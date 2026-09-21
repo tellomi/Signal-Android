@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">登録ロックを有効にしますか？</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">登録ロックを無効にしますか？</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Signalに再登録する際にPINを忘れると、アカウントが7日間ロックされます。</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Tellomiに再登録する際にPINを忘れると、アカウントが7日間ロックされます。</string>
     <string name="RegistrationLockV2Dialog_turn_on">有効にする</string>
     <string name="RegistrationLockV2Dialog_turn_off">無効にする</string>
     <string name="preferences__advanced_pin_settings">PINの詳細設定</string>
@@ -19,13 +19,13 @@
     <string name="preferences_app_protection__turn_off">無効にする</string>
     <string name="preferences_app_protection__confirm_pin">PINを再入力</string>
     <string name="preferences_app_protection__confirm_your_signal_pin">Tellomi PINの確認</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">PINは復元できないため、記憶するか安全に保管してください。PINを忘れると、Signalアカウントの再登録時にデータが失われる可能性があります。</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">PINは復元できないため、記憶するか安全に保管してください。PINを忘れると、Tellomiアカウントの再登録時にデータが失われる可能性があります。</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">PINが違います。もう一度試してください。</string>
     <string name="preferences_app_protection__registration_lock">登録ロック</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">アカウントを再登録する</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Signalをアップデートしてください</string>
+    <string name="preferences_account_update_signal">Tellomiをアップデートしてください</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">すべてのデータを消去する</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,7 +40,7 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">アカウント</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">確認の頻度は次第に少なくなります。</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">あなたの電話番号をSignalに再登録する際に、Tellomi PINを要求します。</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">あなたの電話番号をTellomiに再登録する際に、Tellomi PINを要求します。</string>
     <string name="AccountSettingsFragment__change_phone_number">電話番号を変更</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">あなたのアカウントデータ</string>
@@ -69,7 +69,7 @@
         <item quantity="other">%1$d個のパスキー</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">新しい端末でSignal Loginキーを使用する場合、アカウント保護のために別の認証方法を使用してください。</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">新しい端末でTellomi Loginキーを使用する場合、アカウント保護のために別の認証方法を使用してください。</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">詳しく見る</string>
 
@@ -87,7 +87,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">ステップ2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">下のボタンをタップして認証アプリを開き、Signalアカウントを追加してください。</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">下のボタンをタップして認証アプリを開き、Tellomiアカウントを追加してください。</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">開く</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -99,7 +99,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">認証アプリが見つかりませんでした</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Signalに接続できませんでした。インターネット接続を確認して、もう一度お試しください。</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomiに接続できませんでした。インターネット接続を確認して、もう一度お試しください。</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">ステップ3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,7 +147,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">コードが違います。認証アプリに表示されたコードを入力してください。</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signalに接続できませんでした。インターネット接続を確認して、もう一度お試しください。</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomiに接続できませんでした。インターネット接続を確認して、もう一度お試しください。</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">認証アプリ</string>

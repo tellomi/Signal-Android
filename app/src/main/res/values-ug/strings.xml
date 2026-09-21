@@ -1203,19 +1203,19 @@
 
     <!-- DozeReminder -->
     <string name="DozeReminder_optimize_for_missing_play_services">يۈتكەن Google Play مۇلازىمەتلىرىگە ئەلالاشتۇرۇش</string>
-    <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">بۇ ئۈسكۈنە Google Play مۇلازىمەتلىرىنى قوللىمايدۇ. Signalنىڭ ھەرىكەتسىز ھالەتتىمۇ ئۇچۇر ئېلىشىنى توسۇپ قويىدىغان «سىستېما باتارېيەسىنى ئەلالاشتۇرۇش»نى چەكلەڭ.</string>
+    <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">بۇ ئۈسكۈنە Google Play مۇلازىمەتلىرىنى قوللىمايدۇ. Tellomiنىڭ ھەرىكەتسىز ھالەتتىمۇ ئۇچۇر ئېلىشىنى توسۇپ قويىدىغان «سىستېما باتارېيەسىنى ئەلالاشتۇرۇش»نى چەكلەڭ.</string>
 
     <!-- ExpiredBuildReminder -->
     <string name="ExpiredBuildReminder_this_version_of_signal_has_expired">بۇ Tellomi نەشرىنىڭ ۋاقتى توشتى. ئۇچۇر يوللىيالىشىڭىز ۋە قوبۇل قىلالىشىڭىز ئۈچۈن ھازىرلا يېڭىلاڭ.</string>
     <string name="ExpiredBuildReminder_update_now">ھازىر يېڭىلاڭ</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->
-    <string name="DeprecatedSdkBanner_body">Tellomi بۇ ئۈسكۈنىدە ئەمدى ئىشلىمەيدۇ. Signalنى قايتا ئىشلىتىش ئۈچۈن، ئۈسكۈنىڭىزنى ئاندىرويىدنىڭ يېڭىراق نەشرىگە يېڭىلاڭ ياكى يېڭى ئۈسكۈنىگە ئالماشتۇرۇڭ.</string>
+    <string name="DeprecatedSdkBanner_body">Tellomi بۇ ئۈسكۈنىدە ئەمدى ئىشلىمەيدۇ. Tellomiنى قايتا ئىشلىتىش ئۈچۈن، ئۈسكۈنىڭىزنى ئاندىرويىدنىڭ يېڭىراق نەشرىگە يېڭىلاڭ ياكى يېڭى ئۈسكۈنىگە ئالماشتۇرۇڭ.</string>
 
     <!-- Title of notification telling users to update Signal -->
     <string name="DeprecatedNotificationJob_update_signal">Tellomi نى يېڭىلا</string>
     <!-- Message body of notification telling users that this current version of Signal has expired. If pressed, we will direct them to the website APK or PlayStore page -->
-    <string name="DeprecatedNotificationJob_this_version_of_signal_has_expired">Signalنىڭ بۇ نەشرىنىڭ ۋاقتى ئ‍ۆتكەن. ئۇچۇرلارنى يوللاش ۋە تاپشۇرۇۋېلىش ئۈچۈن يېڭىلاشنى چېكىڭ.</string>
+    <string name="DeprecatedNotificationJob_this_version_of_signal_has_expired">Tellomiنىڭ بۇ نەشرىنىڭ ۋاقتى ئ‍ۆتكەن. ئۇچۇرلارنى يوللاش ۋە تاپشۇرۇۋېلىش ئۈچۈن يېڭىلاشنى چېكىڭ.</string>
 
     <!-- PendingGroupJoinRequestsReminder -->
     <plurals name="PendingGroupJoinRequestsReminder_d_pending_member_requests">
@@ -4147,7 +4147,7 @@
     <string name="preferences__disable_pin">PIN چەكلە</string>
     <string name="preferences__enable_pin">PIN نى قوزغات</string>
     <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">ئەگەر PIN نى چەكلىسىڭىز، Tellomi غا قايتا تىزىملاتقاندا ئۆزىڭىز زاپاسلاپ ۋە ئەسلىگە كەلتۈرمىگۈچە ھەممە سانلىق مەلۇماتلىرىڭىز يوقىلىدۇ، PIN چەكلەنسە تىزىملىتىش قۇلۇپىنى ئاچالمايسىز.</string>
-    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">PINلەر Signalدا ساقلانغان ئۇچۇرلارنى مەخپىيلەشتۈرۈپ ساقلايدۇ. شۇڭا سىزلا زىيارەت قىلالايسىز. ئارخىپىڭىز، سەپلىمىلىرىڭىز ۋە ئالاقەداشلىرىڭىز Tellomi نى قايتا قاچىلىغىنىڭىزدا ئەسلىگە كەلتۈرىلىدۇ. ئەپنى ئېچىش PIN نىڭىز كېرەك ئەمەس.</string>
+    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">PINلەر Tellomiدا ساقلانغان ئۇچۇرلارنى مەخپىيلەشتۈرۈپ ساقلايدۇ. شۇڭا سىزلا زىيارەت قىلالايسىز. ئارخىپىڭىز، سەپلىمىلىرىڭىز ۋە ئالاقەداشلىرىڭىز Tellomi نى قايتا قاچىلىغىنىڭىزدا ئەسلىگە كەلتۈرىلىدۇ. ئەپنى ئېچىش PIN نىڭىز كېرەك ئەمەس.</string>
     <string name="preferences__system_default">كۆڭۈلدىكى سىستېما</string>
     <string name="preferences__language">تىل</string>
     <string name="preferences__signal_messages_and_calls">Tellomi ئۇچۇر ۋە چاقىرىشلىرى</string>
@@ -6293,7 +6293,7 @@
     <string name="Subscription__expires_s">مۇددىتى %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">مۇستەقىل پايدا ئالمايدىغان تەشكىلات بولۇش سۈپىتى بىلەن، Tellomi شەخسىي ئۇچۇر ۋە تېلېفونلىشىشقا كاپالەتلىك قىلىدۇ. ئېلان، ئىز قوغلاش، نازارەت قىلىنىشتىن خالىي. Signalنى قوللاش ئۈچۈن بۈگۈنلا ئىئانە قىلىڭ.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">مۇستەقىل پايدا ئالمايدىغان تەشكىلات بولۇش سۈپىتى بىلەن، Tellomi شەخسىي ئۇچۇر ۋە تېلېفونلىشىشقا كاپالەتلىك قىلىدۇ. ئېلان، ئىز قوغلاش، نازارەت قىلىنىشتىن خالىي. Tellomiنى قوللاش ئۈچۈن بۈگۈنلا ئىئانە قىلىڭ.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -7357,7 +7357,7 @@
     <!-- Continue button label -->
     <string name="DonateToSignalFragment__continue">داۋاملاشتۇر</string>
     <!-- Description below title -->
-    <string name="DonateToSignalFragment__private_messaging">شەخسىي ئۇچۇرلىشىشنى قوللاش ئۈچۈن ئىئانە قىلىڭ. Signalنى مۇستەقىل ۋە ئېلاندىن خالىي قىلىشقا ياردەملىشىڭ.</string>
+    <string name="DonateToSignalFragment__private_messaging">شەخسىي ئۇچۇرلىشىشنى قوللاش ئۈچۈن ئىئانە قىلىڭ. Tellomiنى مۇستەقىل ۋە ئېلاندىن خالىي قىلىشقا ياردەملىشىڭ.</string>
     <!-- Dialog title when a user tries to donate while they already have a pending donation. -->
     <string name="DonateToSignalFragment__you_have_a_donation_pending">بىر ئىئانىڭىز بىر تەرەپ قىلىنىۋاتىدۇ</string>
     <!-- Dialog body when a user tries to donate while they already have a pending monthly donation. -->
@@ -8027,7 +8027,7 @@
     <!-- Title of a megaphone shown to prompt the user to open Signal on their primary device -->
     <string name="InactivePrimary__title">تېلېفونىڭىزدا Tellomi نى ئېچىڭ</string>
     <!-- Body of a megaphone shown to prompt the user to open Signal on their primary device -->
-    <string name="InactivePrimary__body">ھېساباتىڭىزنى ئاكتىپ ھالەتتە ساقلاش ئۈچۈن ئاساسلىق ئۈسكۈنىڭىزدە Signalنى ئېچىڭ.</string>
+    <string name="InactivePrimary__body">ھېساباتىڭىزنى ئاكتىپ ھالەتتە ساقلاش ئۈچۈن ئاساسلىق ئۈسكۈنىڭىزدە Tellomiنى ئېچىڭ.</string>
     <!-- Button of a megaphone shown to prompt the user to open Signal on their primary device that will navigate to a support page -->
     <string name="InactivePrimary__learn_more">تەپسىلاتى</string>
     <!-- Button of a megaphone shown to prompt the user to open Signal on their primary device that will snooze the megaphone -->
@@ -8712,9 +8712,9 @@
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
     <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">زاپاسلاش ئېتىۋېتىلدى ، سانلىق مەلۇماتلىرىڭىز ئۈسكۈنىڭىزگە چۈشۈرۈلىدۇ ، ئاندىن Tellomi نىڭ بىخەتەر ساقلاش مۇلازىمىتىدىن ئۆچۈرۈلىدۇ.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">زاپاسلاش ئېتىلدى ، Signalنىڭ بىخەتەر ساقلاش مۇلازىمىتىدىن سانلىق مەلۇماتلىرىڭىز ئۆچۈرۈلىدۇ.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">زاپاسلاش ئېتىلدى ، Tellomiنىڭ بىخەتەر ساقلاش مۇلازىمىتىدىن سانلىق مەلۇماتلىرىڭىز ئۆچۈرۈلىدۇ.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">زاپاسلاش ئېتىۋېتىلدى ۋە Signalنىڭ بىخەتەر ساقلاش مۇلازىمىتىدىن سانلىق مەلۇماتلىرىڭىز ئۆچۈرۈلدى.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">زاپاسلاش ئېتىۋېتىلدى ۋە Tellomiنىڭ بىخەتەر ساقلاش مۇلازىمىتىدىن سانلىق مەلۇماتلىرىڭىز ئۆچۈرۈلدى.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">%2$s نىڭ %1$s تى چۈشۈۋاتىدۇ(%3$d)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -8811,7 +8811,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">ئۇچۇرلىرىڭىزنى ۋە مېدىيانى Signalنىڭ بىخەتەر ، ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتىنى ئىشلىتىپ زاپاسلاڭ. يېڭى تېلېفون ئالغاندا ياكى سىگنالنى قايتا قاچىلىغاندا ھەرقانداق ئۇچۇرنى يۈتتۈرۈپ قويمايسىز.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">ئۇچۇرلىرىڭىزنى ۋە مېدىيانى Tellomiنىڭ بىخەتەر ، ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتىنى ئىشلىتىپ زاپاسلاڭ. يېڭى تېلېفون ئالغاندا ياكى سىگنالنى قايتا قاچىلىغاندا ھەرقانداق ئۇچۇرنى يۈتتۈرۈپ قويمايسىز.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->
@@ -8851,7 +8851,7 @@
     <!-- Row label indicating that the recovery key can be used to restore an on-device backup. -->
     <string name="MessageBackupsKeyEducationScreen__restore_on_device_backup">ئۈسكۈنىڭىزدىكى زاپاسلاشنى ئەسلىگە كەلتۈرۈڭ</string>
     <!-- Row label indicating that the recovery key can be used to restore a Signal Secure Backup. -->
-    <string name="MessageBackupsKeyEducationScreen__restore_a_signal_secure_backup">بىرSignal بىخەتەر زاپاسلانمىسىنى ئەسلىگە كەلتۈرۈش</string>
+    <string name="MessageBackupsKeyEducationScreen__restore_a_signal_secure_backup">بىرTellomi بىخەتەر زاپاسلانمىسىنى ئەسلىگە كەلتۈرۈش</string>
     <!-- Row label indicating that the recovery key can be used to restore a Signal Secure Backup. -->
     <string name="MessageBackupsKeyEducationScreen__restore_your_signal_secure_backup">Tellomi بىخەتەر زاپاسلانمىللىرىڭىزنى ئەسلىگە كەلتۈرۈڭ</string>
     <!-- Action button label -->
@@ -8881,7 +8881,7 @@
     <!-- Dialog message shown when there is an error saving the recovery key because no compatible password manager was detected. -->
     <string name="MessageBackupsKeyRecordScreen__missing_password_manager_message">سىزدە پارول باشقۇرغۇچى ئورنىتىلمىغان ، ياكى ئىشلىتىۋاتقان پارول باشقۇرغۇچىڭىزنى قوللىمايدۇ.</string>
     <!-- Dialog message shown when there is an error saving the recovery key because the user previously chose not to save Signal passwords to their password manager. -->
-    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">سىز بۇرۇن Google پارول باشقۇرغۇچىدا Signalنىڭ مەخپىي نومۇرىنى ساقلىماسلىقنى تاللىغان. Google پارول باشقۇرغۇچ تەڭشىكىڭىزدىكى «رەت قىلىنغان تور بېكەت ۋە ئەپلەر» دىن Tellomi نى چىقىرىۋېتىپ قايتا سىناڭ.</string>
+    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">سىز بۇرۇن Google پارول باشقۇرغۇچىدا Tellomiنىڭ مەخپىي نومۇرىنى ساقلىماسلىقنى تاللىغان. Google پارول باشقۇرغۇچ تەڭشىكىڭىزدىكى «رەت قىلىنغان تور بېكەت ۋە ئەپلەر» دىن Tellomi نى چىقىرىۋېتىپ قايتا سىناڭ.</string>
     <!-- Label for a button that navigates to the device settings -->
     <string name="MessageBackupsKeyRecordScreen__go_to_settings">تەڭشەكلەرگە يۆتكەل</string>
     <!-- Action button label -->
@@ -9390,7 +9390,7 @@
     <!-- Notification title for when user is out of remote storage -->
     <string name="Notification_backup_storage_full">زاپاسلاش ئامبىرى چېكىگە يەتتى</string>
     <!-- Notification body for when user is out of remote storage -->
-    <string name="Notification_youve_reached_your_backup_storage_limit">زاپاسلاش ئامبىرىڭىزنىڭ چېكىگە يەتتىڭىز. پاراڭلار ۋە مېدىيانى داۋاملىق زاپاسلاش ئۈچۈن Signalدا بوشلۇق ھازىرلاڭ.</string>
+    <string name="Notification_youve_reached_your_backup_storage_limit">زاپاسلاش ئامبىرىڭىزنىڭ چېكىگە يەتتىڭىز. پاراڭلار ۋە مېدىيانى داۋاملىق زاپاسلاش ئۈچۈن Tellomiدا بوشلۇق ھازىرلاڭ.</string>
     <!-- Notification title for when initial backup failed -->
     <string name="Notification_backup_failed">زاپاسلاش مەغلۇپ بولدى</string>
     <!-- Notification body for when initial backup failed -->
@@ -9515,7 +9515,7 @@
     <!-- Label for text field where user describes their call quality issue -->
     <string name="CallQualitySomethingElseScreen__describe_your_issue">بايقىغان مەسىلىنى تەسۋىرلەڭ</string>
     <!-- Privacy notice explaining that issue details will be kept private and used to improve Signal calls -->
-    <string name="CallQualitySomethingElseScreen__privacy_notice">مەسىلىگە مۇناسىۋەتلىك قانداق تەپسىلاتلار بولسا قوشۇپ قويۇڭ. بۇ يەردە ھەمبەھىرلىگەن ھەر قانداق مەزمۇن شەخسىي ھالەتتە ساقلىنىدۇ ھەمدە Signalدىكى تېلېفونلىشىش سۈپىتىنى ياردەملىشىپ ياخشىلاشقا ئىشلىتىلىدۇ.</string>
+    <string name="CallQualitySomethingElseScreen__privacy_notice">مەسىلىگە مۇناسىۋەتلىك قانداق تەپسىلاتلار بولسا قوشۇپ قويۇڭ. بۇ يەردە ھەمبەھىرلىگەن ھەر قانداق مەزمۇن شەخسىي ھالەتتە ساقلىنىدۇ ھەمدە Tellomiدىكى تېلېفونلىشىش سۈپىتىنى ياردەملىشىپ ياخشىلاشقا ئىشلىتىلىدۇ.</string>
     <!-- Button to save the call quality issue description -->
     <string name="CallQualitySomethingElseScreen__save">ساقلاش</string>
     <!-- Content description for the back navigation button -->
@@ -9525,7 +9525,7 @@
     <!-- Title asking user how their call was -->
     <string name="CallQualitySheet__how_was_your_call">تېلېفونلىشىش جەريانى قانداق بولدى؟</string>
     <!-- Subtitle explaining that feedback helps improve Signal and no PII is stored -->
-    <string name="CallQualitySheet__how_was_your_call_subtitle">بۇ بىزنىڭ Signalدىكى تېلېفونلىشىش سۈپىتىنى ياخشىلىشىمىزغا ياردەم بېرىدۇ. شەخسىي سالاھىيەتكە باغلىنىشلىق ئۇچۇرلار ساقلانمايدۇ.</string>
+    <string name="CallQualitySheet__how_was_your_call_subtitle">بۇ بىزنىڭ Tellomiدىكى تېلېفونلىشىش سۈپىتىنى ياخشىلىشىمىزغا ياردەم بېرىدۇ. شەخسىي سالاھىيەتكە باغلىنىشلىق ئۇچۇرلار ساقلانمايدۇ.</string>
     <!-- Button label indicating the call had issues -->
     <string name="CallQualitySheet__had_issues">مەسىلىلەرگە يولۇقتىۇم</string>
     <!-- Button label indicating the call was great -->
@@ -9693,7 +9693,7 @@
     <!-- Title of the sheet shown when the server reports a verification code was requested for the user\'s phone number -->
     <string name="VerificationCodeRequestedBottomSheet__title">دەلىللەش كودى تەلەپ قىلىنغان</string>
     <!-- First paragraph of the body of the verification code requested sheet -->
-    <string name="VerificationCodeRequestedBottomSheet__body_1">دەلىللەش كودىڭىزنى ھېچكىمگە بەرمەڭ. Tellomi ھەرگىز سىزگە ئۇچۇر يوللاپ كود سورىمايدۇ. ئەگەر سىز Signalنىڭ قىياپىتىگە كىرىۋالغان بىرىنىڭ ئۇچۇرىنى تاپشۇرۇۋالغان بولسىڭىز، بۇ بىر ئالدامچىلىق.</string>
+    <string name="VerificationCodeRequestedBottomSheet__body_1">دەلىللەش كودىڭىزنى ھېچكىمگە بەرمەڭ. Tellomi ھەرگىز سىزگە ئۇچۇر يوللاپ كود سورىمايدۇ. ئەگەر سىز Tellomiنىڭ قىياپىتىگە كىرىۋالغان بىرىنىڭ ئۇچۇرىنى تاپشۇرۇۋالغان بولسىڭىز، بۇ بىر ئالدامچىلىق.</string>
     <!-- Second paragraph of the body of the verification code requested sheet -->
     <string name="VerificationCodeRequestedBottomSheet__body_2">ئەگەر سىز ئۆزىڭىز كودنى تەلەپ قىلغان بولسىڭىز، بۇ ئۇچۇرغا پەرۋا قىلماڭ.</string>
     <!-- Button on the verification code requested sheet that opens the safety tips screen -->

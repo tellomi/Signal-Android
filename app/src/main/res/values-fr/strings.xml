@@ -649,13 +649,13 @@
     <!-- Menu option to unblock in a conversation -->
     <string name="ConversationFragment_unblock">Débloquer</string>
     <!-- Dialog title shown after reporting spam and tapping the conversation item -->
-    <string name="ConversationFragment_reported_spam">Signalé comme spam</string>
+    <string name="ConversationFragment_reported_spam">Tellomié comme spam</string>
     <!-- Dialog message shown after reporting spam and tapping the conversation item -->
     <string name="ConversationFragment_reported_spam_message">Tellomi a été informé que cet utilisateur envoie peut-être des spams. Nous n’avons cependant jamais accès au contenu des conversations.</string>
     <!-- Toast shown after reporting spam and tapping the conversation item -->
-    <string name="ConversationFragment_reported_as_spam">Signalé comme spam</string>
+    <string name="ConversationFragment_reported_as_spam">Tellomié comme spam</string>
     <!-- Toast shown after reporting and blocking a conversation -->
-    <string name="ConversationFragment_reported_as_spam_and_blocked">Signalé comme spam et bloqué</string>
+    <string name="ConversationFragment_reported_as_spam_and_blocked">Tellomié comme spam et bloqué</string>
     <!-- Dialog message shown after accepting a message request and tapping on options from the conversation event -->
     <string name="ConversationFragment_you_accepted_a_message_request_from_s">Vous avez accepté l’invitation par message de %1$s. S’il s’agit d’une erreur, choisissez l’une des actions suivantes.</string>
     <!-- Text shown in conversation header when in a message request state and to carefully review the user -->
@@ -2206,7 +2206,7 @@
     <!-- Body for quote when message being quoted is an in-app payment message tombstone without an amount -->
     <string name="MessageRecord__payment_tombstone">Paiement</string>
     <!-- Update message shown in chat after reporting it as spam -->
-    <string name="MessageRecord_reported_as_spam">Signalé comme spam</string>
+    <string name="MessageRecord_reported_as_spam">Tellomié comme spam</string>
     <!-- Update message shown in chat after accept a message request, placeholder is the other person\'s display name -->
     <string name="MessageRecord_you_accepted_s_message_request">Vous avez accepté l\'invitation par message de %1$s</string>
     <!-- Update message shown in a group chat after accepting a group message request -->

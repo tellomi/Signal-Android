@@ -148,7 +148,7 @@
   <!-- Dialog title asking users for microphone permission -->
   <string name="CameraXFragment_allow_access_microphone">允許連接你的麥克風</string>
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">要拍照或錄影，請允許Signal存取相機。</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">要拍照或錄影，請允許Tellomi存取相機。</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
   <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">要拍照及錄影，請允許 Tellomi 存取相機及麥克風。</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->

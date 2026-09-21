@@ -98,7 +98,7 @@
     <string name="AttachmentKeyboard_location">સ્થળ</string>
     <!-- Text for a button that will allow users to create a poll -->
     <string name="AttachmentKeyboard_poll">મતદાન</string>
-    <string name="AttachmentKeyboard_Signal_needs_permission_to_show_your_photos_and_videos">તમારા ફોટા અને વીડિયો બતાવવા માટે Signalને પરવાનગીની જરૂર છે</string>
+    <string name="AttachmentKeyboard_Signal_needs_permission_to_show_your_photos_and_videos">તમારા ફોટા અને વીડિયો બતાવવા માટે Tellomiને પરવાનગીની જરૂર છે</string>
     <!-- Text for a button prompting users to allow Signal access to their gallery storage -->
     <string name="AttachmentKeyboard_allow_access">ઍક્સેસ આપો</string>
     <string name="AttachmentKeyboard_payment">પેમેન્ટ</string>
@@ -119,24 +119,24 @@
 
     <!-- AttachmentManager -->
     <string name="AttachmentManager_cant_open_media_selection">મીડિયા પસંદ કરવા માટે કોઈ એપ્લિકેશન મળતું નથી.</string>
-    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">ફોટા, વીડિયો અથવા ઓડિયોને જોડવા માટે Signalને સ્ટોરેજ પરવાનગીની જરૂર હોય છે, પરંતુ તે કાયમી ધોરણે નકારવામાં આવી છે. કૃપા કરીને ઍપ સેટિંગ્સ મેનૂ પર ચાલુ રાખો, \"પરવાનગી આપો\" પસંદ કરો અને \"સ્ટોરેજ\" સક્ષમ કરો.</string>
-    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">સંપર્ક માહિતીને જોડવા માટે Signalને સંપર્કોની પરવાનગીની જરૂર હોય છે, પરંતુ તે કાયમી ધોરણે નકારવામાં આવી છે. કૃપા કરીને ઍપ સેટિંગ્સ મેનૂ પર ચાલુ રાખો, \"પરવાનગી આપો\" પસંદ કરો અને \"સંપર્કો\" સક્ષમ કરો.</string>
-    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">કોઈ સ્થળ જોડવા માટે Signalને સ્થાનની પરવાનગીની જરૂર હોય છે, પરંતુ તે કાયમી ધોરણે નકારવામાં આવી છે. કૃપા કરીને ઍપ સેટિંગ્સ મેનૂ પર ચાલુ રાખો, \"પરવાનગી આપો\" પસંદ કરો અને \"સ્થાન\" સક્ષમ કરો.</string>
+    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">ફોટા, વીડિયો અથવા ઓડિયોને જોડવા માટે Tellomiને સ્ટોરેજ પરવાનગીની જરૂર હોય છે, પરંતુ તે કાયમી ધોરણે નકારવામાં આવી છે. કૃપા કરીને ઍપ સેટિંગ્સ મેનૂ પર ચાલુ રાખો, \"પરવાનગી આપો\" પસંદ કરો અને \"સ્ટોરેજ\" સક્ષમ કરો.</string>
+    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">સંપર્ક માહિતીને જોડવા માટે Tellomiને સંપર્કોની પરવાનગીની જરૂર હોય છે, પરંતુ તે કાયમી ધોરણે નકારવામાં આવી છે. કૃપા કરીને ઍપ સેટિંગ્સ મેનૂ પર ચાલુ રાખો, \"પરવાનગી આપો\" પસંદ કરો અને \"સંપર્કો\" સક્ષમ કરો.</string>
+    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">કોઈ સ્થળ જોડવા માટે Tellomiને સ્થાનની પરવાનગીની જરૂર હોય છે, પરંતુ તે કાયમી ધોરણે નકારવામાં આવી છે. કૃપા કરીને ઍપ સેટિંગ્સ મેનૂ પર ચાલુ રાખો, \"પરવાનગી આપો\" પસંદ કરો અને \"સ્થાન\" સક્ષમ કરો.</string>
 
     <!-- Dialog title asking users for location permission -->
     <string name="AttachmentManager_signal_allow_access_location">તમારા લોકેશનનો ઍક્સેસ આપો</string>
     <!-- Dialog description that will explain the steps needed to give location permission -->
     <string name="AttachmentManager_signal_to_send_location">તમારું લોકેશન મોકલવા માટે:</string>
     <!-- Alert dialog description asking for location permission -->
-    <string name="AttachmentManager_signal_allow_signal_access_location">Signalને તમારું લોકેશન મોકલવા માટે ઍક્સેસ આપો.</string>
+    <string name="AttachmentManager_signal_allow_signal_access_location">Tellomiને તમારું લોકેશન મોકલવા માટે ઍક્સેસ આપો.</string>
     <!-- Toast text explaining Signal\'s need for location access -->
-    <string name="AttachmentManager_signal_needs_location_access">તમારું લોકેશન મોકલવા માટે Signalને લોકેશન ઍક્સેસની જરૂર છે.</string>
+    <string name="AttachmentManager_signal_needs_location_access">તમારું લોકેશન મોકલવા માટે Tellomiને લોકેશન ઍક્સેસની જરૂર છે.</string>
     <!-- Dialog title asking users for gallery storage permission -->
     <string name="AttachmentManager_signal_allow_storage">સ્ટોરેજના એક્સેસની મંજૂરી આપો</string>
     <!-- Dialog description that will explain the steps needed to give gallery storage permission -->
     <string name="AttachmentManager_signal_to_show_photos">ફોટા અને વીડિયો બતાવવા માટે:</string>
     <!-- Toast text explaining Signal\'s need for storage access -->
-    <string name="AttachmentManager_signal_needs_storage_access">તમારા ફોટા અને વીડિયો બતાવવા માટે Signalને ઍક્સેસની જરૂર છે.</string>
+    <string name="AttachmentManager_signal_needs_storage_access">તમારા ફોટા અને વીડિયો બતાવવા માટે Tellomiને ઍક્સેસની જરૂર છે.</string>
 
     <!-- Alert dialog title to show the recipient has not activated payments -->
     <string name="AttachmentManager__not_activated_payments">%1$sએ પેમેન્ટ સક્રિય કરેલ નથી </string>
@@ -242,11 +242,11 @@
     <!-- Dialog button to report as spam only -->
     <string name="BlockUnblockDialog_report_spam">સ્પામ તરીકે જાણ કરો</string>
     <!-- Dialog message when reporting spam of an individual (1:1 conversation) -->
-    <string name="BlockUnblockDialog_report_spam_description">Signalને જાણ કરવામાં આવશે કે આ વ્યક્તિ સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
+    <string name="BlockUnblockDialog_report_spam_description">Tellomiને જાણ કરવામાં આવશે કે આ વ્યક્તિ સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
     <!-- Dialog message when reporting spam of a group and we can determine the group member that invited you, placeholder is a name -->
-    <string name="BlockUnblockDialog_report_spam_group_named_adder">Signalને જાણ કરવામાં આવશે કે %1$s, જેમણે તમને આ ગ્રૂપમાં આમંત્રિત કર્યા છે, તે સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
+    <string name="BlockUnblockDialog_report_spam_group_named_adder">Tellomiને જાણ કરવામાં આવશે કે %1$s, જેમણે તમને આ ગ્રૂપમાં આમંત્રિત કર્યા છે, તે સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
     <!-- Dialog message when reporting spam of a group and we cannot determine the group member that invited you -->
-    <string name="BlockUnblockDialog_report_spam_group_unknown_adder">Signalને જાણ કરવામાં આવશે કે જે વ્યક્તિએ તમને આ ગ્રૂપમાં આમંત્રિત કર્યા છે, તે સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
+    <string name="BlockUnblockDialog_report_spam_group_unknown_adder">Tellomiને જાણ કરવામાં આવશે કે જે વ્યક્તિએ તમને આ ગ્રૂપમાં આમંત્રિત કર્યા છે, તે સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
 
     <!-- BucketedThreadMedia -->
     <string name="BucketedThreadMedia_Today">આજે</string>
@@ -326,7 +326,7 @@
     <!-- Title on dialog when quick restore qr code is scanned in system camera -->
     <string name="CommunicationActions__transfer_dialog_title">એકાઉન્ટને નવા ડિવાઇસમાં ટ્રાન્સફર કરીએ?</string>
     <!-- Message on dialog when quick restore qr code is scanned in system camera -->
-    <string name="CommunicationActions__transfer_dialog_message">આ એકાઉન્ટને નવા ડિવાઇસમાં ટ્રાન્સફર કરવા માટે, \"ચાલુ રાખો\" પર ટેપ કરો અને Tellomi કેમેરાથી ફરીથી QR કોડ સ્કેન કરો. ખાતરી કરો કે તમે ફક્ત એવા QR કોડ સ્કેન કરો છો જે સીધા Signalમાંથી જ આવતા હોય.</string>
+    <string name="CommunicationActions__transfer_dialog_message">આ એકાઉન્ટને નવા ડિવાઇસમાં ટ્રાન્સફર કરવા માટે, \"ચાલુ રાખો\" પર ટેપ કરો અને Tellomi કેમેરાથી ફરીથી QR કોડ સ્કેન કરો. ખાતરી કરો કે તમે ફક્ત એવા QR કોડ સ્કેન કરો છો જે સીધા Tellomiમાંથી જ આવતા હોય.</string>
     <string name="CommunicationActions__dont_transfer">ટ્રાન્સફર કરશો નહીં</string>
 
     <!-- ConfirmIdentityDialog -->
@@ -477,9 +477,9 @@
     <!-- Dialog description that will explain the steps needed to give microphone permissions -->
     <string name="ConversationActivity_signal_to_send_audio_messages">વોઇસ મેસેજ મોકલવા માટે:</string>
     <!-- Alert dialog description asking for microphone permission in order to send voice messages -->
-    <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">વૉઇસ મેસેજ મોકલવા માટે, Signalને તમારા માઇક્રોફોન પર ઍક્સેસ આપો.</string>
+    <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">વૉઇસ મેસેજ મોકલવા માટે, Tellomiને તમારા માઇક્રોફોન પર ઍક્સેસ આપો.</string>
     <!-- Toast text explaining Signal\'s need for microphone access -->
-    <string name="ConversationActivity_signal_needs_microphone_access_voice_message">વૉઇસ મેસેજ રેકોર્ડ કરવા માટે Signalને માઇક્રોફોન ઍક્સેસની જરૂર છે.</string>
+    <string name="ConversationActivity_signal_needs_microphone_access_voice_message">વૉઇસ મેસેજ રેકોર્ડ કરવા માટે Tellomiને માઇક્રોફોન ઍક્સેસની જરૂર છે.</string>
     <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">ઓડિયો મેસેજ મોકલવા માટે Tellomi ને માઇક્રોફોન પરવાનગીની આવશ્યકતા છે, પરંતુ તે કાયમી ધોરણે નામંજૂર કરવામાં આવી છે. કૃપા કરીને એપ્લિકેશન સેટિંગ્સ ચાલુ રાખો, \"પરવાનગી\" પસંદ કરો અને \"માઇક્રોફોન\" સક્ષમ કરો.</string>
 
     <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">કૉલ કરવા માટે Tellomi ને માઇક્રોફોન અને કેમેરાની પરવાનગીની જરૂર છે %1$s, પરંતુ તેઓને કાયમી નામંજૂર કરવામાં આવ્યા છે. કૃપા કરીને એપ્લિકેશન સેટિંગ્સ ચાલુ રાખો, \"પરવાનગી\" પસંદ કરો અને \"માઇક્રોફોન\" અને \"કેમેરો\" સક્ષમ કરો.</string>
@@ -508,9 +508,9 @@
     <!-- Dialog description that will explain the steps needed to give microphone permissions for a voice call -->
     <string name="ConversationActivity__to_start_call">કૉલ શરૂ કરવા માટે:</string>
     <!-- Alert dialog description asking for microphone permission in order to start a voice call -->
-    <string name="ConversationActivity__to_call_signal_needs_access_to_your_microphone">કૉલ શરૂ કરવા માટે, તમારા Signalને તમારા માઇક્રોફોન પર ઍક્સેસ આપો.</string>
+    <string name="ConversationActivity__to_call_signal_needs_access_to_your_microphone">કૉલ શરૂ કરવા માટે, તમારા Tellomiને તમારા માઇક્રોફોન પર ઍક્સેસ આપો.</string>
     <!-- Toast text explaining Signal\'s need for microphone access for a voice call -->
-    <string name="ConversationActivity_signal_needs_microphone_access_voice_call">કૉલ શરૂ કરવા માટે Signalને માઇક્રોફોન ઍક્સેસની જરૂર છે.</string>
+    <string name="ConversationActivity_signal_needs_microphone_access_voice_call">કૉલ શરૂ કરવા માટે Tellomiને માઇક્રોફોન ઍક્સેસની જરૂર છે.</string>
 
 
     <string name="ConversationActivity_join">જોડાઓ</string>
@@ -520,11 +520,11 @@
     <string name="ConversationActivity_error_sending_media">મીડિયા મોકલવામાં ભૂલ</string>
 
     <!-- Message shown when opening an MMS group conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__sms_messaging_is_no_longer_supported">Signalમાં હવે SMS મેસેજિંગ સમર્થિત નથી.</string>
+    <string name="ConversationActivity__sms_messaging_is_no_longer_supported">Tellomiમાં હવે SMS મેસેજિંગ સમર્થિત નથી.</string>
     <!-- Message shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Signalમાં હવે SMS મેસેજિંગ સમર્થિત નથી. વાતચીત અહીં રાખવા માટે %1$s ને Tellomi પર આમંત્રિત કરો.</string>
+    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Tellomiમાં હવે SMS મેસેજિંગ સમર્થિત નથી. વાતચીત અહીં રાખવા માટે %1$s ને Tellomi પર આમંત્રિત કરો.</string>
     <!-- Message shown when opening a conversation with an unregistered user who used to be on Signal -->
-    <string name="ConversationActivity__this_person_is_no_longer_using_signal">આ વ્યક્તિ હવે Signalનો ઉપયોગ કરી રહી નથી. વાતચીત અહીં રાખવા માટે તેમને Tellomi પર આમંત્રિત કરો.</string>
+    <string name="ConversationActivity__this_person_is_no_longer_using_signal">આ વ્યક્તિ હવે Tellomiનો ઉપયોગ કરી રહી નથી. વાતચીત અહીં રાખવા માટે તેમને Tellomi પર આમંત્રિત કરો.</string>
     <!-- Action button shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
     <string name="ConversationActivity__invite_to_signal">Tellomi માટે આમંત્રણ આપો</string>
     <!-- Snackbar message shown after dismissing the full screen sms export megaphone indicating we\'ll do it again soon -->
@@ -583,8 +583,8 @@
     <string name="ConversationFragment_delete_for_everyone_title">બધા માટે ડિલીટ કરવું છે?</string>
     <!-- Body of dialog explaining what happens during deletion -->
     <plurals name="ConversationFragment_delete_for_everyone_body">
-        <item quantity="one">Signalના લેટેસ્ટ વર્ઝન પરના ગ્રૂપના સભ્યો જોશે કે તમે આ મેસેજ ડિલીટ કર્યો છે.</item>
-        <item quantity="other">Signalના લેટેસ્ટ વર્ઝન પરના ગ્રૂપના સભ્યો જોશે કે તમે આ મેસેજ ડિલીટ કર્યા છે.</item>
+        <item quantity="one">Tellomiના લેટેસ્ટ વર્ઝન પરના ગ્રૂપના સભ્યો જોશે કે તમે આ મેસેજ ડિલીટ કર્યો છે.</item>
+        <item quantity="other">Tellomiના લેટેસ્ટ વર્ઝન પરના ગ્રૂપના સભ્યો જોશે કે તમે આ મેસેજ ડિલીટ કર્યા છે.</item>
     </plurals>
     <!-- Dialog button for deleting one or more note-to-self messages only on this device, leaving that same message intact on other devices. -->
     <string name="ConversationFragment_delete_on_this_device">આ ડિવાઇસ પર ડિલીટ કરો</string>
@@ -651,7 +651,7 @@
     <!-- Dialog title shown after reporting spam and tapping the conversation item -->
     <string name="ConversationFragment_reported_spam">સ્પામ તરીકે જાણ કરી</string>
     <!-- Dialog message shown after reporting spam and tapping the conversation item -->
-    <string name="ConversationFragment_reported_spam_message">Signalને જાણ કરવામાં આવી છે કે આ વ્યક્તિ સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
+    <string name="ConversationFragment_reported_spam_message">Tellomiને જાણ કરવામાં આવી છે કે આ વ્યક્તિ સ્પામ મોકલતા હોઈ શકે છે. Tellomi કોઈ પણ ચેટની કન્ટેન્ટ જોઈ શકતું નથી.</string>
     <!-- Toast shown after reporting spam and tapping the conversation item -->
     <string name="ConversationFragment_reported_as_spam">સ્પામ તરીકે જાણ કરી</string>
     <!-- Toast shown after reporting and blocking a conversation -->
@@ -665,9 +665,9 @@
     <!-- Label for official chat pill shown in the Note to Self conversation header -->
     <string name="ConversationFragment_official_chat">સત્તાવાર ચેટ</string>
     <!-- Description shown in the Signal release notes conversation header -->
-    <string name="ConversationFragment_release_notes_description">Signalની એકમાત્ર સત્તાવાર ચેટ. સમાચાર અને રિલીઝ નોટ સાથે અપ ટૂ ડેટ રહો.</string>
+    <string name="ConversationFragment_release_notes_description">Tellomiની એકમાત્ર સત્તાવાર ચેટ. સમાચાર અને રિલીઝ નોટ સાથે અપ ટૂ ડેટ રહો.</string>
     <!-- Label shown in place of the input in the Signal release notes conversation -->
-    <string name="ConversationFragment_the_only_official_chat_from_signal">Signalની એકમાત્ર સત્તાવાર ચેટ</string>
+    <string name="ConversationFragment_the_only_official_chat_from_signal">Tellomiની એકમાત્ર સત્તાવાર ચેટ</string>
     <!-- Plural for group member count shown in conversation header. %1$d is the number of members -->
     <plurals name="ConversationFragment_group_member_count">
         <item quantity="one">%1$d સભ્યો</item>
@@ -718,7 +718,7 @@
     <!-- Summary tip 1 title: Review names and photos -->
     <string name="SafetyTips_summary_tip1_title">નામ અને ફોટાને રિવ્યૂ કરો</string>
     <!-- Summary tip 1 message -->
-    <string name="SafetyTips_summary_tip1_message">\"નામ વેરિફાય થયેલ નથી\" નોટિસ તપાસો. દરેકજણ Signalમાં તેમનું પોતાનું પ્રોફાઇલ નેમ સેટ કરે છે.</string>
+    <string name="SafetyTips_summary_tip1_message">\"નામ વેરિફાય થયેલ નથી\" નોટિસ તપાસો. દરેકજણ Tellomiમાં તેમનું પોતાનું પ્રોફાઇલ નેમ સેટ કરે છે.</string>
     <!-- Summary tip 2 title: Look out for scams -->
     <string name="SafetyTips_summary_tip2_title">કૌભાંડથી સચેત રહો</string>
     <!-- Summary tip 2 message -->
@@ -731,7 +731,7 @@
     <!-- Detail tip 1 title -->
     <string name="SafetyTips_detail_tip1_title">નામ અને ફોટાને રિવ્યૂ કરો</string>
     <!-- Detail tip 1 message -->
-    <string name="SafetyTips_detail_tip1_message">\"નામ વેરિફાય થયેલ નથી\" નોટિસ તપાસો. Signalમાં દરેકજણ તેમનું પોતાનું પ્રોફાઇલ નામ અને ફોટો સેટ કરે છે. જો તમને ખાતરી ન હોય કે વિનંતી કોની છે, તો તેને અવગણવી જ સલામત છે.</string>
+    <string name="SafetyTips_detail_tip1_message">\"નામ વેરિફાય થયેલ નથી\" નોટિસ તપાસો. Tellomiમાં દરેકજણ તેમનું પોતાનું પ્રોફાઇલ નામ અને ફોટો સેટ કરે છે. જો તમને ખાતરી ન હોય કે વિનંતી કોની છે, તો તેને અવગણવી જ સલામત છે.</string>
     <!-- Detail tip 2 title -->
     <string name="SafetyTips_detail_tip2_title">અસ્પષ્ટ અથવા નકામા મેસેજ</string>
     <!-- Detail tip 2 message -->
@@ -1183,7 +1183,7 @@
     <!-- Bottom sheet title telling users to complete the linking process on the other device  -->
     <string name="AddLinkDeviceFragment__finish_linking_on_other_device">તમારા અન્ય ડિવાઇસ પર લિંક કરવાનું પૂર્ણ કરો</string>
     <!-- Bottom sheet description telling users to complete the linking process -->
-    <string name="AddLinkDeviceFragment__finish_linking_signal">તમારા અન્ય ડિવાઇસ પર Signalને લિંક કરવાનું પૂર્ણ કરો.</string>
+    <string name="AddLinkDeviceFragment__finish_linking_signal">તમારા અન્ય ડિવાઇસ પર Tellomiને લિંક કરવાનું પૂર્ણ કરો.</string>
     <!-- Title of dialog when the QR code being scanned is invalid -->
     <string name="AddLinkDeviceFragment__linking_device_failed">ડિવાઇસને જોડવાનું નિષ્ફળ થયું</string>
     <!-- Text shown in a dialog when the QR code being scanned is invalid -->
@@ -1239,12 +1239,12 @@
     <string name="ExpiredBuildReminder_update_now">અત્યારે અપડેટ કરો</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->
-    <string name="DeprecatedSdkBanner_body">Tellomi હવે આ ડિવાઇસ પર કામ કરતું નથી. Signalનો ફરીથી ઉપયોગ કરવા માટે, તમારા ડિવાઇસને Android ના નવા વર્ઝન પર અપડેટ કરો અથવા નવા ડિવાઇસ પર સ્વિચ કરો.</string>
+    <string name="DeprecatedSdkBanner_body">Tellomi હવે આ ડિવાઇસ પર કામ કરતું નથી. Tellomiનો ફરીથી ઉપયોગ કરવા માટે, તમારા ડિવાઇસને Android ના નવા વર્ઝન પર અપડેટ કરો અથવા નવા ડિવાઇસ પર સ્વિચ કરો.</string>
 
     <!-- Title of notification telling users to update Signal -->
-    <string name="DeprecatedNotificationJob_update_signal">Signalને અપડેટ કરો</string>
+    <string name="DeprecatedNotificationJob_update_signal">Tellomiને અપડેટ કરો</string>
     <!-- Message body of notification telling users that this current version of Signal has expired. If pressed, we will direct them to the website APK or PlayStore page -->
-    <string name="DeprecatedNotificationJob_this_version_of_signal_has_expired">Signalનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. મેસેજ મોકલવા અને મેળવવા માટે અપડેટ કરો પર ટેપ કરો.</string>
+    <string name="DeprecatedNotificationJob_this_version_of_signal_has_expired">Tellomiનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. મેસેજ મોકલવા અને મેળવવા માટે અપડેટ કરો પર ટેપ કરો.</string>
 
     <!-- PendingGroupJoinRequestsReminder -->
     <plurals name="PendingGroupJoinRequestsReminder_d_pending_member_requests">
@@ -1390,7 +1390,7 @@
     <!-- Message for dialog asking user to submit logs for debugging a crash -->
     <string name="PromptLogsSlowNotificationsDialog__message">ડીબગ લૉગ અમને સમસ્યાનું નિદાન કરવામાં અને તેને ઠીક કરવામાં મદદ કરે છે અને તેમાં ઓળખ થઈ શકે તેવી માહિતી શામેલ હોતી નથી.</string>
     <!-- Title for dialog asking user to submit logs for debugging slow notification issues -->
-    <string name="PromptLogsSlowNotificationsDialog__title_crash">Signalને એક સમસ્યા આવી. ડીબગ લૉગ સબમિટ કરવો છે?</string>
+    <string name="PromptLogsSlowNotificationsDialog__title_crash">Tellomiને એક સમસ્યા આવી. ડીબગ લૉગ સબમિટ કરવો છે?</string>
     <!-- Title for dialog asking user to submit logs for a situation where they\'re not able to connect to the signal service -->
     <string name="PromptLogsSlowNotificationsDialog__title_connectivity_warning">તમે કદાચ મેસેજ મેળવી શકતા નથી. ડીબગ લૉગ સબમિટ કરવો છે?</string>
 
@@ -1565,9 +1565,9 @@
     <!-- Dialog title displayed when remote restore failed because of an outdated backup version. -->
     <string name="RemoteRestoreActivity__couldnt_restore">આ બેકઅપ રિસ્ટોર કરી શકાયું નથી</string>
     <!-- Dialog message explaining that an update to Signal is required to restore the backup. -->
-    <string name="RemoteRestoreActivity__update_latest">Signalનું આ વર્ઝન તમારું બેકઅપ રિસ્ટોર કરી શકતું નથી. લેટેસ્ટ વર્ઝન પર અપડેટ કરો અને ફરી પ્રયાસ કરો.</string>
+    <string name="RemoteRestoreActivity__update_latest">Tellomiનું આ વર્ઝન તમારું બેકઅપ રિસ્ટોર કરી શકતું નથી. લેટેસ્ટ વર્ઝન પર અપડેટ કરો અને ફરી પ્રયાસ કરો.</string>
     <!-- Text on button that when pressed will redirect them to update Signal -->
-    <string name="RemoteRestoreActivity__update_signal">Signalને અપડેટ કરો</string>
+    <string name="RemoteRestoreActivity__update_signal">Tellomiને અપડેટ કરો</string>
     <!-- Text label button to dismiss the dialog -->
     <string name="RemoteRestoreActivity__not_now">અત્યારે નહીં</string>
     <!-- Text shown on restore screen as information on what will happen if you skip -->
@@ -2117,7 +2117,7 @@
     <string name="MessageRecord_a_message_from_s_couldnt_be_delivered">%1$s તરફથી મેસેજ પહોંચાડી શકાયો નથી</string>
     <string name="MessageRecord_s_changed_their_phone_number">%1$sએ તેમનો ફોન નંબર બદલ્યો.</string>
     <!-- Update item message shown in the release channel when someone is already a sustainer so we ask them if they want to boost. -->
-    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">આ નવી સુવિધા ગમી? Signalને એક-વખતના દાન સાથે સહયોગ આપવામાં મદદ કરો.</string>
+    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">આ નવી સુવિધા ગમી? Tellomiને એક-વખતના દાન સાથે સહયોગ આપવામાં મદદ કરો.</string>
     <!-- Update item message shown when we merge two threads together. First placeholder is a name, second placeholder is a phone number. -->
     <string name="MessageRecord_your_message_history_with_s_and_their_number_s_has_been_merged">%1$s સાથેની તમારી મેસેજ હિસ્ટ્રી અને તેમનો નંબર %2$s ભેગા કરી દેવામાં આવ્યા છે.</string>
     <!-- Update item message shown when we merge two threads together and we don\'t know the phone number of the other thread. The placeholder is a person\'s name. -->
@@ -2198,9 +2198,9 @@
     </plurals>
 
     <!-- In-conversation update message to indicate that the current contact is sms only and will need to migrate to signal to continue the conversation in signal. -->
-    <string name="MessageRecord__you_will_no_longer_be_able_to_send_sms_messages_from_signal_soon">તમે Signalમાંથી હવે SMS મેસેજ મોકલી શકશો નહીં. વાતચીત અહીં રાખવા માટે %1$s ને Tellomi પર આમંત્રિત કરો.</string>
+    <string name="MessageRecord__you_will_no_longer_be_able_to_send_sms_messages_from_signal_soon">તમે Tellomiમાંથી હવે SMS મેસેજ મોકલી શકશો નહીં. વાતચીત અહીં રાખવા માટે %1$s ને Tellomi પર આમંત્રિત કરો.</string>
     <!-- In-conversation update message to indicate that the current contact is sms only and will need to migrate to signal to continue the conversation in signal. -->
-    <string name="MessageRecord__you_can_no_longer_send_sms_messages_in_signal">તમે Signalમાં હવે SMS મેસેજ મોકલી શકતા નથી. વાતચીત અહીં રાખવા માટે %1$s ને Tellomi પર આમંત્રિત કરો.</string>
+    <string name="MessageRecord__you_can_no_longer_send_sms_messages_in_signal">તમે Tellomiમાં હવે SMS મેસેજ મોકલી શકતા નથી. વાતચીત અહીં રાખવા માટે %1$s ને Tellomi પર આમંત્રિત કરો.</string>
     <!-- Body for quote when message being quoted is an in-app payment message -->
     <string name="MessageRecord__payment_s">પેમેન્ટ: %1$s</string>
     <!-- Body for quote when message being quoted is an in-app payment message tombstone without an amount -->
@@ -2335,7 +2335,7 @@
     <string name="DeviceProvisioningActivity_sorry_you_have_too_many_devices_linked_already">માફ કરશો, તમારી પાસે ઘણા બધા ડિવાઇસ પહેલાથી જોડાયેલા છે, કેટલાકને દૂર કરવાનો પ્રયાસ કરો</string>
     <string name="DeviceActivity_sorry_this_is_not_a_valid_device_link_qr_code">માફ કરશો, આ માન્ય ડિવાઇસ લિંક QR કોડ નથી.</string>
     <string name="DeviceProvisioningActivity_link_a_signal_device">Tellomi ડિવાઇસ ને લિંક કરીએ?</string>
-    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">આ Tellomi એકાઉન્ટ સાથે ડેસ્કટોપ કે iPadને લિંક કરવા માટે, લિંક કરેલા ડિવાઇસ પર જાઓ અને \"નવું ડિવાઇસ લિંક કરો\" પર ટેપ કરો અને QR કોડ ફરીથી સ્કેન કરો. ખાતરી કરો કે તમે ફક્ત એવા QR કોડ સ્કેન કરો છો જે સીધા Signalમાંથી જ આવતા હોય.</string>
+    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">આ Tellomi એકાઉન્ટ સાથે ડેસ્કટોપ કે iPadને લિંક કરવા માટે, લિંક કરેલા ડિવાઇસ પર જાઓ અને \"નવું ડિવાઇસ લિંક કરો\" પર ટેપ કરો અને QR કોડ ફરીથી સ્કેન કરો. ખાતરી કરો કે તમે ફક્ત એવા QR કોડ સ્કેન કરો છો જે સીધા Tellomiમાંથી જ આવતા હોય.</string>
 
     <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">QR કોડને સ્કેન કરવા માટે Tellomi ને કેમેરાની પરવાનગીની જરૂર હોય છે, પરંતુ તે કાયમી ધોરણે નામંજૂર કરવામાં આવી છે. કૃપા કરીને એપ્લિકેશન સેટિંગ્સ ચાલુ રાખો, \"પરવાનગી\" પસંદ કરો અને \"કેમેરો\" સક્ષમ કરો.</string>
     <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">કેમેરાની પરવાનગી વિના QR કોડ સ્કેન કરવામાં અસમર્થ</string>
@@ -2402,7 +2402,7 @@
 
     <!-- PinOptOutDialog -->
     <string name="PinOptOutDialog_warning">ચેતવણી</string>
-    <string name="PinOptOutDialog_if_you_disable_the_pin_you_will_lose_all_data">જો તમે પિનને અક્ષમ કરો છો, તો જ્યારે તમે Signalને ફરીથી રજીસ્ટર કરશો ત્યારે તમે તમામ ડેટા ગુમાવશો જો તમે તેને મેન્યુઅલી બેકઅપ અને રિસ્ટોર ન કરો. જ્યારે પિન અક્ષમ હોય ત્યારે તમે રજીસ્ટ્રેશન લૉક ચાલુ કરી શકતા નથી.</string>
+    <string name="PinOptOutDialog_if_you_disable_the_pin_you_will_lose_all_data">જો તમે પિનને અક્ષમ કરો છો, તો જ્યારે તમે Tellomiને ફરીથી રજીસ્ટર કરશો ત્યારે તમે તમામ ડેટા ગુમાવશો જો તમે તેને મેન્યુઅલી બેકઅપ અને રિસ્ટોર ન કરો. જ્યારે પિન અક્ષમ હોય ત્યારે તમે રજીસ્ટ્રેશન લૉક ચાલુ કરી શકતા નથી.</string>
     <string name="PinOptOutDialog_disable_pin">PIN અક્ષમ કરો</string>
 
     <!-- RatingManager -->
@@ -2531,15 +2531,15 @@
     <!-- Dialog title asking users for camera permission -->
     <string name="WebRtcCallActivity__allow_access_camera">તમારા કૅમેરા પર એક્સેસની મંજૂરી આપો</string>
     <!-- Dialog description explaining why camera and microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__to_start_call_camera_microphone">કૉલ શરૂ કરવા અથવા તેમાં જોડાવા માટે, તમારા કૅમેરા અને માઇક્રોફોનને Signalને એક્સેસ કરવાની મંજૂરી આપો.</string>
+    <string name="WebRtcCallActivity__to_start_call_camera_microphone">કૉલ શરૂ કરવા અથવા તેમાં જોડાવા માટે, તમારા કૅમેરા અને માઇક્રોફોનને Tellomiને એક્સેસ કરવાની મંજૂરી આપો.</string>
     <!-- Dialog description explaining why microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__to_start_call_microphone">કૉલ શરૂ કરવા અથવા તેમાં જોડાવા માટે, Signalને તમારા માઇક્રોફોન પર એક્સેસ આપો.</string>
+    <string name="WebRtcCallActivity__to_start_call_microphone">કૉલ શરૂ કરવા અથવા તેમાં જોડાવા માટે, Tellomiને તમારા માઇક્રોફોન પર એક્સેસ આપો.</string>
     <!-- Dialog description explaining why camera permissions are needed to enable a user\'s video in a call -->
     <string name="WebRtcCallActivity__to_enable_video_allow_camera">તમારા વીડિયોને ચાલુ કરવા માટે, તમારા કૅમેરામાં Tellomi એક્સેસની મંજૂરી આપો.</string>
     <!-- Toast describing why microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__signal_needs_microphone_start_call">કૉલ શરૂ કરવા અથવા જોડાવા માટે Signalને માઇક્રોફોનની પરવાનગીની જરૂર છે.</string>
+    <string name="WebRtcCallActivity__signal_needs_microphone_start_call">કૉલ શરૂ કરવા અથવા જોડાવા માટે Tellomiને માઇક્રોફોનની પરવાનગીની જરૂર છે.</string>
     <!-- Toast describing why camera permissions are needed to enable a video in a call -->
-    <string name="WebRtcCallActivity__signal_needs_camera_access_enable_video">તમારા વીડિયોને ચાલુ કરવા માટે Signalને કૅમેરાના એક્સેસની જરૂર છે</string>
+    <string name="WebRtcCallActivity__signal_needs_camera_access_enable_video">તમારા વીડિયોને ચાલુ કરવા માટે Tellomiને કૅમેરાના એક્સેસની જરૂર છે</string>
     <!-- Dialog description that will explain the steps needed to give microphone permissions -->
     <string name="WebRtcCallActivity__to_start_call">કૉલ શરૂ કરવા અથવા તેમાં જોડાવા માટે:</string>
     <!-- Dialog description that will explain the steps needed to give camera permissions -->
@@ -2831,8 +2831,8 @@
     <string name="RegistrationActivity_i_understand">મને સમજાયુ</string>
     <string name="RegistrationActivity_play_services_error">Play Services ભૂલ</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play Services અપડેટ થઈ રહી છે અથવા અસ્થાયીરૂપે અનુપલબ્ધ છે. મેહરબાની કરી ને ફરીથી પ્રયાસ કરો.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Signalને તમને મિત્રો સાથે કનેક્ટ થવા અને મેસેજ મોકલવામાં સહાયતા કરવા સંપર્કો અને મીડિયા પરવાનગીઓની જરૂર છે. તમારા સંપર્કો Signalની ખાનગી સંપર્ક શોધનો ઉપયોગ કરીને અપલોડ કરવામાં આવશે, જેનો અર્થ એમ કે તેઓ એન્ડ-ટુ-એન્ડ એન્ક્રિપ્ટ થયેલ છે અને Tellomi સર્વિસને ક્યારેય દેખાઈ શકશે નહીં.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Signalને તમને મિત્રો સાથે કનેક્ટ થવામાં સહાયતા કરવા સંપર્કોની પરવાનગીઓની જરૂર છે. તમારા સંપર્કો Signalની ખાનગી સંપર્ક શોધનો ઉપયોગ કરીને અપલોડ કરવામાં આવશે, જેનો અર્થ એમ કે તેઓ એન્ડ-ટુ-એન્ડ એન્ક્રિપ્ટ થયેલ છે અને Tellomi સર્વિસને ક્યારેય દેખાઈ શકશે નહીં.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomiને તમને મિત્રો સાથે કનેક્ટ થવા અને મેસેજ મોકલવામાં સહાયતા કરવા સંપર્કો અને મીડિયા પરવાનગીઓની જરૂર છે. તમારા સંપર્કો Tellomiની ખાનગી સંપર્ક શોધનો ઉપયોગ કરીને અપલોડ કરવામાં આવશે, જેનો અર્થ એમ કે તેઓ એન્ડ-ટુ-એન્ડ એન્ક્રિપ્ટ થયેલ છે અને Tellomi સર્વિસને ક્યારેય દેખાઈ શકશે નહીં.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomiને તમને મિત્રો સાથે કનેક્ટ થવામાં સહાયતા કરવા સંપર્કોની પરવાનગીઓની જરૂર છે. તમારા સંપર્કો Tellomiની ખાનગી સંપર્ક શોધનો ઉપયોગ કરીને અપલોડ કરવામાં આવશે, જેનો અર્થ એમ કે તેઓ એન્ડ-ટુ-એન્ડ એન્ક્રિપ્ટ થયેલ છે અને Tellomi સર્વિસને ક્યારેય દેખાઈ શકશે નહીં.</string>
     <string name="RegistrationActivity_rate_limited_to_service">તમે આ નંબરને રજીસ્ટર કરવા માટે ઘણા પ્રયત્નો કર્યા છે. પછીથી ફરી પ્રયત્ન કરો.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">આ નંબરને રજિસ્ટર કરવા માટે તમે ઘણા બધા પ્રયત્નો કરી લીધા છે. કૃપા કરીને %1$sમાં ફરી પ્રયાસ કરો.</string>
@@ -3154,7 +3154,7 @@
 
     <!-- ApkUpdateNotifications -->
     <string name="ApkUpdateNotifications_prompt_install_title">Tellomi અપડેટ</string>
-    <string name="ApkUpdateNotifications_prompt_install_body">Signalનું નવું વર્ઝન ઉપલબ્ધ છે. અપડેટ કરવા માટે ટૅપ કરો.</string>
+    <string name="ApkUpdateNotifications_prompt_install_body">Tellomiનું નવું વર્ઝન ઉપલબ્ધ છે. અપડેટ કરવા માટે ટૅપ કરો.</string>
     <string name="ApkUpdateNotifications_failed_general_title">Tellomi અપડેટ થવામાં નિષ્ફળ રહ્યું</string>
     <string name="ApkUpdateNotifications_failed_general_body">અમે પછીથી ફરી પ્રયાસ કરીશું.</string>
     <string name="ApkUpdateNotifications_auto_update_success_title">Tellomi સફળતાપૂર્વક અપડેટ થઈ ગયું</string>
@@ -3223,7 +3223,7 @@
     <string name="UsernameShareBottomSheet__copy_or_share_a_username_link">યુઝરનેમ લિંક કૉપી કરો અથવા શેર કરો</string>
 
     <!-- VerifyIdentityActivity -->
-    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">તમારો સંપર્ક અસંગત QR કોડ ફોર્મેટ સાથે Signalનું નવું વર્ઝન ચલાવી રહ્યું છે. કૃપા કરીને તુલના કરવા માટે અપડેટ કરો.</string>
+    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">તમારો સંપર્ક અસંગત QR કોડ ફોર્મેટ સાથે Tellomiનું નવું વર્ઝન ચલાવી રહ્યું છે. કૃપા કરીને તુલના કરવા માટે અપડેટ કરો.</string>
     <string name="VerifyIdentityActivity_the_scanned_qr_code_is_not_a_correctly_formatted_safety_number">સ્કેન કરેલો QR કોડ યોગ્ય રીતે ફોર્મેટ થયેલ સલામતી નંબર ચકાસણી કોડ નથી. કૃપા કરીને ફરીથી સ્કેન કરવાનો પ્રયાસ કરો.</string>
     <string name="VerifyIdentityActivity_share_safety_number_via">સલામતી નંબર શેર કરો દ્વારા…</string>
     <string name="VerifyIdentityActivity_our_signal_safety_number">અમારો Tellomi સલામતી નંબર:</string>
@@ -3509,22 +3509,22 @@
     <!-- Action in reminder banner that will take user to re-register -->
     <string name="UnauthorizedReminder_reregister_action">ડિવાઇસને ફરીથી રજિસ્ટર કરાવો</string>
     <!-- Message shown in a reminder banner when this linked device is no longer linked to a primary device -->
-    <string name="UnauthorizedReminder_this_device_is_no_longer_linked_relink_to_continue_messaging">આ ડિવાઇસ હવે લિંક થયેલ નથી. મેસેજિંગ ચાલુ રાખવા Signalને તમારા ફોન સાથે ફરીથી લિંક કરો.</string>
+    <string name="UnauthorizedReminder_this_device_is_no_longer_linked_relink_to_continue_messaging">આ ડિવાઇસ હવે લિંક થયેલ નથી. મેસેજિંગ ચાલુ રાખવા Tellomiને તમારા ફોન સાથે ફરીથી લિંક કરો.</string>
     <!-- Action in reminder banner that will take the user to re-link this device -->
     <string name="UnauthorizedReminder_relink_action">ડિવાઇસને ફરીથી લિંક કરો</string>
 
     <!-- Push notification when the app is forcibly logged out by the server. -->
-    <string name="LoggedOutNotification_you_have_been_logged_out">તમે આ ડિવાઇસ પર Signalમાંથી લૉગ આઉટ થઈ ગયા છો.</string>
+    <string name="LoggedOutNotification_you_have_been_logged_out">તમે આ ડિવાઇસ પર Tellomiમાંથી લૉગ આઉટ થઈ ગયા છો.</string>
 
     <!-- EnclaveFailureReminder -->
     <!-- Banner message to update app to use payments -->
-    <string name="EnclaveFailureReminder_update_signal">ચુકવણીઓનો ઉપયોગ કરતાં રહેવા માટે Signalને અપડેટ કરો. તમારું બેલેન્સ અપ-ટૂ-ડેટ ન પણ હોઈ શકે.</string>
+    <string name="EnclaveFailureReminder_update_signal">ચુકવણીઓનો ઉપયોગ કરતાં રહેવા માટે Tellomiને અપડેટ કરો. તમારું બેલેન્સ અપ-ટૂ-ડેટ ન પણ હોઈ શકે.</string>
     <!-- Banner button to update now -->
 
     <!-- WebRtcCallActivity -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">કૉલનો જવાબ આપવા માટે, Signalને તમારા માઇક્રોફોન પર ઍક્સેસ આપો.</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">કૉલનો જવાબ આપવા માટે, Tellomiને તમારા માઇક્રોફોન પર ઍક્સેસ આપો.</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">વીડિયો કૉલનો જવાબ આપવા માટે, Signalને તમારા માઇક્રોફોન અને કૅમેરાનો ઍક્સેસ આપો.</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">વીડિયો કૉલનો જવાબ આપવા માટે, Tellomiને તમારા માઇક્રોફોન અને કૅમેરાનો ઍક્સેસ આપો.</string>
     <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">કૉલ કરવા અથવા પ્રાપ્ત કરવા માટે Tellomi ને માઇક્રોફોન અને કેમેરાની પરવાનગીની જરૂર હોય છે, પરંતુ તેઓને કાયમી નામંજૂર કરવામાં આવ્યા છે. કૃપા કરીને એપ્લિકેશન સેટિંગ્સ ચાલુ રાખો, \"પરવાનગી\" પસંદ કરો અને \"માઇક્રોફોન\" અને \"કેમેરો\" સક્ષમ કરો.</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">લિંક્ડ ડિવાઇસ પર જવાબ આપ્યો.</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">લિંક્ડ ડિવાઇસ પર નકારી.</string>
@@ -3938,7 +3938,7 @@
     <!-- The title of a dialog prompting user to update to the latest version of Signal. -->
     <string name="EditProfileFragment_deprecated_dialog_title">સિગ્નલ ને અપડેટ કરો</string>
     <!-- The body of a dialog prompting user to update to the latest version of Signal. -->
-    <string name="EditProfileFragment_deprecated_dialog_body">Signalનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. Signalનો ઉપયોગ ચાલુ રાખવા માટે હમણાં જ અપડેટ કરો.</string>
+    <string name="EditProfileFragment_deprecated_dialog_body">Tellomiનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. Tellomiનો ઉપયોગ ચાલુ રાખવા માટે હમણાં જ અપડેટ કરો.</string>
     <!-- The button on a dialog prompting user to update to the latest version of Signal. When clicked, the user will be taken to the store to update their app. -->
     <string name="EditProfileFragment_deprecated_dialog_update_button">અપડેટ</string>
     <!-- The title of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
@@ -4257,7 +4257,7 @@
     <!-- Title for the confirmation dialog of changing the app icon. -->
     <string name="preferences__app_icon_dialog_title">ઍપ આઇકન અને નામને બદલીને \"%1$s\" કરો</string>
     <!-- Description for the confirmation dialog of changing the app icon. -->
-    <string name="preferences__app_icon_dialog_description">ઍપ આઇકન અને નામ બદલવા માટે Signalને બંધ કરવાની જરૂર પડશે. નોટિફિકેશન હંમેશા ડિફોલ્ટ Tellomi આઇકન અને નામ પ્રદર્શિત કરશે.</string>
+    <string name="preferences__app_icon_dialog_description">ઍપ આઇકન અને નામ બદલવા માટે Tellomiને બંધ કરવાની જરૂર પડશે. નોટિફિકેશન હંમેશા ડિફોલ્ટ Tellomi આઇકન અને નામ પ્રદર્શિત કરશે.</string>
     <!-- Visible warning label for the limitations of changing the app icon with learn more call to action. -->
     <string name="preferences__app_icon_warning_learn_more">એવું ઍપ આઇકન અને નામ પસંદ કરો, જે તમારા ફોનની હોમ સ્ક્રીન અને ઍપ ડ્રોઅર પર દેખાશે. નોટિફિકેશન હંમેશા ડિફોલ્ટ Tellomi આઇકન અને નામ પ્રદર્શિત કરશે. વધુ જાણો</string>
     <!-- Visible warning label for the limitations of changing the app icon. -->
@@ -4424,7 +4424,7 @@
 
     <!-- Displayed on a welcome screen for payments -->
     <string name="PaymentsHomeFragment_introducing_payments">પ્રસ્તુત છે ચુકવણીઓ</string>
-    <string name="PaymentsHomeFragment__use_signal_to_send_and_receive">MobileCoin મોકલવા અને પ્રાપ્ત કરવા માટે Signalનો ઉપયોગ કરો, જે એક નવી ગોપનીયતા કેન્દ્રિત ડિજિટલ ચલણ છે. શરૂ કરવા માટે સક્રિય કરો.</string>
+    <string name="PaymentsHomeFragment__use_signal_to_send_and_receive">MobileCoin મોકલવા અને પ્રાપ્ત કરવા માટે Tellomiનો ઉપયોગ કરો, જે એક નવી ગોપનીયતા કેન્દ્રિત ડિજિટલ ચલણ છે. શરૂ કરવા માટે સક્રિય કરો.</string>
     <string name="PaymentsHomeFragment__activate_payments">પેમેન્ટ સક્રિય કરો</string>
     <string name="PaymentsHomeFragment__activating_payments">પેમેન્ટ સક્રિય કરી રહ્યું છે…</string>
     <string name="PaymentsHomeFragment__restore_payments_account">પેમેન્ટ એકાઉન્ટને રિસ્ટોર કરો</string>
@@ -4459,7 +4459,7 @@
     <string name="PaymentsHomeFragment__details">વિગતો</string>
   <!-- Removed by excludeNonTranslatables <string name="PaymentsHomeFragment__learn_more__activate_payments" translatable="false">https://support.signal.org/hc/articles/360057625692#payments_activate</string> -->
     <!-- Displayed as a description in a dialog when the user tries to activate payments -->
-    <string name="PaymentsHomeFragment__you_can_use_signal_to_send_and">તમે હવે MobileCoin મોકલવા અને મેળવવા માટે Signalનો ઉપયોગ કરી શકો છો. તમામ ચુકવણીઓ MobileCoins અને MobileCoin Walletની ઉપયોગની શરતોને આધીન છે. તમને થોડી સમસ્યાઓ આવી શકે છે અને તમે ગુમાવી શકો તેવી ચુકવણીઓ કે બેલેન્સ પાછું ન પણ આવી શકે. </string>
+    <string name="PaymentsHomeFragment__you_can_use_signal_to_send_and">તમે હવે MobileCoin મોકલવા અને મેળવવા માટે Tellomiનો ઉપયોગ કરી શકો છો. તમામ ચુકવણીઓ MobileCoins અને MobileCoin Walletની ઉપયોગની શરતોને આધીન છે. તમને થોડી સમસ્યાઓ આવી શકે છે અને તમે ગુમાવી શકો તેવી ચુકવણીઓ કે બેલેન્સ પાછું ન પણ આવી શકે. </string>
     <string name="PaymentsHomeFragment__activate">સક્રિય કરો</string>
     <string name="PaymentsHomeFragment__view_mobile_coin_terms">MobileCoin ના નિયમો જુઓ</string>
     <string name="PaymentsHomeFragment__payments_not_available">Tellomi માં પેમેન્ટ હવે ઉપલબ્ધ નથી. તમે હજી પણ એક્સચેન્જમાં ફંડ સ્થાનાંતરિત કરી શકો છો પરંતુ તમે હવે પેમેન્ટ મોકલી શકતા નથી અને મેળવી શકતા નથી અથવા ફંડ ઉમેરી શકતા નથી.</string>
@@ -4791,11 +4791,11 @@
     <string name="reminder_header_service_outage_text">Tellomi તકનીકી મુશ્કેલીઓ અનુભવી રહ્યું છે. અમે શક્ય તેટલી ઝડપથી સેવાને રિસ્ટોર કરવા માટે સખત મહેનત કરી રહ્યા છીએ.</string>
     <string name="reminder_header_progress">%1$d%%</string>
     <!-- Body text of a banner that will show at the top of the chat list when we temporarily cannot process the user\'s contacts -->
-    <string name="reminder_cds_warning_body">Signalની ખાનગી સંપર્ક શોધ અસ્થાયી રૂપે તમારા ફોનના સંપર્કો પર પ્રક્રિયા કરી શકતી નથી.</string>
+    <string name="reminder_cds_warning_body">Tellomiની ખાનગી સંપર્ક શોધ અસ્થાયી રૂપે તમારા ફોનના સંપર્કો પર પ્રક્રિયા કરી શકતી નથી.</string>
     <!-- Label for a button in a banner to learn more about why we temporarily can\'t process the user\'s contacts -->
     <string name="reminder_cds_warning_learn_more">વધુ જાણો</string>
     <!-- Body text of a banner that will show at the top of the chat list when the user has so many contacts that we cannot ever process them -->
-    <string name="reminder_cds_permanent_error_body">Signalની ખાનગી સંપર્ક શોધ તમારા ફોનના સંપર્કો પર પ્રક્રિયા કરી શકતી નથી.</string>
+    <string name="reminder_cds_permanent_error_body">Tellomiની ખાનગી સંપર્ક શોધ તમારા ફોનના સંપર્કો પર પ્રક્રિયા કરી શકતી નથી.</string>
     <!-- Label for a button in a banner to learn more about why we cannot process the user\'s contacts -->
     <string name="reminder_cds_permanent_error_learn_more">વધુ જાણો</string>
 
@@ -4962,7 +4962,7 @@
     <!-- Title for dialog to enter in the backup passphrase -->
     <string name="RegistrationActivity_enter_backup_passphrase">બૅકઅપ પાસફ્રેઝ દાખલ કરો</string>
     <string name="RegistrationActivity_restore">રિસ્ટોર</string>
-    <string name="RegistrationActivity_backup_failure_downgrade">Signalના નવા વર્ઝનમાંથી બેકઅપ આયાત કરી શકાતો નથી</string>
+    <string name="RegistrationActivity_backup_failure_downgrade">Tellomiના નવા વર્ઝનમાંથી બેકઅપ આયાત કરી શકાતો નથી</string>
     <!-- Error message indicating that we could not restore the user\'s backup. Displayed in a toast at the bottom of the screen. -->
     <string name="RegistrationActivity_backup_failure_foreign_key">બૅકઅપ દૂષિત ડેટા ધરાવે છે</string>
     <string name="RegistrationActivity_incorrect_backup_passphrase">ખોટો બૅકઅપ પાસફ્રેઝ</string>
@@ -5060,9 +5060,9 @@
     <!-- Title text shown when Signal is locked and needs to be unlocked -->
     <string name="prompt_passphrase_activity__unlock_signal">Tellomi અનલૉક કરો</string>
     <!-- Description text explaining how to unlock Signal -->
-    <string name="prompt_passphrase_activity__use_your_android_device">Signalને અનલૉક કરવા માટે તમારા Android ડિવાઇસ લૉક સેટિંગ્સ વાપરો.</string>
+    <string name="prompt_passphrase_activity__use_your_android_device">Tellomiને અનલૉક કરવા માટે તમારા Android ડિવાઇસ લૉક સેટિંગ્સ વાપરો.</string>
     <!-- Text shown in a dialog that further explains how to unlock Signal by using the same unlocking methods that are used to unlock their own device -->
-    <string name="prompt_passphrase_activity__screen_lock_is_on">સ્ક્રીન લૉક ચાલુ છે અને Tellomi તમારા ડિવાઇસ લૉક સેટિંગ્સ સાથે સલામત રીતે સુરક્ષિત છે. Signalને એ જ રીતે અનલૉક કરો જેમ તમે સામાન્ય રીતે તમારા ફોનને અનલૉક કરો છો, આ ફેસ અનલૉક, ફિંગરપ્રિન્ટ અનલૉક, પિન, પાસવર્ડ અથવા પેટર્ન સાથે હોઈ શકે છે.</string>
+    <string name="prompt_passphrase_activity__screen_lock_is_on">સ્ક્રીન લૉક ચાલુ છે અને Tellomi તમારા ડિવાઇસ લૉક સેટિંગ્સ સાથે સલામત રીતે સુરક્ષિત છે. Tellomiને એ જ રીતે અનલૉક કરો જેમ તમે સામાન્ય રીતે તમારા ફોનને અનલૉક કરો છો, આ ફેસ અનલૉક, ફિંગરપ્રિન્ટ અનલૉક, પિન, પાસવર્ડ અથવા પેટર્ન સાથે હોઈ શકે છે.</string>
     <!-- Button in a dialog that will contact Signal support if pressed -->
     <string name="prompt_passphrase_activity__contact_support">સપોર્ટનો સંપર્ક કરો</string>
     <!-- Button text to try again after unlocking has previously failed -->
@@ -5074,7 +5074,7 @@
     <!-- Text shown with toggle that when switched on will enable screen lock -->
     <string name="ScreenLockSettingsFragment__use_screen_lock">સ્ક્રીન લૉક વાપરો</string>
     <!-- Description of what screen locking will do and how notification content will not be shown when screen is locked -->
-    <string name="ScreenLockSettingsFragment__your_android_device">જ્યારે તમે ઍપમાંથી બહાર નીકળો અથવા સ્વિચ કરો ત્યારે Signalને અનલૉક કરવા માટે તમારા Android ડિવાઇસના લૉક સેટિંગ્સ હોવા જરૂરી છે. જ્યારે લૉક હોય, ત્યારે નોટિફિકેશન પ્રિવ્યૂ મેસેજની વિષયવસ્તુ બતાવશે નહીં.</string>
+    <string name="ScreenLockSettingsFragment__your_android_device">જ્યારે તમે ઍપમાંથી બહાર નીકળો અથવા સ્વિચ કરો ત્યારે Tellomiને અનલૉક કરવા માટે તમારા Android ડિવાઇસના લૉક સેટિંગ્સ હોવા જરૂરી છે. જ્યારે લૉક હોય, ત્યારે નોટિફિકેશન પ્રિવ્યૂ મેસેજની વિષયવસ્તુ બતાવશે નહીં.</string>
     <!-- Title text explaining when users should start the screen lock -->
     <string name="ScreenLockSettingsFragment__start_screen_lock">સ્ક્રીન લૉક શરૂ કરો</string>
     <!-- Option text explaining that screen lock should start immediately -->
@@ -5156,8 +5156,8 @@
     <string name="NewDeviceTransferSetup__preparing_to_connect_to_old_android_device">જૂના Android ડિવાઇસ સાથે જોડાવાની તૈયારી કરી રહ્યાં છીએ…</string>
     <string name="NewDeviceTransferSetup__take_a_moment_should_be_ready_soon">થોડીક જ વારમાં, જલ્દી તૈયાર થવું જોઈએ</string>
     <string name="NewDeviceTransferSetup__waiting_for_old_device_to_connect">જૂના Android ડિવાઇસને કનેક્ટ કરવાની રાહ જોઇ રહ્યા છીએ…</string>
-    <string name="NewDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_old_device">તમારા જૂના Android ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Signalને સ્થાન પરવાનગીની જરૂર છે.</string>
-    <string name="NewDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_old_device">તમારા જૂના એન્ડ્રોઇડ ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Signalને સ્થાન સેવાઓ સક્ષમ કરવાની જરૂર છે.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_old_device">તમારા જૂના Android ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Tellomiને સ્થાન પરવાનગીની જરૂર છે.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_old_device">તમારા જૂના એન્ડ્રોઇડ ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Tellomiને સ્થાન સેવાઓ સક્ષમ કરવાની જરૂર છે.</string>
     <string name="NewDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_old_device">તમારા જૂના Android ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Tellomi ને વાઇ-ફાઇની જરૂર છે. વાઇ-ફાઇ ચાલુ હોવું જરૂરી છે પરંતુ તેને વાઇ-ફાઇ નેટવર્ક સાથે કનેક્ટ કરવાની જરૂર નથી.</string>
     <string name="NewDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">માફ કરશો, એવું લાગે છે કે આ ઉપકરણ વાઇ-ફાઇ ડાયરેક્ટને સપોર્ટ કરતું નથી. Tellomi તમારા જૂના Android ઉપકરણને શોધવા અને કનેક્ટ કરવા માટે વાઇ-ફાઇ ડાયરેક્ટનો ઉપયોગ કરે છે. તમે તમારા જૂના Android ઉપકરણથી તમારા એકાઉન્ટને રિસ્ટોર કરવા માટે હજુ પણ બેકઅપ રિસ્ટોર કરી શકો છો.</string>
     <string name="NewDeviceTransferSetup__restore_a_backup">બૅકઅપ રિસ્ટોર કરો</string>
@@ -5205,7 +5205,7 @@
     <string name="DeviceTransferSetup__tap_continue_on_your_other_device">તમારા અન્ય ડિવાઇસ પર ચાલુ રાખો પર ટેપ કરો…</string>
 
     <!-- NewDeviceTransferFragment -->
-    <string name="NewDeviceTransfer__cannot_transfer_from_a_newer_version_of_signal">Signalના નવા વર્ઝનમાંથી ટ્રાન્સફર કરી શકાતું નથી</string>
+    <string name="NewDeviceTransfer__cannot_transfer_from_a_newer_version_of_signal">Tellomiના નવા વર્ઝનમાંથી ટ્રાન્સફર કરી શકાતું નથી</string>
     <!-- Error message indicating that we could not finish the user\'s device transfer. Displayed in a toast at the bottom of the screen. -->
     <string name="NewDeviceTransfer__failure_foreign_key">ટ્રાન્સફર કરેલો ડેટા દૂષિત હતો</string>
 
@@ -5538,7 +5538,7 @@
     <string name="PaymentsRecoveryStartFragment__save_recovery_phrase">રિકવરી ફ્રેઝ સેવ કરો</string>
     <string name="PaymentsRecoveryStartFragment__enter_recovery_phrase">રિકવરી ફ્રેઝ દાખલ કરો</string>
     <plurals name="PaymentsRecoveryStartFragment__your_balance_will_automatically_restore">
-        <item quantity="one">જો તમે તમારા Tellomi પિનની પુષ્ટિ કરો છો તો તમે Signalને ફરીથી ઇન્સ્ટોલ કરો ત્યારે તમારું બેલેન્સ આપોઆપ રિસ્ટોર થશે. તમે રિકવરી ફ્રેઝનો ઉપયોગ કરીને પણ તમારું બેલેન્સ રિસ્ટોર કરી શકો છો, જે તમારા માટે અનન્ય %1$d શબ્દોનો ફ્રેઝ છે. તેને લખીને સલામત સ્થળે સંગ્રહ કરો.</item>
+        <item quantity="one">જો તમે તમારા Tellomi પિનની પુષ્ટિ કરો છો તો તમે Tellomiને ફરીથી ઇન્સ્ટોલ કરો ત્યારે તમારું બેલેન્સ આપોઆપ રિસ્ટોર થશે. તમે રિકવરી ફ્રેઝનો ઉપયોગ કરીને પણ તમારું બેલેન્સ રિસ્ટોર કરી શકો છો, જે તમારા માટે અનન્ય %1$d શબ્દોનો ફ્રેઝ છે. તેને લખીને સલામત સ્થળે સંગ્રહ કરો.</item>
         <item quantity="other">જો તમે તમારા Tellomi પિનની પુષ્ટિ કરો છો તો તમે Tellomi ને ફરીથી ઇન્સ્ટોલ કરો ત્યારે તમારું બેલેન્સ આપોઆપ રિસ્ટોર થશે. તમે રિકવરી ફ્રેઝનો ઉપયોગ કરીને તમારું બેલેન્સ પણ રિસ્ટોર કરી શકો છો, જે તમારા માટે અનન્ય %1$d શબ્દોનો ફ્રેઝ છે. તેને લખીને સલામત સ્થળે સંગ્રહ કરો.</item>
     </plurals>
     <!-- Description in save recovery phrase screen which shows up when user has non zero balance -->
@@ -5933,7 +5933,7 @@
     <string name="NotificationsSettingsFragment__sounds">અવાજો</string>
     <string name="NotificationsSettingsFragment__contact_joins_signal">સંપર્ક Tellomi સાથે જોડાય છે</string>
     <!-- Notification body to get notified when someone joins Signal -->
-    <string name="NotificationsSettingsFragment__notify_contact">જ્યારે કોઈ ફોન સંપર્ક Signalમાં જોડાય ત્યારે નોટિફિકેશન બતાવો</string>
+    <string name="NotificationsSettingsFragment__notify_contact">જ્યારે કોઈ ફોન સંપર્ક Tellomiમાં જોડાય ત્યારે નોટિફિકેશન બતાવો</string>
     <!-- Option to reset their notification settings -->
     <string name="NotificationsSettingsFragment__reset">નોટિફિકેશન સેટિંગ્સ ફરીથી સેટ કરો</string>
     <!-- Option body to reset their notification settings -->
@@ -6194,7 +6194,7 @@
     <string name="ConversationSettingsFragment__conversation_muted_always">હંમેશાં</string>
     <string name="ConversationSettingsFragment__copied_phone_number_to_clipboard">ક્લિપબોર્ડ પર ફોન નંબરની નકલ કરી.</string>
     <string name="ConversationSettingsFragment__phone_number">ફોન નંબર</string>
-    <string name="ConversationSettingsFragment__get_badges">Signalને સમર્થન આપીને તમારી પ્રોફાઇલ માટે બૅજ મેળવો. વધુ જાણવા માટે બૅજ પર ટૅપ કરો.</string>
+    <string name="ConversationSettingsFragment__get_badges">Tellomiને સમર્થન આપીને તમારી પ્રોફાઇલ માટે બૅજ મેળવો. વધુ જાણવા માટે બૅજ પર ટૅપ કરો.</string>
     <!-- Error message shown when the user is trying to open a media that is not sent yet. -->
     <string name="ConversationSettingsFragment__this_media_is_not_sent_yet">આ મીડિયા હજી સુધી મોકલવામાં આવ્યું નથી.</string>
     <!-- End group option in group conversation settings screen -->
@@ -6427,11 +6427,11 @@
     <!-- Displayed on primary button in the bottom sheet as a call-to-action to launch into the donation flow -->
     <string name="ViewBadgeBottomSheetDialogFragment__donate_now">દાન કરો</string>
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Signalને સપોર્ટ કરે છે</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomiને સપોર્ટ કરે છે</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s એક માસિક દાન દ્વારા Signalને સમર્થન કરે છે. Tellomi એક બિનલાભકારી છે જેમાં કોઈ જાહેરાતકારો કે રોકાણકારો નથી, અને તે ફક્ત તમારા જેવા લોકો દ્વારા જ સમર્થિત છે.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s એક માસિક દાન દ્વારા Tellomiને સમર્થન કરે છે. Tellomi એક બિનલાભકારી છે જેમાં કોઈ જાહેરાતકારો કે રોકાણકારો નથી, અને તે ફક્ત તમારા જેવા લોકો દ્વારા જ સમર્થિત છે.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s દાન દ્વારા Signalને સમર્થન કરે છે. Tellomi એક બિનલાભકારી છે જેમાં કોઈ જાહેરાતકારો કે રોકાણકારો નથી, અને તે ફક્ત તમારા જેવા લોકો દ્વારા જ સમર્થિત છે.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s દાન દ્વારા Tellomiને સમર્થન કરે છે. Tellomi એક બિનલાભકારી છે જેમાં કોઈ જાહેરાતકારો કે રોકાણકારો નથી, અને તે ફક્ત તમારા જેવા લોકો દ્વારા જ સમર્થિત છે.</string>
 
     <string name="ImageView__badge">બૅજ</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">%1$sના રોજ સમાપ્ત થશે</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">એક સ્વતંત્ર બિનનફાકારક સંસ્થા તરીકે, Tellomi ખાનગી મેસેજિંગ અને કૉલ માટે પ્રતિબદ્ધ છે. કોઈ જાહેરાતો નહીં, કોઈ પગેરું નહીં, કોઈ દેખરેખ નહીં. Signalને સપોર્ટ આપવા માટે આજે જ દાન આપો.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">એક સ્વતંત્ર બિનનફાકારક સંસ્થા તરીકે, Tellomi ખાનગી મેસેજિંગ અને કૉલ માટે પ્રતિબદ્ધ છે. કોઈ જાહેરાતો નહીં, કોઈ પગેરું નહીં, કોઈ દેખરેખ નહીં. Tellomiને સપોર્ટ આપવા માટે આજે જ દાન આપો.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6473,7 +6473,7 @@
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__continue">ચાલુ રાખો</string>
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">જ્યારે તમારી પાસે એકથી વધુ બૅજ હોય, તમે અન્યોને તમારી પ્રોફાઇલ પર દર્શાવવા એક પસંદ કરી શકો છો.</string>
 
-    <string name="BecomeASustainerFragment__get_badges">Signalને સમર્થન આપીને તમારી પ્રોફાઇલ માટે બૅજ મેળવો.</string>
+    <string name="BecomeASustainerFragment__get_badges">Tellomiને સમર્થન આપીને તમારી પ્રોફાઇલ માટે બૅજ મેળવો.</string>
     <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi એક બિનલાભકારી છે જેમાં કોઈ જાહેરાતકારો કે રોકાણકારો નથી, અને તે ફક્ત તમારા જેવા લોકો દ્વારા જ સમર્થિત છે.</string>
 
     <!-- Button label for creating a donation -->
@@ -6523,7 +6523,7 @@
     <!-- Title of dialog telling user they need to update signal as it expired -->
     <string name="UpdateSignalExpiredDialog__title">સિગ્નલ ને અપડેટ કરો</string>
     <!-- Message of dialog telling user they need to update signal as it expired -->
-    <string name="UpdateSignalExpiredDialog__message">Signalનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. Signalનો ઉપયોગ ચાલુ રાખવા માટે હમણાં જ અપડેટ કરો.</string>
+    <string name="UpdateSignalExpiredDialog__message">Tellomiનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. Tellomiનો ઉપયોગ ચાલુ રાખવા માટે હમણાં જ અપડેટ કરો.</string>
     <!-- Button text of expiration dialog, will take user to update the app -->
     <string name="UpdateSignalExpiredDialog__update_action">અપડેટ</string>
     <!-- Button text of expiration dialog to cancel the dialog.  -->
@@ -6532,7 +6532,7 @@
     <!-- Title of dialog telling user they need to re-register signal -->
     <string name="ReregisterSignalDialog__title">ડિવાઇસ રજીસ્ટર થયેલું નથી</string>
     <!-- Message of dialog telling user they need to re-register signal as it is no longer registered -->
-    <string name="ReregisterSignalDialog__message">આ ડિવાઇસ રજીસ્ટર થયેલું નથી. આ ડિવાઇસ પર Signalનો ઉપયોગ ચાલુ રાખવા માટે ફરીથી રજીસ્ટર કરો.</string>
+    <string name="ReregisterSignalDialog__message">આ ડિવાઇસ રજીસ્ટર થયેલું નથી. આ ડિવાઇસ પર Tellomiનો ઉપયોગ ચાલુ રાખવા માટે ફરીથી રજીસ્ટર કરો.</string>
     <!-- Button text of re-registration dialog to re-register the device.  -->
     <string name="ReregisterSignalDialog__reregister_action">ફરીથી રજીસ્ટર</string>
     <!-- Button text of re-registration dialog to cancel the dialog.  -->
@@ -6546,7 +6546,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_boost_badge_has_expired_and">તમારું બૂસ્ટ બૅજ સમાપ્ત થઈ ગયું છે અને હવે તમારી પ્રોફાઇલ પર દેખાશે નહીં.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_reactivate">તમે એક-વખતના યોગદાન દ્વારા અન્ય 30 દિવસ માટે તમારા બૂસ્ટ બૅજને ફરીથી સક્રિય કરી શકો છો.</string>
     <!-- Displayed when we do not think the user is a subscriber when their boost expires -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">તમે Signalનો ઉપયોગ કરવાનું ચાલુ રાખી શકો છો પરંતુ તમારા માટે નિર્મિત ટેક્નોલોજીને સહયોગ આપવા માટે, એક માસિક યોગદાન આપીને સસ્ટેનર બનવાનું ધ્યાને લો.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">તમે Tellomiનો ઉપયોગ કરવાનું ચાલુ રાખી શકો છો પરંતુ તમારા માટે નિર્મિત ટેક્નોલોજીને સહયોગ આપવા માટે, એક માસિક યોગદાન આપીને સસ્ટેનર બનવાનું ધ્યાને લો.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__become_a_sustainer">સસ્ટેનર બનો</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">બૂસ્ટ ઉમેરો</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">અત્યારે નહીં</string>
@@ -6556,7 +6556,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled">તમારું પુનરાવર્તિત માસિક યોગદાન રદ થઈ ગયું હતું કારણ કે અમે તમારી ચુકવણીની પ્રક્રિયા ન કરી શક્યા. તમારું બૅજ હવે તમારી પ્રોફાઇલ પર દેખાશે નહીં.</string>
     <!-- Copy displayed when badge expires after a payment failure and we have a displayable charge failure reason -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled_s">તમારું પુનરાવર્તિત માસિક દાન રદ થઈ ગયું હતું. %1$s તમારું %2$s બૅજ હવે તમારી પ્રોફાઇલ પર દેખાશે નહીં.</string>
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">તમે Signalનો ઉપયોગ કરવાનું ચાલુ રાખી શકો છો પરંતુ ઍપને સહયોગ આપવા અને તમારા બૅજને ફરીથી સક્રિય કરવા, હમણાં જ રિન્યૂ કરો.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">તમે Tellomiનો ઉપયોગ કરવાનું ચાલુ રાખી શકો છો પરંતુ ઍપને સહયોગ આપવા અને તમારા બૅજને ફરીથી સક્રિય કરવા, હમણાં જ રિન્યૂ કરો.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__renew_subscription">સબ્સ્ક્રિપ્શન રિન્યૂ કરો</string>
     <!-- Button label to send user to Google Pay website -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__go_to_google_pay">Google Pay પર જાઓ</string>
@@ -6617,13 +6617,13 @@
     <string name="DonationsErrors__your_payment_is_still">તમારા દાનની પ્રક્રિયા હજી ચાલુ છે. આમાં તમારા કનેક્શનને આધારે થોડી મિનિટો લાગી શકે છે.</string>
     <string name="DonationsErrors__failed_to_cancel_subscription">સબ્સ્ક્રિપ્શન રદ કરવાનું નિષ્ફળ</string>
     <string name="DonationsErrors__subscription_cancellation_requires_an_internet_connection">સબ્સ્ક્રિપ્શન રદ કરવા માટે ઇન્ટરનેટ કનેક્શનની જરૂર પડશે.</string>
-    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">તમારું ડિવાઇસ ઍપની અંદરથી દાનને સપોર્ટ કરતું નથી, તેથી તમે બૅજ મેળવવા માટે સબ્સ્ક્રાઇબ કરી શકતા નથી. તમે હજી પણ અમારી વેબસાઇટ પર યોગદાન આપીને Signalને સપોર્ટ કરી શકો છો.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">તમારું ડિવાઇસ ઍપની અંદરથી દાનને સપોર્ટ કરતું નથી, તેથી તમે બૅજ મેળવવા માટે સબ્સ્ક્રાઇબ કરી શકતા નથી. તમે હજી પણ અમારી વેબસાઇટ પર યોગદાન આપીને Tellomiને સપોર્ટ કરી શકો છો.</string>
     <string name="NetworkFailure__network_error_check_your_connection_and_try_again">નેટવર્ક ત્રુટિ. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.</string>
     <string name="NetworkFailure__retry">ફરી પ્રયાસ કરો</string>
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
     <string name="DonationsErrors__cannot_send_donation">દાન મોકલી શકાતું નથી</string>
     <!-- Displayed as a dialog message when the selected recipient for a gift doesn\'t support gifting -->
-    <string name="DonationsErrors__this_user_cant_receive_donations_until">આ ઉપયોગકર્તા Signalને અપગ્રેડ ન કરે ત્યાં સુધી દાન પ્રાપ્ત નહીં કરી શકે.</string>
+    <string name="DonationsErrors__this_user_cant_receive_donations_until">આ ઉપયોગકર્તા Tellomiને અપગ્રેડ ન કરે ત્યાં સુધી દાન પ્રાપ્ત નહીં કરી શકે.</string>
     <!-- Displayed as a dialog message when the user\'s profile could not be fetched, likely due to lack of internet -->
     <string name="DonationsErrors__your_donation_could_not_be_sent">નેટવર્ક ભૂલને કારણે તમારું દાન મોકલી ન શકાયું. તમારું કનેક્શન તપાસો અને ફરીથી પ્રયત્ન કરો.</string>
     <!-- Displayed as a dialog message when the user encounters an error during an iDEAL donation -->
@@ -6632,7 +6632,7 @@
     <!-- Gift message view title -->
     <string name="GiftMessageView__donation_on_behalf_of_s">%1$s વતી દાન</string>
     <!-- Gift message view title for incoming donations -->
-    <string name="GiftMessageView__s_donated_to_signal_on">%1$sએ તમારા વતી Signalને દાન આપ્યું</string>
+    <string name="GiftMessageView__s_donated_to_signal_on">%1$sએ તમારા વતી Tellomiને દાન આપ્યું</string>
     <!-- Gift badge redeem action label -->
     <string name="GiftMessageView__redeem">રીડીમ કરો</string>
     <!-- Gift badge view action label -->
@@ -6851,7 +6851,7 @@
     <!-- Displayed in a toast when we fail to open the ringtone picker -->
     <string name="NotificationSettingsFragment__failed_to_open_picker">પીકર ખોલવામાં નિષ્ફળ.</string>
     <!-- Banner title when notification permission is disabled -->
-    <string name="NotificationSettingsFragment__to_enable_notifications">નોટિફિકેશનને સક્ષમ કરવા માટે, Signalને તેમને પ્રદર્શિત કરવાની પરવાનગીની જરૂર છે.</string>
+    <string name="NotificationSettingsFragment__to_enable_notifications">નોટિફિકેશનને સક્ષમ કરવા માટે, Tellomiને તેમને પ્રદર્શિત કરવાની પરવાનગીની જરૂર છે.</string>
     <!-- Banner action when notification permission is disabled -->
     <string name="NotificationSettingsFragment__turn_on">ચાલુ કરો</string>
 
@@ -6881,7 +6881,7 @@
     <!-- Donation receipts share PNG -->
     <string name="DonationReceiptDetailsFragment__share_receipt">રસીદ શેર કરો</string>
     <!-- Donation receipts list end note -->
-    <string name="DonationReceiptListFragment__if_you_have">જો તમે Signalને ફરીથી ઇન્સ્ટોલ કર્યું હોય, તો અગાઉના દાનની રસીદો ઉપલબ્ધ નહીં રહે.</string>
+    <string name="DonationReceiptListFragment__if_you_have">જો તમે Tellomiને ફરીથી ઇન્સ્ટોલ કર્યું હોય, તો અગાઉના દાનની રસીદો ઉપલબ્ધ નહીં રહે.</string>
     <!-- Donation receipts document title -->
     <string name="DonationReceiptDetailsFragment__donation_receipt">દાનની રસીદ</string>
     <!-- Donation receipts amount title -->
@@ -7280,8 +7280,8 @@
     <string name="GiftFlowStartFragment__donate_for_a_friend">મિત્ર માટે દાન આપો</string>
     <!-- Description text on start fragment for gifting a badge -->
     <plurals name="GiftFlowStartFragment__support_signal_by">
-        <item quantity="one">Signalનો ઉપયોગ કરતા મિત્ર અથવા કુટુંબના સભ્ય માટે દાન કરીને Signalને સપોર્ટ કરો. તેઓને %1$d દિવસ માટે તેમની પ્રોફાઇલ પર પ્રદર્શિત કરવા માટે એક બૅજ પ્રાપ્ત થશે</item>
-        <item quantity="other">Signalનો ઉપયોગ કરતા મિત્ર અથવા કુટુંબના સભ્ય માટે દાન કરીને Signalને સપોર્ટ કરો. તેઓને %1$d દિવસ માટે તેમની પ્રોફાઇલ પર પ્રદર્શિત કરવા માટે એક બૅજ પ્રાપ્ત થશે</item>
+        <item quantity="one">Tellomiનો ઉપયોગ કરતા મિત્ર અથવા કુટુંબના સભ્ય માટે દાન કરીને Tellomiને સપોર્ટ કરો. તેઓને %1$d દિવસ માટે તેમની પ્રોફાઇલ પર પ્રદર્શિત કરવા માટે એક બૅજ પ્રાપ્ત થશે</item>
+        <item quantity="other">Tellomiનો ઉપયોગ કરતા મિત્ર અથવા કુટુંબના સભ્ય માટે દાન કરીને Tellomiને સપોર્ટ કરો. તેઓને %1$d દિવસ માટે તેમની પ્રોફાઇલ પર પ્રદર્શિત કરવા માટે એક બૅજ પ્રાપ્ત થશે</item>
     </plurals>
     <!-- Action button label for start fragment for gifting a badge -->
     <string name="GiftFlowStartFragment__next">આગળ</string>
@@ -7304,9 +7304,9 @@
     <!-- Title for sheet shown when opening a sent gift -->
     <string name="ViewSentGiftBottomSheet__thanks_for_your_support">આપના સહયોગ બદલ આભાર!</string>
     <!-- Description for sheet shown when opening a redeemed gift -->
-    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$sએ તમારા વતી Signalને દાન આપ્યું! તમારી પ્રોફાઇલ પર Tellomi માટે તમારો સપોર્ટ બતાવો.</string>
+    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$sએ તમારા વતી Tellomiને દાન આપ્યું! તમારી પ્રોફાઇલ પર Tellomi માટે તમારો સપોર્ટ બતાવો.</string>
     <!-- Description for sheet shown when opening a sent gift -->
-    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">તમે %1$s વતી Signalને દાન આપ્યું છે. તેમની પ્રોફાઇલ પર તેમનો સપોર્ટ બતાવવાનો વિકલ્પ તેઓને આપવામાં આવશે.</string>
+    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">તમે %1$s વતી Tellomiને દાન આપ્યું છે. તેમની પ્રોફાઇલ પર તેમનો સપોર્ટ બતાવવાનો વિકલ્પ તેઓને આપવામાં આવશે.</string>
     <!-- Primary action for pending gift sheet to redeem badge now -->
     <string name="ViewReceivedGiftSheet__redeem">રીડીમ કરો</string>
     <!-- Primary action for pending gift sheet to redeem badge later -->
@@ -7314,7 +7314,7 @@
     <!-- Dialog text while redeeming a gift -->
     <string name="ViewReceivedGiftSheet__redeeming_badge">બૅજ રિડિમ થઈ રહ્યું છે…</string>
     <!-- Description text in gift thanks sheet -->
-    <string name="GiftThanksSheet__youve_made_a_donation">તમે %1$s વતી Signalને દાન આપ્યું છે. તેમને તેમની પ્રોફાઇલ પર તેમનો સપોર્ટ બતાવવાનો વિકલ્પ આપવામાં આવશે.</string>
+    <string name="GiftThanksSheet__youve_made_a_donation">તમે %1$s વતી Tellomiને દાન આપ્યું છે. તેમને તેમની પ્રોફાઇલ પર તેમનો સપોર્ટ બતાવવાનો વિકલ્પ આપવામાં આવશે.</string>
     <!-- Expired gift sheet title -->
     <string name="ExpiredGiftSheetConfiguration__your_badge_has_expired">તમારા બૅજની સમયસીમા સમાપ્ત થઈ ગઈ છે</string>
     <!-- Expired gift sheet top description text -->
@@ -7538,7 +7538,7 @@
     <!-- Continue button label -->
     <string name="DonateToSignalFragment__continue">ચાલુ રાખો</string>
     <!-- Description below title -->
-    <string name="DonateToSignalFragment__private_messaging">ખાનગી મેસેજિંગને સપોર્ટ કરવા માટે દાન આપો. Signalને સ્વતંત્ર અને જાહેરાત-મુક્ત રાખો.</string>
+    <string name="DonateToSignalFragment__private_messaging">ખાનગી મેસેજિંગને સપોર્ટ કરવા માટે દાન આપો. Tellomiને સ્વતંત્ર અને જાહેરાત-મુક્ત રાખો.</string>
     <!-- Dialog title when a user tries to donate while they already have a pending donation. -->
     <string name="DonateToSignalFragment__you_have_a_donation_pending">તમારું દાન બાકી છે</string>
     <!-- Dialog body when a user tries to donate while they already have a pending monthly donation. -->
@@ -7592,7 +7592,7 @@
     <!-- Title of screen displaying the bank transfer mandate -->
     <string name="BankTransferMandateFragment__bank_transfer">બેંક ટ્રાન્સફર</string>
     <!-- Subtitle of screen displaying the bank transfer mandate, placeholder is \'Learn more\' -->
-    <string name="BankTransferMandateFragment__stripe_processes_donations">Signalને આપવામાં આવેલા દાનની પ્રક્રિયા Stripe કરે છે. Tellomi તમારી અંગત માહિતી એકત્રિત કે સંગ્રહિત કરતું નથી. %1$s</string>
+    <string name="BankTransferMandateFragment__stripe_processes_donations">Tellomiને આપવામાં આવેલા દાનની પ્રક્રિયા Stripe કરે છે. Tellomi તમારી અંગત માહિતી એકત્રિત કે સંગ્રહિત કરતું નથી. %1$s</string>
     <!-- Subtitle learn more of screen displaying bank transfer mandate -->
     <string name="BankTransferMandateFragment__learn_more">વધુ જાણો</string>
     <!-- Button label to continue with transfer -->
@@ -8134,7 +8134,7 @@
     <!-- Title of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups -->
     <string name="TurnOnSignalBackups__title">Tellomi સુરક્ષિત બેકઅપ ચાલુ કરો</string>
     <!-- Body of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups -->
-    <string name="TurnOnSignalBackups__body">જ્યારે તમે નવો ફોન મેળવો અથવા Signalને ફરીથી ઇન્સ્ટોલ કરો ત્યારે ક્યારેય કોઈ મેસેજ ગુમાવશો નહીં.</string>
+    <string name="TurnOnSignalBackups__body">જ્યારે તમે નવો ફોન મેળવો અથવા Tellomiને ફરીથી ઇન્સ્ટોલ કરો ત્યારે ક્યારેય કોઈ મેસેજ ગુમાવશો નહીં.</string>
     <!-- Button of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups that will take the user to the flow to enable backups -->
     <string name="TurnOnSignalBackups__turn_on">ચાલુ કરો</string>
     <!-- Button of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups that will simply dismiss the megaphone -->
@@ -8186,7 +8186,7 @@
     <!-- Feature bullet: save on-device storage -->
     <string name="BackupUpsellBottomSheet__save_on_device_storage">ડિવાઇસ પરના સ્ટોરેજને સેવ કરો</string>
     <!-- Feature bullet: thanks for supporting Signal -->
-    <string name="BackupUpsellBottomSheet__thanks_for_supporting">Signalને સપોર્ટ કરવા બદલ આભાર</string>
+    <string name="BackupUpsellBottomSheet__thanks_for_supporting">Tellomiને સપોર્ટ કરવા બદલ આભાર</string>
     <!-- Primary button for the upsell bottom sheet. The %s is replaced by the subscription price, e.g. "$1.99/month" -->
     <string name="BackupUpsellBottomSheet__subscribe_for">%1$s/મહિને સબ્સ્ક્રાઇબ કરો</string>
     <!-- Secondary/dismiss button for the upsell bottom sheet -->
@@ -8195,7 +8195,7 @@
     <!-- Title of the backup setup complete bottom sheet -->
     <string name="BackupSetupCompleteBottomSheet__title">તમે એકદમ તૈયાર છો. હવે તમારું બેકઅપ શરૂ કરો.</string>
     <!-- Body of the backup setup complete bottom sheet -->
-    <string name="BackupSetupCompleteBottomSheet__body">આમાં થોડો સમય લાગી શકે છે. બેકઅપ લેતી વખતે તમે Signalનો સામાન્યની જેમ જ ઉપયોગ કરી શકો છો.</string>
+    <string name="BackupSetupCompleteBottomSheet__body">આમાં થોડો સમય લાગી શકે છે. બેકઅપ લેતી વખતે તમે Tellomiનો સામાન્યની જેમ જ ઉપયોગ કરી શકો છો.</string>
     <!-- Label for the optimize storage toggle -->
     <string name="BackupSetupCompleteBottomSheet__optimize_storage">Tellomi સ્ટોરેજ ઑપ્ટિમાઇઝ કરો</string>
     <!-- Subtitle for the optimize storage toggle -->
@@ -8222,7 +8222,7 @@
     <string name="InactivePrimary__got_it">સમજાઈ ગયું</string>
 
     <!-- Text describing how to restore a backup displayed on the on-device backups screen -->
-    <string name="OnDeviceBackupsScreen__to_restore_a_backup">"બેકઅપ રિસ્ટોર કરવા માટે, Signalની નવી કૉપિ ઇન્સ્ટોલ કરો. ઍપ ખોલો અને \"બેકઅપ રિસ્ટોર કરો\" પર ટેપ કરો, પછી બેકઅપ ફાઇલ શોધો."</string>
+    <string name="OnDeviceBackupsScreen__to_restore_a_backup">"બેકઅપ રિસ્ટોર કરવા માટે, Tellomiની નવી કૉપિ ઇન્સ્ટોલ કરો. ઍપ ખોલો અને \"બેકઅપ રિસ્ટોર કરો\" પર ટેપ કરો, પછી બેકઅપ ફાઇલ શોધો."</string>
     <!-- Body of a dialog shown when turning on on-device backups while "Optimize Signal storage" is enabled, warning that optimized media won\'t be included -->
     <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">તમારું \"Tellomi સ્ટોરેજ ઑપ્ટિમાઇઝ કરો\" ચાલુ છે. જો તમે તમારા ડિવાઇસ પરના બેકઅપમાં બધા મીડિયા શામેલ કરવા માંગતા હોવ, તો સેટિંગ બંધ કરો.</string>
     <!-- Dialog action that takes the user to the "Optimize Signal storage" setting -->
@@ -8325,7 +8325,7 @@
     <!-- Title displayed at the top of the screen -->
     <string name="NicknameActivity__nickname">ઉપનામ</string>
     <!-- Subtitle displayed under title -->
-    <string name="NicknameActivity__nicknames_amp_notes">ઉપનામો અને નોંધને Signalની એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવાનો ઉપયોગ કરીને સ્ટોર કરવામાં આવે છે. તે ફક્ત તમને જ દેખાય છે.</string>
+    <string name="NicknameActivity__nicknames_amp_notes">ઉપનામો અને નોંધને Tellomiની એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવાનો ઉપયોગ કરીને સ્ટોર કરવામાં આવે છે. તે ફક્ત તમને જ દેખાય છે.</string>
     <!-- Field label for given name -->
     <string name="NicknameActivity__first_name">પહેલું નામ</string>
     <!-- Content description for first name clear button -->
@@ -8437,7 +8437,7 @@
     <!-- Dialog title when a backup redemption fails -->
     <string name="BackupAlertBottomSheet__couldnt_redeem_your_backups_subscription">તમારું બેકઅપ સબ્સ્ક્રિપ્શન રિડીમ કરી શકાયું નથી</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it -->
-    <string name="BackupAlertBottomSheet__an_error_occurred">એક એરર આવી અને તમારું બેકઅપ પૂર્ણ કરી શકાયું નથી. ખાતરી કરો કે તમે Signalનું લેટેસ્ટ વર્ઝન વાપરો છો અને ફરી પ્રયાસ કરો. જો સમસ્યા ચાલુ રહે તો સપોર્ટનો સંપર્ક કરો.</string>
+    <string name="BackupAlertBottomSheet__an_error_occurred">એક એરર આવી અને તમારું બેકઅપ પૂર્ણ કરી શકાયું નથી. ખાતરી કરો કે તમે Tellomiનું લેટેસ્ટ વર્ઝન વાપરો છો અને ફરી પ્રયાસ કરો. જો સમસ્યા ચાલુ રહે તો સપોર્ટનો સંપર્ક કરો.</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it. Used for out of remote storage space error. -->
     <string name="BackupAlertBottomSheet__an_error_occurred_and">એક એરર આવી અને તમારું બેકઅપ પૂર્ણ કરી શકાયું નથી. જો સમસ્યા ચાલુ રહે તો સપોર્ટનો સંપર્ક કરો.</string>
     <!-- Dialog action button that will allow you to check for any Signal version updates -->
@@ -8519,7 +8519,7 @@
     <!-- Text displayed when a backup could not be completed -->
     <string name="BackupStatusRow__your_last_backup">તમારું છેલ્લું બેકઅપ પૂર્ણ કરી શકાયું નથી. ખાતરી કરો કે તમારો ફોન વાઇ-ફાઇથી કનેક્ટ થયેલો છે અને \"હમણાં બેકઅપ લો\" પર ટેપ કરો.</string>
     <!-- Text displayed when a backup could not be completed and to check that they are on the latest version of Signal -->
-    <string name="BackupStatusRow__your_last_backup_latest_version">તમારું છેલ્લું બેકઅપ પૂર્ણ કરી શકાયું નથી. ખાતરી કરો કે તમે Signalનું લેટેસ્ટ વર્ઝન વાપરો છો અને ફરી પ્રયાસ કરો.</string>
+    <string name="BackupStatusRow__your_last_backup_latest_version">તમારું છેલ્લું બેકઅપ પૂર્ણ કરી શકાયું નથી. ખાતરી કરો કે તમે Tellomiનું લેટેસ્ટ વર્ઝન વાપરો છો અને ફરી પ્રયાસ કરો.</string>
     <!-- Text displayed when a backup file exceeds the storage limit during upload. -->
     <string name="BackupStatusRow__backup_file_too_large">તમારા મેસેજની સંખ્યા સ્ટોરેજ મર્યાદા કરતાં વધી ગઈ છે. કેટલાક મેસેજ ડિલીટ કરો અને ફરી પ્રયાસ કરો.</string>
     <!-- Text displayed when we\'re not backing up all messages. The placeholder represents the cutoff date for the messages we\'re backing up. -->
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">સબ્સ્ક્રિપ્શન રદ કર્યું</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Signalની સુરક્ષિત, એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવા સાથે ઓટોમેટિક બેકઅપ.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Tellomiની સુરક્ષિત, એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવા સાથે ઓટોમેટિક બેકઅપ.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Signalની સુરક્ષિત, એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવા સાથે ઓટોમેટિક બેકઅપ. તમારા ફોન પર શરૂઆત કરો.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Tellomiની સુરક્ષિત, એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવા સાથે ઓટોમેટિક બેકઅપ. તમારા ફોન પર શરૂઆત કરો.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"આ ડિવાઇસ પર સબ્સ્ક્રિપ્શન મળ્યું નથી."</string>
     <!-- Action button label to set up backups -->
@@ -8779,7 +8779,7 @@
     <!-- Displays the date the subscription expired. Placeholder is the date. -->
     <string name="RemoteBackupsSettingsFragment__expired_on_s">%1$sના રોજ સમાપ્ત થયું</string>
     <!-- Displayed at the top of the screen when no backup is currently enabled -->
-    <string name="RemoteBackupsSettingsFragment__back_up_your_message_history">તમારી મેસેજ હિસ્ટ્રીનું બેકઅપ લો જેથી જ્યારે તમે નવો ફોન લો અથવા Signalને ફરીથી ઇન્સ્ટોલ કરો ત્યારે તમે ક્યારેય ડેટા ગુમાવશો નહીં.</string>
+    <string name="RemoteBackupsSettingsFragment__back_up_your_message_history">તમારી મેસેજ હિસ્ટ્રીનું બેકઅપ લો જેથી જ્યારે તમે નવો ફોન લો અથવા Tellomiને ફરીથી ઇન્સ્ટોલ કરો ત્યારે તમે ક્યારેય ડેટા ગુમાવશો નહીં.</string>
     <!-- Section header for other ways to back up -->
     <string name="RemoteBackupsSettingsFragment__other_ways_to_backup">બેકઅપ લેવાની અન્ય રીતો</string>
     <!-- Row title for performing on-device backup -->
@@ -8837,7 +8837,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">બેકઅપ ફરીથી સક્ષમ કરો</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">બેકઅપ બંધ કરવામાં આવ્યા છે અને તમારો ડેટા Signalની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવ્યો છે.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">બેકઅપ બંધ કરવામાં આવ્યા છે અને તમારો ડેટા Tellomiની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવ્યો છે.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">તમારું બેકઅપ ડાઉનલોડ કરી રહ્યા છીએ</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -8902,17 +8902,17 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">વિગતો</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">બેકઅપ બંધ કરવામાં આવ્યા છે, પરંતુ Signalની સુરક્ષિત સ્ટોરેજ સેવામાંથી તમારો ડેટા ડિલીટ કરવામાં એક ભૂલ આવી હતી.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">બેકઅપ બંધ કરવામાં આવ્યા છે, પરંતુ Tellomiની સુરક્ષિત સ્ટોરેજ સેવામાંથી તમારો ડેટા ડિલીટ કરવામાં એક ભૂલ આવી હતી.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">બેકઅપ ડિલીટ કરવાનું નિષ્ફળ થયું</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">એક ભૂલ આવી. કૃપા કરીને સપોર્ટનો સંપર્ક કરો.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">બેકઅપ બંધ કરવામાં આવ્યા છે, તમારો ડેટા તમારા ડિવાઇસ પર ડાઉનલોડ થશે અને પછી Signalની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવશે.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">બેકઅપ બંધ કરવામાં આવ્યા છે, તમારો ડેટા તમારા ડિવાઇસ પર ડાઉનલોડ થશે અને પછી Tellomiની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવશે.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">બેકઅપ બંધ કરવામાં આવ્યા છે અને તમારો ડેટા Signalની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવશે.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">બેકઅપ બંધ કરવામાં આવ્યા છે અને તમારો ડેટા Tellomiની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવશે.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">બેકઅપ બંધ કરવામાં આવ્યા છે અને તમારો ડેટા Signalની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવ્યો છે.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">બેકઅપ બંધ કરવામાં આવ્યા છે અને તમારો ડેટા Tellomiની સુરક્ષિત સ્ટોરેજ સેવામાંથી ડિલીટ કરવામાં આવ્યો છે.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">ડાઉનલોડ થઈ રહ્યું છે: %2$s માંથી %1$s (%3$d%%)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -9009,7 +9009,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">તમારા મેસેજ અને મીડિયાનો Signalની સુરક્ષિત, એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવા વડે બેકઅપ લો. જ્યારે તમે નવો ફોન મેળવો અથવા Signalને ફરીથી ઇન્સ્ટોલ કરો ત્યારે ક્યારેય કોઈ મેસેજ ગુમાવશો નહીં.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">તમારા મેસેજ અને મીડિયાનો Tellomiની સુરક્ષિત, એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ સ્ટોરેજ સેવા વડે બેકઅપ લો. જ્યારે તમે નવો ફોન મેળવો અથવા Tellomiને ફરીથી ઇન્સ્ટોલ કરો ત્યારે ક્યારેય કોઈ મેસેજ ગુમાવશો નહીં.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">એન્ડ-ટૂ-એન્ડ એન્ક્રિપ્ટેડ</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->
@@ -9039,7 +9039,7 @@
     <!-- Screen body shown when upgrading on-device backups to a new recovery key (part 2, bolded). -->
     <string name="MessageBackupsKeyEducationScreen__local_backup_upgrade_description_bold">આ કી તમારા ઓન-ડિવાઇસ બેકઅપ માટેની કીને બદલશે.</string>
     <!-- Screen body shown when enabling Signal Secure Backups while on-device backups are already enabled (part 1). -->
-    <string name="MessageBackupsKeyEducationScreen__remote_backup_with_local_enabled_description">તમારી રિકવરી કી એ 64-અક્ષરનો કોડ છે જે તમને Signalને ફરીથી ઇન્સ્ટોલ કરવા પર તમારા બેકઅપને રિસ્ટોર કરવા દે છે.</string>
+    <string name="MessageBackupsKeyEducationScreen__remote_backup_with_local_enabled_description">તમારી રિકવરી કી એ 64-અક્ષરનો કોડ છે જે તમને Tellomiને ફરીથી ઇન્સ્ટોલ કરવા પર તમારા બેકઅપને રિસ્ટોર કરવા દે છે.</string>
     <!-- Screen body shown when enabling Signal Secure Backups while on-device backups are already enabled (part 2, bolded). -->
     <string name="MessageBackupsKeyEducationScreen__remote_backup_with_local_enabled_description_bold">આ તમારી ઓન-ડિવાઇસ રિકવરી કી જેવી જ છે.</string>
     <!-- Screen body shown when enabling on-device backups while Signal Secure Backups are already enabled (part 2, bolded). -->
@@ -9079,7 +9079,7 @@
     <!-- Dialog message shown when there is an error saving the recovery key because no compatible password manager was detected. -->
     <string name="MessageBackupsKeyRecordScreen__missing_password_manager_message">તમારી પાસે કોઈ પાસવર્ડ મેનેજર સેટ કરેલ નથી અથવા તમે જે પાસવર્ડ મેનેજરનો ઉપયોગ કરી રહ્યા છો તે સપોર્ટેડ નથી.</string>
     <!-- Dialog message shown when there is an error saving the recovery key because the user previously chose not to save Signal passwords to their password manager. -->
-    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">તમે પહેલાં Tellomi માટેના પાસવર્ડને Google પાસવર્ડ મેનેજર પર સેવ ન કરવાનું પસંદ કર્યું હતું. તમારા Google પાસવર્ડ મેનેજર સેટિંગ્સમાં, \"નકારેલી સાઇટ અને ઍપ\"માંથી Signalને દૂર કરો અને ફરી પ્રયાસ કરો.</string>
+    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">તમે પહેલાં Tellomi માટેના પાસવર્ડને Google પાસવર્ડ મેનેજર પર સેવ ન કરવાનું પસંદ કર્યું હતું. તમારા Google પાસવર્ડ મેનેજર સેટિંગ્સમાં, \"નકારેલી સાઇટ અને ઍપ\"માંથી Tellomiને દૂર કરો અને ફરી પ્રયાસ કરો.</string>
     <!-- Label for a button that navigates to the device settings -->
     <string name="MessageBackupsKeyRecordScreen__go_to_settings">સેટિંગ્સ પર જાઓ</string>
     <!-- Action button label -->
@@ -9200,7 +9200,7 @@
     <!-- Description text for storage space for paid tier media. Placeholder 1 is for byte amount, placeholder 2 is for a photo count estimate -->
     <string name="MessageBackupsTypeSelectionScreen__s_of_storage_s_photos">%1$sનું સ્ટોરેજ (%2$s ફોટા)</string>
     <!-- Description text for thanks -->
-    <string name="MessageBackupsTypeSelectionScreen__thanks_for_supporting_signal">Signalને સપોર્ટ કરવા બદલ આભાર!</string>
+    <string name="MessageBackupsTypeSelectionScreen__thanks_for_supporting_signal">Tellomiને સપોર્ટ કરવા બદલ આભાર!</string>
     <!-- Description text for free tier media retention. Placeholder is retention day count. -->
     <plurals name="MessageBackupsTypeSelectionScreen__last_d_days_of_media">
         <item quantity="one">મીડિયાનો છેલ્લો %1$d દિવસ</item>
@@ -9590,7 +9590,7 @@
     <!-- Notification title for when user is out of remote storage -->
     <string name="Notification_backup_storage_full">બેકઅપ સ્ટોરેજ ભરાઈ ગયું છે</string>
     <!-- Notification body for when user is out of remote storage -->
-    <string name="Notification_youve_reached_your_backup_storage_limit">તમે તમારી બેકઅપ સ્ટોરેજ મર્યાદા સુધી પહોંચી ગયા છો. ચેટ અને મીડિયાનો બેકઅપ લેવાનું ચાલુ રાખવા માટે Signalમાં જગ્યા ખાલી કરો.</string>
+    <string name="Notification_youve_reached_your_backup_storage_limit">તમે તમારી બેકઅપ સ્ટોરેજ મર્યાદા સુધી પહોંચી ગયા છો. ચેટ અને મીડિયાનો બેકઅપ લેવાનું ચાલુ રાખવા માટે Tellomiમાં જગ્યા ખાલી કરો.</string>
     <!-- Notification title for when initial backup failed -->
     <string name="Notification_backup_failed">બેકઅપ નિષ્ફળ થયું</string>
     <!-- Notification body for when initial backup failed -->
@@ -9718,7 +9718,7 @@
     <!-- Label for text field where user describes their call quality issue -->
     <string name="CallQualitySomethingElseScreen__describe_your_issue">તમારી સમસ્યાનું વર્ણન કરો</string>
     <!-- Privacy notice explaining that issue details will be kept private and used to improve Signal calls -->
-    <string name="CallQualitySomethingElseScreen__privacy_notice">કૃપા કરીને સમસ્યાને લગતી કોઈ પણ વિગતો શામેલ કરો. તમે અહીં જે કંઈ પણ શેર કરશો તે ખાનગી રાખવામાં આવશે અને તેનો ઉપયોગ ફક્ત Signalમાં કૉલને બહેતર બનાવવામાં મદદ માટે કરવામાં આવશે.</string>
+    <string name="CallQualitySomethingElseScreen__privacy_notice">કૃપા કરીને સમસ્યાને લગતી કોઈ પણ વિગતો શામેલ કરો. તમે અહીં જે કંઈ પણ શેર કરશો તે ખાનગી રાખવામાં આવશે અને તેનો ઉપયોગ ફક્ત Tellomiમાં કૉલને બહેતર બનાવવામાં મદદ માટે કરવામાં આવશે.</string>
     <!-- Button to save the call quality issue description -->
     <string name="CallQualitySomethingElseScreen__save">સેવ કરો</string>
     <!-- Content description for the back navigation button -->
@@ -9728,7 +9728,7 @@
     <!-- Title asking user how their call was -->
     <string name="CallQualitySheet__how_was_your_call">તમારો કૉલ કેવો રહ્યો?</string>
     <!-- Subtitle explaining that feedback helps improve Signal and no PII is stored -->
-    <string name="CallQualitySheet__how_was_your_call_subtitle">આ અમને Signalમાં કૉલને બહેતર બનાવવામાં મદદ કરે છે. કોઈ વ્યક્તિગત રીતે ઓળખી શકાય તેવી માહિતી સંગ્રહિત કરવામાં આવશે નહીં.</string>
+    <string name="CallQualitySheet__how_was_your_call_subtitle">આ અમને Tellomiમાં કૉલને બહેતર બનાવવામાં મદદ કરે છે. કોઈ વ્યક્તિગત રીતે ઓળખી શકાય તેવી માહિતી સંગ્રહિત કરવામાં આવશે નહીં.</string>
     <!-- Button label indicating the call had issues -->
     <string name="CallQualitySheet__had_issues">સમસ્યાઓ હતી</string>
     <!-- Button label indicating the call was great -->

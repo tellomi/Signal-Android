@@ -456,7 +456,7 @@
     <string name="ConversationActivity_transport_signal">Tellomi செய்தி</string>
     <!-- The content description for button to send a message in a conversation -->
     <string name="ConversationActivity_send_message_content_description">அனுப்பு செய்தி</string>
-    <string name="ConversationActivity_lets_switch_to_signal">%1$s நாம் Signalக்கு மாறுவோம்</string>
+    <string name="ConversationActivity_lets_switch_to_signal">%1$s நாம் Tellomiக்கு மாறுவோம்</string>
     <string name="ConversationActivity_specify_recipient">தயவு செய்து ஒரு தொடர்பை தேர்ந்தெடு</string>
     <string name="ConversationActivity_attachment_exceeds_size_limits">நீங்கள் அனுப்பும் இணைப்பு செய்தி அளவு வரம்பை மீறுகிறது .</string>
     <string name="ConversationActivity_unable_to_record_audio">ஒலி பதிவுச் செய்ய இயலவில்லை!</string>
@@ -526,7 +526,7 @@
     <!-- Message shown when opening a conversation with an unregistered user who used to be on Signal -->
     <string name="ConversationActivity__this_person_is_no_longer_using_signal">இந்த நபர் சிக்னலைப் பயன்படுத்துவதில்லை. உரையாடலை இங்கே மேற்கொள்ள அவர்களை சிக்னலுக்கு அழைக்கவும்.</string>
     <!-- Action button shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__invite_to_signal">Signalக்கு அழை</string>
+    <string name="ConversationActivity__invite_to_signal">Tellomiக்கு அழை</string>
     <!-- Snackbar message shown after dismissing the full screen sms export megaphone indicating we\'ll do it again soon -->
     <string name="ConversationActivity__you_will_be_reminded_again_soon">நீங்கள் விரைவில் மீண்டும் நினைவூட்டப்படுவீர்கள்.</string>
     <!-- Toast message shown when trying to record a voice message during an ongoing call -->
@@ -627,7 +627,7 @@
     <!-- Action shown to allow a user to update their application because it has expired -->
     <string name="ConversationFragment__update_build">Tellomi லைப் புதுப்பிக்கவும்</string>
     <!-- Action shown to allow a user to re-register as they are no longer registered -->
-    <string name="ConversationFragment__reregister_signal">Signalஐ மீண்டும் பதிவு செய்க</string>
+    <string name="ConversationFragment__reregister_signal">Tellomiஐ மீண்டும் பதிவு செய்க</string>
     <!-- Action shown in the conversation input area to allow a user to re-link this device as it is no longer linked -->
     <string name="ConversationFragment__relink_signal">மீண்டும் இணை</string>
     <!-- Label for a button displayed in the conversation toolbar to return to the previous screen. -->
@@ -1398,7 +1398,7 @@
     <!-- Title for dialog asking user to submit logs for debugging slow notification issues -->
     <string name="PromptBatterySaverBottomSheet__title">பேட்டரி மேம்படுத்தல்கள் காரணமாக அறிவிப்புகள் தாமதமாகலாம்</string>
     <!-- Message explaining that battery saver may delay notifications -->
-    <string name="PromptBatterySaverBottomSheet__message">மெசேஜ் அறிவிப்புகள் தாமதமாகாமல் இருக்க, Signalக்கான பேட்டரி மேம்படுத்தல்களை நீங்கள் முடக்கலாம்.</string>
+    <string name="PromptBatterySaverBottomSheet__message">மெசேஜ் அறிவிப்புகள் தாமதமாகாமல் இருக்க, Tellomiக்கான பேட்டரி மேம்படுத்தல்களை நீங்கள் முடக்கலாம்.</string>
 
     <!-- Title in bottom sheet that states that notifications for this device could be delayed -->
     <string name="DeviceSpecificNotificationBottomSheet__notifications_may_be_delayed">பேட்டரி மேம்படுத்தல்கள் காரணமாக அறிவிப்புகள் தாமதமாகலாம்</string>
@@ -1516,7 +1516,7 @@
     <string name="ManageGroupActivity_legacy_group_upgrade">இது ஒரு மரபு குழு. @குறிப்புகள் மற்றும் நிர்வாகிகள் போன்ற புதிய அம்சங்களை அணுக,</string>
     <string name="ManageGroupActivity_legacy_group_too_large">இந்த மரபு குழுவை புதிய குழுவாக மேம்படுத்த முடியாது, ஏனெனில் அது அளவு மிகப் பெரியது. அதிகபட்ச குழு அளவு%1$d.</string>
     <string name="ManageGroupActivity_upgrade_this_group">இந்த குழுவை மேம்படுத்தவும்.</string>
-    <string name="ManageGroupActivity_this_is_an_insecure_mms_group">இது பாதுகாப்பற்ற MMS குழு. தனிப்பட்ட முறையில் சாட் செய்ய, உங்கள் தொடர்புகளை Signalக்கு அழைக்கவும்.</string>
+    <string name="ManageGroupActivity_this_is_an_insecure_mms_group">இது பாதுகாப்பற்ற MMS குழு. தனிப்பட்ட முறையில் சாட் செய்ய, உங்கள் தொடர்புகளை Tellomiக்கு அழைக்கவும்.</string>
     <string name="ManageGroupActivity_invite_now">இப்போது அழைக்கவும்</string>
     <string name="ManageGroupActivity_more">மேலும்</string>
     <string name="ManageGroupActivity_add_group_description">கூட்டு குழு விளக்கம்…</string>
@@ -1744,13 +1744,13 @@
     <string name="InviteActivity_cancel">ரத்து செய் </string>
     <string name="InviteActivity_sending">அனுப்புகிறது …</string>
     <string name="InviteActivity_invitations_sent">அழைப்புகள் அனுப்பட்டது!</string>
-    <string name="InviteActivity_invite_to_signal">Signalக்கு அழை</string>
+    <string name="InviteActivity_invite_to_signal">Tellomiக்கு அழை</string>
     <string name="InviteActivity_send_sms">குறுஞ்செய்தியை அனுப்பு (%1$d)</string>
     <plurals name="InviteActivity_send_sms_invites">
         <item quantity="one">%1$d எஸ்எம்எஸ் அழைப்பை அனுப்பவா?</item>
         <item quantity="other">%1$d SMS அழைப்புகளை அனுப்பவா?</item>
     </plurals>
-    <string name="InviteActivity_lets_switch_to_signal">%1$s: நாம் Signalக்கு மாறுவோம்</string>
+    <string name="InviteActivity_lets_switch_to_signal">%1$s: நாம் Tellomiக்கு மாறுவோம்</string>
     <!-- Toast shown when Signal is unable to find an external app to share the Invite text string to -->
     <string name="InviteActivity_no_app_to_share_to">உங்களிடம் பகிர எந்த பயன்பாடுகளும் இல்லை என்று தெரிகிறது.</string>
 
@@ -2117,7 +2117,7 @@
     <string name="MessageRecord_a_message_from_s_couldnt_be_delivered">இருந்து ஒரு செய்தி %1$s வழங்க முடியவில்லை</string>
     <string name="MessageRecord_s_changed_their_phone_number">%1$s அவர்களது தொலைபேசி எண்ணை மாற்றியுள்ளார்.</string>
     <!-- Update item message shown in the release channel when someone is already a sustainer so we ask them if they want to boost. -->
-    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">இந்த புதிய அம்சம் பிடித்திருக்கிறதா? ஒரு முறைக்கான நன்கொடை மூலம் Signalஐ ஆதரித்து உதவுங்கள்.</string>
+    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">இந்த புதிய அம்சம் பிடித்திருக்கிறதா? ஒரு முறைக்கான நன்கொடை மூலம் Tellomiஐ ஆதரித்து உதவுங்கள்.</string>
     <!-- Update item message shown when we merge two threads together. First placeholder is a name, second placeholder is a phone number. -->
     <string name="MessageRecord_your_message_history_with_s_and_their_number_s_has_been_merged">%1$s உடனான உங்கள் செய்தி வரலாறு மற்றும் அவர்களின் எண் %2$s இணைக்கப்பட்டது.</string>
     <!-- Update item message shown when we merge two threads together and we don\'t know the phone number of the other thread. The placeholder is a person\'s name. -->
@@ -2402,7 +2402,7 @@
 
     <!-- PinOptOutDialog -->
     <string name="PinOptOutDialog_warning">எச்சரிக்கை</string>
-    <string name="PinOptOutDialog_if_you_disable_the_pin_you_will_lose_all_data">நீங்கள் PIN-ஐ முடக்கினால், நீங்கள் கைமுறையாக பேக்அப் செய்து மீட்டெடுக்காமல் Signalஐ மீண்டும் பதிவுசெய்யும்போது எல்லா தரவையும் இழப்பீர்கள். PIN முடக்கப்பட்டிருக்கும் போது நீங்கள் பதிவு பூட்டை இயக்க முடியாது.</string>
+    <string name="PinOptOutDialog_if_you_disable_the_pin_you_will_lose_all_data">நீங்கள் PIN-ஐ முடக்கினால், நீங்கள் கைமுறையாக பேக்அப் செய்து மீட்டெடுக்காமல் Tellomiஐ மீண்டும் பதிவுசெய்யும்போது எல்லா தரவையும் இழப்பீர்கள். PIN முடக்கப்பட்டிருக்கும் போது நீங்கள் பதிவு பூட்டை இயக்க முடியாது.</string>
     <string name="PinOptOutDialog_disable_pin">PIN-ஐ முடக்கு</string>
 
     <!-- RatingManager -->
@@ -2912,13 +2912,13 @@
 
     <!-- SharedContactDetailsActivity -->
     <string name="SharedContactDetailsActivity_add_to_contacts">தொடர்பு பட்டியலில் சேர்க்க</string>
-    <string name="SharedContactDetailsActivity_invite_to_signal">Signalக்கு அழை</string>
+    <string name="SharedContactDetailsActivity_invite_to_signal">Tellomiக்கு அழை</string>
     <string name="SharedContactDetailsActivity_signal_message">Tellomi செய்தி</string>
     <string name="SharedContactDetailsActivity_signal_call">Tellomi அழைப்பு</string>
 
     <!-- SharedContactView -->
     <string name="SharedContactView_add_to_contacts">தொடர்பு பட்டியலில் சேர்க்க</string>
-    <string name="SharedContactView_invite_to_signal">Signalக்கு அழை</string>
+    <string name="SharedContactView_invite_to_signal">Tellomiக்கு அழை</string>
     <string name="SharedContactView_message">Tellomi செய்தி</string>
 
     <!-- SignalBottomActionBar -->
@@ -3155,7 +3155,7 @@
     <!-- ApkUpdateNotifications -->
     <string name="ApkUpdateNotifications_prompt_install_title">Tellomi புதுப்பிப்பு</string>
     <string name="ApkUpdateNotifications_prompt_install_body">Tellomi இன் புதிய பதிப்பு கிடைக்கப்பெறுகிறது. புதுப்பிக்க அழுத்தவும்.</string>
-    <string name="ApkUpdateNotifications_failed_general_title">Signalஐப் புதுப்பிக்க முடியவில்லை</string>
+    <string name="ApkUpdateNotifications_failed_general_title">Tellomiஐப் புதுப்பிக்க முடியவில்லை</string>
     <string name="ApkUpdateNotifications_failed_general_body">பின்னர் மீண்டும் முயல்வோம்.</string>
     <string name="ApkUpdateNotifications_auto_update_success_title">Tellomi வெற்றிகரமாக புதுப்பிக்கப்பட்டது</string>
     <string name="ApkUpdateNotifications_auto_update_success_body">நீங்கள் தானாகவே பதிப்பு %1$sக்குப் புதுப்பிக்கப்பட்டீர்கள்.</string>
@@ -3518,13 +3518,13 @@
 
     <!-- EnclaveFailureReminder -->
     <!-- Banner message to update app to use payments -->
-    <string name="EnclaveFailureReminder_update_signal">கட்டணங்களைத் தொடர்ந்து பயன்படுத்த Signalஐப் புதுப்பிக்கவும். உங்கள் இருப்பு புதுப்பித்த நிலையில் இல்லாமல் இருக்கலாம்.</string>
+    <string name="EnclaveFailureReminder_update_signal">கட்டணங்களைத் தொடர்ந்து பயன்படுத்த Tellomiஐப் புதுப்பிக்கவும். உங்கள் இருப்பு புதுப்பித்த நிலையில் இல்லாமல் இருக்கலாம்.</string>
     <!-- Banner button to update now -->
 
     <!-- WebRtcCallActivity -->
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">அழைப்பிற்கு பதிலளிக்க, உங்கள் மைக்ரோஃபோன் அணுகலை சிக்னலுக்கு வழங்கவும்.</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">வீடியோ அழைப்பிற்கு பதிலளிக்க, உங்கள் மைக்ரோஃபோன் மற்றும் கேமரா அணுகலை Signalக்கு வழங்கவும்.</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">வீடியோ அழைப்பிற்கு பதிலளிக்க, உங்கள் மைக்ரோஃபோன் மற்றும் கேமரா அணுகலை Tellomiக்கு வழங்கவும்.</string>
     <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">அழைப்புகளைச் செய்ய அல்லது பெற Tellomi கு மைக்ரோஃபோன் மற்றும் கேமரா அனுமதிகள் தேவை, ஆனால் அவை நிரந்தரமாக மறுக்கப்பட்டுள்ளன. பயன்பாடு அமைப்புகளைத் தொடரவும், \"அனுமதிகள்\" என்பதைத் தேர்ந்தெடுத்து, \"மைக்ரோஃபோன்\" மற்றும் \"கேமரா\" ஐ இயக்கவும்.</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">இணைக்கப்பட்ட சாதனத்தில் பதிலளிக்கப்பட்டது.</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">இணைக்கப்பட்ட சாதனத்தில் மறுக்கப்பட்டது.</string>
@@ -3573,7 +3573,7 @@
     <string name="change_passphrase_activity__repeat_new_passphrase">புதிய கடவுச்சொல்</string>
 
     <!-- contact_selection_activity -->
-    <string name="contact_selection_activity__invite_to_signal">Signalக்கு அழை</string>
+    <string name="contact_selection_activity__invite_to_signal">Tellomiக்கு அழை</string>
     <string name="contact_selection_activity__new_group">புதிய குழு</string>
     <!-- Row item title for refreshing contacts -->
     <string name="contact_selection_activity__refresh_contacts">தொடர்பு பட்டியலை புதுப்பி</string>
@@ -3938,7 +3938,7 @@
     <!-- The title of a dialog prompting user to update to the latest version of Signal. -->
     <string name="EditProfileFragment_deprecated_dialog_title">Tellomi லைப் புதுப்பிக்கவும்</string>
     <!-- The body of a dialog prompting user to update to the latest version of Signal. -->
-    <string name="EditProfileFragment_deprecated_dialog_body">Tellomi இன் இந்தப் பதிப்பு காலாவதியானது. தொடர்ந்து Signalஐப் பயன்படுத்த, இப்போதே புதுப்பிக்கவும்.</string>
+    <string name="EditProfileFragment_deprecated_dialog_body">Tellomi இன் இந்தப் பதிப்பு காலாவதியானது. தொடர்ந்து Tellomiஐப் பயன்படுத்த, இப்போதே புதுப்பிக்கவும்.</string>
     <!-- The button on a dialog prompting user to update to the latest version of Signal. When clicked, the user will be taken to the store to update their app. -->
     <string name="EditProfileFragment_deprecated_dialog_update_button">புதுப்பிக்கப்பட்டது</string>
     <!-- The title of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
@@ -4220,7 +4220,7 @@
     <string name="preferences__slow">மெதுவாக</string>
     <string name="preferences__help">உதவி</string>
     <string name="preferences__advanced">மேம்பட்ட</string>
-    <string name="preferences__donate_to_signal">Signalக்கு நன்கொடை அளிக்கவும்</string>
+    <string name="preferences__donate_to_signal">Tellomiக்கு நன்கொடை அளிக்கவும்</string>
     <!-- Preference label for making one-time donations to Signal -->
     <string name="preferences__privacy">தனியுரிமை</string>
     <!-- Preference label for stories -->
@@ -4459,7 +4459,7 @@
     <string name="PaymentsHomeFragment__details">விவரங்கள்</string>
   <!-- Removed by excludeNonTranslatables <string name="PaymentsHomeFragment__learn_more__activate_payments" translatable="false">https://support.signal.org/hc/articles/360057625692#payments_activate</string> -->
     <!-- Displayed as a description in a dialog when the user tries to activate payments -->
-    <string name="PaymentsHomeFragment__you_can_use_signal_to_send_and">MobileCoinஐ அனுப்பவும் பெறவும் நீங்கள் Signalஐப் பயன்படுத்தலாம். அனைத்து பேமெண்ட்களும் MobileCoins மற்றும் MobileCoin Wallet செயலியின் விதிமுறைகளுக்கு உட்பட்டது. நீங்கள் சில சிக்கல்களைச் சந்திக்க நேரிடலாம் மற்றும் நீங்கள் இழக்கக்கூடிய கட்டணங்களை அல்லது நிலுவைகளை மீட்டெடுக்க முடியாது. </string>
+    <string name="PaymentsHomeFragment__you_can_use_signal_to_send_and">MobileCoinஐ அனுப்பவும் பெறவும் நீங்கள் Tellomiஐப் பயன்படுத்தலாம். அனைத்து பேமெண்ட்களும் MobileCoins மற்றும் MobileCoin Wallet செயலியின் விதிமுறைகளுக்கு உட்பட்டது. நீங்கள் சில சிக்கல்களைச் சந்திக்க நேரிடலாம் மற்றும் நீங்கள் இழக்கக்கூடிய கட்டணங்களை அல்லது நிலுவைகளை மீட்டெடுக்க முடியாது. </string>
     <string name="PaymentsHomeFragment__activate">செயல்படுத்த</string>
     <string name="PaymentsHomeFragment__view_mobile_coin_terms">MobileCoin விதிமுறைகளைக் காண்க</string>
     <string name="PaymentsHomeFragment__payments_not_available">கொடுப்பனவுகள் Tellomi இருக்கிறது இல்லைநீண்ட நேரம் கிடைக்கும். நீங்கள் இன்னும் முடியும்பரிமாற்றம் நிதி ஒரு பரிமாற்றம் ஆனால் உன்னால் முடியும் இல்லை நீண்டது அனுப்பு மற்றும் பணம் பெறுதல் அல்லது கூட்டு நிதி.</string>
@@ -5538,8 +5538,8 @@
     <string name="PaymentsRecoveryStartFragment__save_recovery_phrase">மீட்பு சொற்றொடரைச் சேமிக்கவும்</string>
     <string name="PaymentsRecoveryStartFragment__enter_recovery_phrase">உள்ளிடவும் மீட்பு சொற்றொடர்</string>
     <plurals name="PaymentsRecoveryStartFragment__your_balance_will_automatically_restore">
-        <item quantity="one">உங்கள் Tellomi PINஐ உறுதிசெய்தால், Signalஐ மீண்டும் நிறுவும் போது, உங்கள் பேலன்ஸ் தானாகவே மீட்டெடுக்கப்படும். மீட்டெடுப்பு சொற்றொடரைப் பயன்படுத்தி உங்கள் பேலன்ஸை மீட்டெடுக்கலாம். இது உங்களுக்கான தனித்துவமான %1$d-வார்த்தை சொற்றொடர். அதை எழுதி பாதுகாப்பான இடத்தில் வைக்கவும்.</item>
-        <item quantity="other">உங்கள் Tellomi PINஐ உறுதிசெய்தால், Signalஐ மீண்டும் நிறுவும் போது, உங்கள் பேலன்ஸ் தானாகவே மீட்டெடுக்கப்படும். மீட்டெடுப்பு சொற்றொடரைப் பயன்படுத்தி உங்கள் பேலன்ஸை மீட்டெடுக்கலாம். இது உங்களுக்கான தனித்துவமான %1$d-வார்த்தை சொற்றொடர். அதை எழுதி பாதுகாப்பான இடத்தில் வைக்கவும்.</item>
+        <item quantity="one">உங்கள் Tellomi PINஐ உறுதிசெய்தால், Tellomiஐ மீண்டும் நிறுவும் போது, உங்கள் பேலன்ஸ் தானாகவே மீட்டெடுக்கப்படும். மீட்டெடுப்பு சொற்றொடரைப் பயன்படுத்தி உங்கள் பேலன்ஸை மீட்டெடுக்கலாம். இது உங்களுக்கான தனித்துவமான %1$d-வார்த்தை சொற்றொடர். அதை எழுதி பாதுகாப்பான இடத்தில் வைக்கவும்.</item>
+        <item quantity="other">உங்கள் Tellomi PINஐ உறுதிசெய்தால், Tellomiஐ மீண்டும் நிறுவும் போது, உங்கள் பேலன்ஸ் தானாகவே மீட்டெடுக்கப்படும். மீட்டெடுப்பு சொற்றொடரைப் பயன்படுத்தி உங்கள் பேலன்ஸை மீட்டெடுக்கலாம். இது உங்களுக்கான தனித்துவமான %1$d-வார்த்தை சொற்றொடர். அதை எழுதி பாதுகாப்பான இடத்தில் வைக்கவும்.</item>
     </plurals>
     <!-- Description in save recovery phrase screen which shows up when user has non zero balance -->
     <string name="PaymentsRecoveryStartFragment__got_balance">நீங்கள் சமநிலையில் உள்ளீர்கள்! உங்கள் மீட்பு சொற்றொடரைச் சேமிப்பதற்கான நேரம்—உங்கள் சமநிலையை மீட்டெடுக்க நீங்கள் பயன்படுத்தக்கூடிய 24-வார்த்தை குறியீடு</string>
@@ -6092,7 +6092,7 @@
     <!-- ChatColorGradientTool -->
 
     <!-- Title text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
-    <string name="Donate2022Q2Megaphone_donate_to_signal">Signalக்கு நன்கொடை அளிக்கவும்</string>
+    <string name="Donate2022Q2Megaphone_donate_to_signal">Tellomiக்கு நன்கொடை அளிக்கவும்</string>
     <!-- Body text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
     <string name="Donate2022Q2Megaphone_signal_is_powered_by_people_like_you">Tellomi உங்களைப் போன்றவர்களின் உதவியில் இயங்குகிறது. மாதாந்திர நன்கொடை அளித்து ஒரு பேட்ஜைப் பெறுங்கள்.</string>
     <!-- Button label that brings a user to the donate screen. Shown in a popup at the bottom of the chat list. -->
@@ -6194,7 +6194,7 @@
     <string name="ConversationSettingsFragment__conversation_muted_always">எப்போதும்</string>
     <string name="ConversationSettingsFragment__copied_phone_number_to_clipboard">கிளிப்போர்டுக்கு தொலைபேசி எண் நகலெடுக்கப்பட்டது.</string>
     <string name="ConversationSettingsFragment__phone_number">தொலைபேசி எண்</string>
-    <string name="ConversationSettingsFragment__get_badges">Signalஐ ஆதரிப்பதன் மூலம் உங்கள் சுயவிவரத்திற்கான பேட்ஜ்களைப் பெறுங்கள். மேலும் அறிய ஒரு பேட்ஜில் தட்டவும்.</string>
+    <string name="ConversationSettingsFragment__get_badges">Tellomiஐ ஆதரிப்பதன் மூலம் உங்கள் சுயவிவரத்திற்கான பேட்ஜ்களைப் பெறுங்கள். மேலும் அறிய ஒரு பேட்ஜில் தட்டவும்.</string>
     <!-- Error message shown when the user is trying to open a media that is not sent yet. -->
     <string name="ConversationSettingsFragment__this_media_is_not_sent_yet">இந்த ஊடகம் இன்னும் அனுப்பப்படவில்லை.</string>
     <!-- End group option in group conversation settings screen -->
@@ -6427,11 +6427,11 @@
     <!-- Displayed on primary button in the bottom sheet as a call-to-action to launch into the donation flow -->
     <string name="ViewBadgeBottomSheetDialogFragment__donate_now">நன்கொடையளிக்கவும்</string>
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Signalஐ ஆதரிக்கிறார்</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomiஐ ஆதரிக்கிறார்</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s மாதாந்திர நன்கொடை வழங்கி Signalஐ ஆதரிக்கிறார். Tellomi உங்களைப் போன்றவர்களால் மட்டுமே ஆதரிக்கப்படும் விளம்பரதாரர்கள் அல்லது முதலீட்டாளர்கள் இல்லாத ஒரு இலாப நோக்கமற்ற செயலியாகும்.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s மாதாந்திர நன்கொடை வழங்கி Tellomiஐ ஆதரிக்கிறார். Tellomi உங்களைப் போன்றவர்களால் மட்டுமே ஆதரிக்கப்படும் விளம்பரதாரர்கள் அல்லது முதலீட்டாளர்கள் இல்லாத ஒரு இலாப நோக்கமற்ற செயலியாகும்.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Signalக்கு நன்கொடை வழங்கி ஆதரிக்கிறார். சிக்னல் என்பது உங்களைப் போன்றவர்களால் மட்டுமே ஆதரிக்கப்படும் விளம்பரதாரர்கள் அல்லது முதலீட்டாளர்கள் இல்லாத ஒரு இலாப நோக்கமற்ற நிறுவனமாகும்.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Tellomiக்கு நன்கொடை வழங்கி ஆதரிக்கிறார். சிக்னல் என்பது உங்களைப் போன்றவர்களால் மட்டுமே ஆதரிக்கப்படும் விளம்பரதாரர்கள் அல்லது முதலீட்டாளர்கள் இல்லாத ஒரு இலாப நோக்கமற்ற நிறுவனமாகும்.</string>
 
     <string name="ImageView__badge">பேட்ஜ்</string>
 
@@ -6473,11 +6473,11 @@
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__continue">தொடரவும்</string>
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">உங்களிடம் ஒன்றுக்கும் மேற்பட்ட பேட்ஜ்கள் இருந்தால், உங்கள் சுயவிவரத்தில் மற்றவர்கள் பார்க்கும்படியாக ஒன்றைத் தேர்ந்தெடுக்கலாம்.</string>
 
-    <string name="BecomeASustainerFragment__get_badges">Signalஐ ஆதரித்து உங்கள் சுயவிவரத்திற்கான பேட்ஜ்களைப் பெறுங்கள்.</string>
+    <string name="BecomeASustainerFragment__get_badges">Tellomiஐ ஆதரித்து உங்கள் சுயவிவரத்திற்கான பேட்ஜ்களைப் பெறுங்கள்.</string>
     <string name="BecomeASustainerFragment__signal_is_a_non_profit">சிக்னல் என்பது உங்களைப் போன்றவர்களால் மட்டுமே ஆதரிக்கப்படும், விளம்பரதாரர்கள் அல்லது முதலீட்டாளர்கள் இல்லாத ஒரு இலாப நோக்கமற்ற நிறுவனமாகும்.</string>
 
     <!-- Button label for creating a donation -->
-    <string name="ManageDonationsFragment__donate_to_signal">Signalக்கு நன்கொடை அளிக்கவும்</string>
+    <string name="ManageDonationsFragment__donate_to_signal">Tellomiக்கு நன்கொடை அளிக்கவும்</string>
     <!-- Heading for more area of manage subscriptions page -->
     <string name="ManageDonationsFragment__more">மேலும்</string>
     <!-- Heading for receipts area of manage subscriptions page -->
@@ -6523,7 +6523,7 @@
     <!-- Title of dialog telling user they need to update signal as it expired -->
     <string name="UpdateSignalExpiredDialog__title">Tellomi லைப் புதுப்பிக்கவும்</string>
     <!-- Message of dialog telling user they need to update signal as it expired -->
-    <string name="UpdateSignalExpiredDialog__message">Tellomi இன் இந்தப் பதிப்பு காலாவதியானது. தொடர்ந்து Signalஐப் பயன்படுத்த, இப்போதே புதுப்பிக்கவும்.</string>
+    <string name="UpdateSignalExpiredDialog__message">Tellomi இன் இந்தப் பதிப்பு காலாவதியானது. தொடர்ந்து Tellomiஐப் பயன்படுத்த, இப்போதே புதுப்பிக்கவும்.</string>
     <!-- Button text of expiration dialog, will take user to update the app -->
     <string name="UpdateSignalExpiredDialog__update_action">புதுப்பிக்கப்பட்டது</string>
     <!-- Button text of expiration dialog to cancel the dialog.  -->
@@ -6532,7 +6532,7 @@
     <!-- Title of dialog telling user they need to re-register signal -->
     <string name="ReregisterSignalDialog__title">டிவைஸ் பதிவு செய்யப்படவில்லை</string>
     <!-- Message of dialog telling user they need to re-register signal as it is no longer registered -->
-    <string name="ReregisterSignalDialog__message">இந்த டிவைஸ் இனி பதிவுசெய்யப்பட்டிருக்காது. இந்த டிவைஸில் Signalஐத் தொடர்ந்து பயன்படுத்த, மீண்டும் பதிவு செய்யவும்.</string>
+    <string name="ReregisterSignalDialog__message">இந்த டிவைஸ் இனி பதிவுசெய்யப்பட்டிருக்காது. இந்த டிவைஸில் Tellomiஐத் தொடர்ந்து பயன்படுத்த, மீண்டும் பதிவு செய்யவும்.</string>
     <!-- Button text of re-registration dialog to re-register the device.  -->
     <string name="ReregisterSignalDialog__reregister_action">மறு பதிவு</string>
     <!-- Button text of re-registration dialog to cancel the dialog.  -->
@@ -6546,7 +6546,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_boost_badge_has_expired_and">உங்கள் பூஸ்ட் பேட்ஜ் காலாவதியாகிவிட்டது மற்றும் உங்கள் சுயவிவரத்தில் இனி பார்க்க முடியாது.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_reactivate">ஒரு முறைக்கான பங்களிப்புடன் உங்கள் பூஸ்ட் பேட்ஜை இன்னும் 30 நாட்களுக்கு மீண்டும் இயக்கலாம்.</string>
     <!-- Displayed when we do not think the user is a subscriber when their boost expires -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">நீங்கள் தொடர்ந்து Signalஐப் பயன்படுத்தலாம், ஆனால் உங்களுக்காக உருவாக்கப்பட்ட தொழில்நுட்பத்தை ஆதரிக்க, மாதாந்திர நன்கொடையை வழங்கி, காப்பாளராக மாறுவதைக் கருத்தில் கொள்ளுங்கள்.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">நீங்கள் தொடர்ந்து Tellomiஐப் பயன்படுத்தலாம், ஆனால் உங்களுக்காக உருவாக்கப்பட்ட தொழில்நுட்பத்தை ஆதரிக்க, மாதாந்திர நன்கொடையை வழங்கி, காப்பாளராக மாறுவதைக் கருத்தில் கொள்ளுங்கள்.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__become_a_sustainer">ஒரு காப்பாளராக மாறவும்</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">பூஸ்ட்டைச் சேர்க்கவும்</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">இப்போது இல்லை</string>
@@ -6556,7 +6556,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled">உங்கள் கட்டணத்தைச் செயல்படுத்த முடியாததால், உங்கள் தொடர் மாதாந்திர நன்கொடை ரத்துசெய்யப்பட்டது. உங்கள் பேட்ஜ் இனி உங்கள் சுயவிவரத்தில் காட்டப்படாது.</string>
     <!-- Copy displayed when badge expires after a payment failure and we have a displayable charge failure reason -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled_s">உங்கள் தொடர் மாதாந்திர நன்கொடை ரத்து செய்யப்பட்டது. %1$s உங்கள் %2$s பேட்ஜ் இனி உங்கள் சுயவிவரத்தில் காட்டப்படாது.</string>
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">நீங்கள் தொடர்ந்து Signalஐப் பயன்படுத்தலாம், ஆனால் செயலியை ஆதரிக்கவும், உங்கள் பேட்ஜை மீண்டும் செயல்படுத்தவும், இப்போதே புதுப்பிக்கவும்.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">நீங்கள் தொடர்ந்து Tellomiஐப் பயன்படுத்தலாம், ஆனால் செயலியை ஆதரிக்கவும், உங்கள் பேட்ஜை மீண்டும் செயல்படுத்தவும், இப்போதே புதுப்பிக்கவும்.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__renew_subscription">சந்தாவைப் புதுப்பிக்கவும்</string>
     <!-- Button label to send user to Google Pay website -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__go_to_google_pay">கூகிள் பே-க்குச் செல்லவும்</string>
@@ -6623,7 +6623,7 @@
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
     <string name="DonationsErrors__cannot_send_donation">நன்கொடை அனுப்ப முடியாது</string>
     <!-- Displayed as a dialog message when the selected recipient for a gift doesn\'t support gifting -->
-    <string name="DonationsErrors__this_user_cant_receive_donations_until">Signalஐ மேம்படுத்தும் வரை இந்தப் பயனர் நன்கொடைகளைப் பெற முடியாது.</string>
+    <string name="DonationsErrors__this_user_cant_receive_donations_until">Tellomiஐ மேம்படுத்தும் வரை இந்தப் பயனர் நன்கொடைகளைப் பெற முடியாது.</string>
     <!-- Displayed as a dialog message when the user\'s profile could not be fetched, likely due to lack of internet -->
     <string name="DonationsErrors__your_donation_could_not_be_sent">நெட்வொர்க் பிழையின் காரணமாக உங்கள் நன்கொடையை அனுப்ப முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயலவும்.</string>
     <!-- Displayed as a dialog message when the user encounters an error during an iDEAL donation -->
@@ -6632,7 +6632,7 @@
     <!-- Gift message view title -->
     <string name="GiftMessageView__donation_on_behalf_of_s">%1$s சார்பாக நன்கொடை</string>
     <!-- Gift message view title for incoming donations -->
-    <string name="GiftMessageView__s_donated_to_signal_on">உங்கள் சார்பாக Signalக்கு %1$s நன்கொடை அளித்துள்ளார்</string>
+    <string name="GiftMessageView__s_donated_to_signal_on">உங்கள் சார்பாக Tellomiக்கு %1$s நன்கொடை அளித்துள்ளார்</string>
     <!-- Gift badge redeem action label -->
     <string name="GiftMessageView__redeem">மீட்டெடு</string>
     <!-- Gift badge view action label -->
@@ -6851,7 +6851,7 @@
     <!-- Displayed in a toast when we fail to open the ringtone picker -->
     <string name="NotificationSettingsFragment__failed_to_open_picker">பிக்கரைத் திறக்க முடியவில்லை.</string>
     <!-- Banner title when notification permission is disabled -->
-    <string name="NotificationSettingsFragment__to_enable_notifications">அறிவிப்புகளை இயக்க, Signalக்கு அவற்றைக் காண்பிக்க அனுமதி தேவை.</string>
+    <string name="NotificationSettingsFragment__to_enable_notifications">அறிவிப்புகளை இயக்க, Tellomiக்கு அவற்றைக் காண்பிக்க அனுமதி தேவை.</string>
     <!-- Banner action when notification permission is disabled -->
     <string name="NotificationSettingsFragment__turn_on">இயக்கு</string>
 
@@ -6881,7 +6881,7 @@
     <!-- Donation receipts share PNG -->
     <string name="DonationReceiptDetailsFragment__share_receipt">ரசீதை பகிரவும்</string>
     <!-- Donation receipts list end note -->
-    <string name="DonationReceiptListFragment__if_you_have">நீங்கள் Signalஐ மீண்டும் நிறுவியிருந்தால், முந்தைய நன்கொடைகளின் ரசீதுகள் கிடைக்காது.</string>
+    <string name="DonationReceiptListFragment__if_you_have">நீங்கள் Tellomiஐ மீண்டும் நிறுவியிருந்தால், முந்தைய நன்கொடைகளின் ரசீதுகள் கிடைக்காது.</string>
     <!-- Donation receipts document title -->
     <string name="DonationReceiptDetailsFragment__donation_receipt">நன்கொடை ரசீது</string>
     <!-- Donation receipts amount title -->
@@ -7280,7 +7280,7 @@
     <string name="GiftFlowStartFragment__donate_for_a_friend">நண்பருக்காக நன்கொடை அளிக்கவும்</string>
     <!-- Description text on start fragment for gifting a badge -->
     <plurals name="GiftFlowStartFragment__support_signal_by">
-        <item quantity="one">Signalஐ பயன்படுத்தும் நண்பர் அல்லது குடும்ப உறுப்பினருக்கு நன்கொடை அளிப்பதன் மூலம் Signalஐ ஆதரிக்கவும். %1$d நாளுக்கு அவர்களின் ப்ரொஃபைலில் காண்பிக்க ஒரு பேட்ஜைப் பெறுவார்கள்</item>
+        <item quantity="one">Tellomiஐ பயன்படுத்தும் நண்பர் அல்லது குடும்ப உறுப்பினருக்கு நன்கொடை அளிப்பதன் மூலம் Tellomiஐ ஆதரிக்கவும். %1$d நாளுக்கு அவர்களின் ப்ரொஃபைலில் காண்பிக்க ஒரு பேட்ஜைப் பெறுவார்கள்</item>
         <item quantity="other">சிக்னலைப் பயன்படுத்தும் நண்பர் அல்லது குடும்ப உறுப்பினருக்கு நன்கொடை அளிப்பதன் மூலம் சிக்னலை ஆதரிக்கவும். %1$d நாட்களுக்கு அவர்களின் ப்ரொஃபைலில் காண்பிக்க ஒரு பேட்ஜைப் பெறுவார்கள்</item>
     </plurals>
     <!-- Action button label for start fragment for gifting a badge -->
@@ -7304,9 +7304,9 @@
     <!-- Title for sheet shown when opening a sent gift -->
     <string name="ViewSentGiftBottomSheet__thanks_for_your_support">உங்கள் ஆதரவுக்கு நன்றி!</string>
     <!-- Description for sheet shown when opening a redeemed gift -->
-    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">உங்கள் சார்பாக Signalக்கு %1$s நன்கொடை அளித்துள்ளார்! உங்கள் புரொஃபைலில் Signalக்கான உங்கள் ஆதரவைக் காட்டுங்கள்.</string>
+    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">உங்கள் சார்பாக Tellomiக்கு %1$s நன்கொடை அளித்துள்ளார்! உங்கள் புரொஃபைலில் Tellomiக்கான உங்கள் ஆதரவைக் காட்டுங்கள்.</string>
     <!-- Description for sheet shown when opening a sent gift -->
-    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">%1$s சார்பாக Signalக்கு நன்கொடை அளித்துள்ளீர்கள். அவர்களின் புரொஃபைலில் தங்கள் ஆதரவைக் காட்ட அவர்களுக்கு விருப்பம் வழங்கப்படும்.</string>
+    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">%1$s சார்பாக Tellomiக்கு நன்கொடை அளித்துள்ளீர்கள். அவர்களின் புரொஃபைலில் தங்கள் ஆதரவைக் காட்ட அவர்களுக்கு விருப்பம் வழங்கப்படும்.</string>
     <!-- Primary action for pending gift sheet to redeem badge now -->
     <string name="ViewReceivedGiftSheet__redeem">மீட்டெடு</string>
     <!-- Primary action for pending gift sheet to redeem badge later -->
@@ -7314,7 +7314,7 @@
     <!-- Dialog text while redeeming a gift -->
     <string name="ViewReceivedGiftSheet__redeeming_badge">பேட்ஜை ரிடீம் செய்கிறது…</string>
     <!-- Description text in gift thanks sheet -->
-    <string name="GiftThanksSheet__youve_made_a_donation">%1$s சார்பாக Signalக்கு நன்கொடை அளித்துள்ளீர்கள். அவர்களின் ப்ரொஃபைலில் தங்கள் ஆதரவைக் காட்ட அவர்களுக்கு விருப்பம் வழங்கப்படும்.</string>
+    <string name="GiftThanksSheet__youve_made_a_donation">%1$s சார்பாக Tellomiக்கு நன்கொடை அளித்துள்ளீர்கள். அவர்களின் ப்ரொஃபைலில் தங்கள் ஆதரவைக் காட்ட அவர்களுக்கு விருப்பம் வழங்கப்படும்.</string>
     <!-- Expired gift sheet title -->
     <string name="ExpiredGiftSheetConfiguration__your_badge_has_expired">உங்களது பேட்ஜ் காலாவதியாகிவிட்டது</string>
     <!-- Expired gift sheet top description text -->
@@ -7416,8 +7416,8 @@
     <string name="SafetyNumberBottomSheetFragment__all_connections_have_been_reviewed">அனைத்து இணைப்புகளும் மதிப்பாய்வு செய்யப்பட்டுள்ளன, தொடர அனுப்பு என்பதைத் தட்டவும்.</string>
     <!-- Message of safety number changes bottom sheet when not showing individual records -->
     <plurals name="SafetyNumberBottomSheetFragment__you_have_d_connections_plural">
-        <item quantity="one">%1$d இணைப்பு Signalஐ மீண்டும் நிறுவியிருக்கலாம் அல்லது டிவைஸ்களை மாற்றியிருக்கலாம். அவர்களின் பாதுகாப்பு எண்ணை நீங்கள் மதிப்பாய்வு செய்யலாம் அல்லது அனுப்புவதைத் தொடரலாம்.</item>
-        <item quantity="other">%1$d இணைப்புகள் Signalஐ மீண்டும் நிறுவியிருக்கலாம் அல்லது டிவைஸ்களை மாற்றியிருக்கலாம். அவர்களின் பாதுகாப்பு எண்ணை நீங்கள் மதிப்பாய்வு செய்யலாம் அல்லது அனுப்புவதைத் தொடரலாம்.</item>
+        <item quantity="one">%1$d இணைப்பு Tellomiஐ மீண்டும் நிறுவியிருக்கலாம் அல்லது டிவைஸ்களை மாற்றியிருக்கலாம். அவர்களின் பாதுகாப்பு எண்ணை நீங்கள் மதிப்பாய்வு செய்யலாம் அல்லது அனுப்புவதைத் தொடரலாம்.</item>
+        <item quantity="other">%1$d இணைப்புகள் Tellomiஐ மீண்டும் நிறுவியிருக்கலாம் அல்லது டிவைஸ்களை மாற்றியிருக்கலாம். அவர்களின் பாதுகாப்பு எண்ணை நீங்கள் மதிப்பாய்வு செய்யலாம் அல்லது அனுப்புவதைத் தொடரலாம்.</item>
     </plurals>
     <!-- Menu action to launch safety number verification screen -->
     <string name="SafetyNumberBottomSheetFragment__verify_safety_number">பாதுகாப்பு எண்ணைச் சரிபார்க்கவும்</string>
@@ -7563,11 +7563,11 @@
 
     <!-- GatewaySelectorBottomSheet -->
     <!-- Sheet title when subscribing -->
-    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Signalக்கு %1$s/மாதம் நன்கொடை அளியுங்கள்</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Tellomiக்கு %1$s/மாதம் நன்கொடை அளியுங்கள்</string>
     <!-- Sheet summary when subscribing -->
     <string name="GatewaySelectorBottomSheet__get_a_s_badge">%1$s பேட்ஜைப் பெறுக</string>
     <!-- Sheet title when giving a one-time donation -->
-    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Signalக்கு %1$s நன்கொடை அளிக்கவும்</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Tellomiக்கு %1$s நன்கொடை அளிக்கவும்</string>
     <!-- Sheet summary when giving a one-time donation -->
     <plurals name="GatewaySelectorBottomSheet__get_a_s_badge_for_d_days">
         <item quantity="one">%2$d நாளுக்கு %1$s பேட்ஜைப் பெறுங்கள்</item>
@@ -7592,7 +7592,7 @@
     <!-- Title of screen displaying the bank transfer mandate -->
     <string name="BankTransferMandateFragment__bank_transfer">வங்கி பணப் பரிமாற்றம்</string>
     <!-- Subtitle of screen displaying the bank transfer mandate, placeholder is \'Learn more\' -->
-    <string name="BankTransferMandateFragment__stripe_processes_donations">Signalக்கு வழங்கப்படும் நன்கொடைகளை Stripe செயல்படுத்துகிறது. Tellomi உங்கள் தனிப்பட்ட தகவல்களைச் சேகரிக்கவோ சேமிக்கவோ இல்லை. %1$s</string>
+    <string name="BankTransferMandateFragment__stripe_processes_donations">Tellomiக்கு வழங்கப்படும் நன்கொடைகளை Stripe செயல்படுத்துகிறது. Tellomi உங்கள் தனிப்பட்ட தகவல்களைச் சேகரிக்கவோ சேமிக்கவோ இல்லை. %1$s</string>
     <!-- Subtitle learn more of screen displaying bank transfer mandate -->
     <string name="BankTransferMandateFragment__learn_more">மேலும் அறிக</string>
     <!-- Button label to continue with transfer -->
@@ -8291,7 +8291,7 @@
     <!-- Dialog title for invalid phone number -->
     <string name="FindByActivity__invalid_phone_number">தவறான தொலைபேசி எண்</string>
     <!-- Dialog title when phone number is not a registered signal user -->
-    <string name="FindByActivity__invite_to_signal">Signalக்கு அழை</string>
+    <string name="FindByActivity__invite_to_signal">Tellomiக்கு அழை</string>
     <!-- Dialog title when username is not found -->
     <string name="FindByActivity__username_not_found">பயனர்பெயர் கிடைக்கவில்லை</string>
     <!-- Dialog body for invalid username. Placeholder is the entered username. -->
@@ -10037,7 +10037,7 @@
     <!-- Context menu entry that copies a shared contact detail to the clipboard -->
     <string name="SharedContactDetailsScreen__copy">நகல்</string>
     <!-- Row that invites a shared contact who is not yet on Signal -->
-    <string name="SharedContactDetailsScreen__invite_to_signal">Signalக்கு அழை</string>
+    <string name="SharedContactDetailsScreen__invite_to_signal">Tellomiக்கு அழை</string>
     <!-- Row that saves a shared contact into the device address book -->
     <string name="SharedContactDetailsScreen__add_to_phone_contacts">உங்கள் அங்கீகரிப்புச் செயலிகளை ஏற்ற முடியவில்லை</string>
     <!-- Row that adds a shared contact to a Signal group -->

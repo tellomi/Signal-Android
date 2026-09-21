@@ -1744,7 +1744,7 @@
     <string name="InviteActivity_cancel">ರದ್ದುಗೊಳಿಸಿ</string>
     <string name="InviteActivity_sending">ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ…</string>
     <string name="InviteActivity_invitations_sent">ಆಮಂತ್ರಣಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ!</string>
-    <string name="InviteActivity_invite_to_signal">Signalಗೆ ಆಮಂತ್ರಿಸಿ</string>
+    <string name="InviteActivity_invite_to_signal">Tellomiಗೆ ಆಮಂತ್ರಿಸಿ</string>
     <string name="InviteActivity_send_sms">SMS ಕಳುಹಿಸಿ (%1$d)</string>
     <plurals name="InviteActivity_send_sms_invites">
         <item quantity="one">ಕಳುಹಿಸು %1$d ಎಸ್‌ಎಂಎಸ್ ಆಹ್ವಾನ?</item>
@@ -2918,7 +2918,7 @@
 
     <!-- SharedContactView -->
     <string name="SharedContactView_add_to_contacts">ಸಂಪರ್ಕಗಳಿಗೆ ಸೇರಿಸಿ</string>
-    <string name="SharedContactView_invite_to_signal">Signalಗೆ ಆಮಂತ್ರಿಸಿ</string>
+    <string name="SharedContactView_invite_to_signal">Tellomiಗೆ ಆಮಂತ್ರಿಸಿ</string>
     <string name="SharedContactView_message">Tellomi ಸಂದೇಶ</string>
 
     <!-- SignalBottomActionBar -->
@@ -3573,7 +3573,7 @@
     <string name="change_passphrase_activity__repeat_new_passphrase">ಹೊಸ ಪಾಸ್‌‌ಫ್ರೇಸ್ ಪುನರಾವರ್ತಿಸಿ</string>
 
     <!-- contact_selection_activity -->
-    <string name="contact_selection_activity__invite_to_signal">Signalಗೆ ಆಮಂತ್ರಿಸಿ</string>
+    <string name="contact_selection_activity__invite_to_signal">Tellomiಗೆ ಆಮಂತ್ರಿಸಿ</string>
     <string name="contact_selection_activity__new_group">ಹೊಸ ಗುಂಪು</string>
     <!-- Row item title for refreshing contacts -->
     <string name="contact_selection_activity__refresh_contacts">ಸಂಪರ್ಕಗಳನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ</string>

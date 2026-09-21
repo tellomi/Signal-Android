@@ -121,7 +121,7 @@
     <string name="AttachmentManager_cant_open_media_selection">మీడియా ఎంచుకోవడానికి అనువర్తనం దొరకదు.</string>
     <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">చిత్రాలు , వీడియోలు లేదా ఆడియోను అటాచ్ చేయడానికి Tellomi కు నిల్వ అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్ల మెనుకు కొనసాగండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"నిల్వ\" ను ప్రారంభించండి.</string>
     <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">సంప్రదింపు సమాచారాన్ని అటాచ్ చేయడానికి Tellomi కాంటాక్ట్స్ అనుమతి అవసరం, కానీ అది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తన సెట్టింగ్ల మెనుకి కొనసాగండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"పరిచయాలు\" ప్రారంభించండి.</string>
-    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">ఒక స్థానాన్ని అటాచ్ చేయడానికి Signalకి నగర అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్ల మెనుకి కొనసాగండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"స్థానం\" ని ప్రారంభించండి.</string>
+    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">ఒక స్థానాన్ని అటాచ్ చేయడానికి Tellomiకి నగర అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్ల మెనుకి కొనసాగండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"స్థానం\" ని ప్రారంభించండి.</string>
 
     <!-- Dialog title asking users for location permission -->
     <string name="AttachmentManager_signal_allow_access_location">మీ ప్రదేశంకు యాక్సెస్‌ను అనుమతించండి</string>
@@ -480,7 +480,7 @@
     <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">స్వర సందేశాలను పంపడానికి, మీ మైక్రోఫోన్‌కు Tellomi యాక్సెస్‌ను అనుమతించండి.</string>
     <!-- Toast text explaining Signal\'s need for microphone access -->
     <string name="ConversationActivity_signal_needs_microphone_access_voice_message">స్వర సందేశాన్ని రికార్డ్ చేయడానికి Tellomi కు మైక్రోఫోన్ యాక్సెస్ అవసరం.</string>
-    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">ఆడియో సందేశాలను పంపడానికి Signalకు మైక్రోఫోన్ అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"మైక్రోఫోన్\" ని ప్రారంభించండి.</string>
+    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">ఆడియో సందేశాలను పంపడానికి Tellomiకు మైక్రోఫోన్ అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"మైక్రోఫోన్\" ని ప్రారంభించండి.</string>
 
     <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Tellomi కాల్ చేయడానికి మైక్రోఫోన్ మరియు కెమెరా అనుమతులు అవసరం %1$s,కానీ అవి శాశ్వతంగా తిరస్కరించబడ్డాయి. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"మైక్రోఫోన్\" మరియు \"కెమెరా\" ని ప్రారంభించండి.</string>
     <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">చిత్రాలు మరియు వీడియోలను సంగ్రహించడానికి, కెమెరాకి Tellomi ప్రాప్తిని అనుమతించండి.</string>
@@ -1239,7 +1239,7 @@
     <string name="ExpiredBuildReminder_update_now">నవీకరణ చేయండి ఇప్పుడు</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->
-    <string name="DeprecatedSdkBanner_body">ఈ పరికరంపై Tellomi ఇక ఏమాత్రం పని చేయదు. Signalను మళ్లీ ఉపయోగించడానికి, మీ పరికరాన్ని Android యొక్క కొత్త వెర్షన్‌కి అప్‌డేట్ చేయండి లేదా కొత్త పరికరానికి మారండి.</string>
+    <string name="DeprecatedSdkBanner_body">ఈ పరికరంపై Tellomi ఇక ఏమాత్రం పని చేయదు. Tellomiను మళ్లీ ఉపయోగించడానికి, మీ పరికరాన్ని Android యొక్క కొత్త వెర్షన్‌కి అప్‌డేట్ చేయండి లేదా కొత్త పరికరానికి మారండి.</string>
 
     <!-- Title of notification telling users to update Signal -->
     <string name="DeprecatedNotificationJob_update_signal">Tellomi ను నవీకరించండి</string>
@@ -2337,7 +2337,7 @@
     <string name="DeviceProvisioningActivity_link_a_signal_device">ఒక Tellomi పరికరం లింక్ చేయాలా?</string>
     <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">ఈ Tellomi ఖాతాకు డెస్క్‌టాప్ లేదా iPad ను లింక్ చేయడానికి, లింక్ చేసిన పరికరాలకు వెళ్లండి మరియు \"కొత్త పరికరాన్ని లింక్ చేయండి\"పై తట్టి, QR కోడ్‌ను మళ్లీ స్కాన్ చేయండి. Tellomi నుండి నేరుగా వచ్చే QR కోడ్‌లను మాత్రమే మీరు స్కాన్ చేశారని నిర్ధారించుకోండి.</string>
 
-    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">ఒక QR కోడ్ను స్కాన్ చేయడానికి Signalకు కెమెరా అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"కెమెరా\" ని ప్రారంభించండి.</string>
+    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">ఒక QR కోడ్ను స్కాన్ చేయడానికి Tellomiకు కెమెరా అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"కెమెరా\" ని ప్రారంభించండి.</string>
     <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">కెమెరా అనుమతి లేకుండా QR కోడ్ను స్కాన్ చేయడం సాధ్యపడలేదు</string>
 
     <!-- OutdatedBuildReminder -->
@@ -3229,7 +3229,7 @@
     <string name="VerifyIdentityActivity_our_signal_safety_number">మన Tellomi భద్రత సంఖ్య:</string>
     <string name="VerifyIdentityActivity_no_app_to_share_to">మీరు పంచుకొనడానికి మీ దగ్గర వేరే యాప్స్ లేనట్టు కనబడుతుంది.</string>
     <string name="VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard">ఏ భద్రతకు సంఖ్య పోల్చడానికి క్లిప్బోర్డ్కు లొ కనుగొనబడింది</string>
-    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">ఒక QR కోడ్ను స్కాన్ చేయడానికి Signalకు కెమెరా అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"కెమెరా\" ని ప్రారంభించండి.</string>
+    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">ఒక QR కోడ్ను స్కాన్ చేయడానికి Tellomiకు కెమెరా అనుమతి అవసరం, కానీ ఇది శాశ్వతంగా తిరస్కరించబడింది. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"కెమెరా\" ని ప్రారంభించండి.</string>
     <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">కెమెరా అనుమతి లేకుండా QR కోడ్ను స్కాన్ చేయడం సాధ్యపడలేదు</string>
     <string name="VerifyIdentityActivity_you_must_first_exchange_messages_in_order_to_view">%1$s యొక్క భద్రతా నంబర్‌ను చూడటానికి మీరు మొదట సందేశాలను మార్పిడి చేసుకోవాలి.</string>
     <!-- Dialog message explaining to user they must exchange messages first to create a safety number -->
@@ -3525,7 +3525,7 @@
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">కాల్‌కు సమాధానం ఇవ్వడానికి, Tellomi కు మీ మైక్రోఫోన్‌ యాక్సెస్‌ని ఇవ్వండి.</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">వీడియో కాల్‌కు సమాధానం ఇవ్వడానికి, Tellomi కు మీ మైక్రోఫోన్ మరియు కెమెరాకు యాక్సెస్‌ను ఇవ్వండి.</string>
-    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">కాల్స్ చేయడానికి మరియు కాల్స్ స్వీకరించడానికి Signalకి మైక్రోఫోన్ మరియు కెమెరా అనుమతులు అవసరం, కానీ అవి శాశ్వతంగా తిరస్కరించబడ్డాయి. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"మైక్రోఫోన్\" మరియు \"కెమెరా\" ని ప్రారంభించండి.</string>
+    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">కాల్స్ చేయడానికి మరియు కాల్స్ స్వీకరించడానికి Tellomiకి మైక్రోఫోన్ మరియు కెమెరా అనుమతులు అవసరం, కానీ అవి శాశ్వతంగా తిరస్కరించబడ్డాయి. దయచేసి అనువర్తనం సెట్టింగ్లకు కొనసాగించండి, \"అనుమతులు\" ఎంచుకోండి మరియు \"మైక్రోఫోన్\" మరియు \"కెమెరా\" ని ప్రారంభించండి.</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">లింక్ చేయబడిన పరికరంలో సమాధానం ఇవ్వబడింది.</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">లింక్ చేయబడిన పరికరంలో తిరస్కరించబడింది.</string>
     <string name="WebRtcCallActivity__busy_on_a_linked_device">లింక్ చేయబడిన పరికరంలో బిజీ.</string>
@@ -4424,7 +4424,7 @@
 
     <!-- Displayed on a welcome screen for payments -->
     <string name="PaymentsHomeFragment_introducing_payments">చెల్లింపులను పరిచయం చేస్తోంది</string>
-    <string name="PaymentsHomeFragment__use_signal_to_send_and_receive">గోప్యత‌పై దృష్టి గల డిజిటల్ కరెన్సీ MobileCoinను పంపడానికి మరియు అందుకోవడానికి Signalను ఉపయోగించండి. ప్రారంభించడానికి యాక్టివేట్ చేయండి.</string>
+    <string name="PaymentsHomeFragment__use_signal_to_send_and_receive">గోప్యత‌పై దృష్టి గల డిజిటల్ కరెన్సీ MobileCoinను పంపడానికి మరియు అందుకోవడానికి Tellomiను ఉపయోగించండి. ప్రారంభించడానికి యాక్టివేట్ చేయండి.</string>
     <string name="PaymentsHomeFragment__activate_payments">చెల్లింపులను సక్రియం చేయండి</string>
     <string name="PaymentsHomeFragment__activating_payments">పేమెంట్‌లను యాక్టివేట్ చేస్తోంది…</string>
     <string name="PaymentsHomeFragment__restore_payments_account">పేమెంట్‌ల ఖాతాను పునరుద్ధరించు</string>
@@ -5501,7 +5501,7 @@
     <string name="payment_info_card_about_mobilecoin">MobileCoin గురించి</string>
     <string name="payment_info_card_mobilecoin_is_a_new_privacy_focused_digital_currency">MobileCoin కొత్త గోప్యతా దృష్టి గల డిజిటల్ కరెన్సీ.</string>
     <string name="payment_info_card_adding_funds">ఫండ్స్‌ని జోడించడం</string>
-    <string name="payment_info_card_you_can_add_funds_for_use_in">మీ వాలెట్ చిరునామాకు MobileCoin పంపడం ద్వారా మీరు Signalలో ఉపయోగం కోసం నిధులను జోడించవచ్చు.</string>
+    <string name="payment_info_card_you_can_add_funds_for_use_in">మీ వాలెట్ చిరునామాకు MobileCoin పంపడం ద్వారా మీరు Tellomiలో ఉపయోగం కోసం నిధులను జోడించవచ్చు.</string>
     <string name="payment_info_card_cashing_out">క్యాష్ అవుట్</string>
     <string name="payment_info_card_you_can_cash_out_mobilecoin">మీరు MobileCoinకు మద్దతిచ్చే మారకంలో ఎప్పుడైనా MobileCoinను క్యాష్ అవుట్ చేయవచ్చు. ఆ మారకంలో మీ ఖాతాకు బదిలీ చేయండి.</string>
     <string name="payment_info_card_hide_this_card">ఈ కార్డును దాచిపెట్టాలా?</string>
@@ -6623,7 +6623,7 @@
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
     <string name="DonationsErrors__cannot_send_donation">విరాళాన్ని పంపలేరు</string>
     <!-- Displayed as a dialog message when the selected recipient for a gift doesn\'t support gifting -->
-    <string name="DonationsErrors__this_user_cant_receive_donations_until">ఈ యూజర్ వారి Signalని అప్‌గ్రేడ్ చేసుకునేంత వరకు విరాళాలను పొందలేడు.</string>
+    <string name="DonationsErrors__this_user_cant_receive_donations_until">ఈ యూజర్ వారి Tellomiని అప్‌గ్రేడ్ చేసుకునేంత వరకు విరాళాలను పొందలేడు.</string>
     <!-- Displayed as a dialog message when the user\'s profile could not be fetched, likely due to lack of internet -->
     <string name="DonationsErrors__your_donation_could_not_be_sent">ఒక నెట్‌వర్క్ దోషం కారణంగా మీ విరాళాన్ని పంపలేరు. మీ కనెక్షన్‌ను తనిఖీ చేయండి మరియు మళ్ళీ ప్రయత్నించండి.</string>
     <!-- Displayed as a dialog message when the user encounters an error during an iDEAL donation -->
@@ -6632,7 +6632,7 @@
     <!-- Gift message view title -->
     <string name="GiftMessageView__donation_on_behalf_of_s">%1$s తరఫున విరాళం</string>
     <!-- Gift message view title for incoming donations -->
-    <string name="GiftMessageView__s_donated_to_signal_on">మీ తరఫున %1$s Signalకు విరాళం ఇచ్చారు</string>
+    <string name="GiftMessageView__s_donated_to_signal_on">మీ తరఫున %1$s Tellomiకు విరాళం ఇచ్చారు</string>
     <!-- Gift badge redeem action label -->
     <string name="GiftMessageView__redeem">రీడిమ్</string>
     <!-- Gift badge view action label -->
@@ -7280,8 +7280,8 @@
     <string name="GiftFlowStartFragment__donate_for_a_friend">ఒక స్నేహితుడి కొరకు విరాళం ఇవ్వండి</string>
     <!-- Description text on start fragment for gifting a badge -->
     <plurals name="GiftFlowStartFragment__support_signal_by">
-        <item quantity="one">Tellomi ఉపయోగించే స్నేహితుడు లేదా కుటుంబ సభ్యుడి కొరకు విరాళం ఇవ్వడం ద్వారా Signalకు మద్దతు ఇవ్వండి. %1$d రోజుపాటు వారి ప్రొఫైల్‌లో ప్రదర్శించడానికి వారు ఒక బ్యాడ్జీని పొందుతారు.</item>
-        <item quantity="other">Tellomi ఉపయోగించే స్నేహితుడు లేదా కుటుంబ సభ్యుడి కొరకు విరాళం ఇవ్వడం ద్వారా Signalకు మద్దతు ఇవ్వండి. %1$d రోజులపాటు వారి ప్రొఫైల్‌లో ప్రదర్శించడానికి వారు ఒక బ్యాడ్జీని పొందుతారు.</item>
+        <item quantity="one">Tellomi ఉపయోగించే స్నేహితుడు లేదా కుటుంబ సభ్యుడి కొరకు విరాళం ఇవ్వడం ద్వారా Tellomiకు మద్దతు ఇవ్వండి. %1$d రోజుపాటు వారి ప్రొఫైల్‌లో ప్రదర్శించడానికి వారు ఒక బ్యాడ్జీని పొందుతారు.</item>
+        <item quantity="other">Tellomi ఉపయోగించే స్నేహితుడు లేదా కుటుంబ సభ్యుడి కొరకు విరాళం ఇవ్వడం ద్వారా Tellomiకు మద్దతు ఇవ్వండి. %1$d రోజులపాటు వారి ప్రొఫైల్‌లో ప్రదర్శించడానికి వారు ఒక బ్యాడ్జీని పొందుతారు.</item>
     </plurals>
     <!-- Action button label for start fragment for gifting a badge -->
     <string name="GiftFlowStartFragment__next">తరువాత</string>
@@ -7304,9 +7304,9 @@
     <!-- Title for sheet shown when opening a sent gift -->
     <string name="ViewSentGiftBottomSheet__thanks_for_your_support">మీ సపోర్ట్‌కు ధన్యవాదాలు!</string>
     <!-- Description for sheet shown when opening a redeemed gift -->
-    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$s మీ తరపున Signalకి విరాళం ఇచ్చారు! మీ ప్రొఫైల్‌లో Tellomi కోసం మీ మద్దతును చూపండి.</string>
+    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$s మీ తరపున Tellomiకి విరాళం ఇచ్చారు! మీ ప్రొఫైల్‌లో Tellomi కోసం మీ మద్దతును చూపండి.</string>
     <!-- Description for sheet shown when opening a sent gift -->
-    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">మీరు %1$s తరఫున Signalకు విరాళం ఇచ్చారు. వారి ప్రొఫైల్‌లో తమ మద్దతును చూపించే ఆప్షన్ ఇస్తారు.</string>
+    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">మీరు %1$s తరఫున Tellomiకు విరాళం ఇచ్చారు. వారి ప్రొఫైల్‌లో తమ మద్దతును చూపించే ఆప్షన్ ఇస్తారు.</string>
     <!-- Primary action for pending gift sheet to redeem badge now -->
     <string name="ViewReceivedGiftSheet__redeem">రీడిమ్</string>
     <!-- Primary action for pending gift sheet to redeem badge later -->
@@ -7314,7 +7314,7 @@
     <!-- Dialog text while redeeming a gift -->
     <string name="ViewReceivedGiftSheet__redeeming_badge">బ్యాడ్జీని రీడిమ్ చేయడం…</string>
     <!-- Description text in gift thanks sheet -->
-    <string name="GiftThanksSheet__youve_made_a_donation">మీరు %1$s తరఫున Signalకు విరాళం ఇచ్చారు. వారి ప్రొఫైల్‌లో తమ మద్దతును చూపించే ఆప్షన్ ఇస్తారు.</string>
+    <string name="GiftThanksSheet__youve_made_a_donation">మీరు %1$s తరఫున Tellomiకు విరాళం ఇచ్చారు. వారి ప్రొఫైల్‌లో తమ మద్దతును చూపించే ఆప్షన్ ఇస్తారు.</string>
     <!-- Expired gift sheet title -->
     <string name="ExpiredGiftSheetConfiguration__your_badge_has_expired">మీ బ్యాడ్జీ గడువు తీరింది</string>
     <!-- Expired gift sheet top description text -->
@@ -7435,8 +7435,8 @@
     <string name="SafetyNumberReviewConnectionsFragment__safety_number_changes">భద్రతా సంఖ్య మార్పులు</string>
     <!-- Message of safety number review fragment -->
     <plurals name="SafetyNumberReviewConnectionsFragment__d_recipients_may_have">
-        <item quantity="one">%1$dగ్రహీత Signalని తిరిగి ఇన్‌స్టాల్ చేయవచ్చు లేదా పరికరాలను మార్చవచ్చు. కొత్త భద్రతా సంఖ్యను ధృవీకరించడానికి గ్రహీతను తట్టండి. ఇది ఐచ్ఛికం.</item>
-        <item quantity="other">%1$dగ్రహీతలు Signalని తిరిగి ఇన్‌స్టాల్ చేయవచ్చు లేదా పరికరాలను మార్చవచ్చు. కొత్త భద్రతా సంఖ్యను ధృవీకరించడానికి గ్రహీతను తట్టండి. ఇది ఐచ్ఛికం.</item>
+        <item quantity="one">%1$dగ్రహీత Tellomiని తిరిగి ఇన్‌స్టాల్ చేయవచ్చు లేదా పరికరాలను మార్చవచ్చు. కొత్త భద్రతా సంఖ్యను ధృవీకరించడానికి గ్రహీతను తట్టండి. ఇది ఐచ్ఛికం.</item>
+        <item quantity="other">%1$dగ్రహీతలు Tellomiని తిరిగి ఇన్‌స్టాల్ చేయవచ్చు లేదా పరికరాలను మార్చవచ్చు. కొత్త భద్రతా సంఖ్యను ధృవీకరించడానికి గ్రహీతను తట్టండి. ఇది ఐచ్ఛికం.</item>
     </plurals>
     <!-- Section header for 1:1 contacts in review fragment -->
     <string name="SafetyNumberBucketRowItem__contacts">పరిచయాలు</string>

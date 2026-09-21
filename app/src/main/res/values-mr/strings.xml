@@ -583,8 +583,8 @@
     <string name="ConversationFragment_delete_for_everyone_title">सर्वांसाठी हटवायचा?</string>
     <!-- Body of dialog explaining what happens during deletion -->
     <plurals name="ConversationFragment_delete_for_everyone_body">
-        <item quantity="one">Signalच्या नवीन आवृत्तीवरील गट सदस्यांना तुम्ही हा संदेश हटवल्याचे दिसेल.</item>
-        <item quantity="other">Signalच्या नवीन आवृत्तीवरील गट सदस्यांना तुम्ही हे संदेश हटवल्याचे दिसेल.</item>
+        <item quantity="one">Tellomiच्या नवीन आवृत्तीवरील गट सदस्यांना तुम्ही हा संदेश हटवल्याचे दिसेल.</item>
+        <item quantity="other">Tellomiच्या नवीन आवृत्तीवरील गट सदस्यांना तुम्ही हे संदेश हटवल्याचे दिसेल.</item>
     </plurals>
     <!-- Dialog button for deleting one or more note-to-self messages only on this device, leaving that same message intact on other devices. -->
     <string name="ConversationFragment_delete_on_this_device">या डिव्हाइस वरून हटवा</string>
@@ -665,9 +665,9 @@
     <!-- Label for official chat pill shown in the Note to Self conversation header -->
     <string name="ConversationFragment_official_chat">अधिकृत चॅट</string>
     <!-- Description shown in the Signal release notes conversation header -->
-    <string name="ConversationFragment_release_notes_description">Signalचे एकमेव अधिकृत चॅट. बातम्या आणि प्रकाशन टीप मिळवत राहा.</string>
+    <string name="ConversationFragment_release_notes_description">Tellomiचे एकमेव अधिकृत चॅट. बातम्या आणि प्रकाशन टीप मिळवत राहा.</string>
     <!-- Label shown in place of the input in the Signal release notes conversation -->
-    <string name="ConversationFragment_the_only_official_chat_from_signal">Signalचे एकमेव अधिकृत चॅट</string>
+    <string name="ConversationFragment_the_only_official_chat_from_signal">Tellomiचे एकमेव अधिकृत चॅट</string>
     <!-- Plural for group member count shown in conversation header. %1$d is the number of members -->
     <plurals name="ConversationFragment_group_member_count">
         <item quantity="one">%1$d सदस्य</item>
@@ -6617,7 +6617,7 @@
     <string name="DonationsErrors__your_payment_is_still">आपल्या देणगीवर अद्याप प्रक्रिया केली जात आहे. आपल्या कनेक्शन वर अवलंबून हे काही मिनिटांचा वेळ घेऊ शकते.</string>
     <string name="DonationsErrors__failed_to_cancel_subscription">सदस्यत्व रद्द करणे अयशस्वी झाले</string>
     <string name="DonationsErrors__subscription_cancellation_requires_an_internet_connection">सदस्यत्व रद्द करण्यास इंटरनेट कनेक्शन आवश्यक आहे.</string>
-    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">तुमच्या डिव्हाईसवर इन-ॲप देणग्यांना सपोर्ट मिळत नाही, त्यामुळे तुम्ही बॅज कमावण्यासाठी सदस्यत्व घेऊ शकत नाही. पण तुम्ही आमच्या वेबसाईटवर देणगी देऊन Signalला सपोर्ट करू शकता.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">तुमच्या डिव्हाईसवर इन-ॲप देणग्यांना सपोर्ट मिळत नाही, त्यामुळे तुम्ही बॅज कमावण्यासाठी सदस्यत्व घेऊ शकत नाही. पण तुम्ही आमच्या वेबसाईटवर देणगी देऊन Tellomiला सपोर्ट करू शकता.</string>
     <string name="NetworkFailure__network_error_check_your_connection_and_try_again">नेटवर्क त्रुटी. आपले कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
     <string name="NetworkFailure__retry">पुन्हा प्रयत्न करा</string>
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
@@ -7586,7 +7586,7 @@
     <string name="ExternalNavigationHelper__leave_signal_to_confirm_payment">देणगीची पुष्टी करण्यासाठी Tellomi सोडायचे?</string>
     <string name="ExternalNavigationHelper__once_this_payment_is_confirmed">पुष्टी केली गेल्यानंतर, आपल्या देणगीवर प्रक्रिया करणे समाप्त करण्यासाठी Tellomi कडे परत या.</string>
     <!-- Dialog message shown when leaving Signal to complete a donation in an external app. Placeholder is the resolved app name (e.g. a banking app). -->
-    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">तुम्हाला %1$s येथे पाठवले जाईल. पुष्टी झाल्यावर, तुमच्या देणगीवर प्रक्रिया करणे पूर्ण करण्यासाठी Signalकडे परत या.</string>
+    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">तुम्हाला %1$s येथे पाठवले जाईल. पुष्टी झाल्यावर, तुमच्या देणगीवर प्रक्रिया करणे पूर्ण करण्यासाठी Tellomiकडे परत या.</string>
 
     <!-- BankTransferMandateFragment -->
     <!-- Title of screen displaying the bank transfer mandate -->
@@ -8195,7 +8195,7 @@
     <!-- Title of the backup setup complete bottom sheet -->
     <string name="BackupSetupCompleteBottomSheet__title">आपण तयार आहात. आपला बॅकअप आत्ता सुरू करा.</string>
     <!-- Body of the backup setup complete bottom sheet -->
-    <string name="BackupSetupCompleteBottomSheet__body">यासाठी थोडा वेळ लागू शकतो. तुम्ही बॅकअप चालू असताना Signalचा नेहमीप्रमाणे वापर करू शकता.</string>
+    <string name="BackupSetupCompleteBottomSheet__body">यासाठी थोडा वेळ लागू शकतो. तुम्ही बॅकअप चालू असताना Tellomiचा नेहमीप्रमाणे वापर करू शकता.</string>
     <!-- Label for the optimize storage toggle -->
     <string name="BackupSetupCompleteBottomSheet__optimize_storage">Tellomi साठवणीचा परिपूर्ण वापर करा</string>
     <!-- Subtitle for the optimize storage toggle -->
@@ -8902,13 +8902,13 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">तपशील</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">बॅकअप्स बंद केले आहेत, पण Signalच्या सुरक्षित साठवण सेवेतून तुमचा डेटा हटवताना एक त्रुटी उद्भवली.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">बॅकअप्स बंद केले आहेत, पण Tellomiच्या सुरक्षित साठवण सेवेतून तुमचा डेटा हटवताना एक त्रुटी उद्भवली.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">बॅकअप हटवता आला नाही</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">एक त्रुटी उद्भवली. कृपया सपोर्टशी संंपर्क साधा.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">बॅकअप्स बंद केले आहेत, तुमचा डेटा तुमच्या डिव्हाईसवर डाऊनलोड होईल आणि मग Signalच्या सुरक्षित साठवण सेवेतून हटवला जाईल.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">बॅकअप्स बंद केले आहेत, तुमचा डेटा तुमच्या डिव्हाईसवर डाऊनलोड होईल आणि मग Tellomiच्या सुरक्षित साठवण सेवेतून हटवला जाईल.</string>
     <!-- Text displayed while we are processing a backup delete -->
     <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">बॅकअप्स बंद करण्यात आलेले आहेत आणि आपला डेटा Tellomi च्या सुरक्षित संग्रहण सेवेमधून हटवण्यात आला आहे.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
@@ -9079,7 +9079,7 @@
     <!-- Dialog message shown when there is an error saving the recovery key because no compatible password manager was detected. -->
     <string name="MessageBackupsKeyRecordScreen__missing_password_manager_message">तुम्ही पासवर्ड व्यवस्थापक अजून सेट केलेला नाही, किंवा तुम्ही वापरत असलेला पासवर्ड व्यवस्थापक समर्थित नाही.</string>
     <!-- Dialog message shown when there is an error saving the recovery key because the user previously chose not to save Signal passwords to their password manager. -->
-    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">तुम्ही याआधी गूगल पासवर्ड मॅनेजरमध्ये Signalचे पासवर्ड जतन न करण्याचा निर्णय घेतला होतात. तुमच्या गूगल पासवर्ड मॅनेजर सेटिंग्जमध्ये, \"नाकारलेल्या साईट्स आणि ॲप्स\" मधून Tellomi हटवा आणि पुन्हा प्रयत्न करा.</string>
+    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">तुम्ही याआधी गूगल पासवर्ड मॅनेजरमध्ये Tellomiचे पासवर्ड जतन न करण्याचा निर्णय घेतला होतात. तुमच्या गूगल पासवर्ड मॅनेजर सेटिंग्जमध्ये, \"नाकारलेल्या साईट्स आणि ॲप्स\" मधून Tellomi हटवा आणि पुन्हा प्रयत्न करा.</string>
     <!-- Label for a button that navigates to the device settings -->
     <string name="MessageBackupsKeyRecordScreen__go_to_settings">सेटिंग्ज वर जा</string>
     <!-- Action button label -->

@@ -25,7 +25,7 @@
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">એકાઉન્ટને ફરીથી રજીસ્ટર કરો</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Signalને અપડેટ કરો</string>
+    <string name="preferences_account_update_signal">Tellomiને અપડેટ કરો</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">બધા ડેટા ડિલીટ કરો</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->

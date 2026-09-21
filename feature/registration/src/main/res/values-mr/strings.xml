@@ -534,11 +534,11 @@
     <string name="DeviceTransferSetup__numbers_match">हो, आकडे जुळत आहेत</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">नंबर जुळत नाही</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">तुमच्या जुन्या डिव्हाईसची पडताळणी होण्याची वाट पाहात आहोत…</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signalला तुमचा जुना डिव्हाईस शोधता येण्यासाठी आणि कनेक्ट होण्यासाठी ठिकाण परवानगी हवी आहे.</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomiला तुमचा जुना डिव्हाईस शोधता येण्यासाठी आणि कनेक्ट होण्यासाठी ठिकाण परवानगी हवी आहे.</string>
     <string name="DeviceTransferSetup__grant_location_permission">परवानगी द्या</string>
-    <string name="DeviceTransferSetup__location_services_required">Signalला तुमचा जुना डिव्हाईस शोधता येण्यासाठी आणि कनेक्ट होण्यासाठी ठिकाण सेवा सक्षम असणे आवश्यक आहे.</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomiला तुमचा जुना डिव्हाईस शोधता येण्यासाठी आणि कनेक्ट होण्यासाठी ठिकाण सेवा सक्षम असणे आवश्यक आहे.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">स्थान सेवा चालू करा</string>
-    <string name="DeviceTransferSetup__wifi_required">Signalला तुमचा जुना डिव्हाईस शोधण्यासाठी आणि कनेक्ट करण्यासाठी Wi-Fi चालू लागतो.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomiला तुमचा जुना डिव्हाईस शोधण्यासाठी आणि कनेक्ट करण्यासाठी Wi-Fi चालू लागतो.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Wi-Fi चालू करा</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">क्षमस्व, तुमचा डिव्हाईस Wi-Fi Direct सपोर्ट करत नाही असे दिसते.</string>
     <string name="DeviceTransferSetup__restore_a_backup">त्याऐवजी बॅकअप रीस्टोर करा</string>

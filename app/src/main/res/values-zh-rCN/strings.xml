@@ -312,7 +312,7 @@
     <string name="CommunicationActions_cancel">取消</string>
     <string name="CommunicationActions_call">呼叫</string>
     <string name="CommunicationActions_insecure_call">不安全的通话</string>
-    <string name="CommunicationActions_carrier_charges_may_apply">运营商可能会收取额外的费用。 您呼叫的号码未在Signal中注册。 该呼叫将通过您的移动运营商发出，而不是通过互联网发出。</string>
+    <string name="CommunicationActions_carrier_charges_may_apply">运营商可能会收取额外的费用。 您呼叫的号码未在Tellomi中注册。 该呼叫将通过您的移动运营商发出，而不是通过互联网发出。</string>
     <string name="CommunicationActions_cant_join_call">无法加入通话</string>
     <string name="CommunicationActions_this_call_link_is_no_longer_valid">此通话链接已失效。</string>
     <!-- Title on dialog when call link url cannot be parsed -->

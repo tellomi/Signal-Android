@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">あなたにプライバシーを。\nすべてのメッセージで自分らしく。</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signalは非営利団体です\n利用規約とプライバシーポリシー</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomiは非営利団体です\n利用規約とプライバシーポリシー</string>
     <string name="RegistrationActivity_continue">続行</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">復元または移行する</string>
@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">権限を許可する</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">友人にメッセージを送信するには、Signalに権限を与える必要があります。 </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">友人にメッセージを送信するには、Tellomiに権限を与える必要があります。 </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">今はしない</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">連絡先</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">知り合いを探しましょう。連絡先は暗号化され、私たちSignalからは見えません。</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">知り合いを探しましょう。連絡先は暗号化され、私たちTellomiからは見えません。</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">通話</string>
     <!-- Phone calls permission row description -->
@@ -128,7 +128,7 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">サポートに問い合わせる</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal登録 - Android用認証コード</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi登録 - Android用認証コード</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">以前利用していた端末がある場合</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">新しいSignalアカウントからQRコードをスキャンすれば、すぐに再開できます</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">新しいTellomiアカウントからQRコードをスキャンすれば、すぐに再開できます</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">以前利用していた端末がない場合</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">または、Signalを同じ端末に再インストールする場合</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">または、Tellomiを同じ端末に再インストールする場合</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">メッセージ履歴とアカウントデータを復元する方法を選択してください。</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Signalバックアップから復元する</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomiバックアップから復元する</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">無料、または有料のSignalバックアッププランから復元します</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">無料、または有料のTellomiバックアッププランから復元します</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">端末内のバックアップの復元</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">バックアップが見つかりません</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">選択したフォルダにはSignalのバックアップは見つかりませんでした。他のフォルダを選択してください。</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">選択したフォルダにはTellomiのバックアップは見つかりませんでした。他のフォルダを選択してください。</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">他のフォルダを選択</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">新しいアカウントへ復元しますか？</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">復元しようとしているバックアップは、別のSignalアカウントで作成されたものです。新しいアカウントに復元することはできますが、復元後はすべてのグループから外れます。</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">復元しようとしているバックアップは、別のTellomiアカウントで作成されたものです。新しいアカウントに復元することはできますが、復元後はすべてのグループから外れます。</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">復元する</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">バックアップが見つかりません</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">回復キーは正しいですが、このアカウントにはSignalバックアップがありません。戻って別の回復方法を選択するか、回復せずに続行してください。</string>
+    <string name="EnterAepScreen__no_backup_found_body">回復キーは正しいですが、このアカウントにはTellomiバックアップがありません。戻って別の回復方法を選択するか、回復せずに続行してください。</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">復元の準備中…</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">アカウントをリンクさせる</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">まだSignalを使っていませんか？</string>
+    <string name="WelcomeScreen__not_on_signal_yet">まだTellomiを使っていませんか？</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">アカウントを作成</string>
 
@@ -309,7 +309,7 @@
     <!-- Body for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__update_latest">このバージョンの Tellomi ではバックアップを復元できません。最新バージョンにアップデートして、もう一度お試しください。</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Signalをアップデートしてください</string>
+    <string name="RemoteRestoreScreen__update_signal">Tellomiをアップデートしてください</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">今はしない</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">プライバシーとセキュリティ保護のため、あなたのアカウントをロックしました。%1$d日間の休止後に、PINなしでこの電話番号を再登録できるようになります。メッセージ等はすべて消去されます。</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">以前利用していた端末でSignalを開きます</string>
+    <string name="QuickRestoreQRScreen__step_1">以前利用していた端末でTellomiを開きます</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">カメラのアイコンをタップします </string>
     <!-- Step 3 to quick restore -->
@@ -391,13 +391,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">より強固なPINを選択</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">電話番号の確認に、すでに使用したコードが再入力されました。新しい固有のSignal PINを選択してください。</string>
+    <string name="PinCreationScreen__reentered_verification_code">電話番号の確認に、すでに使用したコードが再入力されました。新しい固有のTellomi PINを選択してください。</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">PINに関する詳細情報</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">ご注意ください</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">PINを無効にすると、自身でバックアップと復元を行わない限り、Signalに再登録する際すべてのデータが失われます。PINを無効にしている間は登録ロックは使用できません。</string>
+    <string name="PinCreationScreen__disable_pin_warning">PINを無効にすると、自身でバックアップと復元を行わない限り、Tellomiに再登録する際すべてのデータが失われます。PINを無効にしている間は登録ロックは使用できません。</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">PINを無効にする</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -414,9 +414,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">PINを入力してください</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">最初にSignalをインストールしたときに作成したPINを入力してください</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">最初にTellomiをインストールしたときに作成したPINを入力してください</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">電話番号の確認に、すでに使用したコードが再入力されました。以前、アカウント用に選択した固有のSignal PINを入力してください。</string>
+    <string name="PinEntryScreen__reentered_verification_code">電話番号の確認に、すでに使用したコードが再入力されました。以前、アカウント用に選択した固有のTellomi PINを入力してください。</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="other">PINが違います。あと%1$d回試せます。</item>
@@ -442,14 +442,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">サポートに問い合わせる</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal登録 - AndroidのPINに関するサポートが必要</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi登録 - AndroidのPINに関するサポートが必要</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">通知を許可してください</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signalは通知権限をリクエストします。権限を有効にすると、新しいメッセージが届いたときに端末に通知が表示されるようになります。</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomiは通知権限をリクエストします。権限を有効にすると、新しいメッセージが届いたときに端末に通知が表示されるようになります。</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">今はしない</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -485,9 +485,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">このコードをスキャンするとアカウントがリンクします</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">ご利用のスマートフォンでSignalを開いてください</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">ご利用のスマートフォンでTellomiを開いてください</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">プロフィール画像をタップしてSignalの設定を開きます</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">プロフィール画像をタップしてTellomiの設定を開きます</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">「リンク済み端末」をタップし、次画面の「新しい端末をリンク」をタップします</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -499,7 +499,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">コードを生成できませんでした</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">他の端末にはSignalをインストールしていませんか？</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">他の端末にはTellomiをインストールしていませんか？</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">アカウントを作成</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -513,7 +513,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">アプリのデータを消去しますか？</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">別のSignalアカウントへリンクしようとしています。続行すると、現在この端末上にあるすべてのSignalのデータが消去されます。</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">別のTellomiアカウントへリンクしようとしています。続行すると、現在この端末上にあるすべてのTellomiのデータが消去されます。</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">消去＆やり直す</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -521,7 +521,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">アカウントの移行</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">アカウントを移行するには、以前のAndroid端末でSignalを開き、「アカウントの移行」を選択してください。</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">アカウントを移行するには、以前のAndroid端末でTellomiを開き、「アカウントの移行」を選択してください。</string>
     <string name="DeviceTransferInstructions__continue">続行</string>
 
     <!-- Device transfer: Setup screen -->
@@ -532,11 +532,11 @@
     <string name="DeviceTransferSetup__numbers_match">はい、番号は一致しています</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">番号が一致しません</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">以前の端末の確認を待っています…</string>
-    <string name="DeviceTransferSetup__location_permission_required">以前の端末を見つけて接続するには、Signalへの位置情報の権限が必要です。</string>
+    <string name="DeviceTransferSetup__location_permission_required">以前の端末を見つけて接続するには、Tellomiへの位置情報の権限が必要です。</string>
     <string name="DeviceTransferSetup__grant_location_permission">権限を許可</string>
     <string name="DeviceTransferSetup__location_services_required">以前の端末を見つけて接続するには、Signaの位置情報サービスを有効にする必要があります。</string>
     <string name="DeviceTransferSetup__turn_on_location_services">位置情報サービスを有効にする</string>
-    <string name="DeviceTransferSetup__wifi_required">Signalが以前の端末を見つけて接続するには、Wi-Fiを有効にする必要があります。</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomiが以前の端末を見つけて接続するには、Wi-Fiを有効にする必要があります。</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Wi-Fiを有効にしてください</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">申し訳ありませんが、ご利用の端末はWi-Fi Directに対応していないようです。</string>
     <string name="DeviceTransferSetup__restore_a_backup">代わりにバックアップを復元</string>
@@ -553,7 +553,7 @@
     <string name="DeviceTransferProgress__transferring_data">データを移行しています</string>
     <string name="DeviceTransferProgress__d_messages_so_far">これまで%1$d件のメッセージ</string>
     <string name="DeviceTransferProgress__unable_to_transfer">移行できません</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Signalのバージョンが、移行先よりも新しい場合は移行できません</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Tellomiのバージョンが、移行先よりも新しい場合は移行できません</string>
     <string name="DeviceTransferProgress__failure_foreign_key">データベースの制限のため一部のデータは移行できませんでした。</string>
     <string name="DeviceTransferProgress__transfer_failed">移行できませんでした。もう一度お試しください。</string>
     <string name="DeviceTransferProgress__try_again">もう一度試す</string>
@@ -584,9 +584,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">私を電話番号から検索できる人は？</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">あなたの電話番号を知っている人は誰でも、あなたがSignal利用者であることがわかり、チャットを始めることができます。</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">あなたの電話番号を知っている人は誰でも、あなたがTellomi利用者であることがわかり、チャットを始めることができます。</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">あなたからメッセージを送るか、以前からチャットをやりとりしていない限り、あなたがSignalを利用していることは誰にもわかりません。</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">あなたからメッセージを送るか、以前からチャットをやりとりしていない限り、あなたがTellomiを利用していることは誰にもわかりません。</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">全員</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -594,7 +594,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">本当に復元しますか？</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">「私を電話番号から検索できる人」を「なし」に設定すると、Signal上で他のユーザーはあなたを見つけにくくなります。</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">「私を電話番号から検索できる人」を「なし」に設定すると、Tellomi上で他のユーザーはあなたを見つけにくくなります。</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">キャンセル</string>
     <!-- Save button on the discoverability picker. -->
@@ -624,7 +624,7 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">メッセージと通話がユーザーネームで可能です</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signalは非営利団体であり、皆様のご購入は私たちの活動をサポートしていただくことに繋がります</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomiは非営利団体であり、皆様のご購入は私たちの活動をサポートしていただくことに繋がります</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Tellomi Loginキーを持っている場合</string>
     <!-- Subtitle of the existing-login option. -->
@@ -632,7 +632,7 @@
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">ログインしてアカウントを復元してください</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Signalをサポートしていただきありがとうございます</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Tellomiをサポートしていただきありがとうございます</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">%1$sを支払う</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->

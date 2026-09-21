@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">આ બેકઅપ રિસ્ટોર કરી શકાયું નથી</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Signalનું આ વર્ઝન તમારું બેકઅપ રિસ્ટોર કરી શકતું નથી. લેટેસ્ટ વર્ઝન પર અપડેટ કરો અને ફરી પ્રયાસ કરો.</string>
+    <string name="RemoteRestoreScreen__update_latest">Tellomiનું આ વર્ઝન તમારું બેકઅપ રિસ્ટોર કરી શકતું નથી. લેટેસ્ટ વર્ઝન પર અપડેટ કરો અને ફરી પ્રયાસ કરો.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Signalને અપડેટ કરો</string>
+    <string name="RemoteRestoreScreen__update_signal">Tellomiને અપડેટ કરો</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">અત્યારે નહીં</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -398,7 +398,7 @@
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">ચેતવણી</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">જો તમે પિનને અક્ષમ કરો છો, તો જ્યારે તમે Signalને ફરીથી રજીસ્ટર કરશો ત્યારે તમે તમામ ડેટા ગુમાવશો જો તમે તેને મેન્યુઅલી બેકઅપ અને રિસ્ટોર ન કરો. જ્યારે પિન અક્ષમ હોય ત્યારે તમે રજીસ્ટ્રેશન લૉક ચાલુ કરી શકતા નથી.</string>
+    <string name="PinCreationScreen__disable_pin_warning">જો તમે પિનને અક્ષમ કરો છો, તો જ્યારે તમે Tellomiને ફરીથી રજીસ્ટર કરશો ત્યારે તમે તમામ ડેટા ગુમાવશો જો તમે તેને મેન્યુઅલી બેકઅપ અને રિસ્ટોર ન કરો. જ્યારે પિન અક્ષમ હોય ત્યારે તમે રજીસ્ટ્રેશન લૉક ચાલુ કરી શકતા નથી.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">પિન અક્ષમ કરો</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -534,9 +534,9 @@
     <string name="DeviceTransferSetup__numbers_match">હા, નંબર મેચ થાય છે</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">નંબર મેચ થતાં નથી</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">તમારા જૂના ડિવાઇસને વેરિફાય કરવાની રાહ જોઈએ છીએ…</string>
-    <string name="DeviceTransferSetup__location_permission_required">તમારા જૂના ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Signalને લોકેશન પરવાનગીની જરૂર છે.</string>
+    <string name="DeviceTransferSetup__location_permission_required">તમારા જૂના ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Tellomiને લોકેશન પરવાનગીની જરૂર છે.</string>
     <string name="DeviceTransferSetup__grant_location_permission">પરવાનગી આપો</string>
-    <string name="DeviceTransferSetup__location_services_required">તમારા જૂના ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Signalને લોકેશન સેવાઓ સક્ષમ કરવાની જરૂર છે.</string>
+    <string name="DeviceTransferSetup__location_services_required">તમારા જૂના ડિવાઇસને શોધવા અને કનેક્ટ કરવા માટે Tellomiને લોકેશન સેવાઓ સક્ષમ કરવાની જરૂર છે.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">લોકેશન સેવાઓ ચાલુ કરો</string>
     <string name="DeviceTransferSetup__wifi_required">તમારા જૂના ડિવાઇસને શોધવા અને તેની સાથે કનેક્ટ કરવા Tellomi માટે જરૂરી છે કે Wi-Fi ચાલુ હોવું જોઈએ.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Wi-Fi ચાલુ કરો</string>
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">ડેટા ટ્રાન્સફર કરી રહ્યા છીએ</string>
     <string name="DeviceTransferProgress__d_messages_so_far">%1$d મેસેજ અત્યાર સુધી</string>
     <string name="DeviceTransferProgress__unable_to_transfer">ટ્રાન્સફર કરવામાં અસમર્થ</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Signalના નવા વર્ઝનમાંથી ટ્રાન્સફર કરી શકાતું નથી</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Tellomiના નવા વર્ઝનમાંથી ટ્રાન્સફર કરી શકાતું નથી</string>
     <string name="DeviceTransferProgress__failure_foreign_key">ડેટાબેઝના પ્રતિબંધને કારણે કેટલાક ડેટા ટ્રાન્સફર કરી શકાયા નથી.</string>
     <string name="DeviceTransferProgress__transfer_failed">ટ્રાન્સફર નિષ્ફળ થયું. કૃપા કરીને ફરીથી પ્રયાસ કરો.</string>
     <string name="DeviceTransferProgress__try_again">ફરીથી પ્રયત્ન કરો</string>
@@ -634,7 +634,7 @@
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">લૉગ ઇન કરો અને તમારું એકાઉન્ટ રિસ્ટોર કરો</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Signalને સપોર્ટ કરવા બદલ આભાર</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Tellomiને સપોર્ટ કરવા બદલ આભાર</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">%1$s ચૂકવો</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->

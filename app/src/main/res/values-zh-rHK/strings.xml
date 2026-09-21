@@ -476,11 +476,11 @@
     <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">如要傳送語音訊息，請允許 Tellomi 存取你的麥克風。</string>
     <!-- Toast text explaining Signal\'s need for microphone access -->
     <string name="ConversationActivity_signal_needs_microphone_access_voice_message">Tellomi 需要麥克風存取權限以錄製語音訊息。</string>
-    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Signal需要存取咪高峰來傳送語音訊息，但您已經永久拒絕。請前往應用程式設定功能表，按「權限」，然後開啟「咪高峰」。</string>
+    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Tellomi需要存取咪高峰來傳送語音訊息，但您已經永久拒絕。請前往應用程式設定功能表，按「權限」，然後開啟「咪高峰」。</string>
 
-    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Signal需要存取咪高峰及相機來呼叫%1$s，但您已經永久拒絕。請前往應用程式設定功能表，按「權限」，然後開啟「咪高峰」和「相機」。</string>
-    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">要拍照或錄影，請允許Signal存取相機。</string>
-    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Signal需要存取相機來拍照或錄影，但您已經永久拒絕。請前往應用程式設定功能表，按「權限」，然後開啟「相機」。</string>
+    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Tellomi需要存取咪高峰及相機來呼叫%1$s，但您已經永久拒絕。請前往應用程式設定功能表，按「權限」，然後開啟「咪高峰」和「相機」。</string>
+    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">要拍照或錄影，請允許Tellomi存取相機。</string>
+    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Tellomi需要存取相機來拍照或錄影，但您已經永久拒絕。請前往應用程式設定功能表，按「權限」，然後開啟「相機」。</string>
     <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Tellomi 需要「相機」權限以拍攝照片或影片</string>
     <string name="ConversationActivity_enable_the_microphone_permission_to_capture_videos_with_sound">請啟用咪高峰權限以擷取現場收音的影片。</string>
     <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Tellomi 需要咪高峰權限以錄製影片。</string>
@@ -4901,7 +4901,7 @@
     <!-- Dialog title shown when selecting "Nobody" in phone number privacy settings for who can find me by number -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">你確定嗎？</string>
     <!-- Dialog warning message shown when selecting "Nobody" in phone number privacy settings for who can find me by number -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">將「誰可以透過電話號碼找到我」設定為「沒有人」，會讓別人更難在 Signal上找到你。</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">將「誰可以透過電話號碼找到我」設定為「沒有人」，會讓別人更難在 Tellomi上找到你。</string>
     <!-- Dialog button text for canceling change action -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">取消</string>
     <string name="PhoneNumberPrivacy_everyone">所有人</string>

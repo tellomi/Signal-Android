@@ -532,11 +532,11 @@
     <string name="DeviceTransferSetup__numbers_match">ھەئە، نۇمۇرلار بىردەك</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">نومۇر ماس كەلمىدى</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">كونا ئۈسكۈنىڭىزنىڭ دەلىللىشىنى كۈتۈۋاتىدۇ…</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signalنىڭ كونا ئاندىروئىد ئۈسكۈنىڭىزنى بايقىشى ۋە باغلىشى ئۈچۈن، جۇغراپىيەلىك ئورۇن بەلگىلەش ئىجازىتى بېرىلگەن بولۇشى كېرەك.</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomiنىڭ كونا ئاندىروئىد ئۈسكۈنىڭىزنى بايقىشى ۋە باغلىشى ئۈچۈن، جۇغراپىيەلىك ئورۇن بەلگىلەش ئىجازىتى بېرىلگەن بولۇشى كېرەك.</string>
     <string name="DeviceTransferSetup__grant_location_permission">ئىجازەت بېرىش</string>
-    <string name="DeviceTransferSetup__location_services_required">Signalنىڭ كونا ئاندىروئىد ئۈسكۈنىڭىزنى بايقىشى ۋە باغلىشى ئۈچۈن، جۇغراپىيەلىك ئورۇن بەلگىلەش مۇلازىمىتى قوزغىتىلغان بولۇشى كېرەك.</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomiنىڭ كونا ئاندىروئىد ئۈسكۈنىڭىزنى بايقىشى ۋە باغلىشى ئۈچۈن، جۇغراپىيەلىك ئورۇن بەلگىلەش مۇلازىمىتى قوزغىتىلغان بولۇشى كېرەك.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">ئورۇن مۇلازىمىتىنى قوزغات</string>
-    <string name="DeviceTransferSetup__wifi_required">Signalنىڭ كونا ئاندىروئىد ئۈسكۈنىڭىزنى بايقىشى ۋە باغلىشى ئۈچۈن Wi-Fi ئوچۇق بولۇشى كېرەك.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomiنىڭ كونا ئاندىروئىد ئۈسكۈنىڭىزنى بايقىشى ۋە باغلىشى ئۈچۈن Wi-Fi ئوچۇق بولۇشى كېرەك.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Wi-Fi نى قوزغات</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">كەچۈرۈڭ، سىزنىڭ ئۈسكۈنىڭىز Wi-Fi Direct نى قوللىمايدىكەن.</string>
     <string name="DeviceTransferSetup__restore_a_backup">بىر زاپاسنى ئەسلىگە كەلتۈرۈڭ</string>

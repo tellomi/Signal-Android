@@ -386,7 +386,7 @@
     <string name="ConversationItem_send_paused">გაგზავნა შეჩერებულია</string>
     <string name="ConversationItem_click_to_approve_unencrypted_sms_dialog_title">დავაბრუნოთ დაუშიფრავ SMS-ზე?</string>
     <string name="ConversationItem_click_to_approve_unencrypted_mms_dialog_title">დავაბრუნოთ დაუშიფრავ MMS-ზე?</string>
-    <string name="ConversationItem_click_to_approve_unencrypted_dialog_message">ეს მესიჯი <b>არ</b> იქნება დაშიფრული, რადგან მიმღები აღარ არის Signalს მომხმარებელი. \n\nგავაგზავნოთ დაუშიფრავი შეტყობინება?</string>
+    <string name="ConversationItem_click_to_approve_unencrypted_dialog_message">ეს მესიჯი <b>არ</b> იქნება დაშიფრული, რადგან მიმღები აღარ არის Tellomiს მომხმარებელი. \n\nგავაგზავნოთ დაუშიფრავი შეტყობინება?</string>
     <string name="ConversationItem_unable_to_open_media">ამ მედია-ფაილის გამშვები აპლიკაცია ვერ მოიძებნა</string>
     <string name="ConversationItem_copied_text">%1$s დაკოპირებულია</string>
     <string name="ConversationItem_from_s">%1$s დან</string>
