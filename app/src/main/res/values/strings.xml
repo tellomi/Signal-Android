@@ -7,7 +7,8 @@
 
 <!-- smartling.instruction_comments_enabled = on -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Signal</string>
+    <!-- Tellomi：launcher 与系统里显示的名字。App 内文案里的 "Signal" 还有上千处，是另一批（见 docs/product/BRAND.md）。 -->
+    <string name="app_name" translatable="false">Tellomi</string>
 
     <string name="install_url" translatable="false">https://signal.org/install</string>
     <string name="donate_url" translatable="false">https://signal.org/donate</string>
