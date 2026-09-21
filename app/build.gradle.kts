@@ -501,8 +501,10 @@ android {
       buildConfigField("String", "GENERIC_SERVER_PUBLIC_PARAMS", "\"AP56nq1D39Uj1w+IDJCLdI4Eu9oqaEVKGELsl9HUlLxsflrRKB+gotelWnixnUDG+8yux4794uDsyWQlGKp1xHq2UH8NB+3VDJWJ1TC0Dp9TaBv3Mm8u09WiycRRslZjQ8qr62rztIru/9qbgsm9nbsgnlu4eKIBSG0BTeNN+MEC0jzZyDBNeG+liynQyFBCAhgzT1Q9a4iBr451Su97P1hO4IQmKDPNwQtulriKtlLBXkqFmzL8GlZpyX1x0NRZDsimO8t+kEmovoAf+Ybbhe12PMQfVWS9IB+kJrOs+00r\"")
       buildConfigField("String", "BACKUP_SERVER_PUBLIC_PARAMS", "\"AHYrGb9IfugAAJiPKp+mdXUx+OL9zBolPYHYQz6GI1gWjpEu5me3zVNSvmYY4zWboZHif+HG1sDHSuvwFd0QszSwuSF4X4kRP3fJREdTZ5MCR0n55zUppTwfHRW2S4sdQ0JGz7YDQIJCufYSKh0pGNEHL6hv79Agrdnr4momr3oXdnkpVBIp3HWAQ6IbXQVSG18X36GaicI1vdT0UFmTwU2KTneluC2eyL9c5ff8PcmiS+YcLzh0OKYQXB5ZfQ06d6DiINvDQLy75zcfUOniLAj0lGJiHxGczin/RXisKSR8\"")
       buildConfigField("String", "MOBILE_COIN_ENVIRONMENT", "\"testnet\"")
-      buildConfigField("String", "SIGNAL_CAPTCHA_URL", "\"https://signalcaptchas.org/staging/registration/generate.html\"")
-      buildConfigField("String", "RECAPTCHA_PROOF_URL", "\"https://signalcaptchas.org/staging/challenge/generate.html\"")
+      // 自建服务端：香港 nginx 上的开发用 captcha 页（打开即跳 signalcaptcha://noop...，服务端 stub 接受）。
+      // 上生产换成真 hCaptcha（服务端 captcha.allowHCaptcha + site keys）。
+      buildConfigField("String", "SIGNAL_CAPTCHA_URL", "\"https://chat.tellomi.app/captcha/registration/generate.html\"")
+      buildConfigField("String", "RECAPTCHA_PROOF_URL", "\"https://chat.tellomi.app/captcha/challenge/generate.html\"")
       buildConfigField("org.signal.libsignal.net.Network.Environment", "LIBSIGNAL_NET_ENV", "org.signal.libsignal.net.Network.Environment.STAGING")
       // 自建服务端：libsignal 的 chat 连接走 Omnibus 主机（与上面的 REST 主机不是同一台虚拟主机）。
       // 空字符串 = 沿用上面的 LIBSIGNAL_NET_ENV（Signal 自己的 staging）；非空 = Network.customServer(...)。
