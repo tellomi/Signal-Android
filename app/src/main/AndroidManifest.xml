@@ -20,7 +20,10 @@
     <!-- Permissions                             -->
     <!-- ======================================= -->
     <permission android:name="${applicationId}.ACCESS_SECRETS" android:label="Access to TextSecure Secrets" android:protectionLevel="signature" />
-    <uses-permission android:name="org.thoughtcrime.securesms.ACCESS_SECRETS" />
+    <!-- Tellomi：上游这里硬写成 org.thoughtcrime.securesms.ACCESS_SECRETS，但上一行是用
+         ${applicationId} 声明的——staging 档（applicationId 带 .staging 后缀）本来就对不上，
+         改 applicationId 之后更对不上。两边统一成同一个来源。 -->
+    <uses-permission android:name="${applicationId}.ACCESS_SECRETS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

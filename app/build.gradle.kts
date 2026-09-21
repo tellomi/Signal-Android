@@ -237,6 +237,9 @@ android {
     buildConfig = true
     viewBinding = true
     compose = true
+    // Tellomi：为了按档注入 @string/contact_account_type（见 defaultConfig 的注释）。
+    // AGP 默认关掉 resValues，不开这个开关 defaultConfig 里写 resValue 会直接配置失败。
+    resValues = true
   }
 
   defaultConfig {
@@ -245,6 +248,22 @@ android {
     }
     versionCode = (canonicalVersionCode * maxHotfixVersions) + possibleHotfixVersions[currentHotfixVersion]
     versionName = canonicalVersionName
+
+    // Tellomi：上游没写 applicationId，于是它默认等于 namespace（org.thoughtcrime.securesms）。
+    // 商店身份按 ADR-0019 定为 app.tellomi。namespace 不动——那是 Java 包名与 R 类的位置，
+    // 改它等于把整棵源码树搬家，跟品牌无关，而且会让以后合并上游变得极痛苦。
+    // provider 的 authority、自定义权限、FileProvider 全都是从 applicationId 派生的
+    // （manifest 里是 ${'$'}{applicationId}.xxx，代码里是 BuildConfig.APPLICATION_ID），所以改这一处就够。
+    applicationId = "app.tellomi"
+
+    // 系统联系人账号的 accountType 必须与代码里用的那一个一字不差（代码用 BuildConfig.APPLICATION_ID），
+    // 否则 AccountManager 不认。上游把它硬写在 res/xml/{authenticator,syncadapter}.xml 里，
+    // 再用 src/staging/ 的一整份副本改成带 .staging 的那个——每加一个后缀就要再抄一份。
+    // 改成按档注入一个字符串资源，xml 只引用它，staging 那两份副本就可以删掉了。
+    // （试过 onVariants 里的 variant.applicationId：实测拿到的是 namespace 派生值而不是这里的
+    //   applicationId，产物里核出来还是 org.thoughtcrime.securesms.staging，所以不用它。）
+    // test_run / benchmark 这两个后缀不覆盖：那是测试变体，不跑联系人同步。
+    resValue("string", "contact_account_type", "app.tellomi")
 
     if (isInstrumentationTestRun) {
       applicationIdSuffix = ".test_run"
@@ -512,6 +531,7 @@ android {
       buildConfigField("int", "LIBSIGNAL_CUSTOM_SERVER_PORT", "443")
       buildConfigField("int", "LIBSIGNAL_LOG_LEVEL", "org.signal.libsignal.protocol.logging.SignalProtocolLogger.DEBUG")
 
+      resValue("string", "contact_account_type", "app.tellomi.staging")
       buildConfigField("String", "BUILD_ENVIRONMENT_TYPE", "\"Staging\"")
       buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_test_sngOd8FnXNkpce9nPXawKrJD00kIDngZkD\"")
     }
