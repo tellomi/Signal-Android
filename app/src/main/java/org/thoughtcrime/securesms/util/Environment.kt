@@ -6,6 +6,18 @@ import org.signal.donations.StripeApi
 import org.thoughtcrime.securesms.BuildConfig
 
 object Environment {
+  /**
+   * Tellomi：阶段一**不做捐赠**（owner 2026-09-22 定）。
+   *
+   * 为 false 时隐藏所有用户能点到的捐赠入口。这不是「部署差异」而是产品阶段决定，
+   * 所以写成常量而不是按 flavor 的 BuildConfig——要做的时候翻成 true 即可，
+   * 上游的捐赠代码原样留着，没有删。
+   *
+   * 背景：我们既没有支付通道，服务端下发的也还是上游的测试配置（客户端解析不了）；
+   * 这些页面上还写着「Proudly Nonprofit」这类对 Tellomi 不成立的资质说法。
+   */
+  const val DONATIONS_ENABLED = false
+
   private const val GOOGLE_PLAY_BILLING_APPLICATION_ID = "org.thoughtcrime.securesms"
 
   const val IS_STAGING: Boolean = BuildConfig.BUILD_ENVIRONMENT_TYPE == "Staging" || BuildConfig.BUILD_ENVIRONMENT_TYPE == "Pnp" || BuildConfig.BUILD_ENVIRONMENT_TYPE == "Backup"

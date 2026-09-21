@@ -79,6 +79,7 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.profiles.ProfileName
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.util.CommunicationActions
+import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.SignalE164Util
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
 import org.signal.appsettings.R as AppSettingsR
@@ -318,6 +319,8 @@ private fun AppSettingsContent(
           }
         }
 
+        // Tellomi：阶段一不做捐赠，隐藏这一行。见 Environment.DONATIONS_ENABLED。
+        if (Environment.DONATIONS_ENABLED) {
         item {
           val context = LocalContext.current
           val donateUrl = stringResource(R.string.donate_url)
@@ -355,6 +358,7 @@ private fun AppSettingsContent(
               callbacks.copyDonorBadgeSubscriberIdToClipboard()
             }
           )
+        }
         }
 
         item {

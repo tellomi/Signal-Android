@@ -131,12 +131,15 @@ fun ReleaseNotesSettingsScreen(
       )
     }
 
-    item {
-      Rows.TextRow(
-        text = stringResource(R.string.preferences__donate_to_signal),
-        icon = painterResource(R.drawable.symbol_heart_24),
-        onClick = { onEvent(IndividualSettingsEvent.DonateClicked) }
-      )
+    // Tellomi：阶段一不做捐赠。见 Environment.DONATIONS_ENABLED。
+    if (org.thoughtcrime.securesms.util.Environment.DONATIONS_ENABLED) {
+      item {
+        Rows.TextRow(
+          text = stringResource(R.string.preferences__donate_to_signal),
+          icon = painterResource(R.drawable.symbol_heart_24),
+          onClick = { onEvent(IndividualSettingsEvent.DonateClicked) }
+        )
+      }
     }
 
     if (state.canModifyBlockedState) {
