@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Тіркеу құлпын іске қосу керек пе?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Тіркеу құлпын ажырату керек пе?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Егер Signal қолданбасына қайтадан тіркелген кезде, PIN кодыңызды ұмытып қалсаңыз, тіркелгіңіз сіз үшін 7 күнге құлыпталады.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Егер Tellomi қолданбасына қайтадан тіркелген кезде, PIN кодыңызды ұмытып қалсаңыз, тіркелгіңіз сіз үшін 7 күнге құлыпталады.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Іске қосу</string>
     <string name="RegistrationLockV2Dialog_turn_off">Өшіру</string>
     <string name="preferences__advanced_pin_settings">Кеңейтілген PIN-код параметрлері</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">Пернетақтаны ауыстырыңыз</string>
     <string name="preferences_chats__transfer_account">Аккаунтты тасымалдау</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Аккаунтты жаңа Android құрылғысына тасымалдау</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN коды</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi PIN коды</string>
     <string name="preferences_app_protection__create_a_pin">PIN код жасау</string>
     <string name="preferences_app_protection__change_your_pin">PIN кодты өзгерту</string>
     <string name="preferences_app_protection__pin_reminders">PIN-кодты еске салғыштар</string>
     <string name="preferences_app_protection__turn_off">Өшіру</string>
     <string name="preferences_app_protection__confirm_pin">PIN кодын растау</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Signal PIN кодын растау</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">PIN-кодты есіңізде сақтаңыз немесе қауіпсіз жерде сақтаңыз, себебі оны қалпына келтіру мүмкін емес. PIN-кодыңызды ұмытып қалсаңыз, Signal аккаунтыңызды қайта тіркеу кезінде деректеріңізді жоғалтып алуыңыз мүмкін.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Tellomi PIN кодын растау</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">PIN-кодты есіңізде сақтаңыз немесе қауіпсіз жерде сақтаңыз, себебі оны қалпына келтіру мүмкін емес. PIN-кодыңызды ұмытып қалсаңыз, Tellomi аккаунтыңызды қайта тіркеу кезінде деректеріңізді жоғалтып алуыңыз мүмкін.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">PIN коды дұрыс емес. Әрекетті қайталап көріңіз.</string>
     <string name="preferences_app_protection__registration_lock">Тіркеуді құлыптау</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Аккаунтты қайта тіркеу</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Signal-ды жаңарту</string>
+    <string name="preferences_account_update_signal">Tellomi-ды жаңарту</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Барлық деректі жою</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Аккаунт</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Уақыт өткен сайын сізден сирек сұралатын болады</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Signal-да телефон нөміріңізді қайта тіркеу үшін Signal PIN-коды қажет</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Tellomi-да телефон нөміріңізді қайта тіркеу үшін Tellomi PIN-коды қажет</string>
     <string name="AccountSettingsFragment__change_phone_number">Телефон нөмірін өзгерту</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Аккаунтыңыз туралы дерек</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Аккаунт және қалпына келтіру</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Аккаунтыңызды қалпына келтіру үшін Signal Login тіркелу деректеріңіз қолданылады. Бұл кілттерді өзіңіз сенетін құпия сөз менеджерінде сақтап қойыңыз.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Аккаунтыңызды қалпына келтіру үшін Tellomi Login тіркелу деректеріңіз қолданылады. Бұл кілттерді өзіңіз сенетін құпия сөз менеджерінде сақтап қойыңыз.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Екі факторлы аутентификация</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d кіру кілті</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Жаңа құрылғыда Signal Login тіркелу деректерін пайдаланғанда, аккаунтыңызды қорғау үшін аутентификацияның екінші формасын пайдаланыңыз.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Жаңа құрылғыда Tellomi Login тіркелу деректерін пайдаланғанда, аккаунтыңызды қорғау үшін аутентификацияның екінші формасын пайдаланыңыз.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Толық ақпарат</string>
 
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">2-қадам</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Төмендегі түймені басу арқылы аутентификатор қолданбасын ашып, Signal аккаунтын қосыңыз.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Төмендегі түймені басу арқылы аутентификатор қолданбасын ашып, Tellomi аккаунтын қосыңыз.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Ашу</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Аутентификатор қолданбасы табылмады</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Signal-мен байланыс орнату мүмкін болмады. Байланысты тексеріп, әрекетті қайталаңыз.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomi-мен байланыс орнату мүмкін болмады. Байланысты тексеріп, әрекетті қайталаңыз.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">3-қадам</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Код дұрыс емес. Дәл қазір аутентификатор қолданбаңызда көрсетіліп тұрған кодты енгізіңіз.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal-мен байланыс орнату мүмкін болмады. Байланысты тексеріп, әрекетті қайталаңыз.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomi-мен байланыс орнату мүмкін болмады. Байланысты тексеріп, әрекетті қайталаңыз.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Аутентификатор қолданбасы</string>

@@ -130,7 +130,7 @@
     <!-- Email subject used when contacting support from the verification code screen -->
     <string name="VerificationCodeScreen__contact_support_email_subject">تسجيل سيجنال - كود التحقُّق لأندرويد</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -454,7 +454,7 @@
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
     <string name="PinEntryScreen__contact_support_email_subject">التسجيل في سيجنال - تحتاج مساعدة لرقم التعريف الشخصي (PIN) في أندرويد</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">السماح بالإشعارات</string>
@@ -622,9 +622,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">سجِّل دون رقم هاتف باستخدام Signal Login. عند الشراء لمرّة واحدة، ستحصل على مفتاح حساب للبدء.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">سجِّل دون رقم هاتف باستخدام Tellomi Login. عند الشراء لمرّة واحدة، ستحصل على مفتاح حساب للبدء.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">اعرف المزيد</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -636,7 +636,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">سيجنال شركة غير ربحية — مشترياتك تساعد على دعمنا في مهمتنا</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">لدي Signal Login</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">لدي Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">استخدِم مفتاح حسابك الحالي</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -658,15 +658,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Signal Login الخاص بك</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Tellomi Login الخاص بك</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">شكرًا لك على إتمام عملية الشراء. استخدِم Signal Login الخاص بك للتسجيل واستعادة حسابك. إذا نسيت مفتاحك، فلن تتمكَّن من استعادة حسابك.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">شكرًا لك على إتمام عملية الشراء. استخدِم Tellomi Login الخاص بك للتسجيل واستعادة حسابك. إذا نسيت مفتاحك، فلن تتمكَّن من استعادة حسابك.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">حفظ في مدير كلمات المرور</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">حفظ يدويًا</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">تعذَّر حفظ بيانات Signal Login الخاصة بك. يُرجى حفظها يدويًا بدلًا من ذلك.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">تعذَّر حفظ بيانات Tellomi Login الخاصة بك. يُرجى حفظها يدويًا بدلًا من ذلك.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -676,7 +676,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">أدخِل مُعرِّف الحساب المتبوع بمفتاح الاستعادة الخاص بك لاسترجاع حسابك.</string>
     <!-- Label of the text field the account ID is typed into. -->

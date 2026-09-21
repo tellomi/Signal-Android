@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Vzemite svojo zasebnost v lastne roke!\nDa boste v sporočilih lahko to kar ste.</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal je neprofitna organizacija\nPogoji in politika zasebnosti</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomi je neprofitna organizacija\nPogoji in politika zasebnosti</string>
     <string name="RegistrationActivity_continue">Nadaljuj</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">Obnovi ali prenesi</string>
@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">Odobri dovoljenja</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Za pomoč pri pošiljanju sporočil ljudem, ki jih poznate, bo Signal zahteval ta dovoljenja. </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Za pomoč pri pošiljanju sporočil ljudem, ki jih poznate, bo Tellomi zahteval ta dovoljenja. </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">Ne zdaj</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">Stiki</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">Poiščite ljudi, ki jih poznate. Vaši stiki so šifrirani in niso vidni storitvi Signal.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">Poiščite ljudi, ki jih poznate. Vaši stiki so šifrirani in niso vidni storitvi Tellomi.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">Telefonski klici</string>
     <!-- Phone calls permission row description -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">Obrnite se na Podporo</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Registracija za storitev Signal - verifikacijska koda za Android</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Registracija za storitev Tellomi - verifikacijska koda za Android</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">Imam svoj stari telefon</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">Skenirajte kodo QR iz svojega trenutnega računa Signal in hitro začnite</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">Skenirajte kodo QR iz svojega trenutnega računa Tellomi in hitro začnite</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Nimam starega telefona</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">Ali pa ponovno nameščate Signal v isto napravo</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">Ali pa ponovno nameščate Tellomi v isto napravo</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">Izberite, kako bi želeli obnoviti vašo zgodovino sporočil in podatke računa.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Iz Varnostnih kopij Signal</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Iz Varnostnih kopij Tellomi</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Vaš brezplačni ali plačljivi načrt varnostnega kopiranja Signal</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Vaš brezplačni ali plačljivi načrt varnostnega kopiranja Tellomi</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">Obnovitev varnostne kopije v napravi</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">Varnostna kopija ni bila najdena</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">Varnostna kopija Signal ni bila najdena v izbrani mapi. Izberite drugo mapo.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">Varnostna kopija Tellomi ni bila najdena v izbrani mapi. Izberite drugo mapo.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">Izberi drugo mapo</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">Želite obnoviti v nov račun?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">Varnostna kopija, ki jo obnavljate, je bila ustvarjena z drugim računom Signal. To varnostno kopijo lahko obnovite v nov račun, vendar ne boste več član nobene skupine, ki je bila obnovljena.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">Varnostna kopija, ki jo obnavljate, je bila ustvarjena z drugim računom Tellomi. To varnostno kopijo lahko obnovite v nov račun, vendar ne boste več član nobene skupine, ki je bila obnovljena.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">Obnovi</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Varnostna kopija ni bila najdena</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Vaš obnovitveni ključ je pravilen, vendar za ta račun ni varnostne kopije Signal. Vrnite se, da izberete drug način obnovitve, ali nadaljujte brez obnovitve.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Vaš obnovitveni ključ je pravilen, vendar za ta račun ni varnostne kopije Tellomi. Vrnite se, da izberete drug način obnovitve, ali nadaljujte brez obnovitve.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Priprava obnovitve …</string>
     <!-- Title shown while restore is in progress -->
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Te varnostne kopije ni bilo mogoče obnoviti</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Ta različica programa Signal ne more obnoviti varnostne kopije. Posodobite na najnovejšo različico in poskusite znova.</string>
+    <string name="RemoteRestoreScreen__update_latest">Ta različica programa Tellomi ne more obnoviti varnostne kopije. Posodobite na najnovejšo različico in poskusite znova.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Posodobite aplikacijo Signal</string>
+    <string name="RemoteRestoreScreen__update_signal">Posodobite aplikacijo Tellomi</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">Ne zdaj</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">Obrnite se na službo za podporo</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Trajna napaka ob obnovitvi varnostne kopije Signal Android</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Trajna napaka ob obnovitvi varnostne kopije Tellomi Android</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">Zaradi zaščite vaše varnosti in zasebnosti je bil vaš račun zaklenjen. Po %1$d dneh neaktivnosti računa se boste lahko spet prijavili s to telefonsko številko brez vnosa PIN-a. Vsa vsebina bo izbrisana.</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">Odprite aplikacijo Signal v stari napravi</string>
+    <string name="QuickRestoreQRScreen__step_1">Odprite aplikacijo Tellomi v stari napravi</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">Tapnite ikono kamere </string>
     <!-- Step 3 to quick restore -->
@@ -400,7 +400,7 @@
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">Opozorilo</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">Z izklopom številke PIN boste ob ponovni prijavi v svoj račun Signal izgubili vse tam shranjene podatke, razen če prej sami ne ustvarite varnostne kopije. Brez PIN-a tudi ne morete vklopiti zaklepa registracije.</string>
+    <string name="PinCreationScreen__disable_pin_warning">Z izklopom številke PIN boste ob ponovni prijavi v svoj račun Tellomi izgubili vse tam shranjene podatke, razen če prej sami ne ustvarite varnostne kopije. Brez PIN-a tudi ne morete vklopiti zaklepa registracije.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">Izklopi PIN</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -438,7 +438,7 @@
     <!-- Title of the dialog shown when the user taps skip on the PIN entry screen. -->
     <string name="PinEntryScreen__skip_pin_entry">Želite preskočiti vnos PIN-a?</string>
     <!-- Body of the dialog shown when the user taps skip on the PIN entry screen, explaining the consequences of creating a new PIN. -->
-    <string name="PinEntryScreen__skip_pin_entry_message">Če se ne morete spomniti svojega PIN-a, lahko ustvarite novega. Z njim se lahko ponovno registrirate in uporabljate svoj račun Signal, izgubili pa boste nekatere nastavitve, kot so npr. podatki iz vašega profila.</string>
+    <string name="PinEntryScreen__skip_pin_entry_message">Če se ne morete spomniti svojega PIN-a, lahko ustvarite novega. Z njim se lahko ponovno registrirate in uporabljate svoj račun Tellomi, izgubili pa boste nekatere nastavitve, kot so npr. podatki iz vašega profila.</string>
     <!-- Labels the button in the skip dialog that takes the user to create a new PIN. -->
     <string name="PinEntryScreen__create_new_pin">Ustvari nov PIN</string>
     <!-- Labels the button in the skip dialog that dismisses it. -->
@@ -448,14 +448,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">Obrnite se na službo za podporo</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Registracija storitve Signal - Potrebujem pomoč pri vnosu PINa za Android</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Registracija storitve Tellomi - Potrebujem pomoč pri vnosu PINa za Android</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">Dovolite obvestila</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal želi pridobiti dovoljenje za pošiljanje obvestil. To omogoča, da vaša naprava prikaže obvestila, ko prejmete nova sporočila.</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi želi pridobiti dovoljenje za pošiljanje obvestil. To omogoča, da vaša naprava prikaže obvestila, ko prejmete nova sporočila.</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">Ne zdaj</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -491,7 +491,7 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">Skenirajte to kodo, da povežete svoj račun</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">Odprite Signal v svoji napravi</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">Odprite Tellomi v svoji napravi</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
     <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Tapnite svojo profilno sliko, da odprete nastavitve Signala</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
@@ -519,7 +519,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Želite izbrisati podatke aplikacije?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Poskušate povezati drugi račun Signal. Če nadaljujete, se bodo vsi Signalovi podatki, ki so trenutno v tej napravi, izbrisali.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Poskušate povezati drugi račun Tellomi. Če nadaljujete, se bodo vsi Signalovi podatki, ki so trenutno v tej napravi, izbrisali.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Izbriši in ponovno zaženi</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -527,7 +527,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">Prenesite svoj račun</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Če želite prenesti svoj račun, odprite Signal na svoji stari napravi Android in izberite »Prenesi račun«.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Če želite prenesti svoj račun, odprite Tellomi na svoji stari napravi Android in izberite »Prenesi račun«.</string>
     <string name="DeviceTransferInstructions__continue">Nadaljuj</string>
 
     <!-- Device transfer: Setup screen -->
@@ -538,11 +538,11 @@
     <string name="DeviceTransferSetup__numbers_match">Da, številki se ujemata</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">Številki se ne ujemata</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">Čakanje na potrditev z vaše stare naprave …</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signal potrebuje dovoljenje za dostop do lokacije, da lahko najde in se poveže z vašo staro napravo.</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomi potrebuje dovoljenje za dostop do lokacije, da lahko najde in se poveže z vašo staro napravo.</string>
     <string name="DeviceTransferSetup__grant_location_permission">Odobri dovoljenje</string>
-    <string name="DeviceTransferSetup__location_services_required">Signal potrebuje omogočene lokacijske storitve, da lahko najde in se poveže z vašo staro napravo.</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomi potrebuje omogočene lokacijske storitve, da lahko najde in se poveže z vašo staro napravo.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Vklopi lokacijske storitve</string>
-    <string name="DeviceTransferSetup__wifi_required">Signal potrebuje vklopljen Wi-Fi, da lahko najde in se poveže z vašo staro napravo.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomi potrebuje vklopljen Wi-Fi, da lahko najde in se poveže z vašo staro napravo.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Vklopi Wi-Fi</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">Videti je, da vaša naprava ne podpira funkcije Wi-Fi Direct.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Namesto tega obnovi iz varnostne kopije</string>
@@ -618,9 +618,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Registrirajte se brez telefonske številke z uporabo Signal Logina. Z enkratnim nakupom boste prejeli ključ računa, da boste lahko začeli.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Registrirajte se brez telefonske številke z uporabo Tellomi Logina. Z enkratnim nakupom boste prejeli ključ računa, da boste lahko začeli.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Več o tem</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -630,9 +630,9 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Uporabniško ime za pošiljanje sporočil in klice</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal je neprofitna organizacija – vaš nakup nam pomaga podpirati naše poslanstvo</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi je neprofitna organizacija – vaš nakup nam pomaga podpirati naše poslanstvo</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Imam Signal Login</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Imam Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Uporabi obstoječi ključ računa</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -654,15 +654,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Vaš Signal Login</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Vaš Tellomi Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Hvala za vaš nakup. Uporabite svoj Signal Login za registracijo in obnovitev svojega računa. Če pozabite ključe, računa ne boste mogli obnoviti.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Hvala za vaš nakup. Uporabite svoj Tellomi Login za registracijo in obnovitev svojega računa. Če pozabite ključe, računa ne boste mogli obnoviti.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Shrani v upravitelja gesel</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Shrani ročno</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Vašega Signal Logina ni bilo mogoče shraniti. Namesto tega ga shranite ročno.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Vašega Tellomi Logina ni bilo mogoče shraniti. Namesto tega ga shranite ročno.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -672,7 +672,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Vnesite številko svojega računa ter obnovitveni ključ, da obnovite svoj račun.</string>
     <!-- Label of the text field the account ID is typed into. -->

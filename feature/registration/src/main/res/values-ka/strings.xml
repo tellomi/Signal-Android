@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">გაითვალისწინეთ კონფიდენციალურობა.\nიყავით საკუთარი თავი ყველა შეტყობინებაში.</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal-ი არაკომერციული ორგანიზაციაა\nწესები &amp; კონფიდენციალურობის პოლიტიკა</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomi-ი არაკომერციული ორგანიზაციაა\nწესები &amp; კონფიდენციალურობის პოლიტიკა</string>
     <string name="RegistrationActivity_continue">გაგრძელება</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">აღდგენა ან გადატანა</string>
@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">ნებართვების დაშვება</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">იმისათვის, რომ შენს ნაცნობებთან მიმოწერაში დაგეხმაროთ, Signal-ი ამ ნებართვებს მოითხოვს. </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">იმისათვის, რომ შენს ნაცნობებთან მიმოწერაში დაგეხმაროთ, Tellomi-ი ამ ნებართვებს მოითხოვს. </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">ახლა არა</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">კონტაქტები</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">იპოვე ნაცნობები. შენი კონტაქტები დაშიფრულია და Signal-ის სერვისისთვის უხილავია.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">იპოვე ნაცნობები. შენი კონტაქტები დაშიფრულია და Tellomi-ის სერვისისთვის უხილავია.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">სატელეფონო ზარები</string>
     <!-- Phone calls permission row description -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">მხარდაჭერის გუნდთან დაკავშირება</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal-ის რეგისტრაცია - დადასტურების კოდი Android-ითვის</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi-ის რეგისტრაცია - დადასტურების კოდი Android-ითვის</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">ჩემი ძველი მობილური მაქვს</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">სწრაფად დასაწყებად დაასკანირე QR კოდი შენი ახლანდელი Signal-ის ანგარიშიდან</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">სწრაფად დასაწყებად დაასკანირე QR კოდი შენი ახლანდელი Tellomi-ის ანგარიშიდან</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">ჩემი ძველი მობილური არ მაქვს</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">ან Signal-ს თავიდან იწერ იმავე მოწყობილობაზე</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">ან Tellomi-ს თავიდან იწერ იმავე მოწყობილობაზე</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">აირჩიე, როგორ გსურს შენი მიმოწერის ისტორიისა და ანგარიშის მონაცემების აღდგენა.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Signal-ის სათადარიგო ასლებიდან</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomi-ის სათადარიგო ასლებიდან</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">შენი უფასო ან ფასიანი Signal-ის სათადარიგო ასლების გამოწერა</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">შენი უფასო ან ფასიანი Tellomi-ის სათადარიგო ასლების გამოწერა</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">მოწყობილობის სათადარიგო ასლების აღდგენა</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">ახალ ანგარიშზე აღდგენა გსურს?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">სათადარიგო ასლი, რომლის აღდგენასაც ცდილობ Signal-ის სხვა ანგარიშის გამოყენებით შეიქმნა. შეგიძლია ეს სათადარიგო ასლი ახალ ანაგრიშზე აღადგინო, მაგრამ არც ერთი აღდგენილი ჯგუფის წევრი აღარ იქნები.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">სათადარიგო ასლი, რომლის აღდგენასაც ცდილობ Tellomi-ის სხვა ანგარიშის გამოყენებით შეიქმნა. შეგიძლია ეს სათადარიგო ასლი ახალ ანაგრიშზე აღადგინო, მაგრამ არც ერთი აღდგენილი ჯგუფის წევრი აღარ იქნები.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">აღდგენა</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">სათადარიგო ასლი ვერ მოიძებნა</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">შენი აღდგენის გასაღები სწორია, მაგრამ ამ ანგარიშზე Signal-ის სათადარიგო ასლები არ გაქვს. აღდგენის სხვა გზის ასარჩევად უკან დაბრუნდი ან აღდგენის გარეშე განაგრძე.</string>
+    <string name="EnterAepScreen__no_backup_found_body">შენი აღდგენის გასაღები სწორია, მაგრამ ამ ანგარიშზე Tellomi-ის სათადარიგო ასლები არ გაქვს. აღდგენის სხვა გზის ასარჩევად უკან დაბრუნდი ან აღდგენის გარეშე განაგრძე.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">მზადდება აღდგენა…</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">მიაბი შენი ანგარიში</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">ჯერ არ ხარ Signal-ზე?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">ჯერ არ ხარ Tellomi-ზე?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">შექმენი ანგარიში</string>
 
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">ამ სათადარიგო ასლის აღდგენა ვერ მოხერხდა</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Signal-ის ამ ვერსიაზე სათადარიგო ასლების აღდგენა შეუძლებელია. გადადი უახლეს ვერსიაზე და სცადე თავიდან.</string>
+    <string name="RemoteRestoreScreen__update_latest">Tellomi-ის ამ ვერსიაზე სათადარიგო ასლების აღდგენა შეუძლებელია. გადადი უახლეს ვერსიაზე და სცადე თავიდან.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Signal-ის განახლება</string>
+    <string name="RemoteRestoreScreen__update_signal">Tellomi-ის განახლება</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">ახლა არა</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">მხარდაჭერის გუნდთან დაკავშირება</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Signal Android-ის სარეზერვო ასლის აღდგენის ხარვეზი</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Tellomi Android-ის სარეზერვო ასლის აღდგენის ხარვეზი</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">შენი მონაცემები დაიბლოკა მათი კონფიდენციალურობისა და უსაფრთხოების დასაცავად. შენს პროფილზე %1$d დღის უმოქმედობის შემდეგ, პინ-კოდის გარეშე შეძლებ ხელახლა დარეგისტრირებას ამ ტელეფონის ნომრით. კონტენტი მთლიანად წაიშლება.</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">გახსენი Signal-ი შენს ძველ მობილურში</string>
+    <string name="QuickRestoreQRScreen__step_1">გახსენი Tellomi-ი შენს ძველ მობილურში</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">დააჭირე კამერის ნიშანს </string>
     <!-- Step 3 to quick restore -->
@@ -392,13 +392,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">უფრო საიმედო პინ-კოდი აირჩიე</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">ის კოდი შეგყავს, რომელიც შენი მობილურის ნომრის ვერიფიკაციისთვის გაქვს უკვე გამოყენებული. აირჩიე ახალი და უნიკალური Signal-ის პინ-კოდი.</string>
+    <string name="PinCreationScreen__reentered_verification_code">ის კოდი შეგყავს, რომელიც შენი მობილურის ნომრის ვერიფიკაციისთვის გაქვს უკვე გამოყენებული. აირჩიე ახალი და უნიკალური Tellomi-ის პინ-კოდი.</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">გაიგე მეტი პინ-კოდებზე</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">გაფრთხილება</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">თუ პინ-კოდს გამორთავ, Signal-ზე ხელახლა დარეგისტრირებისას ყველა მონაცემს დაკარგავ, თუ ხელით არ შექმნი სარეზერვო ასლს და აღადგენ. რეგისტრაციის დაბლოკვას ვერ ჩართავ, სანამ პინ-კოდი გამორთულია.</string>
+    <string name="PinCreationScreen__disable_pin_warning">თუ პინ-კოდს გამორთავ, Tellomi-ზე ხელახლა დარეგისტრირებისას ყველა მონაცემს დაკარგავ, თუ ხელით არ შექმნი სარეზერვო ასლს და აღადგენ. რეგისტრაციის დაბლოკვას ვერ ჩართავ, სანამ პინ-კოდი გამორთულია.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">პინ-კოდის გამორთვა</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -415,9 +415,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">შეიყვანე შენი პინ-კოდი</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">შეიყვანე პინ-კოდი, რომელიც Signal-ის დაყენებისას შექმენი</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">შეიყვანე პინ-კოდი, რომელიც Tellomi-ის დაყენებისას შექმენი</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">ის კოდი შეგყავს, რომელიც შენი მობილურის ნომერის ვერიფიკაციისთვის გაქვს უკვე გამოყენებული. Signal-ის უნიკალური პინ-კოდი შეიყვანე, რომელიც შენი ანგარიშისთვის გაქვს არჩეული.</string>
+    <string name="PinEntryScreen__reentered_verification_code">ის კოდი შეგყავს, რომელიც შენი მობილურის ნომერის ვერიფიკაციისთვის გაქვს უკვე გამოყენებული. Tellomi-ის უნიკალური პინ-კოდი შეიყვანე, რომელიც შენი ანგარიშისთვის გაქვს არჩეული.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="one">არასწორი პინ-კოდი. დაგრჩა %1$d მცდელობა.</item>
@@ -444,14 +444,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">მხარდაჭერის გუნდთან დაკავშირება</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal-ის რეგისტრაცია - საჭიროა დახმარება Android-ის პინ-კოდთან დაკავშირებით</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi-ის რეგისტრაცია - საჭიროა დახმარება Android-ის პინ-კოდთან დაკავშირებით</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">დაშვებული შეტყობინებები</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal-ს შეტყობინებების ნებართვის მოთხოვნა სურს. ეს შენს მოწყობილობას საშუალებას აძლევს გაგაფრთხილოს, როცა ახალ წერილებს მიიღებ.</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi-ს შეტყობინებების ნებართვის მოთხოვნა სურს. ეს შენს მოწყობილობას საშუალებას აძლევს გაგაფრთხილოს, როცა ახალ წერილებს მიიღებ.</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">ახლა არა</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -487,9 +487,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">დაასკანირე ეს კოდი, რომ შენი ანგარიში მიაბა</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">გახსენი Signal-ი შენს ტელეფონში</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">გახსენი Tellomi-ი შენს ტელეფონში</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Signal-ის პარამეტრებში შესასვლელად შენი პროფილის სურათს დააჭირე</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Tellomi-ის პარამეტრებში შესასვლელად შენი პროფილის სურათს დააჭირე</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">აირჩიე \"მიბმული მოწყობილობები\" და \"ახალი მოწყობილობის მიბმა\"</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -501,7 +501,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">კოდის გენერირება ვერ მოხერხდა</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">არ გაქვს Signal სხვა მოწყობილობაზე?</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">არ გაქვს Tellomi სხვა მოწყობილობაზე?</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">შექმენი ანგარიში</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -515,7 +515,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">წავშალოთ აპის მონაცემები?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Signal-ის სხვა ანგარიშის მიბმას ცდილობ. თუ გააგრძელებ, ამ მოწყობილობაზე ამჟამად არსებული Signal-ის ყველა მონაცემი წაიშლება.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Tellomi-ის სხვა ანგარიშის მიბმას ცდილობ. თუ გააგრძელებ, ამ მოწყობილობაზე ამჟამად არსებული Tellomi-ის ყველა მონაცემი წაიშლება.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">წაშლა &amp; თავიდან დაწყება</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -523,7 +523,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">გადაიტანე შენი ანგარიში</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">შენი ანგარიშის გადმოსატანად, შედი Signal-ზე შენს ძველ Android მოწყობილობაზე და აირჩიე ანგარიშის გადატანა.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">შენი ანგარიშის გადმოსატანად, შედი Tellomi-ზე შენს ძველ Android მოწყობილობაზე და აირჩიე ანგარიშის გადატანა.</string>
     <string name="DeviceTransferInstructions__continue">გაგრძელება</string>
 
     <!-- Device transfer: Setup screen -->
@@ -534,11 +534,11 @@
     <string name="DeviceTransferSetup__numbers_match">დიახ, ნომრები ემთხვევა</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">ნომრები არ ემთხვევა</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">ველოდებით შენს ძველ მოწყობილობას, რომ დავადასტუროთ…</string>
-    <string name="DeviceTransferSetup__location_permission_required">შენი ძველი მოწყობილობის აღმოსაჩენად და მასთან დასაკავშირებლად, Signal-ს მდებარეობაზე წვდომის ნებართვა სჭირდება.</string>
+    <string name="DeviceTransferSetup__location_permission_required">შენი ძველი მოწყობილობის აღმოსაჩენად და მასთან დასაკავშირებლად, Tellomi-ს მდებარეობაზე წვდომის ნებართვა სჭირდება.</string>
     <string name="DeviceTransferSetup__grant_location_permission">ნებართვის მიცემა</string>
-    <string name="DeviceTransferSetup__location_services_required">Signal-ს შენი ძველი მოწყობილობის აღმოსაჩენად და მასთან დასაკავშირებლად მდებარეობის სერვისების ჩართვა სჭირდება.</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomi-ს შენი ძველი მოწყობილობის აღმოსაჩენად და მასთან დასაკავშირებლად მდებარეობის სერვისების ჩართვა სჭირდება.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">ადგილმდებარეობის სერვისების ჩართა</string>
-    <string name="DeviceTransferSetup__wifi_required">შენი ძველი მოწყობილობის აღმოსაჩენად და მასთან დასაკავშირებლად, Signal-ს WI-Fi-ის ჩართვა სჭირდება.</string>
+    <string name="DeviceTransferSetup__wifi_required">შენი ძველი მოწყობილობის აღმოსაჩენად და მასთან დასაკავშირებლად, Tellomi-ს WI-Fi-ის ჩართვა სჭირდება.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Wi-Fi-ს ჩართვა</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">ვწუხვართ, როგორც ჩანს შენს მოწყობილობას Wi-Fi Direct-ის მხარდაჭერა არ აქვს.</string>
     <string name="DeviceTransferSetup__restore_a_backup">აღადგინე სათადარიგო ასლები</string>
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">მონაცემთა გადატანა</string>
     <string name="DeviceTransferProgress__d_messages_so_far">ჯერ-ჯერობით %1$d შეტყობინება</string>
     <string name="DeviceTransferProgress__unable_to_transfer">გადატანა შეუძლებელია</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Signal-ის უფრო ახალი ვერსიიდან გადატანა შეუძლებელია.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Tellomi-ის უფრო ახალი ვერსიიდან გადატანა შეუძლებელია.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">მონაცემთა ნაწილის გადატანა მონაცემთა ბაზის შეზღუდვის გამო ვერ მოხერხდა.</string>
     <string name="DeviceTransferProgress__transfer_failed">გადატანა ვერ მოხერხდა. გთხოვთ, თავიდან სცადო.</string>
     <string name="DeviceTransferProgress__try_again">ახლიდან სცადე</string>
@@ -586,9 +586,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">ვის შეუძლია ნომრით მიპოვოს?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">ნებისმიერს, ვისაც შენი მობილურის ნომერი აქვს, დაინახავს, რომ Signal-ზე ხარ და შენთან ჩატის წამოწყებას შეძლებს.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">ნებისმიერს, ვისაც შენი მობილურის ნომერი აქვს, დაინახავს, რომ Tellomi-ზე ხარ და შენთან ჩატის წამოწყებას შეძლებს.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">ვერავინ დაინახავს, რომ Signal-ზე ხარ, სანამ არ მისწერ ან თუ არსებული ჩატი არ გექნებათ.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">ვერავინ დაინახავს, რომ Tellomi-ზე ხარ, სანამ არ მისწერ ან თუ არსებული ჩატი არ გექნებათ.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">ყველა</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -596,7 +596,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">დარწმუნებული ხარ?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">თუ „ვინ მიპოვის ნომრით“ პარამეტრს „არავინ“-ზე დააყენებ, სხვებს შენი Signal-ზე პოვნა გაურთულდებათ.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">თუ „ვინ მიპოვის ნომრით“ პარამეტრს „არავინ“-ზე დააყენებ, სხვებს შენი Tellomi-ზე პოვნა გაურთულდებათ.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">გაუქმება</string>
     <!-- Save button on the discoverability picker. -->
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">დარეგისტრირდი მობილურის ნომრის გარეშე Signal Login-ით. ერთჯერადი შენაძენით ანგარიშის გასაღებს მიიღებ დასაწყებად.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">დარეგისტრირდი მობილურის ნომრის გარეშე Tellomi Login-ით. ერთჯერადი შენაძენით ანგარიშის გასაღებს მიიღებ დასაწყებად.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">გაიგე მეტი</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,15 +626,15 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">მომხმარებლის სახელი მიმოწერისა &amp; ზარებისთვის</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal-ი არაკომერციულია — შენი შენაძენი ჩვენი მისიის მხარდაჭერაში გვეხმარება</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi-ი არაკომერციულია — შენი შენაძენი ჩვენი მისიის მხარდაჭერაში გვეხმარება</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Signal Login მაქვს</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Tellomi Login მაქვს</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">გამოიყენე შენი ანგარიშის არსებული გასაღები</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">შედი და აღადგინე შენი ანგარიში</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">მადლობა Signal-ის მხარდაჭერისთვის</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">მადლობა Tellomi-ის მხარდაჭერისთვის</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">გადაიხადე %1$s</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->
@@ -650,15 +650,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">შენი Signal Login</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">შენი Tellomi Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">მადლობა შენაძენისთვის. გამოიყენე Signal Login, რათა დარეგისტრირდე ან შენი ანგარიში აღადგინო. თუ შენი პინ-კოდი დაგავიწყდება, შენი ანგარიშის აღდგენას ვეღარ შეძლებ.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">მადლობა შენაძენისთვის. გამოიყენე Tellomi Login, რათა დარეგისტრირდე ან შენი ანგარიში აღადგინო. თუ შენი პინ-კოდი დაგავიწყდება, შენი ანგარიშის აღდგენას ვეღარ შეძლებ.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">პაროლების მენეჯერში შენახვა</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">ხელით შენახვა</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">შენი Signal Login ვერ შეინახა. გთხოვთ, ხელით შეინახო.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">შენი Tellomi Login ვერ შეინახა. გთხოვთ, ხელით შეინახო.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -668,7 +668,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">შენი ანგარიშის აღსადგენად შეიყვანე შენი ანგარიშის ID და აღდგენის გასაღები.</string>
     <!-- Label of the text field the account ID is typed into. -->

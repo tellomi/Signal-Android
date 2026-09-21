@@ -5,7 +5,7 @@
   -->
 <!-- smartling.instruction_comments_enabled = on -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!-- Removed by excludeNonTranslatables <string name="app_name" translatable="false">Signal</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="app_name" translatable="false">Tellomi</string> -->
 
   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
   <!-- Removed by excludeNonTranslatables <string name="donate_url" translatable="false">https://signal.org/donate</string> -->
@@ -98,7 +98,7 @@
     <string name="AttachmentKeyboard_location">Asukoht</string>
     <!-- Text for a button that will allow users to create a poll -->
     <string name="AttachmentKeyboard_poll">Küsitlus</string>
-    <string name="AttachmentKeyboard_Signal_needs_permission_to_show_your_photos_and_videos">Signal vajab sinu fotode ja videote näitamiseks luba</string>
+    <string name="AttachmentKeyboard_Signal_needs_permission_to_show_your_photos_and_videos">Tellomi vajab sinu fotode ja videote näitamiseks luba</string>
     <!-- Text for a button prompting users to allow Signal access to their gallery storage -->
     <string name="AttachmentKeyboard_allow_access">Luba ligipääs</string>
     <string name="AttachmentKeyboard_payment">Makse</string>
@@ -119,9 +119,9 @@
 
     <!-- AttachmentManager -->
     <string name="AttachmentManager_cant_open_media_selection">Ei leia rakendust meediafaili valimiseks.</string>
-    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">Signal vajab fotode, videote või audiofailide manustamiseks ligipääsu salvestusmeediale, kuid see on püsivalt keelatud. Palun ava rakenduse seadete menüü, vali \"Õigused\" ja luba \"Salvestusmeedia\".</string>
-    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">Signal vajab kontaktide manustamiseks ligipääsu kontaktidele, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Kontaktid\".</string>
-    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">Signal vajab asukoha manustamiseks ligipääsu seadme asukohale, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Asukoht\".</string>
+    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">Tellomi vajab fotode, videote või audiofailide manustamiseks ligipääsu salvestusmeediale, kuid see on püsivalt keelatud. Palun ava rakenduse seadete menüü, vali \"Õigused\" ja luba \"Salvestusmeedia\".</string>
+    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">Tellomi vajab kontaktide manustamiseks ligipääsu kontaktidele, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Kontaktid\".</string>
+    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">Tellomi vajab asukoha manustamiseks ligipääsu seadme asukohale, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Asukoht\".</string>
 
     <!-- Dialog title asking users for location permission -->
     <string name="AttachmentManager_signal_allow_access_location">Anna ligipääs oma asukohale</string>
@@ -130,13 +130,13 @@
     <!-- Alert dialog description asking for location permission -->
     <string name="AttachmentManager_signal_allow_signal_access_location">Oma asukoha saatmiseks anna Signalile luba.</string>
     <!-- Toast text explaining Signal\'s need for location access -->
-    <string name="AttachmentManager_signal_needs_location_access">Sinu asukoha saatmiseks vajab Signal ligipääsu asukohale.</string>
+    <string name="AttachmentManager_signal_needs_location_access">Sinu asukoha saatmiseks vajab Tellomi ligipääsu asukohale.</string>
     <!-- Dialog title asking users for gallery storage permission -->
     <string name="AttachmentManager_signal_allow_storage">Luba ligipääs salvestusruumile</string>
     <!-- Dialog description that will explain the steps needed to give gallery storage permission -->
     <string name="AttachmentManager_signal_to_show_photos">Fotode ja videote näitamiseks:</string>
     <!-- Toast text explaining Signal\'s need for storage access -->
-    <string name="AttachmentManager_signal_needs_storage_access">Signal vajab su fotode ja videote näitamiseks ligipääsu.</string>
+    <string name="AttachmentManager_signal_needs_storage_access">Tellomi vajab su fotode ja videote näitamiseks ligipääsu.</string>
 
     <!-- Alert dialog title to show the recipient has not activated payments -->
     <string name="AttachmentManager__not_activated_payments">%1$s ei ole makseid aktiveerinud </string>
@@ -178,7 +178,7 @@
     <!-- Title of fragment -->
     <string name="CreditCardFragment__credit_or_debit_card">Krediit- või deebetkaart</string>
     <!-- Explanation of how to fill in the form and a note about pii, displayed above the credit card text fields -->
-    <string name="CreditCardFragment__enter_your_card_details">Sisesta oma kaardi andmed. Signal ei kogu ega salvesta sinu isikuandmeid.</string>
+    <string name="CreditCardFragment__enter_your_card_details">Sisesta oma kaardi andmed. Tellomi ei kogu ega salvesta sinu isikuandmeid.</string>
     <!-- Displayed as a hint in the card number text field -->
     <string name="CreditCardFragment__card_number">Kaardi number</string>
     <!-- Displayed as a hint in the card expiry text field -->
@@ -242,11 +242,11 @@
     <!-- Dialog button to report as spam only -->
     <string name="BlockUnblockDialog_report_spam">Teata rämpspostist</string>
     <!-- Dialog message when reporting spam of an individual (1:1 conversation) -->
-    <string name="BlockUnblockDialog_report_spam_description">Signalit teavitatakse, et see isik võib olla rämpsposti edastaja. Signal ei näe ühegi vestluse sisu.</string>
+    <string name="BlockUnblockDialog_report_spam_description">Signalit teavitatakse, et see isik võib olla rämpsposti edastaja. Tellomi ei näe ühegi vestluse sisu.</string>
     <!-- Dialog message when reporting spam of a group and we can determine the group member that invited you, placeholder is a name -->
-    <string name="BlockUnblockDialog_report_spam_group_named_adder">Signalit teavitatakse, et %1$s, kes sind sellesse gruppi kutsus, võib olla rämpsposti edastaja. Signal ei näe ühegi vestluse sisu.</string>
+    <string name="BlockUnblockDialog_report_spam_group_named_adder">Signalit teavitatakse, et %1$s, kes sind sellesse gruppi kutsus, võib olla rämpsposti edastaja. Tellomi ei näe ühegi vestluse sisu.</string>
     <!-- Dialog message when reporting spam of a group and we cannot determine the group member that invited you -->
-    <string name="BlockUnblockDialog_report_spam_group_unknown_adder">Signalit teavitatakse, et isik, kes sind sellesse gruppi kutsus, võib olla rämpsposti edastaja. Signal ei näe ühegi vestluse sisu.</string>
+    <string name="BlockUnblockDialog_report_spam_group_unknown_adder">Signalit teavitatakse, et isik, kes sind sellesse gruppi kutsus, võib olla rämpsposti edastaja. Tellomi ei näe ühegi vestluse sisu.</string>
 
     <!-- BucketedThreadMedia -->
     <string name="BucketedThreadMedia_Today">Täna</string>
@@ -479,15 +479,15 @@
     <!-- Alert dialog description asking for microphone permission in order to send voice messages -->
     <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">Häälsõnumite saatmiseks luba Signalil kasutada oma mikrofoni.</string>
     <!-- Toast text explaining Signal\'s need for microphone access -->
-    <string name="ConversationActivity_signal_needs_microphone_access_voice_message">Signal vajab häälsõnumi salvestamiseks ligipääsu mikrofonile.</string>
-    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Signal vajab audiosõnumite saatmiseks ligipääsu seadme mikrofonile, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Mikrofon\".</string>
+    <string name="ConversationActivity_signal_needs_microphone_access_voice_message">Tellomi vajab häälsõnumi salvestamiseks ligipääsu mikrofonile.</string>
+    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Tellomi vajab audiosõnumite saatmiseks ligipääsu seadme mikrofonile, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Mikrofon\".</string>
 
-    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Signal vajab kasutajale %1$s helistamiseks ligipääsu kaamerale ja mikrofonile, kuid need on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Mikrofon\" ning \"Kaamera\".</string>
+    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Tellomi vajab kasutajale %1$s helistamiseks ligipääsu kaamerale ja mikrofonile, kuid need on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Mikrofon\" ning \"Kaamera\".</string>
     <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Luba Signalile ligipääs kaamerale fotode ja videote salvestamiseks.</string>
-    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Signal vajab ligipääsu kaamerale, et salvestada fotosid ja videosid, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Kaamera\".</string>
-    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Signal vajab fotode ja videote salvestamiseks ligipääsu kaamerale</string>
+    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Tellomi vajab ligipääsu kaamerale, et salvestada fotosid ja videosid, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Kaamera\".</string>
+    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Tellomi vajab fotode ja videote salvestamiseks ligipääsu kaamerale</string>
     <string name="ConversationActivity_enable_the_microphone_permission_to_capture_videos_with_sound">Luba mikrofoni kasutus, et teha heliga videoid.</string>
-    <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Signal vajab videote salvestamiseks mikrofoniluba.</string>
+    <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Tellomi vajab videote salvestamiseks mikrofoniluba.</string>
 
     <string name="ConversationActivity_quoted_contact_message">%1$s %2$s</string>
     <string name="ConversationActivity_no">Ei</string>
@@ -510,7 +510,7 @@
     <!-- Alert dialog description asking for microphone permission in order to start a voice call -->
     <string name="ConversationActivity__to_call_signal_needs_access_to_your_microphone">Kõne alustamiseks anna Signalile juurdepääs mikrofonile.</string>
     <!-- Toast text explaining Signal\'s need for microphone access for a voice call -->
-    <string name="ConversationActivity_signal_needs_microphone_access_voice_call">Signal vajab kõne alustamiseks ligipääsu mikrofonile.</string>
+    <string name="ConversationActivity_signal_needs_microphone_access_voice_call">Tellomi vajab kõne alustamiseks ligipääsu mikrofonile.</string>
 
 
     <string name="ConversationActivity_join">Liitu</string>
@@ -520,9 +520,9 @@
     <string name="ConversationActivity_error_sending_media">Meedia saatmisel tekkis tõrge</string>
 
     <!-- Message shown when opening an MMS group conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__sms_messaging_is_no_longer_supported">Signal ei toeta enam SMS-sõnumeid.</string>
+    <string name="ConversationActivity__sms_messaging_is_no_longer_supported">Tellomi ei toeta enam SMS-sõnumeid.</string>
     <!-- Message shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Signal ei toeta enam SMS-sõnumeid. Kutsu %1$s Signalisse ja jätkake vestlust siin.</string>
+    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Tellomi ei toeta enam SMS-sõnumeid. Kutsu %1$s Signalisse ja jätkake vestlust siin.</string>
     <!-- Message shown when opening a conversation with an unregistered user who used to be on Signal -->
     <string name="ConversationActivity__this_person_is_no_longer_using_signal">See isik ei kasuta enam Signalit. Kutsu ta Signalisse ja jätkake vestlust siin.</string>
     <!-- Action button shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
@@ -562,7 +562,7 @@
     <string name="ConversationFragment_dont_show_again">Ära näita seda uuesti</string>
     <string name="ConversationFragment_pending">Ootel…</string>
     <!-- Describes how the message was sent when looking at a message detail. Previously, messages could be through other means like SMS -->
-    <string name="ConversationFragment_push">Andmeside (Signal)</string>
+    <string name="ConversationFragment_push">Andmeside (Tellomi)</string>
     <string name="ConversationFragment_mms">MMS</string>
     <string name="ConversationFragment_sms">SMS</string>
     <string name="ConversationFragment_deleting">Kustutan</string>
@@ -627,13 +627,13 @@
     <!-- Action shown to allow a user to update their application because it has expired -->
     <string name="ConversationFragment__update_build">Uuenda Signalit</string>
     <!-- Action shown to allow a user to re-register as they are no longer registered -->
-    <string name="ConversationFragment__reregister_signal">Registreeri Signal uuesti</string>
+    <string name="ConversationFragment__reregister_signal">Registreeri Tellomi uuesti</string>
     <!-- Action shown in the conversation input area to allow a user to re-link this device as it is no longer linked -->
     <string name="ConversationFragment__relink_signal">Seo uuesti</string>
     <!-- Label for a button displayed in the conversation toolbar to return to the previous screen. -->
     <string name="ConversationFragment__content_description_back_button">Liigu tagasi</string>
     <!-- Label for a button displayed in the conversation toolbar to open the main screen of the app. -->
-    <string name="ConversationFragment__content_description_launch_signal_button">Ava Signal</string>
+    <string name="ConversationFragment__content_description_launch_signal_button">Ava Tellomi</string>
     <!-- Dialog title shown when more than one contact in a group conversation is no longer verified -->
     <string name="ConversationFragment__no_longer_verified">Ei ole enam kinnitatud</string>
     <!-- Button shown in conversation header when in a message request state and no groups in common to show new message safety tips -->
@@ -651,7 +651,7 @@
     <!-- Dialog title shown after reporting spam and tapping the conversation item -->
     <string name="ConversationFragment_reported_spam">Rämpspostist teatatud</string>
     <!-- Dialog message shown after reporting spam and tapping the conversation item -->
-    <string name="ConversationFragment_reported_spam_message">Signalit on teavitatud, et see isik võib olla rämpsposti edastaja. Signal ei näe ühegi vestluse sisu.</string>
+    <string name="ConversationFragment_reported_spam_message">Signalit on teavitatud, et see isik võib olla rämpsposti edastaja. Tellomi ei näe ühegi vestluse sisu.</string>
     <!-- Toast shown after reporting spam and tapping the conversation item -->
     <string name="ConversationFragment_reported_as_spam">Rämpspostist teatatud</string>
     <!-- Toast shown after reporting and blocking a conversation -->
@@ -682,7 +682,7 @@
     <!-- Title of the dialog shown when re-requesting an expired attachment from your primary device fails -->
     <string name="ConversationFragment_attachment_backfill_failed_title">Meediat ei saa alla laadida</string>
     <!-- Body of the dialog shown when your phone didn\'t respond to a request to re-send an expired attachment -->
-    <string name="ConversationFragment_attachment_backfill_timeout">Kontrolli oma arvuti ja telefoni internetiühendust. Ava Signal oma telefonis ja proovi see uuesti alla laadida.</string>
+    <string name="ConversationFragment_attachment_backfill_timeout">Kontrolli oma arvuti ja telefoni internetiühendust. Ava Tellomi oma telefonis ja proovi see uuesti alla laadida.</string>
     <!-- Body of the dialog shown when your phone no longer has the attachment you tried to download -->
     <string name="ConversationFragment_attachment_backfill_not_found">See meedia ei ole enam su telefonis saadaval ning seda ei saa alla laadida.</string>
     <!-- Dialog for how to long to keep a messaged pinned for -->
@@ -714,7 +714,7 @@
     <!-- Summary tip 0 title: Don\'t respond to chats from Signal -->
     <string name="SafetyTips_summary_tip0_title">Ära vasta Signali saadetud sõnumitele</string>
     <!-- Summary tip 0 message -->
-    <string name="SafetyTips_summary_tip0_message">Signal ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks. Ära vasta kunagi sõnumitele, milles väidetakse, et need on Signalilt.</string>
+    <string name="SafetyTips_summary_tip0_message">Tellomi ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks. Ära vasta kunagi sõnumitele, milles väidetakse, et need on Signalilt.</string>
     <!-- Summary tip 1 title: Review names and photos -->
     <string name="SafetyTips_summary_tip1_title">Vaata nimed ja fotod üle</string>
     <!-- Summary tip 1 message -->
@@ -727,7 +727,7 @@
     <!-- Detail tip 0 title -->
     <string name="SafetyTips_detail_tip0_title">Ära vasta Signali saadetud sõnumitele</string>
     <!-- Detail tip 0 message -->
-    <string name="SafetyTips_detail_tip0_message">Signal ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks. Ära vasta sõnumitele, milles väidetakse, et need on Signalilt või Signali toelt. Pahatahtlikud isikud saadavad sinu konto ülevõtmiseks võltssõnumeid.</string>
+    <string name="SafetyTips_detail_tip0_message">Tellomi ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks. Ära vasta sõnumitele, milles väidetakse, et need on Signalilt või Signali toelt. Pahatahtlikud isikud saadavad sinu konto ülevõtmiseks võltssõnumeid.</string>
     <!-- Detail tip 1 title -->
     <string name="SafetyTips_detail_tip1_title">Vaata nimed ja fotod üle</string>
     <!-- Detail tip 1 message -->
@@ -752,9 +752,9 @@
     <!-- Bottom sheet text explaining that profile names are chosen by the account holder. Placeholder will be \'Profile names\' -->
     <string name="ProfileNameBottomSheet__profile_names_on_signal">%1$s Signalis valib iga konto omanik ise.</string>
     <!-- Bottom sheet text explaining that Signal can\'t verify names and photos -->
-    <string name="ProfileNameBottomSheet__signal_cant_verify">Signal ei saa nimesid ja fotosid kontrollida</string>
+    <string name="ProfileNameBottomSheet__signal_cant_verify">Tellomi ei saa nimesid ja fotosid kontrollida</string>
     <!-- Bottom sheet text explaining that Signal will never contact you for registration code, PIN, or recovery key -->
-    <string name="ProfileNameBottomSheet__signal_will_never_contact">Signal ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks.</string>
+    <string name="ProfileNameBottomSheet__signal_will_never_contact">Tellomi ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks.</string>
     <!-- Bottom sheet text explaining that accounts can impersonate other people and to be cautious -->
     <string name="ProfileNameBottomSheet__be_cautious_of_accounts">Ole ettevaatlik kontode suhtes, kus esinetakse kellegi teisena</string>
     <!-- Bottom sheet text explaining that personal information should not be shared with strangers -->
@@ -985,7 +985,7 @@
     <string name="BackupsPreferenceFragment__d_so_far">Siiani %1$d…</string>
     <!-- Show percentage of completion of backup -->
     <string name="BackupsPreferenceFragment__s_so_far">%1$s/ %% …</string>
-    <string name="BackupsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups">Signal vajab varukoopiate loomiseks välismälu õigust, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ning luba \"Mäluruum\".</string>
+    <string name="BackupsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups">Tellomi vajab varukoopiate loomiseks välismälu õigust, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ning luba \"Mäluruum\".</string>
     <!-- Title of dialog shown when picking the time to perform a chat backup -->
     <string name="BackupsPreferenceFragment__set_backup_time">Vali varukoopia tegemise aeg</string>
 
@@ -1066,7 +1066,7 @@
 
     <!-- DecryptionFailedDialog -->
     <string name="DecryptionFailedDialog_chat_session_refreshed">Vestluse seanss on värskendatud</string>
-    <string name="DecryptionFailedDialog_signal_uses_end_to_end_encryption">Signal kasutab otspunkt krüptimist ja see võib mõnikord vajada vestluse seansi värskendamist. See ei mõjuta vestluse turvalisust, aga sa võisid mõnest selle kontakti sõnumist ilma jääda, seepärast palu neil vajadusel need uuesti saata.</string>
+    <string name="DecryptionFailedDialog_signal_uses_end_to_end_encryption">Tellomi kasutab otspunkt krüptimist ja see võib mõnikord vajada vestluse seansi värskendamist. See ei mõjuta vestluse turvalisust, aga sa võisid mõnest selle kontakti sõnumist ilma jääda, seepärast palu neil vajadusel need uuesti saata.</string>
 
     <!-- LinkDeviceFragment -->
     <!-- Description for how Signal will work with a linked device (eg desktop, iPad) -->
@@ -1076,7 +1076,7 @@
     <!-- Text explaining that on linked devices, messages will be encrypted where %s will be replaced with an image-->
     <string name="LinkDeviceFragment__messages_and_chat_info_are_protected">%1$s Sõnumid ja vestluse info on kaitstud kõigis seadmetes otspunktkrüpteeringuga</string>
     <!-- Bottom sheet title explaining how Signal works on a linked device -->
-    <string name="LinkDeviceFragment__signal_on_desktop_ipad">Signal lingitud seadmes</string>
+    <string name="LinkDeviceFragment__signal_on_desktop_ipad">Tellomi lingitud seadmes</string>
     <!-- Bottom sheet description explaining that messages on linked devices are private -->
     <string name="LinkDeviceFragment__all_messaging_is_private">Kogu sõnumivahetus lingitud seadmetes on privaatne</string>
     <!-- Bottom sheet description explaining that future messages on linked devices will be in sync with your phone but previous messages will not appear -->
@@ -1239,7 +1239,7 @@
     <string name="ExpiredBuildReminder_update_now">Uuenda kohe</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->
-    <string name="DeprecatedSdkBanner_body">Signal ei tööta enam selles seadmes. Selleks, et Signalit edasi kasutada, uuenda oma seadme Androidi versiooni või võta kasutusele uuem seade.</string>
+    <string name="DeprecatedSdkBanner_body">Tellomi ei tööta enam selles seadmes. Selleks, et Signalit edasi kasutada, uuenda oma seadme Androidi versiooni või võta kasutusele uuem seade.</string>
 
     <!-- Title of notification telling users to update Signal -->
     <string name="DeprecatedNotificationJob_update_signal">Uuenda Signalit</string>
@@ -1765,7 +1765,7 @@
     <string name="LongMessageActivity_your_message">Sinu sõnum</string>
 
     <!-- MessageRetrievalService -->
-    <string name="MessageRetrievalService_signal">Signal</string>
+    <string name="MessageRetrievalService_signal">Tellomi</string>
     <string name="MessageRetrievalService_background_connection_enabled">Taustaühendus lubatud</string>
 
     <!-- MediaOverviewActivity -->
@@ -2304,7 +2304,7 @@
     <!-- Alert dialog body for accepting a message request. Contains bold substring placeholder -->
     <string name="MessageRequestBottomView_accept_request_body">Võta kutseid vastu ainult inimestelt, keda usaldad. %1$s ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks.</string>
     <!-- Bold substring used in accept request body: "Signal will never" -->
-    <string name="MessageRequestBottomView_signal_will_never">Signal ei võta sinuga kunagi</string>
+    <string name="MessageRequestBottomView_signal_will_never">Tellomi ei võta sinuga kunagi</string>
     <!-- Alert dialog title to accept a message request to join a group -->
     <string name="MessageRequestBottomView_join_group">Kas liituda grupiga?</string>
     <!-- Alert dialog body to review the message request for a group carefully -->
@@ -2337,7 +2337,7 @@
     <string name="DeviceProvisioningActivity_link_a_signal_device">Lingid Signali seadme?</string>
     <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">Lauaarvuti või iPadi linkimiseks selle Signali kontoga ava jaotis Lingitud seadmed, toksa valikut „Lingi uus seade“ ja skanni QR-kood uuesti. Veendu, et skannid vaid otse Signalilt saadud QR-koode.</string>
 
-    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Signal vajab kaamera luba, et skanneerida QR-koodi, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Kaamera\".</string>
+    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Tellomi vajab kaamera luba, et skanneerida QR-koodi, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Kaamera\".</string>
     <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">QR-koodi ei saa skanneerida ilma kaamera loata</string>
 
     <!-- OutdatedBuildReminder -->
@@ -2353,9 +2353,9 @@
     <string name="PassphrasePromptActivity_watermark_content_description">Signali ikoon</string>
     <string name="PassphrasePromptActivity_ok_button_content_description">Saada salasõna</string>
     <string name="PassphrasePromptActivity_invalid_passphrase_exclamation">Sobimatu salasõna!</string>
-    <string name="PassphrasePromptActivity_unlock_signal">Lukusta Signal lahti</string>
+    <string name="PassphrasePromptActivity_unlock_signal">Lukusta Tellomi lahti</string>
     <!-- This is the subject line for the email that is sent to support -->
-    <string name="PassphrasePromptActivity_signal_android_lock_screen">Signal Android: ekraanilukk</string>
+    <string name="PassphrasePromptActivity_signal_android_lock_screen">Tellomi Android: ekraanilukk</string>
 
     <!-- PlacePickerActivity -->
     <string name="PlacePickerActivity_title">Kaart</string>
@@ -2468,9 +2468,9 @@
 
     <!-- WebRtcCallActivity -->
     <string name="WebRtcCallActivity__tap_here_to_turn_on_your_video">Klõpsa siia enda video käivitamiseks</string>
-    <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">Signal vajab kasutajale %1$s helistamiseks juurdepääsu seadme kaamerale</string>
+    <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">Tellomi vajab kasutajale %1$s helistamiseks juurdepääsu seadme kaamerale</string>
     <!-- Subtitle shown at top of call where %s is the elapsed time of the call -->
-    <string name="WebRtcCallActivity__signal_s">Signal %1$s</string>
+    <string name="WebRtcCallActivity__signal_s">Tellomi %1$s</string>
     <string name="WebRtcCallActivity__calling">Helistamine…</string>
     <!-- Call status shown when an active call was disconnected (e.g., network hiccup) and is trying to reconnect -->
     <string name="WebRtcCallActivity__reconnecting">Ühenduse taastamine…</string>
@@ -2537,7 +2537,7 @@
     <!-- Dialog description explaining why camera permissions are needed to enable a user\'s video in a call -->
     <string name="WebRtcCallActivity__to_enable_video_allow_camera">Oma video lubamiseks anna Signalile ligipääs oma kaamerale.</string>
     <!-- Toast describing why microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__signal_needs_microphone_start_call">Signal vajab kõne alustamiseks või sellega liitumiseks mikrofoniluba.</string>
+    <string name="WebRtcCallActivity__signal_needs_microphone_start_call">Tellomi vajab kõne alustamiseks või sellega liitumiseks mikrofoniluba.</string>
     <!-- Toast describing why camera permissions are needed to enable a video in a call -->
     <string name="WebRtcCallActivity__signal_needs_camera_access_enable_video">Signalil on sinu video lubamiseks vaja ligipääsu kaamerale</string>
     <!-- Dialog description that will explain the steps needed to give microphone permissions -->
@@ -2571,11 +2571,11 @@
     <!-- Displayed on the call screen as the status when waiting to be let into a call link by an admin -->
     <string name="WebRtcCallView__waiting_to_be_let_in">Sisselaskmise ootel …</string>
 
-    <string name="WebRtcCallView__signal_will_ring_s">Signal helistab isikule %1$s</string>
-    <string name="WebRtcCallView__signal_will_ring_s_and_s">Signal helistab isikutele %1$s ja %2$s</string>
+    <string name="WebRtcCallView__signal_will_ring_s">Tellomi helistab isikule %1$s</string>
+    <string name="WebRtcCallView__signal_will_ring_s_and_s">Tellomi helistab isikutele %1$s ja %2$s</string>
     <plurals name="WebRtcCallView__signal_will_ring_s_s_and_d_others">
-        <item quantity="one">Signal helistab isikutele %1$s, %2$s ja %3$d muule</item>
-        <item quantity="other">Signal helistab isikutele %1$s, %2$s ja %3$d muule</item>
+        <item quantity="one">Tellomi helistab isikutele %1$s, %2$s ja %3$d muule</item>
+        <item quantity="other">Tellomi helistab isikutele %1$s, %2$s ja %3$d muule</item>
     </plurals>
 
     <string name="WebRtcCallView__s_will_be_notified">%1$ssaab teavituse</string>
@@ -2755,13 +2755,13 @@
         <item quantity="other">Selles kõnes (%1$d)</item>
     </plurals>
     <plurals name="CallParticipantsListDialog__signal_will_ring">
-        <item quantity="one">Signal helistab isikule (%1$d)</item>
-        <item quantity="other">Signal helistab isikutele (%1$d)</item>
+        <item quantity="one">Tellomi helistab isikule (%1$d)</item>
+        <item quantity="other">Tellomi helistab isikutele (%1$d)</item>
     </plurals>
     <!-- Header text shown in a bottom sheet that indicates how many people will be notified about an outgoing call -->
     <plurals name="CallParticipantsListDialog__signal_will_notify">
-        <item quantity="one">Signal teavitab isikut (%1$d)</item>
-        <item quantity="other">Signal teavitab isikuid (%1$d)</item>
+        <item quantity="one">Tellomi teavitab isikut (%1$d)</item>
+        <item quantity="other">Tellomi teavitab isikuid (%1$d)</item>
     </plurals>
     <plurals name="CallParticipantsListDialog__raised_hands">
         <item quantity="one">Tõstetud käsi (%1$d)</item>
@@ -2831,8 +2831,8 @@
     <string name="RegistrationActivity_i_understand">Saan aru</string>
     <string name="RegistrationActivity_play_services_error">Play teenuste viga</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play teenused uuenevad või pole hetkel saadaval. Palun proovi uuesti.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Signal vajab sinu kontaktidele ja meediale ligipääsu, et võimaldada sul ühenduda sõpradega ja vahetada sõnumeid. Sinu kontaktid laetakse üles Signali privaatse kontaktituvastuse abil, mis tähendab, et need on lõpp-punkti krüpteeringuga ega ole Signali teenusele kunagi nähtavad.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Signal vajab kontaktidega seotud luba, et võimaldada sul sõpradega ühenduda. Sinu kontaktid laetakse üles Signali privaatse kontaktituvastuse abil, mis tähendab, et need on lõpp-punkti krüpteeringuga ega ole Signali teenusele kunagi nähtavad.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi vajab sinu kontaktidele ja meediale ligipääsu, et võimaldada sul ühenduda sõpradega ja vahetada sõnumeid. Sinu kontaktid laetakse üles Signali privaatse kontaktituvastuse abil, mis tähendab, et need on lõpp-punkti krüpteeringuga ega ole Signali teenusele kunagi nähtavad.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi vajab kontaktidega seotud luba, et võimaldada sul sõpradega ühenduda. Sinu kontaktid laetakse üles Signali privaatse kontaktituvastuse abil, mis tähendab, et need on lõpp-punkti krüpteeringuga ega ole Signali teenusele kunagi nähtavad.</string>
     <string name="RegistrationActivity_rate_limited_to_service">Oled sooritanud liiga palju selle numbri registreerimise katseid. Palun proovi hiljem uuesti.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Oled proovinud seda numbrit liiga palju kordi registreerida. Palun proovi uuesti %1$s pärast.</string>
@@ -2846,7 +2846,7 @@
     <string name="RegistrationActivity_non_standard_number_format">Ebastandardne numbriformaat</string>
     <!-- Dialog message shown to confirm when entering phone number (first placeholder) is normalized and formatted differently by the app (second placeholder). -->
     <string name="RegistrationActivity_the_number_you_entered_appears_to_be_a_non_standard">Sisestatud number (%1$s) tundub olevat mittestandardses formaadis.\n\nKas mõtlesid hoopis %2$s?</string>
-    <string name="RegistrationActivity_signal_android_phone_number_format">Signal Android - telefoninumbri formaat</string>
+    <string name="RegistrationActivity_signal_android_phone_number_format">Tellomi Android - telefoninumbri formaat</string>
     <!--    Small "toast" notification to the user confirming that they have requested a new code via voice call.-->
     <string name="RegistrationActivity_call_requested">Kõnepäring esitatud</string>
     <!--    Small "toast" notification to the user confirming that they have requested a new code via SMS.-->
@@ -3076,8 +3076,8 @@
     <string name="SupportEmailUtil_filter">Filter:</string>
     <string name="SupportEmailUtil_device_info">Seadme info:</string>
     <string name="SupportEmailUtil_android_version">Androidi versioon:</string>
-  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_version" translatable="false">Signal version:</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_package" translatable="false">Signal package:</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_version" translatable="false">Tellomi version:</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_package" translatable="false">Tellomi package:</string> -->
     <string name="SupportEmailUtil_registration_lock">Registreerimislukk:</string>
   <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_locale" translatable="false">Locale:</string> -->
   <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_challenge_received" translatable="false">Challenge Received:</string> -->
@@ -3157,7 +3157,7 @@
     <string name="ApkUpdateNotifications_prompt_install_body">Signali uus versioon on saadaval. Toksa uuendamiseks.</string>
     <string name="ApkUpdateNotifications_failed_general_title">Signali uuendamine ebaõnnestus</string>
     <string name="ApkUpdateNotifications_failed_general_body">Proovime hiljem uuesti.</string>
-    <string name="ApkUpdateNotifications_auto_update_success_title">Signal on edukalt uuendatud</string>
+    <string name="ApkUpdateNotifications_auto_update_success_title">Tellomi on edukalt uuendatud</string>
     <string name="ApkUpdateNotifications_auto_update_success_body">Sinu versioon on automaatselt uuendatud versioonile %1$s.</string>
     <string name="ApkUpdateNotifications_manual_update_success_body">Uuendasid versioonile %1$s.</string>
 
@@ -3229,7 +3229,7 @@
     <string name="VerifyIdentityActivity_our_signal_safety_number">Meie Signali turvanumber:</string>
     <string name="VerifyIdentityActivity_no_app_to_share_to">Tundub, et sul pole ühtegi rakendust, kuhu jagada.</string>
     <string name="VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard">Lõikelaualt ei leitud turvanumbrit, millega võrrelda</string>
-    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Signal vajab kaamera luba, et skanneerida QR-koodi, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Kaamera\".</string>
+    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Tellomi vajab kaamera luba, et skanneerida QR-koodi, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Kaamera\".</string>
     <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">QR-koodi ei saa skanneerida ilma kaamera loata</string>
     <string name="VerifyIdentityActivity_you_must_first_exchange_messages_in_order_to_view">Kasutaja %1$s turvanumbri nägemiseks pead kõigepealt temaga sõnumeid vahetama.</string>
     <!-- Dialog message explaining to user they must exchange messages first to create a safety number -->
@@ -3272,8 +3272,8 @@
 
     <!-- KeyCachingService -->
     <string name="KeyCachingService_signal_passphrase_cached">Koputa avamiseks.</string>
-    <string name="KeyCachingService_passphrase_cached">Signal on avatud</string>
-    <string name="KeyCachingService_lock">Lukusta Signal</string>
+    <string name="KeyCachingService_passphrase_cached">Tellomi on avatud</string>
+    <string name="KeyCachingService_lock">Lukusta Tellomi</string>
 
     <!-- MediaPreviewActivity -->
     <string name="MediaPreviewActivity_you">Sina</string>
@@ -3347,7 +3347,7 @@
     <!-- Body of a notification when someone votes in a poll. First placeholder is the poll emoji, second placeholder is the name of the voter and third is the poll question -->
     <string name="MessageNotifier_s_voted_in_poll">%1$s %2$s vastas küsitlusele „%3$s“</string>
 
-    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">Kas lülitada Signaliga liitumise teavitused välja? Neid saab uuesti lubada, valides Signal &gt; Seaded &gt; Teavitused.</string>
+    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">Kas lülitada Signaliga liitumise teavitused välja? Neid saab uuesti lubada, valides Tellomi &gt; Seaded &gt; Teavitused.</string>
 
     <!-- TurnOnNotificationsBottomSheet -->
     <!-- Title for sheet explaining how to turn on app notifications -->
@@ -3392,7 +3392,7 @@
     <string name="NotificationChannel_unread_reminders">Lugemata meeldetuletused</string>
 
     <!-- QuickResponseService -->
-    <string name="QuickResponseService_quick_response_unavailable_when_Signal_is_locked">Kiirvastus pole saadaval, kui Signal on lukustatud!</string>
+    <string name="QuickResponseService_quick_response_unavailable_when_Signal_is_locked">Kiirvastus pole saadaval, kui Tellomi on lukustatud!</string>
     <string name="QuickResponseService_problem_sending_message">Sõnumi saatmisel esines probleem!</string>
 
     <!-- A toast notification that is shown when the app does not have sufficient permissions to save media files to the device storage. -->
@@ -3427,7 +3427,7 @@
     </plurals>
 
     <!-- Message shown when the app requests permission to save media to the device storage, but that permission has been permanently denied by the user. -->
-    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Signal vajab mäluruumi luba, et salvestada välismällu, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Mäluruum\".</string>
+    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Tellomi vajab mäluruumi luba, et salvestada välismällu, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Mäluruum\".</string>
 
     <!-- Message explaining that it is not possible to save media to the device storage after the user denied the system save to storage permission. -->
     <string name="AttachmentSaver__unable_to_write_to_external_storage_without_permission">Õiguste puudumise tõttu pole võimalik välisele andmekandjale salvestada.</string>
@@ -3457,7 +3457,7 @@
     <string name="ShortcutLauncherActivity_invalid_shortcut">Sobimatu otsetee</string>
 
     <!-- SingleRecipientNotificationBuilder -->
-    <string name="SingleRecipientNotificationBuilder_signal">Signal</string>
+    <string name="SingleRecipientNotificationBuilder_signal">Tellomi</string>
     <string name="SingleRecipientNotificationBuilder_new_message">Uus sõnum</string>
     <string name="SingleRecipientNotificationBuilder_message_request">Sõnumitaotlus</string>
     <string name="SingleRecipientNotificationBuilder_you">Sina</string>
@@ -3509,7 +3509,7 @@
     <!-- Action in reminder banner that will take user to re-register -->
     <string name="UnauthorizedReminder_reregister_action">Registreeri seade uuesti</string>
     <!-- Message shown in a reminder banner when this linked device is no longer linked to a primary device -->
-    <string name="UnauthorizedReminder_this_device_is_no_longer_linked_relink_to_continue_messaging">See seade ei ole enam seotud. Seo Signal uuesti oma telefoniga, et jätkata sõnumite saatmist.</string>
+    <string name="UnauthorizedReminder_this_device_is_no_longer_linked_relink_to_continue_messaging">See seade ei ole enam seotud. Seo Tellomi uuesti oma telefoniga, et jätkata sõnumite saatmist.</string>
     <!-- Action in reminder banner that will take the user to re-link this device -->
     <string name="UnauthorizedReminder_relink_action">Seo seade uuesti</string>
 
@@ -3525,7 +3525,7 @@
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">Kõnele vastamiseks anna Signalile juurdepääs mikrofonile.</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">Videokõnele vastamiseks anna Signalile juurdepääs oma mikrofonile ja kaamerale.</string>
-    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Signal vajab mikrofoni ja kaamera lubasid, et teha ja vastu võtta kõnesid, ent need on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Mikrofon\" ning \"Kaamera\".</string>
+    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Tellomi vajab mikrofoni ja kaamera lubasid, et teha ja vastu võtta kõnesid, ent need on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Mikrofon\" ning \"Kaamera\".</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">Vastatud ühendatud seadmes.</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">Keeldutud ühendatud seadmes.</string>
     <string name="WebRtcCallActivity__busy_on_a_linked_device">Hõivatud ühendatud seadmes.</string>
@@ -3599,7 +3599,7 @@
     <string name="SingleContactSelectionActivity_contact_photo">Kontakti pilt</string>
 
     <!-- ContactSelectionListFragment-->
-    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Signal vajab kontaktide kuvamiseks neile ligipääsu, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Kontaktid\".</string>
+    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Tellomi vajab kontaktide kuvamiseks neile ligipääsu, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Kontaktid\".</string>
     <string name="ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection">Kontaktide laadimisel tekkis tõrge. Kontrolli võrguühendust.</string>
     <string name="ContactSelectionListFragment_username_not_found">Kasutajanime ei leitud</string>
     <string name="ContactSelectionListFragment_s_is_not_a_signal_user">"„%1$s“ ei ole Signali kasutaja. Palun kontrolli kasutajanime ja proovi uuesti."</string>
@@ -3628,7 +3628,7 @@
     <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">Anna ligipääs oma kontaktidele. Sinu kontaktid on krüptitud ega ole Signali teenusele nähtavad.</string>
 
     <!-- contact_selection_list_fragment -->
-    <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">Signal vajab kontaktide kuvamiseks nendele ligipääsu.</string>
+    <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">Tellomi vajab kontaktide kuvamiseks nendele ligipääsu.</string>
     <string name="contact_selection_list_fragment__show_contacts">Näita kontakte</string>
 
     <!-- contact_selection_list_item -->
@@ -3903,7 +3903,7 @@
     <string name="prompt_passphrase_activity__unlock">Eemalda blokeering</string>
 
     <!-- prompt_mms_activity -->
-    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">Signal vajab MMS-seadeid, et edastada meediat ja grupisõnumeid läbi sinu võrguteenuse pakkuja. Sinu seade ei tee seda informatsiooni saadavaks, mis esineb mõnikord lukustatud seadmete ja piiravate konfiguratsioonide puhul.</string>
+    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">Tellomi vajab MMS-seadeid, et edastada meediat ja grupisõnumeid läbi sinu võrguteenuse pakkuja. Sinu seade ei tee seda informatsiooni saadavaks, mis esineb mõnikord lukustatud seadmete ja piiravate konfiguratsioonide puhul.</string>
     <string name="prompt_mms_activity__to_send_media_and_group_messages_tap_ok">Meedia- ja grupisõnumite saatmiseks klõpsa nupul \"OK\" ja lõpeta taotletud seaded. MMS-seaded sinu teenusepakkuja jaoks võib tavaliselt leida, otsides \"sinu teenusepakkuja APN\". Sa pead seda tegema ainult ühe korra.</string>
 
     <!-- BadDecryptLearnMoreDialog -->
@@ -3986,20 +3986,20 @@
     <!-- Bottom sheet title when encryption is auto-verified -->
     <string name="EncryptionVerifiedSheet__title_success">Selle vestluse krüpteering kontrolliti automaatselt</string>
     <!-- Bottom sheet body when encryption is auto-verified -->
-    <string name="EncryptionVerifiedSheet__body_success">Isikute puhul, kellega lõid ühenduse telefoninumbri kaudu, kinnitab Signal automaatselt, kas ühendus on turvaline, kasutades protsessi nimega võtme läbipaistvus. Täiendava turvalisuse jaoks võrdle otspunktkrüpteeringu kontrollimiseks eelmisel kuval olevaid numbreid seadmes olevatega või skanni teise inimese seadmes olevat koodi.</string>
+    <string name="EncryptionVerifiedSheet__body_success">Isikute puhul, kellega lõid ühenduse telefoninumbri kaudu, kinnitab Tellomi automaatselt, kas ühendus on turvaline, kasutades protsessi nimega võtme läbipaistvus. Täiendava turvalisuse jaoks võrdle otspunktkrüpteeringu kontrollimiseks eelmisel kuval olevaid numbreid seadmes olevatega või skanni teise inimese seadmes olevat koodi.</string>
     <!-- Bottom sheet title when encryption is no longer auto-verified -->
     <string name="EncryptionVerifiedSheet__title_no_longer_unavailable">Automaatkinnitus ei ole selle vestluse jaoks saadaval</string>
     <!-- Bottom sheet body when encryption is no longer auto-verified. Placeholder is the name of the person. -->
-    <string name="EncryptionVerifiedSheet__body_no_longer_unavailable">Signal ei saa krüpteeringut selle vestluse jaoks automaatselt kontrollida. See võib olla sellepärast, et %1$s muutis oma telefoninumbrit, või olla seotud tema telefoninumbri privaatsussätetega. Otspunktkrüpteeringu kontrollimiseks võrdle eelmisel kuval olevaid numbreid seadmes olevatega või skanni tema seadmes olevat koodi.</string>
+    <string name="EncryptionVerifiedSheet__body_no_longer_unavailable">Tellomi ei saa krüpteeringut selle vestluse jaoks automaatselt kontrollida. See võib olla sellepärast, et %1$s muutis oma telefoninumbrit, või olla seotud tema telefoninumbri privaatsussätetega. Otspunktkrüpteeringu kontrollimiseks võrdle eelmisel kuval olevaid numbreid seadmes olevatega või skanni tema seadmes olevat koodi.</string>
     <!-- Bottom sheet title when encryption cannot be auto-verified -->
     <string name="EncryptionVerifiedSheet__title_unavailable">Selle vestluse puhul pole automaatne kontrollimine saadaval</string>
     <!-- Bottom sheet body when encryption cannot be auto-verified -->
-    <string name="EncryptionVerifiedSheet__body_unavailable">Signal saab krüpteeringut automaatselt kontrollida ainult vestlustes, kus oled kellegagi telefoninumbri kaudu ühendatud. Kui vestlust alustati ühise kasutajanime või grupiga, kontrolli otspunktkrüpteeringut, võrreldes eelmisel kuval olevaid numbreid või skannides tema seadmes kuvatavat koodi.</string>
+    <string name="EncryptionVerifiedSheet__body_unavailable">Tellomi saab krüpteeringut automaatselt kontrollida ainult vestlustes, kus oled kellegagi telefoninumbri kaudu ühendatud. Kui vestlust alustati ühise kasutajanime või grupiga, kontrolli otspunktkrüpteeringut, võrreldes eelmisel kuval olevaid numbreid või skannides tema seadmes kuvatavat koodi.</string>
 
     <!-- Title for auto verification education sheet -->
-    <string name="VerifyAutomaticallyEducationSheet__title">Signal saab nüüd krüptimist automaatselt kontrollida</string>
+    <string name="VerifyAutomaticallyEducationSheet__title">Tellomi saab nüüd krüptimist automaatselt kontrollida</string>
     <!-- Body for auto verification education sheet -->
-    <string name="VerifyAutomaticallyEducationSheet__body">Kontaktide puhul, kellega lõid ühenduse telefoninumbri kaudu, kinnitab Signal automaatselt, kas ühendus on turvaline, kasutades protsessi nimega võtme läbipaistvus. Täiendava turvalisuse eesmärgil saab ühendusi endiselt kinnitada ka käsitsi QR-koodi või turvanumbri abil.</string>
+    <string name="VerifyAutomaticallyEducationSheet__body">Kontaktide puhul, kellega lõid ühenduse telefoninumbri kaudu, kinnitab Tellomi automaatselt, kas ühendus on turvaline, kasutades protsessi nimega võtme läbipaistvus. Täiendava turvalisuse eesmärgil saab ühendusi endiselt kinnitada ka käsitsi QR-koodi või turvanumbri abil.</string>
     <!-- Button to learn more about automatic verification -->
     <string name="VerifyAutomaticallyEducationSheet__learn_more">Rohkem teavet</string>
     <!-- Button to go to verification page -->
@@ -4095,11 +4095,11 @@
         <item>Tagasiside</item>
         <item>Maksed (MobileCoin)</item>
         <item>Annetused &amp; märgid</item>
-        <item>Signal Androidi varukoopia</item>
+        <item>Tellomi Androidi varukoopia</item>
         <item>Muu</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Signal Android silumislogi esitamine</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Tellomi Android silumislogi esitamine</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">Postita</string>
     <!-- Action to decline to submit logs -->
@@ -4178,7 +4178,7 @@
     <string name="preferences__enable_passphrase">Luba salaväljendiga ekraanilukk</string>
     <string name="preferences__lock_signal_and_message_notifications_with_a_passphrase">Lukusta ekraan ja teavitused salasõnaga</string>
     <string name="preferences__screen_security">Kuva turvamine</string>
-    <string name="preferences__auto_lock_signal_after_a_specified_time_interval_of_inactivity">Lukusta Signal automaatselt pärast määratud ebaaktiivsuse ajaintervalli</string>
+    <string name="preferences__auto_lock_signal_after_a_specified_time_interval_of_inactivity">Lukusta Tellomi automaatselt pärast määratud ebaaktiivsuse ajaintervalli</string>
     <!-- Legacy preference menu item to enable locking of app after inactivity -->
     <string name="preferences__inactivity_timeout_passphrase">Mitteaktiivsuse aegumise salasõna</string>
     <!-- Legacy preference menu item to choose the interval of inactivity before lockout -->
@@ -4270,7 +4270,7 @@
     <string name="preferences__graphic_illustrating_where_the_replacement_app_icon_will_be_visible">Graafik, mis näitab, kus rakenduse asendusikooni kuvatakse.</string>
     <string name="preferences__disable_pin">Keela PIN</string>
     <string name="preferences__enable_pin">Luba PIN</string>
-    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">Kui keelad PIN-koodi, siis kaotad kõik andmed, kui eemaldad Signal rakenduse ja pole seda käsitsi varundanud ja taastanud. Registreerimislukku pole võimalik sisse lülitada, kui PIN-kood on keelatud.</string>
+    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">Kui keelad PIN-koodi, siis kaotad kõik andmed, kui eemaldad Tellomi rakenduse ja pole seda käsitsi varundanud ja taastanud. Registreerimislukku pole võimalik sisse lülitada, kui PIN-kood on keelatud.</string>
     <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">PIN-koodid hoiavad Signalis salvestatud teabe krüptituna, seega ainult sinul on sellele juurdepääs. Kui paigaldad Signali uuesti, siis sinu profiil, sätted ja kontaktid taastatakse. Rakenduse avamiseks pole PIN-koodi vaja.</string>
     <string name="preferences__system_default">Süsteemi vaikeväärtus</string>
     <string name="preferences__language">Keel</string>
@@ -4365,7 +4365,7 @@
     <string name="preferences_communication__category_censorship_circumvention">Tsensuuri vältimine</string>
     <!-- Title of the \'censorship circumvention\' toggle switch -->
     <string name="preferences_communication__censorship_circumvention">Tsensuuri vältimine</string>
-    <string name="preferences_communication__censorship_circumvention_if_enabled_signal_will_attempt_to_circumvent_censorship">Kui on lubatud, siis püüab Signal tsenseerimisest mööda hiilida. Luba see funktsioon vaid siis, kui oled kohas, kus Signal on tsenseeritud.</string>
+    <string name="preferences_communication__censorship_circumvention_if_enabled_signal_will_attempt_to_circumvent_censorship">Kui on lubatud, siis püüab Tellomi tsenseerimisest mööda hiilida. Luba see funktsioon vaid siis, kui oled kohas, kus Tellomi on tsenseeritud.</string>
     <!-- Summary text for \'censorship circumvention\' toggle. Indicates that we automatically enabled it because we believe you\'re in a censored country -->
     <string name="preferences_communication__censorship_circumvention_has_been_activated_based_on_your_accounts_phone_number">Tsenseerimisest möödahiilimine on aktiveeritud sinu konto telefoninumbri järgi.</string>
     <!-- Summary text for \'censorship circumvention\' toggle. Indicates that you disabled it even though we believe you\'re in a censored country -->
@@ -4405,7 +4405,7 @@
     <!-- Preference title for automatic key verification -->
     <string name="preferences_automatic_key_verification">Võtme automaatne kontroll</string>
     <!-- Preference summary for automatic key verification -->
-    <string name="preferences_automatic_key_verification_body">Kui see on lubatud, proovib Signal automaatselt kontrollida üks-ühele vestluste krüptimist.</string>
+    <string name="preferences_automatic_key_verification_body">Kui see on lubatud, proovib Tellomi automaatselt kontrollida üks-ühele vestluste krüptimist.</string>
 
 
     <string name="configurable_single_select__customize_option">Kohanda valikut</string>
@@ -4546,9 +4546,9 @@
     <string name="PaymentsTransferFragment__invalid_address">Vigane aadress</string>
     <string name="PaymentsTransferFragment__check_the_wallet_address">Kontrolli walleti aadressi, millele üritad ülekannet teha, ning proovi uuesti.</string>
     <string name="PaymentsTransferFragment__you_cant_transfer_to_your_own_signal_wallet_address">Sa ei saa teha ülekannet omaenda Signali walleti aadressile. Sisesta oma kontolt walleti aadress toetatud vahetuskeskuses.</string>
-    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs">QR-koodi skannimiseks vajab Signal ligipääsu kaamerale.</string>
-    <string name="PaymentsTransferFragment__signal_needs_the_camera_permission_to_capture_qr_code_go_to_settings">QR-koodi skannimiseks vajab Signal luba kaamera kasutamiseks. Mine sätetesse, vali \"Load\" ning märgi \"Kaamera\".</string>
-    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs_access_to_the_camera">QR-koodi skannimiseks vajab Signal ligipääsu kaamerale.</string>
+    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs">QR-koodi skannimiseks vajab Tellomi ligipääsu kaamerale.</string>
+    <string name="PaymentsTransferFragment__signal_needs_the_camera_permission_to_capture_qr_code_go_to_settings">QR-koodi skannimiseks vajab Tellomi luba kaamera kasutamiseks. Mine sätetesse, vali \"Load\" ning märgi \"Kaamera\".</string>
+    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs_access_to_the_camera">QR-koodi skannimiseks vajab Tellomi ligipääsu kaamerale.</string>
     <string name="PaymentsTransferFragment__settings">Sätted</string>
 
     <!-- PaymentsTransferQrScanFragment -->
@@ -4608,7 +4608,7 @@
 
     <!-- BiometricDeviceAuthentication -->
     <!-- Biometric/Device authentication prompt title -->
-    <string name="BiometricDeviceAuthentication__signal">Signal</string>
+    <string name="BiometricDeviceAuthentication__signal">Tellomi</string>
 
 
     <!-- CurrencyAmountFormatter_s_at_s -->
@@ -5058,11 +5058,11 @@
     <string name="preferences_chats__backups">Varukoopiad</string>
 
     <!-- Title text shown when Signal is locked and needs to be unlocked -->
-    <string name="prompt_passphrase_activity__unlock_signal">Lukusta Signal lahti</string>
+    <string name="prompt_passphrase_activity__unlock_signal">Lukusta Tellomi lahti</string>
     <!-- Description text explaining how to unlock Signal -->
     <string name="prompt_passphrase_activity__use_your_android_device">Kasuta Signali avamiseks Android-seadme lukustussätteid.</string>
     <!-- Text shown in a dialog that further explains how to unlock Signal by using the same unlocking methods that are used to unlock their own device -->
-    <string name="prompt_passphrase_activity__screen_lock_is_on">Ekraanilukk on sisse lülitatud ning Signal on sinu seadme lukustussätete abil turvatud. Ava Signal samamoodi nagu tavaliselt telefoni avad, nt näotuvastuse, sõrmejäljega avamise, PIN-koodi, parooli või mustri abil.</string>
+    <string name="prompt_passphrase_activity__screen_lock_is_on">Ekraanilukk on sisse lülitatud ning Tellomi on sinu seadme lukustussätete abil turvatud. Ava Tellomi samamoodi nagu tavaliselt telefoni avad, nt näotuvastuse, sõrmejäljega avamise, PIN-koodi, parooli või mustri abil.</string>
     <!-- Button in a dialog that will contact Signal support if pressed -->
     <string name="prompt_passphrase_activity__contact_support">Võta ühendust kasutajatoega</string>
     <!-- Button text to try again after unlocking has previously failed -->
@@ -5103,7 +5103,7 @@
     <!-- Title of an informational card shown on the account settings screen of a linked device -->
     <string name="LinkedDeviceAccountSettingsFragment__this_is_a_linked_device">See on lingitud seade</string>
     <!-- Body of an informational card explaining that account settings must be managed from the primary device -->
-    <string name="LinkedDeviceAccountSettingsFragment__to_manage_your_account_settings">Selleks, et oma konto sätteid hallata, ava Signal oma põhiseadmes.</string>
+    <string name="LinkedDeviceAccountSettingsFragment__to_manage_your_account_settings">Selleks, et oma konto sätteid hallata, ava Tellomi oma põhiseadmes.</string>
     <!-- Title of a settings row that deletes all Signal data from this linked device -->
     <string name="LinkedDeviceAccountSettingsFragment__delete_app_data">Kustuta äpi andmed</string>
     <!-- Subtitle of the delete app data row explaining what it does -->
@@ -5143,7 +5143,7 @@
     <string name="TransferOrRestoreFragment__skip_transfer_description">Jätka ilma sõnumeid ja meediat üle kandmata</string>
 
     <!-- NewDeviceTransferInstructionsFragment -->
-    <string name="NewDeviceTransferInstructions__open_signal_on_your_old_android_phone">Ava Signal vanas Android-seadmes</string>
+    <string name="NewDeviceTransferInstructions__open_signal_on_your_old_android_phone">Ava Tellomi vanas Android-seadmes</string>
     <string name="NewDeviceTransferInstructions__continue">Jätka</string>
     <string name="NewDeviceTransferInstructions__first_bullet">1.</string>
     <string name="NewDeviceTransferInstructions__tap_on_your_profile_photo_in_the_top_left_to_open_settings">Sätete avamiseks klõpsa enda profiilifotol üleval vasakul</string>
@@ -5156,19 +5156,19 @@
     <string name="NewDeviceTransferSetup__preparing_to_connect_to_old_android_device">Valmistun ühenduma vanasse Android-seadmesse…</string>
     <string name="NewDeviceTransferSetup__take_a_moment_should_be_ready_soon">See võtab hetke aega, peaks varsti valmis olema</string>
     <string name="NewDeviceTransferSetup__waiting_for_old_device_to_connect">Ootan vana Android-seadme ühendumist…</string>
-    <string name="NewDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_old_device">Signal vajab vana Android-seadme leidmiseks ja ühendamiseks juurdepääsu asukohainfole.</string>
-    <string name="NewDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_old_device">Signal vajab sinu eelmise Android-seadme leidmiseks ja ühendumiseks ligipääsu asukohateenustele.</string>
-    <string name="NewDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_old_device">Signal vajab sinu eelmise Android-seadme leidmiseks ja ühendumiseks WiFi-t. WiFi peab olema sees, aga ei pea olema ühtegi WiFi võrku ühendatud.</string>
-    <string name="NewDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">Vabandust, nähtavasti ei toeta see seade Wi-Fi Directi. Signal kasutab Wi-Fi Directi sinu vana Android-seadme tuvastamiseks ja sellega ühenduse loomiseks. Siiski saad taastada oma konto vanast seadmest ka varukoopia kaudu.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_old_device">Tellomi vajab vana Android-seadme leidmiseks ja ühendamiseks juurdepääsu asukohainfole.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_old_device">Tellomi vajab sinu eelmise Android-seadme leidmiseks ja ühendumiseks ligipääsu asukohateenustele.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_old_device">Tellomi vajab sinu eelmise Android-seadme leidmiseks ja ühendumiseks WiFi-t. WiFi peab olema sees, aga ei pea olema ühtegi WiFi võrku ühendatud.</string>
+    <string name="NewDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">Vabandust, nähtavasti ei toeta see seade Wi-Fi Directi. Tellomi kasutab Wi-Fi Directi sinu vana Android-seadme tuvastamiseks ja sellega ühenduse loomiseks. Siiski saad taastada oma konto vanast seadmest ka varukoopia kaudu.</string>
     <string name="NewDeviceTransferSetup__restore_a_backup">Taasta varukoopia</string>
     <string name="NewDeviceTransferSetup__an_unexpected_error_occurred_while_attempting_to_connect_to_your_old_device">Sinu vana Android-seadmega ühenduse loomisel tekkis ootamatu tõrge.</string>
 
     <!-- OldDeviceTransferSetupFragment -->
     <string name="OldDeviceTransferSetup__searching_for_new_android_device">Uue Android-seadme otsimine…</string>
-    <string name="OldDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_new_device">Signal vajab sinu uue Android-seadmega ühenduse loomiseks asukoha kasutamise luba.</string>
-    <string name="OldDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_new_device">Signal vajab sinu uue Android-seadme leidmiseks ja ühendumiseks ligipääsu asukohateenustele.</string>
-    <string name="OldDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_new_device">Signal vajab sinu uue Android-seadme leidmiseks ja ühendumiseks WiFi-t. WiFi peab olema sees, aga ei pea olema ühtegi WiFi võrku ühendatud.</string>
-    <string name="OldDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">Vabandust, nähtavasti ei toeta see seade Wi-Fi Directi. Signal kasutab Wi-Fi Directi sinu uue Android-seadme tuvastamiseks ja sellega ühenduse loomiseks. Siiski saad luua oma konto taastamiseks uues seadmes ka varukoopia.</string>
+    <string name="OldDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_new_device">Tellomi vajab sinu uue Android-seadmega ühenduse loomiseks asukoha kasutamise luba.</string>
+    <string name="OldDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_new_device">Tellomi vajab sinu uue Android-seadme leidmiseks ja ühendumiseks ligipääsu asukohateenustele.</string>
+    <string name="OldDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_new_device">Tellomi vajab sinu uue Android-seadme leidmiseks ja ühendumiseks WiFi-t. WiFi peab olema sees, aga ei pea olema ühtegi WiFi võrku ühendatud.</string>
+    <string name="OldDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">Vabandust, nähtavasti ei toeta see seade Wi-Fi Directi. Tellomi kasutab Wi-Fi Directi sinu uue Android-seadme tuvastamiseks ja sellega ühenduse loomiseks. Siiski saad luua oma konto taastamiseks uues seadmes ka varukoopia.</string>
     <string name="OldDeviceTransferSetup__create_a_backup">Loo varukoopia</string>
     <string name="OldDeviceTransferSetup__an_unexpected_error_occurred_while_attempting_to_connect_to_your_old_device">Sinu uue Android-seadmega ühenduse loomisel tekkis ootamatu tõrge.</string>
 
@@ -5211,7 +5211,7 @@
 
     <!-- DeviceTransferFragment -->
     <string name="DeviceTransfer__transferring_data">Andmete ülekandmine</string>
-    <string name="DeviceTransfer__keep_both_devices_near_each_other">Hoia seadmeid teineteise lähedal. Ära lülita seadmeid välja ja hoia Signal avatuna. Ülekandmine on otspunktkrüptitud.</string>
+    <string name="DeviceTransfer__keep_both_devices_near_each_other">Hoia seadmeid teineteise lähedal. Ära lülita seadmeid välja ja hoia Tellomi avatuna. Ülekandmine on otspunktkrüptitud.</string>
     <string name="DeviceTransfer__d_messages_so_far">%1$d sõnumit siiani…</string>
     <!-- Filled in with total percentage of messages transferred -->
     <string name="DeviceTransfer__s_of_messages_so_far">%1$s%% sõnumitest…</string>
@@ -5225,7 +5225,7 @@
     <!-- OldDeviceTransferInstructionsFragment -->
     <string name="OldDeviceTransferInstructions__transfer_account">Kanna konto üle</string>
     <string name="OldDeviceTransferInstructions__first_bullet">1.</string>
-    <string name="OldDeviceTransferInstructions__download_signal_on_your_new_android_device">Laadi Signal alla uues Android-seadmes</string>
+    <string name="OldDeviceTransferInstructions__download_signal_on_your_new_android_device">Laadi Tellomi alla uues Android-seadmes</string>
     <string name="OldDeviceTransferInstructions__second_bullet">2.</string>
     <string name="OldDeviceTransferInstructions__tap_on_transfer_or_restore_account">"Toksa \"Konto ülekandmine või taastamine\""</string>
     <string name="OldDeviceTransferInstructions__third_bullet">3.</string>
@@ -5262,7 +5262,7 @@
 
     <!-- OldDeviceTransferLockedDialog -->
     <string name="OldDeviceTransferLockedDialog__complete_registration_on_your_new_device">Vii lõpule registreerimine oma uues seadmes</string>
-    <string name="OldDeviceTransferLockedDialog__your_signal_account_has_been_transferred_to_your_new_device">Sinu Signali konto on kantud üle sinu uude seadmesse, kuid jätkamiseks pead viima uues seadmes lõpule registreerimise. Selles seadmes on Signal mitteaktiivne.</string>
+    <string name="OldDeviceTransferLockedDialog__your_signal_account_has_been_transferred_to_your_new_device">Sinu Signali konto on kantud üle sinu uude seadmesse, kuid jätkamiseks pead viima uues seadmes lõpule registreerimise. Selles seadmes on Tellomi mitteaktiivne.</string>
     <string name="OldDeviceTransferLockedDialog__done">Tehtud</string>
     <string name="OldDeviceTransferLockedDialog__cancel_and_activate_this_device">Loobu ja aktiveeri see seade</string>
 
@@ -5306,7 +5306,7 @@
     <string name="GroupsLearnMore_paragraph_1">Vanad grupid on need grupid, mis pole ühilduvad uute gruppide funktsionaalsustega nagu administraatorid ja rohkem kirjeldavad grupi muudatused.</string>
     <string name="GroupsLearnMore_can_i_upgrade_a_legacy_group">Kas saan vana gruppi uuendada?</string>
     <string name="GroupsLearnMore_paragraph_2">Vanu gruppe ei saa veel uuteks gruppideks uuendada, aga sa saad luua samade liikmetega uue grupi, kui need liikmed kasutavad uusimat Signali versiooni.</string>
-    <string name="GroupsLearnMore_paragraph_3">Tulevikus pakub Signal võimalust vanu gruppe uuteks uuendada.</string>
+    <string name="GroupsLearnMore_paragraph_3">Tulevikus pakub Tellomi võimalust vanu gruppe uuteks uuendada.</string>
 
     <!-- GroupLinkBottomSheetDialogFragment -->
     <string name="GroupLinkBottomSheet_share_hint_requiring_approval">Igaüks saab selle lingi kaudu näha grupi nime ja fotot ning saata taotluse liitumiseks. Jaga seda isikutega, keda usaldad.</string>
@@ -5675,7 +5675,7 @@
     <!-- Shown in a dialog with a spinner while the report is downloading -->
     <string name="ExportAccountDataFragment__download_progress">Aruande loomine …</string>
     <!-- Explanation that the report is only generated on export and is not saved on the device -->
-    <string name="ExportAccountDataFragment__report_not_stored_disclaimer">Sinu aruanne luuakse ainult ekspordi hetkel ja Signal ei salvesta seda sinu seadmesse.</string>
+    <string name="ExportAccountDataFragment__report_not_stored_disclaimer">Sinu aruanne luuakse ainult ekspordi hetkel ja Tellomi ei salvesta seda sinu seadmesse.</string>
 
     <!-- ChangeNumberFragment -->
     <string name="ChangeNumberFragment__use_this_to_change_your_current_phone_number_to_a_new_phone_number">Kasuta seda, et oma praegust telefoninumbrit uue telefoninumbri vastu vahetada. Seda muudatust ei saa tagasi võtta.\n\nEnne jätkamist veendu, et sinu uus number on võimeline sõnumeid ja kõnesid vastu võtma.</string>
@@ -6043,7 +6043,7 @@
     <string name="HelpFragment__copyright_signal_messenger">Autoriõigus Signal Messenger</string>
     <string name="HelpFragment__licenced_under_the_agplv3">Litsentsitud GNU AGPLv3 litsentsiga</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="HelpSettingsFragment__signal_is_a_501c3">Signal on mittetulundusühing</string>
+    <string name="HelpSettingsFragment__signal_is_a_501c3">Tellomi on mittetulundusühing</string>
 
     <!-- DataAndStorageSettingsFragment -->
     <string name="DataAndStorageSettingsFragment__media_quality">Meedia kvaliteet</string>
@@ -6094,7 +6094,7 @@
     <!-- Title text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
     <string name="Donate2022Q2Megaphone_donate_to_signal">Anneta Signalile</string>
     <!-- Body text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
-    <string name="Donate2022Q2Megaphone_signal_is_powered_by_people_like_you">Signal toimib tänu inimestele nagu Sina. Anneta igakuiselt, et saada medal.</string>
+    <string name="Donate2022Q2Megaphone_signal_is_powered_by_people_like_you">Tellomi toimib tänu inimestele nagu Sina. Anneta igakuiselt, et saada medal.</string>
     <!-- Button label that brings a user to the donate screen. Shown in a popup at the bottom of the chat list. -->
     <string name="Donate2022Q2Megaphone_donate">Anneta</string>
     <!-- Button label that dismissed a prompt to donate. Shown in a popup at the bottom of the chat list. -->
@@ -6117,7 +6117,7 @@
     <!-- BecomeASustainerMegaphone -->
     <string name="BecomeASustainerMegaphone__become_a_sustainer">Hakka toetajaks</string>
     <!-- Displayed in the Become a Sustainer megaphone -->
-    <string name="BecomeASustainerMegaphone__signal_is_powered_by">Signal toimib tänu inimestele nagu sina. Anneta, et saada toetaja märk.</string>
+    <string name="BecomeASustainerMegaphone__signal_is_powered_by">Tellomi toimib tänu inimestele nagu sina. Anneta, et saada toetaja märk.</string>
     <string name="BecomeASustainerMegaphone__not_now">Mitte praegu</string>
     <string name="BecomeASustainerMegaphone__donate">Anneta</string>
 
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s toetab Signalit</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s toetab Signalit igakuise annetusega. Signal on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s toetab Signalit igakuise annetusega. Tellomi on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s toetab Signalit igakuise annetusega. Signal on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s toetab Signalit igakuise annetusega. Tellomi on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
 
     <string name="ImageView__badge">Märk</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Aegub %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Sõltumatu mittetulundusühinguna on Signal pühendunud privaatsõnumitele ja kõnedele. Ei mingeid reklaame, jälgijaid ega järelevalvet. Anneta nüüd, et Signalit toetada.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Sõltumatu mittetulundusühinguna on Tellomi pühendunud privaatsõnumitele ja kõnedele. Ei mingeid reklaame, jälgijaid ega järelevalvet. Anneta nüüd, et Signalit toetada.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6461,7 +6461,7 @@
     <!-- Third small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__your_privacy_is_our_mission">SInu privaatsus on meie missioon</string>
     <!-- Fourth small text blurb on learn more sheet. Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3">Signal on mittetulundusühing</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3">Tellomi on mittetulundusühing</string>
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">Täname sind toetuse eest!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Kui sul on rohkem kui üks märk, saad valida, millist soovid oma profiilil kuvada.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Toeta Signalit ja teeni oma profiilile märke.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Anneta Signalile</string>
@@ -6562,7 +6562,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__go_to_google_pay">Mine Google Pay-sse</string>
 
     <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__cant_process_subscription_payment">Tellimuse makset ei õnnestu töödelda</string>
-    <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__were_having_trouble">Meil on probleeme sinu Signali toetaja tasu töötlemisega. Palun veendu, et sinu maksemeetod on uuendatud. Kui ei ole, siis palun uuenda seda Google Pay kaudu. Signal proovib makset paari päeva pärast uuesti töödelda.</string>
+    <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__were_having_trouble">Meil on probleeme sinu Signali toetaja tasu töötlemisega. Palun veendu, et sinu maksemeetod on uuendatud. Kui ei ole, siis palun uuenda seda Google Pay kaudu. Tellomi proovib makset paari päeva pärast uuesti töödelda.</string>
     <string name="CantProcessSubscriptionPaymentBottomSheetDialogFragment__dont_show_this_again">Ära näita seda uuesti</string>
 
     <string name="Subscription__contact_support">Võta ühendust kasutajatoega</string>
@@ -6612,7 +6612,7 @@
     <!-- Displayed as title when some generic error happens during sending donation on behalf of another user -->
     <string name="DonationsErrors__donation_failed">Annetus nurjus</string>
     <!-- Displayed as message when some generic error happens during sending donation on behalf of another user -->
-    <string name="DonationsErrors__your_payment_was_processed_but">Sinu annetus oli küll edukas, aga Signal ei saanud sinu annetusega saadetud sõnumit saata. Palun võta ühendust kasutajatoega.</string>
+    <string name="DonationsErrors__your_payment_was_processed_but">Sinu annetus oli küll edukas, aga Tellomi ei saanud sinu annetusega saadetud sõnumit saata. Palun võta ühendust kasutajatoega.</string>
     <string name="DonationsErrors__your_badge_could_not">Sinu kontole ei õnnestunud märki lisada, kuid on võimalik, et sult võeti tasu. Palun pöördu kasutajatoe poole.</string>
     <string name="DonationsErrors__your_payment_is_still">Sinu annetus on endiselt töötlemisel. Selleks võib olenevalt sinu ühendusest kuluda mõni minut.</string>
     <string name="DonationsErrors__failed_to_cancel_subscription">Tellimust ei õnnestunud tühistada</string>
@@ -6851,7 +6851,7 @@
     <!-- Displayed in a toast when we fail to open the ringtone picker -->
     <string name="NotificationSettingsFragment__failed_to_open_picker">Valija avamine nurjus.</string>
     <!-- Banner title when notification permission is disabled -->
-    <string name="NotificationSettingsFragment__to_enable_notifications">Teavituste näitamiseks vajab Signal nende kuvamise luba.</string>
+    <string name="NotificationSettingsFragment__to_enable_notifications">Teavituste näitamiseks vajab Tellomi nende kuvamise luba.</string>
     <!-- Banner action when notification permission is disabled -->
     <string name="NotificationSettingsFragment__turn_on">Lülita sisse</string>
 
@@ -7538,7 +7538,7 @@
     <!-- Continue button label -->
     <string name="DonateToSignalFragment__continue">Jätka</string>
     <!-- Description below title -->
-    <string name="DonateToSignalFragment__private_messaging">Anneta privaatse sõnumivahetuse toetuseks. Aita hoida Signal sõltumatu ja reklaamivaba.</string>
+    <string name="DonateToSignalFragment__private_messaging">Anneta privaatse sõnumivahetuse toetuseks. Aita hoida Tellomi sõltumatu ja reklaamivaba.</string>
     <!-- Dialog title when a user tries to donate while they already have a pending donation. -->
     <string name="DonateToSignalFragment__you_have_a_donation_pending">Sul on annetus ootel</string>
     <!-- Dialog body when a user tries to donate while they already have a pending monthly donation. -->
@@ -7592,7 +7592,7 @@
     <!-- Title of screen displaying the bank transfer mandate -->
     <string name="BankTransferMandateFragment__bank_transfer">Pangaülekanne</string>
     <!-- Subtitle of screen displaying the bank transfer mandate, placeholder is \'Learn more\' -->
-    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe töötleb Signalile tehtud annetusi. Signal ei kogu ega salvesta sinu isikuandmeid. %1$s</string>
+    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe töötleb Signalile tehtud annetusi. Tellomi ei kogu ega salvesta sinu isikuandmeid. %1$s</string>
     <!-- Subtitle learn more of screen displaying bank transfer mandate -->
     <string name="BankTransferMandateFragment__learn_more">Rohkem teavet</string>
     <!-- Button label to continue with transfer -->
@@ -7638,7 +7638,7 @@
     <!-- Subtitle of the screen, displayed below the toolbar. Placeholder is for \'learn more\' -->
     <string name="IdealTransferDetailsFragment__enter_your_bank">Sisesta oma nimi ja meiliaadress. Stripe kasutab seda meiliaadressi sulle sinu annetuse kohta teavituste saatmiseks. %1$s</string>
     <!-- Subtitle of the screen, displayed below the toolbar. Placeholder is for \'learn more\' -->
-    <string name="IdealTransferDetailsFragment__enter_your_bank_details_one_time">Sisesta oma pangaandmed. Signal ei kogu ega salvesta sinu isikuandmeid. %1$s</string>
+    <string name="IdealTransferDetailsFragment__enter_your_bank_details_one_time">Sisesta oma pangaandmed. Tellomi ei kogu ega salvesta sinu isikuandmeid. %1$s</string>
     <!-- Subtitle learn-more button displayed inline with the subtitle text -->
     <string name="IdealTransferDetailsFragment__learn_more">Rohkem teavet</string>
     <!-- Hint label for text entry box for name on bank account -->
@@ -7710,7 +7710,7 @@
     <!-- The title of a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_title">Sinu kontakte ei saa töödelda</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
-    <string name="CdsPermanentErrorBottomSheet_body">Sinu telefonis on rohkem kontakte kui Signal suudab töödelda. Selleks, et kontakte Signalis leida, proovi eemaldada oma telefonist kontaktid või kontod, mis suurt arvu kontakte sünkroniseerivad.</string>
+    <string name="CdsPermanentErrorBottomSheet_body">Sinu telefonis on rohkem kontakte kui Tellomi suudab töödelda. Selleks, et kontakte Signalis leida, proovi eemaldada oma telefonist kontaktid või kontod, mis suurt arvu kontakte sünkroniseerivad.</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_learn_more">Rohkem teavet</string>
     <!-- A button label in a bottom sheet that will navigate the user to their contacts settings. -->
@@ -7726,9 +7726,9 @@
 
     <!-- YourInformationIsPrivateBottomSheet -->
     <string name="YourInformationIsPrivateBottomSheet__your_information_is_private">Sinu andmed on privaatsed</string>
-    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_collect">Signal ei kogu ega salvesta annetuse tegemisel sinu isikuandmeid.</string>
+    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_collect">Tellomi ei kogu ega salvesta annetuse tegemisel sinu isikuandmeid.</string>
     <string name="YourInformationIsPrivateBottomSheet__we_use_stripe">Kasutame sinu annetuse vastuvõtmisel makse töötlemiseks Stripe\'i. Meil ei ole ligipääsu andmetele, mida sa nendega jagad; me ei kogu ega salvesta neid andmeid.</string>
-    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_and_cannot">Signal ei saa ega soovi seostada sinu annetust sinu Signali kontoga.</string>
+    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_and_cannot">Tellomi ei saa ega soovi seostada sinu annetust sinu Signali kontoga.</string>
     <string name="YourInformationIsPrivateBottomSheet__thank_you">Täname sind toetuse eest!</string>
 
     <!-- GroupStoryEducationSheet -->
@@ -8213,9 +8213,9 @@
     <string name="UseNewOnDeviceBackups__not_now">Mitte praegu</string>
 
     <!-- Title of a megaphone shown to prompt the user to open Signal on their primary device -->
-    <string name="InactivePrimary__title">Ava Signal enda telefonis</string>
+    <string name="InactivePrimary__title">Ava Tellomi enda telefonis</string>
     <!-- Body of a megaphone shown to prompt the user to open Signal on their primary device -->
-    <string name="InactivePrimary__body">Selleks, et oma konto aktiivsena hoida, ava Signal oma põhiseadmes.</string>
+    <string name="InactivePrimary__body">Selleks, et oma konto aktiivsena hoida, ava Tellomi oma põhiseadmes.</string>
     <!-- Button of a megaphone shown to prompt the user to open Signal on their primary device that will navigate to a support page -->
     <string name="InactivePrimary__learn_more">Rohkem teavet</string>
     <!-- Button of a megaphone shown to prompt the user to open Signal on their primary device that will snooze the megaphone -->
@@ -8313,8 +8313,8 @@
     <string name="LinkedDeviceInactiveMegaphone_title">Mitteaktiivne lingitud seade</string>
     <!-- Body for an alert letting someone know that one of their linked devices is inactive. The string placeholder is the name of the device, and the number placeholder is the number of days before device is unlinked. -->
     <plurals name="LinkedDeviceInactiveMegaphone_body">
-        <item quantity="one">Et hoida „%1$s“ lingituna, ava Signal selles seadmes %2$d päeva jooksul.</item>
-        <item quantity="other">Et hoida „%1$s“ lingituna, ava Signal selles seadmes %2$d päeva jooksul.</item>
+        <item quantity="one">Et hoida „%1$s“ lingituna, ava Tellomi selles seadmes %2$d päeva jooksul.</item>
+        <item quantity="other">Et hoida „%1$s“ lingituna, ava Tellomi selles seadmes %2$d päeva jooksul.</item>
     </plurals>
     <!-- Button label for an alert letting someone know that one of their linked devices is inactive. When clicked, the user will opt out of all future alerts. -->
     <string name="LinkedDeviceInactiveMegaphone_dont_remind_button_label">Ära tuleta meelde</string>
@@ -9069,7 +9069,7 @@
     <!-- Dialog title confirming that the user wants to save a recovery key to the device password manager. -->
     <string name="MessageBackupsKeyRecordScreen__confirm_save_to_password_manager_title">Kas salvestada paroolihaldurisse?</string>
     <!-- Dialog message confirming that the user wants to save a recovery key to the device password manager. -->
-    <string name="MessageBackupsKeyRecordScreen__confirm_save_to_password_manager_body">Hoia oma varukoopia võtit ainult paroolihalduris, mille turvalisust usaldad. Signal ei anna soovitust, milline paroolihaldur sulle sobib.</string>
+    <string name="MessageBackupsKeyRecordScreen__confirm_save_to_password_manager_body">Hoia oma varukoopia võtit ainult paroolihalduris, mille turvalisust usaldad. Tellomi ei anna soovitust, milline paroolihaldur sulle sobib.</string>
     <!-- ID used when saving the recovery key to the device password manager. -->
     <string name="MessageBackupsKeyRecordScreen__backup_key_password_manager_id">Signali turvalised varukoopiad</string>
     <!-- Message shown after the recovery key is successfully saved to the device password manager. -->
@@ -9079,7 +9079,7 @@
     <!-- Dialog message shown when there is an error saving the recovery key because no compatible password manager was detected. -->
     <string name="MessageBackupsKeyRecordScreen__missing_password_manager_message">Sul pole paroolihaldurit seadistatud või sinu kasutatavat paroolihaldurit ei toetata.</string>
     <!-- Dialog message shown when there is an error saving the recovery key because the user previously chose not to save Signal passwords to their password manager. -->
-    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">Varem valisid, et ei soovi Signali paroole Google\'i paroolihaldurisse salvestada. Eemalda oma Google\'i paroolihalduri sätetes Signal kategooriast „Keelatud saidid ja äpid” ning proovi uuesti.</string>
+    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">Varem valisid, et ei soovi Signali paroole Google\'i paroolihaldurisse salvestada. Eemalda oma Google\'i paroolihalduri sätetes Tellomi kategooriast „Keelatud saidid ja äpid” ning proovi uuesti.</string>
     <!-- Label for a button that navigates to the device settings -->
     <string name="MessageBackupsKeyRecordScreen__go_to_settings">Mine sätetesse</string>
     <!-- Action button label -->
@@ -9087,7 +9087,7 @@
     <!-- Bottom sheet title -->
     <string name="MessageBackupsKeyRecordScreen__keep_your_key_safe">Hoia oma võtit turvaliselt</string>
     <!-- Bottom sheet subtitle -->
-    <string name="MessageBackupsKeyRecordScreen__signal_will_not">Kui oma võtme ära kaotad, ei saa Signal aidata sul varukoopiat taastada. Hoia seda turvalises kohas ning ära jaga teistega.</string>
+    <string name="MessageBackupsKeyRecordScreen__signal_will_not">Kui oma võtme ära kaotad, ei saa Tellomi aidata sul varukoopiat taastada. Hoia seda turvalises kohas ning ära jaga teistega.</string>
     <!-- Checkbox label -->
     <string name="MessageBackupsKeyRecordScreen__ive_recorded_my_key">Olen oma võtme üles kirjutanud</string>
     <!-- Sheet action button label -->
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Vali oma varundamise plaan</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Kõik varukoopiad on otspunktkrüptitud. Signal on mittetulundusühing – varukoopiate eest tasumine aitab meie missiooni toetada.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Kõik varukoopiad on otspunktkrüptitud. Tellomi on mittetulundusühing – varukoopiate eest tasumine aitab meie missiooni toetada.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Rohkem teavet</string>
     <!-- Primary action button label without a current selection -->
@@ -9279,7 +9279,7 @@
     <!-- Recovery key text field hint -->
     <string name="EnterBackupKey_backup_key">Varukoopia võti</string>
     <!-- Recovery key not known bottom sheet info paragraph 1 -->
-    <string name="EnterBackupKey_no_key_paragraph_1">Ilma 64-kohalise koodita ei saa varukoopiat taastada. Kui oled oma varukoopia võtme kaotanud, ei saa Signal sul aidata varukoopiat taastada.</string>
+    <string name="EnterBackupKey_no_key_paragraph_1">Ilma 64-kohalise koodita ei saa varukoopiat taastada. Kui oled oma varukoopia võtme kaotanud, ei saa Tellomi sul aidata varukoopiat taastada.</string>
     <!-- Recovery key not known bottom sheet info paragraph 2 -->
     <string name="EnterBackupKey_no_key_paragraph_2">Kui sul on vana seade alles, saad vaadata oma varukoopia võtit, kui valid Sätted &gt; Varukoopiad. Seejärel vali „Vaata varukoopia võtit“.</string>
     <!-- Recovery key not known bottom sheet button to learn more about it -->
@@ -9318,10 +9318,10 @@
     <string name="EnterBackupKey_contact_support">Võta ühendust kasutajatoega</string>
 
     <!-- Email subject when contacting support on a restore backup network issue -->
-    <string name="EnterBackupKey_network_failure_support_email">Signal Androidi varukoopia taastamise võrguviga</string>
+    <string name="EnterBackupKey_network_failure_support_email">Tellomi Androidi varukoopia taastamise võrguviga</string>
   <!-- Removed by excludeNonTranslatables <string name="EnterBackupKey_network_failure_support_email_filter" translatable="false">Android SignalBackups Import Failed</string> -->
     <!-- Email subject when contacting support on a permanent backup import failure -->
-    <string name="EnterBackupKey_permanent_failure_support_email">Püsiv tõrge Signal Androidi varukoopia taastamisel</string>
+    <string name="EnterBackupKey_permanent_failure_support_email">Püsiv tõrge Tellomi Androidi varukoopia taastamisel</string>
   <!-- Removed by excludeNonTranslatables <string name="EnterBackupKey_permanent_failure_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
 
     <!-- EnterLocalBackupKeyScreen: Screen title for entering recovery key for local backup restore -->
@@ -9451,7 +9451,7 @@
     <string name="SelectLocalBackupTypeScreen__select_the_folder_on_your_device">Vali oma seadmes kaust, kuhu sinu varukoopia on salvestatud</string>
 
     <!-- Email subject when contacting support on a create backup failure -->
-    <string name="BackupAlertBottomSheet_network_failure_support_email">Signal Androidi varukoopia eksportimise võrguviga</string>
+    <string name="BackupAlertBottomSheet_network_failure_support_email">Tellomi Androidi varukoopia eksportimise võrguviga</string>
     <!-- Email filter when contacting support on a create backup failure -->
   <!-- Removed by excludeNonTranslatables <string name="BackupAlertBottomSheet_export_failure_filter" translatable="false">Android SignalBackups Export Failed</string> -->
 
@@ -9467,7 +9467,7 @@
     <!-- Title for restore via qr screen -->
     <string name="RestoreViaQr_title">Skanni oma vana telefoniga see kood</string>
     <!-- First instruction on what to do with restore via qr code -->
-    <string name="RestoreViaQr_instruction_1">Ava Signal oma vanas seadmes</string>
+    <string name="RestoreViaQr_instruction_1">Ava Tellomi oma vanas seadmes</string>
     <!-- Second instruction on what to do with restore via qr code -->
     <string name="RestoreViaQr_instruction_2">Toksa kaamera ikooni </string>
     <!-- Third instruction on what to do with restore via qr code -->
@@ -9514,11 +9514,11 @@
     <!-- Restore Complete bottom sheet dialog title -->
     <string name="RestoreCompleteBottomSheet_restore_complete">Vii teises seadmes lõpule</string>
     <!-- Restore Complete bottom sheet dialog message -->
-    <string name="RestoreCompleteBottomSheet_restore_complete_message">Sinu Signali konto ja sõnumid on su teises seadmes valmis taastamiseks. Signal on selles seadmes nüüd mitteaktiivne.</string>
+    <string name="RestoreCompleteBottomSheet_restore_complete_message">Sinu Signali konto ja sõnumid on su teises seadmes valmis taastamiseks. Tellomi on selles seadmes nüüd mitteaktiivne.</string>
     <!-- Restore Complete bottom sheet dialog title after device transfer -->
     <string name="RestoreCompleteBottomSheet_transfer_complete">Edastamine lõpetatud</string>
     <!-- Restore Complete bottom sheet dialog message after device transfer -->
-    <string name="RestoreCompleteBottomSheet_transfer_complete_message">Sinu Signali konto ja sõnumid on edastatud su teise seadmesse. Signal on selles seadmes nüüd mitteaktiivne.</string>
+    <string name="RestoreCompleteBottomSheet_transfer_complete_message">Sinu Signali konto ja sõnumid on edastatud su teise seadmesse. Tellomi on selles seadmes nüüd mitteaktiivne.</string>
     <!-- Restore Complete bottom sheet dialog button text to dismiss sheet -->
     <string name="RestoreCompleteBottomSheet_button">Olgu</string>
 
@@ -9527,7 +9527,7 @@
     <!-- No Backup to Restore screen subtitle -->
     <string name="NoBackupToRestore_subtitle">Kuna liigud iPhone\'ist Androidi, on ainus viis sõnumite ja meedia edastamiseks lülitada vanas seadmes sisse Signali turvalised varukoopiad.</string>
     <!-- No Backup to Restore step 1 to enable backups on old device -->
-    <string name="NoBackupToRestore_step1">Ava Signal oma vanas seadmes</string>
+    <string name="NoBackupToRestore_step1">Ava Tellomi oma vanas seadmes</string>
     <!-- No Backup to Restore step 2 to enable backups on old device -->
     <string name="NoBackupToRestore_step2">Vali Sätted &gt; Varukoopiad</string>
     <!-- No Backup to Restore step 3 to enable backups on old device -->
@@ -9892,12 +9892,12 @@
     <string name="CouldNotCompleteBackupRestoreSheet__body_error">Tekkis tõrge ja su varukoopiat ei saanud taastada. See võib olla sellepärast, et varukoopia kausta liigutati su seadmes varukoopia taastamise ajal.</string>
 
     <!-- Body of the sheet shown when a local backup restore could not be completed, explaining how to try again -->
-    <string name="CouldNotCompleteBackupRestoreSheet__body_retry">Uuesti proovimiseks eemalda Signal seadmest, paigalda see uuesti ja vali „Taasta või edasta“.</string>
+    <string name="CouldNotCompleteBackupRestoreSheet__body_retry">Uuesti proovimiseks eemalda Tellomi seadmest, paigalda see uuesti ja vali „Taasta või edasta“.</string>
 
     <!-- Title of the sheet shown when the server reports a verification code was requested for the user\'s phone number -->
     <string name="VerificationCodeRequestedBottomSheet__title">Kinnituskood on tellitud</string>
     <!-- First paragraph of the body of the verification code requested sheet -->
-    <string name="VerificationCodeRequestedBottomSheet__body_1">Ära jaga oma kinnituskoodi mitte kellegagi. Signal ei küsi seda kunagi sõnumi teel. Kui said sõnumi kelleltki, kes esineb Signali nime all, on see pettus.</string>
+    <string name="VerificationCodeRequestedBottomSheet__body_1">Ära jaga oma kinnituskoodi mitte kellegagi. Tellomi ei küsi seda kunagi sõnumi teel. Kui said sõnumi kelleltki, kes esineb Signali nime all, on see pettus.</string>
     <!-- Second paragraph of the body of the verification code requested sheet -->
     <string name="VerificationCodeRequestedBottomSheet__body_2">Kui palusid koodi ise, võid seda sõnumit eirata.</string>
     <!-- Button on the verification code requested sheet that opens the safety tips screen -->
@@ -9912,7 +9912,7 @@
     <!-- Title of the first safety tip: don\'t respond to chats claiming to be Signal -->
     <string name="SafetyTipsBottomSheet__tip_1_title">Ära vasta Signali saadetud sõnumitele</string>
     <!-- Body of the first safety tip -->
-    <string name="SafetyTipsBottomSheet__tip_1_body">Signal ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks. Ära vasta kunagi sõnumitele, milles väidetakse, et need on Signalilt.</string>
+    <string name="SafetyTipsBottomSheet__tip_1_body">Tellomi ei võta sinuga kunagi ühendust registreerimiskoodi, PIN-koodi või taastevõtme küsimiseks. Ära vasta kunagi sõnumitele, milles väidetakse, et need on Signalilt.</string>
     <!-- Title of the second safety tip: keep your verification code safe -->
     <string name="SafetyTipsBottomSheet__tip_2_title">Hoia oma kinnituskoodi turvaliselt</string>
     <!-- Body of the second safety tip -->
@@ -9927,7 +9927,7 @@
     <!-- Title of a warning sheet shown when the user copies or pastes their recovery key, urging them not to share it -->
     <string name="RecoveryKeyWarningSheetContent__do_not_share_your_recovery_key">Ära jaga oma taastevõtit</string>
     <!-- Bolded lead-in to the warning sheet body; combined with RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond to form a full sentence -->
-    <string name="RecoveryKeyWarningSheetContent__signal_will_never_message_you">Signal ei küsi sinult kunagi sõnumi teel</string>
+    <string name="RecoveryKeyWarningSheetContent__signal_will_never_message_you">Tellomi ei küsi sinult kunagi sõnumi teel</string>
     <!-- Remainder of the warning sheet body following the bolded lead-in RecoveryKeyWarningSheetContent__signal_will_never_message_you -->
     <string name="RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond">taastevõtit. Ära vasta kunagi sõnumitele, milles väidetakse, et need on Signalilt. Säilita oma taastevõtit turvaliselt ja ära jaga seda mitte kellegagi.</string>
     <!-- Button dismissing the recovery key warning sheet after the user has copied their key -->
@@ -9946,7 +9946,7 @@
     <!-- First sentence of the final confirmation dialog body warning against sharing the recovery key -->
     <string name="RecoveryKeyWarningDialog__do_not_share_your_recovery_key_with_anyone">Ära jaga oma taastevõtit mitte kellegagi. Selle abil on teistel isikutel võimalik su konto üle võtta.</string>
     <!-- Bolded middle sentence of the final confirmation dialog body -->
-    <string name="RecoveryKeyWarningDialog__signal_will_never_message_you_for_your_recovery_key">Signal ei palu sinult kunagi sõnumi teel taastevõtit.</string>
+    <string name="RecoveryKeyWarningDialog__signal_will_never_message_you_for_your_recovery_key">Tellomi ei palu sinult kunagi sõnumi teel taastevõtit.</string>
     <!-- Final sentence of the final confirmation dialog body -->
     <string name="RecoveryKeyWarningDialog__never_respond_to_a_chat">Ära vasta kunagi sõnumitele, milles väidetakse, et need on Signalilt.</string>
     <!-- Button confirming the user wants to paste the recovery key -->

@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">اطلاعات حساب شما</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">حساب و بازیابی</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal Login شما برای بازیابی حسابتان استفاده می‌شود. این رمزها را به‌طور امن در یک برنامه مدیر رمز عبور که به آن اعتماد دارید ذخیره کنید.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Tellomi Login شما برای بازیابی حسابتان استفاده می‌شود. این رمزها را به‌طور امن در یک برنامه مدیر رمز عبور که به آن اعتماد دارید ذخیره کنید.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">احراز هویت دومرحله‌ای</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d کلید عبور</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">هنگام استفاده از Signal Login در دستگاه جدید، از یک روش احراز هویت ثانویه برای محافظت از حساب خود استفاده کنید.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">هنگام استفاده از Tellomi Login در دستگاه جدید، از یک روش احراز هویت ثانویه برای محافظت از حساب خود استفاده کنید.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">اطلاعات بیشتر</string>
 

@@ -65,7 +65,7 @@
   <!-- Accessibility description for the button that leaves media selection and opens the camera. -->
   <string name="MediaSelectScreen__go_to_camera">Siirry kameraan</string>
   <!-- Message shown in place of the gallery when the user has not granted permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">Signal tarvitsee käyttöoikeuden kuvien ja videoiden näyttämiseksi</string>
+  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">Tellomi tarvitsee käyttöoikeuden kuvien ja videoiden näyttämiseksi</string>
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">Myönnä käyttöoikeus</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
@@ -83,7 +83,7 @@
   <!-- Subtitle of the sheet shown when the permission to read photos and videos has been permanently denied, introducing the steps that follow. -->
   <string name="MediaSelectScreen__to_show_photos_and_videos">Kuvien ja videoiden näyttäminen:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal tarvitsee käyttöoikeuden kuvien ja videoiden näyttämiseksi.</string>
+  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Tellomi tarvitsee käyttöoikeuden kuvien ja videoiden näyttämiseksi.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">Kuva</string>
@@ -156,11 +156,11 @@
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
   <string name="CameraXFragment_to_scan_qr_code_allow_camera">Jotta voit skannata QR-koodin, anna Signalille kameran käyttöoikeus.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
-  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Signal tarvitsee kameran käyttöoikeuden kuvien ottamiseksi</string>
+  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomi tarvitsee kameran käyttöoikeuden kuvien ottamiseksi</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
-  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Signal tarvitsee kameran käyttöoikeuden QR-koodien skannaamiseksi</string>
+  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Tellomi tarvitsee kameran käyttöoikeuden QR-koodien skannaamiseksi</string>
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
-  <string name="CameraXFragment_signal_needs_microphone_access_video">Signal tarvitsee mikrofonin käyttöoikeuden videon tallentamiseksi</string>
+  <string name="CameraXFragment_signal_needs_microphone_access_video">Tellomi tarvitsee mikrofonin käyttöoikeuden videon tallentamiseksi</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
   <string name="CameraXFragment_to_capture_photos">Kuvien ottaminen Signalissa:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
@@ -186,7 +186,7 @@
   <!-- Label shown below the elapsed time while a video recording is paused -->
   <string name="CameraXFragment_paused">Keskeytetty</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
-  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal tarvitsee mikrofonin käyttöoikeuden videoiden tallennusta varten, mutta se on evätty. Jatka sovellusasetuksiin, valitse \"käyttöoikeudet\" ja ota käyttöön \"mikrofoni\" ja \"kamera\".</string>
+  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Tellomi tarvitsee mikrofonin käyttöoikeuden videoiden tallennusta varten, mutta se on evätty. Jatka sovellusasetuksiin, valitse \"käyttöoikeudet\" ja ota käyttöön \"mikrofoni\" ja \"kamera\".</string>
 
   <!-- Displayed when there is an error capturing video -->
   <string name="MediaSendViewModel__error_recording_video">Virhe videota tallennettaessa</string>
@@ -229,7 +229,7 @@
         <item quantity="other">%1$d kohdetta asetettu vakiolaatuiseksi</item>
     </plurals>
   <!-- Message shown when saving the media being edited requires the storage permission, but that permission has been permanently denied by the user. -->
-  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Signal tarvitsee luvan käyttää laitteesi tallennustilaa tallentaakseen sinne, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
+  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa tallentaakseen sinne, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
   <!-- Message shown when the user disables audio on a video -->
   <string name="MediaSendViewModel__video_will_be_sent_without_audio">Video lähetetään ilman ääntä</string>
 

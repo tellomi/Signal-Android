@@ -5,7 +5,7 @@
   -->
 <!-- smartling.instruction_comments_enabled = on -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!-- Removed by excludeNonTranslatables <string name="app_name" translatable="false">Signal</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="app_name" translatable="false">Tellomi</string> -->
 
   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
   <!-- Removed by excludeNonTranslatables <string name="donate_url" translatable="false">https://signal.org/donate</string> -->
@@ -3076,8 +3076,8 @@
     <string name="SupportEmailUtil_filter">فیلتر:</string>
     <string name="SupportEmailUtil_device_info">اطلاعات دستگاه:</string>
     <string name="SupportEmailUtil_android_version">نسخهٔ اندروید:</string>
-  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_version" translatable="false">Signal version:</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_package" translatable="false">Signal package:</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_version" translatable="false">Tellomi version:</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_package" translatable="false">Tellomi package:</string> -->
     <string name="SupportEmailUtil_registration_lock">قفل ثبت‌نام:</string>
   <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_locale" translatable="false">Locale:</string> -->
   <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_challenge_received" translatable="false">Challenge Received:</string> -->
@@ -4992,7 +4992,7 @@
     <string name="BackupDialog_passphrase_was_not_correct">گذرواژه نادرست بود</string>
     <string name="LocalBackupJob_creating_signal_backup">در حال ایجاد پشتیبان سیگنال…</string>
     <!-- Title for progress notification shown in a system notification while verifying a recent backup. -->
-    <string name="LocalBackupJob_verifying_signal_backup">در حال تایید پشتیبان Signal…</string>
+    <string name="LocalBackupJob_verifying_signal_backup">در حال تایید پشتیبان Tellomi…</string>
     <string name="LocalBackupJobApi29_backup_failed">پشتیبان‌گیری ناموفق بود</string>
     <string name="LocalBackupJobApi29_your_backup_directory_has_been_deleted_or_moved">آدرس ذخیره‌سازی پشتیبان شما پاک شده یا به جای دیگری انتقال یافته است.</string>
     <string name="LocalBackupJobApi29_your_backup_file_is_too_large">حجم فایل پشتیبان شما برای نگهداری در این محل زیاد است.</string>

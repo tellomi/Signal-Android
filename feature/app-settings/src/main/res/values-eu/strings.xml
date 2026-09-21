@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">Aldatu teklatua</string>
     <string name="preferences_chats__transfer_account">Transferitu kontua</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Transferitu kontua Android gailu berri batera</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi PIN</string>
     <string name="preferences_app_protection__create_a_pin">Sortu PIN-a</string>
     <string name="preferences_app_protection__change_your_pin">Aldatu zure PINa</string>
     <string name="preferences_app_protection__pin_reminders">PIN gogorarazleak</string>
     <string name="preferences_app_protection__turn_off">Desaktibatu</string>
     <string name="preferences_app_protection__confirm_pin">Berretsi PINa</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Berretsi zure Signal PIN-a</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Ziurta zaitez zure PIN-a gogoratzeaz edo modu seguruan gordetzeaz, ezin baita berreskuratu. Zure PIN-a ahazten baduzu, zure datuak galdu ditzakezu Signal kontua berriro erregistratzen duzunean.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Berretsi zure Tellomi PIN-a</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Ziurta zaitez zure PIN-a gogoratzeaz edo modu seguruan gordetzeaz, ezin baita berreskuratu. Zure PIN-a ahazten baduzu, zure datuak galdu ditzakezu Tellomi kontua berriro erregistratzen duzunean.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">PIN okerra. Saiatu berriro.</string>
     <string name="preferences_app_protection__registration_lock">Erregistratze-blokeoa</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Erregistratu kontua berriro</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Eguneratu Signal</string>
+    <string name="preferences_account_update_signal">Eguneratu Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Garbitu datu guztiak</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Kontua</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Gero eta gutxiago galdetuko dizute denbora joan ahala</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Eskatu Signal PIN zure telefono-zenbakia Signal-en berriro erregistratzeko</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Eskatu Tellomi PIN zure telefono-zenbakia Tellomi-en berriro erregistratzeko</string>
     <string name="AccountSettingsFragment__change_phone_number">Aldatu telefono-zenbakia</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Zure kontuaren datuak</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Kontua eta berreskuratzea</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal Login kontua berreskuratzeko eta leheneratzeko erabiltzen da. Mantendu gako horiek seguru gordeta pasahitz-kudeatzaile fidagarri batean.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Tellomi Login kontua berreskuratzeko eta leheneratzeko erabiltzen da. Mantendu gako horiek seguru gordeta pasahitz-kudeatzaile fidagarri batean.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Bi faktoreko autentifikazioa</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d pasakode</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Erabili autentifikatzeko beste era bat zure kontua babesteko Signal Login erabiltzean gailu berri batean.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Erabili autentifikatzeko beste era bat zure kontua babesteko Tellomi Login erabiltzean gailu berri batean.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Informazio gehiago</string>
 
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">2. urratsa</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Ireki autentifikatzeko aplikazioa beheko botoia sakatuz Signal-eko kontua gehitzeko.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Ireki autentifikatzeko aplikazioa beheko botoia sakatuz Tellomi-eko kontua gehitzeko.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Ireki</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Ez da autentifikatzeko aplikaziorik aurkitu</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Ezin izan da Signal-ekin konektatu. Egiaztatu Internetera konektatuta zaudela eta saiatu berriro.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Ezin izan da Tellomi-ekin konektatu. Egiaztatu Internetera konektatuta zaudela eta saiatu berriro.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">3. urratsa</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Kode okerra. Idatzi une honetan autentifikazio-aplikazioan ikusgai dagoen kodea.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Ezin izan da Signal-ekin konektatu. Egiaztatu Internetera konektatuta zaudela eta saiatu berriro.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Ezin izan da Tellomi-ekin konektatu. Egiaztatu Internetera konektatuta zaudela eta saiatu berriro.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Autentifikatzeko aplikazioa</string>

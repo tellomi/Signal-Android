@@ -65,13 +65,13 @@
   <!-- Accessibility description for the button that leaves media selection and opens the camera. -->
   <string name="MediaSelectScreen__go_to_camera">Odpri kamero</string>
   <!-- Message shown in place of the gallery when the user has not granted permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">Signal potrebuje dovoljenje za prikaz vaših fotografij in videoposnetkov</string>
+  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">Tellomi potrebuje dovoljenje za prikaz vaših fotografij in videoposnetkov</string>
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">Dovoli dostop</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
-  <string name="MediaSelectScreen__no_photos_or_videos_found">Ni najdenih fotografij ali videoposnetkov. Signal ima dostop samo do izbranih fotografij in videoposnetkov.</string>
+  <string name="MediaSelectScreen__no_photos_or_videos_found">Ni najdenih fotografij ali videoposnetkov. Tellomi ima dostop samo do izbranih fotografij in videoposnetkov.</string>
   <!-- Reminder shown above the gallery when the user only shared selected photos with Signal. -->
-  <string name="MediaSelectScreen__signal_has_limited_access">Signal ima omejen dostop do fotografij ali videoposnetkov</string>
+  <string name="MediaSelectScreen__signal_has_limited_access">Tellomi ima omejen dostop do fotografij ali videoposnetkov</string>
   <!-- Label for the button that opens the menu for changing which photos and videos Signal can see. -->
   <string name="MediaSelectScreen__manage">Upravljaj</string>
   <!-- Menu option that re-opens the system picker so the user can share more photos and videos with Signal. -->
@@ -83,7 +83,7 @@
   <!-- Subtitle of the sheet shown when the permission to read photos and videos has been permanently denied, introducing the steps that follow. -->
   <string name="MediaSelectScreen__to_show_photos_and_videos">Za prikaz fotografij in videoposnetkov:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal potrebuje dostop za prikaz fotografij in videoposnetkov.</string>
+  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Tellomi potrebuje dostop za prikaz fotografij in videoposnetkov.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">Fotografija</string>
@@ -148,7 +148,7 @@
   <!-- Dialog title asking users for microphone permission -->
   <string name="CameraXFragment_allow_access_microphone">Dovoli dostop do mikrofona</string>
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Za zajemanje fotografij in videov dovolite aplikaciji Signal dostop do kamere naprave.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Za zajemanje fotografij in videov dovolite aplikaciji Tellomi dostop do kamere naprave.</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
   <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Za zajemanje fotografij in videov dovolite Signalu dostop do kamere in mikrofona naprave.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
@@ -156,11 +156,11 @@
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
   <string name="CameraXFragment_to_scan_qr_code_allow_camera">Za skeniranje QR kode dovolite Signalu dostop do kamere.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
-  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Signal potrebuje dostop do kamere za zajemanje fotografij</string>
+  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomi potrebuje dostop do kamere za zajemanje fotografij</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
-  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Signal potrebuje dostop do kamere za optično branje QR kod</string>
+  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Tellomi potrebuje dostop do kamere za optično branje QR kod</string>
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
-  <string name="CameraXFragment_signal_needs_microphone_access_video">Signal potrebuje dostop do mikrofona za zajemanje videoposnetkov</string>
+  <string name="CameraXFragment_signal_needs_microphone_access_video">Tellomi potrebuje dostop do mikrofona za zajemanje videoposnetkov</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
   <string name="CameraXFragment_to_capture_photos">Za zajemanje fotografij v Signalu:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
@@ -186,7 +186,7 @@
   <!-- Label shown below the elapsed time while a video recording is paused -->
   <string name="CameraXFragment_paused">Zaustavljeno</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
-  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Dostop do mikrofona je bil onemogočen. Za snemanje videa potrebuje aplikacija Signal dovoljenje za dostop do mikrofona. Prosimo, nadaljujte v nastavitve aplikacij, izberite »Dovoljenja« in omogočite dovoljenje pod postavko »Mikrofon«.</string>
+  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Dostop do mikrofona je bil onemogočen. Za snemanje videa potrebuje aplikacija Tellomi dovoljenje za dostop do mikrofona. Prosimo, nadaljujte v nastavitve aplikacij, izberite »Dovoljenja« in omogočite dovoljenje pod postavko »Mikrofon«.</string>
 
   <!-- Displayed when there is an error capturing video -->
   <string name="MediaSendViewModel__error_recording_video">Napaka pri snemanju videa</string>
@@ -233,7 +233,7 @@
         <item quantity="other">%1$d medijev je nastavljenih na standardno kakovost</item>
     </plurals>
   <!-- Message shown when saving the media being edited requires the storage permission, but that permission has been permanently denied by the user. -->
-  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Dostop do shrambe je bil trajno onemogočen. Aplikacija Signal potrebuje dovoljenje za dostop do sistemske shrambe za shranjevanje v zunanji pomnilnik naprave. Prosimo, pojdite v meni Nastavitve aplikacij, izberite \"Dovoljenja\" in omogočite dovoljenje pod postavko \"Shramba\".</string>
+  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Dostop do shrambe je bil trajno onemogočen. Aplikacija Tellomi potrebuje dovoljenje za dostop do sistemske shrambe za shranjevanje v zunanji pomnilnik naprave. Prosimo, pojdite v meni Nastavitve aplikacij, izberite \"Dovoljenja\" in omogočite dovoljenje pod postavko \"Shramba\".</string>
   <!-- Message shown when the user disables audio on a video -->
   <string name="MediaSendViewModel__video_will_be_sent_without_audio">Video bo poslan brez zvoka</string>
 
@@ -247,7 +247,7 @@
   <!-- The title of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_title">Poveži z napravo?</string>
   <!-- The body of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
-  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Zdi se, da poskušate povezati napravo Signal. Tapnite Nadaljuj in nato »Poveži novo napravo« ter znova preberite kodo QR.</string>
+  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Zdi se, da poskušate povezati napravo Tellomi. Tapnite Nadaljuj in nato »Poveži novo napravo« ter znova preberite kodo QR.</string>
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">Nadaljuj</string>
 

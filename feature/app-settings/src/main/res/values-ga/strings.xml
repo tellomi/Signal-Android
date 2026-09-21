@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">An bhfuil fonn ort Glas Clárúcháin a chur ar siúl?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">An bhfuil fonn ort an Glas Clárúcháin a mhúchadh?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Má ligeann tú d\'UAP Signal i ndearmad nuair a chláróidh tú le Signal arís, cuirfear do chuntas faoi ghlas ar feadh 7 lá.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Má ligeann tú d\'UAP Tellomi i ndearmad nuair a chláróidh tú le Tellomi arís, cuirfear do chuntas faoi ghlas ar feadh 7 lá.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Cuir ar siúl</string>
     <string name="RegistrationLockV2Dialog_turn_off">Múch</string>
     <string name="preferences__advanced_pin_settings">Ardroghanna UAP</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">Aistrigh eochairchlár</string>
     <string name="preferences_chats__transfer_account">Cuntas a Aistriú</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Aistrigh cuntas chuig gléas nua Android</string>
-    <string name="preferences_app_protection__signal_pin">UAP Signal</string>
+    <string name="preferences_app_protection__signal_pin">UAP Tellomi</string>
     <string name="preferences_app_protection__create_a_pin">Cruthaigh UAP</string>
     <string name="preferences_app_protection__change_your_pin">Athraigh d\'UAP</string>
     <string name="preferences_app_protection__pin_reminders">Meabhrúcháin UAP</string>
     <string name="preferences_app_protection__turn_off">Múch</string>
     <string name="preferences_app_protection__confirm_pin">Deimhnaigh an UAP</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">UAP Signal a Dheimhniú</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Cinntigh go gcuirfidh tú d\'UAP de do ghlanmheabhair nó go ndéanfaidh tú í a stóráil go slán toisc nach féidir í a aisghabháil. Má dhéanann tú dearmad ar d\'UAP, seans go gcaillfidh tú sonraí agus do chuntas Signal á athchlárú agat.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">UAP Tellomi a Dheimhniú</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Cinntigh go gcuirfidh tú d\'UAP de do ghlanmheabhair nó go ndéanfaidh tú í a stóráil go slán toisc nach féidir í a aisghabháil. Má dhéanann tú dearmad ar d\'UAP, seans go gcaillfidh tú sonraí agus do chuntas Tellomi á athchlárú agat.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">UAP mícheart. Triail arís.</string>
     <string name="preferences_app_protection__registration_lock">Glas Clárúcháin</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Athchláraigh cuntas</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Nuashonraigh Signal</string>
+    <string name="preferences_account_update_signal">Nuashonraigh Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Scrios na sonraí go léir</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Cuntas</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Ní iarrfar ort chomh minic le himeacht ama</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Éiligh d\'UAP Signal le d\'uimhir ghutháin a chlárú le Signal arís</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Éiligh d\'UAP Tellomi le d\'uimhir ghutháin a chlárú le Tellomi arís</string>
     <string name="AccountSettingsFragment__change_phone_number">Athraigh uimhir ghutháin</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Sonraí do chuntais</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Cuntas &amp; aisghabháil</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Úsáidtear an Signal Login agat chun do chuntas a athshlánú agus a aischur. Coinnigh na heochracha seo stóráilte go slán i mbainisteoir pasfhocal a bhfuil iontaoibh agat as.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Úsáidtear an Tellomi Login agat chun do chuntas a athshlánú agus a aischur. Coinnigh na heochracha seo stóráilte go slán i mbainisteoir pasfhocal a bhfuil iontaoibh agat as.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Fíordheimhniú dhá fhachtóir</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -77,7 +77,7 @@
         <item quantity="other">%1$d paseochair</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Úsáid cineál tánaisteach fíordheimhnithe chun do chuntas a chosaint nuair a úsáideann tú an Signal Login agat ar ghléas nua.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Úsáid cineál tánaisteach fíordheimhnithe chun do chuntas a chosaint nuair a úsáideann tú an Tellomi Login agat ar ghléas nua.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Tuilleadh faisnéise</string>
 
@@ -95,7 +95,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Céim 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Oscail d\'aip fíordheimhnitheora ach an cnaipe thíos a thapáil chun do chuntas Signal a chur leis.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Oscail d\'aip fíordheimhnitheora ach an cnaipe thíos a thapáil chun do chuntas Tellomi a chur leis.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Oscail</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -107,7 +107,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Níor aimsíodh aip fíordheimhnitheora</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Níorbh fhéidir Signal a bhaint amach. Seiceáil do nasc agus triail arís.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Níorbh fhéidir Tellomi a bhaint amach. Seiceáil do nasc agus triail arís.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Céim 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -155,7 +155,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Cód mícheart. Cuir isteach an cód a thaispeántar i d\'aip fíordheimhnitheora anois.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Níorbh fhéidir Signal a bhaint amach. Seiceáil do nasc agus triail arís.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Níorbh fhéidir Tellomi a bhaint amach. Seiceáil do nasc agus triail arís.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Aip fíordheimhnitheora</string>

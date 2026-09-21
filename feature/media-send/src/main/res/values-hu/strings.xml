@@ -69,9 +69,9 @@
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">Hozzáférés engedélyezése</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
-  <string name="MediaSelectScreen__no_photos_or_videos_found">Nincsenek fotók vagy videók. A Signal csak az általad kiválasztott fotókhoz és videókhoz fér hozzá.</string>
+  <string name="MediaSelectScreen__no_photos_or_videos_found">Nincsenek fotók vagy videók. A Tellomi csak az általad kiválasztott fotókhoz és videókhoz fér hozzá.</string>
   <!-- Reminder shown above the gallery when the user only shared selected photos with Signal. -->
-  <string name="MediaSelectScreen__signal_has_limited_access">A Signal korlátozott hozzáféréssel rendelkezik a fotókhoz és videókhoz</string>
+  <string name="MediaSelectScreen__signal_has_limited_access">A Tellomi korlátozott hozzáféréssel rendelkezik a fotókhoz és videókhoz</string>
   <!-- Label for the button that opens the menu for changing which photos and videos Signal can see. -->
   <string name="MediaSelectScreen__manage">Kezelés</string>
   <!-- Menu option that re-opens the system picker so the user can share more photos and videos with Signal. -->
@@ -243,7 +243,7 @@
   <!-- The title of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_title">Eszköz társítása?</string>
   <!-- The body of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
-  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Úgy tűnik, hogy egy Signal-eszközt próbálsz társítani. Koppints a Folytatás, majd az „Új eszköz összekapcsolása” elemre, és olvasd be újra a QR-kódot.</string>
+  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Úgy tűnik, hogy egy Tellomi-eszközt próbálsz társítani. Koppints a Folytatás, majd az „Új eszköz összekapcsolása” elemre, és olvasd be újra a QR-kódot.</string>
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">Folytatás</string>
 

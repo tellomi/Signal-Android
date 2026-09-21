@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">بيانات حسابك</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">الحساب والاستعادة</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">تُستخدَم بيانات Signal Login الخاصة بك لاسترداد حسابك واستعادته. احتفِظ بهذه المفاتيح مُخزَّنة بأمان في مدير كلمات المرور الذي تثق به.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">تُستخدَم بيانات Tellomi Login الخاصة بك لاسترداد حسابك واستعادته. احتفِظ بهذه المفاتيح مُخزَّنة بأمان في مدير كلمات المرور الذي تثق به.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">المصادقة الثنائية</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -79,7 +79,7 @@
         <item quantity="other">%1$d مفتاح مرور</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">استخدِم وسيلة مصادقة ثانية لحماية حسابك عند استخدام Signal Login الخاص بك على جهاز جديد.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">استخدِم وسيلة مصادقة ثانية لحماية حسابك عند استخدام Tellomi Login الخاص بك على جهاز جديد.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">اعرف المزيد</string>
 

@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Уключыць блакіроўку рэгістрацыі?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Адключыць блакіроўку рэгістрацыі?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Калі пры паўторнай рэгістрацыі ў Signal вы зноў забудзеце свой PIN-код Signal, ваш уліковы запіс будзе заблакаваны на 7 дзён.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Калі пры паўторнай рэгістрацыі ў Tellomi вы зноў забудзеце свой PIN-код Tellomi, ваш уліковы запіс будзе заблакаваны на 7 дзён.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Уключыць</string>
     <string name="RegistrationLockV2Dialog_turn_off">Адключыць</string>
     <string name="preferences__advanced_pin_settings">Пашыраныя налады PIN-кода</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">Пераключыць клавіятуру</string>
     <string name="preferences_chats__transfer_account">Перанесці ўліковы запіс</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Перанесці ўліковы запіс на новую прыладу Android</string>
-    <string name="preferences_app_protection__signal_pin">PIN-код Signal</string>
+    <string name="preferences_app_protection__signal_pin">PIN-код Tellomi</string>
     <string name="preferences_app_protection__create_a_pin">Стварыць PIN-код</string>
     <string name="preferences_app_protection__change_your_pin">Змяніць свой PIN-код</string>
     <string name="preferences_app_protection__pin_reminders">Напаміны PIN-кода</string>
     <string name="preferences_app_protection__turn_off">Адключыць</string>
     <string name="preferences_app_protection__confirm_pin">Пацвердзіць PIN-код</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Пацвердзіць свой PIN-код Signal</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Пераканайцеся, што вы запомнілі або надзейна захавалі свой PIN-код, бо яго немагчыма аднавіць. Калі вы забудзеце PIN-код, вы можаце страціць даныя пры паўторнай рэгістрацыі свайго ўліковага запісу Signal.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Пацвердзіць свой PIN-код Tellomi</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Пераканайцеся, што вы запомнілі або надзейна захавалі свой PIN-код, бо яго немагчыма аднавіць. Калі вы забудзеце PIN-код, вы можаце страціць даныя пры паўторнай рэгістрацыі свайго ўліковага запісу Tellomi.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">Няправільны PIN-код. Паўтарыце спробу.</string>
     <string name="preferences_app_protection__registration_lock">Блакіроўка рэгістрацыі</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Зарэгістраваць паўторна ўліковы запіс</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Абнавіць Signal</string>
+    <string name="preferences_account_update_signal">Абнавіць Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Выдаліць усе даныя</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Уліковы запіс</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">З часам мы будзем запытваць вас радзей</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Патрэбен ваш PIN-код Signal, каб нанова зарэгістраваць ваш нумар тэлефона ў Signal</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Патрэбен ваш PIN-код Tellomi, каб нанова зарэгістраваць ваш нумар тэлефона ў Tellomi</string>
     <string name="AccountSettingsFragment__change_phone_number">Змяніць нумар тэлефона</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Даныя аб вашым уліковым запісу</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Улiковы запiс і аднаўленне</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Ваш Signal Login выкарыстоўваецца, каб рэгістраваць і аднаўляць ваш уліковы запіс. Захоўвайце гэтыя коды толькі ў надзейным менеджары пароляў.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Ваш Tellomi Login выкарыстоўваецца, каб рэгістраваць і аднаўляць ваш уліковы запіс. Захоўвайце гэтыя коды толькі ў надзейным менеджары пароляў.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Двухфактарная аўтэнтыфікацыя</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -75,7 +75,7 @@
         <item quantity="other">%1$d ключоў доступу</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Выкарыстоўвайце другую форму аўтэнтыфікацыі, каб абараніць свой уліковы запіс пры выкарыстанні Signal Login на новай прыладзе.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Выкарыстоўвайце другую форму аўтэнтыфікацыі, каб абараніць свой уліковы запіс пры выкарыстанні Tellomi Login на новай прыладзе.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Даведацца больш</string>
 
@@ -93,7 +93,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Крок 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Адкрыйце праграму аўтэнтыфікацыі, націснуўшы кнопку ніжэй, каб дадаць свой уліковы запіс Signal.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Адкрыйце праграму аўтэнтыфікацыі, націснуўшы кнопку ніжэй, каб дадаць свой уліковы запіс Tellomi.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Адкрыць</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -105,7 +105,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Праграма аўтэнтыфікацыі не знойдзена</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Не атрымалася звязацца з Signal. Праверце падключэнне і паўтарыце спробу.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Не атрымалася звязацца з Tellomi. Праверце падключэнне і паўтарыце спробу.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Крок 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -153,7 +153,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Няправільны код. Увядзіце код, што зараз паказаны ў праграме аўтэнтыфікацы.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Не атрымалася звязацца з Signal. Праверце падключэнне і паўтарыце спробу.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Не атрымалася звязацца з Tellomi. Праверце падключэнне і паўтарыце спробу.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Праграма аўтэнтыфікацыі</string>

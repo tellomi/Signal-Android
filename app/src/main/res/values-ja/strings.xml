@@ -5,7 +5,7 @@
   -->
 <!-- smartling.instruction_comments_enabled = on -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!-- Removed by excludeNonTranslatables <string name="app_name" translatable="false">Signal</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="app_name" translatable="false">Tellomi</string> -->
 
   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
   <!-- Removed by excludeNonTranslatables <string name="donate_url" translatable="false">https://signal.org/donate</string> -->
@@ -553,7 +553,7 @@
     <string name="ConversationFragment_dont_show_again">今後表示しない</string>
     <string name="ConversationFragment_pending">保留中…</string>
     <!-- Describes how the message was sent when looking at a message detail. Previously, messages could be through other means like SMS -->
-    <string name="ConversationFragment_push">データ (Signal)</string>
+    <string name="ConversationFragment_push">データ (Tellomi)</string>
     <string name="ConversationFragment_mms">MMS</string>
     <string name="ConversationFragment_sms">SMS</string>
     <string name="ConversationFragment_deleting">削除しています</string>
@@ -614,7 +614,7 @@
     <!-- Action shown to allow a user to update their application because it has expired -->
     <string name="ConversationFragment__update_build">Signalをアップデートしてください</string>
     <!-- Action shown to allow a user to re-register as they are no longer registered -->
-    <string name="ConversationFragment__reregister_signal">Signal を再登録する</string>
+    <string name="ConversationFragment__reregister_signal">Tellomi を再登録する</string>
     <!-- Action shown in the conversation input area to allow a user to re-link this device as it is no longer linked -->
     <string name="ConversationFragment__relink_signal">再リンク</string>
     <!-- Label for a button displayed in the conversation toolbar to return to the previous screen. -->
@@ -1051,7 +1051,7 @@
     <!-- Bottom sheet description explaining that messages on linked devices are private -->
     <string name="LinkDeviceFragment__all_messaging_is_private">リンク済み端末上のすべてのメッセージはプライバシーが保護されています</string>
     <!-- Bottom sheet description explaining that future messages on linked devices will be in sync with your phone but previous messages will not appear -->
-    <string name="LinkDeviceFragment__signal_messages_are_synchronized">Signal メッセージは、リンク後にお使いのスマートフォンの Signal と同期されます。以前のメッセージ履歴は表示されません。</string>
+    <string name="LinkDeviceFragment__signal_messages_are_synchronized">Tellomi メッセージは、リンク後にお使いのスマートフォンの Tellomi と同期されます。以前のメッセージ履歴は表示されません。</string>
     <!-- Bottom sheet description explaining that for non-desktop/iPad devices, they should go to %s to download Signal where %s is Signal\'s website -->
     <string name="LinkDeviceFragment__on_other_device_visit_signal">リンクさせたい端末で%1$sにアクセスしてSignalをインストールします</string>
   <!-- Removed by excludeNonTranslatables <string name="LinkDeviceFragment__signal_download_url" translatable="false">signal.org/download</string> -->
@@ -1078,7 +1078,7 @@
     <!-- Title on bottom sheet explaining our usage of biometrics to link a device -->
     <string name="LinkDeviceFragment__before_linking">リンクする前に、ご本人であることを確認してください</string>
     <!-- Body of bottom sheet explaining that users should use their device pin or biometrics and not their Signal pin -->
-    <string name="LinkDeviceFragment__tap_continue_and_enter_phone">［Continue］をタップし、スマートフォンの解錠コードを入力して確認します。Signal PINを入力しないようにしてください。</string>
+    <string name="LinkDeviceFragment__tap_continue_and_enter_phone">［Continue］をタップし、スマートフォンの解錠コードを入力して確認します。Tellomi PINを入力しないようにしてください。</string>
     <!-- Button that dismisses the bottom sheet -->
     <string name="LinkDeviceFragment__continue">続行</string>
     <!-- Option on button to contact support -->
@@ -1335,7 +1335,7 @@
     <string name="LinkPreviewView_this_group_link_is_not_active">このグループリンクは利用できません</string>
     <string name="LinkPreviewView_domain_date">%1$s · %2$s</string>
     <!-- Description for Call Link url previews -->
-    <string name="LinkPreviewView__use_this_link_to_join_a_signal_call">リンクを使用して Signal 通話に参加する</string>
+    <string name="LinkPreviewView__use_this_link_to_join_a_signal_call">リンクを使用して Tellomi 通話に参加する</string>
 
     <!-- LinkPreviewRepository -->
     <plurals name="LinkPreviewRepository_d_members">
@@ -1355,7 +1355,7 @@
     <!-- Title for dialog asking user to submit logs for debugging slow notification issues -->
     <string name="PromptBatterySaverBottomSheet__title">バッテリーの最適化のために通知が遅れることがあります</string>
     <!-- Message explaining that battery saver may delay notifications -->
-    <string name="PromptBatterySaverBottomSheet__message">Signal のアプリ情報でバッテリーの最適化を無効にすると、メッセージ通知がすみやかに表示されます。</string>
+    <string name="PromptBatterySaverBottomSheet__message">Tellomi のアプリ情報でバッテリーの最適化を無効にすると、メッセージ通知がすみやかに表示されます。</string>
 
     <!-- Title in bottom sheet that states that notifications for this device could be delayed -->
     <string name="DeviceSpecificNotificationBottomSheet__notifications_may_be_delayed">バッテリーの最適化のために通知が遅れることがあります</string>
@@ -1518,7 +1518,7 @@
     <!-- Dialog title displayed when remote restore failed because of an outdated backup version. -->
     <string name="RemoteRestoreActivity__couldnt_restore">このバックアップを復元できませんでした</string>
     <!-- Dialog message explaining that an update to Signal is required to restore the backup. -->
-    <string name="RemoteRestoreActivity__update_latest">このバージョンの Signal ではバックアップを復元できません。最新バージョンにアップデートして、もう一度お試しください。</string>
+    <string name="RemoteRestoreActivity__update_latest">このバージョンの Tellomi ではバックアップを復元できません。最新バージョンにアップデートして、もう一度お試しください。</string>
     <!-- Text on button that when pressed will redirect them to update Signal -->
     <string name="RemoteRestoreActivity__update_signal">Signalをアップデートしてください</string>
     <!-- Text label button to dismiss the dialog -->
@@ -1713,7 +1713,7 @@
     <string name="LongMessageActivity_your_message">あなたのメッセージ</string>
 
     <!-- MessageRetrievalService -->
-    <string name="MessageRetrievalService_signal">Signal</string>
+    <string name="MessageRetrievalService_signal">Tellomi</string>
     <string name="MessageRetrievalService_background_connection_enabled">バックグラウンド通信は有効です</string>
 
     <!-- MediaOverviewActivity -->
@@ -1770,7 +1770,7 @@
 
     <!-- Megaphones -->
     <string name="Megaphones_remind_me_later">あとで通知</string>
-    <string name="Megaphones_verify_your_signal_pin">Signal PINの確認</string>
+    <string name="Megaphones_verify_your_signal_pin">Tellomi PINの確認</string>
     <string name="Megaphones_well_occasionally_ask_you_to_verify_your_pin">PINを忘れないよう、確認をお願いします。</string>
     <string name="Megaphones_verify_pin">PINを確認</string>
     <string name="Megaphones_get_started">始めましょう</string>
@@ -2282,7 +2282,7 @@
     <string name="PassphrasePromptActivity_invalid_passphrase_exclamation">不正なパスフレーズです！</string>
     <string name="PassphrasePromptActivity_unlock_signal">Signalのロックを解除する</string>
     <!-- This is the subject line for the email that is sent to support -->
-    <string name="PassphrasePromptActivity_signal_android_lock_screen">Signal Android - ロック画面</string>
+    <string name="PassphrasePromptActivity_signal_android_lock_screen">Tellomi Android - ロック画面</string>
 
     <!-- PlacePickerActivity -->
     <string name="PlacePickerActivity_title">地図</string>
@@ -2358,7 +2358,7 @@
     <!-- Name of recipient representing user\'s \'My Story\' -->
     <string name="Recipient_my_story">マイストーリー</string>
     <!-- Name of recipient for a call link without a name -->
-    <string name="Recipient_signal_call">Signal 通話</string>
+    <string name="Recipient_signal_call">Tellomi 通話</string>
 
     <!-- RecipientPreferencesActivity -->
     <string name="RecipientPreferenceActivity_block">ブロックする</string>
@@ -2396,7 +2396,7 @@
     <string name="WebRtcCallActivity__tap_here_to_turn_on_your_video">タップして動画を有効にする</string>
     <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">%1$s と通話するには、Signalにカメラへのアクセスを許可してください。</string>
     <!-- Subtitle shown at top of call where %s is the elapsed time of the call -->
-    <string name="WebRtcCallActivity__signal_s">Signal %1$s</string>
+    <string name="WebRtcCallActivity__signal_s">Tellomi %1$s</string>
     <string name="WebRtcCallActivity__calling">呼び出しています…</string>
     <!-- Call status shown when an active call was disconnected (e.g., network hiccup) and is trying to reconnect -->
     <string name="WebRtcCallActivity__reconnecting">再接続しています…</string>
@@ -2751,7 +2751,7 @@
     <string name="RegistrationActivity_non_standard_number_format">非標準の数字フォーマット</string>
     <!-- Dialog message shown to confirm when entering phone number (first placeholder) is normalized and formatted differently by the app (second placeholder). -->
     <string name="RegistrationActivity_the_number_you_entered_appears_to_be_a_non_standard">あなたが入力した数字 (%1$s) は、非標準のフォーマットのようです。\n\n%2$s を意図していすか？</string>
-    <string name="RegistrationActivity_signal_android_phone_number_format">Signal Android - 電話番号フォーマット</string>
+    <string name="RegistrationActivity_signal_android_phone_number_format">Tellomi Android - 電話番号フォーマット</string>
     <!--    Small "toast" notification to the user confirming that they have requested a new code via voice call.-->
     <string name="RegistrationActivity_call_requested">通話を要求されました</string>
     <!--    Small "toast" notification to the user confirming that they have requested a new code via SMS.-->
@@ -2976,8 +2976,8 @@
     <string name="SupportEmailUtil_filter">フィルタ:</string>
     <string name="SupportEmailUtil_device_info">Device info:</string>
     <string name="SupportEmailUtil_android_version">Android version:</string>
-  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_version" translatable="false">Signal version:</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_package" translatable="false">Signal package:</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_version" translatable="false">Tellomi version:</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_signal_package" translatable="false">Tellomi package:</string> -->
     <string name="SupportEmailUtil_registration_lock">Registration lock:</string>
   <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_locale" translatable="false">Locale:</string> -->
   <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_challenge_received" translatable="false">Challenge Received:</string> -->
@@ -3350,7 +3350,7 @@
     <string name="ShortcutLauncherActivity_invalid_shortcut">無効なショートカット</string>
 
     <!-- SingleRecipientNotificationBuilder -->
-    <string name="SingleRecipientNotificationBuilder_signal">Signal</string>
+    <string name="SingleRecipientNotificationBuilder_signal">Tellomi</string>
     <string name="SingleRecipientNotificationBuilder_new_message">新着メッセージ</string>
     <string name="SingleRecipientNotificationBuilder_message_request">メッセージ申請</string>
     <string name="SingleRecipientNotificationBuilder_you">あなた</string>
@@ -3397,11 +3397,11 @@
 
     <!-- UnauthorizedReminder -->
     <!-- Message shown in a reminder banner when the user\'s device is no longer registered -->
-    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">この端末は登録されていません。以前、おそらく別の端末で Signal に電話番号を登録したことが原因です。</string>
+    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">この端末は登録されていません。以前、おそらく別の端末で Tellomi に電話番号を登録したことが原因です。</string>
     <!-- Action in reminder banner that will take user to re-register -->
     <string name="UnauthorizedReminder_reregister_action">端末を再登録する</string>
     <!-- Message shown in a reminder banner when this linked device is no longer linked to a primary device -->
-    <string name="UnauthorizedReminder_this_device_is_no_longer_linked_relink_to_continue_messaging">この端末はリンクされていません。メッセージを送受信するには、Signal とお使いの携帯電話をリンクし直してください。</string>
+    <string name="UnauthorizedReminder_this_device_is_no_longer_linked_relink_to_continue_messaging">この端末はリンクされていません。メッセージを送受信するには、Tellomi とお使いの携帯電話をリンクし直してください。</string>
     <!-- Action in reminder banner that will take the user to re-link this device -->
     <string name="UnauthorizedReminder_relink_action">端末をリンクし直す</string>
 
@@ -3416,7 +3416,7 @@
     <!-- WebRtcCallActivity -->
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">着信に出るには、Signalにマイクへのアクセスを許可してください。</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">ビデオ通話に出るには、Signal にマイクとカメラへのアクセスを許可してください。</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">ビデオ通話に出るには、Tellomi にマイクとカメラへのアクセスを許可してください。</string>
     <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">通話するには、Signalにマイクとカメラへのアクセス許可が必要ですが、無効になっています。アプリ設定メニューの「アプリの権限」で「マイク」と「カメラ」を有効にしてください。</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">リンクした端末で応答しました。</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">リンクした端末で拒否しました。</string>
@@ -3816,7 +3816,7 @@
     <!-- The title of a dialog prompting user to update to the latest version of Signal. -->
     <string name="EditProfileFragment_deprecated_dialog_title">Signalをアップデートしてください</string>
     <!-- The body of a dialog prompting user to update to the latest version of Signal. -->
-    <string name="EditProfileFragment_deprecated_dialog_body">このバージョンの Signal は期限が切れています。引き続きご利用いただくために、Signal をアップデートしてください。</string>
+    <string name="EditProfileFragment_deprecated_dialog_body">このバージョンの Tellomi は期限が切れています。引き続きご利用いただくために、Tellomi をアップデートしてください。</string>
     <!-- The button on a dialog prompting user to update to the latest version of Signal. When clicked, the user will be taken to the store to update their app. -->
     <string name="EditProfileFragment_deprecated_dialog_update_button">アップデートする</string>
     <!-- The title of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
@@ -3956,7 +3956,7 @@
   <!-- Removed by excludeNonTranslatables <string name="HelpFragment__link__faq" translatable="false">https://support.signal.org</string> -->
     <!-- Heading used within support email that lists additional information to help with debugging -->
     <string name="HelpFragment__support_info">サポート情報</string>
-    <string name="HelpFragment__signal_android_support_request">Signal Androidサポートリクエスト</string>
+    <string name="HelpFragment__signal_android_support_request">Tellomi Androidサポートリクエスト</string>
   <!-- Removed by excludeNonTranslatables <string name="HelpFragment__debug_log" translatable="false">Debug Log:</string> -->
     <string name="HelpFragment__could_not_upload_logs">ログをアップロードできませんでした</string>
     <string name="HelpFragment__please_be_as_descriptive_as_possible">問題を理解するため、できるだけ詳細に記述してください。</string>
@@ -3972,11 +3972,11 @@
         <item>フィードバック</item>
         <item>決済機能 (MobileCoin)</item>
         <item>寄付 &amp; バッジ</item>
-        <item>Signal Androidバックアップ</item>
+        <item>Tellomi Androidバックアップ</item>
         <item>その他</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Signal Androidデバッグログの提供</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Tellomi Androidデバッグログの提供</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">送信する</string>
     <!-- Action to decline to submit logs -->
@@ -4482,7 +4482,7 @@
 
     <!-- BiometricDeviceAuthentication -->
     <!-- Biometric/Device authentication prompt title -->
-    <string name="BiometricDeviceAuthentication__signal">Signal</string>
+    <string name="BiometricDeviceAuthentication__signal">Tellomi</string>
 
 
     <!-- CurrencyAmountFormatter_s_at_s -->
@@ -4718,7 +4718,7 @@
     <string name="ConfirmKbsPinFragment__re_enter_your_pin">PINを再入力</string>
     <string name="ConfirmKbsPinFragment__creating_pin">PINを作成しています…</string>
     <!-- ID used when saving the PIN to the device password manager. -->
-    <string name="ConfirmKbsPinFragment__pin_password_manager_id">Signal PIN</string>
+    <string name="ConfirmKbsPinFragment__pin_password_manager_id">Tellomi PIN</string>
 
     <!-- KbsSplashFragment -->
     <string name="KbsSplashFragment__introducing_pins">PINのご紹介</string>
@@ -4733,7 +4733,7 @@
     <string name="KbsSplashFragment__disable_pin">PINを無効にする</string>
 
     <!-- KBS Reminder Dialog -->
-    <string name="KbsReminderDialog__enter_your_signal_pin">Signal PINを入力してください</string>
+    <string name="KbsReminderDialog__enter_your_signal_pin">Tellomi PINを入力してください</string>
     <string name="KbsReminderDialog__to_help_you_memorize_your_pin">PINを覚えていただくため、定期的に入力をお願いしています。頻度は次第に少なくなります。</string>
     <string name="KbsReminderDialog__skip">スキップ</string>
     <string name="KbsReminderDialog__submit">送信する</string>
@@ -4788,9 +4788,9 @@
     <string name="KbsMegaphone__create_pin">PINを作成</string>
 
     <!-- Title for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
-    <string name="UpdatePinMegaphone__update_signal_pin">Signal PINをアップデートしてください</string>
+    <string name="UpdatePinMegaphone__update_signal_pin">Tellomi PINをアップデートしてください</string>
     <!-- Message for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
-    <string name="UpdatePinMegaphone__message">Signal PINをアップデートして、アカウント登録を完了させてください。</string>
+    <string name="UpdatePinMegaphone__message">Tellomi PINをアップデートして、アカウント登録を完了させてください。</string>
     <!-- Button text for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
     <string name="UpdatePinMegaphone__update_pin">PINをアップデート</string>
 
@@ -4827,7 +4827,7 @@
     <!-- Title for dialog to enter in the backup passphrase -->
     <string name="RegistrationActivity_enter_backup_passphrase">バックアップ用パスフレーズを入力してください</string>
     <string name="RegistrationActivity_restore">復元する</string>
-    <string name="RegistrationActivity_backup_failure_downgrade">現在ご利用のものより新しいバージョンの Signal からはバックアップをインポートできません</string>
+    <string name="RegistrationActivity_backup_failure_downgrade">現在ご利用のものより新しいバージョンの Tellomi からはバックアップをインポートできません</string>
     <!-- Error message indicating that we could not restore the user\'s backup. Displayed in a toast at the bottom of the screen. -->
     <string name="RegistrationActivity_backup_failure_foreign_key">正しくない形式のデータがバックアップに含まれています</string>
     <string name="RegistrationActivity_incorrect_backup_passphrase">バックアップ用パスフレーズが違います</string>
@@ -5497,7 +5497,7 @@
     <!-- Part of requesting account data flow, this is the section title for requesting that account data -->
     <string name="ExportAccountDataFragment__your_account_data">あなたのアカウントデータ</string>
     <!-- Explanation of account data the user can request. %1$s is replaced with Learn more with a link -->
-    <string name="ExportAccountDataFragment__export_explanation">Signal アカウントデータのレポートをエクスポートします。このレポートには、メッセージやメディアは一切含まれません。%1$s</string>
+    <string name="ExportAccountDataFragment__export_explanation">Tellomi アカウントデータのレポートをエクスポートします。このレポートには、メッセージやメディアは一切含まれません。%1$s</string>
     <!-- Learn more link to more information about requesting account data -->
     <string name="ExportAccountDataFragment__learn_more">詳しく見る</string>
     <!-- Button action to export the report data to another app (e.g. email) -->
@@ -5525,14 +5525,14 @@
     <!-- Title for export confirmation dialog -->
     <string name="ExportAccountDataFragment__export_report_confirmation">データをエクスポートしますか?</string>
     <!-- Message for export confirmation dialog -->
-    <string name="ExportAccountDataFragment__export_report_confirmation_message">Signal アカウントデータは、信頼できる人またはアプリとのみ共有してください。</string>
+    <string name="ExportAccountDataFragment__export_report_confirmation_message">Tellomi アカウントデータは、信頼できる人またはアプリとのみ共有してください。</string>
     <!-- Action to export in for export confirmation dialog -->
     <string name="ExportAccountDataFragment__export_report_action">エクスポート</string>
 
     <!-- Shown in a dialog with a spinner while the report is downloading -->
     <string name="ExportAccountDataFragment__download_progress">レポートを作成中です…</string>
     <!-- Explanation that the report is only generated on export and is not saved on the device -->
-    <string name="ExportAccountDataFragment__report_not_stored_disclaimer">レポートはエクスポート時にのみ作成され、Signal がお客様の端末に保存することはありません。</string>
+    <string name="ExportAccountDataFragment__report_not_stored_disclaimer">レポートはエクスポート時にのみ作成され、Tellomi がお客様の端末に保存することはありません。</string>
 
     <!-- ChangeNumberFragment -->
     <string name="ChangeNumberFragment__use_this_to_change_your_current_phone_number_to_a_new_phone_number">現在使用している電話番号を、新しい電話番号に変更する際に使用してください。この変更を元に戻すことはできません。続ける前に、新しい電話番号がSMSや通話を受信できることを確認してください。</string>
@@ -6363,7 +6363,7 @@
     <!-- Title of dialog telling user they need to update signal as it expired -->
     <string name="UpdateSignalExpiredDialog__title">Signalをアップデートしてください</string>
     <!-- Message of dialog telling user they need to update signal as it expired -->
-    <string name="UpdateSignalExpiredDialog__message">このバージョンの Signal は期限が切れています。引き続きご利用いただくために、Signal をアップデートしてください。</string>
+    <string name="UpdateSignalExpiredDialog__message">このバージョンの Tellomi は期限が切れています。引き続きご利用いただくために、Tellomi をアップデートしてください。</string>
     <!-- Button text of expiration dialog, will take user to update the app -->
     <string name="UpdateSignalExpiredDialog__update_action">アップデートする</string>
     <!-- Button text of expiration dialog to cancel the dialog.  -->
@@ -6372,7 +6372,7 @@
     <!-- Title of dialog telling user they need to re-register signal -->
     <string name="ReregisterSignalDialog__title">端末が登録されていません</string>
     <!-- Message of dialog telling user they need to re-register signal as it is no longer registered -->
-    <string name="ReregisterSignalDialog__message">この端末は登録されていません。この端末で Signal を引き続きご利用になるには、再登録が必要です。</string>
+    <string name="ReregisterSignalDialog__message">この端末は登録されていません。この端末で Tellomi を引き続きご利用になるには、再登録が必要です。</string>
     <!-- Button text of re-registration dialog to re-register the device.  -->
     <string name="ReregisterSignalDialog__reregister_action">再登録する</string>
     <!-- Button text of re-registration dialog to cancel the dialog.  -->
@@ -7758,9 +7758,9 @@
     <!-- Call link creation item title on calls tab -->
     <string name="CreateCallLink__create_a_call_link">通話リンクを作成する</string>
     <!-- Call link creation item description on calls tab -->
-    <string name="CreateCallLink__share_a_link_for">Signal 通話のリンクを共有する</string>
+    <string name="CreateCallLink__share_a_link_for">Tellomi 通話のリンクを共有する</string>
     <!-- Text inserted when sharing a call link within Signal. Placeholder is a call link url. -->
-    <string name="CreateCallLink__use_this_link_to_join_a_signal_call">リンクを使用して Signal 通話に参加する　%1$s</string>
+    <string name="CreateCallLink__use_this_link_to_join_a_signal_call">リンクを使用して Tellomi 通話に参加する　%1$s</string>
 
     <!-- CallLinkInfoSheet -->
     <!-- Sheet title -->
@@ -7784,7 +7784,7 @@
     <!-- Fragment title -->
     <string name="CreateCallLinkBottomSheetDialogFragment__create_call_link">通話リンクを作成</string>
     <!-- Displayed as a default name for the signal call -->
-    <string name="CreateCallLinkBottomSheetDialogFragment__signal_call">Signal 通話</string>
+    <string name="CreateCallLinkBottomSheetDialogFragment__signal_call">Tellomi 通話</string>
     <!-- Displayed on a small button to allow user to instantly join call -->
     <string name="CreateCallLinkBottomSheetDialogFragment__join">参加する</string>
     <!-- Option to open a full screen dialog to add a call name -->
@@ -7794,7 +7794,7 @@
     <!-- Toggle to require approval for all members before joining -->
     <string name="CreateCallLinkBottomSheetDialogFragment__require_admin_approval">管理者の承認を必要とする</string>
     <!-- Row label to share the link via Signal -->
-    <string name="CreateCallLinkBottomSheetDialogFragment__share_link_via_signal">Signal 経由でリンクを共有する</string>
+    <string name="CreateCallLinkBottomSheetDialogFragment__share_link_via_signal">Tellomi 経由でリンクを共有する</string>
     <!-- Row label to copy the link to the clipboard -->
     <string name="CreateCallLinkBottomSheetDialogFragment__copy_link">リンクをコピーする</string>
     <!-- Row label to share the link with the external share sheet -->
@@ -7910,7 +7910,7 @@
     <!-- Dialog title shown when scanning an image from the gallery for a username QR code and there is no qr code in the image. -->
     <string name="UsernameLinkSettings_qr_code_not_found">QRコードが見つかりません</string>
     <!-- Dialog message shown when scanning an image from the gallery for a username QR code and there is no qr code in the image. -->
-    <string name="UsernameLinkSettings_try_scanning_another_image_containing_a_signal_qr_code">Signal QRコードの別の画像をスキャンしてみてください。</string>
+    <string name="UsernameLinkSettings_try_scanning_another_image_containing_a_signal_qr_code">Tellomi QRコードの別の画像をスキャンしてみてください。</string>
 
     <!-- Explanatory text at the top of a bottom sheet describing how username links work -->
     <string name="UsernameLinkShareBottomSheet_title">このリンクからは、誰でもあなたのユーザーネームを閲覧したりチャットを始めることができますので、信頼できる人とのみ共有してください</string>
@@ -9118,10 +9118,10 @@
     <string name="EnterBackupKey_contact_support">サポートに問い合わせる</string>
 
     <!-- Email subject when contacting support on a restore backup network issue -->
-    <string name="EnterBackupKey_network_failure_support_email">Signal Androidのバックアップ復元時のネットワークエラーについて</string>
+    <string name="EnterBackupKey_network_failure_support_email">Tellomi Androidのバックアップ復元時のネットワークエラーについて</string>
   <!-- Removed by excludeNonTranslatables <string name="EnterBackupKey_network_failure_support_email_filter" translatable="false">Android SignalBackups Import Failed</string> -->
     <!-- Email subject when contacting support on a permanent backup import failure -->
-    <string name="EnterBackupKey_permanent_failure_support_email">Signal Androidのバックアップ復元永久エラー</string>
+    <string name="EnterBackupKey_permanent_failure_support_email">Tellomi Androidのバックアップ復元永久エラー</string>
   <!-- Removed by excludeNonTranslatables <string name="EnterBackupKey_permanent_failure_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
 
     <!-- EnterLocalBackupKeyScreen: Screen title for entering recovery key for local backup restore -->
@@ -9251,7 +9251,7 @@
     <string name="SelectLocalBackupTypeScreen__select_the_folder_on_your_device">バックアップが保存されている端末内のフォルダを選択してください</string>
 
     <!-- Email subject when contacting support on a create backup failure -->
-    <string name="BackupAlertBottomSheet_network_failure_support_email">Signal Androidの、バックアップエクスポート時のネットワークエラーについて</string>
+    <string name="BackupAlertBottomSheet_network_failure_support_email">Tellomi Androidの、バックアップエクスポート時のネットワークエラーについて</string>
     <!-- Email filter when contacting support on a create backup failure -->
   <!-- Removed by excludeNonTranslatables <string name="BackupAlertBottomSheet_export_failure_filter" translatable="false">Android SignalBackups Export Failed</string> -->
 

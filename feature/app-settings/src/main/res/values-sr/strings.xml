@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Желите ли да укључите закључавање регистрације?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Желите ли да искључите закључавање регистрације?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Ако заборавите Signal PIN када се поново региструјете на Signal, ваш налог ће бити закључан 7 дана.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Ако заборавите Tellomi PIN када се поново региструјете на Tellomi, ваш налог ће бити закључан 7 дана.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Укључи</string>
     <string name="RegistrationLockV2Dialog_turn_off">Искључи</string>
     <string name="preferences__advanced_pin_settings">Напредна подешавања PIN-а</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">Промени тастатуру</string>
     <string name="preferences_chats__transfer_account">Пренесите налог</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Пренесите налог на нови Android уређај</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi PIN</string>
     <string name="preferences_app_protection__create_a_pin">Креирајте PIN</string>
     <string name="preferences_app_protection__change_your_pin">Промените PIN</string>
     <string name="preferences_app_protection__pin_reminders">Подсетници за PIN</string>
     <string name="preferences_app_protection__turn_off">Искључи</string>
     <string name="preferences_app_protection__confirm_pin">Потврдите PIN</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Потврдите Signal PIN</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Потрудите се да запамтите PIN или га безбедно сачувајте, јер он не може бити повраћен. Уколико заборавите PIN, можете изгубити податке када поново региструјете налог на Signal-у.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Потврдите Tellomi PIN</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Потрудите се да запамтите PIN или га безбедно сачувајте, јер он не може бити повраћен. Уколико заборавите PIN, можете изгубити податке када поново региструјете налог на Tellomi-у.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">Нетачан PIN. Пробајте поново.</string>
     <string name="preferences_app_protection__registration_lock">Закључавање регистрације</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Поново региструјте налог</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Ажурирај Signal</string>
+    <string name="preferences_account_update_signal">Ажурирај Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Избриши све податке</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Налог</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Временом ћемо вам тражити све ређе</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Захтевај Signal PIN за поновно регистровање броја телефона на Signal-у</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Захтевај Tellomi PIN за поновно регистровање броја телефона на Tellomi-у</string>
     <string name="AccountSettingsFragment__change_phone_number">Промените број телефона</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Подаци са налога</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Налог и опоравак</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal Login се користи за опоравак и враћање налога. Чувајте ове кључеве безбедно у поузданом менаџеру лозинки.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Tellomi Login се користи за опоравак и враћање налога. Чувајте ове кључеве безбедно у поузданом менаџеру лозинки.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Двострука аутентификација</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">Број приступних кључева: %1$d</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Користите други вид аутентификације ради заштите налога када користите Signal Login на новом уређају.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Користите други вид аутентификације ради заштите налога када користите Tellomi Login на новом уређају.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Сазнајте више</string>
 
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Корак 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Отворите апликацију за аутентификацију додиром на дугме испод да додате налог на Signal-у.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Отворите апликацију за аутентификацију додиром на дугме испод да додате налог на Tellomi-у.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Отвори</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Није пронађена апликација за аутентификацију</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Signal није доступан. Проверите да ли сте повезани на интернет и пробајте поново.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomi није доступан. Проверите да ли сте повезани на интернет и пробајте поново.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Корак 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Нетачан код. Унесите код приказан у апликацији за аутентификацију.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal није доступан. Проверите да ли сте повезани на интернет и пробајте поново.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomi није доступан. Проверите да ли сте повезани на интернет и пробајте поново.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Апликација за аутентификацију</string>

@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Activer le blocage d\'inscription ?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Désactiver le blocage d\'inscription ?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Si vous ne vous souvenez plus de votre code PIN au moment de vous réinscrire à Signal, vous ne pourrez pas accéder à votre compte pendant sept jours.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Si vous ne vous souvenez plus de votre code PIN au moment de vous réinscrire à Tellomi, vous ne pourrez pas accéder à votre compte pendant sept jours.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Activer</string>
     <string name="RegistrationLockV2Dialog_turn_off">Désactiver</string>
     <string name="preferences__advanced_pin_settings">Paramètres de PIN avancés</string>
@@ -12,26 +12,26 @@
     <string name="RegistrationLockFragment__switch_keyboard">Changer de clavier</string>
     <string name="preferences_chats__transfer_account">Transférer le compte</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Transférer le compte vers un nouvel appareil Android</string>
-    <string name="preferences_app_protection__signal_pin">Code PIN Signal</string>
+    <string name="preferences_app_protection__signal_pin">Code PIN Tellomi</string>
     <string name="preferences_app_protection__create_a_pin">Créer un code PIN</string>
     <string name="preferences_app_protection__change_your_pin">Changer de code PIN</string>
     <string name="preferences_app_protection__pin_reminders">Rappels de code PIN</string>
     <string name="preferences_app_protection__turn_off">Désactiver</string>
     <string name="preferences_app_protection__confirm_pin">Confirmer le PIN</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Confirmer votre code PIN Signal</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Mémorisez bien votre code PIN ou gardez-le en lieu sûr, car il est impossible de le récupérer. En cas d\'oubli, vous risquez de perdre des données lorsque vous réinscrirez votre compte Signal.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Confirmer votre code PIN Tellomi</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Mémorisez bien votre code PIN ou gardez-le en lieu sûr, car il est impossible de le récupérer. En cas d\'oubli, vous risquez de perdre des données lorsque vous réinscrirez votre compte Tellomi.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">Code PIN incorrect. Veuillez réessayer.</string>
     <string name="preferences_app_protection__registration_lock">Blocage d\'inscription</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Réinscrire le compte</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Mettre à jour Signal</string>
+    <string name="preferences_account_update_signal">Mettre à jour Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Supprimer toutes les données</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
     <string name="preferences_account_delete_all_data_confirmation_title">Supprimer toutes les données ?</string>
     <!-- Message in confirmation dialog to delete all data explaining how it works, and that the app will be closed after deletion -->
-    <string name="preferences_account_delete_all_data_confirmation_message">L\'appli sera réinitialisée et tous les messages seront supprimés. Signal se fermera une fois le processus terminé.</string>
+    <string name="preferences_account_delete_all_data_confirmation_message">L\'appli sera réinitialisée et tous les messages seront supprimés. Tellomi se fermera une fois le processus terminé.</string>
     <!-- Confirmation action to proceed with application data deletion -->
     <string name="preferences_account_delete_all_data_confirmation_proceed">Continuer</string>
     <!-- Confirmation action to cancel application data deletion -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Compte</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Les rappels deviennent moins fréquents au fil du temps</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Exiger le code PIN Signal pour réinscrire votre numéro de téléphone sur Signal</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Exiger le code PIN Tellomi pour réinscrire votre numéro de téléphone sur Tellomi</string>
     <string name="AccountSettingsFragment__change_phone_number">Changer de numéro de téléphone</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Données du compte</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Identifiant Signal</string>
+    <string name="AccountSettingsFragment__signal_login">Identifiant Tellomi</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Compte et récupération</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Votre identifiant Signal vous permet d\'accéder à votre compte et de le restaurer. Conservez ces clés en lieu sûr, dans un gestionnaire de mots de passe fiable.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Votre identifiant Tellomi vous permet d\'accéder à votre compte et de le restaurer. Conservez ces clés en lieu sûr, dans un gestionnaire de mots de passe fiable.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Authentification à deux facteurs</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d clés d\'accès</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Activez la vérification en deux étapes pour protéger votre compte lorsque vous vous connectez à Signal depuis un nouvel appareil.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Activez la vérification en deux étapes pour protéger votre compte lorsque vous vous connectez à Tellomi depuis un nouvel appareil.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">En savoir plus</string>
 
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Étape 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Appuyez sur le bouton ci-dessous pour ouvrir l\'appli d\'authentification et y ajouter votre compte Signal.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Appuyez sur le bouton ci-dessous pour ouvrir l\'appli d\'authentification et y ajouter votre compte Tellomi.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Ouvrir</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Aucune appli d\'authentification n\'est disponible</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Impossible d\'accéder à Signal. Veuillez vérifier votre connexion et réessayer.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Impossible d\'accéder à Tellomi. Veuillez vérifier votre connexion et réessayer.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Étape 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Code incorrect. Saisissez le code qui s\'affiche actuellement sur votre appli d\'authentification.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Impossible d\'accéder à Signal. Veuillez vérifier votre connexion et réessayer.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Impossible d\'accéder à Tellomi. Veuillez vérifier votre connexion et réessayer.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Appli d\'authentification</string>
@@ -174,7 +174,7 @@
     <!-- Title of the dialog confirming removal of an authenticator app -->
     <string name="TotpAppListScreen__remove_authenticator_app">Supprimer l\'appli d\'authentification ?</string>
     <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Vous ne pourrez plus utiliser cette appli pour générer des codes de vérification à usage unique lorsque vous vous connectez à Signal.</string>
+    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Vous ne pourrez plus utiliser cette appli pour générer des codes de vérification à usage unique lorsque vous vous connectez à Tellomi.</string>
     <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
     <string name="TotpAppListScreen__cant_add_authenticator_app">Impossible d\'ajouter l\'appli d\'authentification</string>
     <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->

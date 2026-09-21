@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">고객 지원 문의</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal 등록 - Android용 인증 코드</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi 등록 - Android용 인증 코드</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,7 +138,7 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">이전 휴대폰을 가지고 있음</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">현재 Signal 계정에서 QR 코드를 스캔하여 빠르게 시작하세요</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">현재 Tellomi 계정에서 QR 코드를 스캔하여 빠르게 시작하세요</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">이전 휴대폰이 없음</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">메시지 기록과 계정 데이터를 복원할 방법을 선택하세요.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Signal 백업에서 복원</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomi 백업에서 복원</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">무료 또는 유료 Signal 백업 플랜</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">무료 또는 유료 Tellomi 백업 플랜</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">기기 백업 복원</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">백업을 찾을 수 없음</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">선택한 폴더에서 Signal 백업 파일을 찾을 수 없습니다. 다른 폴더를 선택해 보세요.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">선택한 폴더에서 Tellomi 백업 파일을 찾을 수 없습니다. 다른 폴더를 선택해 보세요.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">다른 폴더 선택하기</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">새 계정으로 복원할까요?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">지금 복원 중인 계정은 다른 Signal 계정을 사용하여 생성되었습니다. 이 백업을 새로운 계정으로 복원할 수는 있으나, 이 경우 복원된 그룹에서 더 이상 멤버로 유지되지 않습니다.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">지금 복원 중인 계정은 다른 Tellomi 계정을 사용하여 생성되었습니다. 이 백업을 새로운 계정으로 복원할 수는 있으나, 이 경우 복원된 그룹에서 더 이상 멤버로 유지되지 않습니다.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">복원하기</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">백업을 찾을 수 없음</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">복구 키는 일치하지만 해당 계정의 Signal 백업이 없습니다. 이전 단계로 돌아가 다른 복원 방법을 선택하거나, 백업 복원 없이 계속 진행하세요.</string>
+    <string name="EnterAepScreen__no_backup_found_body">복구 키는 일치하지만 해당 계정의 Tellomi 백업이 없습니다. 이전 단계로 돌아가 다른 복원 방법을 선택하거나, 백업 복원 없이 계속 진행하세요.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">복구 준비 중…</string>
     <!-- Title shown while restore is in progress -->
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">이 백업을 복원할 수 없음</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">이 Signal 버전은 백업을 복원할 수 없습니다. 최신 버전으로 업데이트하고 다시 시도해 주세요.</string>
+    <string name="RemoteRestoreScreen__update_latest">이 Tellomi 버전은 백업을 복원할 수 없습니다. 최신 버전으로 업데이트하고 다시 시도해 주세요.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Signal 업데이트</string>
+    <string name="RemoteRestoreScreen__update_signal">Tellomi 업데이트</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">나중에</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">지원팀에 문의</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Signal Android 백업 복원 영구 오류</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Tellomi Android 백업 복원 영구 오류</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -391,13 +391,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">더 강력한 PIN을 설정하세요</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">전화번호 인증에 이미 사용된 코드를 다시 입력했습니다. 새로운 전용 Signal PIN을 설정해 주세요.</string>
+    <string name="PinCreationScreen__reentered_verification_code">전화번호 인증에 이미 사용된 코드를 다시 입력했습니다. 새로운 전용 Tellomi PIN을 설정해 주세요.</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">PIN에 대해 더 알아보기</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">경고</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">PIN을 비활성화하면 수동으로 백업 및 복원하지 않는 한, Signal 재등록 시 모든 데이터가 삭제됩니다. PIN이 비활성화된 상태에서는 등록 잠금 기능을 사용할 수 없습니다.</string>
+    <string name="PinCreationScreen__disable_pin_warning">PIN을 비활성화하면 수동으로 백업 및 복원하지 않는 한, Tellomi 재등록 시 모든 데이터가 삭제됩니다. PIN이 비활성화된 상태에서는 등록 잠금 기능을 사용할 수 없습니다.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">PIN 비활성화</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -416,7 +416,7 @@
     <!-- Describes the PIN that needs to be entered. -->
     <string name="PinEntryScreen__enter_the_pin_you_created">Signal을 처음 설치했을 때 만든 PIN을 입력해 주세요.</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">전화번호 인증에 이미 사용된 코드를 다시 입력했습니다. 이전에 계정에 설정한 전용 Signal PIN을 입력하세요.</string>
+    <string name="PinEntryScreen__reentered_verification_code">전화번호 인증에 이미 사용된 코드를 다시 입력했습니다. 이전에 계정에 설정한 전용 Tellomi PIN을 입력하세요.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="other">PIN이 일치하지 않습니다. 입력 가능한 횟수가 %1$d회 남았습니다.</item>
@@ -442,9 +442,9 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">지원팀에 문의</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal 등록 - Android용 PIN 설정과 관련해 도움이 필요합니다</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi 등록 - Android용 PIN 설정과 관련해 도움이 필요합니다</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">알림 허용</string>
@@ -487,7 +487,7 @@
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
     <string name="LinkAccountScreen__open_signal_on_your_phone">휴대전화에서 Signal을 엽니다.</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">프로필 사진을 탭하여 Signal 설정을 엽니다.</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">프로필 사진을 탭하여 Tellomi 설정을 엽니다.</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">\'연동 기기\'와 \'새 기기 연동\'을 차례로 탭합니다.</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -513,7 +513,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">앱 데이터를 삭제할까요?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">다른 Signal 계정을 연동하려고 합니다. 계속 진행하면 현재 기기에 있는 모든 Signal 데이터가 삭제됩니다.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">다른 Tellomi 계정을 연동하려고 합니다. 계속 진행하면 현재 기기에 있는 모든 Tellomi 데이터가 삭제됩니다.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">삭제 후 재시작</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -521,7 +521,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">계정 이전</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">계정을 이전하려면 이전 Android 기기에서 Signal 앱을 열고 \'계정 이전\'을 선택하세요.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">계정을 이전하려면 이전 Android 기기에서 Tellomi 앱을 열고 \'계정 이전\'을 선택하세요.</string>
     <string name="DeviceTransferInstructions__continue">계속</string>
 
     <!-- Device transfer: Setup screen -->
@@ -612,9 +612,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal Login을 이용해 전화번호 없이 등록하세요. 1회 구매를 완료하면 시작에 필요한 계정 키가 발급됩니다.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Tellomi Login을 이용해 전화번호 없이 등록하세요. 1회 구매를 완료하면 시작에 필요한 계정 키가 발급됩니다.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">자세히 알아보기</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,7 +626,7 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal은 비영리 단체로, 결제 금액은 Signal의 사명을 이어가는 데 도움이 됩니다.</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Signal Login이 있는 경우</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Tellomi Login이 있는 경우</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">기존 계정 키를 사용하세요</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -648,15 +648,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">내 Signal Login</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">내 Tellomi Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">구매해 주셔서 감사합니다! Signal Login을 사용해 계정을 등록하고 복구하세요. 키를 잊어버리면 계정을 복구할 수 없습니다.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">구매해 주셔서 감사합니다! Tellomi Login을 사용해 계정을 등록하고 복구하세요. 키를 잊어버리면 계정을 복구할 수 없습니다.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">비밀번호 관리자에 저장</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">수동으로 저장</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Signal Login을 저장하지 못했습니다. 수동으로 저장해 주세요.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Tellomi Login을 저장하지 못했습니다. 수동으로 저장해 주세요.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -666,7 +666,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">계정을 복구하려면 복구 키와 함께 계정 ID를 입력하세요.</string>
     <!-- Label of the text field the account ID is typed into. -->

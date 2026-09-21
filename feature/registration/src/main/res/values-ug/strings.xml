@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">شەخسىي مەخپىيەتلىكىڭىزنى ئۆزىڭىز بىلەن بىرگە ساقلاڭ.\nھەر بىر ئۇچۇردا ئۆزىڭىز بولۇڭ.</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal پايدا ئالمايدىغان تەشكىلات \n شەرتلەر ۋە مەخپىيەتلىك سىياسىتى</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomi پايدا ئالمايدىغان تەشكىلات \n شەرتلەر ۋە مەخپىيەتلىك سىياسىتى</string>
     <string name="RegistrationActivity_continue">داۋاملاشتۇر</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">ئەسلىگە كەلتۈرۈش ياكى يۆتكەش</string>
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">ياردەم خادىمى بىلەن ئالاقىلىشىش</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal تىزىملىتىش - Android ئۈچۈن دەلىللەش كودى</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi تىزىملىتىش - Android ئۈچۈن دەلىللەش كودى</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">زاپاسلاش تېپىلمىدى</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">تاللانغان ھۆججەت قىسقۇچتىن ھېچقانداق Signal زاپىسى تېپىلمىدى. باشقا بىر ھۆججەت قىسقۇچ تاللاڭ.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">تاللانغان ھۆججەت قىسقۇچتىن ھېچقانداق Tellomi زاپىسى تېپىلمىدى. باشقا بىر ھۆججەت قىسقۇچ تاللاڭ.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">باشقا بىر ھۆججەت قىسقۇچ تاللاش</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">يېڭى ھېساباتىڭىزغا باغلاپ ئەسلىگە كەلتۈرەمسىز؟</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">سىز ئەسلىگە كەلتۈرۈۋاتقان زاپاس، باشقا Signal ھېساباتى ئارقىلىق قۇرۇپ چىقىلغان. سىز بۇ زاپاسنى يېڭى ھېساباتىڭىزغا ئەسلىگە كەلتۈرەلەيسىز، لىكىن سىز ئەسلىگە كەلتۈرۈلگەن ھەرقانداق گۇرۇپپىنىڭ ئەزاسى ئەمەس.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">سىز ئەسلىگە كەلتۈرۈۋاتقان زاپاس، باشقا Tellomi ھېساباتى ئارقىلىق قۇرۇپ چىقىلغان. سىز بۇ زاپاسنى يېڭى ھېساباتىڭىزغا ئەسلىگە كەلتۈرەلەيسىز، لىكىن سىز ئەسلىگە كەلتۈرۈلگەن ھەرقانداق گۇرۇپپىنىڭ ئەزاسى ئەمەس.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">ئەسلىگە كەلتۈرۈش</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">زاپاسلاش تېپىلمىدى</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">ئەسلىگە كەلتۈرۈش ئاچقۇچىڭىز توغرا، لېكىن بۇ ھېسابات ئۈچۈن Signal زاپاسلاش يوق. ئەسلىگە كەلتۈرۈش ئۈچۈن قايتىدىن باشقا بىر ئۇسۇلنى تاللاڭ، ياكى ئەسلىگە كەلتۈرمەيلا داۋاملاشتۇرۇڭ.</string>
+    <string name="EnterAepScreen__no_backup_found_body">ئەسلىگە كەلتۈرۈش ئاچقۇچىڭىز توغرا، لېكىن بۇ ھېسابات ئۈچۈن Tellomi زاپاسلاش يوق. ئەسلىگە كەلتۈرۈش ئۈچۈن قايتىدىن باشقا بىر ئۇسۇلنى تاللاڭ، ياكى ئەسلىگە كەلتۈرمەيلا داۋاملاشتۇرۇڭ.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">ئەسلىگە كەلتۈرۈشكە تەييارلىنىۋاتىدۇ…</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">ھېساباتىڭىزنى ئۇلاڭ</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">تېخىغىچە Signal دا يوقمۇ؟</string>
+    <string name="WelcomeScreen__not_on_signal_yet">تېخىغىچە Tellomi دا يوقمۇ؟</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">ھېسابات قۇرۇش</string>
 
@@ -309,7 +309,7 @@
     <!-- Body for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__update_latest">سىگنالنىڭ بۇ نەشرى زاپاسلاشنى ئەسلىگە كەلتۈرەلمىدى. ئەڭ يېڭى نەشرىگە يېڭىلاپ قايتا سىناڭ.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Signal نى يېڭىلا</string>
+    <string name="RemoteRestoreScreen__update_signal">Tellomi نى يېڭىلا</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">ھازىر ئەمەس</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">ياردەم خادىمى بىلەن ئالاقىلىشىش</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Signal Android زاپاسلاش ئۈزلۈكسىز داۋاملاشقان زاپاسلاشتىكى كاشىلىنى ئەسلىگە كەلتۈرىدۇ</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Tellomi Android زاپاسلاش ئۈزلۈكسىز داۋاملاشقان زاپاسلاشتىكى كاشىلىنى ئەسلىگە كەلتۈرىدۇ</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -391,13 +391,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">تېخىمۇ بىخەتەر PIN تاللاڭ</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">سىز تېلېفون نومۇرىڭىزنى دەلىللەش ئۈچۈن كىرگۈزۈپ ئىشلىتىپ بولغان كودنى يەنە قايتا كىرگۈزدىڭىز. يېڭىدىن ئالاھىدە بىر Signal PIN نومۇرىنى تاللاڭ.</string>
+    <string name="PinCreationScreen__reentered_verification_code">سىز تېلېفون نومۇرىڭىزنى دەلىللەش ئۈچۈن كىرگۈزۈپ ئىشلىتىپ بولغان كودنى يەنە قايتا كىرگۈزدىڭىز. يېڭىدىن ئالاھىدە بىر Tellomi PIN نومۇرىنى تاللاڭ.</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">PIN ھەققىدە تېخىمۇ كۆپ بىلىم</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">ئاگاھلاندۇرۇش</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">ئەگەر PIN نى چەكلىسىڭىز، Signal غا قايتا تىزىملاتقاندا ئۆزىڭىز زاپاسلاپ ۋە ئەسلىگە كەلتۈرمىگۈچە ھەممە سانلىق مەلۇماتلىرىڭىز يوقىلىدۇ، PIN چەكلەنسە تىزىملىتىش قۇلۇپىنى ئاچالمايسىز.</string>
+    <string name="PinCreationScreen__disable_pin_warning">ئەگەر PIN نى چەكلىسىڭىز، Tellomi غا قايتا تىزىملاتقاندا ئۆزىڭىز زاپاسلاپ ۋە ئەسلىگە كەلتۈرمىگۈچە ھەممە سانلىق مەلۇماتلىرىڭىز يوقىلىدۇ، PIN چەكلەنسە تىزىملىتىش قۇلۇپىنى ئاچالمايسىز.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">PIN چەكلە</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -414,9 +414,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">PIN ڭىزنى كىرگۈزۈڭ</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">Signal نى تۇنجى قېتىم چۈشۈرگەندە قۇرۇپ چىققان PIN نومۇرىنى كىرگۈزۈڭ</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">Tellomi نى تۇنجى قېتىم چۈشۈرگەندە قۇرۇپ چىققان PIN نومۇرىنى كىرگۈزۈڭ</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">سىز تېلېفون نومۇرىڭىزنى دەلىللەش ئۈچۈن كىرگۈزۈپ ئىشلىتىپ بولغان كودنى يەنە قايتا كىرگۈزدىڭىز. ھېساباتىڭىز ئۈچۈن قۇرغان ئالاھىدە Signal PIN نومۇرىنى كىرگۈزۈڭ.</string>
+    <string name="PinEntryScreen__reentered_verification_code">سىز تېلېفون نومۇرىڭىزنى دەلىللەش ئۈچۈن كىرگۈزۈپ ئىشلىتىپ بولغان كودنى يەنە قايتا كىرگۈزدىڭىز. ھېساباتىڭىز ئۈچۈن قۇرغان ئالاھىدە Tellomi PIN نومۇرىنى كىرگۈزۈڭ.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="other">PIN خاتا . %1$d كىرگۈزۈش پۇرسىتى قالدى.</item>
@@ -442,14 +442,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">ياردەم خادىمى بىلەن ئالاقىلىشىش</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal تىزىملىتىش - Android نىڭ PIN بىلەن ياردەمگە موھتاج</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi تىزىملىتىش - Android نىڭ PIN بىلەن ياردەمگە موھتاج</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">ئۇقتۇرۇشقا رۇخسەت</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal، ئۇقتۇرۇش ئىجازىتىنى تەلەپ قىلىدۇ. بۇ، ئۈسكۈنىڭىزگە يېڭى ئۇچۇرلار كەلگەندە ئۇقتۇرۇشلارنى كۆرسىتىپ ئاگاھلاندۇرۇشقا ئىمكان بېرىدۇ.</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi، ئۇقتۇرۇش ئىجازىتىنى تەلەپ قىلىدۇ. بۇ، ئۈسكۈنىڭىزگە يېڭى ئۇچۇرلار كەلگەندە ئۇقتۇرۇشلارنى كۆرسىتىپ ئاگاھلاندۇرۇشقا ئىمكان بېرىدۇ.</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">ھازىر ئەمەس</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -485,9 +485,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">بۇ كودنى سكاننېرلاپ ھېساباتىڭىزنى ئۇلاڭ</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">تېلېفونىڭىزدا Signal نى ئېچىڭ</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">تېلېفونىڭىزدا Tellomi نى ئېچىڭ</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">باش رەسىمىڭىزنى چېكىپ Signal تەڭشەكلىرىنى ئېچىڭ</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">باش رەسىمىڭىزنى چېكىپ Tellomi تەڭشەكلىرىنى ئېچىڭ</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">«ئۇلانغان ئۈسكۈنىلەر» ۋە «يېڭى ئۈسكۈنىنى ئۇلاش» نى چېكىڭ</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -499,7 +499,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">كودنى ھاسىل قىلالمىدى</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">باشقا ئۈسكۈنىڭىزدە Signal يوقمۇ؟</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">باشقا ئۈسكۈنىڭىزدە Tellomi يوقمۇ؟</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">ھېسابات قۇرۇش</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -513,7 +513,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">ئەپ سانلىق-مەلۇماتلىرىنى ئۆچۈرەمسىز؟</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">سىز باشقا بىر Signal ھېساباتىنى ئۇلاشقا ئۇرۇنىۋاتىسىز. ئەگەر داۋاملاشتۇرسىڭىز، ھازىرقى بۇ ھېساباتتىكى بارلىق Signal سانلىق-مەلۇماتلىرى ئۆچۈرۈلىدۇ.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">سىز باشقا بىر Tellomi ھېساباتىنى ئۇلاشقا ئۇرۇنىۋاتىسىز. ئەگەر داۋاملاشتۇرسىڭىز، ھازىرقى بۇ ھېساباتتىكى بارلىق Tellomi سانلىق-مەلۇماتلىرى ئۆچۈرۈلىدۇ.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">ئۆچۈرۈش &amp; قايتا قوزغىتىش</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -521,7 +521,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">ھېساباتنى يۆتكەش</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">ھېساباتىڭىزنى يۆتكەش ئۈچۈن، كونا ئۈسكۈنىڭىزدە Signal نى ئېچىڭ ۋە «ھېسابات يۆتكەش»نى تاللاڭ.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">ھېساباتىڭىزنى يۆتكەش ئۈچۈن، كونا ئۈسكۈنىڭىزدە Tellomi نى ئېچىڭ ۋە «ھېسابات يۆتكەش»نى تاللاڭ.</string>
     <string name="DeviceTransferInstructions__continue">داۋاملاشتۇر</string>
 
     <!-- Device transfer: Setup screen -->
@@ -553,7 +553,7 @@
     <string name="DeviceTransferProgress__transferring_data">مەلۇمات يۆتكىلىۋاتىدۇ</string>
     <string name="DeviceTransferProgress__d_messages_so_far">ھازىرچە %1$d ئۇچۇرلار</string>
     <string name="DeviceTransferProgress__unable_to_transfer">يۆتكىيەلمىدى</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Signal نىڭ يېڭىراق نەشرلىرىدىن يۆتكىيەلمەيدۇ.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Tellomi نىڭ يېڭىراق نەشرلىرىدىن يۆتكىيەلمەيدۇ.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">بىر ئۇچۇر ئائامبىرى چەكلىمىلىكى تۈپەيلى بەزى مەلۇماتلارنى يۆتكىگىلى بولمىدى.</string>
     <string name="DeviceTransferProgress__transfer_failed">يۆتكەش مەغلۇپ بولدى. قايتا سىناڭ.</string>
     <string name="DeviceTransferProgress__try_again">قايتا سىناڭ</string>
@@ -584,9 +584,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">كىملەر مېنى تېلېفون نومۇرۇم بىلەن تاپسا بولىدۇ؟</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">تېلېفون نومۇرىڭىز بار ھەرقانداق كىشى سىزنىڭ Signal دا ئىكەنلىكىڭىزنى كۆرەلەيدۇ ۋە سىز بىلەن پاراڭ باشلىيالايدۇ.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">تېلېفون نومۇرىڭىز بار ھەرقانداق كىشى سىزنىڭ Tellomi دا ئىكەنلىكىڭىزنى كۆرەلەيدۇ ۋە سىز بىلەن پاراڭ باشلىيالايدۇ.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">ئەگەر باشقىلارغا ئۇچۇر يوللىسىمىڭىز ياكى باشقىلار بىلەن بۇرۇندىنلا مەۋجۇت پارىڭىڭىز بولمىسا، باشقىلار سىزنىڭ Signal دا ئىكەنلىكىڭىزنى كۆرەلمەيدۇ.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">ئەگەر باشقىلارغا ئۇچۇر يوللىسىمىڭىز ياكى باشقىلار بىلەن بۇرۇندىنلا مەۋجۇت پارىڭىڭىز بولمىسا، باشقىلار سىزنىڭ Tellomi دا ئىكەنلىكىڭىزنى كۆرەلمەيدۇ.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">ھەممىسى</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -594,7 +594,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">جەزملەشتۈرەمسىز؟</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">«مېنى نومۇرۇم بىلەن تاپالايدىغانلار» نى «ھېچكىم» گە تەڭشەپ قويسىڭىز، باشقىلارنىڭ سىزنى Signal دا تېپىشى تەس بولىدۇ.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">«مېنى نومۇرۇم بىلەن تاپالايدىغانلار» نى «ھېچكىم» گە تەڭشەپ قويسىڭىز، باشقىلارنىڭ سىزنى Tellomi دا تېپىشى تەس بولىدۇ.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">بىكار قىلىش</string>
     <!-- Save button on the discoverability picker. -->
@@ -612,9 +612,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">تېلېفون نومۇرىنى ئىشلەتمەي، « Signal Login» ئارقىلىق تىزىملىتىش. ئىشلىتىشنى باشلاش ئۈچۈن بىر قېتىملىق سېتىۋېلىش ئارقىلىق ھېسابات ئاچقۇچىغا ئېرىشىسىز.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">تېلېفون نومۇرىنى ئىشلەتمەي، « Tellomi Login» ئارقىلىق تىزىملىتىش. ئىشلىتىشنى باشلاش ئۈچۈن بىر قېتىملىق سېتىۋېلىش ئارقىلىق ھېسابات ئاچقۇچىغا ئېرىشىسىز.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">تەپسىلاتى</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -624,15 +624,15 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">ئۇچۇرلىشىش ۋە چاقىرىق قىلىش ئۈچۈن ئىشلىتىلىدىغان ئىشلەتكۈچى نامى</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal پايدا ئالمايدىغان ئەپ — سىزنىڭ سېتىۋېلىشىڭىز بىزنى قوللاشقا ياردەم بېرىدۇ</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi پايدا ئالمايدىغان ئەپ — سىزنىڭ سېتىۋېلىشىڭىز بىزنى قوللاشقا ياردەم بېرىدۇ</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">مەندە بىر «Signal Login» ھوقوقى بار</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">مەندە بىر «Tellomi Login» ھوقوقى بار</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">ئەسلىدە بار بولغان ھېسابات ئاچقۇچىنى ئىشلىتىڭ</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">ھېساباتىڭىزغا كىرىڭ ۋە ئەسلىگە كەلتۈرۈڭ</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Signal نى قوللىغىنىڭىزغا رەھمەت</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Tellomi نى قوللىغىنىڭىزغا رەھمەت</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">%1$s تاپشۇرۇڭ</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->
@@ -648,15 +648,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">«Signal Login» ھوقوقىڭىز</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">«Tellomi Login» ھوقوقىڭىز</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">سېتىۋالغىنىڭىزغا رەھمەت. «Signal Login» ھوقوقىڭىزنى ئشلىتىپ تىزىملىتىڭ ۋە ھېساباتىڭىزنى ئەسلىگە كەلتۈرۈڭ. ئەگەر ئاچقۇچنى ئۇنتۇپ قالسىڭىز ھېساباتىڭىزنى ئەسلىگە كەلتۈرەلمەيسىز.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">سېتىۋالغىنىڭىزغا رەھمەت. «Tellomi Login» ھوقوقىڭىزنى ئشلىتىپ تىزىملىتىڭ ۋە ھېساباتىڭىزنى ئەسلىگە كەلتۈرۈڭ. ئەگەر ئاچقۇچنى ئۇنتۇپ قالسىڭىز ھېساباتىڭىزنى ئەسلىگە كەلتۈرەلمەيسىز.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">پارول باشقۇرغۇچىغا ساقلاڭ</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">قولدا ساقلاش</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">سىزنىڭ « Signal Login» ىڭىزنى ساقلىغىلى بولمىدى. ئۇنىڭ ئورنىغا ئۇنى قولدا ساقلاڭ.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">سىزنىڭ « Tellomi Login» ىڭىزنى ساقلىغىلى بولمىدى. ئۇنىڭ ئورنىغا ئۇنى قولدا ساقلاڭ.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -666,7 +666,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">ھېساباتىڭىزنى ئەسلىگە كەلتۈرۈش ئۈچۈن، ئەسلىگە كەلتۈرۈش ئاچقۇچىنى ئۆز ئىچىگە ئالغان ھېسابات كىملىكىڭىزنى كىرگۈزۈڭ.</string>
     <!-- Label of the text field the account ID is typed into. -->

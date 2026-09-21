@@ -65,13 +65,13 @@
   <!-- Accessibility description for the button that leaves media selection and opens the camera. -->
   <string name="MediaSelectScreen__go_to_camera">Ir a la cámara</string>
   <!-- Message shown in place of the gallery when the user has not granted permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">Signal necesita permiso para mostrar tus fotos y vídeos</string>
+  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">Tellomi necesita permiso para mostrar tus fotos y vídeos</string>
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">Permitir acceso</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
-  <string name="MediaSelectScreen__no_photos_or_videos_found">No se han encontrado fotos ni vídeos. Signal solo tiene acceso a las fotos y los vídeos que has seleccionado.</string>
+  <string name="MediaSelectScreen__no_photos_or_videos_found">No se han encontrado fotos ni vídeos. Tellomi solo tiene acceso a las fotos y los vídeos que has seleccionado.</string>
   <!-- Reminder shown above the gallery when the user only shared selected photos with Signal. -->
-  <string name="MediaSelectScreen__signal_has_limited_access">Signal tiene acceso limitado a las fotos y los vídeos</string>
+  <string name="MediaSelectScreen__signal_has_limited_access">Tellomi tiene acceso limitado a las fotos y los vídeos</string>
   <!-- Label for the button that opens the menu for changing which photos and videos Signal can see. -->
   <string name="MediaSelectScreen__manage">Gestionar</string>
   <!-- Menu option that re-opens the system picker so the user can share more photos and videos with Signal. -->
@@ -83,7 +83,7 @@
   <!-- Subtitle of the sheet shown when the permission to read photos and videos has been permanently denied, introducing the steps that follow. -->
   <string name="MediaSelectScreen__to_show_photos_and_videos">Para mostrar fotos y vídeos:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal necesita acceso para mostrar tus fotos y vídeos.</string>
+  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Tellomi necesita acceso para mostrar tus fotos y vídeos.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">Foto</string>
@@ -148,23 +148,23 @@
   <!-- Dialog title asking users for microphone permission -->
   <string name="CameraXFragment_allow_access_microphone">Permite el acceso a tu micrófono</string>
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Para hacer fotos y grabar vídeos, permite que Signal acceda a la cámara.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Para hacer fotos y grabar vídeos, permite que Tellomi acceda a la cámara.</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Para hacer fotos y grabar vídeos, permite que Signal acceda a la cámara y al micrófono.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Para hacer fotos y grabar vídeos, permite que Tellomi acceda a la cámara y al micrófono.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
-  <string name="CameraXFragment_to_capture_videos_with_sound">Para grabar vídeos con sonido, permite que Signal acceda a tu micrófono.</string>
+  <string name="CameraXFragment_to_capture_videos_with_sound">Para grabar vídeos con sonido, permite que Tellomi acceda a tu micrófono.</string>
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
-  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Para escanear el código QR, permite que Signal acceda a la cámara.</string>
+  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Para escanear el código QR, permite que Tellomi acceda a la cámara.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
-  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Signal necesita acceso a la cámara para hacer fotos</string>
+  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomi necesita acceso a la cámara para hacer fotos</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
-  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Signal necesita acceso a la cámara para escanear códigos QR</string>
+  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Tellomi necesita acceso a la cámara para escanear códigos QR</string>
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
-  <string name="CameraXFragment_signal_needs_microphone_access_video">Signal necesita acceso al micrófono para grabar vídeos</string>
+  <string name="CameraXFragment_signal_needs_microphone_access_video">Tellomi necesita acceso al micrófono para grabar vídeos</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
-  <string name="CameraXFragment_to_capture_photos">Para hacer fotos en Signal:</string>
+  <string name="CameraXFragment_to_capture_photos">Para hacer fotos en Tellomi:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
-  <string name="CameraXFragment_to_capture_photos_videos">Para hacer fotos y grabar vídeos en Signal:</string>
+  <string name="CameraXFragment_to_capture_photos_videos">Para hacer fotos y grabar vídeos en Tellomi:</string>
   <!-- Dialog description that explains the steps needed to give microphone permission -->
   <string name="CameraXFragment_to_capture_videos">Para grabar vídeos con sonido:</string>
   <!-- Dialog description that explains the steps needed to give Signal camera permissions -->
@@ -186,7 +186,7 @@
   <!-- Label shown below the elapsed time while a video recording is paused -->
   <string name="CameraXFragment_paused">Pausado</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
-  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Signal necesita acceso al micrófono para grabar vídeos. Ve al menú Ajustes de tu dispositivo y selecciona Aplicaciones y notificaciones &gt; Signal &gt; Permisos de la aplicación, y activa el acceso al micrófono y a la cámara. Estos pasos pueden variar dependiendo de tu dispositivo.</string>
+  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">Tellomi necesita acceso al micrófono para grabar vídeos. Ve al menú Ajustes de tu dispositivo y selecciona Aplicaciones y notificaciones &gt; Tellomi &gt; Permisos de la aplicación, y activa el acceso al micrófono y a la cámara. Estos pasos pueden variar dependiendo de tu dispositivo.</string>
 
   <!-- Displayed when there is an error capturing video -->
   <string name="MediaSendViewModel__error_recording_video">No se ha podido grabar el vídeo</string>
@@ -205,7 +205,7 @@
   <!-- Displayed when the media being edited could not be saved to the phone\'s storage -->
   <string name="MediaSendViewModel__error_saving_media">No se ha podido guardar el archivo adjunto.</string>
   <!-- Displayed when the media being edited cannot be saved because the storage permission was denied -->
-  <string name="MediaSendViewModel__unable_to_save_without_storage_permission">No se pueden guardar archivos en una unidad de almacenamiento externo si Signal no tiene acceso</string>
+  <string name="MediaSendViewModel__unable_to_save_without_storage_permission">No se pueden guardar archivos en una unidad de almacenamiento externo si Tellomi no tiene acceso</string>
   <!-- Small notification presented to the user when they set their photo to view-once mode -->
   <string name="MediaSendViewModel__photo_set_to_view_once">Foto configurada para ver solo una vez</string>
   <!-- Small notification presented to the user when they set their video to view-once mode -->
@@ -229,7 +229,7 @@
         <item quantity="other">%1$d elementos configurados en calidad estándar</item>
     </plurals>
   <!-- Message shown when saving the media being edited requires the storage permission, but that permission has been permanently denied by the user. -->
-  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Signal necesita acceso al almacenamiento para guardar archivos en la unidad de almacenamiento externo. Ve al menú Ajustes de tu dispositivo y selecciona Aplicaciones y notificaciones &gt; Signal &gt; Permisos de la aplicación &gt; Almacenamiento &gt; Permitir. Estos pasos pueden variar dependiendo de tu dispositivo.</string>
+  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Tellomi necesita acceso al almacenamiento para guardar archivos en la unidad de almacenamiento externo. Ve al menú Ajustes de tu dispositivo y selecciona Aplicaciones y notificaciones &gt; Tellomi &gt; Permisos de la aplicación &gt; Almacenamiento &gt; Permitir. Estos pasos pueden variar dependiendo de tu dispositivo.</string>
   <!-- Message shown when the user disables audio on a video -->
   <string name="MediaSendViewModel__video_will_be_sent_without_audio">El vídeo se enviará sin audio</string>
 
@@ -243,7 +243,7 @@
   <!-- The title of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_title">¿Vincular dispositivo?</string>
   <!-- The body of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
-  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Parece que estás intentando vincular un dispositivo a tu cuenta de Signal. Toca \"Continuar\", selecciona \"Vincular un nuevo dispositivo\" y vuelve a escanear el código QR.</string>
+  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Parece que estás intentando vincular un dispositivo a tu cuenta de Tellomi. Toca \"Continuar\", selecciona \"Vincular un nuevo dispositivo\" y vuelve a escanear el código QR.</string>
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">Continuar</string>
 

@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">允許權限</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Signal 會要求取得以下權限，協助你同識得嘅人傳送訊息。 </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Tellomi 會要求取得以下權限，協助你同識得嘅人傳送訊息。 </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">遲啲先啦</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">聯絡人</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">尋找你識得嘅人。你嘅聯絡人清單已經加密，Signal 唔會睇到。</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">尋找你識得嘅人。你嘅聯絡人清單已經加密，Tellomi 唔會睇到。</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">電話通話</string>
     <!-- Phone calls permission row description -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">聯絡支援團隊</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal 註冊 - Android 版驗證碼</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi 註冊 - Android 版驗證碼</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">部舊手機喺我手上</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">用你而家嘅 Signal 帳戶掃描二維碼，就可以即刻開始用喇</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">用你而家嘅 Tellomi 帳戶掃描二維碼，就可以即刻開始用喇</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">部舊手機唔喺我手上</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">或者如果你係喺同一部機度重新安裝緊 Signal</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">或者如果你係喺同一部機度重新安裝緊 Tellomi</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">選擇還原訊息紀錄同埋帳戶資料嘅方式。</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">由 Signal 備份</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">由 Tellomi 備份</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">你嘅免費或者課咗金嘅 Signal 備份計劃</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">你嘅免費或者課咗金嘅 Tellomi 備份計劃</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">攞返裝置入面個備份嚟還原</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">搵唔到備份</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">喺揀咗嘅資料夾度搵唔到 Signal 備份。請試下其他資料夾。</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">喺揀咗嘅資料夾度搵唔到 Tellomi 備份。請試下其他資料夾。</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">試下其他資料夾</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">係咪還原去新嘅帳戶？</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">你還原緊嘅備份係由另一個 Signal 帳戶建立嘅。你可以將呢個備份還原去新帳戶，不過還原之後你就唔再係啲谷嘅谷友。</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">你還原緊嘅備份係由另一個 Tellomi 帳戶建立嘅。你可以將呢個備份還原去新帳戶，不過還原之後你就唔再係啲谷嘅谷友。</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">還原</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">搵唔到備份</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">你嘅恢復金鑰正確，但係呢個帳戶冇 Signal 備份。返去揀選其他還原方法，或者唔還原去繼續。</string>
+    <string name="EnterAepScreen__no_backup_found_body">你嘅恢復金鑰正確，但係呢個帳戶冇 Tellomi 備份。返去揀選其他還原方法，或者唔還原去繼續。</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">準備緊還原……</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">連結你嘅帳戶</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">仲未加入 Signal？</string>
+    <string name="WelcomeScreen__not_on_signal_yet">仲未加入 Tellomi？</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">建立帳戶</string>
 
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">還原唔到備份</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">呢個版本嘅 Signal 還原唔到備份。請更新去最新版本，然後再試一次。</string>
+    <string name="RemoteRestoreScreen__update_latest">呢個版本嘅 Tellomi 還原唔到備份。請更新去最新版本，然後再試一次。</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">更新 Signal</string>
+    <string name="RemoteRestoreScreen__update_signal">更新 Tellomi</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">遲啲先</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">聯絡支援團隊</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Signal Android 備份還原出現恆常性錯誤</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Tellomi Android 備份還原出現恆常性錯誤</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">為咗保障你嘅私隱同安全，我哋會將你嘅帳戶暫時鎖定。閒置 %1$d 日之後，你就可以喺冇 PIN 碼嘅情況下重新註冊呢個電話冧把，而所有資料都會被刪除。</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">喺你部舊機度打開 Signal</string>
+    <string name="QuickRestoreQRScreen__step_1">喺你部舊機度打開 Tellomi</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">㩒一吓相機圖示 </string>
     <!-- Step 3 to quick restore -->
@@ -391,13 +391,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">揀一個穩陣啲嘅 PIN 碼</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">你又再入咗已經用嚟驗證你電話冧把嘅驗證碼。揀過個全新又獨一無二嘅 Signal PIN 碼。</string>
+    <string name="PinCreationScreen__reentered_verification_code">你又再入咗已經用嚟驗證你電話冧把嘅驗證碼。揀過個全新又獨一無二嘅 Tellomi PIN 碼。</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">PIN 碼知多啲</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">警告</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">如果你停用 PIN 碼，當你重新註冊 Signal 而又冇手動備份同還原嘅話，所有資料就會冇晒。停用 PIN 期間唔可以開啟註冊鎖定。</string>
+    <string name="PinCreationScreen__disable_pin_warning">如果你停用 PIN 碼，當你重新註冊 Tellomi 而又冇手動備份同還原嘅話，所有資料就會冇晒。停用 PIN 期間唔可以開啟註冊鎖定。</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">停用 PIN 碼</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -414,9 +414,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">輸入 PIN 碼</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">輸入你第一次安裝 Signal 嗰時建立嘅 PIN 碼</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">輸入你第一次安裝 Tellomi 嗰時建立嘅 PIN 碼</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">你又再入咗已經用嚟驗證你電話冧把嘅驗證碼。輸入你之前為帳戶建立嘅專屬 Signal PIN 碼。</string>
+    <string name="PinEntryScreen__reentered_verification_code">你又再入咗已經用嚟驗證你電話冧把嘅驗證碼。輸入你之前為帳戶建立嘅專屬 Tellomi PIN 碼。</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="other">PIN 碼唔啱。剩返 %1$d 次機會。</item>
@@ -442,14 +442,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">聯絡支援團隊</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal 註冊 - Android 版 PIN 碼需要幫手</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi 註冊 - Android 版 PIN 碼需要幫手</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">允許通知</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal 想請你開放通知權限。咁樣做你部機就可以喺收到新訊息嗰陣顯示通知提示。</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi 想請你開放通知權限。咁樣做你部機就可以喺收到新訊息嗰陣顯示通知提示。</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">遲啲先</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -485,9 +485,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">掃描呢個二維碼去連結你個帳戶</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">喺手機度打開 Signal</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">喺手機度打開 Tellomi</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">㩒一下個人檔案張圖嚟打開「Signal 設定」</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">㩒一下個人檔案張圖嚟打開「Tellomi 設定」</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">㩒一下「連結咗嘅裝置」同埋「連結新裝置」</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -499,7 +499,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">建立唔到二維碼</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">另一部裝置係咪冇裝 Signal 呀？</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">另一部裝置係咪冇裝 Tellomi 呀？</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">建立帳戶</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -513,7 +513,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">係咪要刪除 APP 嘅資料？</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">你嘗試緊連結另一個 Signal 帳戶。如果你繼續，系統會刪除而家喺呢部機度嘅所有 Signal 資料。</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">你嘗試緊連結另一個 Tellomi 帳戶。如果你繼續，系統會刪除而家喺呢部機度嘅所有 Tellomi 資料。</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">刪除然後重新啟動</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -521,7 +521,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">轉移你嘅帳戶</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">要轉移你嘅帳戶，請喺舊嘅 Android 機上面打開 Signal，然後揀「轉移帳戶」。</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">要轉移你嘅帳戶，請喺舊嘅 Android 機上面打開 Tellomi，然後揀「轉移帳戶」。</string>
     <string name="DeviceTransferInstructions__continue">繼續</string>
 
     <!-- Device transfer: Setup screen -->
@@ -532,11 +532,11 @@
     <string name="DeviceTransferSetup__numbers_match">係，數字一樣</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">啲數字唔夾</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">等緊你部舊機驗證……</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signal 要攞「位置」權限，先可以探測同連接你部舊機。</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomi 要攞「位置」權限，先可以探測同連接你部舊機。</string>
     <string name="DeviceTransferSetup__grant_location_permission">授權</string>
-    <string name="DeviceTransferSetup__location_services_required">Signal 要啟用定位服務，先可以探測同連接你部舊機。</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomi 要啟用定位服務，先可以探測同連接你部舊機。</string>
     <string name="DeviceTransferSetup__turn_on_location_services">開啟定位服務</string>
-    <string name="DeviceTransferSetup__wifi_required">Signal 要開 Wi-Fi 先可以探測同連接你部舊機。</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomi 要開 Wi-Fi 先可以探測同連接你部舊機。</string>
     <string name="DeviceTransferSetup__turn_on_wifi">開啟 Wi-Fi</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">唔好意思，你部機好似唔支援 Wi-Fi Direct。</string>
     <string name="DeviceTransferSetup__restore_a_backup">改為還原備份</string>
@@ -553,7 +553,7 @@
     <string name="DeviceTransferProgress__transferring_data">轉移緊資料</string>
     <string name="DeviceTransferProgress__d_messages_so_far">目前為止 %1$d 個訊息</string>
     <string name="DeviceTransferProgress__unable_to_transfer">轉移唔到</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">由新啲嘅 Signal 版本轉移過嚟係唔得嘅。</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">由新啲嘅 Tellomi 版本轉移過嚟係唔得嘅。</string>
     <string name="DeviceTransferProgress__failure_foreign_key">因為資料庫限制，有啲資料轉移唔到。</string>
     <string name="DeviceTransferProgress__transfer_failed">轉移失敗。請再試多次。</string>
     <string name="DeviceTransferProgress__try_again">再試多次</string>
@@ -584,9 +584,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">邊個可以用電話號碼搵到我？</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">任何有你電話冧把嘅人都會睇到你用緊 Signal，同埋可以開始同你傾計。</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">任何有你電話冧把嘅人都會睇到你用緊 Tellomi，同埋可以開始同你傾計。</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">除非你向對方傳送訊息或者雙方已經有聊天紀錄，如果唔係冇人會睇到你用緊 Signal。</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">除非你向對方傳送訊息或者雙方已經有聊天紀錄，如果唔係冇人會睇到你用緊 Tellomi。</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">任何人都得</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -594,7 +594,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">你係咪確定？</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">將「邊個可以用電話號碼搵到我」設定為「邊個都唔得」，會令其他人無咁容易喺 Signal 度搵到你。</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">將「邊個可以用電話號碼搵到我」設定為「邊個都唔得」，會令其他人無咁容易喺 Tellomi 度搵到你。</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">取消</string>
     <!-- Save button on the discoverability picker. -->
@@ -612,9 +612,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">用 Signal Login，唔使電話冧把就可以註冊啦。只需要買一次，你就會收到帳戶金鑰，即刻開始用。</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">用 Tellomi Login，唔使電話冧把就可以註冊啦。只需要買一次，你就會收到帳戶金鑰，即刻開始用。</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">了解詳情</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,13 +626,13 @@
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
     <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal 係一間非牟利組織—你嘅課金支持我哋嘅使命</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">我有 Signal Login</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">我有 Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">用而家有嘅帳戶金鑰</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">登入同還原你嘅帳戶</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">多謝你撐 Signal</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">多謝你撐 Tellomi</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">俾 %1$s</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->
@@ -648,15 +648,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">你嘅 Signal Login</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">你嘅 Tellomi Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">多謝你課咗金。請用你嘅 Signal Login 嚟註冊同還原帳戶。如果你唔記得咗啲金鑰，就冇辦法恢復帳戶㗎喇。</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">多謝你課咗金。請用你嘅 Tellomi Login 嚟註冊同還原帳戶。如果你唔記得咗啲金鑰，就冇辦法恢復帳戶㗎喇。</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">儲存去密碼管理器</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">人手記低佢</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">儲存唔到你嘅 Signal Login。請你改做人手儲存。</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">儲存唔到你嘅 Tellomi Login。請你改做人手儲存。</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -666,7 +666,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">輸入你嘅帳戶 ID，跟住輸入恢復金鑰嚟還原你嘅帳戶。</string>
     <!-- Label of the text field the account ID is typed into. -->

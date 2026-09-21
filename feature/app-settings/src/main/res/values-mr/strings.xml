@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">नोंदणी लॉक चालू करायचे?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">नोंदणी लॉक बंद करायचे?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Signal सोबत पुन्हा नोंदणी करताना जर आपण आपला PIN विसरलात, तर आपण आपल्या खात्यापासून 7 दिवसांसाठी बाहेर रहाल.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Tellomi सोबत पुन्हा नोंदणी करताना जर आपण आपला PIN विसरलात, तर आपण आपल्या खात्यापासून 7 दिवसांसाठी बाहेर रहाल.</string>
     <string name="RegistrationLockV2Dialog_turn_on">चालू करा</string>
     <string name="RegistrationLockV2Dialog_turn_off">बंद करा</string>
     <string name="preferences__advanced_pin_settings">प्रगत PIN सेटिंग</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">किबोर्ड स्वीच करा</string>
     <string name="preferences_chats__transfer_account">खाते स्थानांतरित करा</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">नवीन Android डिव्हाइसवर खाते स्थानांतरित करा</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi PIN</string>
     <string name="preferences_app_protection__create_a_pin">PIN तयार करा.</string>
     <string name="preferences_app_protection__change_your_pin">आपला PIN बदला</string>
     <string name="preferences_app_protection__pin_reminders">PIN स्मरणपत्रे</string>
     <string name="preferences_app_protection__turn_off">बंद करा</string>
     <string name="preferences_app_protection__confirm_pin">PIN ची पुष्टी करा</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">आपल्या Signal PIN ची पुष्टी करा</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">ज्याअर्थी ते पुनर्स्थित केले जाऊ शकत नाही त्यामुळे आपला PIN आपण लक्षात ठेवला किंवा सुरक्षितपणे जतन केले असल्याची खात्री करा. जर आपण आपला PIN विसरलात, तर आपण आपले Signal खाते पुन्हा-नोंदवताना आपला डेटा गमवाल.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">आपल्या Tellomi PIN ची पुष्टी करा</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">ज्याअर्थी ते पुनर्स्थित केले जाऊ शकत नाही त्यामुळे आपला PIN आपण लक्षात ठेवला किंवा सुरक्षितपणे जतन केले असल्याची खात्री करा. जर आपण आपला PIN विसरलात, तर आपण आपले Tellomi खाते पुन्हा-नोंदवताना आपला डेटा गमवाल.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">चुकीचा पिन. पुन्हा प्रयत्न करा.</string>
     <string name="preferences_app_protection__registration_lock">नोंदणी लॉक</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">अकाऊंट पुन्हा नाेंदणी करा</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Signal अद्यतनित करा</string>
+    <string name="preferences_account_update_signal">Tellomi अद्यतनित करा</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">सर्व डेटा हटवा</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">खाते</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">वेळेनुसार आपल्याला कमी वारंवार विचारले जाईल</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Signal सोबत पुन्हा नोंदणी करताना आपला Signal PIN आवश्यक करा.</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Tellomi सोबत पुन्हा नोंदणी करताना आपला Tellomi PIN आवश्यक करा.</string>
     <string name="AccountSettingsFragment__change_phone_number">फोन नंबर बदला</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">आपला अकाऊंट डेटा</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">खाते आणि पुनःप्राप्ती</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">तुमचे खाते पुन्हा मिळवण्यासाठी आणि रीस्टोर करण्यासाठी तुमचे Signal Login वापरले जाते. या कीज् तुमच्या विश्वासातील एका पासवर्ड व्यवस्थापकात सुरक्षितपणे साठवून ठेवा.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">तुमचे खाते पुन्हा मिळवण्यासाठी आणि रीस्टोर करण्यासाठी तुमचे Tellomi Login वापरले जाते. या कीज् तुमच्या विश्वासातील एका पासवर्ड व्यवस्थापकात सुरक्षितपणे साठवून ठेवा.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">दुहेरी अधिस्वीकृती</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d पासकीज्</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">तुमचे Signal Login एका नवीन डिव्हाईसवर वापरताना तुमच्या खात्याचे रक्षण करण्यासाठी दुसऱ्या प्रकारची अधिस्वीकृती वापरा.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">तुमचे Tellomi Login एका नवीन डिव्हाईसवर वापरताना तुमच्या खात्याचे रक्षण करण्यासाठी दुसऱ्या प्रकारची अधिस्वीकृती वापरा.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">अधिक जाणून घ्या</string>
 
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">पायरी 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">तुमचे Signal खाते समाविष्ट करण्यासाठी खालचे बटण दाबून तुमचे ऑथेंटिकेटर ॲप उघडा.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">तुमचे Tellomi खाते समाविष्ट करण्यासाठी खालचे बटण दाबून तुमचे ऑथेंटिकेटर ॲप उघडा.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">उघडा</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">कोणतेही ऑथेंटिकेटर ॲप सापडले नाही</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Signal पर्यंत पोहोचता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomi पर्यंत पोहोचता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">पायरी 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">चुकीचा कोड. तुमच्या ऑथेंटिकेटर ॲपमध्ये दिसणारा कोड आत्ता प्रविष्ट करा.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal पर्यंत पोहोचता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomi पर्यंत पोहोचता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">ऑथेंटिकेटर ॲप</string>

@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">開啟註冊鎖？</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">關閉註冊鎖？</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">如果你再次註冊 Signal 時忘記了你的 Signal PIN 碼，你的帳號將會被暫時鎖定 7 天。</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">如果你再次註冊 Tellomi 時忘記了你的 Tellomi PIN 碼，你的帳號將會被暫時鎖定 7 天。</string>
     <string name="RegistrationLockV2Dialog_turn_on">開啟</string>
     <string name="RegistrationLockV2Dialog_turn_off">關閉</string>
     <string name="preferences__advanced_pin_settings">進階 PIN 碼設定</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">切換鍵盤</string>
     <string name="preferences_chats__transfer_account">轉移帳號</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">將帳號轉移到新的Android裝置</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN 碼</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi PIN 碼</string>
     <string name="preferences_app_protection__create_a_pin">建立 PIN 碼</string>
     <string name="preferences_app_protection__change_your_pin">變更你的 PIN 碼</string>
     <string name="preferences_app_protection__pin_reminders">PIN 碼提示器</string>
     <string name="preferences_app_protection__turn_off">關閉</string>
     <string name="preferences_app_protection__confirm_pin">確認 PIN 碼</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">確認你的 Signal PIN 碼</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">確認你的 Tellomi PIN 碼</string>
     <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">確保你記住或安全地儲存了PIN碼，因為它無法回復。 如果你忘記了PIN碼，則在重新註冊Signal帳號時可能會遺失資料。</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">PIN 碼不正確。請再試一次。</string>
     <string name="preferences_app_protection__registration_lock">註冊鎖定</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">重新註冊帳戶</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">更新 Signal</string>
+    <string name="preferences_account_update_signal">更新 Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">刪除所有資料</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">帳號</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">詢問您的次數將會隨著時間減少</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">要求你的 Signal PIN 碼才能在 Signal 再次註冊你的電話號碼</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">要求你的 Tellomi PIN 碼才能在 Tellomi 再次註冊你的電話號碼</string>
     <string name="AccountSettingsFragment__change_phone_number">變更電話號碼</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">你的帳戶資料</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal 免號登入</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi 免號登入</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">帳戶與恢復金鑰</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">你的「Signal 免號登入」是用來恢復及還原帳戶。請將這些金鑰安全地儲存在你信任的密碼管理器中。</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">你的「Tellomi 免號登入」是用來恢復及還原帳戶。請將這些金鑰安全地儲存在你信任的密碼管理器中。</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">雙重驗證</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -69,7 +69,7 @@
         <item quantity="other">%1$d 個通行密鑰</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">當你在新裝置上使用「Signal 免號登入」時，請啟用第二種驗證方式來保護你的帳戶。</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">當你在新裝置上使用「Tellomi 免號登入」時，請啟用第二種驗證方式來保護你的帳戶。</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">了解更多</string>
 
@@ -87,7 +87,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">步驟 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">點按下方的按鈕開啟驗證應用程式，以新增你的 Signal 帳戶。</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">點按下方的按鈕開啟驗證應用程式，以新增你的 Tellomi 帳戶。</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">開啟</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -99,7 +99,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">找不到驗證應用程式</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">無法連線至 Signal。請檢查你的網路連線，然後再試一次。</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">無法連線至 Tellomi。請檢查你的網路連線，然後再試一次。</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">步驟 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,7 +147,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">驗證碼錯誤。請輸入現在驗證應用程式中的驗證碼。</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">無法連線至 Signal。請檢查你的網路連線，然後再試一次。</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">無法連線至 Tellomi。請檢查你的網路連線，然後再試一次。</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">驗證應用程式</string>

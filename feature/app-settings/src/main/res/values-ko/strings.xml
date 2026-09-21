@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">키보드 전환</string>
     <string name="preferences_chats__transfer_account">계정 이전</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">새 Android 기기로 계정 이전</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi PIN</string>
     <string name="preferences_app_protection__create_a_pin">PIN을 생성하세요</string>
     <string name="preferences_app_protection__change_your_pin">PIN 변경</string>
     <string name="preferences_app_protection__pin_reminders">PIN 알림</string>
     <string name="preferences_app_protection__turn_off">끄기</string>
     <string name="preferences_app_protection__confirm_pin">PIN을 확인해 주세요</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Signal PIN을 확인해 주세요</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">PIN은 복구가 불가능하므로 반드시 기억하거나 안전한 곳에 보관해 주세요. PIN을 잊어버리면 Signal 재가입 시 데이터를 복원할 수 없습니다.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Tellomi PIN을 확인해 주세요</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">PIN은 복구가 불가능하므로 반드시 기억하거나 안전한 곳에 보관해 주세요. PIN을 잊어버리면 Tellomi 재가입 시 데이터를 복원할 수 없습니다.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">PIN이 일치하지 않습니다. 다시 시도해 주세요.</string>
     <string name="preferences_app_protection__registration_lock">등록 잠금</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">계정 다시 등록</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Signal 업데이트</string>
+    <string name="preferences_account_update_signal">Tellomi 업데이트</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">모든 데이터 삭제</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">계정</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">사용할수록 확인 요청 횟수가 줄어듭니다.</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Signal에 전화번호를 다시 등록할 때 Signal PIN을 입력하도록 설정합니다.</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Signal에 전화번호를 다시 등록할 때 Tellomi PIN을 입력하도록 설정합니다.</string>
     <string name="AccountSettingsFragment__change_phone_number">전화번호 변경</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">내 계정 데이터</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">계정 및 복구</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal Login 정보는 계정을 복구하고 되살리는 데 사용됩니다. 이 키들을 신뢰할 수 있는 비밀번호 관리자에 안전하게 저장하세요.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Tellomi Login 정보는 계정을 복구하고 되살리는 데 사용됩니다. 이 키들을 신뢰할 수 있는 비밀번호 관리자에 안전하게 저장하세요.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">2단계 인증</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -69,7 +69,7 @@
         <item quantity="other">패스키 %1$d개</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">새 기기에서 Signal Login 정보를 사용할 때 계정을 보호하려면 2차 인증을 사용하세요.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">새 기기에서 Tellomi Login 정보를 사용할 때 계정을 보호하려면 2차 인증을 사용하세요.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">자세히 알아보기</string>
 
@@ -87,7 +87,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">2단계</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">아래 버튼을 탭하여 인증 앱을 열고 Signal 계정을 추가하세요.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">아래 버튼을 탭하여 인증 앱을 열고 Tellomi 계정을 추가하세요.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">열기</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->

@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">பெர்மீஷன்களை அனுமதித்தல்</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">உங்களுக்குத் தெரிந்தவர்களுக்கு மெசேஜ் அனுப்ப உதவ, Signal இந்த அனுமதிகளைக் கோரும். </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">உங்களுக்குத் தெரிந்தவர்களுக்கு மெசேஜ் அனுப்ப உதவ, Tellomi இந்த அனுமதிகளைக் கோரும். </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">இப்போது வேண்டாம்</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">தொடர்புகள்</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">உங்களுக்குத் தெரிந்தவர்களைக் கண்டறியவும். உங்கள் தொடர்புகள் குறியாக்கம் செய்யப்பட்டுள்ளது, மேலும் Signal சேவைக்குக் காண்பிக்கப்படாது.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">உங்களுக்குத் தெரிந்தவர்களைக் கண்டறியவும். உங்கள் தொடர்புகள் குறியாக்கம் செய்யப்பட்டுள்ளது, மேலும் Tellomi சேவைக்குக் காண்பிக்கப்படாது.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">ஃபோன் அழைப்புகள்</string>
     <!-- Phone calls permission row description -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">தொடர்பு ஆதரவு</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal பதிவு - அண்ட்ராய்டு க்கான சரிபார்ப்புக் குறியீடு</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi பதிவு - அண்ட்ராய்டு க்கான சரிபார்ப்புக் குறியீடு</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -247,7 +247,7 @@
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">காப்புப்பிரதி கிடைக்கவில்லை</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">உங்கள் மீட்புக் குறியீடு சரியானது, ஆனால் இந்தக் கணக்கிற்கு Signal காப்புப்பிரதி எதுவும் இல்லை. மீட்டமைப்பதற்கான வேறொரு வழியைத் தேர்வுசெய்ய பின்செல்லவும் அல்லது மீட்டமைக்காமல் தொடரவும்.</string>
+    <string name="EnterAepScreen__no_backup_found_body">உங்கள் மீட்புக் குறியீடு சரியானது, ஆனால் இந்தக் கணக்கிற்கு Tellomi காப்புப்பிரதி எதுவும் இல்லை. மீட்டமைப்பதற்கான வேறொரு வழியைத் தேர்வுசெய்ய பின்செல்லவும் அல்லது மீட்டமைக்காமல் தொடரவும்.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">மீட்டமைக்கத் தயாராகிறது…</string>
     <!-- Title shown while restore is in progress -->
@@ -309,7 +309,7 @@
     <!-- Body for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__update_latest">சிக்னலின் இந்தப் பதிப்பினால் உங்கள் காப்புப்பிரதியை மீட்டெடுக்க முடியாது. அண்மைய பதிப்புக்குப் புதுப்பித்து மீண்டும் முயலுங்கள்.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Signal லைப் புதுப்பிக்கவும்</string>
+    <string name="RemoteRestoreScreen__update_signal">Tellomi லைப் புதுப்பிக்கவும்</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">இப்போது வேண்டாம்</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -444,9 +444,9 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">ஆதரவைத் தொடர்பு கொள்க</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal பதிவு - Android க்கான PIN உடன் உதவி தேவை</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi பதிவு - Android க்கான PIN உடன் உதவி தேவை</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">அறிவிப்புகளுக்கான அனுமதி</string>
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal Login-ஐப் பயன்படுத்தி தொலைபேசி எண் இல்லாமல் பதிவு செய்யவும். ஒரு முறை வாங்குதலில், தொடங்குவதற்கு கணக்கு குறியீட்டைப் பெறுவீர்கள்.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Tellomi Login-ஐப் பயன்படுத்தி தொலைபேசி எண் இல்லாமல் பதிவு செய்யவும். ஒரு முறை வாங்குதலில், தொடங்குவதற்கு கணக்கு குறியீட்டைப் பெறுவீர்கள்.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">மேலும் அறிக</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,9 +626,9 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">செய்தியிடல் &amp; அழைப்புகளுக்காக பயனர்பெயர்</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal என்பது இலாப நோக்கமற்ற செயலியாகும்—உங்களின் வாங்குதல் எங்கள் பணியை ஆதரிக்க உதவுகிறது</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi என்பது இலாப நோக்கமற்ற செயலியாகும்—உங்களின் வாங்குதல் எங்கள் பணியை ஆதரிக்க உதவுகிறது</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">என்னிடம் Signal Login உள்ளது</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">என்னிடம் Tellomi Login உள்ளது</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">உங்களின் ஏற்கெனவே உள்ள கணக்குக் குறியீட்டைப் பயன்படுத்தவும்</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -650,15 +650,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">உங்களின் Signal Login</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">உங்களின் Tellomi Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">உங்களின் வாங்குதலுக்கு நன்றி. உங்கள் கணக்கைப் பதிவு செய்து மீட்டமைக்க, Signal Login-ஐப் பயன்படுத்தவும். உங்கள் குறியீடுகளை மறந்துவிட்டால், உங்கள் கணக்கை உங்களால் மீட்டமைக்க முடியாது.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">உங்களின் வாங்குதலுக்கு நன்றி. உங்கள் கணக்கைப் பதிவு செய்து மீட்டமைக்க, Tellomi Login-ஐப் பயன்படுத்தவும். உங்கள் குறியீடுகளை மறந்துவிட்டால், உங்கள் கணக்கை உங்களால் மீட்டமைக்க முடியாது.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">கடவுச்சொல் மேலாளரில் சேமித்திடுக</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">கைமுறையாகச் சேமி</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">உங்களின் Signal Login சேமிக்கப்படாது. பதிலாக அதனைக் கைமுறையாக சேமிக்கவும்.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">உங்களின் Tellomi Login சேமிக்கப்படாது. பதிலாக அதனைக் கைமுறையாக சேமிக்கவும்.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -668,7 +668,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">உங்கள் கணக்கை மீட்டமைக்க, உங்கள் கணக்கு ID-ஐயும் அதைத் தொடர்ந்து உங்கள் மீட்புக் குறியீட்டையும் உள்ளிடவும்.</string>
     <!-- Label of the text field the account ID is typed into. -->

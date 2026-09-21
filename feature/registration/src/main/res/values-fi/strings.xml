@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Yksityisyys aina mukana.\nOle itsesi jokaisessa viestissä.</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal on voittoa tavoittelematon organisaatio\nKäyttöehdot ja tietosuojapolitiikka</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomi on voittoa tavoittelematon organisaatio\nKäyttöehdot ja tietosuojapolitiikka</string>
     <string name="RegistrationActivity_continue">Jatka</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">Palauta tai siirrä</string>
@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">Myönnä käyttöoikeudet</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Signal pyytää näitä käyttöoikeuksia, jotta voisit viestiä tuntemillesi ihmisille helpommin. </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Tellomi pyytää näitä käyttöoikeuksia, jotta voisit viestiä tuntemillesi ihmisille helpommin. </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">Ei nyt</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">Yhteystiedot</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">Etsi tuntemiasi ihmisiä. Yhteystietosi salataan, eivätkä ne näy Signal-palvelussa.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">Etsi tuntemiasi ihmisiä. Yhteystietosi salataan, eivätkä ne näy Tellomi-palvelussa.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">Puhelut</string>
     <!-- Phone calls permission row description -->
@@ -130,7 +130,7 @@
     <!-- Email subject used when contacting support from the verification code screen -->
     <string name="VerificationCodeScreen__contact_support_email_subject">Signalin rekisteröinti – vahvistuskoodi Androidille</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,7 +138,7 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">Minulla on vanha puhelimeni</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">Aloita nopeasti skannaamalla nykyisen Signal-tilisi QR-koodi</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">Aloita nopeasti skannaamalla nykyisen Tellomi-tilisi QR-koodi</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Minulla ei ole vanhaa puhelintani</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">Valitse, miten haluat palauttaa viestihistoriasi ja tilitietosi.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Signal-varmuuskopiosta</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomi-varmuuskopiosta</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Ilmainen tai maksullinen Signal-varmuuskopioinnin tilaus</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Ilmainen tai maksullinen Tellomi-varmuuskopioinnin tilaus</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">Palauta laitteella oleva varmuuskopio</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">Varmuuskopiota ei löydy</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">Valitusta kansiosta ei löytynyt Signal-varmuuskopiota. Valitse toinen kansio.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">Valitusta kansiosta ei löytynyt Tellomi-varmuuskopiota. Valitse toinen kansio.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">Kokeile toista kansiota</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">Palautetaanko tiedot uudelle tilille?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">Palauttamasi varmuuskopio luotiin toisella Signal-tilillä. Voit palauttaa varmuuskopion uudelle tilille, mutta jäsenyytesi palautetuissa ryhmissä päättyy.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">Palauttamasi varmuuskopio luotiin toisella Tellomi-tilillä. Voit palauttaa varmuuskopion uudelle tilille, mutta jäsenyytesi palautetuissa ryhmissä päättyy.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">Palauta</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Varmuuskopiota ei löydy</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Palautusavain on oikea, mutta tähän tiliin ei liity Signal Backup -varmuuskopiota. Palaa ja valitse toinen palautustapa tai jatka palauttamatta.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Palautusavain on oikea, mutta tähän tiliin ei liity Tellomi Backup -varmuuskopiota. Palaa ja valitse toinen palautustapa tai jatka palauttamatta.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Valmistellaan palautusta…</string>
     <!-- Title shown while restore is in progress -->
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Varmuuskopiota ei voitu palauttaa</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Tämä Signal-versio ei voi palauttaa varmuuskopiota. Päivitä uusimpaan versioon ja yritä uudelleen.</string>
+    <string name="RemoteRestoreScreen__update_latest">Tämä Tellomi-versio ei voi palauttaa varmuuskopiota. Päivitä uusimpaan versioon ja yritä uudelleen.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Päivitä Signal</string>
+    <string name="RemoteRestoreScreen__update_signal">Päivitä Tellomi</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">Ei nyt</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">Ota yhteyttä tukeen</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Pysyvä virhe Signal Androidin varmuuskopion palauttamisessa</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Pysyvä virhe Tellomi Androidin varmuuskopion palauttamisessa</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">Tili on lukittu yksityisyytesi ja tietoturvasi suojaamiseksi. Kun %1$d päivää on kulunut, voit rekisteröidä tämän puhelinnumeron uudelleen ilman tunnuslukua. Kaikki sisältö tullaan poistamaan.</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">Avaa Signal vanhassa laitteessasi</string>
+    <string name="QuickRestoreQRScreen__step_1">Avaa Tellomi vanhassa laitteessasi</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">Napauta kamerakuvaketta </string>
     <!-- Step 3 to quick restore -->
@@ -446,12 +446,12 @@
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
     <string name="PinEntryScreen__contact_support_email_subject">Signalin rekisteröinti - Tarvitsen apua tunnusluvun kanssa Androidilla</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">Ilmoitusten salliminen</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal pyytää käyttöoikeutta ilmoitusten näyttämiseen. Näin laitteesi voi näyttää ilmoituksen uudesta viestistä.</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi pyytää käyttöoikeutta ilmoitusten näyttämiseen. Näin laitteesi voi näyttää ilmoituksen uudesta viestistä.</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">Ei nyt</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -487,9 +487,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">Yhdistä tili skannaamalla koodi</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">Avaa Signal puhelimessa</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">Avaa Tellomi puhelimessa</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Avaa Signal-asetukset napauttamalla profiilikuvaa</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Avaa Tellomi-asetukset napauttamalla profiilikuvaa</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">Napauta Yhdistetyt laitteet ja sen jälkeen Yhdistä uusi laite</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -515,7 +515,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Poistetaanko sovelluksen tiedot?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Yrität yhdistää toiseen Signal-tiliin. Jos jatkat, kaikki tässä laitteessa olevat Signal-tiedot poistetaan.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Yrität yhdistää toiseen Tellomi-tiliin. Jos jatkat, kaikki tässä laitteessa olevat Tellomi-tiedot poistetaan.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Poista ja käynnistä uudelleen</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -534,11 +534,11 @@
     <string name="DeviceTransferSetup__numbers_match">Kyllä, numerot ovat samat</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">Numerot eivät täsmää</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">Odotetaan vahvistusta vanhasta laitteesta…</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signal tarvitsee luvan käyttää sijaintitietojasi vanhan laitteen löytämiseen ja yhdistämiseen.</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomi tarvitsee luvan käyttää sijaintitietojasi vanhan laitteen löytämiseen ja yhdistämiseen.</string>
     <string name="DeviceTransferSetup__grant_location_permission">Anna lupa</string>
     <string name="DeviceTransferSetup__location_services_required">Sijaintipalveluiden täytyy olla päällä, jotta vanha laitteesi voidaan löytää ja siihen voi yhdistää.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Laita päälle sijaintipalvelut</string>
-    <string name="DeviceTransferSetup__wifi_required">Signal tarvitsee Wi-Fi-yhteyden vanhan laitteesi löytämiseen ja siihen yhdistämiseen.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomi tarvitsee Wi-Fi-yhteyden vanhan laitteesi löytämiseen ja siihen yhdistämiseen.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Laita Wi-Fi päälle</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">Pahoittelut. Vaikuttaa siltä, että laitteesi ei tue Wi-Fi Direct -toimintoa.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Palauta sen sijaan varmuuskopiosta</string>
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">Siirretään tietoja</string>
     <string name="DeviceTransferProgress__d_messages_so_far">%1$d viestiä tähän mennessä</string>
     <string name="DeviceTransferProgress__unable_to_transfer">Siirto ei onnistu</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Siirto uudemmasta Signal-versiosta ei ole mahdollista.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Siirto uudemmasta Tellomi-versiosta ei ole mahdollista.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">Osaa tiedoista ei voitu siirtää tietokannan rajoituksesta johtuen.</string>
     <string name="DeviceTransferProgress__transfer_failed">Siirto epäonnistui. Yritä uudelleen.</string>
     <string name="DeviceTransferProgress__try_again">Yritä uudelleen</string>
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login -kirjautuminen</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login -kirjautuminen</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Rekisteröidy ilman puhelinnumeroa Signal Login -kirjautumisen avulla. Saat kertaostoksella tiliavaimen, jolla pääset alkuun.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Rekisteröidy ilman puhelinnumeroa Tellomi Login -kirjautumisen avulla. Saat kertaostoksella tiliavaimen, jolla pääset alkuun.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Lue lisää</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,9 +626,9 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Käyttäjänimi viesteille ja puheluille</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal on voittoa tavoittelematon organisaatio – ostoksesi tukee tehtäväämme</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi on voittoa tavoittelematon organisaatio – ostoksesi tukee tehtäväämme</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Minulla on Signal Login -kirjautuminen käytössä</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Minulla on Tellomi Login -kirjautuminen käytössä</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Käytä olemassa olevaa tiliavainta</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
@@ -650,15 +650,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Signal Login -kirjautuminen</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Tellomi Login -kirjautuminen</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Kiitos ostostasi. Signal Login -kirjautumisen avulla voit rekisteröityä ja palauttaa tilisi. Jos unohdat avaimen, et voi palauttaa tiliäsi.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Kiitos ostostasi. Tellomi Login -kirjautumisen avulla voit rekisteröityä ja palauttaa tilisi. Jos unohdat avaimen, et voi palauttaa tiliäsi.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Tallenna salasananhallintaan</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Tallenna manuaalisesti</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Signal Login -kirjautumista ei voitu tallentaa. Tallenna se manuaalisesti.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Tellomi Login -kirjautumista ei voitu tallentaa. Tallenna se manuaalisesti.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -668,7 +668,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Anna tilisi tunniste ja palautusavain, jotta voit palauttaa tilisi.</string>
     <!-- Label of the text field the account ID is typed into. -->

@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">မှတ်ပုံတင်ခြင်း လော့ခ်ကို ဖွင့်မည်လား။</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">မှတ်ပုံတင်ခြင်း လော့ခ်ကို ပိတ်မည်လား။</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">အကယ်၍ Signal ကို နောက်တစ်ကြိမ် မှတ်ပုံတင်သည့်အခါတွင် သင်၏ Signal PIN ကို မေ့နေပါက သင်၏ အကောင့်ကို 7 ရက် အသုံးပြုနိုင်မည်မဟုတ်ပါ။</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">အကယ်၍ Tellomi ကို နောက်တစ်ကြိမ် မှတ်ပုံတင်သည့်အခါတွင် သင်၏ Tellomi PIN ကို မေ့နေပါက သင်၏ အကောင့်ကို 7 ရက် အသုံးပြုနိုင်မည်မဟုတ်ပါ။</string>
     <string name="RegistrationLockV2Dialog_turn_on">ဖွင့်မည်</string>
     <string name="RegistrationLockV2Dialog_turn_off">ပိတ်မည်</string>
     <string name="preferences__advanced_pin_settings">အဆင့်မြင့် PIN ဆက်တင်များ</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">ကီးဘုတ် ပြောင်းရန်</string>
     <string name="preferences_chats__transfer_account">အကောင့် လွှဲပြောင်းမည်</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">သင့် Android စက်အသစ်ပေါ်သို့ အကောင့်လွှဲပြောင်းမည်</string>
-    <string name="preferences_app_protection__signal_pin">Signal PIN</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi PIN</string>
     <string name="preferences_app_protection__create_a_pin">PIN တစ်ခု ဖန်တီးမည်</string>
     <string name="preferences_app_protection__change_your_pin">သင်၏ PIN ကို ပြောင်းပါ</string>
     <string name="preferences_app_protection__pin_reminders">PIN သတိပေးချက်များ</string>
     <string name="preferences_app_protection__turn_off">ပိတ်မည်</string>
     <string name="preferences_app_protection__confirm_pin">PIN အတည်ပြုမည်</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">သင်၏ Signal PIN ကို အတည်ပြုပါ</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">သင်၏ PIN ကို ပြန်လည် မရယူနိုင်သောကြောင့် မှတ်ထားပါ သို့မဟုတ် သေချာစွာသိမ်းထားပါ။ သင်၏ PIN ကို သင်မေ့သွားပါက သင်၏ Signal အကောင့်ကို ပြန်လည်မှတ်ပုံတင်သောအခါ ဒေတာဆုံးရှုံးနိုင်သည်။</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">သင်၏ Tellomi PIN ကို အတည်ပြုပါ</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">သင်၏ PIN ကို ပြန်လည် မရယူနိုင်သောကြောင့် မှတ်ထားပါ သို့မဟုတ် သေချာစွာသိမ်းထားပါ။ သင်၏ PIN ကို သင်မေ့သွားပါက သင်၏ Tellomi အကောင့်ကို ပြန်လည်မှတ်ပုံတင်သောအခါ ဒေတာဆုံးရှုံးနိုင်သည်။</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">PIN မှားနေသည်။ ထပ်မံကြိုးစားပါ။</string>
     <string name="preferences_app_protection__registration_lock">မှတ်ပုံတင်ခြင်း လော့ခ်</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">အကောင့်ကို ပြန်လည်၍ မှတ်ပုံတင်ရန်</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Signal ကို အပ်ဒိတ်လုပ်ရန်</string>
+    <string name="preferences_account_update_signal">Tellomi ကို အပ်ဒိတ်လုပ်ရန်</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">ဒေတာအားလုံး ဖျက်ရန်</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">အကောင့်</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">အချိန်ကြာလာသည် နှင့်အမျှ သင့်ကို မေးမြန်းသည့်အကြိမ် နည်းသွားပါမည်</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">သင့်ဖုန်းနံပါတ်ကို Signal ဖြင့် ထပ်မံစာရင်းသွင်းရန် သင်၏ Signal PIN ကို လိုအပ်ပါသည်</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">သင့်ဖုန်းနံပါတ်ကို Tellomi ဖြင့် ထပ်မံစာရင်းသွင်းရန် သင်၏ Tellomi PIN ကို လိုအပ်ပါသည်</string>
     <string name="AccountSettingsFragment__change_phone_number">ဖုန်းနံပါတ်ပြောင်းလဲရန်</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">သင့်အကောင့်ဒေတာ</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">အကောင့်နှင့် ပြန်လည်ရယူခြင်း</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">သင့် Signal Login ကို သင့်အကောင့်အား ပြန်လည်ရယူပြီး ပြန်လည်အသုံးပြုနိုင်ရန် အသုံးပြုပါသည်။ ယုံကြည်စိတ်ချရသော စကားဝှက်စီမံရေးတွင် ဤကီးများကို လုံခြုံစွာ သိမ်းဆည်းထားပါ။</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">သင့် Tellomi Login ကို သင့်အကောင့်အား ပြန်လည်ရယူပြီး ပြန်လည်အသုံးပြုနိုင်ရန် အသုံးပြုပါသည်။ ယုံကြည်စိတ်ချရသော စကားဝှက်စီမံရေးတွင် ဤကီးများကို လုံခြုံစွာ သိမ်းဆည်းထားပါ။</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">နှစ်ဆင့် အတည်ပြုခြင်း</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -69,7 +69,7 @@
         <item quantity="other">Passkey %1$d ခု</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">စက်အသစ်တွင် သင့် Signal Login ကို အသုံးပြုသည့်အခါ သင့်အကောင့်ကို ကာကွယ်ရန် ဒုတိယအဆင့် အတည်ပြုခြင်းနည်းလမ်းကို အသုံးပြုပါ။</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">စက်အသစ်တွင် သင့် Tellomi Login ကို အသုံးပြုသည့်အခါ သင့်အကောင့်ကို ကာကွယ်ရန် ဒုတိယအဆင့် အတည်ပြုခြင်းနည်းလမ်းကို အသုံးပြုပါ။</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">ပိုမိုလေ့လာရန်</string>
 
@@ -87,7 +87,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">အဆင့် 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">သင့် Signal အကောင့်ကို ထည့်သွင်းရန် အောက်ပါခလုတ်ကို နှိပ်ပြီး သင့် အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖွင့်ပါ။</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">သင့် Tellomi အကောင့်ကို ထည့်သွင်းရန် အောက်ပါခလုတ်ကို နှိပ်ပြီး သင့် အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို ဖွင့်ပါ။</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">ဖွင့်ရန်</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -99,7 +99,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်ကို မတွေ့ပါ</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Signal သို့ ချိတ်ဆက်၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomi သို့ ချိတ်ဆက်၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">အဆင့် 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,7 +147,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">ကုဒ် မှားနေပါသည်။ ယခု သင့်အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်မှာ ပြသနေသော ကုဒ်ကို ထည့်ပါ။</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal သို့ ချိတ်ဆက်၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomi သို့ ချိတ်ဆက်၍မရပါ။ သင့်အင်တာနက်ချိတ်ဆက်မှုကို ပြန်စစ်ဆေးပြီး ထပ်ကြိုးစားကြည့်ပါ။</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">အတည်ပြုကုဒ်ထုတ်ပေးသည့် အက်ပ်</string>

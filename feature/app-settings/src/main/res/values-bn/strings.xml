@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">রেজিস্ট্রেশন লক চালু করবেন?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">রেজিস্ট্রেশন লক বন্ধ করবেন?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">আবার Signal নিবন্ধকরণ করার সময় আপনি যদি নিজের Signal পিনটি ভুলে যান তবে আপনাকে ৭ দিনের জন্য আপনার অ্যাকাউন্ট থেকে লক আউট করা হবে।</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">আবার Tellomi নিবন্ধকরণ করার সময় আপনি যদি নিজের Tellomi পিনটি ভুলে যান তবে আপনাকে ৭ দিনের জন্য আপনার অ্যাকাউন্ট থেকে লক আউট করা হবে।</string>
     <string name="RegistrationLockV2Dialog_turn_on">চালু করুন</string>
     <string name="RegistrationLockV2Dialog_turn_off">বন্ধ করুন</string>
     <string name="preferences__advanced_pin_settings">অ্যাডভান্সড পিন সেটিংস</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">কীবোর্ড পাল্টান</string>
     <string name="preferences_chats__transfer_account">অ্যাকাউন্ট স্থানান্তর করুন</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">একটি নতুন অ্যান্ড্রয়েড ডিভাইসে অ্যাকাউন্ট স্থানান্তর করুন</string>
-    <string name="preferences_app_protection__signal_pin">Signal পিন</string>
+    <string name="preferences_app_protection__signal_pin">Tellomi পিন</string>
     <string name="preferences_app_protection__create_a_pin">পিন তৈরি করুন</string>
     <string name="preferences_app_protection__change_your_pin">আপনার পিন পরিবর্তন করুন</string>
     <string name="preferences_app_protection__pin_reminders">PIN অনুস্মারক</string>
     <string name="preferences_app_protection__turn_off">বন্ধ করুন</string>
     <string name="preferences_app_protection__confirm_pin">পিনটি সমর্থন করুন</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">আপনার Signal পিনটি নিশ্চিত করুন</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">পিনটি পুনরুদ্ধার করা যাবে না বিধায় নিশ্চিত করুন যে আপনি এটি মুখস্ত করেছেন বা সুরক্ষিতভাবে সংরক্ষণ করেছেন। পিনটি ভুলে গেলে, আপনার Signal অ্যাকাউন্ট পুনরায় রেজিস্টার করার সময় আপনি ডেটা হারাতে পারেন।</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">আপনার Tellomi পিনটি নিশ্চিত করুন</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">পিনটি পুনরুদ্ধার করা যাবে না বিধায় নিশ্চিত করুন যে আপনি এটি মুখস্ত করেছেন বা সুরক্ষিতভাবে সংরক্ষণ করেছেন। পিনটি ভুলে গেলে, আপনার Tellomi অ্যাকাউন্ট পুনরায় রেজিস্টার করার সময় আপনি ডেটা হারাতে পারেন।</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">ভুল পিন। আবার চেষ্টা করুন।</string>
     <string name="preferences_app_protection__registration_lock">রেজিস্ট্রেশন লক</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">অ্যাকাউন্ট পুনরায় নিবন্ধন করুন</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Signal আপডেট করুন</string>
+    <string name="preferences_account_update_signal">Tellomi আপডেট করুন</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">সকল ডেটা মুছে ফেলুন</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,12 +40,12 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">অ্যাকাউন্ট</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">আপনাকে মাঝে মাঝে জিজ্ঞেস করা হবে</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Signal-এ আপনার ফোন নম্বরটি রেজিস্টার করতে আপনার Signal-এর পিনটি আবশ্যক</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Tellomi-এ আপনার ফোন নম্বরটি রেজিস্টার করতে আপনার Tellomi-এর পিনটি আবশ্যক</string>
     <string name="AccountSettingsFragment__change_phone_number">ফোন নম্বর পরিবর্তন করুন</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">আপনার অ্যাকাউন্টের ডেটা</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">অ্যাকাউন্ট ও পুনরুদ্ধার</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d পাস-কি</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">নতুন কোনো ডিভাইসে আপনার Signal লগইন ব্যবহার করার সময় আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে অথেন্টিকেটরের দ্বিতীয় একটি পদ্ধতি ব্যবহার করুন।</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">নতুন কোনো ডিভাইসে আপনার Tellomi লগইন ব্যবহার করার সময় আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে অথেন্টিকেটরের দ্বিতীয় একটি পদ্ধতি ব্যবহার করুন।</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">আরো জানুন</string>
 
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">ধাপ ২</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">আপনার Signal অ্যাকাউন্ট যোগ করতে নিচের বাটনটি ট্যাপ করে আপনার অথেন্টিকেটর অ্যাপটি খুলুন।</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">আপনার Tellomi অ্যাকাউন্ট যোগ করতে নিচের বাটনটি ট্যাপ করে আপনার অথেন্টিকেটর অ্যাপটি খুলুন।</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">খুলুন</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">কোনো অথেন্টিকেটর অ্যাপ পাওয়া যায়নি</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Signal-এর সাথে সংযোগ স্থাপন করা যায়নি। আপনার নেটওয়ার্ক সংযোগ ঠিক আছে কি না দেখুন এবং আবার চেষ্টা করুন।</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomi-এর সাথে সংযোগ স্থাপন করা যায়নি। আপনার নেটওয়ার্ক সংযোগ ঠিক আছে কি না দেখুন এবং আবার চেষ্টা করুন।</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">ধাপ ৩</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">ভুল কোড। এখন আপনার অথেনটিকেটর অ্যাপে দেখানো কোডটি লিখুন।</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signal-এর সাথে সংযোগ স্থাপন করা যায়নি। আপনার নেটওয়ার্ক সংযোগ ঠিক আছে কি না দেখুন এবং আবার চেষ্টা করুন।</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomi-এর সাথে সংযোগ স্থাপন করা যায়নি। আপনার নেটওয়ার্ক সংযোগ ঠিক আছে কি না দেখুন এবং আবার চেষ্টা করুন।</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">অথেন্টিকেটর অ্যাপ</string>

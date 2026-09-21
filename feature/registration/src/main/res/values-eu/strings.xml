@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Pribatutasuna zurekin eraman.\nZu zeu izan mezu bakoitzean.</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal irabazi-asmorik gabeko erakunde bat da\nBaldintzak eta pribatutasun-gidalerroak</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomi irabazi-asmorik gabeko erakunde bat da\nBaldintzak eta pribatutasun-gidalerroak</string>
     <string name="RegistrationActivity_continue">Jarraitu</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">Leheneratu edo transferitu</string>
@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">Onartu baimenak</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Ezagutzen dituzun pertsonei mezuak bidaltzen laguntzeko, Signal-ek baimen hauek eskatuko ditu. </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Ezagutzen dituzun pertsonei mezuak bidaltzen laguntzeko, Tellomi-ek baimen hauek eskatuko ditu. </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">Orain ez</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">Kontaktuak</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">Aurkitu ezagutzen duzun jendea. Zure kontaktuak enkriptatuta daude eta ez daude ikusgai Signal zerbitzuan.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">Aurkitu ezagutzen duzun jendea. Zure kontaktuak enkriptatuta daude eta ez daude ikusgai Tellomi zerbitzuan.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">Telefono-deiak</string>
     <!-- Phone calls permission row description -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">Jarri harremanetan laguntza-zerbitzuarekin</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal Errejistratzea - Androiderako Egiaztatze Kodea</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi Errejistratzea - Androiderako Egiaztatze Kodea</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">Telefono zaharra daukat</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">Eskaneatu QR kode bat Signal-eko oraingo kontutik bizkor hasteko</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">Eskaneatu QR kode bat Tellomi-eko oraingo kontutik bizkor hasteko</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Ez daukat telefono zaharra</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">Edo Signal gailu berean berriro instalatzen ari zara</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">Edo Tellomi gailu berean berriro instalatzen ari zara</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">Aukeratu nola berrezarri nahi dituzun mezu-historia eta kontuko datuak.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Signal-en babeskopietatik</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomi-en babeskopietatik</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Signal-en doako edo ordainpeko babeskopia-plana</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Tellomi-en doako edo ordainpeko babeskopia-plana</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">Leheneratu gailuko babeskopia</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">Ez da babeskopiarik aurkitu</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">Ez da Signal-en babeskopiarik aurkitu hautatutako karpetan. Probatu beste karpeta batekin.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">Ez da Tellomi-en babeskopiarik aurkitu hautatutako karpetan. Probatu beste karpeta batekin.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">Probatu beste karpeta batekin</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">Kontu berrian leheneratu nahi duzu?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">Leheneratu behar duzun babeskopia Signal-eko beste kontu batekin sortua da. Babeskopia kontu berri batean lehenera dezakezu, baina, leheneratutakoan, ez zara izango inongo taldetako kide.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">Leheneratu behar duzun babeskopia Tellomi-eko beste kontu batekin sortua da. Babeskopia kontu berri batean lehenera dezakezu, baina, leheneratutakoan, ez zara izango inongo taldetako kide.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">Berreskuratu</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Ez da babeskopiarik aurkitu</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Berreskuratze-gakoa zuzena da, baina kontu honek ez du Signal-eko babeskopiarik. Egin atzera eta aukeratu beste leheneratze-metodo bat, edo jarraitu leheneratu gabe.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Berreskuratze-gakoa zuzena da, baina kontu honek ez du Tellomi-eko babeskopiarik. Egin atzera eta aukeratu beste leheneratze-metodo bat, edo jarraitu leheneratu gabe.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Leheneratzea prestatzen…</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">Lotu zure kontua</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">Ez zaude Signal-en oraindik?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">Ez zaude Tellomi-en oraindik?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">Sortu kontu bat</string>
 
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Ezin izan da leheneratu babeskopia hau</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Signal-en bertsio honek ezin du leheneratu babeskopia. Egunera ezazu azken bertsiora eta saiatu berriro.</string>
+    <string name="RemoteRestoreScreen__update_latest">Tellomi-en bertsio honek ezin du leheneratu babeskopia. Egunera ezazu azken bertsiora eta saiatu berriro.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Eguneratu Signal</string>
+    <string name="RemoteRestoreScreen__update_signal">Eguneratu Tellomi</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">Orain ez</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">Jarri harremanetan laguntza-zerbitzuarekin</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Android-erako Signal-en babeskopia leheneratzeko behin betiko errorea</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Android-erako Tellomi-en babeskopia leheneratzeko behin betiko errorea</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">Zure pribatutasuna eta segurtasuna babesteko, kontua blokeatu egin da. %1$d egun jarduerarik gabe egon ondoren, berriro erregistratu ahal izango duzu telefono-zenbaki hau, PIN bat erabili gabe. Eduki guztia ezabatuko da.</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">Ireki Signal gailu zaharrean</string>
+    <string name="QuickRestoreQRScreen__step_1">Ireki Tellomi gailu zaharrean</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">Sakatu kameraren ikonoa </string>
     <!-- Step 3 to quick restore -->
@@ -392,13 +392,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">Aukeratu PIN hobea</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">Telefono-zenbakia egiaztatzeko erabilita zegoen kode bat idatzi duzu. Aukeratu Signal-eko PIN berri eta esklusibo bat.</string>
+    <string name="PinCreationScreen__reentered_verification_code">Telefono-zenbakia egiaztatzeko erabilita zegoen kode bat idatzi duzu. Aukeratu Tellomi-eko PIN berri eta esklusibo bat.</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">Gehiago ikasi PINei buruz</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">Markatutako zenbakia ez dago Signalen erregistratuta. SMS bidez gonbidatu nahiko zenuke?</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">PINa desgaitzen baduzu, datu guztiak galduko dituzu Signal berriro erregistratzen duzunean, babeskopiak eskuz egin eta leheneratu ezean. PINa desgaituta badago, ezin duzu aktibatu erregistratzeko blokeoa.</string>
+    <string name="PinCreationScreen__disable_pin_warning">PINa desgaitzen baduzu, datu guztiak galduko dituzu Tellomi berriro erregistratzen duzunean, babeskopiak eskuz egin eta leheneratu ezean. PINa desgaituta badago, ezin duzu aktibatu erregistratzeko blokeoa.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">Desaktibatu PINa</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -415,9 +415,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">Idatzi zure PINa</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">Idatzi Signal instalatzean sortutako PINa</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">Idatzi Tellomi instalatzean sortutako PINa</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">Telefono-zenbakia egiaztatzeko erabilita zegoen kode bat idatzi duzu. Idatzi konturako aukeratu duzun Signal-eko PIN esklusiboa.</string>
+    <string name="PinEntryScreen__reentered_verification_code">Telefono-zenbakia egiaztatzeko erabilita zegoen kode bat idatzi duzu. Idatzi konturako aukeratu duzun Tellomi-eko PIN esklusiboa.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="one">PIN okerra. Saiakera %1$d falta da.</item>
@@ -444,14 +444,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">Jarri harremanetan laguntza-zerbitzuarekin</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal Erregistratzea - Laguntza Android PIN-erako.</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi Erregistratzea - Laguntza Android PIN-erako.</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">Baimendu jakinarazpenak</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal-ek jakinarazpenak bidaltzeko baimena nahi du. Horri esker, zure gailuak alertak bistaratu ahal izango ditu mezu berriak iristen direnean.</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi-ek jakinarazpenak bidaltzeko baimena nahi du. Horri esker, zure gailuak alertak bistaratu ahal izango ditu mezu berriak iristen direnean.</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">Orain ez</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -487,9 +487,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">Eskaneatu kode hau kontua lotzeko</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">Ireki Signal telefonoan</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">Ireki Tellomi telefonoan</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Sakatu profileko argazkia Signal-en ezarpenak irekitzeko</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Sakatu profileko argazkia Tellomi-en ezarpenak irekitzeko</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">Sakatu \"Lotutako gailuak\" eta \"Lotu gailu berria\"</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -501,7 +501,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">Ezin iza da sortu kodea</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Ez duzu Signal beste gailu batean?</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Ez duzu Tellomi beste gailu batean?</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">Sortu kontu bat</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -515,7 +515,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Aplikazioko datuak ezabatu nahi dituzu?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Signal-eko beste kontu bat lotu nahian zabiltza. Jarraituz gero, gailu honetan dauden Signal-en datu guztiak ezabatu egingo dira.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Tellomi-eko beste kontu bat lotu nahian zabiltza. Jarraituz gero, gailu honetan dauden Tellomi-en datu guztiak ezabatu egingo dira.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Ezabatu eta berrabiarazi</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -523,7 +523,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">Transferitu kontua</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Kontua transferitzeko, ireki Signal Android-eko gailu zaharrean eta hautatu Transferitu kontua.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Kontua transferitzeko, ireki Tellomi Android-eko gailu zaharrean eta hautatu Transferitu kontua.</string>
     <string name="DeviceTransferInstructions__continue">Jarraitu</string>
 
     <!-- Device transfer: Setup screen -->
@@ -534,11 +534,11 @@
     <string name="DeviceTransferSetup__numbers_match">Bai, zenbakiak bat datoz</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">Zenbakiak ez datoz bat</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">Gailu zaharra egiaztatzeko zain…</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signal-ek kokapena atzitzeko baimena behar du gailu zaharra hautemateko eta harekin konektatzeko.</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomi-ek kokapena atzitzeko baimena behar du gailu zaharra hautemateko eta harekin konektatzeko.</string>
     <string name="DeviceTransferSetup__grant_location_permission">Eman baimena</string>
-    <string name="DeviceTransferSetup__location_services_required">Signal-ek kokapen-zerbitzuak gaitzea behar du gailu zaharra hautemateko eta harekin konektatzeko.</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomi-ek kokapen-zerbitzuak gaitzea behar du gailu zaharra hautemateko eta harekin konektatzeko.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Aktibatu kokapen zerbitzuak</string>
-    <string name="DeviceTransferSetup__wifi_required">Signal-ek wifia aktibatzea behar du gailu zaharra hautemateko eta harekin konektatzeko.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomi-ek wifia aktibatzea behar du gailu zaharra hautemateko eta harekin konektatzeko.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Aktibatu Wi-Fi-a</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">Dirudienez, zure gailua ez da bateragarria Wi-Fi Direct-ekin.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Horren ordez, leheneratu babeskopia bat</string>
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">Datuak transferitzen</string>
     <string name="DeviceTransferProgress__d_messages_so_far">%1$d mezu orain arte</string>
     <string name="DeviceTransferProgress__unable_to_transfer">Ezin da transferitu</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Ezin da transferitu Signal-en bertsio berriago batetik.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Ezin da transferitu Tellomi-en bertsio berriago batetik.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">Datu-basearen murriztapen bat dela eta, ezin izan dira transferitu datu batzuk.</string>
     <string name="DeviceTransferProgress__transfer_failed">Transferentziak huts egin du. Saiatu berriro.</string>
     <string name="DeviceTransferProgress__try_again">Saiatu berriro</string>
@@ -586,9 +586,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Nork topa nazake nire telefono-zenbakia bilatuta?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Zure telefono-zenbakia daukaten pertsonek Signal-en zaudela ikusi eta zurekin txateatu ahalko dute.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Zure telefono-zenbakia daukaten pertsonek Tellomi-en zaudela ikusi eta zurekin txateatu ahalko dute.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Ezingo du inork ikusi Signal-en zaudela, salbu eta mezuak bidaltzen badituzu edo lehendik txaten bat baduzu norbaitekin.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Ezingo du inork ikusi Tellomi-en zaudela, salbu eta mezuak bidaltzen badituzu edo lehendik txaten bat baduzu norbaitekin.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">Guztiak</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -596,7 +596,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Ziur zaude?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">\"Nork aurki nazake zenbakia erabiliz?\" ezarpenean \"Inork ez\" aukeratuz gero, jendearentzat zailagoa izango da zu Signal-en aurkitzea.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">\"Nork aurki nazake zenbakia erabiliz?\" ezarpenean \"Inork ez\" aukeratuz gero, jendearentzat zailagoa izango da zu Tellomi-en aurkitzea.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Utzi</string>
     <!-- Save button on the discoverability picker. -->
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Erregistratu telefono-zenbaki bat Signal Login erabilita. Behin bakarrik egin beharreko erosketa batekin, kontu-gako bat jasoko duzu, erabiltzen has zaitezen.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Erregistratu telefono-zenbaki bat Tellomi Login erabilita. Behin bakarrik egin beharreko erosketa batekin, kontu-gako bat jasoko duzu, erabiltzen has zaitezen.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Informazio gehiago</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,15 +626,15 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Erabiltzaile-izena mezu eta deietarako</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal irabazi-asmorik gabeko erakunde bat da; erosketa honek gure helburuarekin lagunduko digu</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi irabazi-asmorik gabeko erakunde bat da; erosketa honek gure helburuarekin lagunduko digu</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Badaukat Signal Login</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Badaukat Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Erabili zure kontu-gakoa</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">Hasi saioa eta leheneratu kontua</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Eskerrik asko Signal-i laguntzeagatik</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Eskerrik asko Tellomi-i laguntzeagatik</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">Ordaindu %1$s</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->
@@ -650,15 +650,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Signal Login</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Tellomi Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Eskerrik asko erosketarengatik. Erabili Signal Login kontua erregistratzeko eta leheneratzeko. Gakoak ahaztuz gero, ezingo duzu berreskuratu kontua.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Eskerrik asko erosketarengatik. Erabili Tellomi Login kontua erregistratzeko eta leheneratzeko. Gakoak ahaztuz gero, ezingo duzu berreskuratu kontua.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Gorde pasahitz-kudeatzailean</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Gorde eskuz</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Ezin izan da gorde Signal Login bidezko saio-hasiera. Gorde ezazu eskuz.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Ezin izan da gorde Tellomi Login bidezko saio-hasiera. Gorde ezazu eskuz.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -668,7 +668,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Kontua leheneratzeko, idatzi kontu-identifikatzailea eta berreskuratze-gakoa.</string>
     <!-- Label of the text field the account ID is typed into. -->

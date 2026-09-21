@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">আপনার গোপনীয়তা বজায় রাখুন।\n প্রতিটি বার্তায় নিজস্ব থাকুন।</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal একটি অলাভজনক প্রতিষ্ঠান\nশর্তাবলী এবং গোপনীয়তার নীতিমালা</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomi একটি অলাভজনক প্রতিষ্ঠান\nশর্তাবলী এবং গোপনীয়তার নীতিমালা</string>
     <string name="RegistrationActivity_continue">চলতে থাকুন</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">পুনর্বহাল বা ট্রান্সফার করুন</string>
@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">অনুমতি দিন</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">আপনার পরিচিত ব্যক্তিদের মেসেজ করতে সাহায্য করার জন্য, Signal এই অনুমতিগুলোর জন্য অনুরোধ করবে। </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">আপনার পরিচিত ব্যক্তিদের মেসেজ করতে সাহায্য করার জন্য, Tellomi এই অনুমতিগুলোর জন্য অনুরোধ করবে। </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">এখন না</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">সহায়তা কেন্দ্রে যোগাযোগ করুন</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Signal নিবন্ধন - অ্যানড্রয়েড এর জন্য যাচাইকরণ কোড</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomi নিবন্ধন - অ্যানড্রয়েড এর জন্য যাচাইকরণ কোড</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">আমার পুরানো ফোন আছে</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">দ্রুত শুরু করতে আপনার বর্তমান Signal অ্যাকাউন্ট থেকে একটি QR কোড স্ক্যান করুন</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">দ্রুত শুরু করতে আপনার বর্তমান Tellomi অ্যাকাউন্ট থেকে একটি QR কোড স্ক্যান করুন</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">আমার পুরানো ফোনটি নেই</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">অথবা আপনি একই ডিভাইসে Signal পুনরায় ইনস্টল করছেন</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">অথবা আপনি একই ডিভাইসে Tellomi পুনরায় ইনস্টল করছেন</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,7 +150,7 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">আপনার মেসেজের ইতিহাস ও অ্যাকাউন্টের ডেটা কীভাবে পুনর্বহাল করতে চান তা বেছে নিন।</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Signal ব্যাকআপ থেকে</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomi ব্যাকআপ থেকে</string>
     <!-- Subtitle for the Signal Backups option card -->
     <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">ফ্রি বা পেমেন্টের ভিত্তিতে থাকা ব্যাকআপ প্ল্যান</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">কোনো ব্যাকআপ পাওয়া যায়নি</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">নির্বাচিত ফোল্ডারে কোনো Signal ব্যাকআপ পাওয়া যায়নি। অনুগ্রহ করে অন্য একটি ফোল্ডার দিয়ে চেষ্টা করুন।</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">নির্বাচিত ফোল্ডারে কোনো Tellomi ব্যাকআপ পাওয়া যায়নি। অনুগ্রহ করে অন্য একটি ফোল্ডার দিয়ে চেষ্টা করুন।</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">অন্য একটি ফোল্ডার দিয়ে চেষ্টা করুন</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">নতুন অ্যাকাউন্টে পুনর্বহাল করবেন?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">আপনি যে ব্যাকআপটি পুনর্বহাল করছেন, সেটি একটি ভিন্ন Signal অ্যাকাউন্ট ব্যবহার করে তৈরি করা হয়েছিলো। আপনি এই ব্যাকআপটি একটি নতুন অ্যাকাউন্টে পুনর্বহাল করতে পারবেন, কিন্তু আপনি আর পুনর্বহাল করা কোনো গ্রুপেরই সদস্য থাকবেন না।</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">আপনি যে ব্যাকআপটি পুনর্বহাল করছেন, সেটি একটি ভিন্ন Tellomi অ্যাকাউন্ট ব্যবহার করে তৈরি করা হয়েছিলো। আপনি এই ব্যাকআপটি একটি নতুন অ্যাকাউন্টে পুনর্বহাল করতে পারবেন, কিন্তু আপনি আর পুনর্বহাল করা কোনো গ্রুপেরই সদস্য থাকবেন না।</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">পুনরুদ্ধার</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">কোনো ব্যাকআপ পাওয়া যায়নি</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">আপনার রিকভারি \'কি\' সঠিক, কিন্তু এই অ্যাকাউন্টের জন্য কোনো Signal ব্যাকআপ নেই। রিস্টোর করার জন্য অন্য কোনো উপায় বেছে নিতে ফিরে যান, অথবা রিস্টোর না করেই চালিয়ে যান।</string>
+    <string name="EnterAepScreen__no_backup_found_body">আপনার রিকভারি \'কি\' সঠিক, কিন্তু এই অ্যাকাউন্টের জন্য কোনো Tellomi ব্যাকআপ নেই। রিস্টোর করার জন্য অন্য কোনো উপায় বেছে নিতে ফিরে যান, অথবা রিস্টোর না করেই চালিয়ে যান।</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">পুনর্বহালের প্রস্তুতি চলছে…</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">আপনার অ্যাকাউন্ট লিংক করুন</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">এখনো Signal-এ নেই?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">এখনো Tellomi-এ নেই?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">অ্যাকাউন্ট তৈরি করুন</string>
 
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">এই ব্যাকআপটি পুনর্বহাল করা যায়নি</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Signal-এর এই সংস্করণটি আপনার ব্যাকআপ পুনর্বহাল করতে পারে না। সর্বশেষ সংস্করণে আপডেট করুন এবং আবার চেষ্টা করুন।</string>
+    <string name="RemoteRestoreScreen__update_latest">Tellomi-এর এই সংস্করণটি আপনার ব্যাকআপ পুনর্বহাল করতে পারে না। সর্বশেষ সংস্করণে আপডেট করুন এবং আবার চেষ্টা করুন।</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Signal আপডেট করুন</string>
+    <string name="RemoteRestoreScreen__update_signal">Tellomi আপডেট করুন</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">এখন না</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">সহায়তা কেন্দ্রে যোগাযোগ করুন</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Signal Android ব্যাকআপ পুনর্বহালের স্থায়ী ব্যর্থতা</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Tellomi Android ব্যাকআপ পুনর্বহালের স্থায়ী ব্যর্থতা</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">আপনার গোপনীয়তা এবং সুরক্ষা নিশ্চিত করতে আপনার অ্যাকাউন্টটি লক করা হয়েছে। আপনার অ্যাকাউন্টটি %1$d দিন নিষ্ক্রিয় থাকার পরে আপনি আপনার পিনের প্রয়োজন ছাড়াই এই ফোন নম্বরটি পুনরায় নিবন্ধন করতে সক্ষম হবেন। সকল বিষয়বস্তু মুছে ফেলা হবে।</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">আপনার পুরানো ডিভাইসে Signal খুলুন</string>
+    <string name="QuickRestoreQRScreen__step_1">আপনার পুরানো ডিভাইসে Tellomi খুলুন</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">ক্যামেরা আইকনে ট্যাপ করুন </string>
     <!-- Step 3 to quick restore -->
@@ -392,13 +392,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">একটি শক্তিশালী পিন চয়ন করুন</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">আপনি সেই কোডটি আবারো লিখেছেন যেটি আপনার ফোন নম্বর যাচাই করার জন্য ইতিমধ্যে ব্যবহার করা হয়েছিলো। একটি নতুন এবং অনন্য Signal পিন বেছে নিন।</string>
+    <string name="PinCreationScreen__reentered_verification_code">আপনি সেই কোডটি আবারো লিখেছেন যেটি আপনার ফোন নম্বর যাচাই করার জন্য ইতিমধ্যে ব্যবহার করা হয়েছিলো। একটি নতুন এবং অনন্য Tellomi পিন বেছে নিন।</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">পিনগুলি সম্পর্কে আরও জানুন</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">সতর্কবার্তা</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">পিনটি যদি নিষ্ক্রিয় করেন, তবে আপনি Signal-এ সেভ করা ডেটা ম্যানুয়ালি ব্যাক-আপ ও পুনরুদ্ধার না করলে, পুনরায় Signal-এ রেজিস্টার করার সময় সমস্ত সেভ করা ডেটা হারাবেন। পিন নিষ্ক্রিয় থাকা অবস্থায় আপনি রেজিস্ট্রেশন লক চালু করতে পারবেন না।</string>
+    <string name="PinCreationScreen__disable_pin_warning">পিনটি যদি নিষ্ক্রিয় করেন, তবে আপনি Tellomi-এ সেভ করা ডেটা ম্যানুয়ালি ব্যাক-আপ ও পুনরুদ্ধার না করলে, পুনরায় Tellomi-এ রেজিস্টার করার সময় সমস্ত সেভ করা ডেটা হারাবেন। পিন নিষ্ক্রিয় থাকা অবস্থায় আপনি রেজিস্ট্রেশন লক চালু করতে পারবেন না।</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">পিন নিষ্ক্রিয় করুন</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -415,9 +415,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">আপনার পিন প্রবেশ করান</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">Signal প্রথমবার ইনস্টল করার সময় আপনি যে পিনটি তৈরি করেছিলেন সেটি দিন</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">Tellomi প্রথমবার ইনস্টল করার সময় আপনি যে পিনটি তৈরি করেছিলেন সেটি দিন</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">আপনি সেই কোডটি আবারো লিখেছেন যা আপনার ফোন নম্বর যাচাই করার জন্য ইতিমধ্যে ব্যবহার করা হয়েছিলো। আপনার অ্যাকাউন্টের জন্য পূর্বে বেছে নেওয়া বিশেষ Signal পিনটি লিখুন।</string>
+    <string name="PinEntryScreen__reentered_verification_code">আপনি সেই কোডটি আবারো লিখেছেন যা আপনার ফোন নম্বর যাচাই করার জন্য ইতিমধ্যে ব্যবহার করা হয়েছিলো। আপনার অ্যাকাউন্টের জন্য পূর্বে বেছে নেওয়া বিশেষ Tellomi পিনটি লিখুন।</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="one">ভুল PIN। %1$d টি সুযোগ বাকি আছে।</item>
@@ -444,14 +444,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">সহায়তা কেন্দ্রে যোগাযোগ করুন</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Signal নিবন্ধন - অ্যানড্রয়েড এর জন্য PIN এর ব্যাপারে সাহায্য প্রয়োজন</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Tellomi নিবন্ধন - অ্যানড্রয়েড এর জন্য PIN এর ব্যাপারে সাহায্য প্রয়োজন</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">নোটিফিকেশন অনুমোদন করুন</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal নোটিফিকেশন চালু করার অনুমতি চাইছে।এর মাধ্যমে নতুন মেসেজ এলে আপনার ডিভাইস অ্যালার্ট দেখাতে পারবে।</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi নোটিফিকেশন চালু করার অনুমতি চাইছে।এর মাধ্যমে নতুন মেসেজ এলে আপনার ডিভাইস অ্যালার্ট দেখাতে পারবে।</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">এখন না</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -489,7 +489,7 @@
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
     <string name="LinkAccountScreen__open_signal_on_your_phone">আপনার ফোনে সিগন্যাল খুলুন</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Signal সেটিংস খুলতে আপনার প্রোফাইল ছবিতে ট্যাপ করুন</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Tellomi সেটিংস খুলতে আপনার প্রোফাইল ছবিতে ট্যাপ করুন</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">\"লিংককৃত ডিভাইস\" এবং \"নতুন ডিভাইস লিংক করুন\"-এ ট্যাপ করুন</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -501,7 +501,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">কোড তৈরি করা সফল হয়নি</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">অন্য কোনো ডিভাইসে Signal নেই?</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">অন্য কোনো ডিভাইসে Tellomi নেই?</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">অ্যাকাউন্ট তৈরি করুন</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -515,7 +515,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">অ্যাপের ডেটা মুছে ফেলবেন?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">আপনি একটি ভিন্ন Signal অ্যাকাউন্ট লিংক করার চেষ্টা করছেন। আপনি যদি চালিয়ে যান, এই ডিভাইসে বর্তমানে থাকা সব Signal ডেটা মুছে ফেলা হবে।</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">আপনি একটি ভিন্ন Tellomi অ্যাকাউন্ট লিংক করার চেষ্টা করছেন। আপনি যদি চালিয়ে যান, এই ডিভাইসে বর্তমানে থাকা সব Tellomi ডেটা মুছে ফেলা হবে।</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">মুছুন এবং পুনরায় শুরু করুন</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -523,7 +523,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">আপনার অ্যাকাউন্ট ট্রান্সফার করুন</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">আপনার অ্যাকাউন্ট স্থানান্তর করতে, আপনার পুরানো Android ডিভাইসে Signal খুলুন এবং \'অ্যাকাউন্ট ট্রান্সফার করুন\' বেছে নিন।</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">আপনার অ্যাকাউন্ট স্থানান্তর করতে, আপনার পুরানো Android ডিভাইসে Tellomi খুলুন এবং \'অ্যাকাউন্ট ট্রান্সফার করুন\' বেছে নিন।</string>
     <string name="DeviceTransferInstructions__continue">চলতে থাকুন</string>
 
     <!-- Device transfer: Setup screen -->
@@ -534,11 +534,11 @@
     <string name="DeviceTransferSetup__numbers_match">হ্যাঁ, নম্বরগুলো মিলেছে</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">সংখ্যা মিলছে না</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">আপনার পুরানো ডিভাইসটি যাচাই করার জন্য অপেক্ষা করা হচ্ছে…</string>
-    <string name="DeviceTransferSetup__location_permission_required">আপনার পুরানো ডিভাইসটি খুঁজে বের করতে এবং তার সাথে সংযোগ স্থাপন করতে Signal-এর অবস্থানের অনুমতি প্রয়োজন।</string>
+    <string name="DeviceTransferSetup__location_permission_required">আপনার পুরানো ডিভাইসটি খুঁজে বের করতে এবং তার সাথে সংযোগ স্থাপন করতে Tellomi-এর অবস্থানের অনুমতি প্রয়োজন।</string>
     <string name="DeviceTransferSetup__grant_location_permission">অনুমতি দিন</string>
-    <string name="DeviceTransferSetup__location_services_required">আপনার পুরনো Android ডিভাইস খুঁজে পেতে ও সংযোগ করতে Signal-এর জন্য অবস্থান জানার সার্ভিসটি চালু থাকতে হবে।</string>
+    <string name="DeviceTransferSetup__location_services_required">আপনার পুরনো Android ডিভাইস খুঁজে পেতে ও সংযোগ করতে Tellomi-এর জন্য অবস্থান জানার সার্ভিসটি চালু থাকতে হবে।</string>
     <string name="DeviceTransferSetup__turn_on_location_services">লোকেশন পরিষেবা চালু করুন</string>
-    <string name="DeviceTransferSetup__wifi_required">আপনার পুরানো ডিভাইসটি খুঁজে পেতে এবং সংযোগ করতে Signal-এর Wi-Fi চালু থাকতে হবে।</string>
+    <string name="DeviceTransferSetup__wifi_required">আপনার পুরানো ডিভাইসটি খুঁজে পেতে এবং সংযোগ করতে Tellomi-এর Wi-Fi চালু থাকতে হবে।</string>
     <string name="DeviceTransferSetup__turn_on_wifi">ওয়াই-ফাই চালু করুন</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">দুঃখিত, সম্ভবত আপনার ডিভাইসটি Wi-Fi Direct সমর্থন করে না।</string>
     <string name="DeviceTransferSetup__restore_a_backup">এর পরিবর্তে একটি ব্যাকআপ পুনর্বহাল করুন</string>
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">তথ্য স্থানান্তর করা হচ্ছে</string>
     <string name="DeviceTransferProgress__d_messages_so_far">এযাবৎ %1$d টি বার্তা</string>
     <string name="DeviceTransferProgress__unable_to_transfer">স্থানান্তর করতে অক্ষম</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Signal-এর নতুন সংস্করণ থেকে ট্রান্সফার করা যায় না।</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Tellomi-এর নতুন সংস্করণ থেকে ট্রান্সফার করা যায় না।</string>
     <string name="DeviceTransferProgress__failure_foreign_key">ডাটাবেজ সংক্রান্ত সীমাবদ্ধতার কারণে কিছু ডেটা ট্রান্সফার করা সম্ভব হয়নি।</string>
     <string name="DeviceTransferProgress__transfer_failed">ট্রান্সফার করা সফল হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
     <string name="DeviceTransferProgress__try_again">আবার চেষ্টা করুন</string>
@@ -586,9 +586,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">নম্বরের মাধ্যমে কারা আমাকে খুঁজে পাবেন?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">যাদের কাছে আপনার ফোন নম্বর আছে তারা দেখতে পাবেন আপনি Signal-এ আছেন এবং আপনার সাথে চ্যাট শুরু করতে পারবেন।</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">যাদের কাছে আপনার ফোন নম্বর আছে তারা দেখতে পাবেন আপনি Tellomi-এ আছেন এবং আপনার সাথে চ্যাট শুরু করতে পারবেন।</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">আপনি Signal-এ আছেন তা কেউ দেখতে পাবেন না যদি না আপনি তাদের মেসেজ পাঠান বা তাদের সাথে কোনো চ্যাট বিদ্যমান থাকে।</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">আপনি Tellomi-এ আছেন তা কেউ দেখতে পাবেন না যদি না আপনি তাদের মেসেজ পাঠান বা তাদের সাথে কোনো চ্যাট বিদ্যমান থাকে।</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">সকলে</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -596,7 +596,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">আপনি কি নিশ্চিত?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">\"কারা আমাকে নম্বরের মাধ্যমে খুঁজে পেতে পারেন\"-এ \"কেউ নয়\" সেট করা হলে তা আপনাকে Signal-এ খুঁজে পাওয়া অন্যদের কাছে কঠিন করে তুলবে।</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">\"কারা আমাকে নম্বরের মাধ্যমে খুঁজে পেতে পারেন\"-এ \"কেউ নয়\" সেট করা হলে তা আপনাকে Tellomi-এ খুঁজে পাওয়া অন্যদের কাছে কঠিন করে তুলবে।</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">বাতিল করুন</string>
     <!-- Save button on the discoverability picker. -->
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Signal Login ব্যবহার করে ফোন নম্বর ছাড়াই রেজিস্ট্রেশন করুন। এককালীন ক্রয়ের মাধ্যমে, আপনি শুরু করার জন্য একটি অ্যাকাউন্ট \'কি\' পাবেন।</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Tellomi Login ব্যবহার করে ফোন নম্বর ছাড়াই রেজিস্ট্রেশন করুন। এককালীন ক্রয়ের মাধ্যমে, আপনি শুরু করার জন্য একটি অ্যাকাউন্ট \'কি\' পাবেন।</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">আরো জানুন</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,15 +626,15 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">মেসেজ ও কলের জন্য ব্যবহারকারীর নাম</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal একটি অলাভজনক প্রতিষ্ঠান — আপনার ক্রয় আমাদের লক্ষ্য পূরণে সাহায্য করে</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi একটি অলাভজনক প্রতিষ্ঠান — আপনার ক্রয় আমাদের লক্ষ্য পূরণে সাহায্য করে</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">আমার একটি Signal Login আছে</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">আমার একটি Tellomi Login আছে</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">আপনার বিদ্যমান অ্যাকাউন্ট \'কি\' ব্যবহার করুন</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">লগইন করুন এবং আপনার অ্যাকাউন্ট পুনর্বহাল করুন</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Signal-কে সহায়তা করার জন্য ধন্যবাদ</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Tellomi-কে সহায়তা করার জন্য ধন্যবাদ</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">%1$s পেমেন্ট করুন</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->
@@ -650,15 +650,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">আপনার Signal Login</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">আপনার Tellomi Login</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">আপনার ক্রয়ের জন্য, ধন্যবাদ। আপনার অ্যাকাউন্ট রেজিস্ট্রেশন ও পুনর্বহাল করতে আপনার Signal Login ব্যবহার করুন। \'কি\' ভুলে গেলে, আপনি আপনার অ্যাকাউন্ট পুনরুদ্ধার করতে পারবেন না।</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">আপনার ক্রয়ের জন্য, ধন্যবাদ। আপনার অ্যাকাউন্ট রেজিস্ট্রেশন ও পুনর্বহাল করতে আপনার Tellomi Login ব্যবহার করুন। \'কি\' ভুলে গেলে, আপনি আপনার অ্যাকাউন্ট পুনরুদ্ধার করতে পারবেন না।</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">পাসওয়ার্ড ম্যানেজারে সেভ করুন</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">ম্যানুয়ালি সেভ করুন</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">আপনার Signal Login-টি সেভ করা যায়নি। অনুগ্রহ করে এটি ম্যানুয়ালি সংরক্ষণ করুন।</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">আপনার Tellomi Login-টি সেভ করা যায়নি। অনুগ্রহ করে এটি ম্যানুয়ালি সংরক্ষণ করুন।</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -668,7 +668,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">আপনার অ্যাকাউন্ট পুনরুদ্ধার করতে প্রথমে আপনার অ্যাকাউন্ট আইডি এবং তারপরে আপনার রিকভারি \'কি\' লিখুন।</string>
     <!-- Label of the text field the account ID is typed into. -->

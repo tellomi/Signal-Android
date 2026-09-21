@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">Kubalisha ruhusa</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Ili kukusaidia kutuma ujumbe kwa watu unaowajua, Signal itakuomba ruhusa hizi. </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Ili kukusaidia kutuma ujumbe kwa watu unaowajua, Tellomi itakuomba ruhusa hizi. </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">Sio sasa</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">Wawasiliani</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">Tafuta watu unaowafahamu. Wawasiliani wako wamesimbwa fiche na hawaonekani kwa huduma ya Signal.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">Tafuta watu unaowafahamu. Wawasiliani wako wamesimbwa fiche na hawaonekani kwa huduma ya Tellomi.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">Simu</string>
     <!-- Phone calls permission row description -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">Wasiliana na Msaada</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Usajili wa Signal: Msimbo wa Hakiki wa Android</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Usajili wa Tellomi: Msimbo wa Hakiki wa Android</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">Nina simu yangu ya zamani</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">Skani QR code kutoka kwenye akaunti yako ya Signal ya sasa ili uanze haraka</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">Skani QR code kutoka kwenye akaunti yako ya Tellomi ya sasa ili uanze haraka</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Sina simu yangu ya zamani</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">Au unasakinisha tena Signal kwenye kifaa kile kile</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">Au unasakinisha tena Tellomi kwenye kifaa kile kile</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">Chagua jinsi ungependa kurejesha historia ya jumbe zako na data ya akaunti.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Kutoka Hifadhi Nakala ya Signal</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Kutoka Hifadhi Nakala ya Tellomi</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Mpango wako wa bila malipo na wa kulipia wa Hifadhi Nakala ya Signal</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Mpango wako wa bila malipo na wa kulipia wa Hifadhi Nakala ya Tellomi</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">Rejesha uhifadhi nakala wa kwenye kifaa</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">Hakuna nakala hifadhi zimepatikana</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">Hakuna nakala zilizohifadhiwa na Signal zilizopatikana katika folda iliyochaguliwa. Tafadhali jaribu folda tofauti.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">Hakuna nakala zilizohifadhiwa na Tellomi zilizopatikana katika folda iliyochaguliwa. Tafadhali jaribu folda tofauti.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">Jaribu folda tofauti</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,7 +241,7 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">Ungependa kurejesha akaunti mpya?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">Nakala unazorejesha ziliundwa kwa kutumia akaunti tofauti ya Signal. Unaweza kurejesha nakala hii kwenye akaunti hii, lakini hautaweza kuwa mwanakikundi wa kikundi chochote kilichorejeshwa.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">Nakala unazorejesha ziliundwa kwa kutumia akaunti tofauti ya Tellomi. Unaweza kurejesha nakala hii kwenye akaunti hii, lakini hautaweza kuwa mwanakikundi wa kikundi chochote kilichorejeshwa.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">Rejesha</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">Unganisha akaunti yako</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">Bado haupo kwenye Signal?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">Bado haupo kwenye Tellomi?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">Fungua akaunti</string>
 
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Imeshindwa kurejesha nakala hii</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Toleo hili la Signal limeshindwa kurejesha nakala yako. Sasisha toleo jipya zaidi na ujaribu tena.</string>
+    <string name="RemoteRestoreScreen__update_latest">Toleo hili la Tellomi limeshindwa kurejesha nakala yako. Sasisha toleo jipya zaidi na ujaribu tena.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Sasisha Signal</string>
+    <string name="RemoteRestoreScreen__update_signal">Sasisha Tellomi</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">Sio sasa</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">Wasiliana Msaada</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Hifadhi Nakala ya Signal Android imeshindwa kabisa kurejeshwa</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Hifadhi Nakala ya Tellomi Android imeshindwa kabisa kurejeshwa</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">Akaunti yako imefungwa ili kulinda faragha yako na usalama wako. Baada ya siku %1$d bila shughuli kwenye akaunti yako utaweza kusajili upya nambari hii ya simu bila kuhitaji Nenosiri lako. Yote yaliyomo yatafutwa.</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">Fungua Signal kwenye kifaa chako cha zamani</string>
+    <string name="QuickRestoreQRScreen__step_1">Fungua Tellomi kwenye kifaa chako cha zamani</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">Gusa aikoni ya kamera </string>
     <!-- Step 3 to quick restore -->
@@ -392,13 +392,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">Chagua PINI yenye nguvu zaidi.</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">Umeweka tena code ambayo ulishatumia kuthibitisha namba yako ya simu. Chagua PIN ya Signal mpya na ya kipekee.</string>
+    <string name="PinCreationScreen__reentered_verification_code">Umeweka tena code ambayo ulishatumia kuthibitisha namba yako ya simu. Chagua PIN ya Tellomi mpya na ya kipekee.</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">Jifunze zaidi kuhusu PINI</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">Onyo</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">Ukizima PIN, utapoteza data zote utakaposajili upya Signal isipokuwa kama ukihifadhi nakala yake na kuirejesha mwenyewe. Huwezi kuwasha Kufuli la Usajili wakati PIN imezimwa.</string>
+    <string name="PinCreationScreen__disable_pin_warning">Ukizima PIN, utapoteza data zote utakaposajili upya Tellomi isipokuwa kama ukihifadhi nakala yake na kuirejesha mwenyewe. Huwezi kuwasha Kufuli la Usajili wakati PIN imezimwa.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">Lemaza PIN</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -415,9 +415,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">Ingiza Nenosiri lako</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">Weka PIN uliyotengeneza wakati uliposakinisha Signal kwa mara ya kwanza</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">Weka PIN uliyotengeneza wakati uliposakinisha Tellomi kwa mara ya kwanza</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">Umeweka tena code ambayo ulishatumia kuthibitisha namba yako ya simu. Weka PIN ya Signal ya kipekee ambayo uliichagua awali kwa ajili ya akaunti yako.</string>
+    <string name="PinEntryScreen__reentered_verification_code">Umeweka tena code ambayo ulishatumia kuthibitisha namba yako ya simu. Weka PIN ya Tellomi ya kipekee ambayo uliichagua awali kwa ajili ya akaunti yako.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="one">PINI si sahihi. Jaribio %1$d limebaki.</item>
@@ -444,14 +444,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">Wasiliana Msaada</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Usajili wa Signal - Nahitaji Usaidizi wa Nambari ya Usajili kwenye Android</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Usajili wa Tellomi - Nahitaji Usaidizi wa Nambari ya Usajili kwenye Android</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">Ruhusu Arifa</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal ingependa kuomba ruhusa ya arifa. Hii inaruhusu kifaa chako kuonyesha arifa za jumbe mpya zikiingia.</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi ingependa kuomba ruhusa ya arifa. Hii inaruhusu kifaa chako kuonyesha arifa za jumbe mpya zikiingia.</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">Sio sasa</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -487,9 +487,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">Changanua code hii ili uunganishe akaunti yako</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">Fungua Signal kwenye simu yako</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">Fungua Tellomi kwenye simu yako</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Gusa picha ya wasifu wako ili ufungue Mipangilio ya Signal</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Gusa picha ya wasifu wako ili ufungue Mipangilio ya Tellomi</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">Gusa \"Vifaa vilivyounganishwa\" na \"Unganisha kifaa kipya\"</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -501,7 +501,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">Imeshindwa kutayarisha code</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Hauna Signal kwenye kifaa kingine?</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Hauna Tellomi kwenye kifaa kingine?</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">Fungua akaunti</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -515,7 +515,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Futa data ya programu?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Unajaribu kuunganisha akaunti tofauti ya Signal. Ukiendelea, data yote ya Signal iliyopo sasa kwenye kifaa hiki itafutwa.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Unajaribu kuunganisha akaunti tofauti ya Tellomi. Ukiendelea, data yote ya Tellomi iliyopo sasa kwenye kifaa hiki itafutwa.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Futa na zima kisha uwashe</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -523,7 +523,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">Hamisha akaunti yako</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Ili uhamishe akaunti yako, fungua Signal kwenye kifaa chako cha Android cha zamani kisha chagua Hamisha Akaunti.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Ili uhamishe akaunti yako, fungua Tellomi kwenye kifaa chako cha Android cha zamani kisha chagua Hamisha Akaunti.</string>
     <string name="DeviceTransferInstructions__continue">Endelea</string>
 
     <!-- Device transfer: Setup screen -->
@@ -534,11 +534,11 @@
     <string name="DeviceTransferSetup__numbers_match">Ndio, namba zinalingana</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">Nambari hazilingani</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">Inasubiri kifaa chako cha zamani kithibitishe…</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signal inahitaji ruhusa ya kufikia data ya mahali ulipo ili kugundua na kuunganisha na kifaa chako cha zamani.</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomi inahitaji ruhusa ya kufikia data ya mahali ulipo ili kugundua na kuunganisha na kifaa chako cha zamani.</string>
     <string name="DeviceTransferSetup__grant_location_permission">Ipe ruhusa</string>
-    <string name="DeviceTransferSetup__location_services_required">Signal inahitaji idhini ya kufikia data ya mahali ulipo ili igundue na kuunganisha na kifaa chako cha awali cha Android.</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomi inahitaji idhini ya kufikia data ya mahali ulipo ili igundue na kuunganisha na kifaa chako cha awali cha Android.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Washa huduma za eneo</string>
-    <string name="DeviceTransferSetup__wifi_required">Signal inahitaji W-Fi iwashwe ili iweze kugundua na kuunganisha kwenye kifaaa chako cha zamani.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomi inahitaji W-Fi iwashwe ili iweze kugundua na kuunganisha kwenye kifaaa chako cha zamani.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Washa Wi-Fi</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">Samahani, inaonekana kifaa chako hakitumii Wi-Fi Direct.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Badala yake, rejesha nakala zilizohifadhiwa</string>
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">Inahamisha data</string>
     <string name="DeviceTransferProgress__d_messages_so_far">1%1$d Jumbe hadi sasa</string>
     <string name="DeviceTransferProgress__unable_to_transfer">Imeshindwa kuhamisha</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Haiwezi kuhamisha kutoka matoleo mapya ya Signal.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Haiwezi kuhamisha kutoka matoleo mapya ya Tellomi.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">Baadhi ya data imeshindwa kuhama kutokana na vikwazo vya hifadhidata.</string>
     <string name="DeviceTransferProgress__transfer_failed">Imeshindwa kuhamisha. Tafadhali jaribu tena.</string>
     <string name="DeviceTransferProgress__try_again">Jaribu tena</string>
@@ -586,9 +586,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Nani anaweza kunipata kupitia kwa nambari?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Mtu yeyote mwenye nambari yako ya simu ataona kuwa upo Signal na anaweza kuanza gumzo na wewe.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Mtu yeyote mwenye nambari yako ya simu ataona kuwa upo Tellomi na anaweza kuanza gumzo na wewe.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Hakuna atakayeweza kuona kuwa upo Signal isipokuwa utakapowatumia ujumbe au tayari una gumzo nao.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Hakuna atakayeweza kuona kuwa upo Tellomi isipokuwa utakapowatumia ujumbe au tayari una gumzo nao.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">Kila mtu</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -596,7 +596,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Una uhakika?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Mipangilio ya \"Nani anayeweza kunipata kupitia nambari\" kwenda \"Hakuna\" itafanya iwe ngumu kwa watu kukupata kwenye Signal.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Mipangilio ya \"Nani anayeweza kunipata kupitia nambari\" kwenda \"Hakuna\" itafanya iwe ngumu kwa watu kukupata kwenye Tellomi.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Ghairi</string>
     <!-- Save button on the discoverability picker. -->
@@ -614,9 +614,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Sajili bila namba ya simu ukitumia Signal Login. Kwa ununuzi wa mara moja, utapata ufunguo wa akaunti ili uanze.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Sajili bila namba ya simu ukitumia Tellomi Login. Kwa ununuzi wa mara moja, utapata ufunguo wa akaunti ili uanze.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Jifunze zaidi</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -626,15 +626,15 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Jina la mtumiaji kwa utumaji ujumbe na simu</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal ni taasisi isiyo ya kibiashara—ununuzi wako unasaidia kuendeleza dhamira yetu</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi ni taasisi isiyo ya kibiashara—ununuzi wako unasaidia kuendeleza dhamira yetu</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Nina Signal Login</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Nina Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Tumia ufunguo wako wa akaunti uliopo</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">Ingia katika akaunti na uirejeshe</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Asante kwa kuunga Signal mkono</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Asante kwa kuunga Tellomi mkono</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">Lipa %1$s</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->
@@ -650,15 +650,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Signal Login Yako</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Tellomi Login Yako</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Asante kwa ununuzi wako. Tumia Signal Login yako kujisajili na kurejesha akaunti yako. Iwapo utasahau ufunguo wako, hutaweza kurejesha akaunti yako.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Asante kwa ununuzi wako. Tumia Tellomi Login yako kujisajili na kurejesha akaunti yako. Iwapo utasahau ufunguo wako, hutaweza kurejesha akaunti yako.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Hifadhi kwenye kidhibiti cha manenosiri</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Hifadhi mwenyewe</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Signal Login yako haijahifadhiwa. Tafadhali yahifadhi mwenyewe badala yake.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Tellomi Login yako haijahifadhiwa. Tafadhali yahifadhi mwenyewe badala yake.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -668,7 +668,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Weka ID ya akaunti yako ikifuatiwa na ufunguo wako wa kurejesha akaunti ili uweze kurejesha akaunti yako.</string>
     <!-- Label of the text field the account ID is typed into. -->

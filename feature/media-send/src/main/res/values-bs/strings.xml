@@ -69,9 +69,9 @@
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">Dozvoli pristup</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
-  <string name="MediaSelectScreen__no_photos_or_videos_found">Nisu pronađene fotografije ili videozapisi. Signal ima pristup samo fotografijama i videozapisima koje ste odabrali.</string>
+  <string name="MediaSelectScreen__no_photos_or_videos_found">Nisu pronađene fotografije ili videozapisi. Tellomi ima pristup samo fotografijama i videozapisima koje ste odabrali.</string>
   <!-- Reminder shown above the gallery when the user only shared selected photos with Signal. -->
-  <string name="MediaSelectScreen__signal_has_limited_access">Signal ima ograničen pristup fotografijama ili videozapisima</string>
+  <string name="MediaSelectScreen__signal_has_limited_access">Tellomi ima ograničen pristup fotografijama ili videozapisima</string>
   <!-- Label for the button that opens the menu for changing which photos and videos Signal can see. -->
   <string name="MediaSelectScreen__manage">Upravljaj</string>
   <!-- Menu option that re-opens the system picker so the user can share more photos and videos with Signal. -->
@@ -83,7 +83,7 @@
   <!-- Subtitle of the sheet shown when the permission to read photos and videos has been permanently denied, introducing the steps that follow. -->
   <string name="MediaSelectScreen__to_show_photos_and_videos">Za prikaz fotografija i video zapisa:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Signal treba pristup za prikazivanje vaših fotografija i videozapisa.</string>
+  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Tellomi treba pristup za prikazivanje vaših fotografija i videozapisa.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">Fotografija</string>
@@ -156,7 +156,7 @@
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
   <string name="CameraXFragment_to_scan_qr_code_allow_camera">Da skenirate QR kod, dozvolite Signalu pristup kameri.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
-  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Signal treba pristup kameri za snimanje fotografija</string>
+  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomi treba pristup kameri za snimanje fotografija</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
   <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Signalu treba pristup kameri za skeniranje QR kodova</string>
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
@@ -247,7 +247,7 @@
   <!-- The title of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_title">Povezati uređaj?</string>
   <!-- The body of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
-  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Izgleda da pokušavate povezati Signal uređaj. Dodirnite Nastavi, a zatim dodirnite \"Poveži novi uređaj\" i ponovo skenirajte QR kod.</string>
+  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Izgleda da pokušavate povezati Tellomi uređaj. Dodirnite Nastavi, a zatim dodirnite \"Poveži novi uređaj\" i ponovo skenirajte QR kod.</string>
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">Nastavi</string>
 

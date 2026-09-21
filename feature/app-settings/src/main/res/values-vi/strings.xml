@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Bật Khóa đăng kí?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Tắt Khóa đăng kí?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Nếu bạn quên mã PIN Signal khi đăng kí lại với Signal, bạn sẽ không thể truy cập tài khoản trong 7 ngày.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Nếu bạn quên mã PIN Tellomi khi đăng kí lại với Tellomi, bạn sẽ không thể truy cập tài khoản trong 7 ngày.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Bật</string>
     <string name="RegistrationLockV2Dialog_turn_off">Tắt</string>
     <string name="preferences__advanced_pin_settings">Cài đặt PIN nâng cao</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">Đổi bàn phím</string>
     <string name="preferences_chats__transfer_account">Chuyển tài khoản</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Chuyển tài khoản sang một thiết bị Android mới</string>
-    <string name="preferences_app_protection__signal_pin">Mã PIN Signal</string>
+    <string name="preferences_app_protection__signal_pin">Mã PIN Tellomi</string>
     <string name="preferences_app_protection__create_a_pin">Tạo mã PIN</string>
     <string name="preferences_app_protection__change_your_pin">Thay đổi mã PIN của bạn.</string>
     <string name="preferences_app_protection__pin_reminders">Nhắc nhở PIN</string>
     <string name="preferences_app_protection__turn_off">Tắt</string>
     <string name="preferences_app_protection__confirm_pin">Xác nhận mã PIN</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Xác nhận mã PIN Signal</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Hãy chắc rằng bạn nhớ hoặc lưu trữ bảo mật mã PIN vì PIN không thể được khôi phục. Nếu bạn quên mã PIN, bạn có thể mất dữ liệu khi đăng kí lại tài khoản Signal.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Xác nhận mã PIN Tellomi</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Hãy chắc rằng bạn nhớ hoặc lưu trữ bảo mật mã PIN vì PIN không thể được khôi phục. Nếu bạn quên mã PIN, bạn có thể mất dữ liệu khi đăng kí lại tài khoản Tellomi.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">Mã PIN không chính xác. Thử lại.</string>
     <string name="preferences_app_protection__registration_lock">Khóa Đăng ký</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Đăng ký lại tài khoản</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Cập nhật Signal</string>
+    <string name="preferences_account_update_signal">Cập nhật Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Xóa tất cả dữ liệu</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Tài khoản</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Bạn sẽ dần được hỏi ít thường xuyên hơn qua thời gian</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Yêu cầu mã PIN Signal của bạn để đăng ký lại số điện thoại của bạn với Signal</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Yêu cầu mã PIN Tellomi của bạn để đăng ký lại số điện thoại của bạn với Tellomi</string>
     <string name="AccountSettingsFragment__change_phone_number">Đổi số điện thoại</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Dữ liệu tài khoản của bạn</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Tài khoản &amp; khôi phục</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Signal Login được sử dụng để khôi phục và phục hồi tài khoản của bạn. Lưu trữ an toàn các mã khóa này trong một công cụ quản lý mật khẩu mà bạn tin tưởng.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Tellomi Login được sử dụng để khôi phục và phục hồi tài khoản của bạn. Lưu trữ an toàn các mã khóa này trong một công cụ quản lý mật khẩu mà bạn tin tưởng.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Xác thực hai yếu tố</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -69,7 +69,7 @@
         <item quantity="other">%1$d khóa đăng nhập</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Sử dụng phương thức xác thực thứ hai để bảo vệ tài khoản khi sử dụng Signal Login trên thiết bị mới.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Sử dụng phương thức xác thực thứ hai để bảo vệ tài khoản khi sử dụng Tellomi Login trên thiết bị mới.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Tìm hiểu thêm</string>
 
@@ -87,7 +87,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Bước 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Mở ứng dụng xác thực của bạn bằng cách nhấn vào nút bên dưới để thêm tài khoản Signal của bạn.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Mở ứng dụng xác thực của bạn bằng cách nhấn vào nút bên dưới để thêm tài khoản Tellomi của bạn.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Mở</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -99,7 +99,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Không tìm thấy ứng dụng xác thực nào</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Không thể kết nối với Signal. Kiểm tra kết nối của bạn và thử lại.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Không thể kết nối với Tellomi. Kiểm tra kết nối của bạn và thử lại.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Bước 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -147,7 +147,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Mã không đúng. Nhập mã hiện đang hiển thị trong ứng dụng xác thực của bạn.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Không thể kết nối với Signal. Kiểm tra kết nối của bạn và thử lại.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Không thể kết nối với Tellomi. Kiểm tra kết nối của bạn và thử lại.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Ứng dụng xác thực</string>

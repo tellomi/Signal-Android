@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Ενεργοποίηση του Κλειδώματος εγγραφής;</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Απενεργοποίηση του Κλειδώματος εγγραφής;</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Αν ξεχάσεις το PIN του Signal σου όταν επανεγγραφτείς στο Signal, θα κλειδωθείς έξω απ\' τον λογαριασμό σου για 7 ημέρες.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Αν ξεχάσεις το PIN του Tellomi σου όταν επανεγγραφτείς στο Tellomi, θα κλειδωθείς έξω απ\' τον λογαριασμό σου για 7 ημέρες.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Ενεργοποίηση</string>
     <string name="RegistrationLockV2Dialog_turn_off">Απενεργοποίηση</string>
     <string name="preferences__advanced_pin_settings">Ρυθμίσεις PIN για προχωρημένους</string>
@@ -12,20 +12,20 @@
     <string name="RegistrationLockFragment__switch_keyboard">Εναλλαγή πληκτρολογίου</string>
     <string name="preferences_chats__transfer_account">Μεταφορά λογαριασμού</string>
     <string name="preferences_chats__transfer_account_to_a_new_android_device">Μεταφορά λογαριασμού σε νέα συσκευή Android</string>
-    <string name="preferences_app_protection__signal_pin">PIN Signal</string>
+    <string name="preferences_app_protection__signal_pin">PIN Tellomi</string>
     <string name="preferences_app_protection__create_a_pin">Δημιουργία PIN</string>
     <string name="preferences_app_protection__change_your_pin">Αλλαγή του PIN σου</string>
     <string name="preferences_app_protection__pin_reminders">Υπενθυμίσεις PIN</string>
     <string name="preferences_app_protection__turn_off">Απενεργοποίηση</string>
     <string name="preferences_app_protection__confirm_pin">Επιβεβαίωση PIN</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">Επιβεβαίωση PIN Signal</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Επιβεβαιώσου πως θυμάσαι ή πως έχεις αποθηκεύσει σε ασφαλές μέρος το PIN σου, καθώς αυτό δεν μπορεί να ανακτηθεί. Αν ξεχάσεις το PIN σου, ίσως χαθούν δεδομένα κατά την επανεγγραφή του λογαριασμού Signal σου.</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">Επιβεβαίωση PIN Tellomi</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">Επιβεβαιώσου πως θυμάσαι ή πως έχεις αποθηκεύσει σε ασφαλές μέρος το PIN σου, καθώς αυτό δεν μπορεί να ανακτηθεί. Αν ξεχάσεις το PIN σου, ίσως χαθούν δεδομένα κατά την επανεγγραφή του λογαριασμού Tellomi σου.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">Λάθος ΡΙΝ. Ξαναπροσπάθησε.</string>
     <string name="preferences_app_protection__registration_lock">Κλείδωμα εγγραφής</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
     <string name="preferences_account_reregister">Επανεγγραφή στον λογαριασμό</string>
     <!-- Option in settings that will take user to our website or playstore to update their expired build -->
-    <string name="preferences_account_update_signal">Αναβάθμιση του Signal</string>
+    <string name="preferences_account_update_signal">Αναβάθμιση του Tellomi</string>
     <!-- Option in settings shown when user is no longer registered or expired client that will WIPE ALL THEIR DATA -->
     <string name="preferences_account_delete_all_data">Διαγραφή όλων των δεδομένων</string>
     <!-- Title for confirmation dialog confirming user wants to delete all their data -->
@@ -40,16 +40,16 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Λογαριασμός</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Θα στο ζητάμε όχι τόσο συχνά όσο περνάει ο καιρός</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Να απαιτείται το PIN Signal σου για να εγγράψεις ξανά τον αριθμό τηλεφώνου σου στο Signal</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Να απαιτείται το PIN Tellomi σου για να εγγράψεις ξανά τον αριθμό τηλεφώνου σου στο Tellomi</string>
     <string name="AccountSettingsFragment__change_phone_number">Αλλαγή αριθμού τηλεφώνου</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Τα δεδομένα του λογαριασμού σου</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Λογαριασμός και ανάκτηση</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Το Signal Login σου χρησιμοποιείται για ανάκτηση και επαναφορά του λογαριασμού σου. Αποθήκευσε αυτά τα κλειδιά σε έναν διαχειριστή κωδικών πρόσβασης που εμπιστεύεσαι.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Το Tellomi Login σου χρησιμοποιείται για ανάκτηση και επαναφορά του λογαριασμού σου. Αποθήκευσε αυτά τα κλειδιά σε έναν διαχειριστή κωδικών πρόσβασης που εμπιστεύεσαι.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Έλεγχος ταυτότητας δύο παραγόντων</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d κλειδιά πρόσβασης</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Χρησιμοποίησε μία δεύτερη μορφή επαλήθευσης για να προστατέψεις τον λογαριασμό σου όταν χρησιμοποιείς το Signal Login σε μία νέα συσκευή.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Χρησιμοποίησε μία δεύτερη μορφή επαλήθευσης για να προστατέψεις τον λογαριασμό σου όταν χρησιμοποιείς το Tellomi Login σε μία νέα συσκευή.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Μάθε περισσότερα</string>
 
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">Βήμα 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">Άνοιξε την εφαρμογή επαλήθευσης, πατώντας το κουμπί παρακάτω ώστε να προσθέσεις τον λογαριασμό σου Signal.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">Άνοιξε την εφαρμογή επαλήθευσης, πατώντας το κουμπί παρακάτω ώστε να προσθέσεις τον λογαριασμό σου Tellomi.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">Άνοιγμα</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Δεν βρέθηκε εφαρμογή επαλήθευσης</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Δεν κατέστη δυνατή η σύνδεση με το Signal. Έλεγξε τη σύνδεσή σου και δοκίμασε πάλι.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Δεν κατέστη δυνατή η σύνδεση με το Tellomi. Έλεγξε τη σύνδεσή σου και δοκίμασε πάλι.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Βήμα 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Λάθος κωδικός. Γράψε τον κωδικό από την εφαρμογή επαλήθευσης τώρα.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Δεν κατέστη δυνατή η σύνδεση με το Signal. Έλεγξε τη σύνδεσή σου και δοκίμασε πάλι.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Δεν κατέστη δυνατή η σύνδεση με το Tellomi. Έλεγξε τη σύνδεσή σου και δοκίμασε πάλι.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Εφαρμογή επαλήθευσης</string>

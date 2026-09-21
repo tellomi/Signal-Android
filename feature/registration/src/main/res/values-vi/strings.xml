@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Mang quyền riêng tư luôn bên bạn.\nHãy là chính mình trong từng tin nhắn.</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal là một tổ chức phi lợi nhuận\nĐiều khoản &amp; Chính sách Quyền riêng tư</string>
+    <string name="RegistrationActivity_terms_and_privacy">Tellomi là một tổ chức phi lợi nhuận\nĐiều khoản &amp; Chính sách Quyền riêng tư</string>
     <string name="RegistrationActivity_continue">Tiếp tục</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">Khôi phục hoặc chuyển</string>
@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">Đồng ý Cho phép</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Để giúp bạn nhắn tin cho người bạn biết, Signal sẽ yêu cầu có các quyền này. </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">Để giúp bạn nhắn tin cho người bạn biết, Tellomi sẽ yêu cầu có các quyền này. </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">Để sau</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">Danh bạ</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">Tìm người bạn biết. Danh bạ của bạn được mã hóa và Signal không thể truy cập được.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">Tìm người bạn biết. Danh bạ của bạn được mã hóa và Tellomi không thể truy cập được.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">Gọi điện thoại</string>
     <!-- Phone calls permission row description -->
@@ -128,9 +128,9 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">Liên hệ Hỗ trợ</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Đăng ký Signal - Mã Xác minh cho Android</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Đăng ký Tellomi - Mã Xác minh cho Android</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Signal Registration - Verification Code for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__support_center_url" translatable="false">https://support.signal.org/</string> -->
 
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">Tôi có điện thoại cũ</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">Quét mã QR từ tài khoản Signal điện thoại của bạn để nhanh chóng bắt đầu</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">Quét mã QR từ tài khoản Tellomi điện thoại của bạn để nhanh chóng bắt đầu</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Tôi không có điện thoại cũ</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">Hoặc bạn đang cài lại Signal trên cùng thiết bị</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">Hoặc bạn đang cài lại Tellomi trên cùng thiết bị</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">Chọn cách bạn muốn khôi phục lịch sử tin nhắn và dữ liệu tài khoản của mình.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Bản sao lưu từ Signal</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Bản sao lưu từ Tellomi</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Gói sao lưu Signal miễn phí hoặc trả phí của bạn</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Gói sao lưu Tellomi miễn phí hoặc trả phí của bạn</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">Khôi phục bản sao lưu trên thiết bị</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">Không tìm thấy bản sao lưu</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">Không tìm thấy bản sao lưu Signal trong thư mục đã chọn. Vui lòng thử một thư mục khác.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">Không tìm thấy bản sao lưu Tellomi trong thư mục đã chọn. Vui lòng thử một thư mục khác.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">Thử một thư mục khác</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">Khôi phục vào tài khoản mới?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">Bản sao lưu bạn đang khôi phục được tạo bằng một tài khoản Signal khác. Bạn có thể khôi phục bản sao lưu này vào một tài khoản mới, nhưng bạn sẽ không còn là thành viên của bất kỳ nhóm nào đã được khôi phục.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">Bản sao lưu bạn đang khôi phục được tạo bằng một tài khoản Tellomi khác. Bạn có thể khôi phục bản sao lưu này vào một tài khoản mới, nhưng bạn sẽ không còn là thành viên của bất kỳ nhóm nào đã được khôi phục.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">Khôi phục</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Không tìm thấy bản sao lưu</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Mã khóa khôi phục của bạn đúng, nhưng không có Bản sao lưu Signal nào cho tài khoản này. Hãy quay lại để chọn cách khôi phục khác hoặc tiếp tục mà không khôi phục.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Mã khóa khôi phục của bạn đúng, nhưng không có Bản sao lưu Tellomi nào cho tài khoản này. Hãy quay lại để chọn cách khôi phục khác hoặc tiếp tục mà không khôi phục.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Đang chuẩn bị khôi phục…</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">Liên kết tài khoản của bạn</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">Chưa sử dụng Signal?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">Chưa sử dụng Tellomi?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">Tạo tài khoản</string>
 
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Không thể khôi phục bản sao lưu này</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Phiên bản Signal này không thể khôi phục bản sao lưu của bạn. Cập nhật phiên bản mới nhất và thử lại.</string>
+    <string name="RemoteRestoreScreen__update_latest">Phiên bản Tellomi này không thể khôi phục bản sao lưu của bạn. Cập nhật phiên bản mới nhất và thử lại.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Cập nhật Signal</string>
+    <string name="RemoteRestoreScreen__update_signal">Cập nhật Tellomi</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">Để sau</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -319,7 +319,7 @@
     <!-- Button to contact support -->
     <string name="RemoteRestoreScreen__contact_support">Liên hệ hỗ trợ</string>
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
-    <string name="RemoteRestoreScreen__contact_support_email_subject">Lỗi không thể khôi phục bản sao lưu của Signal Android</string>
+    <string name="RemoteRestoreScreen__contact_support_email_subject">Lỗi không thể khôi phục bản sao lưu của Tellomi Android</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">Tài khoản của bạn đã bị khóa để đảm bảo sự riêng tư và bảo mật. Sau %1$d ngày không sử dụng bạn có thể đăng ký lại số điện thoại mà không cần mã PIN nhưng toàn bộ dữ liệu sẽ bị xóa.</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">Mở Signal trên thiết bị cũ của bạn</string>
+    <string name="QuickRestoreQRScreen__step_1">Mở Tellomi trên thiết bị cũ của bạn</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">Nhấn biểu tượng camera </string>
     <!-- Step 3 to quick restore -->
@@ -391,13 +391,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">Chọn mã PIN mạnh hơn</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">Bạn đã nhập lại mã đã được sử dụng để xác minh số điện thoại của mình. Chọn một mã PIN mới và riêng biệt cho Signal.</string>
+    <string name="PinCreationScreen__reentered_verification_code">Bạn đã nhập lại mã đã được sử dụng để xác minh số điện thoại của mình. Chọn một mã PIN mới và riêng biệt cho Tellomi.</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">Tìm hiểu thêm về mã PIN</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">Cảnh báo</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">Nếu bạn tắt PIN, bạn sẽ mất toàn bộ dữ liệu khi bạn đăng kí lại với Signal trừ khi bạn sao lưu và khôi phục dữ liệu thủ công. Bạn không thể bật Khóa đăng kí khi PIN đang tắt.</string>
+    <string name="PinCreationScreen__disable_pin_warning">Nếu bạn tắt PIN, bạn sẽ mất toàn bộ dữ liệu khi bạn đăng kí lại với Tellomi trừ khi bạn sao lưu và khôi phục dữ liệu thủ công. Bạn không thể bật Khóa đăng kí khi PIN đang tắt.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">Tắt PIN</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -414,9 +414,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">Nhập mã PIN của bạn</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">Nhập mã PIN bạn tạo ở thời điểm bắt đầu cài Signal</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">Nhập mã PIN bạn tạo ở thời điểm bắt đầu cài Tellomi</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">Bạn đã nhập lại mã đã được sử dụng để xác minh số điện thoại của mình. Vui lòng nhập mã PIN của Signal riêng biệt bạn đã chọn trước đó cho tài khoản của mình.</string>
+    <string name="PinEntryScreen__reentered_verification_code">Bạn đã nhập lại mã đã được sử dụng để xác minh số điện thoại của mình. Vui lòng nhập mã PIN của Tellomi riêng biệt bạn đã chọn trước đó cho tài khoản của mình.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="other">Sai mã PIN. Còn %1$d lần thử.</item>
@@ -442,14 +442,14 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">Liên hệ hỗ trợ</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Đăng kí Signal - Cần giúp đỡ về PIN trên Android</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Đăng kí Tellomi - Cần giúp đỡ về PIN trên Android</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Signal Registration - Need Help with PIN for Android</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
     <!-- Title for the screen asking the user to grant the notification permission -->
     <string name="AllowNotificationsScreen__allow_notifications">Cho Phép Thông Báo</string>
     <!-- Description for the screen asking the user to grant the notification permission -->
-    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Signal muốn yêu cầu quyền thông báo. Điều này cho phép thiết bị của bạn hiển thị thông báo khi có tin nhắn mới.</string>
+    <string name="AllowNotificationsScreen__signal_would_like_to_request_the_notification_permission">Tellomi muốn yêu cầu quyền thông báo. Điều này cho phép thiết bị của bạn hiển thị thông báo khi có tin nhắn mới.</string>
     <!-- Button label that dismisses the notification permission request without granting it -->
     <string name="AllowNotificationsScreen__not_now">Để sau</string>
     <!-- Button label that proceeds with the notification permission request -->
@@ -485,9 +485,9 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">Quét mã này để liên kết tài khoản của bạn</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">Mở Signal trên điện thoại của bạn</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">Mở Tellomi trên điện thoại của bạn</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Nhấn vào ảnh đại diện của bạn để mở Cài đặt Signal</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Nhấn vào ảnh đại diện của bạn để mở Cài đặt Tellomi</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">Nhấn vào \"Thiết bị đã liên kết\" và \"Liên kết thiết bị mới\"</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -499,7 +499,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">Tạo mã không thành công</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Không có Signal trên thiết bị khác?</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Không có Tellomi trên thiết bị khác?</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">Tạo tài khoản</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -513,7 +513,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Xóa dữ liệu của ứng dụng?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Bạn đang cố gắng liên kết một tài khoản Signal khác. Nếu tiếp tục, tất cả dữ liệu hiện có trên thiết bị này sẽ bị xóa.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Bạn đang cố gắng liên kết một tài khoản Tellomi khác. Nếu tiếp tục, tất cả dữ liệu hiện có trên thiết bị này sẽ bị xóa.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Xóa và khởi động lại</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -521,7 +521,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">Chuyển tài khoản của bạn</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Để chuyển tài khoản, hãy mở Signal trên thiết bị Android cũ của bạn và chọn Chuyển tài khoản.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">Để chuyển tài khoản, hãy mở Tellomi trên thiết bị Android cũ của bạn và chọn Chuyển tài khoản.</string>
     <string name="DeviceTransferInstructions__continue">Tiếp tục</string>
 
     <!-- Device transfer: Setup screen -->
@@ -532,11 +532,11 @@
     <string name="DeviceTransferSetup__numbers_match">Có, số đã khớp</string>
     <string name="DeviceTransferSetup__numbers_do_not_match">Hai mã số không khớp nhau</string>
     <string name="DeviceTransferSetup__waiting_for_other_to_verify">Đang chờ thiết bị cũ của bạn xác minh…</string>
-    <string name="DeviceTransferSetup__location_permission_required">Signal cần quyền truy cập vị trí để kết nối và ngắt kết nối với thiết bị cũ của bạn.</string>
+    <string name="DeviceTransferSetup__location_permission_required">Tellomi cần quyền truy cập vị trí để kết nối và ngắt kết nối với thiết bị cũ của bạn.</string>
     <string name="DeviceTransferSetup__grant_location_permission">Cấp quyền</string>
-    <string name="DeviceTransferSetup__location_services_required">Signal cần dịch vụ Vị trí được bật để kết nối và ngắt kết nối với thiết bị cũ của bạn.</string>
+    <string name="DeviceTransferSetup__location_services_required">Tellomi cần dịch vụ Vị trí được bật để kết nối và ngắt kết nối với thiết bị cũ của bạn.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Bật dịch vụ Vị trí</string>
-    <string name="DeviceTransferSetup__wifi_required">Signal cần bật Wi-Fi để tìm và kết nối với thiết bị cũ của bạn.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomi cần bật Wi-Fi để tìm và kết nối với thiết bị cũ của bạn.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Bật Wi-Fi</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">Rất tiếc, có vẻ thiết bị của bạn không hỗ trợ Wi-Fi Direct.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Khôi phục bản sao lưu</string>
@@ -553,7 +553,7 @@
     <string name="DeviceTransferProgress__transferring_data">Đang chuyển dữ liệu</string>
     <string name="DeviceTransferProgress__d_messages_so_far">Đã được %1$d tin nhắn</string>
     <string name="DeviceTransferProgress__unable_to_transfer">Không thể chuyển</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Không thể chuyển từ các phiên bản mới hơn của Signal.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Không thể chuyển từ các phiên bản mới hơn của Tellomi.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">Một số dữ liệu không thể được chuyển do hạn chế của cơ sở dữ liệu.</string>
     <string name="DeviceTransferProgress__transfer_failed">Chuyển không thành công. Vui lòng thử lại.</string>
     <string name="DeviceTransferProgress__try_again">Thử lại</string>
@@ -584,9 +584,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Ai có thể tìm tôi bằng số điện thoại?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Bất kỳ ai có số điện thoại của bạn sẽ thấy bạn trên Signal và có thể bắt đầu trò chuyện với bạn.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Bất kỳ ai có số điện thoại của bạn sẽ thấy bạn trên Tellomi và có thể bắt đầu trò chuyện với bạn.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Sẽ không có ai nhìn thấy số điện thoại của bạn trên Signal, trừ khi bạn nhắn tin với người đó hoặc đã có một cuộc trò chuyện với người đó.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Sẽ không có ai nhìn thấy số điện thoại của bạn trên Tellomi, trừ khi bạn nhắn tin với người đó hoặc đã có một cuộc trò chuyện với người đó.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">Bất cứ ai</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -594,7 +594,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Bạn có chắc không?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Thiết lập tùy chọn “Ai có thể tìm thấy tôi bằng số điện thoại” thành “Không ai” sẽ khiến mọi người khó tìm được bạn hơn trên Signal.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Thiết lập tùy chọn “Ai có thể tìm thấy tôi bằng số điện thoại” thành “Không ai” sẽ khiến mọi người khó tìm được bạn hơn trên Tellomi.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Hủy</string>
     <!-- Save button on the discoverability picker. -->
@@ -612,9 +612,9 @@
 
     <!-- Signal Login purchase screen -->
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
-    <string name="SignalLoginPaymentScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Đăng ký không dùng số điện thoại với Signal Login. Chỉ với một lần mua, bạn sẽ nhận được mã khóa tài khoản để bắt đầu.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Đăng ký không dùng số điện thoại với Tellomi Login. Chỉ với một lần mua, bạn sẽ nhận được mã khóa tài khoản để bắt đầu.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Tìm hiểu thêm</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -624,15 +624,15 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Tên người dùng để nhắn tin và gọi điện</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal là tổ chức phi lợi nhuận — khoản mua của bạn góp phần hỗ trợ sứ mệnh của chúng tôi</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi là tổ chức phi lợi nhuận — khoản mua của bạn góp phần hỗ trợ sứ mệnh của chúng tôi</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
-    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Tôi có Signal Login</string>
+    <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Tôi có Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
     <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Sử dụng mã khóa tài khoản hiện có của bạn</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">Đăng nhập và khôi phục tài khoản của bạn</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Cảm ơn bạn đã hỗ trợ Signal</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Cảm ơn bạn đã hỗ trợ Tellomi</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">Trả %1$s</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->
@@ -648,15 +648,15 @@
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
-    <string name="SignalLoginInfoScreen__your_signal_login">Signal Login của bạn</string>
+    <string name="SignalLoginInfoScreen__your_signal_login">Tellomi Login của bạn</string>
     <!-- Description warning the user that a lost Signal Login cannot be recovered. -->
-    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Cảm ơn bạn đã mua hàng. Sử dụng thông tin Signal Login của bạn để đăng ký và khôi phục tài khoản. Nếu quên mã khóa, bạn sẽ không thể khôi phục tài khoản của mình.</string>
+    <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Cảm ơn bạn đã mua hàng. Sử dụng thông tin Tellomi Login của bạn để đăng ký và khôi phục tài khoản. Nếu quên mã khóa, bạn sẽ không thể khôi phục tài khoản của mình.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Lưu vào công cụ quản lý mật khẩu</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Lưu thủ công</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
-    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Không thể lưu Signal Login của bạn. Vui lòng lưu thủ công.</string>
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Không thể lưu Tellomi Login của bạn. Vui lòng lưu thủ công.</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
     <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
@@ -666,7 +666,7 @@
 
     <!-- Signal Login credential entry screen -->
     <!-- Title of the screen where a user with an existing Signal Login types it in to log back in. -->
-    <string name="SignalLoginCredentialEntryScreen__signal_login">Signal Login</string>
+    <string name="SignalLoginCredentialEntryScreen__signal_login">Tellomi Login</string>
     <!-- Description telling the user what to enter to log in. -->
     <string name="SignalLoginCredentialEntryScreen__enter_your_account_id_followed_by_your_recovery_key">Nhập ID tài khoản của bạn, theo sau là mã khóa khôi phục, để khôi phục tài khoản.</string>
     <!-- Label of the text field the account ID is typed into. -->

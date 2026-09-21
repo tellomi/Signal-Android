@@ -45,11 +45,11 @@
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Sinu konto andmed</string>
     <!-- Section header for the Signal Login section of account settings -->
-    <string name="AccountSettingsFragment__signal_login">Signal Login</string>
+    <string name="AccountSettingsFragment__signal_login">Tellomi Login</string>
     <!-- Title of the card that opens the user\'s Signal Login account and recovery keys -->
     <string name="AccountSettingsFragment__account_and_recovery">Konto ja taastamine</string>
     <!-- Description of what a Signal Login is, shown below the Signal Login card -->
-    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Sinu konto leidmiseks ja taastamiseks kasutatakse sinu Signal Logini. Hoia need võtmed salvestatuna turvalisse paroolihaldurisse, mida sa usaldad.</string>
+    <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Sinu konto leidmiseks ja taastamiseks kasutatakse sinu Tellomi Logini. Hoia need võtmed salvestatuna turvalisse paroolihaldurisse, mida sa usaldad.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Kahesammuline autentimine</string>
     <!-- Account setting that takes the user to the authenticator app setup flow -->
@@ -71,7 +71,7 @@
         <item quantity="other">%1$d pääsuvõtit</item>
     </plurals>
     <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
-    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Kasuta teist autentimise meetodit, et oma kontot uues seadmes Signal Logini kasutades kaitsta.</string>
+    <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Kasuta teist autentimise meetodit, et oma kontot uues seadmes Tellomi Logini kasutades kaitsta.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Rohkem teavet</string>
 
