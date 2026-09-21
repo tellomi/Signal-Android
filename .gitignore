@@ -34,3 +34,7 @@ kls_database.db
 .kotlin
 lefthook-local.yml
 sample-videos/
+
+# Tellomi：推送凭证，提交进来等于把「以 Tellomi 名义给所有用户发推送」的能力公开
+# （清单见超级仓库 docs/signal/BUILD_ANDROID.md「推送凭证清单」）
+google-services.json
