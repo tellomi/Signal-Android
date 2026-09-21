@@ -54,6 +54,20 @@ import kotlin.time.Duration
 interface NetworkController {
 
   /**
+   * Tellomi：这套部署有没有 SVR（Secure Value Recovery）enclave。
+   *
+   * SVR2 是 Intel SGX enclave，客户端握手时校验 Intel 根证书签的 DCAP quote 与 mrenclave 白名单
+   * （libsignal `rust/attest`），**没有真 SGX 机器就通不过**，没有绕过开关。自建服务端（香港）现在
+   * 没有，所以注册末尾「创建 PIN」那一步必然超时——上游没有跳过入口，用户就卡死在那里。
+   *
+   * 为 false 时：注册流程直接走上游自己的 opt-out 路径（只写本地 `pinOptedOut` + 刷账号属性，
+   * 不碰 enclave），不展示「创建 PIN」页。以后真装了 enclave，把这个值翻回 true 就恢复上游行为。
+   * 细节与阶段一决定见 `docs/signal/ENCLAVES.md`。
+   */
+  val svrEnclaveAvailable: Boolean
+    get() = true
+
+  /**
    * Request that the service initialize a new registration session.
    *
    * `POST /v1/verification/session`

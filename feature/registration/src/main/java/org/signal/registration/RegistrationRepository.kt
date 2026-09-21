@@ -963,6 +963,10 @@ class RegistrationRepository(
    *
    * Any previously-recorded PIN state is cleared so the persisted blob stays internally consistent.
    */
+  /** Tellomi：见 [NetworkController.svrEnclaveAvailable]。 */
+  val svrEnclaveAvailable: Boolean
+    get() = networkController.svrEnclaveAvailable
+
   suspend fun setPinOptedOut(): Unit = withContext(Dispatchers.IO) {
     Log.i(TAG, "[setPinOptedOut] Recording PIN opt-out in registration data.")
     storageController.updateInProgressRegistrationData {

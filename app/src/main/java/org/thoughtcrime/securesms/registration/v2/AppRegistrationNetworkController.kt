@@ -218,6 +218,9 @@ class AppRegistrationNetworkController(
     return AppDependencies.clientZkReceiptOperations.createReceiptCredentialPresentation(receiptCredential)
   }
 
+  /** Tellomi：见 NetworkController.svrEnclaveAvailable 与 docs/signal/ENCLAVES.md。 */
+  override val svrEnclaveAvailable: Boolean = BuildConfig.SVR_ENCLAVE_AVAILABLE
+
   override suspend fun getFcmToken(): String? {
     return try {
       FcmUtil.getToken(context).orElse(null)

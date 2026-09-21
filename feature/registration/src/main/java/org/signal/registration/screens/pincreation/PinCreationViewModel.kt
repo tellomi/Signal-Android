@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
@@ -57,6 +58,16 @@ class PinCreationViewModel(
     parentState
       .onEach { onEvent(PinCreationScreenEvents.ParentStateChanged(it)) }
       .launchIn(viewModelScope)
+
+    // Tellomi：没有 SVR enclave 的部署里，创建 PIN 必然在 SVR 握手上超时，而上游的注册流程里
+    // 这一页没有跳过入口（只有「下一步」和切键盘），用户就卡死在这里。直接走上游自己的
+    // opt-out 路径——它只写本地 pinOptedOut + 刷账号属性，不碰 enclave。见 docs/signal/ENCLAVES.md。
+    if (!repository.svrEnclaveAvailable) {
+      viewModelScope.launch {
+        Log.i(TAG, "[Init] No SVR enclave in this deployment. Opting out of PIN creation automatically.")
+        applyOptOut()
+      }
+    }
   }
 
   override suspend fun processEvent(event: PinCreationScreenEvents) {

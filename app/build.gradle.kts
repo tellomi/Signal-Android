@@ -265,6 +265,11 @@ android {
     // test_run / benchmark 这两个后缀不覆盖：那是测试变体，不跑联系人同步。
     resValue("string", "contact_account_type", "app.tellomi")
 
+    // Tellomi：这套部署有没有 SVR（SGX enclave）。见 docs/signal/ENCLAVES.md 与
+    // NetworkController.svrEnclaveAvailable。prod 档保持上游行为（连 Signal 自己的 svr2）；
+    // staging 档指的是我们自建的香港服务端，那里没有 enclave。
+    buildConfigField("boolean", "SVR_ENCLAVE_AVAILABLE", "true")
+
     if (isInstrumentationTestRun) {
       applicationIdSuffix = ".test_run"
     }
@@ -532,6 +537,7 @@ android {
       buildConfigField("int", "LIBSIGNAL_LOG_LEVEL", "org.signal.libsignal.protocol.logging.SignalProtocolLogger.DEBUG")
 
       resValue("string", "contact_account_type", "app.tellomi.staging")
+      buildConfigField("boolean", "SVR_ENCLAVE_AVAILABLE", "false")
       buildConfigField("String", "BUILD_ENVIRONMENT_TYPE", "\"Staging\"")
       buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_test_sngOd8FnXNkpce9nPXawKrJD00kIDngZkD\"")
     }
