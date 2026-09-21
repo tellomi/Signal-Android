@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import org.signal.core.util.logging.Log;
+import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.signal.mediasend.SentMediaQuality;
@@ -639,8 +640,18 @@ public final class SettingsValues extends SignalStoreValues {
     return getLong(SCREEN_LOCK_TIMEOUT, 0);
   }
 
+  /**
+   * Tellomi：默认值改由 {@code BuildConfig.KEY_TRANSPARENCY_AVAILABLE} 决定（上游恒为 true）。
+   *
+   * 这套部署没有 key transparency 服务（那是独立的一个 key-transparency-server），服务端对
+   * {@code /v1/key-transparency/distinguished} 只能回 500，而 libsignal 的 keytrans 客户端把任何
+   * 非 200 都当错误——服务端没办法回「未启用」让它停，于是客户端几秒一次地重试
+   * （2026-09-22 在 iPhone 真机日志里看到的）。形状与 SVR_ENCLAVE_AVAILABLE / CDSI_AVAILABLE 一致。
+   *
+   * **用户显式开过的以用户的选择为准**——这里只改默认值，不覆盖已保存的设置。
+   */
   public boolean getAutomaticVerificationEnabled() {
-    return getBoolean(AUTOMATIC_VERIFICATION_ENABLED, true);
+    return getBoolean(AUTOMATIC_VERIFICATION_ENABLED, BuildConfig.KEY_TRANSPARENCY_AVAILABLE);
   }
 
   public void setAutomaticVerificationEnabled(boolean enabled) {

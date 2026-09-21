@@ -271,6 +271,8 @@ android {
     buildConfigField("boolean", "SVR_ENCLAVE_AVAILABLE", "true")
     // 同上，CDSI（按手机号找人）也是 SGX enclave。见 docs/signal/ENCLAVES.md。
     buildConfigField("boolean", "CDSI_AVAILABLE", "true")
+    // 同上，key transparency 也是独立服务。见 docs/signal/ENCLAVES.md。
+    buildConfigField("boolean", "KEY_TRANSPARENCY_AVAILABLE", "true")
 
     if (isInstrumentationTestRun) {
       applicationIdSuffix = ".test_run"
@@ -541,6 +543,7 @@ android {
       resValue("string", "contact_account_type", "app.tellomi.staging")
       buildConfigField("boolean", "SVR_ENCLAVE_AVAILABLE", "false")
       buildConfigField("boolean", "CDSI_AVAILABLE", "false")
+      buildConfigField("boolean", "KEY_TRANSPARENCY_AVAILABLE", "false")
       buildConfigField("String", "BUILD_ENVIRONMENT_TYPE", "\"Staging\"")
       buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_test_sngOd8FnXNkpce9nPXawKrJD00kIDngZkD\"")
     }
