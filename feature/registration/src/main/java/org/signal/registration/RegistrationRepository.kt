@@ -100,6 +100,9 @@ class RegistrationRepository(
   companion object {
     private val TAG = Log.tag(RegistrationRepository::class)
     private val json = Json { ignoreUnknownKeys = true }
+
+    /** Tellomi：注册页预选的国家，见 [getDefaultRegionCode]。 */
+    private const val TELLOMI_DEFAULT_REGION = "CN"
   }
 
   suspend fun createSession(e164: String): RequestResult<SessionMetadata, CreateSessionError> = withContext(Dispatchers.IO) {
@@ -204,14 +207,24 @@ class RegistrationRepository(
   }
 
   /**
-   * Determines the region code to default the country picker to. In priority order:
-   * 1. The region of the device's own phone number, if the phone permission is granted and the number is readable.
-   * 2. The network operator's country.
-   * 3. The SIM's home country.
-   * 4. A best-guess region derived from the device locale.
-   * 5. US, as a last resort.
+   * 注册页国家选择器预选哪个国家。
+   *
+   * Tellomi：固定 **CN（中国大陆）**。上游是「设备号码 → 运营商 → SIM → 语言环境 → US」
+   * 这一串推断，对 Signal 是对的；对我们，**主战场是中国大陆**，而且开发机上推断出来的
+   * 结果五花八门（Android 模拟器是 +1、iOS 模拟器是泰国 +66），每次注册都要先去列表里
+   * 翻一遍「中国大陆」。
+   *
+   * **列表本身完全不动**：用户照常点开、照常选别的国家。这一点是有意的——号码能不能注册
+   * 是**服务端**决定的（香港那套现在 +86 真发短信、其它号走「后六位」规则），客户端把列表
+   * 藏起来只是障眼法，还会挡住我们自己用 `+1 415 555 0301` 这类测试号联调。
+   * 以后要开放 / 限制国家，改服务端配置即可，不用发新版客户端。
+   *
+   * 上游那串推断逻辑原样留在下面，要恢复的话把 return 那行删掉即可。
    */
   fun getDefaultRegionCode(): String {
+    return TELLOMI_DEFAULT_REGION
+
+    @Suppress("UNREACHABLE_CODE")
     return deviceNumberRegionCode()
       ?: Util.getNetworkCountryIso(context).takeIfValidRegion()
       ?: Util.getSimCountryIso(context).orElse(null).takeIfValidRegion()
