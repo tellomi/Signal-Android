@@ -6455,7 +6455,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Kâr amacı gütmeyen, bağımsız bir kuruluş olarak Tellomi özel mesajlaşma ve aramalara önem verir. Reklam yok, takip yok, gözetleme yok. Tellomi\'ı desteklemek için bugün bağış yap.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">Bağış yaptığında profilinde isteğe bağlı bir rozet al</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -9305,7 +9305,7 @@
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_you_entered_is_correct_but_no_backup">Girdiğin kurtarma anahtarı doğru, ancak bununla ilişkili bir yedekleme yok. Hala eski telefonun varsa, yedeklemelerin etkinleştirildiğinden ve bir yedeklemenin tamamlandığından emin ol ve tekrar dene.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
-    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">Kurtarma anahtarını yanlış girmiş veya eski cihazında en az bir yedeklemeyi tamamlamamış olabilirsin.\n\nSignal Güvenli Yedeklemeleri etkinleştirirken kaydettiğin aynı telefon numarası ve kurtarma anahtarıyla kaydolduğundan emin ol ve eski cihazının bir yedeklemeyi tamamladığını onayla.</string>
+    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">Kurtarma anahtarını yanlış girmiş veya eski cihazında en az bir yedeklemeyi tamamlamamış olabilirsin.\n\nTellomi Güvenli Yedeklemeleri etkinleştirirken kaydettiğin aynı telefon numarası ve kurtarma anahtarıyla kaydolduğundan emin ol ve eski cihazının bir yedeklemeyi tamamladığını onayla.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_check_rate_limited">Kurtarma anahtarı denemelerin tükendi. Güvenliğin için yapabileceğin deneme sayısı sınırlıdır. Bir saat bekleyip tekrar dene.</string>
     <!-- Dialog button shown during registration and trying to restore a remote backup to instead skip said backup process -->

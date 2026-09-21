@@ -6295,7 +6295,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">မှီခိုမှုကင်းသည့် အကျိုးအမြတ်မယူသော အဖွဲ့အစည်းတစ်ခုအနေဖြင့် Tellomi သည် သီးသန့်မက်ဆေ့ချ်ပေးပို့ခြင်းနှင့် ဖုန်းခေါ်ဆိုမှုများကို အလေးအနက်ထားပါသည်။ ကြော်ငြာများ မရှိ၊ ခြေရာခံခြင်း မရှိ၊ စောင့်ကြည့်ခြင်း မရှိ။ Tellomi ကို ပံ့ပိုးရန် ယနေ့ပင် လှူဒါန်းလိုက်ပါ။</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">လှူဒါန်းသည့်အခါ သင့်ပရိုဖိုင်တွင် ဘဲ့ဂျ်တစ်ခုရယူရန် ရွေးချယ်နိုင်သည်</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -9105,7 +9105,7 @@
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_you_entered_is_correct_but_no_backup">သင်ထည့်လိုက်သော ပြန်လည်ရယူရေးကီးသည် မှန်ကန်သော်လည်း ၎င်းနှင့် ဆက်စပ်နေသည့် ဘက်ခ်အပ်မရှိပါ။ သင့်တွင် ဖုန်းအဟောင်းရှိနေသေးပါက ဘက်ခ်အပ်ကိုဖွင့်ထားပြီး ဘက်ခ်အပ်ကူးယူမှုပြီးသွားကြောင်း သေချာစေကာ ထပ်စမ်းကြည့်ပါ။</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
-    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">သင်သည် ပြန်လည်ရယူရေးကီးကို မှားယွင်းစွာ ထည့်သွင်းခဲ့ခြင်းသော်လည်းကောင်း၊ သင့်စက်အဟောင်းတွင် အနည်းဆုံး ဘက်ခ်အပ်တစ်ခေါက် မပြီးမြောက်ခဲ့ခြင်းသော်လည်းကောင်း ဖြစ်နိုင်ပါသည်။\n\nSignal လုံခြုံရေးဘက်ခ်အပ်ကိုဖွင့်စဉ်က သင်သိမ်းဆည်းထားသည့် တူညီသောဖုန်းနံပါတ်နှင့် ပြန်လည်ရယူရေးကီးတို့ဖြင့် စာရင်းသွင်းဝင်ရောက်ကြောင်း သေချာစေပြီး သင့်စက်အဟောင်းသည် ဘက်ခ်အပ်လုပ်ခြင်းပြီးမြောက်ကြောင်း အတည်ပြုပါ။</string>
+    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">သင်သည် ပြန်လည်ရယူရေးကီးကို မှားယွင်းစွာ ထည့်သွင်းခဲ့ခြင်းသော်လည်းကောင်း၊ သင့်စက်အဟောင်းတွင် အနည်းဆုံး ဘက်ခ်အပ်တစ်ခေါက် မပြီးမြောက်ခဲ့ခြင်းသော်လည်းကောင်း ဖြစ်နိုင်ပါသည်။\n\nTellomi လုံခြုံရေးဘက်ခ်အပ်ကိုဖွင့်စဉ်က သင်သိမ်းဆည်းထားသည့် တူညီသောဖုန်းနံပါတ်နှင့် ပြန်လည်ရယူရေးကီးတို့ဖြင့် စာရင်းသွင်းဝင်ရောက်ကြောင်း သေချာစေပြီး သင့်စက်အဟောင်းသည် ဘက်ခ်အပ်လုပ်ခြင်းပြီးမြောက်ကြောင်း အတည်ပြုပါ။</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_check_rate_limited">ပြန်လည်ရယူရေးကီးကို ရယူရန်ကြိုးပမ်းမှု အကြိမ်ရေပြည့်သွားပါပြီ။ သင့်လုံခြုံရေးအတွက် သင်ကြိုးစားနိုင်သည့် အကြိမ်အရေအတွက်ကို ကန့်သတ်ထားသည်။ တစ်နာရီစောင့်ပြီး ထပ်စမ်းကြည့်ပါ။</string>
     <!-- Dialog button shown during registration and trying to restore a remote backup to instead skip said backup process -->

@@ -6455,7 +6455,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Tellomi est un organisme indépendant à but non lucratif, qui s\'engage à protéger la confidentialité de vos communications. Ici, aucune publicité, aucun cookie de suivi, aucune surveillance. Faites un don pour soutenir Tellomi.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">Lorsque vous faites un don, vous pouvez afficher un macaron sur votre profil.</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -6465,7 +6465,7 @@
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">Merci pour votre soutien !</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->
-    <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__youve_earned_a_donor_badge">Vous avez gagné un macaron de donateur Signal ! Affichez-le sur votre profil pour montrer que vous nous soutenez.</string>
+    <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__youve_earned_a_donor_badge">Vous avez gagné un macaron de donateur Tellomi ! Affichez-le sur votre profil pour montrer que vous nous soutenez.</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__you_can_also">Envie d\'aller plus loin ?</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__become_a_montly_sustainer">N\'hésitez pas à rejoindre nos donateurs mensuels.</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__display_on_profile">Afficher sur mon profil</string>
@@ -6546,7 +6546,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_boost_badge_has_expired_and">Votre macaron Coup de pouce est arrivé à expiration et n\'est plus visible sur votre profil.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_reactivate">Vous pouvez réactiver votre macaron Coup de pouce pour 30 jours de plus grâce à un don ponctuel.</string>
     <!-- Displayed when we do not think the user is a subscriber when their boost expires -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Vous pouvez bien sûr continuer d\'utiliser Signal, mais pour soutenir une technologie conçue pour vous,  n\'hésitez pas à devenir donateur mensuel.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Vous pouvez bien sûr continuer d\'utiliser Tellomi, mais pour soutenir une technologie conçue pour vous,  n\'hésitez pas à devenir donateur mensuel.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__become_a_sustainer">Devenir donateur mensuel</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">Donner un coup de pouce à Tellomi</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">Plus tard</string>

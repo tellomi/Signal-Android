@@ -2117,7 +2117,7 @@
     <string name="MessageRecord_a_message_from_s_couldnt_be_delivered">Non se puido entregar a mensaxe de %1$s</string>
     <string name="MessageRecord_s_changed_their_phone_number">%1$s cambiou o seu número de teléfono.</string>
     <!-- Update item message shown in the release channel when someone is already a sustainer so we ask them if they want to boost. -->
-    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Gústache esta nova función? Dálle as grazas a Signal cun donativo puntual.</string>
+    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Gústache esta nova función? Dálle as grazas a Tellomi cun donativo puntual.</string>
     <!-- Update item message shown when we merge two threads together. First placeholder is a name, second placeholder is a phone number. -->
     <string name="MessageRecord_your_message_history_with_s_and_their_number_s_has_been_merged">O teu historial de mensaxes con %1$s e o seu número %2$s uníronse.</string>
     <!-- Update item message shown when we merge two threads together and we don\'t know the phone number of the other thread. The placeholder is a person\'s name. -->
@@ -4095,11 +4095,11 @@
         <item>Comentarios</item>
         <item>Pagamentos (MobileCoin)</item>
         <item>Donativos e insignias</item>
-        <item>Copia de seguranza de Signal Android</item>
+        <item>Copia de seguranza de Tellomi Android</item>
         <item>Outros</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Envío de rexistro de depuración de Signal Android</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Envío de rexistro de depuración de Tellomi Android</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">Enviar</string>
     <!-- Action to decline to submit logs -->
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s apoia a Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s apoia a Signal cun donativo mensual. Signal é unha organización sen ánimo de lucro que non conta con anunciantes ou investidores. Por iso dependemos de persoas coma ti.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s apoia a Tellomi cun donativo mensual. Tellomi é unha organización sen ánimo de lucro que non conta con anunciantes ou investidores. Por iso dependemos de persoas coma ti.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s apoia a Signal cun donativo. Signal é unha organización sen ánimo de lucro que non conta con anunciantes ou investidores. Por iso dependemos de persoas coma ti.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s apoia a Tellomi cun donativo. Tellomi é unha organización sen ánimo de lucro que non conta con anunciantes ou investidores. Por iso dependemos de persoas coma ti.</string>
 
     <string name="ImageView__badge">Insignia</string>
 
@@ -6455,7 +6455,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Como organización independente sen ánimo de lucro, Tellomi ten un firme compromiso coa mensaxería e as chamadas privadas. Sen anuncios, sen rastrexadores, sen vixilancia. Fai a túa doazón para apoiar a Tellomi.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">Obtén unha insignia opcional para o teu perfil ao doar</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -6556,7 +6556,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled">Cancelouse o teu donativo mensual porque non puidemos procesar o teu pagamento. A túa insignia xa non aparece no teu perfil.</string>
     <!-- Copy displayed when badge expires after a payment failure and we have a displayable charge failure reason -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled_s">Cancelouse o teu donativo mensual. %1$s A túa insignia %2$s xa non aparece no teu perfil.</string>
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Podes seguir empregando Signal, pero para apoiar a aplicación e reactivar a túa insignia, renova o donativo.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Podes seguir empregando Tellomi, pero para apoiar a aplicación e reactivar a túa insignia, renova o donativo.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__renew_subscription">Renovar subscrición</string>
     <!-- Button label to send user to Google Pay website -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__go_to_google_pay">Ir a Google Pay</string>
@@ -6881,7 +6881,7 @@
     <!-- Donation receipts share PNG -->
     <string name="DonationReceiptDetailsFragment__share_receipt">Compartir comprobante</string>
     <!-- Donation receipts list end note -->
-    <string name="DonationReceiptListFragment__if_you_have">Se volviches instalar Signal, os comprobantes de donativos anteriores non estarán dispoñibles.</string>
+    <string name="DonationReceiptListFragment__if_you_have">Se volviches instalar Tellomi, os comprobantes de donativos anteriores non estarán dispoñibles.</string>
     <!-- Donation receipts document title -->
     <string name="DonationReceiptDetailsFragment__donation_receipt">Comprobante de donativo</string>
     <!-- Donation receipts amount title -->

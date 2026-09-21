@@ -6455,7 +6455,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Тәуелсіз коммерциялық емес жоба ретінде Tellomi хабарлар мен қоңыраулардың құпия болуын міндет көреді. Жарнамалар жоқ, трекерлер жоқ, бақылау жоқ. Tellomi-ға бүгін қаржылай қолдау көрсетіңіз.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">Сіз қаржылай қолдау көрсеткенде, профиліңізге қосымша танымбелгі беріледі</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -9305,7 +9305,7 @@
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_you_entered_is_correct_but_no_backup">Сіз енгізген қалпына келтіру кілті дұрыс, бірақ онымен байланысты сақтық көшірме жоқ. Егер ескі телефоныңыз әлі де болса, сақтық көшірмелер қосылып тұрғанына және сақтық көшірменің жасалғанына көз жеткізіңіз де, қайталап көріңіз.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
-    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">Қалпына келтіру кілтін қате енгізген болуыңыз мүмкін немесе ескі құрылғыңызда кемінде бір сақтық көшірме жасамағансыз.\n\nSignal Қауіпсіз сақтық көшірмесін қосқан кезде сақталған телефон нөмірі мен қалпына келтіру кілтімен тіркелуіңіз керек. Ескі құрылғыңызда сақтық көшірменің орындалғанына көз жеткізіңіз.</string>
+    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">Қалпына келтіру кілтін қате енгізген болуыңыз мүмкін немесе ескі құрылғыңызда кемінде бір сақтық көшірме жасамағансыз.\n\nTellomi Қауіпсіз сақтық көшірмесін қосқан кезде сақталған телефон нөмірі мен қалпына келтіру кілтімен тіркелуіңіз керек. Ескі құрылғыңызда сақтық көшірменің орындалғанына көз жеткізіңіз.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_check_rate_limited">Қалпына келтіру кілтін енгізуге берілген мүмкіндіктің барлығын пайдаланып қойдыңыз. Қауіпсіздік мақсатында қайталап көруге болатын әрекеттер саны шектелген. Бір сағат күте тұрып, қайталап көріңіз.</string>
     <!-- Dialog button shown during registration and trying to restore a remote backup to instead skip said backup process -->

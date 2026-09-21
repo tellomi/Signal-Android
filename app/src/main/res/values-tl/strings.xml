@@ -2117,7 +2117,7 @@
     <string name="MessageRecord_a_message_from_s_couldnt_be_delivered">Ang message mula kay %1$s ay hindi ma-deliver.</string>
     <string name="MessageRecord_s_changed_their_phone_number">Pinalitan ni %1$s ang kanyang phone number.</string>
     <!-- Update item message shown in the release channel when someone is already a sustainer so we ask them if they want to boost. -->
-    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Nagustuhan mo ba bagong feature na ito? Suportahan ang Signal sa pamamagitan ng one-time donation.</string>
+    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Nagustuhan mo ba bagong feature na ito? Suportahan ang Tellomi sa pamamagitan ng one-time donation.</string>
     <!-- Update item message shown when we merge two threads together. First placeholder is a name, second placeholder is a phone number. -->
     <string name="MessageRecord_your_message_history_with_s_and_their_number_s_has_been_merged">Pinagsama na ang inyong message history ni %1$s at ang kanyang number na %2$s.</string>
     <!-- Update item message shown when we merge two threads together and we don\'t know the phone number of the other thread. The placeholder is a person\'s name. -->
@@ -4095,11 +4095,11 @@
         <item>Feedback</item>
         <item>Payments (MobileCoin)</item>
         <item>Donations &amp; Badges</item>
-        <item>Signal Android Backup</item>
+        <item>Tellomi Android Backup</item>
         <item>Iba pa</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Signal Android Debug Log Submission</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Tellomi Android Debug Log Submission</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">Isumite</string>
     <!-- Action to decline to submit logs -->
@@ -4220,7 +4220,7 @@
     <string name="preferences__slow">Mabagal</string>
     <string name="preferences__help">Tulong</string>
     <string name="preferences__advanced">Advanced</string>
-    <string name="preferences__donate_to_signal">Mag-donate sa Signal</string>
+    <string name="preferences__donate_to_signal">Mag-donate sa Tellomi</string>
     <!-- Preference label for making one-time donations to Signal -->
     <string name="preferences__privacy">Pagkapribado</string>
     <!-- Preference label for stories -->
@@ -6092,9 +6092,9 @@
     <!-- ChatColorGradientTool -->
 
     <!-- Title text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
-    <string name="Donate2022Q2Megaphone_donate_to_signal">Mag-donate sa Signal</string>
+    <string name="Donate2022Q2Megaphone_donate_to_signal">Mag-donate sa Tellomi</string>
     <!-- Body text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
-    <string name="Donate2022Q2Megaphone_signal_is_powered_by_people_like_you">Signal is powered by people like you. Mag-donate monthly para maka-receive ng badge.</string>
+    <string name="Donate2022Q2Megaphone_signal_is_powered_by_people_like_you">Tellomi is powered by people like you. Mag-donate monthly para maka-receive ng badge.</string>
     <!-- Button label that brings a user to the donate screen. Shown in a popup at the bottom of the chat list. -->
     <string name="Donate2022Q2Megaphone_donate">Mag-donate</string>
     <!-- Button label that dismissed a prompt to donate. Shown in a popup at the bottom of the chat list. -->
@@ -6117,7 +6117,7 @@
     <!-- BecomeASustainerMegaphone -->
     <string name="BecomeASustainerMegaphone__become_a_sustainer">Become a Sustainer</string>
     <!-- Displayed in the Become a Sustainer megaphone -->
-    <string name="BecomeASustainerMegaphone__signal_is_powered_by">Signal is powered by people like you. Mag-donate para maka-receive ng badge.</string>
+    <string name="BecomeASustainerMegaphone__signal_is_powered_by">Tellomi is powered by people like you. Mag-donate para maka-receive ng badge.</string>
     <string name="BecomeASustainerMegaphone__not_now">Hindi ngayon</string>
     <string name="BecomeASustainerMegaphone__donate">Mag-donate</string>
 
@@ -6455,7 +6455,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Bilang isang independent nonprofit, ang Signal ay committed sa private messaging and calls. Walang ads, walang trackers, at walang surveillance. Mag-donate ngayon para suportahan ang Signal.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">Makakakuha ka ng optional badge sa profile mo kapag nag-donate ka</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -6477,7 +6477,7 @@
     <string name="BecomeASustainerFragment__signal_is_a_non_profit">Ang Signal ay isang nonprofit na walang advertisers o investors, supported only by people like you.</string>
 
     <!-- Button label for creating a donation -->
-    <string name="ManageDonationsFragment__donate_to_signal">Mag-donate sa Signal</string>
+    <string name="ManageDonationsFragment__donate_to_signal">Mag-donate sa Tellomi</string>
     <!-- Heading for more area of manage subscriptions page -->
     <string name="ManageDonationsFragment__more">More</string>
     <!-- Heading for receipts area of manage subscriptions page -->
@@ -6546,7 +6546,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_boost_badge_has_expired_and">Expired na ang iyong Boost badge at hindi na ito makikita sa profile mo.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_reactivate">Pwede mong i-reactivate ang iyong Boost badge nang karagdagang 30 araw sa pamamagitan ng one-time contribution.</string>
     <!-- Displayed when we do not think the user is a subscriber when their boost expires -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Pwede mo pa ring gamitin ang Signal app pero para masuportahan ang technology na ginawa para sa\'yo, inaanyayahan ka naming magbigay ng monthly donation.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Pwede mo pa ring gamitin ang Tellomi app pero para masuportahan ang technology na ginawa para sa\'yo, inaanyayahan ka naming magbigay ng monthly donation.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__become_a_sustainer">Become a Sustainer</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">Mag-add ng Boost</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">Hindi ngayon</string>
@@ -6612,18 +6612,18 @@
     <!-- Displayed as title when some generic error happens during sending donation on behalf of another user -->
     <string name="DonationsErrors__donation_failed">Failed ang Donation</string>
     <!-- Displayed as message when some generic error happens during sending donation on behalf of another user -->
-    <string name="DonationsErrors__your_payment_was_processed_but">Na-process na ang iyong payment pero hindi maipadala ng Signal ang donation message mo. Paki contact ang support.</string>
+    <string name="DonationsErrors__your_payment_was_processed_but">Na-process na ang iyong payment pero hindi maipadala ng Tellomi ang donation message mo. Paki contact ang support.</string>
     <string name="DonationsErrors__your_badge_could_not">Hindi ma-add ang badge mo sa iyong account, pero baka na-charge ang account mo. Paki contact ang support.</string>
     <string name="DonationsErrors__your_payment_is_still">Pina-process pa ang iyong donation. Maaari itong tumagal nang ilang minuto depende sa connection mo.</string>
     <string name="DonationsErrors__failed_to_cancel_subscription">Hindi na-cancel ang subscription</string>
     <string name="DonationsErrors__subscription_cancellation_requires_an_internet_connection">Kailangan ng internet connection ang subscription cancellation.</string>
-    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">Hindi suportado ng device mo ang in-app donations, kaya hindi ka makapag-subscribe para makakuha ng badge. Pwede mo pa ring suportahan ang Signal sa pamamagitan ng pag-donate sa aming website.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">Hindi suportado ng device mo ang in-app donations, kaya hindi ka makapag-subscribe para makakuha ng badge. Pwede mo pa ring suportahan ang Tellomi sa pamamagitan ng pag-donate sa aming website.</string>
     <string name="NetworkFailure__network_error_check_your_connection_and_try_again">Network error. I-check ang iyong internet connection at subukan ulit.</string>
     <string name="NetworkFailure__retry">Subukang muli</string>
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
     <string name="DonationsErrors__cannot_send_donation">Hindi ma-send ang donation</string>
     <!-- Displayed as a dialog message when the selected recipient for a gift doesn\'t support gifting -->
-    <string name="DonationsErrors__this_user_cant_receive_donations_until">Kailangang i-upgrade ng user na ito ang kanyang Signal app bago siya makatanggap ng donation.</string>
+    <string name="DonationsErrors__this_user_cant_receive_donations_until">Kailangang i-upgrade ng user na ito ang kanyang Tellomi app bago siya makatanggap ng donation.</string>
     <!-- Displayed as a dialog message when the user\'s profile could not be fetched, likely due to lack of internet -->
     <string name="DonationsErrors__your_donation_could_not_be_sent">Hindi maipadala ang donation mo dahil sa network error. I-check ang iyong connection at subukan ulit.</string>
     <!-- Displayed as a dialog message when the user encounters an error during an iDEAL donation -->
@@ -6632,7 +6632,7 @@
     <!-- Gift message view title -->
     <string name="GiftMessageView__donation_on_behalf_of_s">Donation sa pangalan ni %1$s</string>
     <!-- Gift message view title for incoming donations -->
-    <string name="GiftMessageView__s_donated_to_signal_on">Nag-donate sa Signal si %1$s para sa iyo</string>
+    <string name="GiftMessageView__s_donated_to_signal_on">Nag-donate sa Tellomi si %1$s para sa iyo</string>
     <!-- Gift badge redeem action label -->
     <string name="GiftMessageView__redeem">I-redeem</string>
     <!-- Gift badge view action label -->
@@ -6881,7 +6881,7 @@
     <!-- Donation receipts share PNG -->
     <string name="DonationReceiptDetailsFragment__share_receipt">Share receipt</string>
     <!-- Donation receipts list end note -->
-    <string name="DonationReceiptListFragment__if_you_have">Kung ni-reinstall mo ang Signal app, hindi na available ang receipts mula sa previous donations.</string>
+    <string name="DonationReceiptListFragment__if_you_have">Kung ni-reinstall mo ang Tellomi app, hindi na available ang receipts mula sa previous donations.</string>
     <!-- Donation receipts document title -->
     <string name="DonationReceiptDetailsFragment__donation_receipt">Donation receipt</string>
     <!-- Donation receipts amount title -->
@@ -7280,8 +7280,8 @@
     <string name="GiftFlowStartFragment__donate_for_a_friend">Mag-donate para sa Kaibigan</string>
     <!-- Description text on start fragment for gifting a badge -->
     <plurals name="GiftFlowStartFragment__support_signal_by">
-        <item quantity="one">Suportahan ang Signal sa pamamagitan ng pag-donate para sa isang kaibigan o kamag-anak na gumagamit ng Signal. Makatatanggap sila ng isang badge na pwede nilang i-display sa kanilang profile sa loob ng %1$d araw</item>
-        <item quantity="other">Suportahan ang Signal sa pamamagitan ng pag-donate para sa isang kaibigan o kamag-anak na gumagamit ng Signal. Makatatanggap sila ng isang badge na pwede nilang i-display sa kanilang profile sa loob ng %1$d araw</item>
+        <item quantity="one">Suportahan ang Tellomi sa pamamagitan ng pag-donate para sa isang kaibigan o kamag-anak na gumagamit ng Tellomi. Makatatanggap sila ng isang badge na pwede nilang i-display sa kanilang profile sa loob ng %1$d araw</item>
+        <item quantity="other">Suportahan ang Tellomi sa pamamagitan ng pag-donate para sa isang kaibigan o kamag-anak na gumagamit ng Tellomi. Makatatanggap sila ng isang badge na pwede nilang i-display sa kanilang profile sa loob ng %1$d araw</item>
     </plurals>
     <!-- Action button label for start fragment for gifting a badge -->
     <string name="GiftFlowStartFragment__next">Susunod</string>
@@ -7304,9 +7304,9 @@
     <!-- Title for sheet shown when opening a sent gift -->
     <string name="ViewSentGiftBottomSheet__thanks_for_your_support">Maraming salamat sa iyong suporta!</string>
     <!-- Description for sheet shown when opening a redeemed gift -->
-    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">Nag-donate sa Signal si %1$s para sa iyo! Ipakita sa profile mo ang iyong pagsuporta sa Signal.</string>
+    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">Nag-donate sa Tellomi si %1$s para sa iyo! Ipakita sa profile mo ang iyong pagsuporta sa Tellomi.</string>
     <!-- Description for sheet shown when opening a sent gift -->
-    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Nag-donate ka sa Signal para kay %1$s. Mabibigyan siya ng option na ipakita ang kanyang suporta sa kanyang profile.</string>
+    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Nag-donate ka sa Tellomi para kay %1$s. Mabibigyan siya ng option na ipakita ang kanyang suporta sa kanyang profile.</string>
     <!-- Primary action for pending gift sheet to redeem badge now -->
     <string name="ViewReceivedGiftSheet__redeem">I-redeem</string>
     <!-- Primary action for pending gift sheet to redeem badge later -->
@@ -7314,7 +7314,7 @@
     <!-- Dialog text while redeeming a gift -->
     <string name="ViewReceivedGiftSheet__redeeming_badge">Nire-redeem ang badge…</string>
     <!-- Description text in gift thanks sheet -->
-    <string name="GiftThanksSheet__youve_made_a_donation">Nag-donate ka sa Signal para kay %1$s. Mabibigyan siya ng option na ipakita ang kanyang suporta sa kanyang profile.</string>
+    <string name="GiftThanksSheet__youve_made_a_donation">Nag-donate ka sa Tellomi para kay %1$s. Mabibigyan siya ng option na ipakita ang kanyang suporta sa kanyang profile.</string>
     <!-- Expired gift sheet title -->
     <string name="ExpiredGiftSheetConfiguration__your_badge_has_expired">Expired na ang iyong badge</string>
     <!-- Expired gift sheet top description text -->
@@ -7538,7 +7538,7 @@
     <!-- Continue button label -->
     <string name="DonateToSignalFragment__continue">Magpatuloy</string>
     <!-- Description below title -->
-    <string name="DonateToSignalFragment__private_messaging">Mag-donate para suportahan ang private messaging. Panatilihing malaya at ad-free ang Signal.</string>
+    <string name="DonateToSignalFragment__private_messaging">Mag-donate para suportahan ang private messaging. Panatilihing malaya at ad-free ang Tellomi.</string>
     <!-- Dialog title when a user tries to donate while they already have a pending donation. -->
     <string name="DonateToSignalFragment__you_have_a_donation_pending">May pending donation ka</string>
     <!-- Dialog body when a user tries to donate while they already have a pending monthly donation. -->
@@ -7563,11 +7563,11 @@
 
     <!-- GatewaySelectorBottomSheet -->
     <!-- Sheet title when subscribing -->
-    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Mag-donate ng %1$s/month sa Signal</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Mag-donate ng %1$s/month sa Tellomi</string>
     <!-- Sheet summary when subscribing -->
     <string name="GatewaySelectorBottomSheet__get_a_s_badge">Kumuha ng %1$s badge</string>
     <!-- Sheet title when giving a one-time donation -->
-    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Mag-donate ng %1$s sa Signal</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Mag-donate ng %1$s sa Tellomi</string>
     <!-- Sheet summary when giving a one-time donation -->
     <plurals name="GatewaySelectorBottomSheet__get_a_s_badge_for_d_days">
         <item quantity="one">Kumuha ng %1$s badge sa loob ng %2$d day</item>
@@ -7583,10 +7583,10 @@
     <string name="GatewaySelectorBottomSheet__ideal_wero">iDEAL | Wero</string>
 
     <!-- Dialog title for launching external intent -->
-    <string name="ExternalNavigationHelper__leave_signal_to_confirm_payment">Gusto mo bang umalis sa Signal para ma-confirm ang donation?</string>
-    <string name="ExternalNavigationHelper__once_this_payment_is_confirmed">Kapag na-confirm na ito, bumalik sa Signal para tapusin ang pag-process ng iyong donation.</string>
+    <string name="ExternalNavigationHelper__leave_signal_to_confirm_payment">Gusto mo bang umalis sa Tellomi para ma-confirm ang donation?</string>
+    <string name="ExternalNavigationHelper__once_this_payment_is_confirmed">Kapag na-confirm na ito, bumalik sa Tellomi para tapusin ang pag-process ng iyong donation.</string>
     <!-- Dialog message shown when leaving Signal to complete a donation in an external app. Placeholder is the resolved app name (e.g. a banking app). -->
-    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">Mapupunta ka sa %1$s. Kapag na-confirm na ito, bumalik sa Signal para tapusin ang pag-process ng iyong donation.</string>
+    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">Mapupunta ka sa %1$s. Kapag na-confirm na ito, bumalik sa Tellomi para tapusin ang pag-process ng iyong donation.</string>
 
     <!-- BankTransferMandateFragment -->
     <!-- Title of screen displaying the bank transfer mandate -->

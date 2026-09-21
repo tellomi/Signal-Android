@@ -6455,7 +6455,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ఒక స్వతంత్ర లాభాపేక్షలేని సంస్థగా, Tellomi ప్రైవేట్ సందేశాలు పంపడం మరియు కాల్స్‌కు కట్టుబడి ఉంది. ప్రకటనలు లేవు, ట్రాకర్‌లు లేవు, నిఘా లేదు. Tellomi కు మద్దతు ఇవ్వడానికి ఈరోజే విరాళం ఇవ్వండి.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">మీరు విరాళం ఇచ్చినప్పుడు మీ ప్రొఫైల్‌పై ఐచ్ఛిక బ్యాడ్జ్‌ను పొందండి.</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -9305,7 +9305,7 @@
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_you_entered_is_correct_but_no_backup">మీరు ఎంటర్ చేసిన రికవరీ కీ సరైనది, కానీ దానితో అనుబంధించబడిన బ్యాకప్ ఏదీ లేదు. ఒకవేళ మీ పాత ఫోన్ ఇంకా మీ దగ్గర ఉంటే, బ్యాకప్‌లు ప్రారంభించబడ్డాయని మరియు బ్యాకప్ పూర్తి చేయబడిందని నిర్ధారించుకుని, మళ్ళీ ప్రయత్నించండి.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
-    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">మీరు మీ రికవరీ కీని తప్పుగా ఎంటర్ చేసి ఉండవచ్చు లేదా మీరు మీ పాత పరికరంలో కనీసం ఒక బ్యాకప్‌ను పూర్తి చేసి ఉండకపోవచ్చు.\n\nSignal సురక్షిత బ్యాకప్‌లను ప్రారంభించేటప్పుడు మీరు సేవ్ చేసిన అదే ఫోన్ నంబర్ మరియు రికవరీ కీతో మీరు నమోదు అవుతున్నారని నిర్ధారించుకోండి మరియు మీ పాత పరికరం బ్యాకప్‌ను పూర్తి చేసిందని నిర్ధారించుకోండి.</string>
+    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">మీరు మీ రికవరీ కీని తప్పుగా ఎంటర్ చేసి ఉండవచ్చు లేదా మీరు మీ పాత పరికరంలో కనీసం ఒక బ్యాకప్‌ను పూర్తి చేసి ఉండకపోవచ్చు.\n\nTellomi సురక్షిత బ్యాకప్‌లను ప్రారంభించేటప్పుడు మీరు సేవ్ చేసిన అదే ఫోన్ నంబర్ మరియు రికవరీ కీతో మీరు నమోదు అవుతున్నారని నిర్ధారించుకోండి మరియు మీ పాత పరికరం బ్యాకప్‌ను పూర్తి చేసిందని నిర్ధారించుకోండి.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_check_rate_limited">మీరు రికవరీ కీ ప్రయత్నాలను పూర్తి చేసుకున్నారు. మీ భద్రత కోసం, మీరు చేయగల ప్రయత్నాల సంఖ్య పరిమితం చేయబడింది. ఒక గంటసేపు ఆగి, మళ్ళీ ప్రయత్నించండి.</string>
     <!-- Dialog button shown during registration and trying to restore a remote backup to instead skip said backup process -->

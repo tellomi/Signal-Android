@@ -2117,7 +2117,7 @@
     <string name="MessageRecord_a_message_from_s_couldnt_be_delivered">En besked fra %1$s kunne ikke leveres</string>
     <string name="MessageRecord_s_changed_their_phone_number">%1$s ændrede sit telefonnummer.</string>
     <!-- Update item message shown in the release channel when someone is already a sustainer so we ask them if they want to boost. -->
-    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Kan du lide denne nye funktion? Hjælp ved at støtte Signal med en engangsdonation.</string>
+    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Kan du lide denne nye funktion? Hjælp ved at støtte Tellomi med en engangsdonation.</string>
     <!-- Update item message shown when we merge two threads together. First placeholder is a name, second placeholder is a phone number. -->
     <string name="MessageRecord_your_message_history_with_s_and_their_number_s_has_been_merged">Din meddelelseshistorik med %1$s og vedkommendes nummer %2$s er slået sammen.</string>
     <!-- Update item message shown when we merge two threads together and we don\'t know the phone number of the other thread. The placeholder is a person\'s name. -->
@@ -4095,11 +4095,11 @@
         <item>Feedback</item>
         <item>Betalinger (MobileCoin)</item>
         <item>Donationer og badges</item>
-        <item>Signal-sikkerhedskopi på Android</item>
+        <item>Tellomi-sikkerhedskopi på Android</item>
         <item>Andet</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Indsendelse af fejlretningslog fra Signal Android</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Indsendelse af fejlretningslog fra Tellomi Android</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">Send</string>
     <!-- Action to decline to submit logs -->
@@ -6455,7 +6455,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Som en uafhængig nonprofitorganisation arbejder Signal for private beskeder og opkald. Ingen annoncer, ingen trackere, ingen overvågning. Donér i dag for at støtte Signal.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">Få et valgfrit badge på din profil, når du donerer</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -6546,7 +6546,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_boost_badge_has_expired_and">Din Boost-badge er udløbet, og er ikke længere synligt på din profil.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_reactivate">Du kan genaktivere din Boost-badge i 30 dage med et engangsbidrag.</string>
     <!-- Displayed when we do not think the user is a subscriber when their boost expires -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Du kan fortsætte med at bruge Signal, men hvis du vil støtte teknologi, der er udviklet til dig, kan du overveje at støtte ved at lave en månedlig donation.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Du kan fortsætte med at bruge Tellomi, men hvis du vil støtte teknologi, der er udviklet til dig, kan du overveje at støtte ved at lave en månedlig donation.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__become_a_sustainer">Bliv bidragsyder</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">Tilføj et Boost</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">Ikke nu</string>
@@ -6612,18 +6612,18 @@
     <!-- Displayed as title when some generic error happens during sending donation on behalf of another user -->
     <string name="DonationsErrors__donation_failed">Donation mislykkedes</string>
     <!-- Displayed as message when some generic error happens during sending donation on behalf of another user -->
-    <string name="DonationsErrors__your_payment_was_processed_but">Din donation blev behandlet, men Signal kunne ikke sende din donationsmeddelelse. Kontakt support.</string>
+    <string name="DonationsErrors__your_payment_was_processed_but">Din donation blev behandlet, men Tellomi kunne ikke sende din donationsmeddelelse. Kontakt support.</string>
     <string name="DonationsErrors__your_badge_could_not">Dit badge kunne ikke tilføjes til din konto, men du kan være blevet opkrævet. Kontakt support.</string>
     <string name="DonationsErrors__your_payment_is_still">Din donation er stadig under behandling. Det kan tage et par minutter afhængigt af din forbindelse.</string>
     <string name="DonationsErrors__failed_to_cancel_subscription">Opsigelse af abonnementet mislykkedes</string>
     <string name="DonationsErrors__subscription_cancellation_requires_an_internet_connection">Opsigelse af abonnement kræver en internetforbindelse.</string>
-    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">Din enhed understøtter ikke donationer i appen, så du kan ikke abonnere for at optjene et badge. Du kan stadig støtte Signal ved at give et bidrag på vores hjemmeside.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">Din enhed understøtter ikke donationer i appen, så du kan ikke abonnere for at optjene et badge. Du kan stadig støtte Tellomi ved at give et bidrag på vores hjemmeside.</string>
     <string name="NetworkFailure__network_error_check_your_connection_and_try_again">Netværksfejl. Kontroller din forbindelse, og prøv igen.</string>
     <string name="NetworkFailure__retry">Prøv igen</string>
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
     <string name="DonationsErrors__cannot_send_donation">Kan ikke sende donation</string>
     <!-- Displayed as a dialog message when the selected recipient for a gift doesn\'t support gifting -->
-    <string name="DonationsErrors__this_user_cant_receive_donations_until">Denne bruger kan ikke modtage donationer, før vedkommende opgraderer Signal.</string>
+    <string name="DonationsErrors__this_user_cant_receive_donations_until">Denne bruger kan ikke modtage donationer, før vedkommende opgraderer Tellomi.</string>
     <!-- Displayed as a dialog message when the user\'s profile could not be fetched, likely due to lack of internet -->
     <string name="DonationsErrors__your_donation_could_not_be_sent">Din donation kunne ikke sendes på grund af en netværksfejl. Tjek din forbindelse, og prøv igen.</string>
     <!-- Displayed as a dialog message when the user encounters an error during an iDEAL donation -->
@@ -6881,7 +6881,7 @@
     <!-- Donation receipts share PNG -->
     <string name="DonationReceiptDetailsFragment__share_receipt">Del kvittering</string>
     <!-- Donation receipts list end note -->
-    <string name="DonationReceiptListFragment__if_you_have">Hvis du har geninstalleret Signal, vil kvitteringer fra tidligere donationer ikke være tilgængelige.</string>
+    <string name="DonationReceiptListFragment__if_you_have">Hvis du har geninstalleret Tellomi, vil kvitteringer fra tidligere donationer ikke være tilgængelige.</string>
     <!-- Donation receipts document title -->
     <string name="DonationReceiptDetailsFragment__donation_receipt">Kvittering for donation</string>
     <!-- Donation receipts amount title -->
@@ -7306,7 +7306,7 @@
     <!-- Description for sheet shown when opening a redeemed gift -->
     <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$s har doneret til Tellomi på dine vegne! Vis at du støtter Tellomi på din profil.</string>
     <!-- Description for sheet shown when opening a sent gift -->
-    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Du har foretaget en donation til Signal på vegne af %1$s. De vil få mulighed for at vise deres støtte på deres profil.</string>
+    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Du har foretaget en donation til Tellomi på vegne af %1$s. De vil få mulighed for at vise deres støtte på deres profil.</string>
     <!-- Primary action for pending gift sheet to redeem badge now -->
     <string name="ViewReceivedGiftSheet__redeem">Indløs</string>
     <!-- Primary action for pending gift sheet to redeem badge later -->
@@ -7314,7 +7314,7 @@
     <!-- Dialog text while redeeming a gift -->
     <string name="ViewReceivedGiftSheet__redeeming_badge">Indløser badge…</string>
     <!-- Description text in gift thanks sheet -->
-    <string name="GiftThanksSheet__youve_made_a_donation">Du har foretaget en donation til Signal på vegne af %1$s. De vil få mulighed for at vise deres støtte på deres profil.</string>
+    <string name="GiftThanksSheet__youve_made_a_donation">Du har foretaget en donation til Tellomi på vegne af %1$s. De vil få mulighed for at vise deres støtte på deres profil.</string>
     <!-- Expired gift sheet title -->
     <string name="ExpiredGiftSheetConfiguration__your_badge_has_expired">Dit badge er udløbet</string>
     <!-- Expired gift sheet top description text -->
@@ -7583,16 +7583,16 @@
     <string name="GatewaySelectorBottomSheet__ideal_wero">iDEAL | Wero</string>
 
     <!-- Dialog title for launching external intent -->
-    <string name="ExternalNavigationHelper__leave_signal_to_confirm_payment">Forlad Signal for at bekræfte donation?</string>
-    <string name="ExternalNavigationHelper__once_this_payment_is_confirmed">Vend tilbage til Signal når den er bekræftet for at afslutte behandlingen af din donation.</string>
+    <string name="ExternalNavigationHelper__leave_signal_to_confirm_payment">Forlad Tellomi for at bekræfte donation?</string>
+    <string name="ExternalNavigationHelper__once_this_payment_is_confirmed">Vend tilbage til Tellomi når den er bekræftet for at afslutte behandlingen af din donation.</string>
     <!-- Dialog message shown when leaving Signal to complete a donation in an external app. Placeholder is the resolved app name (e.g. a banking app). -->
-    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">Du videresendes til %1$s. Vend tilbage til Signal når den er bekræftet for at afslutte behandlingen af din donation.</string>
+    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">Du videresendes til %1$s. Vend tilbage til Tellomi når den er bekræftet for at afslutte behandlingen af din donation.</string>
 
     <!-- BankTransferMandateFragment -->
     <!-- Title of screen displaying the bank transfer mandate -->
     <string name="BankTransferMandateFragment__bank_transfer">Bankoverførsel</string>
     <!-- Subtitle of screen displaying the bank transfer mandate, placeholder is \'Learn more\' -->
-    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe behandler donationer til Signal. Signal indsamler eller opbevarer ikke dine personlige oplysninger. %1$s</string>
+    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe behandler donationer til Tellomi. Tellomi indsamler eller opbevarer ikke dine personlige oplysninger. %1$s</string>
     <!-- Subtitle learn more of screen displaying bank transfer mandate -->
     <string name="BankTransferMandateFragment__learn_more">Få mere at vide</string>
     <!-- Button label to continue with transfer -->
@@ -7726,9 +7726,9 @@
 
     <!-- YourInformationIsPrivateBottomSheet -->
     <string name="YourInformationIsPrivateBottomSheet__your_information_is_private">Dine oplysninger er private</string>
-    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_collect">Signal indsamler eller gemmer ikke nogen af dine personlige oplysninger, når du foretager en donation.</string>
+    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_collect">Tellomi indsamler eller gemmer ikke nogen af dine personlige oplysninger, når du foretager en donation.</string>
     <string name="YourInformationIsPrivateBottomSheet__we_use_stripe">Vi bruger Stripe som vores betalingbehandler til at modtage dine donationer. Vi får ikke adgang til, opbevarer eller gemmer nogen af de oplysninger, du giver dem.</string>
-    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_and_cannot">Signal har ikke mulighed for at forbinde din donation til din Signal-konto.</string>
+    <string name="YourInformationIsPrivateBottomSheet__signal_does_not_and_cannot">Tellomi har ikke mulighed for at forbinde din donation til din Tellomi-konto.</string>
     <string name="YourInformationIsPrivateBottomSheet__thank_you">Tak for din støtte!</string>
 
     <!-- GroupStoryEducationSheet -->

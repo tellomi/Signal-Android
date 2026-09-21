@@ -6295,7 +6295,7 @@
     <!-- Title of learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">مۇستەقىل پايدا ئالمايدىغان تەشكىلات بولۇش سۈپىتى بىلەن، Tellomi شەخسىي ئۇچۇر ۋە تېلېفونلىشىشقا كاپالەتلىك قىلىدۇ. ئېلان، ئىز قوغلاش، نازارەت قىلىنىشتىن خالىي. Tellomiنى قوللاش ئۈچۈن بۈگۈنلا ئىئانە قىلىڭ.</string>
     <!-- First small text blurb on learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Signal.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__donate_and_get_badge">ئىئانە قىلىش ئارقىلىق قوشۇمچە بىر ئىزنەك تاپشۇرۇۋالىسىز</string>
     <!-- Third small text blurb on learn more sheet -->
@@ -9105,7 +9105,7 @@
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_you_entered_is_correct_but_no_backup">سىز كىرگۈزگەن ئەسلىگە كەلتۈرۈش ئاچقۇچى توغرا، ئەمما ئۇنىڭدا زاپاسلاشقا ئائىت مەلۇماتلار يوق. ئەگەر كونا تېلېفونىڭىز يەنىلا بولسا، زاپاسلاشنىڭ قوزغىتىلغانلىقىنى ۋە بىر قېتىملىق زاپاسلاشنىڭ تاماملانغانلىقىنى جەزملەشتۈرۈڭ ھەمدە قايتا سىناڭ.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
-    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">ئەسلىگە كەلتۈرۈش ئاچقۇچىڭىزنى خاتا كىرگۈزگەن بولۇشىڭىز مۇمكىن، ياكى كونا ئۈسكۈنىڭىزدە كەم دېگەندە بىر زاپاسلاشنى تاماملىمىغان بولۇشىڭىز مۇمكىن.\n\nSignal بىخەتەر زاپاسلانمىللىرىنى قوزغاتقاندا، ساقلىۋالغان تېلېفون نومۇرى ۋە ئەسلىگە كەلتۈرۈش ئاچقۇچىنىڭ تىزىملاتقان ۋاقىتتىكى بىلەن ئوخشاش بولۇشىغا كاپالەتلىك قىلىڭ ھەمدە كونا ئۈسكۈنىڭىزنىڭ بىر زاپاسلاشنى تاماملىغانلىقىنى جەزملەشتۈرۈڭ.</string>
+    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">ئەسلىگە كەلتۈرۈش ئاچقۇچىڭىزنى خاتا كىرگۈزگەن بولۇشىڭىز مۇمكىن، ياكى كونا ئۈسكۈنىڭىزدە كەم دېگەندە بىر زاپاسلاشنى تاماملىمىغان بولۇشىڭىز مۇمكىن.\n\nTellomi بىخەتەر زاپاسلانمىللىرىنى قوزغاتقاندا، ساقلىۋالغان تېلېفون نومۇرى ۋە ئەسلىگە كەلتۈرۈش ئاچقۇچىنىڭ تىزىملاتقان ۋاقىتتىكى بىلەن ئوخشاش بولۇشىغا كاپالەتلىك قىلىڭ ھەمدە كونا ئۈسكۈنىڭىزنىڭ بىر زاپاسلاشنى تاماملىغانلىقىنى جەزملەشتۈرۈڭ.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_check_rate_limited">ئەسلىگە كەلتۈرۈش ئاچقۇچى سىناقلىرىڭىز تۈگىدى. بىخەتەرلىكىڭىز ئۈچۈن، سىز قىلالايدىغان سىناقلارنىڭ سانى چەكلىك. بىر سائەت ساقلاپ قايتا سىناڭ.</string>
     <!-- Dialog button shown during registration and trying to restore a remote backup to instead skip said backup process -->
