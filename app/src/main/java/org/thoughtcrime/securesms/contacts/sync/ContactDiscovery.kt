@@ -14,6 +14,7 @@ import org.signal.core.util.StringUtil
 import org.signal.core.util.Util
 import org.signal.core.util.UuidUtil
 import org.signal.core.util.logging.Log
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.database.RecipientTable
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
@@ -43,10 +44,30 @@ object ContactDiscovery {
 
   private const val FULL_SYSTEM_CONTACT_SYNC_THRESHOLD = 3
 
+  /**
+   * Tellomi：这套部署有没有 CDSI（Contact Discovery）enclave。
+   *
+   * CDSI 和 SVR2 一样是 Intel SGX enclave，客户端握手要校验 Intel 根证书签的 DCAP quote
+   * （libsignal `rust/attest`），自建服务端没有，连不上。按 `docs/signal/ENCLAVES.md` 的阶段一决定：
+   * **按手机号找人关掉，按用户名找人**，通讯录同步「安静失败」——不弹错、不重试、不把已知联系人
+   * 标成未注册（用 UNKNOWN 而不是 NOT_REGISTERED），否则会把能聊的人显示成不能聊。
+   */
+  private fun cdsiUnavailable(descriptor: String): Boolean {
+    if (BuildConfig.CDSI_AVAILABLE) {
+      return false
+    }
+    Log.i(TAG, "[$descriptor] No CDSI enclave in this deployment. Skipping contact discovery (use usernames to find people).")
+    return true
+  }
+
   @JvmStatic
   @Throws(IOException::class)
   @WorkerThread
   fun refreshAll(context: Context, notifyOfNewUsers: Boolean) {
+    if (cdsiUnavailable("refresh-all")) {
+      return
+    }
+
     if (TextUtils.isEmpty(SignalStore.account.e164)) {
       Log.w(TAG, "Have not yet set our own local number. Skipping.")
       return
@@ -86,6 +107,10 @@ object ContactDiscovery {
   @Throws(IOException::class)
   @WorkerThread
   fun refresh(context: Context, recipients: List<Recipient>, notifyOfNewUsers: Boolean, timeoutMs: Long? = null) {
+    if (cdsiUnavailable("refresh-multiple")) {
+      return
+    }
+
     refreshRecipients(
       context = context,
       descriptor = "refresh-multiple",
@@ -100,6 +125,11 @@ object ContactDiscovery {
   @Throws(IOException::class)
   @WorkerThread
   fun refresh(context: Context, recipient: Recipient, notifyOfNewUsers: Boolean, timeoutMs: Long? = null): RecipientTable.RegisteredState {
+    if (cdsiUnavailable("refresh-single")) {
+      // 不要返回 NOT_REGISTERED：那会把明明能聊的人标成不能聊。UNKNOWN 表示「没查过」。
+      return RecipientTable.RegisteredState.UNKNOWN
+    }
+
     val result: RefreshResult = refreshRecipients(
       context = context,
       descriptor = "refresh-single",
@@ -125,6 +155,10 @@ object ContactDiscovery {
   @Throws(IOException::class)
   @WorkerThread
   fun lookupE164(e164: String): LookupResult? {
+    if (cdsiUnavailable("lookup-e164")) {
+      return null
+    }
+
     return ContactDiscoveryRefreshV2.lookupE164(e164)
   }
 

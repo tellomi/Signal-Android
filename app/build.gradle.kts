@@ -269,6 +269,8 @@ android {
     // NetworkController.svrEnclaveAvailable。prod 档保持上游行为（连 Signal 自己的 svr2）；
     // staging 档指的是我们自建的香港服务端，那里没有 enclave。
     buildConfigField("boolean", "SVR_ENCLAVE_AVAILABLE", "true")
+    // 同上，CDSI（按手机号找人）也是 SGX enclave。见 docs/signal/ENCLAVES.md。
+    buildConfigField("boolean", "CDSI_AVAILABLE", "true")
 
     if (isInstrumentationTestRun) {
       applicationIdSuffix = ".test_run"
@@ -538,6 +540,7 @@ android {
 
       resValue("string", "contact_account_type", "app.tellomi.staging")
       buildConfigField("boolean", "SVR_ENCLAVE_AVAILABLE", "false")
+      buildConfigField("boolean", "CDSI_AVAILABLE", "false")
       buildConfigField("String", "BUILD_ENVIRONMENT_TYPE", "\"Staging\"")
       buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_test_sngOd8FnXNkpce9nPXawKrJD00kIDngZkD\"")
     }
