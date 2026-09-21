@@ -478,14 +478,22 @@ public class ApplicationContext extends Application implements AppForegroundObse
     PlayServicesUtil.PlayServicesStatus playServicesStatus = PlayServicesUtil.getPlayServicesStatus(this);
 
     if (playServicesStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS && !SignalStore.account().isFcmEnabled()) {
-      Log.w(TAG, "Play Services are newly-available. Enabling FCM and updating server.");
-      SignalStore.account().setFcmEnabled(true);
+      // Tellomi：上游在这里「看见装了 Play Services 就认为 FCM 可用」——直接把 fcmEnabled 打开
+      // 并**停掉常驻 websocket 的前台服务**。这个假设在大陆不成立：手机装着 GMS，但网络到不了
+      // Google，FCM 永远收不到。症状是 App 退到后台约 50 秒 websocket 断开，之后完全收不到消息，
+      // 直到用户手动打开 App（2026-09-22 在模拟器上实测：`Foreground: false, FCM: true` →
+      // `WebSocket State: DISCONNECTED` → `Waiting for websocket state change....`）。
+      //
+      // 上游确实有自愈，但要 FCM **连续失败超过 3 天**才会自动切回 websocket 模式
+      // （FcmRefreshJob.onFailure），三天收不到消息对我们不可接受。
+      //
+      // 改法：**装了 GMS 不等于 FCM 能用**——先不动 fcmEnabled，只去真的取一次 token；
+      // 取到了由 FcmRefreshJob 自己把 fcmEnabled 打开并停掉前台服务（那段逻辑它本来就有）。
+      // 取不到就维持 websocket 模式。这样「FCM 真能用」的机器行为完全不变。
+      Log.w(TAG, "Play Services are available but FCM is not enabled yet. Trying to get a token before trusting FCM.");
       AppDependencies.getJobManager().startChain(new FcmRefreshJob())
                                       .then(new RefreshAttributesJob())
                                       .enqueue();
-      AppDependencies.resetNetwork();
-      AppDependencies.startNetwork();
-      IncomingMessageObserver.stopForegroundService(this);
     } else if (playServicesStatus == PlayServicesUtil.PlayServicesStatus.MISSING && SignalStore.account().isFcmEnabled()) {
       Log.w(TAG, "Play Services are no longer available. Attempting to get an FCM token anyway.");
       AppDependencies.getJobManager().add(new FcmRefreshJob());

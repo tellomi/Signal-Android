@@ -145,13 +145,29 @@ public class FcmRefreshJob extends BaseJob {
       }
     } else if (status == PlayServicesUtil.PlayServicesStatus.SUCCESS &&
                SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED &&
-               System.currentTimeMillis() - SignalStore.account().getFcmTokenLastSetTime() > TimeUnit.DAYS.toMillis(3))
+               (neverHadAnFcmToken() ||
+                System.currentTimeMillis() - SignalStore.account().getFcmTokenLastSetTime() > TimeUnit.DAYS.toMillis(3)))
     {
-      Log.w(TAG, "FCM has been failing for over 3 days despite Play Services being available. Auto-enabling forced websocket mode so the user can still get messages.");
+      // Tellomi：多了 neverHadAnFcmToken() 这个条件。上游只看「连续失败超过 3 天」，那是为了
+      // 避免 FCM 偶发抖动时来回切换——合理。但它把两种情况混成了一种：
+      //   「以前能用、现在坏了」→ 等几天再说，对；
+      //   「从来就没成功过」  → 再等三天也不会好，用户这三天一条后台消息都收不到。
+      // 大陆的手机装着 GMS 但连不上 Google，永远是后一种。所以「从没拿到过 token」直接切。
+      Log.w(TAG, "FCM has never worked (or has been failing for over 3 days) despite Play Services being available. Auto-enabling forced websocket mode so the user can still get messages.");
       SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.ENABLED_AUTOMATICALLY);
       AppDependencies.resetNetwork();
       AppDependencies.startNetwork();
     }
+  }
+
+  /**
+   * Tellomi：这台设备**从来没有成功拿到过 FCM token**。
+   *
+   * 与「拿到过、现在失效了」要区别对待：后者可能是偶发抖动，值得等；前者等多久都不会好
+   * （典型就是大陆装着 GMS 但连不上 Google 的手机）。
+   */
+  private boolean neverHadAnFcmToken() {
+    return SignalStore.account().getFcmToken() == null && SignalStore.account().getFcmTokenLastSetTime() == 0;
   }
 
   @Override
