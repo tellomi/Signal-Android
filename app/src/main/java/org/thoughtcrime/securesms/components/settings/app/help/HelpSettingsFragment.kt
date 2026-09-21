@@ -124,8 +124,9 @@ class HelpSettingsFragment : ComposeFragment() {
                 append(getString(R.string.HelpFragment__copyright_signal_messenger))
                 append("\n")
                 append(getString(R.string.HelpFragment__licenced_under_the_agplv3))
-                append("\n")
-                append(getString(R.string.HelpSettingsFragment__signal_is_a_501c3))
+                // Tellomi：上游这里还有一行「Signal is a 501c3 nonprofit」。
+                // Tellomi 不是 501c3 非营利组织，换成「Tellomi」会变成一句关于自身法律主体的假话，
+                // 所以整行去掉。上面两行（Signal 版权 + AGPLv3）是许可证要求，必须留。
               }.toString()
             )
           }

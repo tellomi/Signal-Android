@@ -4,8 +4,10 @@
     <string name="AccountLockedScreen__learn_more_url" translatable="false">https://support.signal.org/hc/articles/360007059792</string>
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Take privacy with you.\nBe yourself in every message.</string>
-    <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal is a 501c3 nonprofit\nTerms &amp; Privacy Policy</string>
+    <!-- Tellomi：上游这句是「Signal is a 501c3 nonprofit」。Tellomi 不是 501c3 非营利组织，
+         把「Signal」换成「Tellomi」会变成一句关于我们自己法律主体的假话，所以整句删掉，只留条款链接。
+         （品牌替换脚本 scripts/brand/rename-strings.py 的 ORG_HINTS 故意跳过这类组织声明，就是为了不自动改错。） -->
+    <string name="RegistrationActivity_terms_and_privacy">Terms &amp; Privacy Policy</string>
     <string name="RegistrationActivity_continue">Continue</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">Restore or transfer</string>
