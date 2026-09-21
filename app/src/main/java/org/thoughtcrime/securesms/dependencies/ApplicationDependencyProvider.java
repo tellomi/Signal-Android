@@ -346,7 +346,18 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
 
   @Override
   public @NonNull Network provideLibsignalNetwork(@NonNull SignalServiceConfiguration config) {
-    Network network = new Network(BuildConfig.LIBSIGNAL_NET_ENV, StandardUserAgentInterceptor.USER_AGENT, RemoteConfig.getLibsignalConfigs(), Network.BuildVariant.PRODUCTION);
+    // libsignal-net 把 Signal 自己 staging / prod 的域名与根证书编译在 Rust 里，客户端侧覆盖不了，
+    // 所以连自建服务端只能走 customServer 入口（tellomi/libsignal 的 tellomi-0.101.1 分支）。
+    // 主机名为空 = 官方环境，保持上游行为。
+    Network network = BuildConfig.LIBSIGNAL_CUSTOM_SERVER_HOST.isEmpty()
+                      ? new Network(BuildConfig.LIBSIGNAL_NET_ENV, StandardUserAgentInterceptor.USER_AGENT, RemoteConfig.getLibsignalConfigs(), Network.BuildVariant.PRODUCTION)
+                      : Network.customServer(BuildConfig.LIBSIGNAL_CUSTOM_SERVER_HOST,
+                                             BuildConfig.LIBSIGNAL_CUSTOM_SERVER_PORT,
+                                             null,  // 平台信任库：自建服务端用的是公开 CA 签发的证书
+                                             2,     // Omnibus 说 HTTP/2
+                                             StandardUserAgentInterceptor.USER_AGENT,
+                                             RemoteConfig.getLibsignalConfigs(),
+                                             Network.BuildVariant.PRODUCTION);
     LibSignalNetworkExtensions.applyConfiguration(network, config);
 
     return network;
