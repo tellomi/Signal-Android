@@ -40,6 +40,7 @@ import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Fragments
 import org.signal.core.util.DimensionUnit
 import org.signal.core.util.orNull
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.ContactSelectionListFragment
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.menu.ActionItem
@@ -154,7 +155,16 @@ private fun RecipientSearchResultsList(
     isRefreshable = callbacks.refresh != null,
     enableCreateNewGroup = callbacks.newConversation != null,
     enableFindByUsername = callbacks.findByUsername != null,
-    enableFindByPhoneNumber = callbacks.findByPhoneNumber != null,
+    // Tellomi：没有 CDSI enclave 时按号码找人整条路是死的，入口直接不给。
+    // 2026-09-22 在模拟器上实测：对一个**活着的账号**（+8613800000003，当时 iOS 模拟器正用着）
+    // 点查找，弹的是「+8613800000003 is not a Tellomi user. Would you like to invite this number?」
+    // ——假话，还引导用户去发短信邀请。根因是 ContactDiscovery 在没有 enclave 时不查，
+    // 调用方把「查不到」当成了「没注册」。
+    // iOS 侧同样的入口已按同样理由隐藏（Signal-iOS@52580b7）。
+    // 别改成「跳过校验直接开会话」：iOS 上试过，拿不到对方 ACI，消息只发出一条给自己的
+    // 同步回执却显示「已发送」，静默黑洞比假话更难发现。
+    // 按用户名找人走服务端查询、拿得到 ACI，是这套部署里唯一能用的路，那个入口保留。
+    enableFindByPhoneNumber = callbacks.findByPhoneNumber != null && BuildConfig.CDSI_AVAILABLE,
     showCallButtons = callbacks.newCall != null,
     includeRecents = includeRecents,
     currentSelection = preselectedRecipients,
