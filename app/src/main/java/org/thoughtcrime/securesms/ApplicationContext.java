@@ -95,6 +95,7 @@ import org.thoughtcrime.securesms.jobs.RetrieveProfileJob;
 import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob;
 import org.thoughtcrime.securesms.jobs.StoryOnboardingDownloadJob;
 import org.thoughtcrime.securesms.keyvalue.KeepMessagesDuration;
+import org.thoughtcrime.securesms.keyvalue.SettingsValues;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.logging.CustomSignalProtocolLogger;
 import org.thoughtcrime.securesms.logging.PersistentLogger;
@@ -494,6 +495,26 @@ public class ApplicationContext extends Application implements AppForegroundObse
       AppDependencies.getJobManager().startChain(new FcmRefreshJob())
                                       .then(new RefreshAttributesJob())
                                       .enqueue();
+    } else if (playServicesStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS &&
+               SignalStore.account().isFcmEnabled() &&
+               FcmRefreshJob.neverHadAnFcmToken() &&
+               SignalStore.settings().getForceWebsocketMode() == SettingsValues.ForceWebsocketMode.ENABLED_AUTOMATICALLY) {
+      // Tellomi（#923）：这台设备已经被判定「FCM 用不了」（forceWebsocketMode 自动打开了），
+      // 但 fcmEnabled 还是 true —— 于是**服务端以为它走推送**（账号属性 fetchesMessages=false），
+      // 每来一条消息都往一个根本不存在的 token 发一次 FCM。本机能收到消息纯粹是强制 websocket 兜住了。
+      //
+      // 实测（2026-09-22，emulator-5554，装着 GMS 但拿不到 token）：同一行日志里
+      //   Force websocket: true 而 FCM: true。
+      //
+      // FcmRefreshJob 里那段修复只在「从 DISABLED 切到 ENABLED_AUTOMATICALLY」的那一刻跑，
+      // 已经处在这个状态的设备（和升级上来的用户）再也不会进那个分支，所以要在启动时收敛一次。
+      // 恢复路径不受影响：fcmEnabled 变 false 之后，下次启动会走上面那条
+      // 「Play Services available but FCM not enabled → 真取一次 token」，取到了
+      // FcmRefreshJob 的成功分支会把 fcmEnabled 打开并把 forceWebsocketMode revert 回 DISABLED。
+      Log.w(TAG, "Forced websocket mode was auto-enabled and we never had an FCM token, but fcmEnabled is still true. Telling the server we fetch messages.");
+      SignalStore.account().setFcmEnabled(false);
+      SignalStore.account().setFcmToken(null);
+      AppDependencies.getJobManager().add(new RefreshAttributesJob());
     } else if (playServicesStatus == PlayServicesUtil.PlayServicesStatus.MISSING && SignalStore.account().isFcmEnabled()) {
       if (FcmRefreshJob.neverHadAnFcmToken()) {
         // Tellomi（#952）：全新安装时 fcmEnabled 会被写成 true，**与有没有 GMS 无关**——

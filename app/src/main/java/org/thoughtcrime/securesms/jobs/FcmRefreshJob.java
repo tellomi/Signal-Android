@@ -155,6 +155,28 @@ public class FcmRefreshJob extends BaseJob {
       // 大陆的手机装着 GMS 但连不上 Google，永远是后一种。所以「从没拿到过 token」直接切。
       Log.w(TAG, "FCM has never worked (or has been failing for over 3 days) despite Play Services being available. Auto-enabling forced websocket mode so the user can still get messages.");
       SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.ENABLED_AUTOMATICALLY);
+
+      if (neverHadAnFcmToken() && SignalStore.account().isFcmEnabled()) {
+        // Tellomi（#923）：上面那行只修好了**本机**收消息（强制 websocket 常驻），但
+        // 服务端那边仍然以为这台设备走推送：fcmEnabled 还是 true，账号属性里
+        // fetchesMessages=false，于是服务端每来一条消息都往一个根本不存在的 FCM token 发一次。
+        //
+        // 实测（2026-09-22，emulator-5554，装着 GMS 但拿不到 token）：
+        //   Force websocket: ENABLED_AUTOMATICALLY，而同一行日志里 FCM: true。
+        // 消息能收到，纯粹是因为强制 websocket 兜住了；服务端的认知和事实是反的。
+        //
+        // 从来没拿到过 token = 这台机器上 FCM 就是不能用，让服务端知道实情：
+        // fetchesMessages=true，别再往空 token 发推送。
+        // 「以前拿到过、现在失效」不走这条（可能只是抖动，按上游的样子等）。
+        // 恢复路径不受影响：fcmEnabled=false + Play Services 可用时，下次启动
+        // ApplicationContext.initializeFcmCheck 会再取一次 token，取到了这个 Job 的成功分支
+        // 会把 fcmEnabled 打开并把 forceWebsocketMode revert 回 DISABLED。
+        Log.w(TAG, "We never had an FCM token, so tell the server we fetch messages instead of pretending push works.");
+        SignalStore.account().setFcmEnabled(false);
+        SignalStore.account().setFcmToken(null);
+        AppDependencies.getJobManager().add(new RefreshAttributesJob());
+      }
+
       AppDependencies.resetNetwork();
       AppDependencies.startNetwork();
     }
