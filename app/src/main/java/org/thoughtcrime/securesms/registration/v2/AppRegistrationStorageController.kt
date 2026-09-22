@@ -814,6 +814,20 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
     }
 
     SignalStore.account.setServicePassword(accountData.servicePassword)
+
+    // Tellomi（#952）：新注册流**从头到尾没写过 fcmEnabled**（旧的 registration/data/RegistrationRepository
+    // 是在本地落库时写的，这条路径漏了），于是它一直保持 KV 首次迁移写进去的那个错误的 true：
+    // AccountValues.migrateFromSharedPrefsV1 里是 !getBooleanPreference("pref_gcm_disabled", false)，
+    // 全新安装取不到那个 key → 默认 false → !false = true，与有没有 GMS 无关。
+    //
+    // 后果：注册完成后 IncomingMessageObserver 看到 FCM: true，认为不需要常驻 websocket，
+    // 用户一切后台就收不到消息，直到 FcmRefreshJob 重试耗尽才纠正（实测约 51 秒；
+    // 2026-09-22 在无 GMS 模拟器上量到 FCM: true 持续了 5 分钟都没变）。
+    //
+    // fetchesMessages 就是我们**刚刚告诉服务端**的那个值（RegistrationRepository: fetchesMessages = fcmToken == null），
+    // 拿它取反即可，本地状态与服务端认知严格一致。FCM 真能用的机器 fetchesMessages=false → 仍然是 true，行为不变。
+    SignalStore.account.fcmEnabled = !accountData.fetchesMessages
+
     SignalStore.account.setRegistered(registered = true, isAciChanged = isAciChanged)
     TextSecurePreferences.setPromptedPushRegistration(context, true)
     TextSecurePreferences.setUnauthorizedReceived(context, false)
