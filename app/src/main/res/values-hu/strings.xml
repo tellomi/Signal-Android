@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s támogatja a Tellomit</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s havi adománnyal támogatja a Tellomit. A Signal egy nonprofit, hirdetők és befektetők nélküli, kizárólag felhasználók és rajongók által fenntartott alkalmazás.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s havi adománnyal támogatja a Signalt. A Signal egy nonprofit, hirdetők és befektetők nélküli, kizárólag felhasználók és rajongók által fenntartott alkalmazás.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s adománnyal támogatja a Tellomit. A Signal egy nonprofit, hirdetők és befektetők nélküli, kizárólag felhasználók és rajongók által fenntartott alkalmazás.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s adománnyal támogatja a Signalt. A Signal egy nonprofit, hirdetők és befektetők nélküli, kizárólag felhasználók és rajongók által fenntartott alkalmazás.</string>
 
     <string name="ImageView__badge">Jelvény</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">%1$s dátummal lejár</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Független nonprofit szervezetként a Signal elkötelezett a privát üzenetek és hívások iránt. Nincsenek hirdetések, nincsenek nyomkövetők és nincs megfigyelés. Adományozz még ma, és támogasd a Tellomit!</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Független nonprofit szervezetként a Signal elkötelezett a privát üzenetek és hívások iránt. Nincsenek hirdetések, nincsenek nyomkövetők és nincs megfigyelés. Adományozz még ma, és támogasd a Signalt!</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6887,7 +6887,7 @@
     <!-- Donation receipts amount title -->
     <string name="DonationReceiptDetailsFragment__amount">Összeg</string>
     <!-- Donation receipts thanks -->
-    <string name="DonationReceiptDetailsFragment__thank_you_for_supporting" tools:ignore="TypographyDashes">Köszönjük, hogy támogatod a Tellomit! Adományoddal hozzájárulsz a szabad véleménynyilvánítást és milliók számára biztonságos kommunikációt biztosító, nyílt forrású adatvédelmi technológiák fejlesztéséhez. Ha az Egyesült Államokban adózol, kérjük, őrizd meg ezt a nyugtát adóbevallásodhoz. A Signal Technology Foundation egy adómentes, nonprofit szervezet, amely az USA területén az 501c3 Internal Revenue Code hatálya alá tartozik. Federal Tax ID: 82-4506840. A Signal semmilyen terméket vagy szolgáltatást nem nyújtott e hozzájárulás fejében.</string>
+    <string name="DonationReceiptDetailsFragment__thank_you_for_supporting" tools:ignore="TypographyDashes">Köszönjük, hogy támogatod a Signalt! Adományoddal hozzájárulsz a szabad véleménynyilvánítást és milliók számára biztonságos kommunikációt biztosító, nyílt forrású adatvédelmi technológiák fejlesztéséhez. Ha az Egyesült Államokban adózol, kérjük, őrizd meg ezt a nyugtát adóbevallásodhoz. A Signal Technology Foundation egy adómentes, nonprofit szervezet, amely az USA területén az 501c3 Internal Revenue Code hatálya alá tartozik. Federal Tax ID: 82-4506840. A Signal semmilyen terméket vagy szolgáltatást nem nyújtott e hozzájárulás fejében.</string>
     <!-- Donation reciepts screen empty state title -->
     <string name="DonationReceiptListFragment__no_receipts">Nincsenek nyugták</string>
 

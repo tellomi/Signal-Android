@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s tukee Tellomia</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s tukee Tellomia kuukausilahjoituksella. Signal on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s tukee Signalia kuukausilahjoituksella. Signal on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s tukee Tellomia lahjoituksella. Signal on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s tukee Signalia lahjoituksella. Signal on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
 
     <string name="ImageView__badge">Merkki</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Päättyy %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Itsenäisenä, voittoa tavoittelemattomana organisaationa Signal on sitoutunut yksityiseen viestintään ja puheluihin. Ei mainoksia, seurantaevästeitä tai valvontaa. Tue Tellomia lahjoittamalla.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Itsenäisenä, voittoa tavoittelemattomana organisaationa Signal on sitoutunut yksityiseen viestintään ja puheluihin. Ei mainoksia, seurantaevästeitä tai valvontaa. Tue Signalia lahjoittamalla.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6887,7 +6887,7 @@
     <!-- Donation receipts amount title -->
     <string name="DonationReceiptDetailsFragment__amount">Summa</string>
     <!-- Donation receipts thanks -->
-    <string name="DonationReceiptDetailsFragment__thank_you_for_supporting" tools:ignore="TypographyDashes">Kiitos, että tuet Tellomia. Lahjoituksesi auttaa edistämään tavoitettamme suojata sananvapautta ja mahdollistaa turvallinen maailmanlaajuinen viestintä miljoonille käyttäjille ympäri maailmaa avoimen lähdekoodin tietosuojateknologialla. Jos asut Yhdysvalloissa, säilytä tämä kuitti verotusta varten. Signal Technology Foundation on verovapaa voittoa tavoittelematon organisaatio Yhdysvaltojen Internal Revenue Code -pykälän 501c3 mukaisesti. Liittovaltion verotunnuksemme on 82-4506840. Signal ei ole tarjonnut lahjoituksesta tavaroita tai palveluja vastineeksi.</string>
+    <string name="DonationReceiptDetailsFragment__thank_you_for_supporting" tools:ignore="TypographyDashes">Kiitos, että tuet Signalia. Lahjoituksesi auttaa edistämään tavoitettamme suojata sananvapautta ja mahdollistaa turvallinen maailmanlaajuinen viestintä miljoonille käyttäjille ympäri maailmaa avoimen lähdekoodin tietosuojateknologialla. Jos asut Yhdysvalloissa, säilytä tämä kuitti verotusta varten. Signal Technology Foundation on verovapaa voittoa tavoittelematon organisaatio Yhdysvaltojen Internal Revenue Code -pykälän 501c3 mukaisesti. Liittovaltion verotunnuksemme on 82-4506840. Signal ei ole tarjonnut lahjoituksesta tavaroita tai palveluja vastineeksi.</string>
     <!-- Donation reciepts screen empty state title -->
     <string name="DonationReceiptListFragment__no_receipts">Ei kuitteja</string>
 

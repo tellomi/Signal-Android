@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s toetab Tellomit</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s toetab Tellomit igakuise annetusega. Signal on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s toetab Signalit igakuise annetusega. Signal on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s toetab Tellomit igakuise annetusega. Signal on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s toetab Signalit igakuise annetusega. Signal on ilma reklaamide ja investoriteta mittetulundusühing, mida toetavad ainult inimesed nagu sina.</string>
 
     <string name="ImageView__badge">Märk</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Aegub %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Sõltumatu mittetulundusühinguna on Signal pühendunud privaatsõnumitele ja kõnedele. Ei mingeid reklaame, jälgijaid ega järelevalvet. Anneta nüüd, et Tellomit toetada.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Sõltumatu mittetulundusühinguna on Signal pühendunud privaatsõnumitele ja kõnedele. Ei mingeid reklaame, jälgijaid ega järelevalvet. Anneta nüüd, et Signalit toetada.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6887,7 +6887,7 @@
     <!-- Donation receipts amount title -->
     <string name="DonationReceiptDetailsFragment__amount">Summa</string>
     <!-- Donation receipts thanks -->
-    <string name="DonationReceiptDetailsFragment__thank_you_for_supporting" tools:ignore="TypographyDashes">Aitäh, et toetad Tellomit. Sinu panus annab tõuke missioonile kaitsta väljendusvabadust ja võimaldada turvalist suhtlust miljonitele inimestele üle kogu maailma avatud lähtekoodiga privaatsustehnoloogia abil. Kui elad Ameerika Ühendriikides, jäta see kviitung alles oma maksude deklareerimiseks. Signal Technology Foundation on Ameerika Ühendriikides maksuseadustiku (US Internal Revenue Code) jao 501c3 järgi registreeritud maksuvaba mittetulundusühing. Meie föderaalne maksukood (Federal Tax ID) on 82-4506840. Signal ei paku selle annetuse eest vastutasuks kaupu ega teenuseid.</string>
+    <string name="DonationReceiptDetailsFragment__thank_you_for_supporting" tools:ignore="TypographyDashes">Aitäh, et toetad Signalit. Sinu panus annab tõuke missioonile kaitsta väljendusvabadust ja võimaldada turvalist suhtlust miljonitele inimestele üle kogu maailma avatud lähtekoodiga privaatsustehnoloogia abil. Kui elad Ameerika Ühendriikides, jäta see kviitung alles oma maksude deklareerimiseks. Signal Technology Foundation on Ameerika Ühendriikides maksuseadustiku (US Internal Revenue Code) jao 501c3 järgi registreeritud maksuvaba mittetulundusühing. Meie föderaalne maksukood (Federal Tax ID) on 82-4506840. Signal ei paku selle annetuse eest vastutasuks kaupu ega teenuseid.</string>
     <!-- Donation reciepts screen empty state title -->
     <string name="DonationReceiptListFragment__no_receipts">Kviitungeid ei ole</string>
 
