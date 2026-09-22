@@ -388,7 +388,13 @@ android {
     buildConfigField("String", "BUILD_DISTRIBUTION_TYPE", "\"unset\"")
     buildConfigField("String", "BUILD_ENVIRONMENT_TYPE", "\"unset\"")
     buildConfigField("String", "BUILD_VARIANT_TYPE", "\"unset\"")
-    buildConfigField("String", "BADGE_STATIC_ROOT", "\"https://updates2.signal.org/static/badges/\"")
+    // 徽章 sprite 的取数根路径。**不能留上游值**：那是包里最后一个 updates2.signal.org（#1030），
+    // 而且留着也不「能用」——Signal 的 CDN 上只有 Signal 自己的 sprite 文件名，
+    // 我们服务端 badges 配置里写的文件名在那边同样是 404。改成我们自己的镜像至少方向是对的。
+    // 真要让徽章显示出来，还要 deploy/hk/mirror-optional-resources.sh 把 static/badges/ 也镜过来
+    // （现在只镜 emoji 字体 / 搜索索引 / jumbomoji / DRED 权重）。今天没有任何 profile 带徽章，
+    // 所以这条路径实际不会被走到（Badges.kt:64 只在 serviceBadge.sprites6 非空时才拼 URL）。
+    buildConfigField("String", "BADGE_STATIC_ROOT", "\"https://updates.tellomi.app/static/badges/\"")
     buildConfigField("String", "STRIPE_BASE_URL", "\"https://api.stripe.com/v1\"")
     buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_test_sngOd8FnXNkpce9nPXawKrJD00kIDngZkD\"")
     buildConfigField("boolean", "TRACING_ENABLED", "false")
