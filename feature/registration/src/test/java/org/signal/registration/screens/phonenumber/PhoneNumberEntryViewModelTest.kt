@@ -58,12 +58,14 @@ import org.signal.registration.screens.shared.AccountIdError
 import java.io.IOException
 import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
+import java.util.Locale
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PhoneNumberEntryViewModelTest {
 
   private val testAci = ACI.from(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"))
 
+  private lateinit var defaultLocale: Locale
   private lateinit var viewModel: PhoneNumberEntryViewModel
   private lateinit var mockRepository: RegistrationRepository
   private lateinit var parentState: MutableStateFlow<RegistrationFlowState>
@@ -76,6 +78,19 @@ class PhoneNumberEntryViewModelTest {
 
   @Before
   fun setup() {
+    // Tellomi（#1022）：`countryName` 是**当前 locale 下的国家显示名**。Pro 这台 Mac 是
+    // zh_TH，于是它解析成「美国」，下面那条 `isEqualTo("United States")` 必红；CI 与英文
+    // 环境的机器上是绿的。这类「只在某些机器上红」的用例比看起来贵——下一个人在本机跑
+    // 测试，会以为是自己刚把注册流改坏了（这条 issue 的作者就先怀疑了一遍自己）。
+    //
+    // 钉死 locale 而不是把断言换成 regionCode：「显示名确实来自系统 locale」这层覆盖值得留着，
+    // 需要固定的只是环境。
+    //
+    // 必须在构造 viewModel **之前**设：默认国家是在构造时解析的（下面那句 advanceUntilIdle
+    // 之后 state 就已经定型了），放到用例里再设就晚了。
+    defaultLocale = Locale.getDefault()
+    Locale.setDefault(Locale.US)
+
     Dispatchers.setMain(testDispatcher)
     mockRepository = mockk(relaxed = true)
     // Tellomi：relaxed mock 的 Boolean 默认 false，而 false 现在意味着「没有 SVR enclave，
@@ -95,6 +110,8 @@ class PhoneNumberEntryViewModelTest {
   @After
   fun tearDown() {
     Dispatchers.resetMain()
+    // 同一个 JVM 会接着跑这个模块里别的用例，改过的 locale 不能漏出去
+    Locale.setDefault(defaultLocale)
   }
 
   @Test
