@@ -85,6 +85,16 @@ fun LinkDeviceQrScanScreen(
       )
     }
 
+    LinkDeviceSettingsState.QrCodeState.CONTACT_LINK -> {
+      Dialogs.SimpleAlertDialog(
+        title = stringResource(id = R.string.LinkDevice__qr_result_contact_link_title),
+        body = stringResource(id = R.string.LinkDevice__qr_result_contact_link_body),
+        confirm = stringResource(id = android.R.string.ok),
+        onConfirm = { },
+        onDismiss = onQrCodeDismissed
+      )
+    }
+
     LinkDeviceSettingsState.QrCodeState.OUTDATED_DEVICE -> {
       Dialogs.SimpleAlertDialog(
         title = stringResource(id = R.string.AddLinkDeviceFragment__linking_device_failed),

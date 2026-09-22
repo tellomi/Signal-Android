@@ -1190,6 +1190,9 @@
     <!-- Title of dialog when the QR code being scanned is invalid -->
     <string name="AddLinkDeviceFragment__linking_device_failed">Linking device failed</string>
     <!-- Text shown in a dialog when the QR code being scanned is invalid -->
+    <!-- Tellomi（#947）：同上，反方向。 -->
+    <string name="LinkDevice__qr_result_contact_link_title">This is a contact card</string>
+    <string name="LinkDevice__qr_result_contact_link_body">This QR code opens a profile, not a device pairing code. To add that person, use the scanner on your own QR code screen.</string>
     <string name="AddLinkDeviceFragment__this_qr_code_not_valid">This QR code is not valid. Please make sure you are scanning the QR code that is displayed on the device you want to link.</string>
     <!-- Button in dialog to retry linking a device with a qr code -->
     <string name="AddLinkDeviceFragment__retry">Retry</string>
@@ -8082,6 +8085,9 @@
     <!-- App bar title for the username QR code color picker screen -->
     <string name="UsernameLinkSettings_color_picker_app_bar_title">Color</string>
     <!-- Body of a dialog that is displayed when we failed to read a username QR code. -->
+    <!-- Tellomi（#947）：扫错入口时的指路。上游只有一句「二维码无效」，用户不知道该去哪。 -->
+    <string name="UsernameLinkSettings_qr_result_device_link_title">This is a device pairing code</string>
+    <string name="UsernameLinkSettings_qr_result_device_link_body">To link a computer or tablet, go to Settings → Linked devices and scan it there.</string>
     <string name="UsernameLinkSettings_qr_result_invalid">The QR code was invalid.</string>
     <!-- Body of a dialog that is displayed when the username we looked up could not be found. -->
     <string name="UsernameLinkSettings_qr_result_not_found">A user with username %1$s could not be found.</string>

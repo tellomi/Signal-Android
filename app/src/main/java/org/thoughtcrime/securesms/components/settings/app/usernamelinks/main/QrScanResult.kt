@@ -12,6 +12,12 @@ sealed class QrScanResult {
 
   object InvalidData : QrScanResult()
 
+  /**
+   * Tellomi（#947）：扫到的是**设备配对码**，不是联系人名片。
+   * 上游这里一律回 InvalidData（「二维码无效」），用户不知道自己扫错了入口——owner 撞过。
+   */
+  object DeviceLinkCode : QrScanResult()
+
   object NetworkError : QrScanResult()
 
   object QrNotFound : QrScanResult()

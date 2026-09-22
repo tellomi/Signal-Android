@@ -35,6 +35,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.signal.core.util.logging.Log
+import org.thoughtcrime.securesms.util.TellomiLinks
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.settings.app.usernamelinks.QrCodeData
 import org.thoughtcrime.securesms.components.settings.app.usernamelinks.QrCodeState
@@ -162,6 +163,13 @@ class UsernameLinkSettingsViewModel : ViewModel() {
   }
 
   fun onQrCodeScanned(url: String) {
+    // Tellomi（#947）：先认一下是不是设备配对码。是的话别去查用户名——查不到只会回一句
+    // 「二维码无效」，用户不知道自己扫错了入口。
+    if (TellomiLinks.isDeviceLinkQr(url)) {
+      _state.value = _state.value.copy(qrScanResult = QrScanResult.DeviceLinkCode)
+      return
+    }
+
     _state.value = _state.value.copy(
       indeterminateProgress = true
     )

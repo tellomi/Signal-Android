@@ -58,6 +58,14 @@ fun UsernameQrScanScreen(
       QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_invalid), onDismiss = onQrResultHandled)
     }
 
+    QrScanResult.DeviceLinkCode -> {
+      QrScanResultDialog(
+        title = stringResource(R.string.UsernameLinkSettings_qr_result_device_link_title),
+        message = stringResource(R.string.UsernameLinkSettings_qr_result_device_link_body),
+        onDismiss = onQrResultHandled
+      )
+    }
+
     QrScanResult.NetworkError -> {
       QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_network_error), onDismiss = onQrResultHandled)
     }

@@ -5,6 +5,8 @@
 
 package org.thoughtcrime.securesms.util
 
+import android.net.Uri
+
 /**
  * Tellomi 的链接 scheme / 域名，以及「同时接受新旧两种形状」的判定。
  *
@@ -73,6 +75,28 @@ object TellomiLinks {
   @JvmStatic
   fun isAppScheme(scheme: String?): Boolean =
     SCHEME.equals(scheme, ignoreCase = true) || LEGACY_SCHEME.equals(scheme, ignoreCase = true)
+
+  /**
+   * 是不是**设备配对二维码**（`tellomi://linkdevice…` / `sgnl://linkdevice…`）。
+   *
+   * 给「扫错入口」的提示用：用户名链接那个扫码器扫到它时，要能说清「这是配对码，
+   * 请到 设置 → 已关联的设备 扫」，而不是只回一句「二维码无效」（#947，owner 撞过）。
+   *
+   * Telegram reference（只看机制，一行没搬——GPLv2 与 AGPLv3 不兼容）：
+   * - Android `reference/telegram/android/.../ui/CameraScanActivity.java:156-159` 把扫码器分成
+   *   `TYPE_QR` / `TYPE_QR_LOGIN` / `TYPE_QR_WEB_BOT`；`:1380` 里 `TYPE_QR_LOGIN` **显式拒绝**
+   *   非 `tg://login?token=` 的内容，`SessionsActivity.java:1220` 设备页用的就是这个窄模式。
+   * - 通用那个也并不万能：`NewContactBottomSheet.java:660-662` 用 `TYPE_QR`，但 `didFindQr` 里
+   *   只做 `Browser.extractUsername`，不是用户名就弹一条错误。
+   * 结论：**Telegram 同样不统一扫码器**，所以我们也不合并入口；我们自己的改进只是
+   *   「认出对方的码并指路」，这条是 Tellomi 的决定，不是抄来的。
+   */
+  @JvmStatic
+  fun isDeviceLinkQr(url: String?): Boolean {
+    if (url == null) return false
+    val uri = runCatching { Uri.parse(url) }.getOrNull() ?: return false
+    return isAppScheme(uri.scheme) && uri.host.equals("linkdevice", ignoreCase = true)
+  }
 
   /** captcha 回跳：新旧都认。 */
   @JvmStatic

@@ -14,6 +14,8 @@ import org.signal.core.models.backup.MessageBackupKey
 import org.signal.core.util.ServiceUtil
 import org.signal.core.util.Util
 import org.signal.core.util.logging.Log
+import org.thoughtcrime.securesms.profiles.manage.UsernameRepository
+import org.thoughtcrime.securesms.util.TellomiLinks
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.jobs.LinkedDeviceInactiveCheckJob
 import org.thoughtcrime.securesms.jobs.NewLinkedDeviceNotificationJob
@@ -166,6 +168,12 @@ class LinkDeviceViewModel : ViewModel() {
 
   fun onQrCodeScanned(url: String) {
     if (_state.value.qrCodeState != QrCodeState.NONE) {
+      return
+    }
+
+    // Tellomi（#947）：先认一下是不是联系人名片，是的话给明确的指路，不要只说「二维码无效」。
+    if (UsernameRepository.isValidLink(url) || TellomiLinks.parsePlainUsernameFromLink(url) != null) {
+      _state.update { it.copy(qrCodeState = QrCodeState.CONTACT_LINK, linkUri = Uri.parse(url)) }
       return
     }
 

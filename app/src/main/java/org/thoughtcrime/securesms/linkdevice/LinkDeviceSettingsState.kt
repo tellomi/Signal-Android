@@ -51,7 +51,13 @@ data class LinkDeviceSettingsState(
   }
 
   enum class QrCodeState {
-    NONE, VALID_WITH_SYNC, VALID_WITHOUT_SYNC, INVALID, OUTDATED_DEVICE
+    NONE, VALID_WITH_SYNC, VALID_WITHOUT_SYNC, INVALID, OUTDATED_DEVICE,
+
+    /**
+     * Tellomi（#947）：扫到的是**联系人名片**（tell.cc/<用户名>），不是设备配对码。
+     * 上游一律 INVALID（「二维码无效」），用户不知道自己扫错了入口——owner 撞过。
+     */
+    CONTACT_LINK
   }
 
   enum class SyncFailType {
