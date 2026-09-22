@@ -150,11 +150,11 @@
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
   <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Pre fotenie a nahrávanie videa potrebuje Tellomi prístup k fotoaparátu.</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Ak chcete fotiť a nahrávať videá, povoľte Tellomiu prístup k fotoaparátu a mikrofónu.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Ak chcete fotiť a nahrávať videá, povoľte Signalu prístup k fotoaparátu a mikrofónu.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
-  <string name="CameraXFragment_to_capture_videos_with_sound">Ak chcete nahrávať videá so zvukom, povoľte Tellomiu prístup k mikrofónu.</string>
+  <string name="CameraXFragment_to_capture_videos_with_sound">Ak chcete nahrávať videá so zvukom, povoľte Signalu prístup k mikrofónu.</string>
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
-  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Ak chcete naskenovať QR kód, povoľte Tellomiu prístup k fotoaparátu.</string>
+  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Ak chcete naskenovať QR kód, povoľte Signalu prístup k fotoaparátu.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
   <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomi potrebuje na snímanie fotografií prístup k fotoaparátu</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->

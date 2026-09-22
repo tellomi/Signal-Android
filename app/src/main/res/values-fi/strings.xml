@@ -53,7 +53,7 @@
     <!-- ApplicationPreferencesActivity -->
     <string name="ApplicationPreferenceActivity_you_havent_set_a_passphrase_yet">Et ole vielä määritellyt salalausetta!</string>
     <string name="ApplicationPreferencesActivity_disable_passphrase">Poista salalause käytöstä?</string>
-    <string name="ApplicationPreferencesActivity_this_will_permanently_unlock_signal_and_message_notifications">Tämä avaa Tellomiin ja viesti-ilmoitusten lukituksen pysyvästi.</string>
+    <string name="ApplicationPreferencesActivity_this_will_permanently_unlock_signal_and_message_notifications">Tämä avaa Signalin ja viesti-ilmoitusten lukituksen pysyvästi.</string>
     <string name="ApplicationPreferencesActivity_disable">Poista käytöstä</string>
     <string name="ApplicationPreferencesActivity_error_connecting_to_server">Virhe yhdistettäessä palvelimeen!</string>
     <string name="ApplicationPreferencesActivity_pins_are_required_for_registration_lock">Rekisteröintiesto vaatii tunnusluvun. Poista rekisteröintiesto käytöstä ennen tunnusluvun poistamista.</string>
@@ -109,26 +109,26 @@
     <!-- Option in menu to go to settings -->
     <string name="AttachmentKeyboard_go_to_settings">Siirry asetuksiin</string>
     <!-- Text explaining that Signal has limited access to photos -->
-    <string name="AttachmentKeyboard_signal_has_limited_access">Tellomiilla on rajoitettu pääsy kuviin tai videoihin</string>
+    <string name="AttachmentKeyboard_signal_has_limited_access">Signalilla on rajoitettu pääsy kuviin tai videoihin</string>
     <!-- Text shown when user has given no photos for Signal to access and an explanation on how to change those permissions -->
     <string name="AttachmentKeyboard_no_photos_found">Kuvia ei löytynyt. Valitse tässä näytettävät kuvat ja videot tai muuta käyttöoikeuksia</string>
 
     <!-- MediaGalleryFragment -->
     <!-- Text describing that no photos or videos are currently found in the gallery and that Signal can only access media that the user allows -->
-    <string name="MediaGalleryFragment__no_photos_found">Kuvia tai videoita ei löytynyt. Tellomiilla on pääsy vain valitsemiisi valokuviin ja videoihin.</string>
+    <string name="MediaGalleryFragment__no_photos_found">Kuvia tai videoita ei löytynyt. Signalilla on pääsy vain valitsemiisi valokuviin ja videoihin.</string>
 
     <!-- AttachmentManager -->
     <string name="AttachmentManager_cant_open_media_selection">Median valintaan ei löytynyt sovellusta.</string>
-    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa kuvien, videoiden tai äänitiedostojen liittämistä varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
-    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">Tellomi tarvitsee luvan käyttää laitteesi yhteystietoja oman yhteystietolistansa käsittelyä varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Yhteystiedot\".</string>
-    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">Tellomi tarvitsee luvan käyttää sijaintitietoja sijainnin liittämistä varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Sijainti\".</string>
+    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa kuvien, videoiden tai äänitiedostojen liittämistä varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
+    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">Tellomi tarvitsee luvan käyttää laitteesi yhteystietoja oman yhteystietolistansa käsittelyä varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Yhteystiedot\".</string>
+    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">Tellomi tarvitsee luvan käyttää sijaintitietoja sijainnin liittämistä varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Sijainti\".</string>
 
     <!-- Dialog title asking users for location permission -->
     <string name="AttachmentManager_signal_allow_access_location">Myönnä sijaintisi käyttöoikeus</string>
     <!-- Dialog description that will explain the steps needed to give location permission -->
     <string name="AttachmentManager_signal_to_send_location">Sijaintisi lähettäminen:</string>
     <!-- Alert dialog description asking for location permission -->
-    <string name="AttachmentManager_signal_allow_signal_access_location">Myönnä Tellomiille oikeus lähettää sijaintisi.</string>
+    <string name="AttachmentManager_signal_allow_signal_access_location">Myönnä Signalille oikeus lähettää sijaintisi.</string>
     <!-- Toast text explaining Signal\'s need for location access -->
     <string name="AttachmentManager_signal_needs_location_access">Tellomi tarvitsee sijaintitietojen oikeudet sijaintisi lähettämiseksi.</string>
     <!-- Dialog title asking users for gallery storage permission -->
@@ -229,9 +229,9 @@
     <string name="BlockUnblockDialog_blocked_people_wont_be_able_to_call_you_or_send_you_messages">Estetyt henkilöt eivät voi soittaa sinulle tai lähettää sinulle viestejä.</string>
     <string name="BlockUnblockDialog_blocked_people_wont_be_able_to_send_you_messages">Estetyt henkilöt eivät voi lähettää sinulle viestejä.</string>
     <!-- Message shown on block dialog when blocking the Signal release notes recipient -->
-    <string name="BlockUnblockDialog_block_getting_signal_updates_and_news">Estä Tellomiin päivitysten ja uutisten vastaanotto.</string>
+    <string name="BlockUnblockDialog_block_getting_signal_updates_and_news">Estä Signalin päivitysten ja uutisten vastaanotto.</string>
     <!-- Message shown on unblock dialog when unblocking the Signal release notes recipient -->
-    <string name="BlockUnblockDialog_resume_getting_signal_updates_and_news">Jatka Tellomiin päivitysten ja uutisten vastaanottoa.</string>
+    <string name="BlockUnblockDialog_resume_getting_signal_updates_and_news">Jatka Signalin päivitysten ja uutisten vastaanottoa.</string>
     <string name="BlockUnblockDialog_unblock_s">Poistetaanko käyttäjän %1$s esto?</string>
     <string name="BlockUnblockDialog_block">Estä</string>
     <string name="BlockUnblockDialog_block_and_leave">Estä ja poistu</string>
@@ -282,7 +282,7 @@
     <!-- Title for an alert that shows at the bottom of the chat list letting people know that circumvention is no longer needed -->
     <string name="CensorshipCircumventionMegaphone_turn_off_censorship_circumvention">Kytketäänkö sensuurin kiertäminen pois päältä?</string>
     <!-- Body for an alert that shows at the bottom of the chat list letting people know that circumvention is no longer needed -->
-    <string name="CensorshipCircumventionMegaphone_you_can_now_connect_to_the_signal_service">Voit nyt yhdistää suoraan Tellomiin palvelimiin. Tämä parantaa käyttökokemusta.</string>
+    <string name="CensorshipCircumventionMegaphone_you_can_now_connect_to_the_signal_service">Voit nyt yhdistää suoraan Signalin palvelimiin. Tämä parantaa käyttökokemusta.</string>
     <!-- Action to prompt the user to disable circumvention since it is no longer needed -->
     <string name="CensorshipCircumventionMegaphone_turn_off">Poista käytöstä</string>
     <!-- Action to prompt the user to dismiss the alert at the bottom of the chat list -->
@@ -314,7 +314,7 @@
     <string name="CommunicationActions_cancel">Peruuta</string>
     <string name="CommunicationActions_call">Soita</string>
     <string name="CommunicationActions_insecure_call">Salaamaton puhelu</string>
-    <string name="CommunicationActions_carrier_charges_may_apply">Operaattori saattaa veloittaa palvelusta. Valitsemaasi numeroa ei ole rekisteröity Tellomiiin. Tämä puhelu tehdään matkapuhelinoperaattorisi kautta, ei internetin kautta.</string>
+    <string name="CommunicationActions_carrier_charges_may_apply">Operaattori saattaa veloittaa palvelusta. Valitsemaasi numeroa ei ole rekisteröity Signaliin. Tämä puhelu tehdään matkapuhelinoperaattorisi kautta, ei internetin kautta.</string>
     <string name="CommunicationActions_cant_join_call">Puheluun liittyminen ei onnistu</string>
     <string name="CommunicationActions_this_call_link_is_no_longer_valid">Tämä puhelulinkki ei ole enää kelvollinen.</string>
     <!-- Title on dialog when call link url cannot be parsed -->
@@ -326,7 +326,7 @@
     <!-- Title on dialog when quick restore qr code is scanned in system camera -->
     <string name="CommunicationActions__transfer_dialog_title">Siirretäänkö tili uudelle laitteelle?</string>
     <!-- Message on dialog when quick restore qr code is scanned in system camera -->
-    <string name="CommunicationActions__transfer_dialog_message">Jos haluat siirtää tilin uudelle laitteelle, napauta Jatka ja skannaa QR-koodi uudelleen Tellomiin kameralla. Skannaa vain QR-koodeja, jotka ovat suoraan Tellomiin lähettämiä.</string>
+    <string name="CommunicationActions__transfer_dialog_message">Jos haluat siirtää tilin uudelle laitteelle, napauta Jatka ja skannaa QR-koodi uudelleen Signalin kameralla. Skannaa vain QR-koodeja, jotka ovat suoraan Signalin lähettämiä.</string>
     <string name="CommunicationActions__dont_transfer">Älä siirrä</string>
 
     <!-- ConfirmIdentityDialog -->
@@ -386,7 +386,7 @@
     <string name="ConversationItem_send_paused">Lähetys keskeytetty</string>
     <string name="ConversationItem_click_to_approve_unencrypted_sms_dialog_title">Käytetäänkö salaamattomia tekstiviestejä?</string>
     <string name="ConversationItem_click_to_approve_unencrypted_mms_dialog_title">Käytetäänkö salaamattomia MMS-viestejä?</string>
-    <string name="ConversationItem_click_to_approve_unencrypted_dialog_message">Tätä viestiä <b>ei</b> voida salata, koska vastaanottaja ei enää käytä Tellomiia.\n\nLähetetäänkö salaamattomana?</string>
+    <string name="ConversationItem_click_to_approve_unencrypted_dialog_message">Tätä viestiä <b>ei</b> voida salata, koska vastaanottaja ei enää käytä Signalia.\n\nLähetetäänkö salaamattomana?</string>
     <string name="ConversationItem_unable_to_open_media">Median avaamiseen ei löytynyt sovellusta.</string>
     <string name="ConversationItem_copied_text">Kopioitu: %1$s</string>
     <string name="ConversationItem_from_s">SIM-kortilta %1$s</string>
@@ -456,7 +456,7 @@
     <string name="ConversationActivity_transport_signal">Tellomi-viesti</string>
     <!-- The content description for button to send a message in a conversation -->
     <string name="ConversationActivity_send_message_content_description">Lähetä viesti</string>
-    <string name="ConversationActivity_lets_switch_to_signal">Hei, vaihdetaan Tellomiiin %1$s</string>
+    <string name="ConversationActivity_lets_switch_to_signal">Hei, vaihdetaan Signaliin %1$s</string>
     <string name="ConversationActivity_specify_recipient">Valitse yhteystieto</string>
     <string name="ConversationActivity_attachment_exceeds_size_limits">Liitetiedosto ylittää lähettämäsi viestityypin kokorajoituksen.</string>
     <string name="ConversationActivity_unable_to_record_audio">Äänen tallennus ei onnistunut!</string>
@@ -477,14 +477,14 @@
     <!-- Dialog description that will explain the steps needed to give microphone permissions -->
     <string name="ConversationActivity_signal_to_send_audio_messages">Puheviestien lähettäminen:</string>
     <!-- Alert dialog description asking for microphone permission in order to send voice messages -->
-    <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">Myönnä Tellomiille mikrofonin käyttöoikeus lähettääksesi ääniviestejä.</string>
+    <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">Myönnä Signalille mikrofonin käyttöoikeus lähettääksesi ääniviestejä.</string>
     <!-- Toast text explaining Signal\'s need for microphone access -->
     <string name="ConversationActivity_signal_needs_microphone_access_voice_message">Tellomi tarvitsee mikrofonin käyttöoikeuden ääniviestin tallennusta varten.</string>
-    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Tellomi tarvitsee luvan käyttää mikrofonia äänitiedostojen lähettämistä varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Mikrofoni\".</string>
+    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Tellomi tarvitsee luvan käyttää mikrofonia äänitiedostojen lähettämistä varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Mikrofoni\".</string>
 
-    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Tellomi tarvitsee luvan käyttää laitteesi mikrofonia ja kameraa yhteystiedolle %1$s soittamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Mikrofoni\" ja \"Kamera\".</string>
-    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Kuvien ja videoiden ottaminen edellyttää, että annat Tellomiille kameran käyttöoikeuden.</string>
-    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Tellomi tarvitsee luvan käyttää laitteesi kameraa kuvien ja videoiden ottamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Kamera\".</string>
+    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Tellomi tarvitsee luvan käyttää laitteesi mikrofonia ja kameraa yhteystiedolle %1$s soittamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Mikrofoni\" ja \"Kamera\".</string>
+    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Kuvien ja videoiden ottaminen edellyttää, että annat Signalille kameran käyttöoikeuden.</string>
+    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Tellomi tarvitsee luvan käyttää laitteesi kameraa kuvien ja videoiden ottamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Kamera\".</string>
     <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Tellomi tarvitsee käyttöoikeuden kuvien ja videoiden ottamiseksi.</string>
     <string name="ConversationActivity_enable_the_microphone_permission_to_capture_videos_with_sound">Myönnä mikrofonin käyttöoikeus, jotta voit tallentaa videoita, joissa on ääni.</string>
     <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Tellomi tarvitsee mikrofonin käyttöoikeuden videoiden tallennusta varten.</string>
@@ -508,7 +508,7 @@
     <!-- Dialog description that will explain the steps needed to give microphone permissions for a voice call -->
     <string name="ConversationActivity__to_start_call">Puhelun aloittaminen:</string>
     <!-- Alert dialog description asking for microphone permission in order to start a voice call -->
-    <string name="ConversationActivity__to_call_signal_needs_access_to_your_microphone">Myönnä Tellomiille mikrofonin käyttöoikeus soittaaksesi puhelun.</string>
+    <string name="ConversationActivity__to_call_signal_needs_access_to_your_microphone">Myönnä Signalille mikrofonin käyttöoikeus soittaaksesi puhelun.</string>
     <!-- Toast text explaining Signal\'s need for microphone access for a voice call -->
     <string name="ConversationActivity_signal_needs_microphone_access_voice_call">Tellomi tarvitsee mikrofonin käyttöoikeuden puhelun aloittamiseksi.</string>
 
@@ -522,11 +522,11 @@
     <!-- Message shown when opening an MMS group conversation with SMS disabled and there are no exported messages -->
     <string name="ConversationActivity__sms_messaging_is_no_longer_supported">Tellomi ei enää tue tekstiviestejä.</string>
     <!-- Message shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Tellomi ei enää tue tekstiviestejä. Kutsu %1$s Tellomiiin, niin voit jatkaa keskustelua täällä.</string>
+    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Tellomi ei enää tue tekstiviestejä. Kutsu %1$s Signaliin, niin voit jatkaa keskustelua täällä.</string>
     <!-- Message shown when opening a conversation with an unregistered user who used to be on Signal -->
-    <string name="ConversationActivity__this_person_is_no_longer_using_signal">Tämä henkilö ei enää käytä Tellomiia. Kutsu hänet mukaan Tellomiiin, niin voit jatkaa keskustelua täällä.</string>
+    <string name="ConversationActivity__this_person_is_no_longer_using_signal">Tämä henkilö ei enää käytä Signalia. Kutsu hänet mukaan Signaliin, niin voit jatkaa keskustelua täällä.</string>
     <!-- Action button shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__invite_to_signal">Kutsu Tellomiiin</string>
+    <string name="ConversationActivity__invite_to_signal">Kutsu Signaliin</string>
     <!-- Snackbar message shown after dismissing the full screen sms export megaphone indicating we\'ll do it again soon -->
     <string name="ConversationActivity__you_will_be_reminded_again_soon">Saat pian uuden muistutuksen.</string>
     <!-- Toast message shown when trying to record a voice message during an ongoing call -->
@@ -613,7 +613,7 @@
     <string name="ConversationFragment_verify">Vahvista</string>
     <string name="ConversationFragment_not_now">Ei nyt</string>
     <string name="ConversationFragment_your_safety_number_with_s_changed">Turvanumerosi yhteystiedon %1$s kanssa on vaihtunut</string>
-    <string name="ConversationFragment_your_safety_number_with_s_changed_likey_because_they_reinstalled_signal">Turvanumerosi yhteystiedon %1$s kanssa on vaihtunut, luultavasti koska hän on uudelleenasentanut Tellomiin tai vaihtanut käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla Vahvista. Toiminto on valinnainen.</string>
+    <string name="ConversationFragment_your_safety_number_with_s_changed_likey_because_they_reinstalled_signal">Turvanumerosi yhteystiedon %1$s kanssa on vaihtunut, luultavasti koska hän on uudelleenasentanut Signalin tai vaihtanut käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla Vahvista. Toiminto on valinnainen.</string>
     <!-- Dialog title for block group link join requests -->
     <string name="ConversationFragment__block_request">Estetäänkö pyyntö?</string>
     <!-- Dialog message for block group link join requests -->
@@ -714,11 +714,11 @@
     <!-- Summary tip 0 title: Don\'t respond to chats from Signal -->
     <string name="SafetyTips_summary_tip0_title">Älä vastaa keskusteluihin, joiden lähettäjänä on Tellomi</string>
     <!-- Summary tip 0 message -->
-    <string name="SafetyTips_summary_tip0_message">Tellomi ei koskaan lähetä viestejä pyytääkseen rekisteröintikoodia, PIN-koodia tai palautusavainta. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Tellomiia.</string>
+    <string name="SafetyTips_summary_tip0_message">Tellomi ei koskaan lähetä viestejä pyytääkseen rekisteröintikoodia, PIN-koodia tai palautusavainta. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Signalia.</string>
     <!-- Summary tip 1 title: Review names and photos -->
     <string name="SafetyTips_summary_tip1_title">Tarkista nimet ja kuvat</string>
     <!-- Summary tip 1 message -->
-    <string name="SafetyTips_summary_tip1_message">Kiinnitä huomiota ilmoitukseen ”Nimeä ei ole vahvistettu”. Jokainen asettaa itse profiilinsa nimen ja kuvan Tellomiissa.</string>
+    <string name="SafetyTips_summary_tip1_message">Kiinnitä huomiota ilmoitukseen ”Nimeä ei ole vahvistettu”. Jokainen asettaa itse profiilinsa nimen ja kuvan Signalissa.</string>
     <!-- Summary tip 2 title: Look out for scams -->
     <string name="SafetyTips_summary_tip2_title">Varo huijauksia</string>
     <!-- Summary tip 2 message -->
@@ -727,11 +727,11 @@
     <!-- Detail tip 0 title -->
     <string name="SafetyTips_detail_tip0_title">Älä vastaa keskusteluihin, joiden lähettäjänä on Tellomi</string>
     <!-- Detail tip 0 message -->
-    <string name="SafetyTips_detail_tip0_message">Tellomi ei koskaan lähetä viestejä pyytääkseen rekisteröintikoodia, PIN-koodia tai palautusavainta. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Tellomiia tai Tellomi-tukea. Huijarit aloittavat väärennettyjä keskusteluja tarkoituksenaan kaapata tilisi.</string>
+    <string name="SafetyTips_detail_tip0_message">Tellomi ei koskaan lähetä viestejä pyytääkseen rekisteröintikoodia, PIN-koodia tai palautusavainta. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Signalia tai Tellomi-tukea. Huijarit aloittavat väärennettyjä keskusteluja tarkoituksenaan kaapata tilisi.</string>
     <!-- Detail tip 1 title -->
     <string name="SafetyTips_detail_tip1_title">Tarkista nimet ja kuvat</string>
     <!-- Detail tip 1 message -->
-    <string name="SafetyTips_detail_tip1_message">Kiinnitä huomiota ilmoitukseen ”Nimeä ei ole vahvistettu”. Jokainen asettaa Tellomiissa profiilinsa nimen ja kuvan itse. Jos et ole varma, keneltä uusi pyyntö on peräisin, on turvallisinta jättää se huomiotta.</string>
+    <string name="SafetyTips_detail_tip1_message">Kiinnitä huomiota ilmoitukseen ”Nimeä ei ole vahvistettu”. Jokainen asettaa Signalissa profiilinsa nimen ja kuvan itse. Jos et ole varma, keneltä uusi pyyntö on peräisin, on turvallisinta jättää se huomiotta.</string>
     <!-- Detail tip 2 title -->
     <string name="SafetyTips_detail_tip2_title">Epämääräisiä tai merkityksettömiä viestejä</string>
     <!-- Detail tip 2 message -->
@@ -750,7 +750,7 @@
     <string name="SafetyTips_detail_tip5_message">Varo yrityksiä tai virastoja, jotka ottavat sinuun yhteyttä. Viestit, joissa mainitaan esim. verovirasto tai logistiikkayhtiö, voivat olla roskapostia.</string>
 
     <!-- Bottom sheet text explaining that profile names are chosen by the account holder. Placeholder will be \'Profile names\' -->
-    <string name="ProfileNameBottomSheet__profile_names_on_signal">%1$s Tellomiissa on tilin haltijan valittavissa.</string>
+    <string name="ProfileNameBottomSheet__profile_names_on_signal">%1$s Signalissa on tilin haltijan valittavissa.</string>
     <!-- Bottom sheet text explaining that Signal can\'t verify names and photos -->
     <string name="ProfileNameBottomSheet__signal_cant_verify">Tellomi ei voi vahvistaa nimien tai kuvien oikeellisuutta</string>
     <!-- Bottom sheet text explaining that Signal will never contact you for registration code, PIN, or recovery key -->
@@ -897,9 +897,9 @@
     <!-- Toolbar title for this screen -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Kuka voi löytää minut puhelinnumeron avulla?</string>
     <!-- Description for radio item stating anyone can see your phone number -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Kuka tahansa, jolla on puhelinnumerosi, näkee, että olet Tellomiissa, ja voi aloittaa keskustelut kanssasi.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Kuka tahansa, jolla on puhelinnumerosi, näkee, että olet Signalissa, ja voi aloittaa keskustelut kanssasi.</string>
     <!-- Description for radio item stating no one will be able to see your phone number -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Kukaan ei näe, että olet Tellomiissa, ellet lähetä heille viestiä tai keskustele heidän kanssaan.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Kukaan ei näe, että olet Signalissa, ellet lähetä heille viestiä tai keskustele heidän kanssaan.</string>
 
     <!-- ChooseBackupFragment -->
     <string name="ChooseBackupFragment__restore_from_backup">Palautetaanko varmuuskopiosta?</string>
@@ -985,7 +985,7 @@
     <string name="BackupsPreferenceFragment__d_so_far">%1$d tähän mennessä…</string>
     <!-- Show percentage of completion of backup -->
     <string name="BackupsPreferenceFragment__s_so_far">%1$s%% tähän mennessä…</string>
-    <string name="BackupsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa varmuuskopioiden luomista varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
+    <string name="BackupsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa varmuuskopioiden luomista varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
     <!-- Title of dialog shown when picking the time to perform a chat backup -->
     <string name="BackupsPreferenceFragment__set_backup_time">Aseta varmuuskopiointiaika</string>
 
@@ -1066,7 +1066,7 @@
 
     <!-- DecryptionFailedDialog -->
     <string name="DecryptionFailedDialog_chat_session_refreshed">Keskustelu on päivitetty</string>
-    <string name="DecryptionFailedDialog_signal_uses_end_to_end_encryption">Tellomiin sisältö salataan päästä päähän. Tästä syystä keskustelu täytyy joskus päivittää. Tämä ei vaikuta tietoturvaan. Tämän yhteyshenkilön viimeisin viesti ei välttämättä näy. Voit pyytää häntä lähettämään sen uudelleen.</string>
+    <string name="DecryptionFailedDialog_signal_uses_end_to_end_encryption">Signalin sisältö salataan päästä päähän. Tästä syystä keskustelu täytyy joskus päivittää. Tämä ei vaikuta tietoturvaan. Tämän yhteyshenkilön viimeisin viesti ei välttämättä näy. Voit pyytää häntä lähettämään sen uudelleen.</string>
 
     <!-- LinkDeviceFragment -->
     <!-- Description for how Signal will work with a linked device (eg desktop, iPad) -->
@@ -1080,7 +1080,7 @@
     <!-- Bottom sheet description explaining that messages on linked devices are private -->
     <string name="LinkDeviceFragment__all_messaging_is_private">Kaikki viestit yhdistetyillä laitteilla ovat yksityisiä</string>
     <!-- Bottom sheet description explaining that future messages on linked devices will be in sync with your phone but previous messages will not appear -->
-    <string name="LinkDeviceFragment__signal_messages_are_synchronized">Tellomiin viestit synkronoidaan matkapuhelimesi Tellomi-sovelluksen kanssa, kun laite on yhdistetty. Aiempi viestihistoriasi ei tule näkyviin.</string>
+    <string name="LinkDeviceFragment__signal_messages_are_synchronized">Signalin viestit synkronoidaan matkapuhelimesi Tellomi-sovelluksen kanssa, kun laite on yhdistetty. Aiempi viestihistoriasi ei tule näkyviin.</string>
     <!-- Bottom sheet description explaining that for non-desktop/iPad devices, they should go to %s to download Signal where %s is Signal\'s website -->
     <string name="LinkDeviceFragment__on_other_device_visit_signal">Asenna Tellomi käymällä yhdistettävällä laitteella osoitteessa %1$s</string>
   <!-- Removed by excludeNonTranslatables <string name="LinkDeviceFragment__signal_download_url" translatable="false">signal.org/download</string> -->
@@ -1107,7 +1107,7 @@
     <!-- Title on bottom sheet explaining our usage of biometrics to link a device -->
     <string name="LinkDeviceFragment__before_linking">Varmista henkilöllisyytesi ennen laitteen yhdistämistä</string>
     <!-- Body of bottom sheet explaining that users should use their device pin or biometrics and not their Signal pin -->
-    <string name="LinkDeviceFragment__tap_continue_and_enter_phone">Napauta Jatka ja vahvista puhelimen lukituskoodilla. Älä anna Tellomiin PIN-koodia.</string>
+    <string name="LinkDeviceFragment__tap_continue_and_enter_phone">Napauta Jatka ja vahvista puhelimen lukituskoodilla. Älä anna Signalin PIN-koodia.</string>
     <!-- Button that dismisses the bottom sheet -->
     <string name="LinkDeviceFragment__continue">Jatka</string>
     <!-- Option on button to contact support -->
@@ -1183,7 +1183,7 @@
     <!-- Bottom sheet title telling users to complete the linking process on the other device  -->
     <string name="AddLinkDeviceFragment__finish_linking_on_other_device">Viimeistele yhdistäminen toisella laitteellasi</string>
     <!-- Bottom sheet description telling users to complete the linking process -->
-    <string name="AddLinkDeviceFragment__finish_linking_signal">Viimeistele Tellomiin yhdistäminen toisella laitteellasi.</string>
+    <string name="AddLinkDeviceFragment__finish_linking_signal">Viimeistele Signalin yhdistäminen toisella laitteellasi.</string>
     <!-- Title of dialog when the QR code being scanned is invalid -->
     <string name="AddLinkDeviceFragment__linking_device_failed">Laitteen yhdistäminen epäonnistui</string>
     <!-- Text shown in a dialog when the QR code being scanned is invalid -->
@@ -1239,7 +1239,7 @@
     <string name="ExpiredBuildReminder_update_now">Päivitä nyt</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->
-    <string name="DeprecatedSdkBanner_body">Tellomi ei enää toimi tässä laitteessa. Jos haluat käyttää Tellomiia uudelleen, päivitä laite uudempaan Android-versioon tai vaihda uudempaan laitteeseen.</string>
+    <string name="DeprecatedSdkBanner_body">Tellomi ei enää toimi tässä laitteessa. Jos haluat käyttää Signalia uudelleen, päivitä laite uudempaan Android-versioon tai vaihda uudempaan laitteeseen.</string>
 
     <!-- Title of notification telling users to update Signal -->
     <string name="DeprecatedNotificationJob_update_signal">Päivitä Tellomi</string>
@@ -1398,12 +1398,12 @@
     <!-- Title for dialog asking user to submit logs for debugging slow notification issues -->
     <string name="PromptBatterySaverBottomSheet__title">Akun käytön optimointi voi aiheuttaa viiveitä ilmoituksissa</string>
     <!-- Message explaining that battery saver may delay notifications -->
-    <string name="PromptBatterySaverBottomSheet__message">Voit poistaa akun käytön optimoinnin käytöstä Tellomiin osalta varmistaaksesi, etteivät viesti-ilmoitukset viivästy.</string>
+    <string name="PromptBatterySaverBottomSheet__message">Voit poistaa akun käytön optimoinnin käytöstä Signalin osalta varmistaaksesi, etteivät viesti-ilmoitukset viivästy.</string>
 
     <!-- Title in bottom sheet that states that notifications for this device could be delayed -->
     <string name="DeviceSpecificNotificationBottomSheet__notifications_may_be_delayed">Akun käytön optimointi voi aiheuttaa viiveitä ilmoituksissa</string>
     <!-- Message in bottom sheet prompting users to fix potential issues by disabling battery optimizations -->
-    <string name="DeviceSpecificNotificationBottomSheet__disable_battery_optimizations">Voit poistaa akun käytön optimoinnin käytöstä Tellomiin osalta varmistaaksesi, etteivät viesti-ilmoitukset viivästy. Napauta Jatka nähdäksesi laitekohtaiset ohjeet.</string>
+    <string name="DeviceSpecificNotificationBottomSheet__disable_battery_optimizations">Voit poistaa akun käytön optimoinnin käytöstä Signalin osalta varmistaaksesi, etteivät viesti-ilmoitukset viivästy. Napauta Jatka nähdäksesi laitekohtaiset ohjeet.</string>
     <!-- Button to dismiss notification help prompt -->
     <string name="DeviceSpecificNotificationBottomSheet__no_thanks">Ei kiitos</string>
     <!-- Button to continue and go to Signal support website -->
@@ -1489,7 +1489,7 @@
     <!-- Info message shown in the middle of the screen, displayed when adding group details to an MMS Group -->
     <string name="AddGroupDetailsFragment__youve_selected_a_contact_that_doesnt_support">Valitsemasi yhteystieto ei tue Tellomi-ryhmiä, joten tämän ryhmän viestit lähetetään multimediaviesteinä. Mukautettujen multimediaviestiryhmien nimet ja kuvat näkyvät vain sinulle.</string>
     <!-- Info message shown in the middle of the screen, displayed when adding group details to an MMS Group after SMS Phase 0 -->
-    <string name="AddGroupDetailsFragment__youve_selected_a_contact_that_doesnt_support_signal_groups_mms_removal">Olet valinnut yhteystiedon, jonka laite ei tue Tellomiin ryhmäkeskusteluja. Tämä ryhmä tulee olemaan MMS-pohjainen. Multimediaviestiryhmien mukautetut nimet ja kuvat näkyvät vain sinulle. MMS-ryhmien tuki päättyy pian palvelun keskittyessä viestien salaukseen.</string>
+    <string name="AddGroupDetailsFragment__youve_selected_a_contact_that_doesnt_support_signal_groups_mms_removal">Olet valinnut yhteystiedon, jonka laite ei tue Signalin ryhmäkeskusteluja. Tämä ryhmä tulee olemaan MMS-pohjainen. Multimediaviestiryhmien mukautetut nimet ja kuvat näkyvät vain sinulle. MMS-ryhmien tuki päättyy pian palvelun keskittyessä viestien salaukseen.</string>
 
     <!-- ManageGroupActivity -->
     <string name="ManageGroupActivity_who_can_add_new_members">Kuka voi lisätä uusia jäseniä?</string>
@@ -1516,7 +1516,7 @@
     <string name="ManageGroupActivity_legacy_group_upgrade">Tämä on vanhan tyyppinen ryhmä. Käyttääksesi uusia ominaisuuksia, kuten @mainintoja ja ylläpitäjyyttä,</string>
     <string name="ManageGroupActivity_legacy_group_too_large">Tätä vanhan tyyppistä ryhmää ei voida päivittää uuden tyyppiseksi, koska se on liian suuri. Ryhmässä voi olla enintään %1$d jäsentä.</string>
     <string name="ManageGroupActivity_upgrade_this_group">päivitä tämä ryhmä.</string>
-    <string name="ManageGroupActivity_this_is_an_insecure_mms_group">Tämä on salaamaton multimediaviestiryhmä. Jos haluat keskustella yksityisesti, kutsu kontaktisi Tellomiiin.</string>
+    <string name="ManageGroupActivity_this_is_an_insecure_mms_group">Tämä on salaamaton multimediaviestiryhmä. Jos haluat keskustella yksityisesti, kutsu kontaktisi Signaliin.</string>
     <string name="ManageGroupActivity_invite_now">Kutsu nyt</string>
     <string name="ManageGroupActivity_more">lisää</string>
     <string name="ManageGroupActivity_add_group_description">Lisää ryhmän kuvaus…</string>
@@ -1575,7 +1575,7 @@
     <!-- Dialog title -->
     <string name="RestoreActivity__no_longer_registered_title">Tämä laite ei ole enää rekisteröity</string>
     <!-- Dialog message -->
-    <string name="RestoreActivity__no_longer_registered_message">Tämä johtuu todennäköisesti siitä, että olet rekisteröinyt puhelinnumerosi Tellomiiin toisella laitteella.</string>
+    <string name="RestoreActivity__no_longer_registered_message">Tämä johtuu todennäköisesti siitä, että olet rekisteröinyt puhelinnumerosi Signaliin toisella laitteella.</string>
 
     <!-- ManageProfileFragment -->
     <!-- Explanation text about usernames etc displayed underneath buttons to view and edit username etc -->
@@ -1695,7 +1695,7 @@
 
     <!-- GroupJoinUpdateRequiredBottomSheetDialogFragment -->
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal_to_use_group_links">Päivitä Tellomi käyttääksesi ryhmälinkkejä</string>
-    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">Käyttämäsi versio Tellomiista ei tue ryhmälinkkiä. Päivitä viimeisimpään versioon liittyäksesi tähän ryhmään linkin kautta.</string>
+    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">Käyttämäsi versio Signalista ei tue ryhmälinkkiä. Päivitä viimeisimpään versioon liittyäksesi tähän ryhmään linkin kautta.</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Päivitä Tellomi</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_group_link_is_not_valid">Ryhmälinkki ei ole kelvollinen</string>
 
@@ -1744,13 +1744,13 @@
     <string name="InviteActivity_cancel">Peruuta</string>
     <string name="InviteActivity_sending">Lähetetään…</string>
     <string name="InviteActivity_invitations_sent">Kutsut lähetetty!</string>
-    <string name="InviteActivity_invite_to_signal">Kutsu Tellomiiin</string>
+    <string name="InviteActivity_invite_to_signal">Kutsu Signaliin</string>
     <string name="InviteActivity_send_sms">Lähetä SMS (%1$d)</string>
     <plurals name="InviteActivity_send_sms_invites">
         <item quantity="one">Lähetetäänkö %1$d tekstiviestikutsu?</item>
         <item quantity="other">Lähetetäänkö %1$d tekstiviestikutsua?</item>
     </plurals>
-    <string name="InviteActivity_lets_switch_to_signal">Hei, vaihdetaan Tellomiiin: %1$s</string>
+    <string name="InviteActivity_lets_switch_to_signal">Hei, vaihdetaan Signaliin: %1$s</string>
     <!-- Toast shown when Signal is unable to find an external app to share the Invite text string to -->
     <string name="InviteActivity_no_app_to_share_to">Sinulla ole yhtään sovellusta, joihin voi jakaa sisältöä.</string>
 
@@ -1827,7 +1827,7 @@
 
     <!-- Megaphones -->
     <string name="Megaphones_remind_me_later">Muistuta minua myöhemmin</string>
-    <string name="Megaphones_verify_your_signal_pin">Varmenna Tellomiin tunnusluku</string>
+    <string name="Megaphones_verify_your_signal_pin">Varmenna Signalin tunnusluku</string>
     <string name="Megaphones_well_occasionally_ask_you_to_verify_your_pin">Tulemme toisinaan pyytämään sinua varmentamaan tunnuslukusi, jotta muistat sen.</string>
     <string name="Megaphones_verify_pin">Varmenna tunnusluku</string>
     <string name="Megaphones_get_started">Aloita</string>
@@ -1860,8 +1860,8 @@
     <!-- NotificationBarManager -->
     <string name="NotificationBarManager__establishing_signal_call">Muodostetaan Tellomi-puhelua</string>
     <!-- Temporary notification shown when starting the calling service -->
-    <string name="NotificationBarManager__starting_signal_call_service">Käynnistetään Tellomiin puhelupalvelu</string>
-    <string name="NotificationBarManager__stopping_signal_call_service">Pysäytetään Tellomiin puhelupalvelua</string>
+    <string name="NotificationBarManager__starting_signal_call_service">Käynnistetään Signalin puhelupalvelu</string>
+    <string name="NotificationBarManager__stopping_signal_call_service">Pysäytetään Signalin puhelupalvelua</string>
     <string name="NotificationBarManager__cancel_call">Peru puhelu</string>
 
     <!-- NotificationsMegaphone -->
@@ -1884,7 +1884,7 @@
 
     <!-- MessageRecord -->
     <string name="MessageRecord_unknown">Tuntematon</string>
-    <string name="MessageRecord_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Vastaanotettu viesti on salattu Tellomiin vanhalla versiolla, jota ei enää tueta. Pyydä lähettäjää päivittämään uusimpaan versioon ja lähettämään viesti uudelleen.</string>
+    <string name="MessageRecord_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Vastaanotettu viesti on salattu Signalin vanhalla versiolla, jota ei enää tueta. Pyydä lähettäjää päivittämään uusimpaan versioon ja lähettämään viesti uudelleen.</string>
     <string name="MessageRecord_left_group">Olet poistunut ryhmästä.</string>
     <string name="MessageRecord_you_updated_group">Päivitit ryhmää.</string>
     <string name="MessageRecord_the_group_was_updated">Ryhmä päivitettiin.</string>
@@ -1921,7 +1921,7 @@
     <!-- Call update formatter string to place the update message next to a time stamp. e.g., \'Incoming voice call · 11:11am\' -->
     <string name="MessageRecord_call_message_with_date">%1$s · %2$s</string>
     <string name="MessageRecord_s_updated_group">%1$s päivitti ryhmää.</string>
-    <string name="MessageRecord_s_joined_signal">%1$s käyttää Tellomiia!</string>
+    <string name="MessageRecord_s_joined_signal">%1$s käyttää Signalia!</string>
     <string name="MessageRecord_you_disabled_disappearing_messages">Asetit katoavat viestit pois päältä.</string>
     <string name="MessageRecord_s_disabled_disappearing_messages">%1$s asetti katoavat viestit pois päältä.</string>
     <string name="MessageRecord_you_set_disappearing_message_time_to_s">Asetit viestien katoamisajaksi %1$s.</string>
@@ -2117,7 +2117,7 @@
     <string name="MessageRecord_a_message_from_s_couldnt_be_delivered">Viestiä lähettäjältä %1$s ei voitu toimittaa</string>
     <string name="MessageRecord_s_changed_their_phone_number">%1$s vaihtoi puhelinnumeroaan.</string>
     <!-- Update item message shown in the release channel when someone is already a sustainer so we ask them if they want to boost. -->
-    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Pidätkö tästä uudesta ominaisuudesta? Tue Tellomiia kertalahjoituksella.</string>
+    <string name="MessageRecord_like_this_new_feature_help_support_signal_with_a_one_time_donation">Pidätkö tästä uudesta ominaisuudesta? Tue Signalia kertalahjoituksella.</string>
     <!-- Update item message shown when we merge two threads together. First placeholder is a name, second placeholder is a phone number. -->
     <string name="MessageRecord_your_message_history_with_s_and_their_number_s_has_been_merged">Viestihistoriasi yhteystiedon %1$s kanssa ja numero %2$s on yhdistetty.</string>
     <!-- Update item message shown when we merge two threads together and we don\'t know the phone number of the other thread. The placeholder is a person\'s name. -->
@@ -2198,9 +2198,9 @@
     </plurals>
 
     <!-- In-conversation update message to indicate that the current contact is sms only and will need to migrate to signal to continue the conversation in signal. -->
-    <string name="MessageRecord__you_will_no_longer_be_able_to_send_sms_messages_from_signal_soon">Pian et voi enää lähettää tekstiviestejä Tellomiista. Kutsu %1$s Tellomiiin, niin voit jatkaa keskustelua täällä.</string>
+    <string name="MessageRecord__you_will_no_longer_be_able_to_send_sms_messages_from_signal_soon">Pian et voi enää lähettää tekstiviestejä Signalista. Kutsu %1$s Signaliin, niin voit jatkaa keskustelua täällä.</string>
     <!-- In-conversation update message to indicate that the current contact is sms only and will need to migrate to signal to continue the conversation in signal. -->
-    <string name="MessageRecord__you_can_no_longer_send_sms_messages_in_signal">Et voi enää lähettää tekstiviestejä Tellomiissa. Kutsu %1$s Tellomiiin, niin voit jatkaa keskustelua täällä.</string>
+    <string name="MessageRecord__you_can_no_longer_send_sms_messages_in_signal">Et voi enää lähettää tekstiviestejä Signalissa. Kutsu %1$s Signaliin, niin voit jatkaa keskustelua täällä.</string>
     <!-- Body for quote when message being quoted is an in-app payment message -->
     <string name="MessageRecord__payment_s">Maksu: %1$s</string>
     <!-- Body for quote when message being quoted is an in-app payment message tombstone without an amount -->
@@ -2308,7 +2308,7 @@
     <!-- Alert dialog title to accept a message request to join a group -->
     <string name="MessageRequestBottomView_join_group">Liitytäänkö ryhmään?</string>
     <!-- Alert dialog body to review the message request for a group carefully -->
-    <string name="MessageRequestBottomView_review_requests_carefully_groups">Tarkista pyynnöt huolellisesti. Ryhmän nimet Tellomiissa ovat tilin haltijan valittavissa eikä niitä vahvisteta.</string>
+    <string name="MessageRequestBottomView_review_requests_carefully_groups">Tarkista pyynnöt huolellisesti. Ryhmän nimet Signalissa ovat tilin haltijan valittavissa eikä niitä vahvisteta.</string>
     <!-- Button text to join a group -->
     <string name="MessageRequestBottomView_join">Liity</string>
 
@@ -2335,9 +2335,9 @@
     <string name="DeviceProvisioningActivity_sorry_you_have_too_many_devices_linked_already">Valitettavasti sinulla on jo liian monta laitetta yhdistettynä. Kokeile poistaa joitakin.</string>
     <string name="DeviceActivity_sorry_this_is_not_a_valid_device_link_qr_code">Valitettavasti tämä ei ole laitteen yhdistämiseksi tarkoitettu QR-koodi.</string>
     <string name="DeviceProvisioningActivity_link_a_signal_device">Yhdistetäänkö Tellomi-laite?</string>
-    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">Jos haluat yhdistää tietokoneen tai iPadin tähän Tellomi-tiliin, siirry kohtaan Yhdistetyt laitteet, napauta Yhdistä uusi laite ja skannaa QR-koodi uudelleen. Skannaa vain QR-koodeja, jotka tulevat suoraan Tellomiista.</string>
+    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">Jos haluat yhdistää tietokoneen tai iPadin tähän Tellomi-tiliin, siirry kohtaan Yhdistetyt laitteet, napauta Yhdistä uusi laite ja skannaa QR-koodi uudelleen. Skannaa vain QR-koodeja, jotka tulevat suoraan Signalista.</string>
 
-    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Tellomi tarvitsee luvan käyttää kameraa QR-koodien skannaamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Kamera\".</string>
+    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Tellomi tarvitsee luvan käyttää kameraa QR-koodien skannaamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Kamera\".</string>
     <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">QR-koodin skannaus ei onnistu ilman kameran käyttöoikeutta.</string>
 
     <!-- OutdatedBuildReminder -->
@@ -2353,7 +2353,7 @@
     <string name="PassphrasePromptActivity_watermark_content_description">Tellomi-kuvake</string>
     <string name="PassphrasePromptActivity_ok_button_content_description">Syötä salalause</string>
     <string name="PassphrasePromptActivity_invalid_passphrase_exclamation">Salalause ei kelpaa!</string>
-    <string name="PassphrasePromptActivity_unlock_signal">Avaa Tellomiin lukitus</string>
+    <string name="PassphrasePromptActivity_unlock_signal">Avaa Signalin lukitus</string>
     <!-- This is the subject line for the email that is sent to support -->
     <string name="PassphrasePromptActivity_signal_android_lock_screen">Tellomi Android - Lukitusnäyttö</string>
 
@@ -2381,7 +2381,7 @@
         <item quantity="one">Sinulla on %1$d yritys jäljellä. Jos yritykset loppuvat, voit luoda uuden PIN-koodin. Voit rekisteröidä ja käyttää tiliäsi, mutta menetät tallennetut asetukset, kuten profiilitietosi.</item>
         <item quantity="other">Sinulla on %1$d yritystä jäljellä. Jos yritykset loppuvat, voit luoda uuden tunnusluvun. Voit rekisteröidä ja käyttää tiliäsi, mutta menetät tallennetut asetukset, kuten profiilitietosi.</item>
     </plurals>
-    <string name="PinRestoreEntryFragment_signal_registration_need_help_with_pin">Tellomiin rekisteröinti - Tarvitsen apua tunnusluvun kanssa Androidilla</string>
+    <string name="PinRestoreEntryFragment_signal_registration_need_help_with_pin">Signalin rekisteröinti - Tarvitsen apua tunnusluvun kanssa Androidilla</string>
 
     <!-- PinRestoreLockedFragment -->
     <string name="PinRestoreLockedFragment_create_your_pin">Valitse tunnusluku</string>
@@ -2392,7 +2392,7 @@
     <!-- Dialog button text indicating user wishes to send an sms code isntead of skipping it -->
     <string name="ReRegisterWithPinFragment_send_sms_code">Lähetä tekstiviestikoodi</string>
     <!-- Email subject used when user contacts support about an issue with the reregister flow. -->
-    <string name="ReRegisterWithPinFragment_support_email_subject">Tellomiin rekisteröinti – Tarvitsen apua PIN-koodin uudelleenrekisteröintiin Android-laitteella</string>
+    <string name="ReRegisterWithPinFragment_support_email_subject">Signalin rekisteröinti – Tarvitsen apua PIN-koodin uudelleenrekisteröintiin Android-laitteella</string>
     <!-- Dialog message shown in reregister flow when tapping a informational button to to learn about pins or contact support for help -->
     <string name="ReRegisterWithPinFragment_need_help_local">Luomasi PIN-koodi on vähintään %1$d-numeroinen koodi, ja se voi olla numeerinen tai aakkosnumeerinen.\n\nJos olet unohtanut PIN-koodin, voit luoda uuden.</string>
     <!-- Dialog message shown in reregister flow when user requests to skip this flow and return to the normal flow -->
@@ -2402,12 +2402,12 @@
 
     <!-- PinOptOutDialog -->
     <string name="PinOptOutDialog_warning">Varoitus</string>
-    <string name="PinOptOutDialog_if_you_disable_the_pin_you_will_lose_all_data">Jos poistat PIN-koodin käytöstä, menetät kaikki tietosi rekisteröityessäsi Tellomiiin uudelleen, ellet varmuuskopioi ja palauta tietojasi manuaalisesti. Et voi myöskään ottaa rekisteröintiestoa käyttöön, jos PIN-koodi on poistettu käytöstä.</string>
+    <string name="PinOptOutDialog_if_you_disable_the_pin_you_will_lose_all_data">Jos poistat PIN-koodin käytöstä, menetät kaikki tietosi rekisteröityessäsi Signaliin uudelleen, ellet varmuuskopioi ja palauta tietojasi manuaalisesti. Et voi myöskään ottaa rekisteröintiestoa käyttöön, jos PIN-koodi on poistettu käytöstä.</string>
     <string name="PinOptOutDialog_disable_pin">Poista tunnusluku käytöstä</string>
 
     <!-- RatingManager -->
     <string name="RatingManager_rate_this_app">Arvostele tämä sovellus</string>
-    <string name="RatingManager_if_you_enjoy_using_this_app_please_take_a_moment">Jos pidät Tellomiista, voit auttaa meitä arvostelemalla sen.</string>
+    <string name="RatingManager_if_you_enjoy_using_this_app_please_take_a_moment">Jos pidät Signalista, voit auttaa meitä arvostelemalla sen.</string>
     <string name="RatingManager_rate_now">Arvostele nyt!</string>
     <string name="RatingManager_no_thanks">Ei kiitos</string>
     <string name="RatingManager_later">Myöhemmin</string>
@@ -2424,7 +2424,7 @@
 
     <!-- RecaptchaRequiredBottomSheetFragment -->
     <string name="RecaptchaRequiredBottomSheetFragment_verify_to_continue_messaging">Vahvista jatkaaksesi viestintää</string>
-    <string name="RecaptchaRequiredBottomSheetFragment_to_help_prevent_spam_on_signal">Auta vähentämään roskapostia Tellomiissa ja suorita vahvistaminen.</string>
+    <string name="RecaptchaRequiredBottomSheetFragment_to_help_prevent_spam_on_signal">Auta vähentämään roskapostia Signalissa ja suorita vahvistaminen.</string>
     <string name="RecaptchaRequiredBottomSheetFragment_after_verifying_you_can_continue_messaging">Voit jatkaa viestintää vahvistamisen jälkeen. Kaikki odottavat viestit lähetetään automaattisesti.</string>
 
     <!-- Recipient -->
@@ -2531,11 +2531,11 @@
     <!-- Dialog title asking users for camera permission -->
     <string name="WebRtcCallActivity__allow_access_camera">Anna kameran käyttöoikeus</string>
     <!-- Dialog description explaining why camera and microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__to_start_call_camera_microphone">Myönnä Tellomiille kameran ja mikrofonin käyttöoikeus puhelun aloittamiseksi tai siihen liittymiseksi.</string>
+    <string name="WebRtcCallActivity__to_start_call_camera_microphone">Myönnä Signalille kameran ja mikrofonin käyttöoikeus puhelun aloittamiseksi tai siihen liittymiseksi.</string>
     <!-- Dialog description explaining why microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__to_start_call_microphone">Myönnä Tellomiille mikrofonin käyttöoikeus puhelun aloittamiseksi tai siihen liittymiseksi.</string>
+    <string name="WebRtcCallActivity__to_start_call_microphone">Myönnä Signalille mikrofonin käyttöoikeus puhelun aloittamiseksi tai siihen liittymiseksi.</string>
     <!-- Dialog description explaining why camera permissions are needed to enable a user\'s video in a call -->
-    <string name="WebRtcCallActivity__to_enable_video_allow_camera">Videon käyttöönotto edellyttää, että annat Tellomiille kameran käyttöoikeuden.</string>
+    <string name="WebRtcCallActivity__to_enable_video_allow_camera">Videon käyttöönotto edellyttää, että annat Signalille kameran käyttöoikeuden.</string>
     <!-- Toast describing why microphone permissions are needed to start or join a call -->
     <string name="WebRtcCallActivity__signal_needs_microphone_start_call">Tellomi tarvitsee mikrofonin käyttöoikeuden puhelun aloittamiseksi tai siihen liittymiseksi.</string>
     <!-- Toast describing why camera permissions are needed to enable a video in a call -->
@@ -2827,12 +2827,12 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Saat puhelun, jolla voit vahvistaa tämän puhelinnumeron.</string>
     <string name="RegistrationActivity_edit_number">Muokkaa numeroa</string>
     <string name="RegistrationActivity_missing_google_play_services">Google Play -palvelut puuttuvat</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Google Play -palvelut puuttuvat tästä laitteesta. Tellomi toimii myös ilman niitä, mutta kaikki ominaisuudet eivät välttämättä toimi yhtä hyvin.\n\nJos et ole edistyneempi käyttäjä, et käytä epävirallista Android-versiota tai tämä viesti on mielestäsi aiheeton, pyydä apua osoitteesta support@tellomi.app.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Google Play -palvelut puuttuvat tästä laitteesta. Signal toimii myös ilman niitä, mutta kaikki ominaisuudet eivät välttämättä toimi yhtä hyvin.\n\nJos et ole edistyneempi käyttäjä, et käytä epävirallista Android-versiota tai tämä viesti on mielestäsi aiheeton, pyydä apua osoitteesta support@signal.org.</string>
     <string name="RegistrationActivity_i_understand">Selvä</string>
     <string name="RegistrationActivity_play_services_error">Play-palvelujen virhe</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play -palveluita päivitetään tai ne eivät ole käytettävissä. Yritä myöhemmin uudelleen.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi tarvitsee yhteystietojen ja median käyttöoikeudet, jotta voit olla yhteydessä kavereihisi ja lähettää viestejä. Yhteystietosi lähetetään käyttäen Tellomiin yksityistä yhteystietohakua ja ne on suojattu päästä päähän -salauksella. Ne eivät missään vaiheessa paljastu Tellomi-palvelulle.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi tarvitsee yhteystietojen käyttöoikeuden, jotta voit olla yhteydessä kavereihisi. Yhteystietosi lähetetään käyttäen Tellomiin yksityistä yhteystietohakua ja ne on suojattu päästä päähän -salauksella. Ne eivät missään vaiheessa paljastu Tellomi-palvelulle.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi tarvitsee yhteystietojen ja median käyttöoikeudet, jotta voit olla yhteydessä kavereihisi ja lähettää viestejä. Yhteystietosi lähetetään käyttäen Signalin yksityistä yhteystietohakua ja ne on suojattu päästä päähän -salauksella. Ne eivät missään vaiheessa paljastu Tellomi-palvelulle.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi tarvitsee yhteystietojen käyttöoikeuden, jotta voit olla yhteydessä kavereihisi. Yhteystietosi lähetetään käyttäen Signalin yksityistä yhteystietohakua ja ne on suojattu päästä päähän -salauksella. Ne eivät missään vaiheessa paljastu Tellomi-palvelulle.</string>
     <string name="RegistrationActivity_rate_limited_to_service">Olet yrittänyt rekisteröidä tämän numeron liian monta kertaa. Yritä myöhemmin uudelleen.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Olet yrittänyt rekisteröidä tämän numeron liian monta kertaa. Yritä uudelleen, kun on kulunut %1$s.</string>
@@ -2912,13 +2912,13 @@
 
     <!-- SharedContactDetailsActivity -->
     <string name="SharedContactDetailsActivity_add_to_contacts">Lisää yhteystietoihin</string>
-    <string name="SharedContactDetailsActivity_invite_to_signal">Kutsu Tellomiiin</string>
+    <string name="SharedContactDetailsActivity_invite_to_signal">Kutsu Signaliin</string>
     <string name="SharedContactDetailsActivity_signal_message">Tellomi-viesti</string>
     <string name="SharedContactDetailsActivity_signal_call">Tellomi-puhelu</string>
 
     <!-- SharedContactView -->
     <string name="SharedContactView_add_to_contacts">Lisää yhteystietoihin</string>
-    <string name="SharedContactView_invite_to_signal">Kutsu Tellomiiin</string>
+    <string name="SharedContactView_invite_to_signal">Kutsu Signaliin</string>
     <string name="SharedContactView_message">Tellomi-viesti</string>
 
     <!-- SignalBottomActionBar -->
@@ -3111,7 +3111,7 @@
     <string name="ThreadRecord_you_activated_payments">Olet aktivoinut Tellomi-maksut</string>
     <!-- Displayed in the notification when the recipient can accept payments -->
     <string name="ThreadRecord_can_accept_payments">%1$s voi nyt hyväksyä maksuja</string>
-    <string name="ThreadRecord_s_is_on_signal">%1$s käyttää Tellomiia!</string>
+    <string name="ThreadRecord_s_is_on_signal">%1$s käyttää Signalia!</string>
     <string name="ThreadRecord_disappearing_messages_disabled">Katoavat viestit poistettu käytöstä</string>
     <string name="ThreadRecord_disappearing_message_time_updated_to_s">Katoavien viestien ajaksi asetettu %1$s</string>
     <string name="ThreadRecord_safety_number_changed">Turvanumero vaihtunut</string>
@@ -3154,10 +3154,10 @@
 
     <!-- ApkUpdateNotifications -->
     <string name="ApkUpdateNotifications_prompt_install_title">Tellomi-päivitys</string>
-    <string name="ApkUpdateNotifications_prompt_install_body">Uusi versio Tellomiista on saatavilla. Päivitä napauttamalla.</string>
-    <string name="ApkUpdateNotifications_failed_general_title">Tellomiin päivitys epäonnistui</string>
+    <string name="ApkUpdateNotifications_prompt_install_body">Uusi versio Signalista on saatavilla. Päivitä napauttamalla.</string>
+    <string name="ApkUpdateNotifications_failed_general_title">Signalin päivitys epäonnistui</string>
     <string name="ApkUpdateNotifications_failed_general_body">Yritämme myöhemmin uudelleen.</string>
-    <string name="ApkUpdateNotifications_auto_update_success_title">Tellomiin päivitys onnistui</string>
+    <string name="ApkUpdateNotifications_auto_update_success_title">Signalin päivitys onnistui</string>
     <string name="ApkUpdateNotifications_auto_update_success_body">Päivitettiin automaattisesti versioon %1$s.</string>
     <string name="ApkUpdateNotifications_manual_update_success_body">Päivitit versioon %1$s.</string>
 
@@ -3214,8 +3214,8 @@
     <string name="UsernameEditFragment_continue">Jatka</string>
 
     <plurals name="UserNotificationMigrationJob_d_contacts_are_on_signal">
-        <item quantity="one">Tellomiissa on %1$d kontakti!</item>
-        <item quantity="other">Tellomiissa on %1$d yhteystietoasi!</item>
+        <item quantity="one">Signalissa on %1$d kontakti!</item>
+        <item quantity="other">Signalissa on %1$d yhteystietoasi!</item>
     </plurals>
 
     <!-- UsernameShareBottomSheet -->
@@ -3223,13 +3223,13 @@
     <string name="UsernameShareBottomSheet__copy_or_share_a_username_link">Kopioi tai jaa käyttäjänimen linkki</string>
 
     <!-- VerifyIdentityActivity -->
-    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">Yhteystietosi käyttää uudempaa versiota Tellomiista. Sen QR-koodi ei toimi oman sovellusversiosi kanssa. Päivitä Tellomi uusimpaan versioon.</string>
+    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">Yhteystietosi käyttää uudempaa versiota Signalista. Sen QR-koodi ei toimi oman sovellusversiosi kanssa. Päivitä Tellomi uusimpaan versioon.</string>
     <string name="VerifyIdentityActivity_the_scanned_qr_code_is_not_a_correctly_formatted_safety_number">Skannaamasi QR-koodi ei ole kelvollinen turvanumerokoodi. Yritä skannata uudelleen.</string>
     <string name="VerifyIdentityActivity_share_safety_number_via">Jaa turvanumero…</string>
     <string name="VerifyIdentityActivity_our_signal_safety_number">Tellomi-turvanumeromme:</string>
     <string name="VerifyIdentityActivity_no_app_to_share_to">Sinulla ole yhtään sovellusta, joihin voi jakaa sisältöä.</string>
     <string name="VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard">Leikepöydältä ei löytynyt turvanumeroa, johon verrata</string>
-    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Tellomi tarvitsee luvan käyttää kameraa QR-koodien skannaamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla Sovelluksen käyttöoikeudet ja laittamalla päälle Kamera.</string>
+    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Tellomi tarvitsee luvan käyttää kameraa QR-koodien skannaamista varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla Sovelluksen käyttöoikeudet ja laittamalla päälle Kamera.</string>
     <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">QR-koodin skannaus ei onnistu ilman kameran käyttöoikeutta.</string>
     <string name="VerifyIdentityActivity_you_must_first_exchange_messages_in_order_to_view">Voit nähdä käyttäjän %1$s turvanumeron viestimällä hänen kanssaan.</string>
     <!-- Dialog message explaining to user they must exchange messages first to create a safety number -->
@@ -3272,7 +3272,7 @@
 
     <!-- KeyCachingService -->
     <string name="KeyCachingService_signal_passphrase_cached">Siirry takaisin sovellukseen koskettamalla tästä.</string>
-    <string name="KeyCachingService_passphrase_cached">Tellomiin lukitus on avattu</string>
+    <string name="KeyCachingService_passphrase_cached">Signalin lukitus on avattu</string>
     <string name="KeyCachingService_lock">Lukitse Tellomi</string>
 
     <!-- MediaPreviewActivity -->
@@ -3323,7 +3323,7 @@
     <string name="MessageNotifier_failed_to_deliver_message">Viestin lähetys ei onnistunut.</string>
     <string name="MessageNotifier_error_delivering_message">Virhe viestiä toimitettaessa.</string>
     <string name="MessageNotifier_message_delivery_paused">Viestin toimitus keskeytetty.</string>
-    <string name="MessageNotifier_verify_to_continue_messaging_on_signal">Vahvista jatkaaksesi viestintää Tellomiissa.</string>
+    <string name="MessageNotifier_verify_to_continue_messaging_on_signal">Vahvista jatkaaksesi viestintää Signalissa.</string>
     <string name="MessageNotifier_mark_all_as_read">Merkitse kaikki luetuiksi</string>
     <string name="MessageNotifier_mark_read">Luettu</string>
     <string name="MessageNotifier_turn_off_these_notifications">Poista nämä ilmoitukset käytöstä</string>
@@ -3347,7 +3347,7 @@
     <!-- Body of a notification when someone votes in a poll. First placeholder is the poll emoji, second placeholder is the name of the voter and third is the poll question -->
     <string name="MessageNotifier_s_voted_in_poll">%1$s %2$s äänesti kyselyssä ”%3$s”</string>
 
-    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">Poistetaanko Yhteystietosi liittyi Tellomiiin -ilmoitukset käytöstä? Voit ottaa ne uudelleen käyttöön avaamalla Tellomi &gt; Asetukset &gt; Ilmoitukset.</string>
+    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">Poistetaanko Yhteystietosi liittyi Signaliin -ilmoitukset käytöstä? Voit ottaa ne uudelleen käyttöön avaamalla Tellomi &gt; Asetukset &gt; Ilmoitukset.</string>
 
     <!-- TurnOnNotificationsBottomSheet -->
     <!-- Title for sheet explaining how to turn on app notifications -->
@@ -3375,7 +3375,7 @@
     <string name="NotificationChannel_group_chats">Keskustelut</string>
     <string name="NotificationChannel_missing_display_name">Tuntematon</string>
     <string name="NotificationChannel_voice_notes">Ääniviestit</string>
-    <string name="NotificationChannel_contact_joined_signal">Yhteystieto liittyi Tellomiiin</string>
+    <string name="NotificationChannel_contact_joined_signal">Yhteystieto liittyi Signaliin</string>
     <!-- Toast shown when there is no application available to open the settings -->
     <string name="NotificationChannels__no_activity_available_to_open_notification_channel_settings">Ilmoituskanavan asetuksen avaavaa toimintaa ei ole saatavana.</string>
     <!-- Notification channel name for showing persistent background connection on devices without push notifications -->
@@ -3427,7 +3427,7 @@
     </plurals>
 
     <!-- Message shown when the app requests permission to save media to the device storage, but that permission has been permanently denied by the user. -->
-    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa tallentaakseen sinne, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
+    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa tallentaakseen sinne, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
 
     <!-- Message explaining that it is not possible to save media to the device storage after the user denied the system save to storage permission. -->
     <string name="AttachmentSaver__unable_to_write_to_external_storage_without_permission">Tallennus ulkoiseen tallennustilaan ei onnistu ilman käyttöoikeutta.</string>
@@ -3435,11 +3435,11 @@
     <!-- Dialog title shown when attempting to save media that has been offloaded from the device by the storage optimization feature. -->
     <string name="AttachmentSaver__cant_save_media">Mediaa ei voi tallentaa</string>
     <!-- Dialog message explaining that media cannot be saved because it has been offloaded from the device by the storage optimization feature. -->
-    <string name="AttachmentSaver__media_offloaded_message">Mediasisältö on siirretty sivuun laitteelta, koska Tellomiin tallennustilan optimointi on päällä. Voit tallentaa kohteet yksittäin. Laittamalla Tellomiin tallennustilan optimoinnin pois päältä voit ladata kaiken median laitteellesi.</string>
+    <string name="AttachmentSaver__media_offloaded_message">Mediasisältö on siirretty sivuun laitteelta, koska Signalin tallennustilan optimointi on päällä. Voit tallentaa kohteet yksittäin. Laittamalla Signalin tallennustilan optimoinnin pois päältä voit ladata kaiken median laitteellesi.</string>
     <!-- Dialog title shown when attempting to save multiple media items, some of which have been offloaded from the device by the storage optimization feature. -->
     <string name="AttachmentSaver__cant_save_all_items">Kaikkia kohteita ei voi tallentaa</string>
     <!-- Dialog message explaining that some selected media cannot be saved because it has been offloaded from the device by the storage optimization feature. -->
-    <string name="AttachmentSaver__some_media_offloaded_message">Osa valitsemastasi mediasisällöstä on siirretty sivuun laitteelta, koska Tellomiin tallennustilan optimointi on päällä. Voit tallentaa kohteet yksittäin. Laittamalla Tellomiin tallennustilan optimoinnin pois päältä voit ladata kaiken median laitteellesi.</string>
+    <string name="AttachmentSaver__some_media_offloaded_message">Osa valitsemastasi mediasisällöstä on siirretty sivuun laitteelta, koska Signalin tallennustilan optimointi on päällä. Voit tallentaa kohteet yksittäin. Laittamalla Signalin tallennustilan optimoinnin pois päältä voit ladata kaiken median laitteellesi.</string>
     <!-- Button label in the offloaded media dialog that navigates to the storage settings screen. -->
     <string name="AttachmentSaver__view_storage_settings">Näytä tallennustilan asetukset</string>
 
@@ -3505,7 +3505,7 @@
 
     <!-- UnauthorizedReminder -->
     <!-- Message shown in a reminder banner when the user\'s device is no longer registered -->
-    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">Tämä laite ei ole enää rekisteröity. Todennäköisesti olet rekisteröinyt puhelinnumerosi Tellomiiin toisella laitteella.</string>
+    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">Tämä laite ei ole enää rekisteröity. Todennäköisesti olet rekisteröinyt puhelinnumerosi Signaliin toisella laitteella.</string>
     <!-- Action in reminder banner that will take user to re-register -->
     <string name="UnauthorizedReminder_reregister_action">Rekisteröi laite uudelleen</string>
     <!-- Message shown in a reminder banner when this linked device is no longer linked to a primary device -->
@@ -3514,18 +3514,18 @@
     <string name="UnauthorizedReminder_relink_action">Yhdistä laite uudelleen</string>
 
     <!-- Push notification when the app is forcibly logged out by the server. -->
-    <string name="LoggedOutNotification_you_have_been_logged_out">Olet kirjautunut ulos Tellomiista tällä laitteella.</string>
+    <string name="LoggedOutNotification_you_have_been_logged_out">Olet kirjautunut ulos Signalista tällä laitteella.</string>
 
     <!-- EnclaveFailureReminder -->
     <!-- Banner message to update app to use payments -->
-    <string name="EnclaveFailureReminder_update_signal">Maksut-toiminto edellyttää Tellomiin uusinta versiota. Saldosi ei ehkä ole ajan tasalla.</string>
+    <string name="EnclaveFailureReminder_update_signal">Maksut-toiminto edellyttää Signalin uusinta versiota. Saldosi ei ehkä ole ajan tasalla.</string>
     <!-- Banner button to update now -->
 
     <!-- WebRtcCallActivity -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">Jotta voit vastata puheluun, anna Tellomiille lupa käyttää mikrofonia.</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">Jotta voit vastata puheluun, anna Signalille lupa käyttää mikrofonia.</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">Anna Tellomiille mikrofonin ja kameran käyttöoikeus, jotta voit vastata videopuheluun.</string>
-    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Tellomi tarvitsee luvan käyttää mikrofonia ja kameraa puheluiden soittamista ja vastaanottamista varten, mutta nämä käyttöoikeudet ovat pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Mikrofoni\" ja \"Kamera\".</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">Anna Signalille mikrofonin ja kameran käyttöoikeus, jotta voit vastata videopuheluun.</string>
+    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Tellomi tarvitsee luvan käyttää mikrofonia ja kameraa puheluiden soittamista ja vastaanottamista varten, mutta nämä käyttöoikeudet ovat pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Mikrofoni\" ja \"Kamera\".</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">Vastattu yhdistetyllä laitteella.</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">Hylätty yhdistetyllä laitteella.</string>
     <string name="WebRtcCallActivity__busy_on_a_linked_device">Varattu yhdistetyllä laitteella.</string>
@@ -3573,14 +3573,14 @@
     <string name="change_passphrase_activity__repeat_new_passphrase">Toista uusi salalause</string>
 
     <!-- contact_selection_activity -->
-    <string name="contact_selection_activity__invite_to_signal">Kutsu Tellomiiin</string>
+    <string name="contact_selection_activity__invite_to_signal">Kutsu Signaliin</string>
     <string name="contact_selection_activity__new_group">Uusi ryhmä</string>
     <!-- Row item title for refreshing contacts -->
     <string name="contact_selection_activity__refresh_contacts">Päivitä yhteystiedot</string>
     <!-- Row item description for refreshing contacts -->
     <string name="contact_selection_activity__missing_someone">Puuttuuko joku? Kokeile päivittää</string>
     <!-- Row item title for finding people on Signal via your contacts -->
-    <string name="contact_selection_activity__find_people_you_know">Löydä tuntemiasi ihmisiä Tellomiista</string>
+    <string name="contact_selection_activity__find_people_you_know">Löydä tuntemiasi ihmisiä Signalista</string>
     <!-- Row item description asking users for access to their contacts to find people they know -->
     <string name="contact_selection_activity__allow_access_to_contacts">Salli yhteystietojesi käyttöoikeus</string>
     <!-- Row header title for more section -->
@@ -3599,10 +3599,10 @@
     <string name="SingleContactSelectionActivity_contact_photo">Yhteystiedon kuva</string>
 
     <!-- ContactSelectionListFragment-->
-    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Tellomi tarvitsee luvan käyttää laitteesi yhteystietoja voidakseen näyttää ne, mutta tämä käyttöoikeus on pysyvästi evätty Tellomiilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Yhteystiedot\".</string>
+    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Tellomi tarvitsee luvan käyttää laitteesi yhteystietoja voidakseen näyttää ne, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Yhteystiedot\".</string>
     <string name="ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection">Yhteystietojen haussa tapahtui virhe. Tarkista verkkoyhteytesi.</string>
     <string name="ContactSelectionListFragment_username_not_found">Käyttäjänimeä ei löydy</string>
-    <string name="ContactSelectionListFragment_s_is_not_a_signal_user">"%1$s ei käytä Tellomiia. Tarkista käyttäjänimi ja yritä uudelleen."</string>
+    <string name="ContactSelectionListFragment_s_is_not_a_signal_user">"%1$s ei käytä Signalia. Tarkista käyttäjänimi ja yritä uudelleen."</string>
     <string name="ContactSelectionListFragment_you_do_not_need_to_add_yourself_to_the_group">Sinun ei tarvitse lisätä itseäsi ryhmään</string>
     <string name="ContactSelectionListFragment_maximum_group_size_reached">Ryhmän enimmäiskoko saavutettu</string>
     <string name="ContactSelectionListFragment_signal_groups_can_have_a_maximum_of_s_members">Tellomi-ryhmissä voi olla enintään %1$s jäsentä.</string>
@@ -3619,7 +3619,7 @@
     <!-- Dialog title asking users for contact permission -->
     <string name="ContactSelectionListFragment_allow_access_contacts">Anna yhteystietojen käyttöoikeus</string>
     <!-- Dialog description that will explain the steps needed to give contact permissions -->
-    <string name="ContactSelectionListFragment_to_find_people">Näin löydät tuntemasi ihmiset Tellomiista:</string>
+    <string name="ContactSelectionListFragment_to_find_people">Näin löydät tuntemasi ihmiset Signalista:</string>
     <!-- Text on button prompting users to give Signal contact permissions -->
     <string name="ContactSelectionListFragment__allow_access">Myönnä käyttöoikeus</string>
     <!-- Text on button to dismiss Signal\'s request for contact permissions -->
@@ -3767,7 +3767,7 @@
 
     <!-- BubbleOptOutTooltip -->
     <!-- Message to inform the user of what Android chat bubbles are -->
-    <string name="BubbleOptOutTooltip__description">Kuplat on Android-ominaisuus, jonka voit poistaa käytöstä Tellomiin keskusteluista.</string>
+    <string name="BubbleOptOutTooltip__description">Kuplat on Android-ominaisuus, jonka voit poistaa käytöstä Signalin keskusteluista.</string>
     <!-- Button to dismiss the tooltip for opting out of using Android bubbles -->
     <string name="BubbleOptOutTooltip__not_now">Ei nyt</string>
     <!-- Button to move to the system settings to control the use of Android bubbles -->
@@ -3858,9 +3858,9 @@
     <string name="IdentityUtil_unverified_banner_two">Turvanumerosi käyttäjien%1$s ja %2$s kanssa eivät ole enää varmennettuja.</string>
     <string name="IdentityUtil_unverified_banner_many">Turvanumerosi käyttäjien %1$s, %2$s ja %3$s kanssa eivät ole enää varmennettuja.</string>
 
-    <string name="IdentityUtil_unverified_dialog_one">Turvanumerosi käyttäjän %1$s kanssa on vaihtunut. Tämä voi tarkoittaa joko sitä, että joku yrittää kaapata viestiliikennettänne, tai sitä, että %1$s on asentanut Tellomiin uudelleen.</string>
-    <string name="IdentityUtil_unverified_dialog_two">Turvanumerosi käyttäjien %1$s ja %2$s kanssa ovat vaihtuneet. Tämä voi tarkoittaa joko sitä, että joku yrittää kaapata viestiliikennettänne, tai sitä, että he ovat asentaneet Tellomiin uudelleen.</string>
-    <string name="IdentityUtil_unverified_dialog_many">Turvanumerosi käyttäjien %1$s, %2$s ja %3$s kanssa ovat vaihtuneet. Tämä voi tarkoittaa joko sitä, että joku yrittää kaapata viestiliikennettänne, tai sitä, että he ovat asentaneet Tellomiin uudelleen.</string>
+    <string name="IdentityUtil_unverified_dialog_one">Turvanumerosi käyttäjän %1$s kanssa on vaihtunut. Tämä voi tarkoittaa joko sitä, että joku yrittää kaapata viestiliikennettänne, tai sitä, että %1$s on asentanut Signalin uudelleen.</string>
+    <string name="IdentityUtil_unverified_dialog_two">Turvanumerosi käyttäjien %1$s ja %2$s kanssa ovat vaihtuneet. Tämä voi tarkoittaa joko sitä, että joku yrittää kaapata viestiliikennettänne, tai sitä, että he ovat asentaneet Signalin uudelleen.</string>
+    <string name="IdentityUtil_unverified_dialog_many">Turvanumerosi käyttäjien %1$s, %2$s ja %3$s kanssa ovat vaihtuneet. Tämä voi tarkoittaa joko sitä, että joku yrittää kaapata viestiliikennettänne, tai sitä, että he ovat asentaneet Signalin uudelleen.</string>
 
     <string name="IdentityUtil_untrusted_dialog_one">Turvanumerosi käyttäjän %1$s kanssa on vaihtunut.</string>
     <string name="IdentityUtil_untrusted_dialog_two">Turvanumerosi käyttäjien %1$s ja %2$s kanssa ovat vaihtuneet.</string>
@@ -3938,7 +3938,7 @@
     <!-- The title of a dialog prompting user to update to the latest version of Signal. -->
     <string name="EditProfileFragment_deprecated_dialog_title">Päivitä Tellomi</string>
     <!-- The body of a dialog prompting user to update to the latest version of Signal. -->
-    <string name="EditProfileFragment_deprecated_dialog_body">Tämä Tellomi-versio on vanhentunut. Päivitä nyt jatkaaksesi Tellomiin käyttöä.</string>
+    <string name="EditProfileFragment_deprecated_dialog_body">Tämä Tellomi-versio on vanhentunut. Päivitä nyt jatkaaksesi Signalin käyttöä.</string>
     <!-- The button on a dialog prompting user to update to the latest version of Signal. When clicked, the user will be taken to the store to update their app. -->
     <string name="EditProfileFragment_deprecated_dialog_update_button">Päivitä</string>
     <!-- The title of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
@@ -4178,7 +4178,7 @@
     <string name="preferences__enable_passphrase">Ota käyttöön näytön lukitus salalauseella</string>
     <string name="preferences__lock_signal_and_message_notifications_with_a_passphrase">Lukitse näyttö ja ilmoitukset salalauseella</string>
     <string name="preferences__screen_security">Näytön suojaus</string>
-    <string name="preferences__auto_lock_signal_after_a_specified_time_interval_of_inactivity">Lukitse automaattisesti salalauseella, jos Tellomiia ei ole käytetty määriteltynä aikavälinä</string>
+    <string name="preferences__auto_lock_signal_after_a_specified_time_interval_of_inactivity">Lukitse automaattisesti salalauseella, jos Signalia ei ole käytetty määriteltynä aikavälinä</string>
     <!-- Legacy preference menu item to enable locking of app after inactivity -->
     <string name="preferences__inactivity_timeout_passphrase">Ajasta lukitus</string>
     <!-- Legacy preference menu item to choose the interval of inactivity before lockout -->
@@ -4220,7 +4220,7 @@
     <string name="preferences__slow">Hidas</string>
     <string name="preferences__help">Tuki</string>
     <string name="preferences__advanced">Lisäasetukset</string>
-    <string name="preferences__donate_to_signal">Lahjoita Tellomiille</string>
+    <string name="preferences__donate_to_signal">Lahjoita Signalille</string>
     <!-- Preference label for making one-time donations to Signal -->
     <string name="preferences__privacy">Yksityisyys</string>
     <!-- Preference label for stories -->
@@ -4257,27 +4257,27 @@
     <!-- Title for the confirmation dialog of changing the app icon. -->
     <string name="preferences__app_icon_dialog_title">Vaihda sovelluskuvakkeeksi ja nimeksi \"%1$s\"</string>
     <!-- Description for the confirmation dialog of changing the app icon. -->
-    <string name="preferences__app_icon_dialog_description">Tellomi on suljettava sovelluskuvakkeen ja nimen vaihtamiseksi. Ilmoituksissa näytetään aina Tellomiin oletuskuvake ja nimi.</string>
+    <string name="preferences__app_icon_dialog_description">Tellomi on suljettava sovelluskuvakkeen ja nimen vaihtamiseksi. Ilmoituksissa näytetään aina Signalin oletuskuvake ja nimi.</string>
     <!-- Visible warning label for the limitations of changing the app icon with learn more call to action. -->
-    <string name="preferences__app_icon_warning_learn_more">Valitse sovelluskuvake ja nimi, jotka näkyvät puhelimesi aloitusnäytössä ja sovellusvalikossa. Ilmoituksissa näytetään aina Tellomiin oletuskuvake ja nimi. Lue lisää</string>
+    <string name="preferences__app_icon_warning_learn_more">Valitse sovelluskuvake ja nimi, jotka näkyvät puhelimesi aloitusnäytössä ja sovellusvalikossa. Ilmoituksissa näytetään aina Signalin oletuskuvake ja nimi. Lue lisää</string>
     <!-- Visible warning label for the limitations of changing the app icon. -->
     <string name="preferences__app_icon_warning">Sovelluskuvakkeet ja nimet näkyvät aloitusnäytössä ja sovellusvalikossa.</string>
     <!-- Visible warning label explaining that changing the app icon and name does not affect notifications. -->
-    <string name="preferences__app_icon_notification_warning">Ilmoituksissa näytetään aina Tellomiin oletuskuvake ja nimi.</string>
+    <string name="preferences__app_icon_notification_warning">Ilmoituksissa näytetään aina Signalin oletuskuvake ja nimi.</string>
     <!--Call to action to get more information about the limitations of the change app icon functionality. -->
     <string name="preferences__app_icon_learn_more">Lue lisää</string>
     <!--Text description of a graphic illustrating the limitations of the app icon change. -->
     <string name="preferences__graphic_illustrating_where_the_replacement_app_icon_will_be_visible">Kuva, joka havainnollistaa, missä korvaava sovelluskuvake näkyy.</string>
     <string name="preferences__disable_pin">Poista tunnusluku käytöstä</string>
     <string name="preferences__enable_pin">Ota tunnusluku käyttöön</string>
-    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">Jos poistat tunnusluvun käytöstä, menetät kaikki tietosi rekisteröityessäsi Tellomiiin uudelleen, ellet varmuuskopioi tietojasi käsin. Et voi myöskään ottaa rekisteröintiestoa käyttöön, jos tunnusluku on pois päältä.</string>
-    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">Tunnusluvulla salataan Tellomiiin tallentamasi tiedot, jotta vain sinä pääset niihin käsiksi. Profiilisi, asetuksesi ja yhteystietosi palautetaan, kun asennat Tellomiin uudelleen. Tunnuslukua ei tarvita sovelluksen avaamiseen.</string>
+    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">Jos poistat tunnusluvun käytöstä, menetät kaikki tietosi rekisteröityessäsi Signaliin uudelleen, ellet varmuuskopioi tietojasi käsin. Et voi myöskään ottaa rekisteröintiestoa käyttöön, jos tunnusluku on pois päältä.</string>
+    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">Tunnusluvulla salataan Signaliin tallentamasi tiedot, jotta vain sinä pääset niihin käsiksi. Profiilisi, asetuksesi ja yhteystietosi palautetaan, kun asennat Signalin uudelleen. Tunnuslukua ei tarvita sovelluksen avaamiseen.</string>
     <string name="preferences__system_default">Järjestelmän oletus</string>
     <string name="preferences__language">Kieli</string>
     <string name="preferences__signal_messages_and_calls">Tellomi-viestit ja -puhelut</string>
     <!-- Title of toolbar for the advanced pin settings screen -->
     <string name="preferences__advanced_pin_settings_title">Tunnusluvun lisäasetukset</string>
-    <string name="preferences__free_private_messages_and_calls">Ilmaiset ja yksityiset viestit sekä puhelut Tellomiin käyttäjille</string>
+    <string name="preferences__free_private_messages_and_calls">Ilmaiset ja yksityiset viestit sekä puhelut Signalin käyttäjille</string>
     <string name="preferences__submit_debug_log">Lähetä virheenkorjausloki</string>
     <string name="preferences__support_wifi_calling">WiFi-puhelu-yhteensopivuus</string>
     <string name="preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi">Ota käyttöön, jos laitteesi lähettää teksti- ja multimediaviestit WiFi-yhteydellä. (Ota käyttöön vain, kun WiFi-puhelut on käytössä laitteessasi.)</string>
@@ -4331,7 +4331,7 @@
 
     <string name="preferences_storage__custom">Mukautettu</string>
     <string name="preferences_advanced__use_system_emoji">Käytä järjestelmän hymiöitä</string>
-    <string name="preferences_advanced__relay_all_calls_through_the_signal_server_to_avoid_revealing_your_ip_address">Kaikki puhelut välitetään Tellomiin palvelimen kautta, jotta IP-osoitteesi ei paljastu yhteystiedollesi. Heikentää puhelun laatua.</string>
+    <string name="preferences_advanced__relay_all_calls_through_the_signal_server_to_avoid_revealing_your_ip_address">Kaikki puhelut välitetään Signalin palvelimen kautta, jotta IP-osoitteesi ei paljastu yhteystiedollesi. Heikentää puhelun laatua.</string>
     <string name="preferences_advanced__always_relay_calls">Välitä aina kaikki puhelut</string>
     <!-- Privacy settings payments section title -->
     <string name="preferences_app_protection__payments">Maksut</string>
@@ -4382,7 +4382,7 @@
     <string name="preferences_off">Ei käytössä</string>
     <string name="preferences_on">Käytössä</string>
     <string name="preferences_proxy_address">Välityspalvelimen osoite</string>
-    <string name="preferences_only_use_a_proxy_if">Käytä välityspalvelinta vain, jos et saa yhteyttä Tellomiiin mobiiliverkolla tai Wi-Fi:llä.</string>
+    <string name="preferences_only_use_a_proxy_if">Käytä välityspalvelinta vain, jos et saa yhteyttä Signaliin mobiiliverkolla tai Wi-Fi:llä.</string>
     <string name="preferences_share">Jaa</string>
     <string name="preferences_save">Tallenna</string>
     <string name="preferences_connecting_to_proxy">Muodostetaan yhteyttä välityspalvelimeen…</string>
@@ -4424,7 +4424,7 @@
 
     <!-- Displayed on a welcome screen for payments -->
     <string name="PaymentsHomeFragment_introducing_payments">Esittelyssä maksut</string>
-    <string name="PaymentsHomeFragment__use_signal_to_send_and_receive">Voit lähettää ja vastaanottaa Tellomiissa uutta, yksityisyyteen panostavaa digitaalista MobileCoin-valuuttaa. Aloita ottamalla se käyttöön.</string>
+    <string name="PaymentsHomeFragment__use_signal_to_send_and_receive">Voit lähettää ja vastaanottaa Signalissa uutta, yksityisyyteen panostavaa digitaalista MobileCoin-valuuttaa. Aloita ottamalla se käyttöön.</string>
     <string name="PaymentsHomeFragment__activate_payments">Aktivoi maksut</string>
     <string name="PaymentsHomeFragment__activating_payments">Aktivoidaan maksut…</string>
     <string name="PaymentsHomeFragment__restore_payments_account">Palauta maksutili</string>
@@ -4450,7 +4450,7 @@
     <string name="PaymentsHomeFragment__payments_is_not_available_in_your_region">Maksutoiminto ei ole saatavilla alueellasi.</string>
     <string name="PaymentsHomeFragment__could_not_enable_payments">Maksutoiminnon käyttöönotto epäonnistui. Yritä myöhemmin uudelleen.</string>
     <string name="PaymentsHomeFragment__deactivate_payments_question">Poistetaanko maksut käytöstä?</string>
-    <string name="PaymentsHomeFragment__you_will_not_be_able_to_send">MobileCoin-maksuja ei voi lähettää tai vastaanottaa Tellomiissa, jos maksut poistetaan käytöstä.</string>
+    <string name="PaymentsHomeFragment__you_will_not_be_able_to_send">MobileCoin-maksuja ei voi lähettää tai vastaanottaa Signalissa, jos maksut poistetaan käytöstä.</string>
     <string name="PaymentsHomeFragment__deactivate">Poista käytöstä</string>
     <string name="PaymentsHomeFragment__continue">Jatka</string>
     <string name="PaymentsHomeFragment__balance_is_not_currently_available">Saldo ei ole saatavilla tällä hetkellä.</string>
@@ -4459,10 +4459,10 @@
     <string name="PaymentsHomeFragment__details">Lisätietoja</string>
   <!-- Removed by excludeNonTranslatables <string name="PaymentsHomeFragment__learn_more__activate_payments" translatable="false">https://tellomi.app/help/360057625692#payments_activate</string> -->
     <!-- Displayed as a description in a dialog when the user tries to activate payments -->
-    <string name="PaymentsHomeFragment__you_can_use_signal_to_send_and">Tellomiissa voi lähettää tai vastaanottaa MobileCoineja. Maksujen siirto tapahtuu MobileCoinsin ja MobileCoin Walletin käyttöehtojen mukaisesti. Mahdollisten teknisten ongelmien takia keskeytyneitä siirtoja tai katemenetyksiä ei korvata. </string>
+    <string name="PaymentsHomeFragment__you_can_use_signal_to_send_and">Signalissa voi lähettää tai vastaanottaa MobileCoineja. Maksujen siirto tapahtuu MobileCoinsin ja MobileCoin Walletin käyttöehtojen mukaisesti. Mahdollisten teknisten ongelmien takia keskeytyneitä siirtoja tai katemenetyksiä ei korvata. </string>
     <string name="PaymentsHomeFragment__activate">Aktivoi</string>
     <string name="PaymentsHomeFragment__view_mobile_coin_terms">Näytä MobileCoinin ehdot</string>
-    <string name="PaymentsHomeFragment__payments_not_available">Tellomiin maksutoiminto ei ole enää käytettävissä. Varat voi yhä siirtää toiseen kauppapaikkaan, mutta varojen lisääminen tai maksujen lähettäminen ja vastaanottaminen ei ole enää mahdollista.</string>
+    <string name="PaymentsHomeFragment__payments_not_available">Signalin maksutoiminto ei ole enää käytettävissä. Varat voi yhä siirtää toiseen kauppapaikkaan, mutta varojen lisääminen tai maksujen lähettäminen ja vastaanottaminen ei ole enää mahdollista.</string>
 
   <!-- Removed by excludeNonTranslatables <string name="PaymentsHomeFragment__mobile_coin_terms_url" translatable="false">https://www.mobilecoin.com/terms-of-use.html</string> -->
     <!-- Alert dialog title which shows up after a payment to turn on payment lock -->
@@ -4545,7 +4545,7 @@
     <string name="PaymentsTransferFragment__next">Seuraava</string>
     <string name="PaymentsTransferFragment__invalid_address">Virheellinen osoite</string>
     <string name="PaymentsTransferFragment__check_the_wallet_address">Tarkista vastaanottajan lompakko-osoite ja yritä uudelleen.</string>
-    <string name="PaymentsTransferFragment__you_cant_transfer_to_your_own_signal_wallet_address">Siirtoa ei voi tehdä Tellomiin lompakko-osoitteeseen. Syötä yhteensopivan kauppapaikan tilin lompakko-osoite.</string>
+    <string name="PaymentsTransferFragment__you_cant_transfer_to_your_own_signal_wallet_address">Siirtoa ei voi tehdä Signalin lompakko-osoitteeseen. Syötä yhteensopivan kauppapaikan tilin lompakko-osoite.</string>
     <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs">Jotta voit skannata QR-koodin, Tellomi tarvitsee luvan käyttää kameraa.</string>
     <string name="PaymentsTransferFragment__signal_needs_the_camera_permission_to_capture_qr_code_go_to_settings">Tellomi tarvitsee luvan käyttää laitteesi kameraa QR-koodin lukemiseen. Siirry kohtaan Asetukset, valitse Sovelluksen käyttöoikeudet ja salli kameran käyttö.</string>
     <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs_access_to_the_camera">Jotta voit skannata QR-koodin, Tellomi tarvitsee luvan käyttää kameraa.</string>
@@ -4788,14 +4788,14 @@
     <string name="verify_display_fragment_context_menu__compare_with_clipboard">Vertaa leikepöytään</string>
 
     <!-- reminder_header -->
-    <string name="reminder_header_service_outage_text">Tellomiissa on tällä hetkellä teknisiä ongelmia. Pyrimme korjaamaan ongelman mahdollisimman pian.</string>
+    <string name="reminder_header_service_outage_text">Signalissa on tällä hetkellä teknisiä ongelmia. Pyrimme korjaamaan ongelman mahdollisimman pian.</string>
     <string name="reminder_header_progress">%1$d %%</string>
     <!-- Body text of a banner that will show at the top of the chat list when we temporarily cannot process the user\'s contacts -->
-    <string name="reminder_cds_warning_body">Tellomiin yksityisten yhteystietojen hakupalvelu ei tällä hetkellä voi käsitellä puhelimesi yhteystietoja.</string>
+    <string name="reminder_cds_warning_body">Signalin yksityisten yhteystietojen hakupalvelu ei tällä hetkellä voi käsitellä puhelimesi yhteystietoja.</string>
     <!-- Label for a button in a banner to learn more about why we temporarily can\'t process the user\'s contacts -->
     <string name="reminder_cds_warning_learn_more">Lue lisää</string>
     <!-- Body text of a banner that will show at the top of the chat list when the user has so many contacts that we cannot ever process them -->
-    <string name="reminder_cds_permanent_error_body">Tellomiin yksityisten yhteystietojen hakupalvelu ei voi käsitellä puhelimesi yhteystietoja.</string>
+    <string name="reminder_cds_permanent_error_body">Signalin yksityisten yhteystietojen hakupalvelu ei voi käsitellä puhelimesi yhteystietoja.</string>
     <!-- Label for a button in a banner to learn more about why we cannot process the user\'s contacts -->
     <string name="reminder_cds_permanent_error_learn_more">Lue lisää</string>
 
@@ -4834,7 +4834,7 @@
     <string name="CreateKbsPinFragment__create_a_new_pin">Luo uusi tunnusluku</string>
     <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">Tunnusluvun voi vaihtaa vain laitteella, joka on rekisteröity.</string>
     <string name="CreateKbsPinFragment__create_your_pin">Valitse tunnusluku</string>
-    <string name="CreateKbsPinFragment__pins_can_help_you_restore_your_account">PIN-koodien avulla voit palauttaa tilisi ja pitää tietosi salattuna Tellomiissa. </string>
+    <string name="CreateKbsPinFragment__pins_can_help_you_restore_your_account">PIN-koodien avulla voit palauttaa tilisi ja pitää tietosi salattuna Signalissa. </string>
     <string name="CreateKbsPinFragment__choose_a_stronger_pin">Valitse vahvempi tunnusluku</string>
 
     <!-- ConfirmKbsPinFragment -->
@@ -4852,7 +4852,7 @@
 
     <!-- KbsSplashFragment -->
     <string name="KbsSplashFragment__introducing_pins">Esittelyssä tunnusluku</string>
-    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">Tunnusluvulla salataan Tellomiiin tallentamasi tiedot, jotta vain sinä pääset niihin käsiksi. Profiilisi, asetuksesi ja yhteystietosi palautetaan, kun asennat Tellomiin uudelleen. Tunnuslukua ei tarvita sovelluksen avaamiseen.</string>
+    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">Tunnusluvulla salataan Signaliin tallentamasi tiedot, jotta vain sinä pääset niihin käsiksi. Profiilisi, asetuksesi ja yhteystietosi palautetaan, kun asennat Signalin uudelleen. Tunnuslukua ei tarvita sovelluksen avaamiseen.</string>
     <string name="KbsSplashFragment__learn_more">Lue lisää</string>
   <!-- Removed by excludeNonTranslatables <string name="KbsSplashFragment__learn_more_link" translatable="false">https://tellomi.app/help/360007059792</string> -->
     <string name="KbsSplashFragment__registration_lock_equals_pin">Rekisteröintiesto = tunnusluku</string>
@@ -4887,7 +4887,7 @@
     <string name="RegistrationLockFragment__incorrect_pin">Väärä tunnusluku</string>
     <string name="RegistrationLockFragment__forgot_your_pin">Unohditko tunnusluvun?</string>
     <string name="RegistrationLockFragment__not_many_tries_left">Vain muutama yritys jäljellä!</string>
-    <string name="RegistrationLockFragment__signal_registration_need_help_with_pin_for_android_v2_pin">Tellomiin rekisteröinti – Tarvitsen apua tunnusluvun kanssa Androidilla (v2 PIN)</string>
+    <string name="RegistrationLockFragment__signal_registration_need_help_with_pin_for_android_v2_pin">Signalin rekisteröinti – Tarvitsen apua tunnusluvun kanssa Androidilla (v2 PIN)</string>
 
     <plurals name="RegistrationLockFragment__for_your_privacy_and_security_there_is_no_way_to_recover">
         <item quantity="one">Yksityisyytesi ja tietoturvasi vuoksi PIN-koodia ei voida palauttaa. Jos et muista PIN-koodiasi, voit rekisteröityä uudelleen tekstiviestillä %1$d päivän toimettomuuden jälkeen. Tässä tapauksessa tilisi pyyhkiytyy ja kaikki sisältö poistetaan.</item>
@@ -4919,13 +4919,13 @@
 
     <!-- KBS Megaphone -->
     <string name="KbsMegaphone__create_a_pin">Luo tunnusluku</string>
-    <string name="KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped">Tunnusluvut pitävät Tellomiiin tallennetut tiedot salattuina</string>
+    <string name="KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped">Tunnusluvut pitävät Signaliin tallennetut tiedot salattuina</string>
     <string name="KbsMegaphone__create_pin">Luo tunnusluku</string>
 
     <!-- Title for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
-    <string name="UpdatePinMegaphone__update_signal_pin">Päivitä Tellomiin PIN-koodi</string>
+    <string name="UpdatePinMegaphone__update_signal_pin">Päivitä Signalin PIN-koodi</string>
     <!-- Message for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
-    <string name="UpdatePinMegaphone__message">Viimeistele tilin rekisteröinti päivittämällä Tellomiin PIN-koodi.</string>
+    <string name="UpdatePinMegaphone__message">Viimeistele tilin rekisteröinti päivittämällä Signalin PIN-koodi.</string>
     <!-- Button text for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
     <string name="UpdatePinMegaphone__update_pin">Päivitä tunnusluku</string>
 
@@ -4946,7 +4946,7 @@
     <!-- transport_selection_list_item -->
     <string name="ConversationListFragment_loading">Ladataan…</string>
     <string name="CallNotificationBuilder_connecting">Yhdistetään…</string>
-    <string name="SQLCipherMigrationHelper_migrating_signal_database">Tellomiin tietokantaa siirretään</string>
+    <string name="SQLCipherMigrationHelper_migrating_signal_database">Signalin tietokantaa siirretään</string>
     <string name="enter_backup_passphrase_dialog__backup_passphrase">Varmuuskopion salalause</string>
     <string name="backup_enable_dialog__backups_will_be_saved_to_external_storage_and_encrypted_with_the_passphrase_below_you_must_have_this_passphrase_in_order_to_restore_a_backup">Varmuuskopiot tallennetaan laitteesi tallennustilaan ja ne salataan allaolevalla salalauseella. Ilman tätä salalausetta et voi palauttaa varmuuskopiota.</string>
     <string name="backup_enable_dialog__you_must_have_this_passphrase">Varmuuskopion palauttamiseen vaaditaan salalause.</string>
@@ -5007,8 +5007,8 @@
     <string name="RegistrationActivity_call_me_instead_available_in">Soita minulle (%1$02d.%2$02d)</string>
     <!--    Countdown to when the user can request a new SMS code during registration.-->
     <string name="RegistrationActivity_resend_sms_available_in">Lähetä koodi uudelleen (%1$02d.%2$02d)</string>
-    <string name="RegistrationActivity_contact_signal_support">Ota yhteyttä Tellomiin tukeen</string>
-    <string name="RegistrationActivity_code_support_subject">Tellomiin rekisteröinti – vahvistuskoodi Androidille</string>
+    <string name="RegistrationActivity_contact_signal_support">Ota yhteyttä Signalin tukeen</string>
+    <string name="RegistrationActivity_code_support_subject">Signalin rekisteröinti – vahvistuskoodi Androidille</string>
     <string name="RegistrationActivity_incorrect_code">Väärä koodi</string>
     <string name="BackupUtil_never">ei koskaan</string>
     <!-- Subtext below last backup time when we do not know when the last backup was -->
@@ -5016,7 +5016,7 @@
     <!-- Phone number heading displayed as a screen title -->
     <string name="preferences_app_protection__phone_number">Puhelinnumero</string>
     <!-- Subtext below option to launch into phone number privacy settings screen -->
-    <string name="preferences_app_protection__choose_who_can_see">Valitse, kuka voi nähdä puhelinnumerosi ja kuka voi ottaa sinuun yhteyttä Tellomiissa sen avulla.</string>
+    <string name="preferences_app_protection__choose_who_can_see">Valitse, kuka voi nähdä puhelinnumerosi ja kuka voi ottaa sinuun yhteyttä Signalissa sen avulla.</string>
     <!-- Section title above two radio buttons for enabling and disabling phone number display -->
     <string name="PhoneNumberPrivacySettingsFragment_who_can_see_my_number_heading">Kuka voi nähdä numeroni</string>
     <!-- Subtext below radio buttons when who can see my number is set to everybody -->
@@ -5028,15 +5028,15 @@
     <!-- Section title above two radio buttons for enabling and disabling whether users can find me by my phone number  -->
     <string name="PhoneNumberPrivacySettingsFragment_who_can_find_me_by_number_heading">Kuka voi löytää minut puhelinnumerolla</string>
     <!-- Subtext below radio buttons when who can find me by number is set to everyone -->
-    <string name="PhoneNumberPrivacySettingsFragment_discovery_on_description">Kuka tahansa, jolla on puhelinnumerosi, näkee, että olet Tellomiissa, ja voi aloittaa keskustelut kanssasi.</string>
+    <string name="PhoneNumberPrivacySettingsFragment_discovery_on_description">Kuka tahansa, jolla on puhelinnumerosi, näkee, että olet Signalissa, ja voi aloittaa keskustelut kanssasi.</string>
     <!-- Subtext below radio buttons when who can find me by number is set to nobody -->
-    <string name="PhoneNumberPrivacySettingsFragment_discovery_off_description">Kukaan ei näe, että olet Tellomiissa, ellet lähetä heille viestiä tai keskustele heidän kanssaan.</string>
+    <string name="PhoneNumberPrivacySettingsFragment_discovery_off_description">Kukaan ei näe, että olet Signalissa, ellet lähetä heille viestiä tai keskustele heidän kanssaan.</string>
     <!-- Snackbar text when pressing invalid radio item -->
     <string name="PhoneNumberPrivacySettingsFragment__to_change_this_setting">"Jos haluat muuttaa tätä asetusta, määritä Kuka näkee numeroni -asetukseksi Ei kukaan."</string>
     <!-- Dialog title shown when selecting "Nobody" in phone number privacy settings for who can find me by number -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Oletko varma?</string>
     <!-- Dialog warning message shown when selecting "Nobody" in phone number privacy settings for who can find me by number -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Jos määrität asetuksen ”Kuka voi löytää minut puhelinnumerolla” tilaan ”Ei kukaan”, sinua on vaikea löytää Tellomiissa.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Jos määrität asetuksen ”Kuka voi löytää minut puhelinnumerolla” tilaan ”Ei kukaan”, sinua on vaikea löytää Signalissa.</string>
     <!-- Dialog button text for canceling change action -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Peruuta</string>
     <string name="PhoneNumberPrivacy_everyone">Kaikki</string>
@@ -5058,11 +5058,11 @@
     <string name="preferences_chats__backups">Varmuuskopiot</string>
 
     <!-- Title text shown when Signal is locked and needs to be unlocked -->
-    <string name="prompt_passphrase_activity__unlock_signal">Avaa Tellomiin lukitus</string>
+    <string name="prompt_passphrase_activity__unlock_signal">Avaa Signalin lukitus</string>
     <!-- Description text explaining how to unlock Signal -->
-    <string name="prompt_passphrase_activity__use_your_android_device">Käytä Android-laitteen lukitusasetuksia Tellomiin lukituksen avaamiseen.</string>
+    <string name="prompt_passphrase_activity__use_your_android_device">Käytä Android-laitteen lukitusasetuksia Signalin lukituksen avaamiseen.</string>
     <!-- Text shown in a dialog that further explains how to unlock Signal by using the same unlocking methods that are used to unlock their own device -->
-    <string name="prompt_passphrase_activity__screen_lock_is_on">Näytön lukitus on päällä ja Tellomi on suojattu laitteesi lukitusasetuksilla. Tellomiin lukitus avataan samalla tavalla kuin tavallisesti avaisit puhelimen lukituksen, esimerkiksi kasvojentunnistuksen, sormenjälkitunnistuksen, PIN-koodin, salasanan tai kuvion avulla.</string>
+    <string name="prompt_passphrase_activity__screen_lock_is_on">Näytön lukitus on päällä ja Tellomi on suojattu laitteesi lukitusasetuksilla. Signalin lukitus avataan samalla tavalla kuin tavallisesti avaisit puhelimen lukituksen, esimerkiksi kasvojentunnistuksen, sormenjälkitunnistuksen, PIN-koodin, salasanan tai kuvion avulla.</string>
     <!-- Button in a dialog that will contact Signal support if pressed -->
     <string name="prompt_passphrase_activity__contact_support">Ota yhteyttä tukeen</string>
     <!-- Button text to try again after unlocking has previously failed -->
@@ -5074,7 +5074,7 @@
     <!-- Text shown with toggle that when switched on will enable screen lock -->
     <string name="ScreenLockSettingsFragment__use_screen_lock">Käytä näytön lukitusta</string>
     <!-- Description of what screen locking will do and how notification content will not be shown when screen is locked -->
-    <string name="ScreenLockSettingsFragment__your_android_device">Android-laitteesi lukitusasetukset vaaditaan Tellomiin lukituksen avaamiseen, kun poistut sovelluksesta tai vaihdat sovellusten välillä. Kun laite on lukittu, viestien sisältö ei näy ilmoitusten esikatselussa.</string>
+    <string name="ScreenLockSettingsFragment__your_android_device">Android-laitteesi lukitusasetukset vaaditaan Signalin lukituksen avaamiseen, kun poistut sovelluksesta tai vaihdat sovellusten välillä. Kun laite on lukittu, viestien sisältö ei näy ilmoitusten esikatselussa.</string>
     <!-- Title text explaining when users should start the screen lock -->
     <string name="ScreenLockSettingsFragment__start_screen_lock">Käynnistä näytön lukitus</string>
     <!-- Option text explaining that screen lock should start immediately -->
@@ -5088,9 +5088,9 @@
     <!-- Option text explaining that screen lock should start at a custom time set by the user -->
     <string name="ScreenLockSettingsFragment__custom_time">Muu aika</string>
     <!-- Title on biometrics prompt explaining that biometrics are needed to turn on screen lock -->
-    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Käytä Tellomiin näytön lukitusta</string>
+    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Käytä Signalin näytön lukitusta</string>
     <!-- Title on biometrics prompt explaining that biometrics are needed to turn off screen lock -->
-    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Poista Tellomiin näytön lukitus</string>
+    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Poista Signalin näytön lukitus</string>
 
     <string name="Recipient_unknown">Tuntematon</string>
     <!-- Name to use for a user across the UI when they are unregistered and have no other name available -->
@@ -5305,13 +5305,13 @@
     <string name="GroupsLearnMore_what_are_legacy_groups">Mitä ovat vanhan tyyppiset ryhmät?</string>
     <string name="GroupsLearnMore_paragraph_1">Vanhan tyyppiset ryhmät eivät ole yhteensopivia uusien ryhmien ominaisuuksien kanssa, kuten ylläpitäjyyden ja kuvaavien ryhmäpäivityksien.</string>
     <string name="GroupsLearnMore_can_i_upgrade_a_legacy_group">Voinko päivittää vanhan tyyppisen ryhmän?</string>
-    <string name="GroupsLearnMore_paragraph_2">Vanhan tyyppisiä ryhmiä ei voi vielä päivittää uusiksi ryhmiksi, mutta voit luoda uuden ryhmän samoilla jäsenillä, jos he käyttävät Tellomiin uusinta versiota.</string>
+    <string name="GroupsLearnMore_paragraph_2">Vanhan tyyppisiä ryhmiä ei voi vielä päivittää uusiksi ryhmiksi, mutta voit luoda uuden ryhmän samoilla jäsenillä, jos he käyttävät Signalin uusinta versiota.</string>
     <string name="GroupsLearnMore_paragraph_3">Tellomi tulee tarjoamaan tavan päivittää vanhan tyyppisiä ryhmiä tulevaisuudessa.</string>
 
     <!-- GroupLinkBottomSheetDialogFragment -->
     <string name="GroupLinkBottomSheet_share_hint_requiring_approval">Kuka tahansa, jolla on tämä linkki, näkee ryhmän nimen ja kuvan ja voi pyytää liittymistä jäseneksi. Jaa linkki vain henkilöille, joihin luotat.</string>
     <string name="GroupLinkBottomSheet_share_hint_not_requiring_approval">Kuka tahansa, jolla on tämä linkki, näkee ryhmän nimen ja kuvan ja voi liittyä jäseneksi. Jaa linkki vain henkilöille, joihin luotat.</string>
-    <string name="GroupLinkBottomSheet_share_via_signal">Jaa Tellomiin kautta</string>
+    <string name="GroupLinkBottomSheet_share_via_signal">Jaa Signalin kautta</string>
     <string name="GroupLinkBottomSheet_copy">Kopioi</string>
     <string name="GroupLinkBottomSheet_qr_code">QR-koodi</string>
     <string name="GroupLinkBottomSheet_share">Jaa</string>
@@ -5501,7 +5501,7 @@
     <string name="payment_info_card_about_mobilecoin">Tietoa MobileCoinista</string>
     <string name="payment_info_card_mobilecoin_is_a_new_privacy_focused_digital_currency">MobileCoin on uusi yksityisyyden suojaan keskittyvä digitaalinen valuutta.</string>
     <string name="payment_info_card_adding_funds">Varojen lisääminen</string>
-    <string name="payment_info_card_you_can_add_funds_for_use_in">Voit lisätä rahaa käytettäväksi Tellomiissa lähettämällä MobileCoineja lompakko-osoitteeseen.</string>
+    <string name="payment_info_card_you_can_add_funds_for_use_in">Voit lisätä rahaa käytettäväksi Signalissa lähettämällä MobileCoineja lompakko-osoitteeseen.</string>
     <string name="payment_info_card_cashing_out">Nostaminen</string>
     <string name="payment_info_card_you_can_cash_out_mobilecoin">MobileCoinit voi nostaa rahana milloin tahansa MobileCoin-yhteensopivalla kauppapaikalla siirtämällä rahat sillä sijaitsevalle tilille.</string>
     <string name="payment_info_card_hide_this_card">Piilota tämä kortti?</string>
@@ -5538,8 +5538,8 @@
     <string name="PaymentsRecoveryStartFragment__save_recovery_phrase">Tallenna palautuslause</string>
     <string name="PaymentsRecoveryStartFragment__enter_recovery_phrase">Syötä palautuslause</string>
     <plurals name="PaymentsRecoveryStartFragment__your_balance_will_automatically_restore">
-        <item quantity="one">Tilin saldo palautetaan automaattisesti, kun asennat Tellomiin uudelleen ja vahvistat Tellomiin PIN-koodin. Voit palauttaa saldon myös henkilökohtaisella %1$d-sanaisella palautuslauseella. Kirjoita se ylös ja säilytä turvallisessa paikassa.</item>
-        <item quantity="other">Tilin saldo palautetaan automaattisesti, kun asennat Tellomiin uudelleen ja vahvistat Tellomiin PIN-koodin. Voit palauttaa saldon myös henkilökohtaisella %1$d-sanaisella palautuslauseella. Kirjoita se ylös ja säilytä turvallisessa paikassa.</item>
+        <item quantity="one">Tilin saldo palautetaan automaattisesti, kun asennat Signalin uudelleen ja vahvistat Signalin PIN-koodin. Voit palauttaa saldon myös henkilökohtaisella %1$d-sanaisella palautuslauseella. Kirjoita se ylös ja säilytä turvallisessa paikassa.</item>
+        <item quantity="other">Tilin saldo palautetaan automaattisesti, kun asennat Signalin uudelleen ja vahvistat Signalin PIN-koodin. Voit palauttaa saldon myös henkilökohtaisella %1$d-sanaisella palautuslauseella. Kirjoita se ylös ja säilytä turvallisessa paikassa.</item>
     </plurals>
     <!-- Description in save recovery phrase screen which shows up when user has non zero balance -->
     <string name="PaymentsRecoveryStartFragment__got_balance">Sinulla on saldoa! On aika tallentaa palautuslause – 24 sanan mittainen avain, jonka avulla voit palauttaa saldosi.</string>
@@ -5678,7 +5678,7 @@
     <string name="ExportAccountDataFragment__report_not_stored_disclaimer">Raportti luodaan vain viennin yhteydessä, eikä Tellomi tallenna sitä laitteellesi.</string>
 
     <!-- ChangeNumberFragment -->
-    <string name="ChangeNumberFragment__use_this_to_change_your_current_phone_number_to_a_new_phone_number">Voit vaihtaa Tellomiiin kytketyn puhelinnumeron toiseen. Toimintoa ei voi kumota.\n\nVarmista ensin, että uuteen numeroon voi vastaanottaa tekstiviestejä tai puheluja.</string>
+    <string name="ChangeNumberFragment__use_this_to_change_your_current_phone_number_to_a_new_phone_number">Voit vaihtaa Signaliin kytketyn puhelinnumeron toiseen. Toimintoa ei voi kumota.\n\nVarmista ensin, että uuteen numeroon voi vastaanottaa tekstiviestejä tai puheluja.</string>
     <string name="ChangeNumberFragment__continue">Jatka</string>
     <!-- Message shown on dialog after your number has been changed successfully. -->
     <string name="ChangeNumber__your_phone_number_has_changed_to_s">Puhelinnumeroksesi on vaihdettu %1$s</string>
@@ -5737,7 +5737,7 @@
     <string name="ChangeNumberConfirmFragment__edit_number">Muokkaa numeroa</string>
 
     <!-- ChangeNumberRegistrationLockFragment -->
-    <string name="ChangeNumberRegistrationLockFragment__signal_change_number_need_help_with_pin_for_android_v2_pin">Tellomiin numeronvaihto – Tarvitsen apua tunnusluvun kanssa Androidilla (v2 PIN)</string>
+    <string name="ChangeNumberRegistrationLockFragment__signal_change_number_need_help_with_pin_for_android_v2_pin">Signalin numeronvaihto – Tarvitsen apua tunnusluvun kanssa Androidilla (v2 PIN)</string>
 
     <!-- ChangeNumberPinDiffersFragment -->
     <string name="ChangeNumberPinDiffersFragment__pins_do_not_match">Tunnusluvut eivät täsmää</string>
@@ -5931,9 +5931,9 @@
     <string name="NotificationsSettingsFragment__calls">Puhelut</string>
     <!-- Notification header for sounds -->
     <string name="NotificationsSettingsFragment__sounds">Äänet</string>
-    <string name="NotificationsSettingsFragment__contact_joins_signal">Yhteystieto liittyy Tellomiiin</string>
+    <string name="NotificationsSettingsFragment__contact_joins_signal">Yhteystieto liittyy Signaliin</string>
     <!-- Notification body to get notified when someone joins Signal -->
-    <string name="NotificationsSettingsFragment__notify_contact">Näytä ilmoitus, kun puhelimesi yhteystieto liittyy Tellomiiin</string>
+    <string name="NotificationsSettingsFragment__notify_contact">Näytä ilmoitus, kun puhelimesi yhteystieto liittyy Signaliin</string>
     <!-- Option to reset their notification settings -->
     <string name="NotificationsSettingsFragment__reset">Palauta ilmoitusten asetukset</string>
     <!-- Option body to reset their notification settings -->
@@ -6092,7 +6092,7 @@
     <!-- ChatColorGradientTool -->
 
     <!-- Title text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
-    <string name="Donate2022Q2Megaphone_donate_to_signal">Lahjoita Tellomiille</string>
+    <string name="Donate2022Q2Megaphone_donate_to_signal">Lahjoita Signalille</string>
     <!-- Body text for prompt to donate. Shown in a popup at the bottom of the chat list. -->
     <string name="Donate2022Q2Megaphone_signal_is_powered_by_people_like_you">Tellomi toimii kaltaistesi ihmisten tuella. Tee kuukausilahjoitus ja ansaitse merkki.</string>
     <!-- Button label that brings a user to the donate screen. Shown in a popup at the bottom of the chat list. -->
@@ -6194,7 +6194,7 @@
     <string name="ConversationSettingsFragment__conversation_muted_always">Aina</string>
     <string name="ConversationSettingsFragment__copied_phone_number_to_clipboard">Puhelinnumero kopioitu leikepöydälle.</string>
     <string name="ConversationSettingsFragment__phone_number">Puhelinnumero</string>
-    <string name="ConversationSettingsFragment__get_badges">Hanki profiiliisi merkkejä tukemalla Tellomiia. Lue lisää napauttamalla merkkiä.</string>
+    <string name="ConversationSettingsFragment__get_badges">Hanki profiiliisi merkkejä tukemalla Signalia. Lue lisää napauttamalla merkkiä.</string>
     <!-- Error message shown when the user is trying to open a media that is not sent yet. -->
     <string name="ConversationSettingsFragment__this_media_is_not_sent_yet">Tätä mediaa ei ole vielä lähetetty.</string>
     <!-- End group option in group conversation settings screen -->
@@ -6294,13 +6294,13 @@
     <!-- Snackbar message when blocking a contact has failed -->
     <string name="NewConversationActivity__block_failed">Esto epäonnistui</string>
     <!-- Error message shown when looking up a person by phone number and that phone number is not associated with a signal account -->
-    <string name="RecipientLookup_error__s_is_not_a_signal_user">%1$s ei ole Tellomiin käyttäjä</string>
+    <string name="RecipientLookup_error__s_is_not_a_signal_user">%1$s ei ole Signalin käyttäjä</string>
     <!-- Accessibility label for opening the screen specific dropdown menu. -->
     <string name="NewConversationActivity__accessibility_open_top_bar_menu">Avaa valikko</string>
     <!-- Error message shown in a dialog when trying to create a new group with non-signal users (e.g., unregistered or phone number only contacts) -->
     <plurals name="RecipientLookup_error__not_signal_users">
-        <item quantity="one">%1$s ei ole Tellomiin käyttäjä</item>
-        <item quantity="other">%1$s eivät ole Tellomiin käyttäjiä</item>
+        <item quantity="one">%1$s ei ole Signalin käyttäjä</item>
+        <item quantity="other">%1$s eivät ole Signalin käyttäjiä</item>
     </plurals>
 
     <!-- Hint text that shows in the recipient search bar when no text is entered yet. -->
@@ -6427,11 +6427,11 @@
     <!-- Displayed on primary button in the bottom sheet as a call-to-action to launch into the donation flow -->
     <string name="ViewBadgeBottomSheetDialogFragment__donate_now">Lahjoita</string>
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s tukee Tellomiia</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s tukee Signalia</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s tukee Tellomiia kuukausilahjoituksella. Tellomi on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s tukee Signalia kuukausilahjoituksella. Tellomi on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s tukee Tellomiia lahjoituksella. Tellomi on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s tukee Signalia lahjoituksella. Tellomi on voittoa tavoittelematon taho, joka toimii ilman mainostajia tai sijoittajia. Sen toiminta perustuu pelkästään kaltaistesi käyttäjien tukeen.</string>
 
     <string name="ImageView__badge">Merkki</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Päättyy %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Itsenäisenä, voittoa tavoittelemattomana organisaationa Tellomi on sitoutunut yksityiseen viestintään ja puheluihin. Ei mainoksia, seurantaevästeitä tai valvontaa. Tue Tellomiia lahjoittamalla.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Itsenäisenä, voittoa tavoittelemattomana organisaationa Tellomi on sitoutunut yksityiseen viestintään ja puheluihin. Ei mainoksia, seurantaevästeitä tai valvontaa. Tue Signalia lahjoittamalla.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6465,7 +6465,7 @@
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">Kiitämme tuestasi!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->
-    <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__youve_earned_a_donor_badge">Olet ansainnut lahjoittajamerkin Tellomiilta! Näytä se profiilissasi osoittaaksesi, että tuet Tellomiia.</string>
+    <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__youve_earned_a_donor_badge">Olet ansainnut lahjoittajamerkin Signalilta! Näytä se profiilissasi osoittaaksesi, että tuet Signalia.</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__you_can_also">Voit myös</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__become_a_montly_sustainer">ryhtyä kuukausittaiseksi tukijaksi.</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__display_on_profile">Näytä profiilissa</string>
@@ -6473,11 +6473,11 @@
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__continue">Jatka</string>
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Jos sinulla on enemmän kuin yksi merkki, voit valita yhden niistä esiteltäväksi profiilissasi.</string>
 
-    <string name="BecomeASustainerFragment__get_badges">Hanki profiiliisi merkkejä tukemalla Tellomiia.</string>
+    <string name="BecomeASustainerFragment__get_badges">Hanki profiiliisi merkkejä tukemalla Signalia.</string>
     <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi on voittoa tavoittelematon järjestö, joka toimii ilman mainostajia tai sijoittajia pelkästään kaltaistesi käyttäjien tuella.</string>
 
     <!-- Button label for creating a donation -->
-    <string name="ManageDonationsFragment__donate_to_signal">Lahjoita Tellomiille</string>
+    <string name="ManageDonationsFragment__donate_to_signal">Lahjoita Signalille</string>
     <!-- Heading for more area of manage subscriptions page -->
     <string name="ManageDonationsFragment__more">Lisää</string>
     <!-- Heading for receipts area of manage subscriptions page -->
@@ -6523,7 +6523,7 @@
     <!-- Title of dialog telling user they need to update signal as it expired -->
     <string name="UpdateSignalExpiredDialog__title">Päivitä Tellomi</string>
     <!-- Message of dialog telling user they need to update signal as it expired -->
-    <string name="UpdateSignalExpiredDialog__message">Tämä Tellomi-versio on vanhentunut. Päivitä nyt jatkaaksesi Tellomiin käyttöä.</string>
+    <string name="UpdateSignalExpiredDialog__message">Tämä Tellomi-versio on vanhentunut. Päivitä nyt jatkaaksesi Signalin käyttöä.</string>
     <!-- Button text of expiration dialog, will take user to update the app -->
     <string name="UpdateSignalExpiredDialog__update_action">Päivitä</string>
     <!-- Button text of expiration dialog to cancel the dialog.  -->
@@ -6532,7 +6532,7 @@
     <!-- Title of dialog telling user they need to re-register signal -->
     <string name="ReregisterSignalDialog__title">Laitetta ei ole rekisteröity</string>
     <!-- Message of dialog telling user they need to re-register signal as it is no longer registered -->
-    <string name="ReregisterSignalDialog__message">Tämä laite ei ole enää rekisteröity. Rekisteröi uudelleen jatkaaksesi Tellomiin käyttöä tällä laitteella.</string>
+    <string name="ReregisterSignalDialog__message">Tämä laite ei ole enää rekisteröity. Rekisteröi uudelleen jatkaaksesi Signalin käyttöä tällä laitteella.</string>
     <!-- Button text of re-registration dialog to re-register the device.  -->
     <string name="ReregisterSignalDialog__reregister_action">Rekisteröidy uudelleen</string>
     <!-- Button text of re-registration dialog to cancel the dialog.  -->
@@ -6546,7 +6546,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_boost_badge_has_expired_and">Boost-merkkisi on vanhentunut, eikä se enää näy profiilissasi.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_reactivate">Voit aktivoida Boost-merkkisi uudelleen 30 päiväksi kertalahjoituksella.</string>
     <!-- Displayed when we do not think the user is a subscriber when their boost expires -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Voit jatkaa Tellomiin käyttöä. Tukeaksesi sinun tarpeisiisi rakennettua teknologiaa, harkitse tukijaksi ryhtymistä tekemällä kuukausilahjoitus.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Voit jatkaa Signalin käyttöä. Tukeaksesi sinun tarpeisiisi rakennettua teknologiaa, harkitse tukijaksi ryhtymistä tekemällä kuukausilahjoitus.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__become_a_sustainer">Ryhdy tukijaksi</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">Lisää Boost</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">Ei nyt</string>
@@ -6556,7 +6556,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled">Toistuva kuukausittainen lahjoituksesi peruutettiin automaattisesti, koska maksuasi ei voitu käsitellä. Merkki ei näy enää profiilissasi.</string>
     <!-- Copy displayed when badge expires after a payment failure and we have a displayable charge failure reason -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled_s">Toistuva kuukausittainen lahjoituksesi peruutettiin. %1$s %2$s-merkki ei näy enää profiilissasi.</string>
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Voit jatkaa Tellomiin käyttöä, mutta jos haluat tukea sovellusta ja aktivoida merkin uudelleen, uusi lahjoitus nyt.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Voit jatkaa Signalin käyttöä, mutta jos haluat tukea sovellusta ja aktivoida merkin uudelleen, uusi lahjoitus nyt.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__renew_subscription">Uusi tilaus</string>
     <!-- Button label to send user to Google Pay website -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__go_to_google_pay">Siirry Google Payhin</string>
@@ -6617,13 +6617,13 @@
     <string name="DonationsErrors__your_payment_is_still">Lahjoitusta käsitellään vielä. Tämä voi kestää muutamia minuutteja yhteydestäsi riippuen.</string>
     <string name="DonationsErrors__failed_to_cancel_subscription">Tilauksen peruutus epäonnistui</string>
     <string name="DonationsErrors__subscription_cancellation_requires_an_internet_connection">Tilauksen peruutus vaatii internet-yhteyden.</string>
-    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">Laitteesi ei tue sovelluksen sisäistä lahjoittamista, joten et voi tehdä tilausta ansaitaksesi merkin. Voit silti tukea Tellomiia tekemällä lahjoituksen verkkosivustomme kautta.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__your_device_doesn_t_support">Laitteesi ei tue sovelluksen sisäistä lahjoittamista, joten et voi tehdä tilausta ansaitaksesi merkin. Voit silti tukea Signalia tekemällä lahjoituksen verkkosivustomme kautta.</string>
     <string name="NetworkFailure__network_error_check_your_connection_and_try_again">Verkkovirhe. Tarkista yhteys ja yritä uudelleen.</string>
     <string name="NetworkFailure__retry">Yritä uudelleen</string>
     <!-- Displayed as a dialog title when the selected recipient for a gift doesn\'t support gifting -->
     <string name="DonationsErrors__cannot_send_donation">Lahjoitusta ei voi lähettää</string>
     <!-- Displayed as a dialog message when the selected recipient for a gift doesn\'t support gifting -->
-    <string name="DonationsErrors__this_user_cant_receive_donations_until">Tämä käyttäjä ei voi saada lahjoituksia, ennen kuin hän on päivittänyt Tellomiin.</string>
+    <string name="DonationsErrors__this_user_cant_receive_donations_until">Tämä käyttäjä ei voi saada lahjoituksia, ennen kuin hän on päivittänyt Signalin.</string>
     <!-- Displayed as a dialog message when the user\'s profile could not be fetched, likely due to lack of internet -->
     <string name="DonationsErrors__your_donation_could_not_be_sent">Lahjoitustasi ei voitu lähettää verkkovirheen takia. Tarkista yhteytesi ja yritä uudelleen.</string>
     <!-- Displayed as a dialog message when the user encounters an error during an iDEAL donation -->
@@ -6632,7 +6632,7 @@
     <!-- Gift message view title -->
     <string name="GiftMessageView__donation_on_behalf_of_s">Lahjoitus henkilön %1$s puolesta</string>
     <!-- Gift message view title for incoming donations -->
-    <string name="GiftMessageView__s_donated_to_signal_on">%1$s lahjoitti Tellomiille puolestasi</string>
+    <string name="GiftMessageView__s_donated_to_signal_on">%1$s lahjoitti Signalille puolestasi</string>
     <!-- Gift badge redeem action label -->
     <string name="GiftMessageView__redeem">Lunasta</string>
     <!-- Gift badge view action label -->
@@ -6881,7 +6881,7 @@
     <!-- Donation receipts share PNG -->
     <string name="DonationReceiptDetailsFragment__share_receipt">Jaa kuitti</string>
     <!-- Donation receipts list end note -->
-    <string name="DonationReceiptListFragment__if_you_have">Jos olet asentanut Tellomiin uudelleen, kuitit vanhemmista lahjoituksista eivät näy.</string>
+    <string name="DonationReceiptListFragment__if_you_have">Jos olet asentanut Signalin uudelleen, kuitit vanhemmista lahjoituksista eivät näy.</string>
     <!-- Donation receipts document title -->
     <string name="DonationReceiptDetailsFragment__donation_receipt">Lahjoituskuitti</string>
     <!-- Donation receipts amount title -->
@@ -7280,8 +7280,8 @@
     <string name="GiftFlowStartFragment__donate_for_a_friend">Lahjoita ystävän puolesta</string>
     <!-- Description text on start fragment for gifting a badge -->
     <plurals name="GiftFlowStartFragment__support_signal_by">
-        <item quantity="one">Tue Tellomiia tekemällä lahjoitus Tellomiia käyttävän ystävän tai perheenjäsenen puolesta. Hän saa merkin, jonka hän voi näyttää profiilissaan %1$d päivän ajan.</item>
-        <item quantity="other">Tue Tellomiia tekemällä lahjoitus Tellomiia käyttävän ystävän tai perheenjäsenen puolesta. Hän saa merkin, jonka hän voi näyttää profiilissaan %1$d päivän ajan.</item>
+        <item quantity="one">Tue Signalia tekemällä lahjoitus Signalia käyttävän ystävän tai perheenjäsenen puolesta. Hän saa merkin, jonka hän voi näyttää profiilissaan %1$d päivän ajan.</item>
+        <item quantity="other">Tue Signalia tekemällä lahjoitus Signalia käyttävän ystävän tai perheenjäsenen puolesta. Hän saa merkin, jonka hän voi näyttää profiilissaan %1$d päivän ajan.</item>
     </plurals>
     <!-- Action button label for start fragment for gifting a badge -->
     <string name="GiftFlowStartFragment__next">Seuraava</string>
@@ -7304,9 +7304,9 @@
     <!-- Title for sheet shown when opening a sent gift -->
     <string name="ViewSentGiftBottomSheet__thanks_for_your_support">Kiitämme tuestasi!</string>
     <!-- Description for sheet shown when opening a redeemed gift -->
-    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$s teki lahjoituksen Tellomiille puolestasi! Näytä profiilissasi, että tuet Tellomiia.</string>
+    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$s teki lahjoituksen Signalille puolestasi! Näytä profiilissasi, että tuet Signalia.</string>
     <!-- Description for sheet shown when opening a sent gift -->
-    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Olet tehnyt lahjoituksen Tellomiille henkilön %1$s puolesta. Hän saa mahdollisuuden näyttää omassa profiilissaan, että hän tukee Tellomiia.</string>
+    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Olet tehnyt lahjoituksen Signalille henkilön %1$s puolesta. Hän saa mahdollisuuden näyttää omassa profiilissaan, että hän tukee Signalia.</string>
     <!-- Primary action for pending gift sheet to redeem badge now -->
     <string name="ViewReceivedGiftSheet__redeem">Lunasta</string>
     <!-- Primary action for pending gift sheet to redeem badge later -->
@@ -7314,7 +7314,7 @@
     <!-- Dialog text while redeeming a gift -->
     <string name="ViewReceivedGiftSheet__redeeming_badge">Lunastetaan merkkiä…</string>
     <!-- Description text in gift thanks sheet -->
-    <string name="GiftThanksSheet__youve_made_a_donation">Olet tehnyt lahjoituksen Tellomiille henkilön %1$s puolesta. Hän saa mahdollisuuden näyttää omassa profiilissaan, että hän tukee Tellomiia.</string>
+    <string name="GiftThanksSheet__youve_made_a_donation">Olet tehnyt lahjoituksen Signalille henkilön %1$s puolesta. Hän saa mahdollisuuden näyttää omassa profiilissaan, että hän tukee Signalia.</string>
     <!-- Expired gift sheet title -->
     <string name="ExpiredGiftSheetConfiguration__your_badge_has_expired">Merkkisi on vanhentunut</string>
     <!-- Expired gift sheet top description text -->
@@ -7407,7 +7407,7 @@
     <!-- Title of safety number changes bottom sheet when showing individual records -->
     <string name="SafetyNumberBottomSheetFragment__safety_number_changes">Turvanumeromuutokset</string>
     <!-- Message of safety number changes bottom sheet when showing individual records -->
-    <string name="SafetyNumberBottomSheetFragment__the_following_people">Seuraavat henkilöt ovat ehkä asentaneet Tellomiin uudelleen tai vaihtaneet käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla vastaanottajaa. Toiminto on valinnainen.</string>
+    <string name="SafetyNumberBottomSheetFragment__the_following_people">Seuraavat henkilöt ovat ehkä asentaneet Signalin uudelleen tai vaihtaneet käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla vastaanottajaa. Toiminto on valinnainen.</string>
     <!-- Title of safety number changes bottom sheet when not showing individual records -->
     <string name="SafetyNumberBottomSheetFragment__safety_number_checkup">Turvanumerotarkistus</string>
     <!-- Title of safety number changes bottom sheet when not showing individual records and user has seen review screen -->
@@ -7416,8 +7416,8 @@
     <string name="SafetyNumberBottomSheetFragment__all_connections_have_been_reviewed">Kaikki kontaktit on tarkistettu. Jatka napauttamalla.</string>
     <!-- Message of safety number changes bottom sheet when not showing individual records -->
     <plurals name="SafetyNumberBottomSheetFragment__you_have_d_connections_plural">
-        <item quantity="one">%1$d kontakti on ehkä asentanut Tellomiin uudelleen tai vaihtanut käyttämäänsä laitetta. Voit tarkistaa hänen turvanumeronsa ennen lähettämistä.</item>
-        <item quantity="other">%1$d kontaktia on ehkä asentanut Tellomiin uudelleen tai vaihtanut käyttämiänsä laitteita. Voit tarkistaa heidän turvanumeronsa ennen lähettämistä.</item>
+        <item quantity="one">%1$d kontakti on ehkä asentanut Signalin uudelleen tai vaihtanut käyttämäänsä laitetta. Voit tarkistaa hänen turvanumeronsa ennen lähettämistä.</item>
+        <item quantity="other">%1$d kontaktia on ehkä asentanut Signalin uudelleen tai vaihtanut käyttämiänsä laitteita. Voit tarkistaa heidän turvanumeronsa ennen lähettämistä.</item>
     </plurals>
     <!-- Menu action to launch safety number verification screen -->
     <string name="SafetyNumberBottomSheetFragment__verify_safety_number">Varmenna turvanumero</string>
@@ -7435,8 +7435,8 @@
     <string name="SafetyNumberReviewConnectionsFragment__safety_number_changes">Turvanumeromuutokset</string>
     <!-- Message of safety number review fragment -->
     <plurals name="SafetyNumberReviewConnectionsFragment__d_recipients_may_have">
-        <item quantity="one">%1$d vastaanottaja on ehkä asentanut Tellomiin uudelleen tai vaihtanut käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla vastaanottajaa. Toiminto on valinnainen.</item>
-        <item quantity="other">%1$d vastaanottajaa on ehkä asentanut Tellomiin uudelleen tai vaihtanut käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla vastaanottajaa. Toiminto on valinnainen.</item>
+        <item quantity="one">%1$d vastaanottaja on ehkä asentanut Signalin uudelleen tai vaihtanut käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla vastaanottajaa. Toiminto on valinnainen.</item>
+        <item quantity="other">%1$d vastaanottajaa on ehkä asentanut Signalin uudelleen tai vaihtanut käyttämäänsä laitetta. Vahvista uusi turvanumero napauttamalla vastaanottajaa. Toiminto on valinnainen.</item>
     </plurals>
     <!-- Section header for 1:1 contacts in review fragment -->
     <string name="SafetyNumberBucketRowItem__contacts">Yhteystiedot</string>
@@ -7563,11 +7563,11 @@
 
     <!-- GatewaySelectorBottomSheet -->
     <!-- Sheet title when subscribing -->
-    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Lahjoita Tellomiille %1$s/kuukausi</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Lahjoita Signalille %1$s/kuukausi</string>
     <!-- Sheet summary when subscribing -->
     <string name="GatewaySelectorBottomSheet__get_a_s_badge">Hanki %1$s-merkki</string>
     <!-- Sheet title when giving a one-time donation -->
-    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Lahjoita Tellomiille %1$s</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Lahjoita Signalille %1$s</string>
     <!-- Sheet summary when giving a one-time donation -->
     <plurals name="GatewaySelectorBottomSheet__get_a_s_badge_for_d_days">
         <item quantity="one">Hanki %1$s-merkki %2$d päiväksi</item>
@@ -7583,16 +7583,16 @@
     <string name="GatewaySelectorBottomSheet__ideal_wero">iDEAL | Wero</string>
 
     <!-- Dialog title for launching external intent -->
-    <string name="ExternalNavigationHelper__leave_signal_to_confirm_payment">Siirrytäänkö pois Tellomiista lahjoituksen vahvistamiseksi?</string>
-    <string name="ExternalNavigationHelper__once_this_payment_is_confirmed">Palaa Tellomiiin lahjoituksen vahvistamisen jälkeen, jotta se voidaan käsitellä loppuun.</string>
+    <string name="ExternalNavigationHelper__leave_signal_to_confirm_payment">Siirrytäänkö pois Signalista lahjoituksen vahvistamiseksi?</string>
+    <string name="ExternalNavigationHelper__once_this_payment_is_confirmed">Palaa Signaliin lahjoituksen vahvistamisen jälkeen, jotta se voidaan käsitellä loppuun.</string>
     <!-- Dialog message shown when leaving Signal to complete a donation in an external app. Placeholder is the resolved app name (e.g. a banking app). -->
-    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">Lähetämme sinut sovellukseen %1$s. Palaa Tellomiiin lahjoituksen vahvistamisen jälkeen, jotta lahjoitus voidaan käsitellä loppuun.</string>
+    <string name="ExternalNavigationHelper__once_payment_confirmed_in_app">Lähetämme sinut sovellukseen %1$s. Palaa Signaliin lahjoituksen vahvistamisen jälkeen, jotta lahjoitus voidaan käsitellä loppuun.</string>
 
     <!-- BankTransferMandateFragment -->
     <!-- Title of screen displaying the bank transfer mandate -->
     <string name="BankTransferMandateFragment__bank_transfer">Pankkisiirto</string>
     <!-- Subtitle of screen displaying the bank transfer mandate, placeholder is \'Learn more\' -->
-    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe käsittelee Tellomiille tehdyt lahjoitukset. Tellomi ei kerää tai tallenna henkilötietojasi. %1$s</string>
+    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe käsittelee Signalille tehdyt lahjoitukset. Tellomi ei kerää tai tallenna henkilötietojasi. %1$s</string>
     <!-- Subtitle learn more of screen displaying bank transfer mandate -->
     <string name="BankTransferMandateFragment__learn_more">Lue lisää</string>
     <!-- Button label to continue with transfer -->
@@ -7688,7 +7688,7 @@
     <!-- Title of \'Donation Complete\' sheet displayed after a bank transfer completes and the badge is redeemed -->
     <string name="DonationCompletedBottomSheet__donation_complete">Lahjoitus on valmis</string>
     <!-- Text block of \'Donation Complete\' sheet displayed after a bank transfer completes and the badge is redeemed -->
-    <string name="DonationCompleteBottomSheet__your_bank_transfer_was_received">Pankkisiirtosi saapui perille. Voit halutessasi näyttää tämän merkin profiilissasi ja osoittaa, että tuet Tellomiia.</string>
+    <string name="DonationCompleteBottomSheet__your_bank_transfer_was_received">Pankkisiirtosi saapui perille. Voit halutessasi näyttää tämän merkin profiilissasi ja osoittaa, että tuet Signalia.</string>
     <!-- Button text of \'Donation Complete\' sheet displayed after a bank transfer completes and the badge is redeemed to dismiss sheet -->
     <string name="DonationCompleteBottomSheet__done">Valmis</string>
 
@@ -7710,7 +7710,7 @@
     <!-- The title of a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_title">Yhteystietoja ei voi käsitellä</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
-    <string name="CdsPermanentErrorBottomSheet_body">Puhelimessa olevien yhteystietojen määrä ylittää enimmäismäärän, jonka Tellomi voi käsitellä. Voit etsiä yhteystietoja Tellomiista poistamalla puhelimestasi yhteystietoja tai tilejä, jotka synkronoivat monia yhteystietoja.</string>
+    <string name="CdsPermanentErrorBottomSheet_body">Puhelimessa olevien yhteystietojen määrä ylittää enimmäismäärän, jonka Tellomi voi käsitellä. Voit etsiä yhteystietoja Signalista poistamalla puhelimestasi yhteystietoja tai tilejä, jotka synkronoivat monia yhteystietoja.</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_learn_more">Lue lisää</string>
     <!-- A button label in a bottom sheet that will navigate the user to their contacts settings. -->
@@ -7980,7 +7980,7 @@
     <!-- Toggle to require approval for all members before joining -->
     <string name="CreateCallLinkBottomSheetDialogFragment__require_admin_approval">Vaadi järjestelmänvalvojan hyväksyntä</string>
     <!-- Row label to share the link via Signal -->
-    <string name="CreateCallLinkBottomSheetDialogFragment__share_link_via_signal">Jaa linkki Tellomiissa</string>
+    <string name="CreateCallLinkBottomSheetDialogFragment__share_link_via_signal">Jaa linkki Signalissa</string>
     <!-- Row label to copy the link to the clipboard -->
     <string name="CreateCallLinkBottomSheetDialogFragment__copy_link">Kopioi linkki</string>
     <!-- Row label to share the link with the external share sheet -->
@@ -8092,7 +8092,7 @@
     <!-- Body of a dialog that is displayed when we successfully reset you username link. -->
     <string name="UsernameLinkSettings_reset_link_result_success">QR-koodisi ja linkkisi on palautettu oletusasetukseen ja uusi QR-koodi ja linkki on luotu.</string>
     <!-- Shown on the generated username qr code image to explain how to use it. -->
-    <string name="UsernameLinkSettings_scan_this_qr_code">Skannaa tämä QR-koodi puhelimellasi, niin voit keskustella kanssani Tellomiissa.</string>
+    <string name="UsernameLinkSettings_scan_this_qr_code">Skannaa tämä QR-koodi puhelimellasi, niin voit keskustella kanssani Signalissa.</string>
     <!-- Dialog title shown when scanning an image from the gallery for a username QR code and there is no qr code in the image. -->
     <string name="UsernameLinkSettings_qr_code_not_found">QR-koodia ei löydy</string>
     <!-- Dialog message shown when scanning an image from the gallery for a username QR code and there is no qr code in the image. -->
@@ -8134,7 +8134,7 @@
     <!-- Title of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups -->
     <string name="TurnOnSignalBackups__title">Ota Tellomi Secure -varmuuskopiointi käyttöön</string>
     <!-- Body of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups -->
-    <string name="TurnOnSignalBackups__body">Älä koskaan menetä viestiä, kun hankit uuden puhelimen tai asennat Tellomiin uudelleen.</string>
+    <string name="TurnOnSignalBackups__body">Älä koskaan menetä viestiä, kun hankit uuden puhelimen tai asennat Signalin uudelleen.</string>
     <!-- Button of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups that will take the user to the flow to enable backups -->
     <string name="TurnOnSignalBackups__turn_on">Ota käyttöön</string>
     <!-- Button of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups that will simply dismiss the megaphone -->
@@ -8174,7 +8174,7 @@
     <!-- Title of the backup upsell bottom sheet promoting paid backup plans -->
     <string name="BackupUpsellBottomSheet__title">Päivitä tilaus varmuuskopioidaksesi kaiken median</string>
     <!-- Body of the backup upsell bottom sheet -->
-    <string name="BackupUpsellBottomSheet__body">Maksulliset Tellomi Secure -varmuuskopiointitilaukset tallentavat kaiken lähettämäsi ja vastaanottamasi median, enintään 100 Gt. Älä koskaan menetä kuvaa tai videota, kun hankit uuden puhelimen tai asennat Tellomiin uudelleen.</string>
+    <string name="BackupUpsellBottomSheet__body">Maksulliset Tellomi Secure -varmuuskopiointitilaukset tallentavat kaiken lähettämäsi ja vastaanottamasi median, enintään 100 Gt. Älä koskaan menetä kuvaa tai videota, kun hankit uuden puhelimen tai asennat Signalin uudelleen.</string>
     <!-- Label for the paid plan price shown in the feature card, e.g. "$1.99/month" -->
     <string name="BackupUpsellBottomSheet__price_per_month">%1$s/kk</string>
     <!-- Subtitle for the paid plan feature card -->
@@ -8186,7 +8186,7 @@
     <!-- Feature bullet: save on-device storage -->
     <string name="BackupUpsellBottomSheet__save_on_device_storage">Säästä laitteen tallennustilaa</string>
     <!-- Feature bullet: thanks for supporting Signal -->
-    <string name="BackupUpsellBottomSheet__thanks_for_supporting">Kiitos, että tuet Tellomiia</string>
+    <string name="BackupUpsellBottomSheet__thanks_for_supporting">Kiitos, että tuet Signalia</string>
     <!-- Primary button for the upsell bottom sheet. The %s is replaced by the subscription price, e.g. "$1.99/month" -->
     <string name="BackupUpsellBottomSheet__subscribe_for">Tilaa hintaan %1$s / kk</string>
     <!-- Secondary/dismiss button for the upsell bottom sheet -->
@@ -8195,9 +8195,9 @@
     <!-- Title of the backup setup complete bottom sheet -->
     <string name="BackupSetupCompleteBottomSheet__title">Kaikki on valmista. Aloita varmuuskopiointi nyt.</string>
     <!-- Body of the backup setup complete bottom sheet -->
-    <string name="BackupSetupCompleteBottomSheet__body">Tämä voi kestää hetken. Voit käyttää Tellomiia normaalisti varmuuskopioinnin aikana.</string>
+    <string name="BackupSetupCompleteBottomSheet__body">Tämä voi kestää hetken. Voit käyttää Signalia normaalisti varmuuskopioinnin aikana.</string>
     <!-- Label for the optimize storage toggle -->
-    <string name="BackupSetupCompleteBottomSheet__optimize_storage">Optimoi Tellomiin tallennustila</string>
+    <string name="BackupSetupCompleteBottomSheet__optimize_storage">Optimoi Signalin tallennustila</string>
     <!-- Subtitle for the optimize storage toggle -->
     <string name="BackupSetupCompleteBottomSheet__optimize_subtitle">Vanhempi media poistetaan, mutta se voidaan ladata varmuuskopiosta milloin tahansa.</string>
     <!-- Primary button on the setup complete bottom sheet -->
@@ -8222,9 +8222,9 @@
     <string name="InactivePrimary__got_it">Selvä</string>
 
     <!-- Text describing how to restore a backup displayed on the on-device backups screen -->
-    <string name="OnDeviceBackupsScreen__to_restore_a_backup">"Palauta varmuuskopio asentamalla uusi kopio Tellomiista. Avaa sovellus, napauta Palauta varmuuskopio ja etsi sitten varmuuskopiokansio."</string>
+    <string name="OnDeviceBackupsScreen__to_restore_a_backup">"Palauta varmuuskopio asentamalla uusi kopio Signalista. Avaa sovellus, napauta Palauta varmuuskopio ja etsi sitten varmuuskopiokansio."</string>
     <!-- Body of a dialog shown when turning on on-device backups while "Optimize Signal storage" is enabled, warning that optimized media won\'t be included -->
-    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Tellomiin tallennustilan optimointi on päällä. Jos haluat sisällyttää kaiken median laitteessa olevaan varmuuskopioon, laita asetus pois päältä.</string>
+    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Signalin tallennustilan optimointi on päällä. Jos haluat sisällyttää kaiken median laitteessa olevaan varmuuskopioon, laita asetus pois päältä.</string>
     <!-- Dialog action that takes the user to the "Optimize Signal storage" setting -->
     <string name="OnDeviceBackupsScreen__view_setting">Näytä asetus</string>
     <!-- Dialog action to proceed with turning on on-device backups without turning off "Optimize Signal storage" -->
@@ -8291,7 +8291,7 @@
     <!-- Dialog title for invalid phone number -->
     <string name="FindByActivity__invalid_phone_number">Virheellinen puhelinnumero</string>
     <!-- Dialog title when phone number is not a registered signal user -->
-    <string name="FindByActivity__invite_to_signal">Kutsu Tellomiiin</string>
+    <string name="FindByActivity__invite_to_signal">Kutsu Signaliin</string>
     <!-- Dialog title when username is not found -->
     <string name="FindByActivity__username_not_found">Käyttäjänimeä ei löydy</string>
     <!-- Dialog body for invalid username. Placeholder is the entered username. -->
@@ -8299,9 +8299,9 @@
     <!-- Dialog body for an invalid phone number. Placeholder is the entered phone number. -->
     <string name="FindByActivity__s_is_not_a_valid_phone_number">%1$s ei ole kelvollinen puhelinnumero. Yritä uudelleen kelvollisella puhelinnumerolla</string>
     <!-- Dialog body for not found username -->
-    <string name="FindByActivity__s_is_not_a_signal_user">%1$s ei käytä Tellomiia. Tarkista käyttäjänimi ja yritä uudelleen.</string>
+    <string name="FindByActivity__s_is_not_a_signal_user">%1$s ei käytä Signalia. Tarkista käyttäjänimi ja yritä uudelleen.</string>
     <!-- Dialog body for not found phone number -->
-    <string name="FindByActivity__s_is_not_a_signal_user_would">%1$s ei ole Tellomiin käyttäjä. Haluatko kutsua tämän numeron?</string>
+    <string name="FindByActivity__s_is_not_a_signal_user_would">%1$s ei ole Signalin käyttäjä. Haluatko kutsua tämän numeron?</string>
     <!-- Dialog action to invite the phone number to Signal -->
     <string name="FindByActivity__invite">Kutsu</string>
     <!-- Button label for a button that will launch a camera to scan a username QR code -->
@@ -8325,7 +8325,7 @@
     <!-- Title displayed at the top of the screen -->
     <string name="NicknameActivity__nickname">Lempinimi</string>
     <!-- Subtitle displayed under title -->
-    <string name="NicknameActivity__nicknames_amp_notes">Lempinimet ja huomautukset tallennetaan Tellomiin päästä päähän salattua tallennuspalvelua käyttäen. Ne näkyvät vain sinulle.</string>
+    <string name="NicknameActivity__nicknames_amp_notes">Lempinimet ja huomautukset tallennetaan Signalin päästä päähän salattua tallennuspalvelua käyttäen. Ne näkyvät vain sinulle.</string>
     <!-- Field label for given name -->
     <string name="NicknameActivity__first_name">Etunimi</string>
     <!-- Content description for first name clear button -->
@@ -8437,7 +8437,7 @@
     <!-- Dialog title when a backup redemption fails -->
     <string name="BackupAlertBottomSheet__couldnt_redeem_your_backups_subscription">Varmuuskopiotilausta ei voitu lunastaa</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it -->
-    <string name="BackupAlertBottomSheet__an_error_occurred">Tapahtui virhe, eikä varmuuskopiointia voitu suorittaa loppuun. Varmista, että käytät Tellomiin uusinta versiota ja yritä uudelleen. Jos ongelma jatkuu, ota yhteyttä tukeen.</string>
+    <string name="BackupAlertBottomSheet__an_error_occurred">Tapahtui virhe, eikä varmuuskopiointia voitu suorittaa loppuun. Varmista, että käytät Signalin uusinta versiota ja yritä uudelleen. Jos ongelma jatkuu, ota yhteyttä tukeen.</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it. Used for out of remote storage space error. -->
     <string name="BackupAlertBottomSheet__an_error_occurred_and">Tapahtui virhe, eikä varmuuskopiointia voitu suorittaa loppuun. Jos ongelma jatkuu, ota yhteyttä tukeen.</string>
     <!-- Dialog action button that will allow you to check for any Signal version updates -->
@@ -8519,7 +8519,7 @@
     <!-- Text displayed when a backup could not be completed -->
     <string name="BackupStatusRow__your_last_backup">Viimeistä varmuuskopiointia ei voitu suorittaa loppuun. Varmista, että puhelimesi on yhdistetty Wi-Fi-verkkoon, ja yritä uudelleen napauttamalla Varmuuskopioi nyt.</string>
     <!-- Text displayed when a backup could not be completed and to check that they are on the latest version of Signal -->
-    <string name="BackupStatusRow__your_last_backup_latest_version">Viimeistä varmuuskopiointia ei voitu suorittaa loppuun. Varmista, että käytät Tellomiin uusinta versiota ja yritä uudelleen.</string>
+    <string name="BackupStatusRow__your_last_backup_latest_version">Viimeistä varmuuskopiointia ei voitu suorittaa loppuun. Varmista, että käytät Signalin uusinta versiota ja yritä uudelleen.</string>
     <!-- Text displayed when a backup file exceeds the storage limit during upload. -->
     <string name="BackupStatusRow__backup_file_too_large">Viestien määrä ylittää tallennusrajan. Poista joitakin viestejä ja yritä uudelleen.</string>
     <!-- Text displayed when we\'re not backing up all messages. The placeholder represents the cutoff date for the messages we\'re backing up. -->
@@ -8607,7 +8607,7 @@
     <!-- Setting section title header for storage optimization -->
     <string name="ManageStorageSettingsFragment__on_device_storage">Tellomi-tallennustila</string>
     <!-- Setting row title for storage optimization -->
-    <string name="ManageStorageSettingsFragment__optimize_on_device_storage">Optimoi Tellomiin tallennustila</string>
+    <string name="ManageStorageSettingsFragment__optimize_on_device_storage">Optimoi Signalin tallennustila</string>
     <!-- Setting row explanation for storage optimization -->
     <string name="ManageStorageSettingsFragment__unused_media_will_be_offloaded">Käyttämätön media poistetaan, mutta se voidaan ladata varmuuskopiosta milloin tahansa.</string>
     <!-- Dialog message for paid tier pending dialog -->
@@ -8615,7 +8615,7 @@
     <!-- Title of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
     <string name="ManageStorageSettingsFragment__media_will_be_removed_from_your_on_device_backup">Mediasisältö poistetaan laitteessa olevasta varmuuskopiosta</string>
     <!-- Body of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
-    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Laittamalla Tellomiin tallennustilan optimoinnin pois päältä voit siirtää vanhan mediasisällön sivuun. Voi ladata sen takaisin laitteellesi milloin vain. Tämä poistaa myös vanhan mediasisällön laitteessa olevasta varmuuskopiosta.</string>
+    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Laittamalla Signalin tallennustilan optimoinnin pois päältä voit siirtää vanhan mediasisällön sivuun. Voi ladata sen takaisin laitteellesi milloin vain. Tämä poistaa myös vanhan mediasisällön laitteessa olevasta varmuuskopiosta.</string>
     <!-- Dialog action to confirm turning on "Optimize Signal storage" -->
     <string name="ManageStorageSettingsFragment__turn_on">Ota käyttöön</string>
 
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Tilaus on peruttu</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automaattiset varmuuskopiot Tellomiin turvallisella, päästä päähän salatulla tallennuspalvelulla.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automaattiset varmuuskopiot Signalin turvallisella, päästä päähän salatulla tallennuspalvelulla.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automaattiset varmuuskopiot Tellomiin turvallisella, päästä päähän salatulla tallennuspalvelulla. Aloita puhelimellasi.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automaattiset varmuuskopiot Signalin turvallisella, päästä päähän salatulla tallennuspalvelulla. Aloita puhelimellasi.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Tilausta ei löydy tältä laitteelta."</string>
     <!-- Action button label to set up backups -->
@@ -8779,7 +8779,7 @@
     <!-- Displays the date the subscription expired. Placeholder is the date. -->
     <string name="RemoteBackupsSettingsFragment__expired_on_s">Päättyi %1$s</string>
     <!-- Displayed at the top of the screen when no backup is currently enabled -->
-    <string name="RemoteBackupsSettingsFragment__back_up_your_message_history">Varmuuskopioi viestihistoriasi, jotta et koskaan menetä tietoja, kun hankit uuden puhelimen tai asennat Tellomiin uudelleen.</string>
+    <string name="RemoteBackupsSettingsFragment__back_up_your_message_history">Varmuuskopioi viestihistoriasi, jotta et koskaan menetä tietoja, kun hankit uuden puhelimen tai asennat Signalin uudelleen.</string>
     <!-- Section header for other ways to back up -->
     <string name="RemoteBackupsSettingsFragment__other_ways_to_backup">Muita tapoja varmuuskopioida</string>
     <!-- Row title for performing on-device backup -->
@@ -8837,7 +8837,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">Ota varmuuskopiot uudelleen käyttöön</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Varmuuskopiointi on poistettu käytöstä ja tietosi on poistettu Tellomiin suojatusta tallennuspalvelusta.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Varmuuskopiointi on poistettu käytöstä ja tietosi on poistettu Signalin suojatusta tallennuspalvelusta.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">Ladataan varmuuskopiota</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -8902,17 +8902,17 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">Lisätietoja</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Varmuuskopiot on poistettu käytöstä, mutta tietojen poistamisessa Tellomiin suojatusta tallennuspalvelusta tapahtui virhe.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Varmuuskopiot on poistettu käytöstä, mutta tietojen poistamisessa Signalin suojatusta tallennuspalvelusta tapahtui virhe.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">Varmuuskopion poistaminen epäonnistui</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">Tapahtui virhe. Ota yhteys tukeen.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Varmuuskopiointi on poistettu käytöstä, tiedot ladataan laitteellesi ja poistetaan sitten Tellomiin suojatusta tallennuspalvelusta.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Varmuuskopiointi on poistettu käytöstä, tiedot ladataan laitteellesi ja poistetaan sitten Signalin suojatusta tallennuspalvelusta.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Varmuuskopiointi on poistettu käytöstä ja tietosi poistetaan Tellomiin suojatusta tallennuspalvelusta.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Varmuuskopiointi on poistettu käytöstä ja tietosi poistetaan Signalin suojatusta tallennuspalvelusta.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Varmuuskopiointi on poistettu käytöstä ja tietosi on poistettu Tellomiin suojatusta tallennuspalvelusta.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Varmuuskopiointi on poistettu käytöstä ja tietosi on poistettu Signalin suojatusta tallennuspalvelusta.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">Ladataan: %1$s / %2$s (%3$d %%)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -9009,7 +9009,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Varmuuskopioi viestit ja mediasisältö käyttämällä Tellomiin turvallista, päästä päähän salattua tallennuspalvelua. Älä koskaan menetä viestiä, kun hankit uuden puhelimen tai asennat Tellomiin uudelleen.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Varmuuskopioi viestit ja mediasisältö käyttämällä Signalin turvallista, päästä päähän salattua tallennuspalvelua. Älä koskaan menetä viestiä, kun hankit uuden puhelimen tai asennat Signalin uudelleen.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">Päästä päähän salattu</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->
@@ -9039,7 +9039,7 @@
     <!-- Screen body shown when upgrading on-device backups to a new recovery key (part 2, bolded). -->
     <string name="MessageBackupsKeyEducationScreen__local_backup_upgrade_description_bold">Tämä avain korvaa laitteella olevan varmuuskopion avaimen.</string>
     <!-- Screen body shown when enabling Signal Secure Backups while on-device backups are already enabled (part 1). -->
-    <string name="MessageBackupsKeyEducationScreen__remote_backup_with_local_enabled_description">Palautusavain on 64 merkkiä sisältävä koodi, jonka avulla voit palauttaa varmuuskopiot, kun asennat Tellomiin uudelleen.</string>
+    <string name="MessageBackupsKeyEducationScreen__remote_backup_with_local_enabled_description">Palautusavain on 64 merkkiä sisältävä koodi, jonka avulla voit palauttaa varmuuskopiot, kun asennat Signalin uudelleen.</string>
     <!-- Screen body shown when enabling Signal Secure Backups while on-device backups are already enabled (part 2, bolded). -->
     <string name="MessageBackupsKeyEducationScreen__remote_backup_with_local_enabled_description_bold">Avain on sama kuin laitteellasi oleva palautusavain.</string>
     <!-- Screen body shown when enabling on-device backups while Signal Secure Backups are already enabled (part 2, bolded). -->
@@ -9079,7 +9079,7 @@
     <!-- Dialog message shown when there is an error saving the recovery key because no compatible password manager was detected. -->
     <string name="MessageBackupsKeyRecordScreen__missing_password_manager_message">Sinulla ei ole salasananhallintaa määritettynä, tai käyttämääsi salasananhallintaa ei tueta.</string>
     <!-- Dialog message shown when there is an error saving the recovery key because the user previously chose not to save Signal passwords to their password manager. -->
-    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">Valitsit aiemmin, ettet halua tallentaa Tellomiin salasanaa Google Password Manageriin. Poista Tellomi Google Password Managerin asetusten kohdasta \"Hylätyt sivustot ja sovellukset\" ja yritä uudelleen.</string>
+    <string name="MessageBackupsKeyRecordScreen__password_save_prompt_disabled_message">Valitsit aiemmin, ettet halua tallentaa Signalin salasanaa Google Password Manageriin. Poista Tellomi Google Password Managerin asetusten kohdasta \"Hylätyt sivustot ja sovellukset\" ja yritä uudelleen.</string>
     <!-- Label for a button that navigates to the device settings -->
     <string name="MessageBackupsKeyRecordScreen__go_to_settings">Siirry asetuksiin</string>
     <!-- Action button label -->
@@ -9099,13 +9099,13 @@
     <!-- Dialog title for confirming you need to disable optimized storage and download media to rotate AEP key -->
     <string name="MessageBackupsKeyRecordScreen__download_media">Lataa media</string>
     <!-- Dialog body for confirming you need to disable optimized storage and download media to rotate AEP key -->
-    <string name="MessageBackupsKeyRecordScreen__to_create_a_new_backup_key">Uuden palautusavaimen luomiseksi sinun on poistettava käytöstä Optimoi Tellomiin tallennustila ja odotettava, kunnes mediasisältö on ladattu. Kun lataus on valmis, voit luoda uuden avaimen.</string>
+    <string name="MessageBackupsKeyRecordScreen__to_create_a_new_backup_key">Uuden palautusavaimen luomiseksi sinun on poistettava käytöstä Optimoi Signalin tallennustila ja odotettava, kunnes mediasisältö on ladattu. Kun lataus on valmis, voit luoda uuden avaimen.</string>
     <!-- Action label to turn off optimized storage and download media -->
     <string name="MessageBackupsKeyRecordScreen__turn_off_and_download">Poista käytöstä ja lataa</string>
     <!-- Bottom Sheet title for creating a new AEP key -->
     <string name="MessageBackupsKeyRecordScreen__create_a_new_backup_key">Luo uusi palautusavain</string>
     <!-- Bottom Sheet body for creating a new AEP key -->
-    <string name="MessageBackupsKeyRecordScreen__creating_a_new_key_is_only_necessary">Uuden avaimen luominen on tarpeen vain, jos joku muu tietää sen. Sinun on ladattava varmuuskopio uudelleen, mediasisältö mukaan lukien. Jos Optimoi Tellomiin tallennustila -toiminto on käytössä, sinun on ensin ladattava sivuun siirretty media.</string>
+    <string name="MessageBackupsKeyRecordScreen__creating_a_new_key_is_only_necessary">Uuden avaimen luominen on tarpeen vain, jos joku muu tietää sen. Sinun on ladattava varmuuskopio uudelleen, mediasisältö mukaan lukien. Jos Optimoi Signalin tallennustila -toiminto on käytössä, sinun on ensin ladattava sivuun siirretty media.</string>
     <!-- Dialog title shown when user attempts to exit backup setup before completion -->
     <string name="MessageBackupsKeyRecordScreen__exit_backup_setup">Poistutaanko varmuuskopioinnin asetuksista?</string>
     <!-- Dialog body warning user that backup setup is incomplete -->
@@ -9200,7 +9200,7 @@
     <!-- Description text for storage space for paid tier media. Placeholder 1 is for byte amount, placeholder 2 is for a photo count estimate -->
     <string name="MessageBackupsTypeSelectionScreen__s_of_storage_s_photos">%1$s tallennustilaa (%2$s valokuvaa)</string>
     <!-- Description text for thanks -->
-    <string name="MessageBackupsTypeSelectionScreen__thanks_for_supporting_signal">Kiitos Tellomiin tukemisesta!</string>
+    <string name="MessageBackupsTypeSelectionScreen__thanks_for_supporting_signal">Kiitos Signalin tukemisesta!</string>
     <!-- Description text for free tier media retention. Placeholder is retention day count. -->
     <plurals name="MessageBackupsTypeSelectionScreen__last_d_days_of_media">
         <item quantity="one">Mediasisältö viimeisen %1$d päivän ajalta</item>
@@ -9236,7 +9236,7 @@
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Minulla ei ole vanhaa puhelintani</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">Tai jos asennat Tellomiia uudelleen samalle laitteelle</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">Tai jos asennat Signalia uudelleen samalle laitteelle</string>
 
     <!-- Screen title for selecting which restore method to use during registration -->
     <string name="SelectRestoreMethodFragment__restore_or_transfer_account">Palauta tai siirrä tili</string>
@@ -9289,7 +9289,7 @@
     <!-- Dialog title shown when entered AEP doesn\'t work to register with provided e164 -->
     <string name="EnterBackupKey_incorrect_backup_key_title">Virheellinen palautusavain</string>
     <!-- Dialog message shown when entered AEP doesn\'t work to register with provided e164 -->
-    <string name="EnterBackupKey_incorrect_backup_key_message">Varmista, että rekisteröidyt samalla puhelinnumerolla ja 64-merkkisellä palautusavaimella, jonka tallensit ottaessasi Tellomiin Secure -varmuuskopioinnin käyttöön. Varmuuskopioita ei voi palauttaa ilman koodia.</string>
+    <string name="EnterBackupKey_incorrect_backup_key_message">Varmista, että rekisteröidyt samalla puhelinnumerolla ja 64-merkkisellä palautusavaimella, jonka tallensit ottaessasi Signalin Secure -varmuuskopioinnin käyttöön. Varmuuskopioita ei voi palauttaa ilman koodia.</string>
     <!-- Dialog positive button text to try entering their recovery key again -->
     <string name="EnterBackupKey_try_again">Yritä uudelleen</string>
     <!-- Dialog negative button text to get help with recovery key -->
@@ -9590,7 +9590,7 @@
     <!-- Notification title for when user is out of remote storage -->
     <string name="Notification_backup_storage_full">Varmuuskopioinnin tallennustila täynnä</string>
     <!-- Notification body for when user is out of remote storage -->
-    <string name="Notification_youve_reached_your_backup_storage_limit">Olet saavuttanut varmuuskopioinnin tilarajan. Vapauta tilaa Tellomiissa, jotta voit jatkaa keskustelujen ja median varmuuskopiointia.</string>
+    <string name="Notification_youve_reached_your_backup_storage_limit">Olet saavuttanut varmuuskopioinnin tilarajan. Vapauta tilaa Signalissa, jotta voit jatkaa keskustelujen ja median varmuuskopiointia.</string>
     <!-- Notification title for when initial backup failed -->
     <string name="Notification_backup_failed">Varmuuskopio epäonnistui</string>
     <!-- Notification body for when initial backup failed -->
@@ -9728,7 +9728,7 @@
     <!-- Title asking user how their call was -->
     <string name="CallQualitySheet__how_was_your_call">Millainen oli puhelun laatu?</string>
     <!-- Subtitle explaining that feedback helps improve Signal and no PII is stored -->
-    <string name="CallQualitySheet__how_was_your_call_subtitle">Palaute auttaa meitä parantamaan puheluita Tellomiissa. Henkilökohtaisesti tunnistettavia tietoja ei tallenneta.</string>
+    <string name="CallQualitySheet__how_was_your_call_subtitle">Palaute auttaa meitä parantamaan puheluita Signalissa. Henkilökohtaisesti tunnistettavia tietoja ei tallenneta.</string>
     <!-- Button label indicating the call had issues -->
     <string name="CallQualitySheet__had_issues">Puhelussa oli ongelmia</string>
     <!-- Button label indicating the call was great -->
@@ -9912,7 +9912,7 @@
     <!-- Title of the first safety tip: don\'t respond to chats claiming to be Signal -->
     <string name="SafetyTipsBottomSheet__tip_1_title">Älä vastaa keskusteluihin, joiden lähettäjänä on Tellomi</string>
     <!-- Body of the first safety tip -->
-    <string name="SafetyTipsBottomSheet__tip_1_body">Tellomi ei koskaan lähetä viestejä pyytääkseen rekisteröintikoodia, PIN-koodia tai palautusavainta. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Tellomiia.</string>
+    <string name="SafetyTipsBottomSheet__tip_1_body">Tellomi ei koskaan lähetä viestejä pyytääkseen rekisteröintikoodia, PIN-koodia tai palautusavainta. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Signalia.</string>
     <!-- Title of the second safety tip: keep your verification code safe -->
     <string name="SafetyTipsBottomSheet__tip_2_title">Pidä vahvistuskoodi turvassa</string>
     <!-- Body of the second safety tip -->
@@ -9929,7 +9929,7 @@
     <!-- Bolded lead-in to the warning sheet body; combined with RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond to form a full sentence -->
     <string name="RecoveryKeyWarningSheetContent__signal_will_never_message_you">Tellomi ei koskaan lähetä sinulle viestejä,</string>
     <!-- Remainder of the warning sheet body following the bolded lead-in RecoveryKeyWarningSheetContent__signal_will_never_message_you -->
-    <string name="RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond">joissa pyydetään palautusavaintasi. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Tellomiia. Säilytä palautusavainta turvallisessa paikassa, äläkä koskaan sitä kenellekään.</string>
+    <string name="RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond">joissa pyydetään palautusavaintasi. Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Signalia. Säilytä palautusavainta turvallisessa paikassa, äläkä koskaan sitä kenellekään.</string>
     <!-- Button dismissing the recovery key warning sheet after the user has copied their key -->
     <string name="RecoveryKeyWarningSheetContent__got_it">Selvä</string>
     <!-- Button opening a help article with more information about recovery key safety -->
@@ -9948,7 +9948,7 @@
     <!-- Bolded middle sentence of the final confirmation dialog body -->
     <string name="RecoveryKeyWarningDialog__signal_will_never_message_you_for_your_recovery_key">Tellomi ei koskaan lähetä viestejä pyytääkseen palautusavainta.</string>
     <!-- Final sentence of the final confirmation dialog body -->
-    <string name="RecoveryKeyWarningDialog__never_respond_to_a_chat">Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Tellomiia.</string>
+    <string name="RecoveryKeyWarningDialog__never_respond_to_a_chat">Älä vastaa keskusteluihin, joissa lähettäjä esittää edustavansa Signalia.</string>
     <!-- Button confirming the user wants to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__paste_key">Liitä avain</string>
     <!-- Button declining to paste the recovery key -->
@@ -10037,7 +10037,7 @@
     <!-- Context menu entry that copies a shared contact detail to the clipboard -->
     <string name="SharedContactDetailsScreen__copy">Kopioi</string>
     <!-- Row that invites a shared contact who is not yet on Signal -->
-    <string name="SharedContactDetailsScreen__invite_to_signal">Kutsu Tellomiiin</string>
+    <string name="SharedContactDetailsScreen__invite_to_signal">Kutsu Signaliin</string>
     <!-- Row that saves a shared contact into the device address book -->
     <string name="SharedContactDetailsScreen__add_to_phone_contacts">Lisää puhelimen yhteystietoihin</string>
     <!-- Row that adds a shared contact to a Signal group -->
@@ -10049,7 +10049,7 @@
     <!-- Toast shown when there is no map app to open a shared address in -->
     <string name="SharedContactDetailsScreen__couldnt_open_maps">Karttojen avaaminen epäonnistui</string>
     <!-- Subject line of an email invitation to Signal -->
-    <string name="SharedContactDetailsScreen__join_me_on_signal">Liity Tellomiiin</string>
+    <string name="SharedContactDetailsScreen__join_me_on_signal">Liity Signaliin</string>
 
     <!-- EOF -->
 </resources>

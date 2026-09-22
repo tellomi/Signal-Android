@@ -105,7 +105,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Aplikacije za preverjanje pristnosti ni bilo mogoče najti</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomia ni bilo mogoče doseči. Preverite povezavo in poskusite znova.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Signala ni bilo mogoče doseči. Preverite povezavo in poskusite znova.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">3. korak</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -153,7 +153,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Napačna koda. Vnesite kodo, prikazano v vaši aplikaciji za preverjanje pristnosti.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomia ni bilo mogoče doseči. Preverite povezavo in poskusite znova.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signala ni bilo mogoče doseči. Preverite povezavo in poskusite znova.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Aplikacija za preverjanje pristnosti</string>

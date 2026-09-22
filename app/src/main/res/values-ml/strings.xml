@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">ഈ നമ്പർ പരിശോധിക്കാൻ വേണ്ടി നിങ്ങൾക്ക് ഒരു കോൾ വരും.</string>
     <string name="RegistrationActivity_edit_number">നമ്പർ തിരുത്തുക</string>
     <string name="RegistrationActivity_missing_google_play_services">Google Play Services കാണുന്നില്ല</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ഈ ഉപകരണത്തിന് Google Play Services കാണുന്നില്ല. നിങ്ങൾക്ക് ഇപ്പോഴും Tellomi ഉപയോഗിക്കാം, പക്ഷേ ഈ കോൺഫിഗറേഷൻ വിശ്വാസ്യതയോ പ്രകടനമോ കുറയാൻ കാരണമായേക്കാം.\n\nനിങ്ങൾ ഒരു നൂതന ഉപയോക്താവല്ലെങ്കിൽ, അഥവാ ഒരു വിപണനാനന്തര Android റോം പ്രവർത്തിപ്പിക്കുന്നില്ല, അല്ലെങ്കിൽ നിങ്ങൾ ഇത് തെറ്റായി കാണുന്നുവെന്ന് വിശ്വസിക്കുന്നുവെങ്കിൽ, പ്രശ്‌നപരിഹാരത്തിന്ദ യവായി support@tellomi.app-നെ ബന്ധപ്പെടുക.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ഈ ഉപകരണത്തിന് Google Play Services കാണുന്നില്ല. നിങ്ങൾക്ക് ഇപ്പോഴും Signal ഉപയോഗിക്കാം, പക്ഷേ ഈ കോൺഫിഗറേഷൻ വിശ്വാസ്യതയോ പ്രകടനമോ കുറയാൻ കാരണമായേക്കാം.\n\nനിങ്ങൾ ഒരു നൂതന ഉപയോക്താവല്ലെങ്കിൽ, അഥവാ ഒരു വിപണനാനന്തര Android റോം പ്രവർത്തിപ്പിക്കുന്നില്ല, അല്ലെങ്കിൽ നിങ്ങൾ ഇത് തെറ്റായി കാണുന്നുവെന്ന് വിശ്വസിക്കുന്നുവെങ്കിൽ, പ്രശ്‌നപരിഹാരത്തിന്ദ യവായി support@signal.org-നെ ബന്ധപ്പെടുക.</string>
     <string name="RegistrationActivity_i_understand">എനിക്ക് മനസിലായി</string>
     <string name="RegistrationActivity_play_services_error">Play Services പിശക്</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play Services അപ്‌ഡേറ്റുചെയ്യുന്നു അല്ലെങ്കിൽ താൽക്കാലികമായി ലഭ്യമല്ല. ദയവായി വീണ്ടും ശ്രമിക്കുക.</string>

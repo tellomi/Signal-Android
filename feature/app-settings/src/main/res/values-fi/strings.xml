@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Otetaanko rekisteröintiesto käyttöön?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Poistetaanko rekisteröintiesto käytöstä?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Jos et muista Tellomi-tunnuslukua, kun rekisteröit Tellomiin uudelleen, tili lukitaan 7 päiväksi.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Jos et muista Tellomi-tunnuslukua, kun rekisteröit Signalin uudelleen, tili lukitaan 7 päiväksi.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Ota käyttöön</string>
     <string name="RegistrationLockV2Dialog_turn_off">Poista käytöstä</string>
     <string name="preferences__advanced_pin_settings">Tunnusluvun lisäasetukset</string>
@@ -40,7 +40,7 @@
     <!-- AccountSettingsFragment -->
     <string name="AccountSettingsFragment__account">Tili</string>
     <string name="AccountSettingsFragment__youll_be_asked_less_frequently">Kysymme harvemmin ajan kuluessa</string>
-    <string name="AccountSettingsFragment__require_your_signal_pin">Vaadi Tellomi-tunnuslukua aina, kun tällä puhelinnumerolla rekisteröidytään Tellomiiin.</string>
+    <string name="AccountSettingsFragment__require_your_signal_pin">Vaadi Tellomi-tunnuslukua aina, kun tällä puhelinnumerolla rekisteröidytään Signaliin.</string>
     <string name="AccountSettingsFragment__change_phone_number">Vaihda puhelinnumero</string>
     <!-- Account setting that allows user to request and export their signal account data -->
     <string name="AccountSettingsFragment__request_account_data">Tilitietosi</string>
@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Autentikointisovellusta ei löytynyt</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Tellomiiin ei saatu yhteyttä. Tarkista verkkoyhteys ja yritä uudelleen.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Signaliin ei saatu yhteyttä. Tarkista verkkoyhteys ja yritä uudelleen.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">Vaihe 3</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Väärä koodi. Anna autentikointisovelluksen antama koodi.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Tellomiiin ei saatu yhteyttä. Tarkista verkkoyhteys ja yritä uudelleen.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Signaliin ei saatu yhteyttä. Tarkista verkkoyhteys ja yritä uudelleen.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Autentikointisovellus</string>

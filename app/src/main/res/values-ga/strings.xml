@@ -3112,7 +3112,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Cuirfear glao ort chun an uimhir seo a dheimhniú.</string>
     <string name="RegistrationActivity_edit_number">Edit Number</string>
     <string name="RegistrationActivity_missing_google_play_services">Níl Google Play Services le fáil.</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Níl Seirbhísí Google Play ar fáil ar an ngléas seo. Is féidir leat Tellomi a úsáid mar sin féin, ach d\'fhéadfadh sé go mbeadh sé níos éagobhsaí nó níos moille.\n\nMura bhfuil tú i d\'ardúsáideoir, nó mura bhfuil ROM Android iardhíola agat, nó má chreideann tú gur botún é an teachtaireacht seo, déan teagmháil le support@tellomi.app chun cúnamh a fháil.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Níl Seirbhísí Google Play ar fáil ar an ngléas seo. Is féidir leat Signal a úsáid mar sin féin, ach d\'fhéadfadh sé go mbeadh sé níos éagobhsaí nó níos moille.\n\nMura bhfuil tú i d\'ardúsáideoir, nó mura bhfuil ROM Android iardhíola agat, nó má chreideann tú gur botún é an teachtaireacht seo, déan teagmháil le support@signal.org chun cúnamh a fháil.</string>
     <string name="RegistrationActivity_i_understand">Tuigim</string>
     <string name="RegistrationActivity_play_services_error">Botún le Play Services</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Tá Seirbhísí Google Play á nuashonrú, nó níl aon fháil orthu faoi láthair. Bain triail eile as.</string>

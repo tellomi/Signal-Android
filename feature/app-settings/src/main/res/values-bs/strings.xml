@@ -3,7 +3,7 @@
     <!-- RegistrationLockV2Dialog -->
     <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Uključiti zaključavanje registracije?</string>
     <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Isključiti zaključavanje registracije?</string>
-    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Ako zaboravite svoj Tellomi PIN kad se budete ponovo registrovali na Tellomiu, Vaš račun bit će Vam nedostupan 7 dana.</string>
+    <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Ako zaboravite svoj Tellomi PIN kad se budete ponovo registrovali na Signalu, Vaš račun bit će Vam nedostupan 7 dana.</string>
     <string name="RegistrationLockV2Dialog_turn_on">Uključi</string>
     <string name="RegistrationLockV2Dialog_turn_off">Isključi</string>
     <string name="preferences__advanced_pin_settings">Napredna podešavanja PIN-a</string>
@@ -105,7 +105,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Aplikacija za autentifikaciju nije pronađena</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Nije moguće pristupiti Tellomiu. Provjerite vezu i pokušajte ponovno.</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Nije moguće pristupiti Signalu. Provjerite vezu i pokušajte ponovno.</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">3. korak</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -153,7 +153,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Pogrešan kôd. Unesite kôd koji se sada prikazuje u vašoj aplikaciji za autentifikaciju.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Nije moguće pristupiti Tellomiu. Provjerite vezu i pokušajte ponovno.</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Nije moguće pristupiti Signalu. Provjerite vezu i pokušajte ponovno.</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Aplikacija za autentifikaciju</string>

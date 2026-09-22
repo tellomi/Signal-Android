@@ -2922,7 +2922,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Vei primi un apel pentru a verifica acest număr.</string>
     <string name="RegistrationActivity_edit_number">Editează număr</string>
     <string name="RegistrationActivity_missing_google_play_services">Serviciile Google Play lipsesc</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Acestui dispozitiv îi lipsesc serviciile Google Play. Poți utiliza în continuare Tellomi, însă această configurație poate duce la fiabilitate și performanță redusă.\n\nDacă nu ești un utilizator avansat, nu rulezi un ROM Android aftermarket, sau crezi că vezi asta în urma unei erori, te rugăm contactează support@tellomi.app pentru ajutor la depanare.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Acestui dispozitiv îi lipsesc serviciile Google Play. Poți utiliza în continuare Signal, însă această configurație poate duce la fiabilitate și performanță redusă.\n\nDacă nu ești un utilizator avansat, nu rulezi un ROM Android aftermarket, sau crezi că vezi asta în urma unei erori, te rugăm contactează support@signal.org pentru ajutor la depanare.</string>
     <string name="RegistrationActivity_i_understand">Am înțeles</string>
     <string name="RegistrationActivity_play_services_error">Eroare Servicii Play</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Serviciile Google Play se actualizează sau sunt temporar indisponibile. Te rugăm încearcă din nou.</string>

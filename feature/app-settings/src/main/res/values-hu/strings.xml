@@ -101,7 +101,7 @@
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Nem található hitelesítő alkalmazás</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
-    <string name="TotpSetupScreen__couldnt_reach_signal">Nem sikerült elérni a Tellomit. Ellenőrizd az internetkapcsolatodat, és próbáld újra!</string>
+    <string name="TotpSetupScreen__couldnt_reach_signal">Nem sikerült elérni a Signalt. Ellenőrizd az internetkapcsolatodat, és próbáld újra!</string>
     <!-- Header of the third step of authenticator app setup -->
     <string name="TotpSetupScreen__step_3">3. lépés</string>
     <!-- Body of the third step of authenticator app setup -->
@@ -149,7 +149,7 @@
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Helytelen kód! Add meg most a hitelesítő alkalmazásodban megjelenő kódot.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
-    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Nem sikerült elérni a Tellomit. Ellenőrizd az internetkapcsolatodat, és próbáld újra!</string>
+    <string name="TotpCodeEntryScreen__couldnt_reach_signal">Nem sikerült elérni a Signalt. Ellenőrizd az internetkapcsolatodat, és próbáld újra!</string>
     <!-- TotpAppListScreen -->
     <!-- Title of the screen listing the authenticator apps on the account -->
     <string name="TotpAppListScreen__authenticator_app">Hitelesítő alkalmazás</string>

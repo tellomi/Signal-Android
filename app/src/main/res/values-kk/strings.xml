@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Осы нөмірді растау үшін сізге қоңырау соғылады.</string>
     <string name="RegistrationActivity_edit_number">Нөмірді өзгерту</string>
     <string name="RegistrationActivity_missing_google_play_services">Google Play қызметтері жоқ</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Бұл құрылғыда Google Play қызметтері жоқ. Tellomi қолданбасын әлі де пайдалануға болады, бірақ бұл конфигурация сенімділік пен жұмыс өнімділігін азайтуы мүмкін.\n\nЕгер сіз тәжірибелі пайдаланушы болмасаңыз, сатылымнан кейінгі Android ROM жадын қолданбасаңыз немесе мұны қате көріп отырмын деп ойласаңыз, ақайлықты анықтауда көмек алу үшін support@tellomi.app қызметіне хабарласыңыз.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Бұл құрылғыда Google Play қызметтері жоқ. Signal қолданбасын әлі де пайдалануға болады, бірақ бұл конфигурация сенімділік пен жұмыс өнімділігін азайтуы мүмкін.\n\nЕгер сіз тәжірибелі пайдаланушы болмасаңыз, сатылымнан кейінгі Android ROM жадын қолданбасаңыз немесе мұны қате көріп отырмын деп ойласаңыз, ақайлықты анықтауда көмек алу үшін support@signal.org қызметіне хабарласыңыз.</string>
     <string name="RegistrationActivity_i_understand">Түсінемін</string>
     <string name="RegistrationActivity_play_services_error">Play қызметтерінің қатесі</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play қызметтері жаңартылуда немесе уақытша жұмыс істемейді. Тағы да байқап көріңіз.</string>

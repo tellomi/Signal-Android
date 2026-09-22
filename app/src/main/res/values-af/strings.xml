@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Jy sal ’n oproep kry om hierdie nommer te verifieer.</string>
     <string name="RegistrationActivity_edit_number">Wysig nommer</string>
     <string name="RegistrationActivity_missing_google_play_services">Geen Google Play Services nie</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Hierdie toestel het nie Google Play-dienste nie. Jy kan nog steeds Tellomi gebruik, maar hierdie konfigurasie kan lei tot \'n verminderde betroubaarheid of werkverrigting.\n\nAs jy nie \'n gevorderde gebruiker is nie, nie \'n na-mark Android ROM gebruik nie, of glo dat jy die foutkennisgewing per ongeluk sien, kontak support@tellomi.app vir hulp met die oplos van probleme.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Hierdie toestel het nie Google Play-dienste nie. Jy kan nog steeds Signal gebruik, maar hierdie konfigurasie kan lei tot \'n verminderde betroubaarheid of werkverrigting.\n\nAs jy nie \'n gevorderde gebruiker is nie, nie \'n na-mark Android ROM gebruik nie, of glo dat jy die foutkennisgewing per ongeluk sien, kontak support@signal.org vir hulp met die oplos van probleme.</string>
     <string name="RegistrationActivity_i_understand">Ek verstaan</string>
     <string name="RegistrationActivity_play_services_error">Play Services Fout</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play-dienste word bygewerk of is nie tydelik beskikbaar nie. Probeer asseblief weer.</string>

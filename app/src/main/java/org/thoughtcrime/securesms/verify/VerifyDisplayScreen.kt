@@ -108,9 +108,7 @@ fun VerifyDisplayScreen(
                 )
               )
             ) {
-              // Tellomi（#984）：上游这里是 signal.org/redirect/safety-numbers。
-              // 我们还没有对应的帮助文章，先落到帮助中心首页。
-              CommunicationActions.openBrowserLink(context, "https://tellomi.app/help/")
+              CommunicationActions.openBrowserLink(context, "https://signal.org/redirect/safety-numbers")
             }
           ) {
             append(stringResource(R.string.LearnMoreTextView_learn_more))

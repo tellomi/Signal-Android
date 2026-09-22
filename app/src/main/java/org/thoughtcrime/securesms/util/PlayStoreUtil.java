@@ -15,8 +15,7 @@ public final class PlayStoreUtil {
 
   public static void openPlayStoreOrOurApkDownloadPage(@NonNull Context context) {
     if (BuildConfig.MANAGES_APP_UPDATES) {
-      // Tellomi（#984）：上游这里是 signal.org/android/apk。我们不上架 Play，手动安装落到自己的下载页。
-      CommunicationActions.openBrowserLink(context, "https://tellomi.app/download/");
+      CommunicationActions.openBrowserLink(context, "https://signal.org/android/apk");
     } else {
       openPlayStore(context);
     }

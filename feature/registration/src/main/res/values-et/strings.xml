@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">Kontaktid</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">Leia tuttavaid. Sinu kontaktid on krüptitud ega ole Tellomii teenusele nähtavad.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">Leia tuttavaid. Sinu kontaktid on krüptitud ega ole Signali teenusele nähtavad.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">Telefonikõned</string>
     <!-- Phone calls permission row description -->
@@ -128,7 +128,7 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">Võta ühendust kasutajatoega</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Tellomii registreerimine – kinnituskood Androidile</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Signali registreerimine – kinnituskood Androidile</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">Mul on mu vana telefon alles</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">Kiiresti alustamiseks skanni oma praeguse Tellomii konto alt QR-kood</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">Kiiresti alustamiseks skanni oma praeguse Signali konto alt QR-kood</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Mul ei ole mu vana telefoni</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">Või paigaldad Tellomiit uuesti samasse seadmesse</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">Või paigaldad Signalit uuesti samasse seadmesse</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">Vali, kuidas soovid oma sõnumiajalugu ja kontoandmeid taastada.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomii varukoopiatest</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Signali varukoopiatest</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Sinu tasuta või tasuline Tellomii varundamisplaan</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Sinu tasuta või tasuline Signali varundamisplaan</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">Seadmesisese varukoopia taastamine</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">Varukoopiat ei leitud</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">Valitud kaustast ei leitud ühtegi Tellomii varukoopiat. Palun proovi mõnda teist kausta.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">Valitud kaustast ei leitud ühtegi Signali varukoopiat. Palun proovi mõnda teist kausta.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">Proovi mõnda teist kausta</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -241,13 +241,13 @@
     <!-- Title of the dialog warning that the backup being restored was created with a different account -->
     <string name="EnterAepScreen__restore_to_new_account">Kas taastada uuele kontole?</string>
     <!-- Body of the dialog warning the user that the backup was created with a different account and they will lose group memberships -->
-    <string name="EnterAepScreen__restore_to_new_account_body">Varukoopia, mida sa taastad, loodi teise Tellomii konto kaudu. Sa saad seda varukoopiat uuele kontole taastada, kuid sa ei ole enam taastatud gruppide liige.</string>
+    <string name="EnterAepScreen__restore_to_new_account_body">Varukoopia, mida sa taastad, loodi teise Signali konto kaudu. Sa saad seda varukoopiat uuele kontole taastada, kuid sa ei ole enam taastatud gruppide liige.</string>
     <!-- Confirm button label for the restore to new account dialog -->
     <string name="EnterAepScreen__restore">Taasta</string>
     <!-- Title of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
     <string name="EnterAepScreen__no_backup_found">Varukoopiat ei leitud</string>
     <!-- Body of the dialog shown when the entered recovery key is correct, but the account has no Signal Backup to restore -->
-    <string name="EnterAepScreen__no_backup_found_body">Sinu varukoopia võti on õige, kuid sellel kontol ei ole Tellomii varukoopiat. Mine tagasi ja vali teine taastamise viis või jätka ilma taastamata.</string>
+    <string name="EnterAepScreen__no_backup_found_body">Sinu varukoopia võti on õige, kuid sellel kontol ei ole Signali varukoopiat. Mine tagasi ja vali teine taastamise viis või jätka ilma taastamata.</string>
     <!-- Text shown while preparing the restore -->
     <string name="LocalBackupRestoreScreen__preparing_restore">Taastamise ettevalmistamine …</string>
     <!-- Title shown while restore is in progress -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">Seo oma konto</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">Ei ole veel Tellomiis?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">Ei ole veel Signalis?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">Loo konto</string>
 
@@ -307,9 +307,9 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Seda varukoopiat ei saanud taastada</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">See Tellomii versioon ei saa su varukoopiat taastada. Hangi uusim versioon ja proovi uuesti.</string>
+    <string name="RemoteRestoreScreen__update_latest">See Signali versioon ei saa su varukoopiat taastada. Hangi uusim versioon ja proovi uuesti.</string>
     <!-- Button to update Signal -->
-    <string name="RemoteRestoreScreen__update_signal">Uuenda Tellomiit</string>
+    <string name="RemoteRestoreScreen__update_signal">Uuenda Signalit</string>
     <!-- Button to dismiss update dialog -->
     <string name="RemoteRestoreScreen__not_now">Mitte praegu</string>
     <!-- Title for unrecoverable backup failure dialog -->
@@ -392,13 +392,13 @@
     <!-- Error shown below the PIN field when the user tries to create a PIN that is too easy to guess, such as one made of sequential or repeated digits. -->
     <string name="PinCreationScreen__choose_a_stronger_pin">Vali tugevam PIN-kood</string>
     <!-- Error shown below the PIN field when the user tries to create a PIN that matches the code used to verify their phone number. -->
-    <string name="PinCreationScreen__reentered_verification_code">Sa sisestasid uuesti juba kasutatud koodi oma telefoninumbri kontrollimiseks. Vali uus unikaalne Tellomii PIN-kood.</string>
+    <string name="PinCreationScreen__reentered_verification_code">Sa sisestasid uuesti juba kasutatud koodi oma telefoninumbri kontrollimiseks. Vali uus unikaalne Signali PIN-kood.</string>
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">Uuri lähemalt PIN-koodide kohta</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">Hoiatus</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">Kui keelad PIN-koodi, siis kaotad Tellomiisse uuesti registreerudes kõik andmed, mida sa pole käsitsi varundanud ja taastanud. Registreerimislukku pole võimalik sisse lülitada, kui PIN-kood on keelatud.</string>
+    <string name="PinCreationScreen__disable_pin_warning">Kui keelad PIN-koodi, siis kaotad Signalisse uuesti registreerudes kõik andmed, mida sa pole käsitsi varundanud ja taastanud. Registreerimislukku pole võimalik sisse lülitada, kui PIN-kood on keelatud.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">Keela PIN</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -415,9 +415,9 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">Sisesta enda PIN-kood</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">Sisesta PIN-kood, mille sa Tellomiit esmakordselt paigaldades lõid</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">Sisesta PIN-kood, mille sa Signalit esmakordselt paigaldades lõid</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
-    <string name="PinEntryScreen__reentered_verification_code">Sa sisestasid uuesti juba kasutatud koodi oma telefoninumbri kontrollimiseks. Sisesta unikaalne Tellomii PIN-kood, mille oled varem oma konto jaoks loonud.</string>
+    <string name="PinEntryScreen__reentered_verification_code">Sa sisestasid uuesti juba kasutatud koodi oma telefoninumbri kontrollimiseks. Sisesta unikaalne Signali PIN-kood, mille oled varem oma konto jaoks loonud.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
     <plurals name="PinEntryScreen__incorrect_pin">
         <item quantity="one">Vale PIN-kood. %1$d katse jäänud.</item>
@@ -444,7 +444,7 @@
     <!-- Labels the button in the no-data-to-restore dialog that lets the user contact support. -->
     <string name="PinEntryScreen__contact_support">Võta ühendust kasutajatoega</string>
     <!-- Subject line of the support email composed when the user contacts support about PIN entry. -->
-    <string name="PinEntryScreen__contact_support_email_subject">Tellomii registreerimine – vajad abi Androidi PIN-koodiga</string>
+    <string name="PinEntryScreen__contact_support_email_subject">Signali registreerimine – vajad abi Androidi PIN-koodiga</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about PIN entry. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="PinEntryScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Need Help with PIN for Android</string> -->
 
@@ -489,7 +489,7 @@
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
     <string name="LinkAccountScreen__open_signal_on_your_phone">Ava Tellomi enda telefonis</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Toksa oma profiilipilti ja ava Tellomii sätted</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Toksa oma profiilipilti ja ava Signali sätted</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">Vali Lingitud seadmete alt Lingi uus seade</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -501,7 +501,7 @@
     <!-- Error label shown in place of the QR code if it could not be generated -->
     <string name="LinkAccountScreen__failed_to_generate_code">Koodi ei saanud luua</string>
     <!-- Footer prompt asking the user if they have another device with Signal. Precedes a separate "Create account" link. -->
-    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Kas sul ei ole teises seadmes Tellomiit?</string>
+    <string name="LinkAccountScreen__dont_have_signal_on_another_device">Kas sul ei ole teises seadmes Signalit?</string>
     <!-- Inline link in the link-account screen footer that takes the user to the new-account creation flow instead of linking -->
     <string name="LinkAccountScreen__create_account">Loo konto</string>
     <!-- Button to retry generating the QR code after it failed to load -->
@@ -515,7 +515,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Kas kustutada äpi andmed?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Sa üritad siduda teist Tellomii kontot. Kui jätkad, kustutatakse kõik praegu selles seadmes olevad Tellomii andmed.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Sa üritad siduda teist Signali kontot. Kui jätkad, kustutatakse kõik praegu selles seadmes olevad Signali andmed.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Kustuta ja taaskäivita</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -538,7 +538,7 @@
     <string name="DeviceTransferSetup__grant_location_permission">Anna luba</string>
     <string name="DeviceTransferSetup__location_services_required">Tellomi vajab sinu vana seadme leidmiseks ja sellega ühendumiseks ligipääsu asukohainfole.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Lülita sisse asukohateenused</string>
-    <string name="DeviceTransferSetup__wifi_required">Tellomiil on vaja su vana seadme leidmiseks ja sellega ühenduse loomiseks Wi-Fi ühendust.</string>
+    <string name="DeviceTransferSetup__wifi_required">Signalil on vaja su vana seadme leidmiseks ja sellega ühenduse loomiseks Wi-Fi ühendust.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Lülita Wi-Fi sisse</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">Kahjuks tundub, et su seade ei toeta Wi-Fi Directi.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Taasta selle asemel varukoopia</string>
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">Andmete ülekandmine</string>
     <string name="DeviceTransferProgress__d_messages_so_far">Siiani leidsime %1$d sõnumit</string>
     <string name="DeviceTransferProgress__unable_to_transfer">Ülekandmine ei ole võimalik</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Ülekandmine uuematest Tellomii versioonidest ei ole võimalik.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Ülekandmine uuematest Signali versioonidest ei ole võimalik.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">Andmebaasi piirangute tõttu ei õnnestunud osasid andmeid edastada.</string>
     <string name="DeviceTransferProgress__transfer_failed">Edastus ebaõnnestus. Palun proovi uuesti.</string>
     <string name="DeviceTransferProgress__try_again">Proovi uuesti</string>
@@ -586,9 +586,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Kes mind numbri järgi leida saavad?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Kõik, kellel on sinu telefoninumber, näevad, et sa kasutad Tellomiit ja saavad sinuga vestlust alustada.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Kõik, kellel on sinu telefoninumber, näevad, et sa kasutad Signalit ja saavad sinuga vestlust alustada.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Mitte keegi ei näe, et sa oled Tellomiis, kui sa neile sõnumit ei saada või sul nendega juba vestlust pooleli ei ole.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Mitte keegi ei näe, et sa oled Signalis, kui sa neile sõnumit ei saada või sul nendega juba vestlust pooleli ei ole.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">Igaüks</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -596,7 +596,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Kas oled kindel?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Kui teed „Kes mind numbri järgi leida saavad“ alt valiku „Mitte keegi“, on inimestel sind raskem Tellomiis leida.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Kui teed „Kes mind numbri järgi leida saavad“ alt valiku „Mitte keegi“, on inimestel sind raskem Signalis leida.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Loobu</string>
     <!-- Save button on the discoverability picker. -->
@@ -634,7 +634,7 @@
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">Logi sisse ja taasta konto</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Aitäh, et toetad Tellomiit</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Aitäh, et toetad Signalit</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">Maksa %1$s</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->

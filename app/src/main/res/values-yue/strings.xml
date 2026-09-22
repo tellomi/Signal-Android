@@ -2732,7 +2732,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">有個電話會打畀您，去驗證呢個冧把。</string>
     <string name="RegistrationActivity_edit_number">改過個冧把</string>
     <string name="RegistrationActivity_missing_google_play_services">冇安到 Google Play 服務</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">呢部機欠奉 Google Play 服務。您仍然可以用 Tellomi，但係咁嘅狀況底下可能有損效能，亦無咁可靠。\n\n若然您唔係專業玩家，又唔係用緊售後自灌嘅 Android ROM，抑或覺得當中有啲嘢搞錯咗，請聯絡 support@tellomi.app 協助您排難解紛。</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">呢部機欠奉 Google Play 服務。您仍然可以用 Signal，但係咁嘅狀況底下可能有損效能，亦無咁可靠。\n\n若然您唔係專業玩家，又唔係用緊售後自灌嘅 Android ROM，抑或覺得當中有啲嘢搞錯咗，請聯絡 support@signal.org 協助您排難解紛。</string>
     <string name="RegistrationActivity_i_understand">我明白</string>
     <string name="RegistrationActivity_play_services_error">Play 服務錯誤</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play 服務一係更新緊，一係暫時用唔到。請您再試下啦。</string>

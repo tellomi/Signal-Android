@@ -2732,7 +2732,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">이 전화번호를 인증하는 데 필요한 전화를 수신하게 됩니다.</string>
     <string name="RegistrationActivity_edit_number">전화번호 수정</string>
     <string name="RegistrationActivity_missing_google_play_services">Google Play Services가 설치되어 있지 않음</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">이 기기에는 Google Play Services가 없습니다. Tellomi을 계속 사용할 수는 있지만, 알림 지연이나 성능 저하가 발생할 수 있습니다.\n\n고급 사용자가 아니거나, 커스텀 ROM을 설치하지 않았는데도 이 메시지가 보인다면 오류일 수 있으니 support@tellomi.app로 문의해 주세요.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">이 기기에는 Google Play Services가 없습니다. Signal을 계속 사용할 수는 있지만, 알림 지연이나 성능 저하가 발생할 수 있습니다.\n\n고급 사용자가 아니거나, 커스텀 ROM을 설치하지 않았는데도 이 메시지가 보인다면 오류일 수 있으니 support@signal.org로 문의해 주세요.</string>
     <string name="RegistrationActivity_i_understand">이해했습니다</string>
     <string name="RegistrationActivity_play_services_error">Play Services 오류</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play Services가 업데이트 중이거나 잠시 제공되지 않고 있습니다. 다시 시도해 주세요.</string>

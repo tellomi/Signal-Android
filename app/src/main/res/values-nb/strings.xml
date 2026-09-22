@@ -727,7 +727,7 @@
     <!-- Detail tip 0 title -->
     <string name="SafetyTips_detail_tip0_title">Ikke svar på meldinger fra Tellomi</string>
     <!-- Detail tip 0 message -->
-    <string name="SafetyTips_detail_tip0_message">Tellomi kommer aldri til å be deg om å sende registreringskoden, PIN-koden eller sikkerhetskoden din. Ikke svar på meldinger som tilsynelatende kommer fra Tellomi eller Tellomis brukerstøtte. Svindlere kan lage falske samtaler for å hacke kontoen din.</string>
+    <string name="SafetyTips_detail_tip0_message">Tellomi kommer aldri til å be deg om å sende registreringskoden, PIN-koden eller sikkerhetskoden din. Ikke svar på meldinger som tilsynelatende kommer fra Tellomi eller Signals brukerstøtte. Svindlere kan lage falske samtaler for å hacke kontoen din.</string>
     <!-- Detail tip 1 title -->
     <string name="SafetyTips_detail_tip1_title">Gå gjennom navn og bilder</string>
     <!-- Detail tip 1 message -->
@@ -1412,7 +1412,7 @@
     <!-- Title of a bottom sheet that is shown when the user is having connectivity issues -->
     <string name="ConnectivityWarningBottomSheet_title">Det kan hende at du ikke mottar meldinger</string>
     <!-- Body of a bottom sheet that is shown when the user is having connectivity issues -->
-    <string name="ConnectivityWarningBottomSheet_body">Det kan hende at problemet løser seg hvis du starter enheten på nytt. Hvis det vedvarer, kan du ta kontakt med Tellomis brukerstøtte.</string>
+    <string name="ConnectivityWarningBottomSheet_body">Det kan hende at problemet løser seg hvis du starter enheten på nytt. Hvis det vedvarer, kan du ta kontakt med Signals brukerstøtte.</string>
     <!-- Text for a button in a bottom sheet that is shown when the user is having connectivity issues. Clicking it will dismiss the bottom sheet. -->
     <string name="ConnectivityWarningBottomSheet_dismiss_button">Skjønner</string>
 
@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Du vil motta et taleanrop for å bekrefte dette nummeret.</string>
     <string name="RegistrationActivity_edit_number">Rediger nummer</string>
     <string name="RegistrationActivity_missing_google_play_services">Mangler Google Play tjenester</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Denne enheten mangler Google Play-tjenester. Du kan fremdeles bruke Tellomi, men det kan oppføre seg ustabilit eller gi dårlig ytelse.\n\nHvis du ikke er en avansert bruker, ikke kjører en egeninstallert Android-fastvare, eller du mener at du har Google Play-tjenester installert, ber vi deg om å kontakte support@tellomi.app så vi kan hjelpe deg med feilsøking.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Denne enheten mangler Google Play-tjenester. Du kan fremdeles bruke Signal, men det kan oppføre seg ustabilit eller gi dårlig ytelse.\n\nHvis du ikke er en avansert bruker, ikke kjører en egeninstallert Android-fastvare, eller du mener at du har Google Play-tjenester installert, ber vi deg om å kontakte support@signal.org så vi kan hjelpe deg med feilsøking.</string>
     <string name="RegistrationActivity_i_understand">Jeg forstår</string>
     <string name="RegistrationActivity_play_services_error">Play Tjenester Feil</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play-tjenester er opptatt eller midlertidig utilgjengelig. Vent litt, og prøv på nytt.</string>
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Abonnementet er sagt opp</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatisk sikkerhetskopiering med Tellomis trygge, ende-til-ende-krypterte lagringstjeneste.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatisk sikkerhetskopiering med Signals trygge, ende-til-ende-krypterte lagringstjeneste.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatisk sikkerhetskopiering med Tellomis sikre, ende-til-ende-krypterte lagringstjeneste. Kom i gang på mobilen din.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatisk sikkerhetskopiering med Signals sikre, ende-til-ende-krypterte lagringstjeneste. Kom i gang på mobilen din.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Fant ingen abonnementer på denne enheten."</string>
     <!-- Action button label to set up backups -->
@@ -8837,7 +8837,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">Slå på sikkerhetskopiering</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sikkerhetskopiering er slått av, og dataene ble slettet fra Tellomis sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sikkerhetskopiering er slått av, og dataene ble slettet fra Signals sikre lagringstjeneste.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">Nedlasting av sikkerhetskopi</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -8902,17 +8902,17 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">Detaljer</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sikkerhetskopiering er slått av, men det oppsto en feil da dataene dine skulle slettes fra Tellomis sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sikkerhetskopiering er slått av, men det oppsto en feil da dataene dine skulle slettes fra Signals sikre lagringstjeneste.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">Sikkerhetskopien kunne ikke slettes</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">Det har oppstått en feil. Ta kontakt med brukerstøtten vår.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sikkerhetskopiering er slått av. Dataene dine lastes ned på enheten og slettes så fra Tellomis sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sikkerhetskopiering er slått av. Dataene dine lastes ned på enheten og slettes så fra Signals sikre lagringstjeneste.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sikkerhetskopiering er slått av, og dataene blir slettet fra Tellomis sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sikkerhetskopiering er slått av, og dataene blir slettet fra Signals sikre lagringstjeneste.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sikkerhetskopiering er slått av, og dataene ble slettet fra Tellomis sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sikkerhetskopiering er slått av, og dataene ble slettet fra Signals sikre lagringstjeneste.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">Laster ned %1$s av %2$s (%3$d %%)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -9009,7 +9009,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Sikkerhetskopier meldingene og mediefilene dine med Tellomis sikre ende-til-ende-krypterte lagringstjeneste. Behold alt innholdet ditt når du må bytte mobil eller installere Tellomi på nytt.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Sikkerhetskopier meldingene og mediefilene dine med Signals sikre ende-til-ende-krypterte lagringstjeneste. Behold alt innholdet ditt når du må bytte mobil eller installere Tellomi på nytt.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">Ende-til-ende-kryptert</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->

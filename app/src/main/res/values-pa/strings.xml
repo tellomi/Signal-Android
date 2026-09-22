@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">ਤੁਹਾਨੂੰ ਇਸ ਨੰਬਰ ਨੂੰ ਤਸਦੀਕ ਕਰਨ ਲਈ ਇੱਕ ਕਾਲ ਆਵੇਗੀ।</string>
     <string name="RegistrationActivity_edit_number">ਨੰਬਰ ਨੂੰ ਸੋਧੋ</string>
     <string name="RegistrationActivity_missing_google_play_services">Google Play ਸੇਵਾਵਾਂ ਗਾਇਬ</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ਇਸ ਡਿਵਾਈਸ ’ਤੇ Google Play ਸੇਵਾਵਾਂ ਗਾਇਬ ਹੈ ਤੁਸੀਂ ਅਜੇ ਵੀ Tellomi ਦੀ ਵਰਤੋਂ ਕਰ ਸਕਦੇ ਹੋ, ਪਰ ਇਸ ਸੰਰਚਨਾ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਘਟੀ ਹੋਈ ਭਰੋਸੇਯੋਗਤਾ ਜਾਂ ਕਾਰਗੁਜ਼ਾਰੀ ਹੋ ਸਕਦੀ ਹੈ।\n\nਜੇਕਰ ਤੁਸੀਂ ਇੱਕ ਉੱਨਤ ਵਰਤੋਂਕਾਰ ਨਹੀਂ ਹੋ, ਅਤੇ ਮੁਰੰਮਤ ਕੀਤਾ ਹੋਇਆ Android ROM ਨਹੀਂ ਚਲਾ ਰਹੇ ਹੋ, ਜਾਂ ਇਹ ਮੰਨਦੇ ਹੋ ਕਿ ਤੁਸੀਂ ਇਸ ਨੂੰ ਗਲਤੀ ਨਾਲ ਵੇਖ ਰਹੇ ਹੋ, ਤਾਂ ਸਮੱਸਿਆ ਦੇ ਹੱਲ ਲਈ support@tellomi.app ਨਾਲ ਸੰਪਰਕ ਕਰੋ।</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ਇਸ ਡਿਵਾਈਸ ’ਤੇ Google Play ਸੇਵਾਵਾਂ ਗਾਇਬ ਹੈ ਤੁਸੀਂ ਅਜੇ ਵੀ Signal ਦੀ ਵਰਤੋਂ ਕਰ ਸਕਦੇ ਹੋ, ਪਰ ਇਸ ਸੰਰਚਨਾ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਘਟੀ ਹੋਈ ਭਰੋਸੇਯੋਗਤਾ ਜਾਂ ਕਾਰਗੁਜ਼ਾਰੀ ਹੋ ਸਕਦੀ ਹੈ।\n\nਜੇਕਰ ਤੁਸੀਂ ਇੱਕ ਉੱਨਤ ਵਰਤੋਂਕਾਰ ਨਹੀਂ ਹੋ, ਅਤੇ ਮੁਰੰਮਤ ਕੀਤਾ ਹੋਇਆ Android ROM ਨਹੀਂ ਚਲਾ ਰਹੇ ਹੋ, ਜਾਂ ਇਹ ਮੰਨਦੇ ਹੋ ਕਿ ਤੁਸੀਂ ਇਸ ਨੂੰ ਗਲਤੀ ਨਾਲ ਵੇਖ ਰਹੇ ਹੋ, ਤਾਂ ਸਮੱਸਿਆ ਦੇ ਹੱਲ ਲਈ support@signal.org ਨਾਲ ਸੰਪਰਕ ਕਰੋ।</string>
     <string name="RegistrationActivity_i_understand">ਮੈਂ ਸਮਝਦਾ/ਸਮਝਦੀ ਹਾਂ</string>
     <string name="RegistrationActivity_play_services_error">Play ਸੇਵਾਵਾਂ ਚ ਤਰੁੱਟੀ</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play ਸੇਵਾਵਾਂ ਅਪਡੇਟ ਹੋ ਰਹੀਆਂ ਹਨ ਜਾਂ ਅਸਥਾਈ ਤੌਰ ’ਤੇ ਉਪਲਬਧ ਨਹੀਂ ਹਨ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ ਕਰੋ।</string>

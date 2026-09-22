@@ -2827,12 +2827,12 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Du får ett samtal för att verifiera detta nummer.</string>
     <string name="RegistrationActivity_edit_number">Ändra nummer</string>
     <string name="RegistrationActivity_missing_google_play_services">Saknar Google Play-tjänster</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Denna enhet saknar Google Play-tjänster. Du kan fortfarande använda Tellomi men denna konfiguration kan leda till minskad tillförlitlighet eller prestanda.\n\nOm du inte är en avancerad användare, inte använder en egenhändigt modifierad Android ROM eller tror att du ser detta på grund av ett fel, kontakta support@tellomi.app för hjälp med felsökning.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Denna enhet saknar Google Play-tjänster. Du kan fortfarande använda Signal men denna konfiguration kan leda till minskad tillförlitlighet eller prestanda.\n\nOm du inte är en avancerad användare, inte använder en egenhändigt modifierad Android ROM eller tror att du ser detta på grund av ett fel, kontakta support@signal.org för hjälp med felsökning.</string>
     <string name="RegistrationActivity_i_understand">Jag förstår</string>
     <string name="RegistrationActivity_play_services_error">Fel på Google Play-tjänster</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play-tjänster uppdateras eller är tillfälligt otillgängliga. Försök igen.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi behöver kontakter och mediabehörigheter för att hjälpa dig att ansluta till vänner och skicka meddelanden. Dina kontakter laddas upp med Tellomis privata kontaktupptäckt, vilket innebär att de är ände-till-ände-krypterade och aldrig synliga för Tellomi-tjänsten.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi behöver kontaktbehörighet för att hjälpa dig att få kontakt med vänner. Dina kontakter laddas upp med Tellomis privata kontaktupptäckt, vilket innebär att de är ände-till-ände-krypterade och aldrig synliga för Tellomi-tjänsten.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi behöver kontakter och mediabehörigheter för att hjälpa dig att ansluta till vänner och skicka meddelanden. Dina kontakter laddas upp med Signals privata kontaktupptäckt, vilket innebär att de är ände-till-ände-krypterade och aldrig synliga för Tellomi-tjänsten.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi behöver kontaktbehörighet för att hjälpa dig att få kontakt med vänner. Dina kontakter laddas upp med Signals privata kontaktupptäckt, vilket innebär att de är ände-till-ände-krypterade och aldrig synliga för Tellomi-tjänsten.</string>
     <string name="RegistrationActivity_rate_limited_to_service">Du har gjort för många försök att registrera detta nummer. Försök igen senare.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Du har gjort för många försök att registrera detta nummer. Försök igen om %1$s.</string>
@@ -4791,11 +4791,11 @@
     <string name="reminder_header_service_outage_text">Tellomi upplever tekniska problem. Vi arbetar för fullt för att återställa tjänsten så snabbt som möjligt.</string>
     <string name="reminder_header_progress">%1$d %%</string>
     <!-- Body text of a banner that will show at the top of the chat list when we temporarily cannot process the user\'s contacts -->
-    <string name="reminder_cds_warning_body">Tellomis privata kontaktupptäckt kan för tillfället inte bearbeta telefonens kontakter.</string>
+    <string name="reminder_cds_warning_body">Signals privata kontaktupptäckt kan för tillfället inte bearbeta telefonens kontakter.</string>
     <!-- Label for a button in a banner to learn more about why we temporarily can\'t process the user\'s contacts -->
     <string name="reminder_cds_warning_learn_more">Läs mer</string>
     <!-- Body text of a banner that will show at the top of the chat list when the user has so many contacts that we cannot ever process them -->
-    <string name="reminder_cds_permanent_error_body">Tellomis privata kontaktupptäckt kan inte bearbeta telefonens kontakter.</string>
+    <string name="reminder_cds_permanent_error_body">Signals privata kontaktupptäckt kan inte bearbeta telefonens kontakter.</string>
     <!-- Label for a button in a banner to learn more about why we cannot process the user\'s contacts -->
     <string name="reminder_cds_permanent_error_learn_more">Läs mer</string>
 
@@ -4887,7 +4887,7 @@
     <string name="RegistrationLockFragment__incorrect_pin">Felaktig PIN-kod</string>
     <string name="RegistrationLockFragment__forgot_your_pin">Har du glömt din PIN-kod?</string>
     <string name="RegistrationLockFragment__not_many_tries_left">Inte många försök kvar!</string>
-    <string name="RegistrationLockFragment__signal_registration_need_help_with_pin_for_android_v2_pin">Tellomiregistrering - Behöver du hjälp med PIN-kod för Android (v2 PIN)</string>
+    <string name="RegistrationLockFragment__signal_registration_need_help_with_pin_for_android_v2_pin">Signalregistrering - Behöver du hjälp med PIN-kod för Android (v2 PIN)</string>
 
     <plurals name="RegistrationLockFragment__for_your_privacy_and_security_there_is_no_way_to_recover">
         <item quantity="one">För din integritet och säkerhet finns det inget sätt att återställa din PIN-kod. Om du inte kan komma ihåg din PIN-kod kan du verifiera med SMS efter %1$d dag av inaktivitet. I detta fall kommer ditt konto att rensas och allt innehåll tas bort.</item>
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Abonnemanget uppsagt</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatiska säkerhetskopieringar med Tellomis säkra totalsträckskrypterade lagringstjänst.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatiska säkerhetskopieringar med Signals säkra totalsträckskrypterade lagringstjänst.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatiska säkerhetskopieringar med Tellomis säkra totalsträckskrypterade lagringstjänst. Kom igång på din telefon.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatiska säkerhetskopieringar med Signals säkra totalsträckskrypterade lagringstjänst. Kom igång på din telefon.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Abonnemanget hittades inte på den här enheten."</string>
     <!-- Action button label to set up backups -->
@@ -8837,7 +8837,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">Återaktivera säkerhetskopiering</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Säkerhetskopieringar har stängts av och dina data har tagits bort från Tellomis säkra lagringstjänst.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Säkerhetskopieringar har stängts av och dina data har tagits bort från Signals säkra lagringstjänst.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">Laddar ner din säkerhetskopia</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -8902,17 +8902,17 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">Detaljer</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Säkerhetskopiering har inaktiverats, men det uppstod ett fel när dina data togs bort från Tellomis säkra lagringstjänst.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Säkerhetskopiering har inaktiverats, men det uppstod ett fel när dina data togs bort från Signals säkra lagringstjänst.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">Det gick inte att ta bort säkerhetskopian</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">Ett fel inträffade. Kontakta supporten.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Säkerhetskopiering har inaktiverats, dina data kommer att laddas ner till din enhet och sedan tas bort från Tellomis säkra lagringstjänst.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Säkerhetskopiering har inaktiverats, dina data kommer att laddas ner till din enhet och sedan tas bort från Signals säkra lagringstjänst.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Säkerhetskopieringar har stängts av och dina data kommer att tas bort från Tellomis säkra lagringstjänst.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Säkerhetskopieringar har stängts av och dina data kommer att tas bort från Signals säkra lagringstjänst.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Säkerhetskopieringar har stängts av och dina data har tagits bort från Tellomis säkra lagringstjänst.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Säkerhetskopieringar har stängts av och dina data har tagits bort från Signals säkra lagringstjänst.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">Laddar ned: %1$s av %2$s (%3$d %%)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -9009,7 +9009,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Säkerhetskopiera dina meddelanden och media med Tellomis säkra, totalsträckskrypterade lagringstjänst. Förlora aldrig ett meddelande när du skaffar en ny telefon eller installerar om Tellomi.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Säkerhetskopiera dina meddelanden och media med Signals säkra, totalsträckskrypterade lagringstjänst. Förlora aldrig ett meddelande när du skaffar en ny telefon eller installerar om Tellomi.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">Totalsträckskrypterad</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->
@@ -9043,7 +9043,7 @@
     <!-- Screen body shown when enabling Signal Secure Backups while on-device backups are already enabled (part 2, bolded). -->
     <string name="MessageBackupsKeyEducationScreen__remote_backup_with_local_enabled_description_bold">Detta är samma som din återställningsnyckel på enheten.</string>
     <!-- Screen body shown when enabling on-device backups while Signal Secure Backups are already enabled (part 2, bolded). -->
-    <string name="MessageBackupsKeyEducationScreen__local_backup_with_remote_enabled_description_bold">Det här är samma som återställningsnyckeln för Tellomis säkra säkerhetskopior.</string>
+    <string name="MessageBackupsKeyEducationScreen__local_backup_with_remote_enabled_description_bold">Det här är samma som återställningsnyckeln för Signals säkra säkerhetskopior.</string>
     <!-- Label shown above a list of actions that the recovery key can be used for. -->
     <string name="MessageBackupsKeyEducationScreen__use_this_key_to">Använd den här nyckeln för att:</string>
     <!-- Row label indicating that the recovery key can be used to restore an on-device backup. -->
