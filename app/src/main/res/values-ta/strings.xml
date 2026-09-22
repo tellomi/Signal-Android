@@ -6043,7 +6043,7 @@
     <string name="HelpFragment__copyright_signal_messenger">பதிப்புரிமை Tellomi தூதர்</string>
     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3 இன் கீழ் உரிமம் பெற்றது</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="HelpSettingsFragment__signal_is_a_501c3">சிக்னல் ஓர் இலாப நோக்கற்ற அமைப்பாகும்.</string>
+    <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
 
     <!-- DataAndStorageSettingsFragment -->
     <string name="DataAndStorageSettingsFragment__media_quality">மீடியா தரம்</string>
@@ -6461,7 +6461,7 @@
     <!-- Third small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__your_privacy_is_our_mission">உங்கள் தனியுரிமையே எங்கள் லட்சியம்</string>
     <!-- Fourth small text blurb on learn more sheet. Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3">சிக்னல் ஓர் இலாப நோக்கற்ற அமைப்பாகும். வரி விலக்கு உண்டு.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3"></string>
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">உங்கள் ஆதரவுக்கு நன்றி!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->

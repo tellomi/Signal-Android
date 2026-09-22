@@ -6043,7 +6043,7 @@
     <string name="HelpFragment__copyright_signal_messenger">Signal Messenger yenye Hakimiliki</string>
     <string name="HelpFragment__licenced_under_the_agplv3">Imepewa leseni chini ya GNU AGPLv3</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="HelpSettingsFragment__signal_is_a_501c3">Tellomi ni shirika lilisilo la faida</string>
+    <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
 
     <!-- DataAndStorageSettingsFragment -->
     <string name="DataAndStorageSettingsFragment__media_quality">Ubora wa Media</string>
@@ -6461,7 +6461,7 @@
     <!-- Third small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__your_privacy_is_our_mission">Faragha yako ni jukumu letu</string>
     <!-- Fourth small text blurb on learn more sheet. Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3">Tellomi ni shirika lilisilo la faida. Michango inayotolewa Marekani hukatwa kodi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3"></string>
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">Asante kwa kutuunga mkono!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->

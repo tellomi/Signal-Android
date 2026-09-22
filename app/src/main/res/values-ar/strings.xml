@@ -6651,7 +6651,7 @@
     <string name="HelpFragment__copyright_signal_messenger">جميع الحقوق محفوظة لتطبيق سيجنال للمراسلة</string>
     <string name="HelpFragment__licenced_under_the_agplv3">بموجب رخصة GNU AGPLv3</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="HelpSettingsFragment__signal_is_a_501c3">سيجنال شركة غير ربحية</string>
+    <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
 
     <!-- DataAndStorageSettingsFragment -->
     <string name="DataAndStorageSettingsFragment__media_quality">جودة الوسائط</string>
@@ -7101,7 +7101,7 @@
     <!-- Third small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__your_privacy_is_our_mission">خصوصيتك هي مهمتنا</string>
     <!-- Fourth small text blurb on learn more sheet. Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3">سيجنال شركة غير ربحية.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3"></string>
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">شكرا لدعمك!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->

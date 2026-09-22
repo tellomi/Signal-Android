@@ -6043,7 +6043,7 @@
     <string name="HelpFragment__copyright_signal_messenger">പകർപ്പവകാശ Tellomi സന്ദേശകന്‍</string>
     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3-യ്ക്ക് കീഴിൽ ലൈസൻസ് ചെയ്‌തത്</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="HelpSettingsFragment__signal_is_a_501c3">Tellomi ഒരു ലാഭേച്ഛയില്ലാത്ത സ്ഥാപനമാണ്</string>
+    <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
 
     <!-- DataAndStorageSettingsFragment -->
     <string name="DataAndStorageSettingsFragment__media_quality">മീഡിയ നിലവാരം</string>
@@ -6461,7 +6461,7 @@
     <!-- Third small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__your_privacy_is_our_mission">നിങ്ങളുടെ സ്വകാര്യതയാണ് ഞങ്ങളുടെ ദൗത്യം</string>
     <!-- Fourth small text blurb on learn more sheet. Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3">Tellomi ഒരു ലാഭേച്ഛയില്ലാത്ത സ്ഥാപനമാണ്. Tellomi ഒരു ലാഭേച്ഛയില്ലാത്ത സ്ഥാപനമാണ്.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3"></string>
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">നിങ്ങളുടെ പിന്തുണയ്ക്ക് നന്ദി!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->

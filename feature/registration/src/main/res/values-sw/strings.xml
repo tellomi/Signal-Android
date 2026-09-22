@@ -5,7 +5,7 @@
 
     <string name="RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message">Enda na faragha.\n Kuwa wewe katika kila ujumbe</string>
     <!-- Non-English translations should use "Signal is a nonprofit" instead, dropping the 501c3 reference. -->
-    <string name="RegistrationActivity_terms_and_privacy">Signal ni 501c3 shirika lilisilo la faida\nSheria na Sera ya Faragha</string>
+    <string name="RegistrationActivity_terms_and_privacy">Sheria na Sera ya Faragha</string>
     <string name="RegistrationActivity_continue">Endelea</string>
     <!-- Screen title for restoring or transfering account -->
     <string name="registration_activity__restore_or_transfer">Rejesha au hamisha</string>

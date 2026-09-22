@@ -76,9 +76,10 @@ fun CaptchaScreen(
             webViewClient = object : WebViewClient() {
               @Deprecated("Deprecated in Java")
               override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                if (url.startsWith(state.captchaScheme)) {
-                  val token = url.substring(state.captchaScheme.length)
-                  onEvent(CaptchaScreenEvents.CaptchaCompleted(token))
+                // Tellomi：新旧两种回跳都认。两种前缀长度不同，所以按命中的那个来切，不能写死长度。
+                val scheme = state.captchaSchemeOf(url)
+                if (scheme != null) {
+                  onEvent(CaptchaScreenEvents.CaptchaCompleted(url.substring(scheme.length)))
                   return true
                 }
                 return false

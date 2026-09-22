@@ -6043,7 +6043,7 @@
     <string name="HelpFragment__copyright_signal_messenger">Авторлық құқығы қорғалған Tellomi мессенджері</string>
     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3 лицензиясымен жұмыс істейді</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="HelpSettingsFragment__signal_is_a_501c3">Tellomi – коммерциялық емес жоба</string>
+    <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
 
     <!-- DataAndStorageSettingsFragment -->
     <string name="DataAndStorageSettingsFragment__media_quality">Мультимедиа сапасы</string>
@@ -6461,7 +6461,7 @@
     <!-- Third small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__your_privacy_is_our_mission">Құпиялық – біздің басты міндетіміз</string>
     <!-- Fourth small text blurb on learn more sheet. Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3">Tellomi – коммерциялық емес жоба. АҚШ-тан көрсетілген қаржылай қолдауға салықтық шегерім қарастырылған.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_a_501c3"></string>
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">Қолдау көрсеткеніңіз үшін алғысымызды білдіреміз!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->
