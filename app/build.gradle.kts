@@ -351,10 +351,19 @@ android {
     buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\"")
     buildConfigField("String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\"")
     buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\"")
-    buildConfigField("String", "SIGNAL_SFU_URL", "\"https://sfu.voip.signal.org\"")
-    buildConfigField("String", "SIGNAL_STAGING_SFU_URL", "\"https://sfu.staging.voip.signal.org\"")
-    buildConfigField("String[]", "SIGNAL_SFU_INTERNAL_NAMES", "new String[]{\"Test\", \"Staging\", \"Development\"}")
-    buildConfigField("String[]", "SIGNAL_SFU_INTERNAL_URLS", "new String[]{\"https://sfu.test.voip.signal.org\", \"https://sfu.staging.voip.signal.org\", \"https://sfu.staging.test.voip.signal.org\"}")
+    // 群通话的 SFU 走我们自己的（docs/signal/BUILD_CALLING.md）：香港那台上 calling_frontend
+    // 听 127.0.0.1:9010，nginx 以 /callingService/ 暴露；Desktop 的 config/production.json
+    // 早就写的是这个地址，Android 这边一直还是上游的 —— 而 InternalValues.groupCallingServer
+    // 默认就取 SIGNAL_SFU_URL，所以群通话的媒体一直在经 Signal 的服务器中转。
+    //
+    // 它和 CDSI / SVR2 那两条不是一回事：那两条有 *_AVAILABLE 开关整条关掉，是惰性常量；
+    // 这条没有任何开关挡着。
+    buildConfigField("String", "SIGNAL_SFU_URL", "\"https://chat.tellomi.app/callingService\"")
+    buildConfigField("String", "SIGNAL_STAGING_SFU_URL", "\"https://chat.tellomi.app/callingService\"")
+    // 内部调试菜单里的备选 SFU：我们只有一套，列三个上游地址只会把人导到连不上的服务器
+    // （而且它们会作为字符串留在包里）。留空——菜单里选主 SFU 的那一项还在。
+    buildConfigField("String[]", "SIGNAL_SFU_INTERNAL_NAMES", "new String[]{}")
+    buildConfigField("String[]", "SIGNAL_SFU_INTERNAL_URLS", "new String[]{}")
     buildConfigField("String", "CONTENT_PROXY_HOST", "\"contentproxy.signal.org\"")
     buildConfigField("int", "CONTENT_PROXY_PORT", "443")
     buildConfigField("String[]", "SIGNAL_SERVICE_IPS", rootProject.extra["service_ips"] as String)
