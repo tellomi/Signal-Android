@@ -2732,7 +2732,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">بۇ نومۇرنى دەلىللەش ئۈچۈن بىر تېلېفون تاپشۇرۇۋالىسىز.</string>
     <string name="RegistrationActivity_edit_number">نومۇرنى تەھرىرلەش</string>
     <string name="RegistrationActivity_missing_google_play_services">Google Play مۇلازىمەتلىرى كەم</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">بۇ ئۈسكۈنىدە Google Play مۇلازىمىتى كەم ئىكەن. شۇنداقتىمۇ سىز يەنىلا Signal نى ئىشلىتەلەيسىز، ئەمما بۇ سەپلىمە تۆۋەنلىتىلگەن ئىشەنچ ياكى ئىقتىدارنى كەلتۈرۈپ چىقىرىشى مۇمكىن.\n\nئەگەر سىز تەجرىبىلىك ئىشلەتكۈچى بولمىسىڭىز، ياكى بازارغا سېلىنغان Android ROM نى ئىشلەتمىگەن بولسىڭىز ياكى بۇنى خاتالىق دەپ كۆرۈۋاتقانلىقىڭىزغا ئىشەنسىڭىز، كاشىلا تېپىشىمىزغا ياردەم قىلىش ئۈچۈن support@signal.org بىلەن ئالاقىلىشىڭ.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">بۇ ئۈسكۈنىدە Google Play مۇلازىمىتى كەم ئىكەن. شۇنداقتىمۇ سىز يەنىلا Tellomi نى ئىشلىتەلەيسىز، ئەمما بۇ سەپلىمە تۆۋەنلىتىلگەن ئىشەنچ ياكى ئىقتىدارنى كەلتۈرۈپ چىقىرىشى مۇمكىن.\n\nئەگەر سىز تەجرىبىلىك ئىشلەتكۈچى بولمىسىڭىز، ياكى بازارغا سېلىنغان Android ROM نى ئىشلەتمىگەن بولسىڭىز ياكى بۇنى خاتالىق دەپ كۆرۈۋاتقانلىقىڭىزغا ئىشەنسىڭىز، كاشىلا تېپىشىمىزغا ياردەم قىلىش ئۈچۈن support@tellomi.app بىلەن ئالاقىلىشىڭ.</string>
     <string name="RegistrationActivity_i_understand">چۈشەندىم</string>
     <string name="RegistrationActivity_play_services_error">Play مۇلازىمەتلىرى خاتالىقى</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play مۇلازىمەتلىرى يېڭىلىنىۋاتىدۇ ياكى ئۇلارنى ۋاقىتلىق ئىشلەتكىلى بولمايدۇ. سەل تۇرۇپ قايتا سىناڭ.</string>

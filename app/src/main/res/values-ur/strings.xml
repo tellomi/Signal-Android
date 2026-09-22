@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">اس نمبر کی تصدیق کے لیئے آپ کو کال موصول ہوگی۔</string>
     <string name="RegistrationActivity_edit_number">نمبر ترتیب کرے</string>
     <string name="RegistrationActivity_missing_google_play_services">غائب گوگل پلے سروسز</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">یہ ڈیوائس Google Play خدمات کو حاصل کرنے سے قاصر ہے۔ اب بھی آپ Signal استعمال کر سکتے ہیں لیکن اس کنفگریشن سے کارکردگی میں فرق آسکتا ہے۔ n/n/اگر آپ ماہر صارف نہیں ہیں، اور کوئی aftermarket سے لیا ہوا Android ROM نہیں چلا رہے، یا اگر آپ اس کو غلطی کے طور پر دیکھ رہے ہیں تو براہِ کرم ٹربل شوٹنگ مدد حاصل کرنے کیلئے support@signal.org پر رابطہ کریں۔</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">یہ ڈیوائس Google Play خدمات کو حاصل کرنے سے قاصر ہے۔ اب بھی آپ Tellomi استعمال کر سکتے ہیں لیکن اس کنفگریشن سے کارکردگی میں فرق آسکتا ہے۔ n/n/اگر آپ ماہر صارف نہیں ہیں، اور کوئی aftermarket سے لیا ہوا Android ROM نہیں چلا رہے، یا اگر آپ اس کو غلطی کے طور پر دیکھ رہے ہیں تو براہِ کرم ٹربل شوٹنگ مدد حاصل کرنے کیلئے support@tellomi.app پر رابطہ کریں۔</string>
     <string name="RegistrationActivity_i_understand">میں سمجھ گیا</string>
     <string name="RegistrationActivity_play_services_error">گوگل پلے سروسز خرابی</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">گوگل پلے سروسز تجدید ہو رہی ہیں یا عارضی طور پر دستیاب نہیں۔ براہ کرم دوبارہ کوشش کریں۔</string>
@@ -3858,7 +3858,7 @@
     <string name="IdentityUtil_unverified_banner_two">آپ کا حفاظتی نمبر %1$s اور %2$sکے ساتھ مزید تصدیق شدہ نہیں ہیں</string>
     <string name="IdentityUtil_unverified_banner_many">آپ کا حفاظتی نمبر %1$s ،%2$s، اور %3$s کے ساتھ مزید تصدیق شدہ نہیں ہیں</string>
 
-    <string name="IdentityUtil_unverified_dialog_one">آپ کا تصدیقی نمبر %1$sکے ساتھ تبدیل ہو چکا ہےاور مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے،یا یہ %1$sSignal سادگی سے دوبارہ نصب کریں۔</string>
+    <string name="IdentityUtil_unverified_dialog_one">آپ کا تصدیقی نمبر %1$sکے ساتھ تبدیل ہو چکا ہےاور مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے،یا یہ %1$sTellomi سادگی سے دوبارہ نصب کریں۔</string>
     <string name="IdentityUtil_unverified_dialog_two">آپ کا حفاظتی نمبر %1$sاور %2$sکے ساتھ مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے۔یا یہ Tellomi سادگی سے دوبارہ نصب کریں۔</string>
     <string name="IdentityUtil_unverified_dialog_many">آپ کا حفاظتی نمبر %1$s،%2$s،اور %3$sکے ساتھ مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے۔یا یہ Tellomi سادگی سے دوبارہ نصب کریں۔</string>
 

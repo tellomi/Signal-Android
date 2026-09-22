@@ -2922,7 +2922,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Jūs saņēmāt zvanu, lai verificētu šo numuru.</string>
     <string name="RegistrationActivity_edit_number">Rediģēt numuru</string>
     <string name="RegistrationActivity_missing_google_play_services">Jocīgi, trūkst izspiegojošo Google Play pakalpojumu</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Šajā ierīcei trūkst Google Play pakalpojumu. Jūs varat izmantot Signal, taču šī ierīces konfigurācija, iespējams, var pasliktināt uzticamību un veiktspēju.\n\nJa jūs neesat pieredzējis lietotājs, ierīcē neizmantojiet \"pēctirgus\" Android operētājsistēmu vai arī uzskatiet, ka šo paziņojumu redziet kļūdas pēc, lūdzu, sazinieties ar support@signal.org, lai saņemtu palīdzību.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Šajā ierīcei trūkst Google Play pakalpojumu. Jūs varat izmantot Tellomi, taču šī ierīces konfigurācija, iespējams, var pasliktināt uzticamību un veiktspēju.\n\nJa jūs neesat pieredzējis lietotājs, ierīcē neizmantojiet \"pēctirgus\" Android operētājsistēmu vai arī uzskatiet, ka šo paziņojumu redziet kļūdas pēc, lūdzu, sazinieties ar support@tellomi.app, lai saņemtu palīdzību.</string>
     <string name="RegistrationActivity_i_understand">Es saprotu</string>
     <string name="RegistrationActivity_play_services_error">Google Play pakalpojumu kļūme</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play pakalpojumi tiek aktualizēti vai īslaicīgi nav pieejami. Lūdzu, mēģiniet vēlreiz.</string>

@@ -2827,12 +2827,12 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Du erhältst einen Anruf zur Verifizierung dieser Telefonnummer.</string>
     <string name="RegistrationActivity_edit_number">Telefonnummer bearbeiten</string>
     <string name="RegistrationActivity_missing_google_play_services">Fehlende Google-Play-Dienste</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Auf diesem Gerät fehlen die Google-Play-Dienste. Signal kann immer noch verwendet werden, allerdings beeinträchtigt diese Konfiguration eventuell die Zuverlässigkeit oder die Leistung.\n\nFalls du keine Erfahrung damit hast, kein Custom-ROM verwendest oder glaubst, dass diese Meldung irrtümlich angezeigt wird, kontaktiere bitte support@signal.org für Hilfe bei der Problembehandlung.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Auf diesem Gerät fehlen die Google-Play-Dienste. Tellomi kann immer noch verwendet werden, allerdings beeinträchtigt diese Konfiguration eventuell die Zuverlässigkeit oder die Leistung.\n\nFalls du keine Erfahrung damit hast, kein Custom-ROM verwendest oder glaubst, dass diese Meldung irrtümlich angezeigt wird, kontaktiere bitte support@tellomi.app für Hilfe bei der Problembehandlung.</string>
     <string name="RegistrationActivity_i_understand">Verstanden</string>
     <string name="RegistrationActivity_play_services_error">Fehler bei den Google-Play-Diensten</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google-Play-Dienste werden aktualisiert oder sind vorübergehend nicht verfügbar. Bitte versuche es erneut.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigungen »Kontakte« und »Speicher«, damit du deine Kontakte einfacher erreichen und ihnen Nachrichten senden kannst. Deine Kontakte werden mittels Signals vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigung »Kontakte«, damit du deine Kontakte einfacher erreichen kannst. Deine Kontakte werden mittels Signals vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigungen »Kontakte« und »Speicher«, damit du deine Kontakte einfacher erreichen und ihnen Nachrichten senden kannst. Deine Kontakte werden mittels Tellomis vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigung »Kontakte«, damit du deine Kontakte einfacher erreichen kannst. Deine Kontakte werden mittels Tellomis vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
     <string name="RegistrationActivity_rate_limited_to_service">Du hast zu oft versucht, diese Telefonnummer zu registrieren. Bitte versuche es später erneut.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Du hast zu oft versucht, diese Nummer zu registrieren. Bitte versuche es erneut in %1$s.</string>
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Abo gekündigt</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatische Backups mit Signals sicherem Ende-zu-Ende-verschlüsselten Speicherservice.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatische Backups mit Tellomis sicherem Ende-zu-Ende-verschlüsselten Speicherservice.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatische Backups mit Signals sicherem Ende-zu-Ende-verschlüsselten Speicherservice. Leg einfach auf deinem Smartphone los.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatische Backups mit Tellomis sicherem Ende-zu-Ende-verschlüsselten Speicherservice. Leg einfach auf deinem Smartphone los.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Kein Abo auf diesem Gerät gefunden."</string>
     <!-- Action button label to set up backups -->

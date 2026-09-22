@@ -98,7 +98,7 @@
     <string name="AttachmentKeyboard_location">Lokacija</string>
     <!-- Text for a button that will allow users to create a poll -->
     <string name="AttachmentKeyboard_poll">Anketa</string>
-    <string name="AttachmentKeyboard_Signal_needs_permission_to_show_your_photos_and_videos">Signalu je potrebno dopuštenje da prikaže vaše slike i videozapise</string>
+    <string name="AttachmentKeyboard_Signal_needs_permission_to_show_your_photos_and_videos">Tellomiu je potrebno dopuštenje da prikaže vaše slike i videozapise</string>
     <!-- Text for a button prompting users to allow Signal access to their gallery storage -->
     <string name="AttachmentKeyboard_allow_access">Dozvoli pristup</string>
     <string name="AttachmentKeyboard_payment">Plaćanje</string>
@@ -119,16 +119,16 @@
 
     <!-- AttachmentManager -->
     <string name="AttachmentManager_cant_open_media_selection">Nije pronađena aplikacija za biranje priloga.</string>
-    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">Signalu je potrebno dopuštenje da pristupi memoriji uređaja kako bi mogao priložiti slike, video i audiozapise, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Prostor za pohranu\".</string>
-    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">Signalu je potrebno dopuštenje da pristupi kontaktima kako bi mogao priložiti informacije o njima, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kontakti\".</string>
-    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">Signalu je potrebno dopuštenje da sazna lokaciju uređaja, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Lokacija\".</string>
+    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">Tellomiu je potrebno dopuštenje da pristupi memoriji uređaja kako bi mogao priložiti slike, video i audiozapise, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Prostor za pohranu\".</string>
+    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">Tellomiu je potrebno dopuštenje da pristupi kontaktima kako bi mogao priložiti informacije o njima, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kontakti\".</string>
+    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">Tellomiu je potrebno dopuštenje da sazna lokaciju uređaja, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Lokacija\".</string>
 
     <!-- Dialog title asking users for location permission -->
     <string name="AttachmentManager_signal_allow_access_location">Dozvolite pristup vašoj lokaciji</string>
     <!-- Dialog description that will explain the steps needed to give location permission -->
     <string name="AttachmentManager_signal_to_send_location">Da pošaljete lokaciju:</string>
     <!-- Alert dialog description asking for location permission -->
-    <string name="AttachmentManager_signal_allow_signal_access_location">Dozvolite pristup Signalu za slanje vaše lokacije.</string>
+    <string name="AttachmentManager_signal_allow_signal_access_location">Dozvolite pristup Tellomiu za slanje vaše lokacije.</string>
     <!-- Toast text explaining Signal\'s need for location access -->
     <string name="AttachmentManager_signal_needs_location_access">Tellomi treba pristup lokaciji da pošalje vašu lokaciju.</string>
     <!-- Dialog title asking users for gallery storage permission -->
@@ -231,7 +231,7 @@
     <!-- Message shown on block dialog when blocking the Signal release notes recipient -->
     <string name="BlockUnblockDialog_block_getting_signal_updates_and_news">Blokiraj primanje ažuriranja i novosti za Tellomi.</string>
     <!-- Message shown on unblock dialog when unblocking the Signal release notes recipient -->
-    <string name="BlockUnblockDialog_resume_getting_signal_updates_and_news">Nastavi primati ažuriranja Signala i novosti.</string>
+    <string name="BlockUnblockDialog_resume_getting_signal_updates_and_news">Nastavi primati ažuriranja Tellomia i novosti.</string>
     <string name="BlockUnblockDialog_unblock_s">Odblokirati %1$s?</string>
     <string name="BlockUnblockDialog_block">Blokiraj</string>
     <string name="BlockUnblockDialog_block_and_leave">Blokiraj i napusti</string>
@@ -286,7 +286,7 @@
     <!-- Title for an alert that shows at the bottom of the chat list letting people know that circumvention is no longer needed -->
     <string name="CensorshipCircumventionMegaphone_turn_off_censorship_circumvention">Isključiti zaobilazak cenzure?</string>
     <!-- Body for an alert that shows at the bottom of the chat list letting people know that circumvention is no longer needed -->
-    <string name="CensorshipCircumventionMegaphone_you_can_now_connect_to_the_signal_service">Sad se možete povezati direktno sa Signalom radi boljeg iskustva.</string>
+    <string name="CensorshipCircumventionMegaphone_you_can_now_connect_to_the_signal_service">Sad se možete povezati direktno sa Tellomiom radi boljeg iskustva.</string>
     <!-- Action to prompt the user to disable circumvention since it is no longer needed -->
     <string name="CensorshipCircumventionMegaphone_turn_off">Isključi</string>
     <!-- Action to prompt the user to dismiss the alert at the bottom of the chat list -->
@@ -298,7 +298,7 @@
     <string name="ClientDeprecatedActivity_update">Ažuriraj</string>
     <string name="ClientDeprecatedActivity_dont_update">Ne ažuriraj</string>
     <string name="ClientDeprecatedActivity_warning">Upozorenje</string>
-    <string name="ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history">Vaša verzija Signala je istekla. Možete pristupiti ranijim porukama, ali nećete moći slati ni primati nove poruke dok ne ažurirate aplikaciju.</string>
+    <string name="ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history">Vaša verzija Tellomia je istekla. Možete pristupiti ranijim porukama, ali nećete moći slati ni primati nove poruke dok ne ažurirate aplikaciju.</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->
@@ -318,7 +318,7 @@
     <string name="CommunicationActions_cancel">Prekini</string>
     <string name="CommunicationActions_call">Nazovi</string>
     <string name="CommunicationActions_insecure_call">Nezaštićen poziv</string>
-    <string name="CommunicationActions_carrier_charges_may_apply">Može doći do troškova. Broj koji pozivate nije registrovan na Signalu. Poziv će biti usmjeren preko Vašeg mobilnog operatera, ne preko interneta.</string>
+    <string name="CommunicationActions_carrier_charges_may_apply">Može doći do troškova. Broj koji pozivate nije registrovan na Tellomiu. Poziv će biti usmjeren preko Vašeg mobilnog operatera, ne preko interneta.</string>
     <string name="CommunicationActions_cant_join_call">Nije se moguće pridružiti pozivu</string>
     <string name="CommunicationActions_this_call_link_is_no_longer_valid">Ovaj link za poziv više nije važeći.</string>
     <!-- Title on dialog when call link url cannot be parsed -->
@@ -330,7 +330,7 @@
     <!-- Title on dialog when quick restore qr code is scanned in system camera -->
     <string name="CommunicationActions__transfer_dialog_title">Prenijeti račun na novi uređaj?</string>
     <!-- Message on dialog when quick restore qr code is scanned in system camera -->
-    <string name="CommunicationActions__transfer_dialog_message">Da biste prenijeli ovaj račun na novi uređaj, dodirnite \"Nastavi\" i ponovo skenirajte QR kod Tellomi kamerom. Vodite računa da skenirate samo QR kodove koji dolaze direktno iz Signala.</string>
+    <string name="CommunicationActions__transfer_dialog_message">Da biste prenijeli ovaj račun na novi uređaj, dodirnite \"Nastavi\" i ponovo skenirajte QR kod Tellomi kamerom. Vodite računa da skenirate samo QR kodove koji dolaze direktno iz Tellomia.</string>
     <string name="CommunicationActions__dont_transfer">Ne prenosi</string>
 
     <!-- ConfirmIdentityDialog -->
@@ -488,14 +488,14 @@
     <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">Za slanje glasovnih poruka, dozvolite da Tellomi pristupi vašem mikrofonu.</string>
     <!-- Toast text explaining Signal\'s need for microphone access -->
     <string name="ConversationActivity_signal_needs_microphone_access_voice_message">Tellomi treba pristup mikrofonu za snimanje glasovne poruke.</string>
-    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Signalu je potrebno dopuštenje da pristupi mikrofonu kako bi mogao slati zvučne poruke, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Mikrofon\".</string>
+    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Tellomiu je potrebno dopuštenje da pristupi mikrofonu kako bi mogao slati zvučne poruke, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Mikrofon\".</string>
 
-    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Signalu je potrebno dopuštenje da pristupi mikrofonu i kameri kako bi mogao nazvati %1$s, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavke \"Mikrofon\" i \"Kamera\".</string>
-    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Da biste slikali i snimali, dozvolite Signalu da pristupi kameri.</string>
-    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Signalu je potrebno dopuštenje da pristupi kameri kako bi mogao slikati i snimati, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kamera\".</string>
-    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Signalu je potrebno dopuštenje da pristupi kameri kako bi mogao slikati i snimati.</string>
+    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Tellomiu je potrebno dopuštenje da pristupi mikrofonu i kameri kako bi mogao nazvati %1$s, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavke \"Mikrofon\" i \"Kamera\".</string>
+    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Da biste slikali i snimali, dozvolite Tellomiu da pristupi kameri.</string>
+    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Tellomiu je potrebno dopuštenje da pristupi kameri kako bi mogao slikati i snimati, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kamera\".</string>
+    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Tellomiu je potrebno dopuštenje da pristupi kameri kako bi mogao slikati i snimati.</string>
     <string name="ConversationActivity_enable_the_microphone_permission_to_capture_videos_with_sound">Omogućite pristup mikrofonu da biste snimali video sa zvukom.</string>
-    <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Signalu je potrebno dopuštenje da pristupi mikrofonu kako bi mogao snimati videozapise.</string>
+    <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Tellomiu je potrebno dopuštenje da pristupi mikrofonu kako bi mogao snimati videozapise.</string>
 
     <string name="ConversationActivity_quoted_contact_message">%1$s %2$s</string>
     <string name="ConversationActivity_no">Ne</string>
@@ -528,9 +528,9 @@
     <string name="ConversationActivity_error_sending_media">Greška prilikom slanja priloga</string>
 
     <!-- Message shown when opening an MMS group conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__sms_messaging_is_no_longer_supported">Razmjena SMS poruka više nije podržana u Signalu.</string>
+    <string name="ConversationActivity__sms_messaging_is_no_longer_supported">Razmjena SMS poruka više nije podržana u Tellomiu.</string>
     <!-- Message shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
-    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Razmjena SMS poruka više nije podržana u Signalu. Pozovite korisnika %1$s u Tellomi da zadržite razgovor ovdje.</string>
+    <string name="ConversationActivity__sms_messaging_is_no_longer_supported_in_signal_invite_s_to_to_signal_to_keep_the_conversation_here">Razmjena SMS poruka više nije podržana u Tellomiu. Pozovite korisnika %1$s u Tellomi da zadržite razgovor ovdje.</string>
     <!-- Message shown when opening a conversation with an unregistered user who used to be on Signal -->
     <string name="ConversationActivity__this_person_is_no_longer_using_signal">Ova osoba više ne koristi Tellomi. Pozovite korisnika u Tellomi da zadržite razgovor ovdje.</string>
     <!-- Action button shown when opening an SMS conversation with SMS disabled and there are no exported messages -->
@@ -605,10 +605,10 @@
     <string name="ConversationFragment_delete_for_everyone_title">Izbrisati za sve?</string>
     <!-- Body of dialog explaining what happens during deletion -->
     <plurals name="ConversationFragment_delete_for_everyone_body">
-        <item quantity="one">Članovi grupe na najnovijoj verziji Signala će vidjeti da ste izbrisali ovu poruku.</item>
-        <item quantity="few">Članovi grupe na najnovijoj verziji Signala će vidjeti da ste izbrisali ove poruke.</item>
-        <item quantity="many">Članovi grupe na najnovijoj verziji Signala će vidjeti da ste izbrisali ove poruke.</item>
-        <item quantity="other">Članovi grupe na najnovijoj verziji Signala će vidjeti da ste izbrisali ove poruke.</item>
+        <item quantity="one">Članovi grupe na najnovijoj verziji Tellomia će vidjeti da ste izbrisali ovu poruku.</item>
+        <item quantity="few">Članovi grupe na najnovijoj verziji Tellomia će vidjeti da ste izbrisali ove poruke.</item>
+        <item quantity="many">Članovi grupe na najnovijoj verziji Tellomia će vidjeti da ste izbrisali ove poruke.</item>
+        <item quantity="other">Članovi grupe na najnovijoj verziji Tellomia će vidjeti da ste izbrisali ove poruke.</item>
     </plurals>
     <!-- Dialog button for deleting one or more note-to-self messages only on this device, leaving that same message intact on other devices. -->
     <string name="ConversationFragment_delete_on_this_device">Izbriši na ovom uređaju</string>
@@ -691,9 +691,9 @@
     <!-- Label for official chat pill shown in the Note to Self conversation header -->
     <string name="ConversationFragment_official_chat">Zvanični razgovor</string>
     <!-- Description shown in the Signal release notes conversation header -->
-    <string name="ConversationFragment_release_notes_description">Jedini zvanični chat od Signala. Budite u toku s vijestima i napomenama o izdanjima.</string>
+    <string name="ConversationFragment_release_notes_description">Jedini zvanični chat od Tellomia. Budite u toku s vijestima i napomenama o izdanjima.</string>
     <!-- Label shown in place of the input in the Signal release notes conversation -->
-    <string name="ConversationFragment_the_only_official_chat_from_signal">Jedini zvanični chat od Signala</string>
+    <string name="ConversationFragment_the_only_official_chat_from_signal">Jedini zvanični chat od Tellomia</string>
     <!-- Plural for group member count shown in conversation header. %1$d is the number of members -->
     <plurals name="ConversationFragment_group_member_count">
         <item quantity="one">%1$d član</item>
@@ -740,26 +740,26 @@
     <string name="SafetyTips_next_tip">Sljedeći savjet</string>
 
     <!-- Summary tip 0 title: Don\'t respond to chats from Signal -->
-    <string name="SafetyTips_summary_tip0_title">Ne odgovarajte na razgovore koji navodno dolaze od Signala</string>
+    <string name="SafetyTips_summary_tip0_title">Ne odgovarajte na razgovore koji navodno dolaze od Tellomia</string>
     <!-- Summary tip 0 message -->
-    <string name="SafetyTips_summary_tip0_message">Tellomi vam nikada neće poslati poruku tražeći vaš registracijski kod, PIN ili ključ za oporavak. Ne odgovarajte na razgovore koji navodno dolaze od Signala</string>
+    <string name="SafetyTips_summary_tip0_message">Tellomi vam nikada neće poslati poruku tražeći vaš registracijski kod, PIN ili ključ za oporavak. Ne odgovarajte na razgovore koji navodno dolaze od Tellomia</string>
     <!-- Summary tip 1 title: Review names and photos -->
     <string name="SafetyTips_summary_tip1_title">Provjerite imena i fotografije</string>
     <!-- Summary tip 1 message -->
-    <string name="SafetyTips_summary_tip1_message">Obratite pažnju na oznaku „Ime nije potvrđeno“. Svako sam postavlja svoje ime profila u Signalu.</string>
+    <string name="SafetyTips_summary_tip1_message">Obratite pažnju na oznaku „Ime nije potvrđeno“. Svako sam postavlja svoje ime profila u Tellomiu.</string>
     <!-- Summary tip 2 title: Look out for scams -->
     <string name="SafetyTips_summary_tip2_title">Obratite pažnju na prevare</string>
     <!-- Summary tip 2 message -->
     <string name="SafetyTips_summary_tip2_message">Izbjegavajte nejasne poruke koje vas pokušavaju navesti na odgovor. Budite oprezni s finansijskim savjetima i sumnjivim web linkovima.</string>
 
     <!-- Detail tip 0 title -->
-    <string name="SafetyTips_detail_tip0_title">Ne odgovarajte na razgovore koji navodno dolaze od Signala</string>
+    <string name="SafetyTips_detail_tip0_title">Ne odgovarajte na razgovore koji navodno dolaze od Tellomia</string>
     <!-- Detail tip 0 message -->
     <string name="SafetyTips_detail_tip0_message">Tellomi vam nikada neće poslati poruku tražeći vaš registracijski kod, PIN ili ključ za oporavak. Ne odgovarajte na razgovore koji se predstavljaju kao Tellomi ili Tellomi podrška. Zlonamjerni akteri kreiraju lažne razgovore kako bi pokušali preuzeti vaš račun.</string>
     <!-- Detail tip 1 title -->
     <string name="SafetyTips_detail_tip1_title">Provjerite imena i fotografije</string>
     <!-- Detail tip 1 message -->
-    <string name="SafetyTips_detail_tip1_message">Obratite pažnju na oznaku „Ime nije potvrđeno“. Svako sam postavlja svoje ime i fotografiju profila u Signalu. Ako niste sigurni ko šalje novi zahtjev, sigurnije je da ga ignorišete.</string>
+    <string name="SafetyTips_detail_tip1_message">Obratite pažnju na oznaku „Ime nije potvrđeno“. Svako sam postavlja svoje ime i fotografiju profila u Tellomiu. Ako niste sigurni ko šalje novi zahtjev, sigurnije je da ga ignorišete.</string>
     <!-- Detail tip 2 title -->
     <string name="SafetyTips_detail_tip2_title">Nejasne ili nebitne poruke</string>
     <!-- Detail tip 2 message -->
@@ -778,7 +778,7 @@
     <string name="SafetyTips_detail_tip5_message">Obratite pažnju na preduzeća ili vladine agencije koje vas kontaktiraju. Poruke koje uključuju porezne agencije, dostave i druge službe mogu biti neželjena pošta.</string>
 
     <!-- Bottom sheet text explaining that profile names are chosen by the account holder. Placeholder will be \'Profile names\' -->
-    <string name="ProfileNameBottomSheet__profile_names_on_signal">%1$s na Signalu bira vlasnik računa.</string>
+    <string name="ProfileNameBottomSheet__profile_names_on_signal">%1$s na Tellomiu bira vlasnik računa.</string>
     <!-- Bottom sheet text explaining that Signal can\'t verify names and photos -->
     <string name="ProfileNameBottomSheet__signal_cant_verify">Tellomi ne može potvrditi imena i fotografije</string>
     <!-- Bottom sheet text explaining that Signal will never contact you for registration code, PIN, or recovery key -->
@@ -949,9 +949,9 @@
     <!-- Toolbar title for this screen -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Ko me može pronaći po broju?</string>
     <!-- Description for radio item stating anyone can see your phone number -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Svako ko ima vaš broj telefona vidjet će da ste na Signalu i može započeti razgovor s vama.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Svako ko ima vaš broj telefona vidjet će da ste na Tellomiu i može započeti razgovor s vama.</string>
     <!-- Description for radio item stating no one will be able to see your phone number -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Niko neće moći vidjeti da ste na Signalu osim ako toj osobi ne pošaljete poruku ili ne razgovarate s njom.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Niko neće moći vidjeti da ste na Tellomiu osim ako toj osobi ne pošaljete poruku ili ne razgovarate s njom.</string>
 
     <!-- ChooseBackupFragment -->
     <string name="ChooseBackupFragment__restore_from_backup">Vratiti podatke iz rezervne kopije?</string>
@@ -1037,7 +1037,7 @@
     <string name="BackupsPreferenceFragment__d_so_far">%1$d do sada…</string>
     <!-- Show percentage of completion of backup -->
     <string name="BackupsPreferenceFragment__s_so_far">%1$s%% do sada…</string>
-    <string name="BackupsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups">Signalu je potrebno dopuštenje da pristupi memoriji uređaja kako bi mogao kreirati rezervne kopije, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Prostor za pohranu\".</string>
+    <string name="BackupsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups">Tellomiu je potrebno dopuštenje da pristupi memoriji uređaja kako bi mogao kreirati rezervne kopije, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Prostor za pohranu\".</string>
     <!-- Title of dialog shown when picking the time to perform a chat backup -->
     <string name="BackupsPreferenceFragment__set_backup_time">Podesite vrijeme rezervne kopije</string>
 
@@ -1138,7 +1138,7 @@
     <!-- Bottom sheet description explaining that messages on linked devices are private -->
     <string name="LinkDeviceFragment__all_messaging_is_private">Sve poruke na povezanim uređajima su privatne</string>
     <!-- Bottom sheet description explaining that future messages on linked devices will be in sync with your phone but previous messages will not appear -->
-    <string name="LinkDeviceFragment__signal_messages_are_synchronized">Tellomi poruke se sinhronizuju sa Signalom na vašem mobilnom telefonu nakon što se poveže. Vaša prethodna historija poruka se neće pojaviti.</string>
+    <string name="LinkDeviceFragment__signal_messages_are_synchronized">Tellomi poruke se sinhronizuju sa Tellomiom na vašem mobilnom telefonu nakon što se poveže. Vaša prethodna historija poruka se neće pojaviti.</string>
     <!-- Bottom sheet description explaining that for non-desktop/iPad devices, they should go to %s to download Signal where %s is Signal\'s website -->
     <string name="LinkDeviceFragment__on_other_device_visit_signal">Na uređaju koji želite povezati, posjetite %1$s da instalirate Tellomi</string>
   <!-- Removed by excludeNonTranslatables <string name="LinkDeviceFragment__signal_download_url" translatable="false">signal.org/download</string> -->
@@ -1241,7 +1241,7 @@
     <!-- Bottom sheet title telling users to complete the linking process on the other device  -->
     <string name="AddLinkDeviceFragment__finish_linking_on_other_device">Završite povezivanje na drugom uređaju</string>
     <!-- Bottom sheet description telling users to complete the linking process -->
-    <string name="AddLinkDeviceFragment__finish_linking_signal">Završite povezivanje Signala na svom drugom uređaju.</string>
+    <string name="AddLinkDeviceFragment__finish_linking_signal">Završite povezivanje Tellomia na svom drugom uređaju.</string>
     <!-- Title of dialog when the QR code being scanned is invalid -->
     <string name="AddLinkDeviceFragment__linking_device_failed">Uvezivanje uređaja nije uspjelo</string>
     <!-- Text shown in a dialog when the QR code being scanned is invalid -->
@@ -1293,7 +1293,7 @@
     <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">Ovaj uređaj ne podržava Play Services. Pritisnite ovdje kako biste onemogućili sistemske optimizacije korištenja baterije koje sprečavaju Tellomi da prima poruke dok je aplikacija zatvorena.</string>
 
     <!-- ExpiredBuildReminder -->
-    <string name="ExpiredBuildReminder_this_version_of_signal_has_expired">Ova verzija Signala je istekla. Ažurirajte aplikaciju sada da biste mogli slati i primati poruke.</string>
+    <string name="ExpiredBuildReminder_this_version_of_signal_has_expired">Ova verzija Tellomia je istekla. Ažurirajte aplikaciju sada da biste mogli slati i primati poruke.</string>
     <string name="ExpiredBuildReminder_update_now">Ažuriraj sada</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->
@@ -1302,7 +1302,7 @@
     <!-- Title of notification telling users to update Signal -->
     <string name="DeprecatedNotificationJob_update_signal">Ažurirajte Tellomi</string>
     <!-- Message body of notification telling users that this current version of Signal has expired. If pressed, we will direct them to the website APK or PlayStore page -->
-    <string name="DeprecatedNotificationJob_this_version_of_signal_has_expired">Ova verzija Signala je istekla. Dodirnite za ažuriranje kako biste slali i primali poruke.</string>
+    <string name="DeprecatedNotificationJob_this_version_of_signal_has_expired">Ova verzija Tellomia je istekla. Dodirnite za ažuriranje kako biste slali i primali poruke.</string>
 
     <!-- PendingGroupJoinRequestsReminder -->
     <plurals name="PendingGroupJoinRequestsReminder_d_pending_member_requests">
@@ -1461,7 +1461,7 @@
     <string name="LinkPreviewView_this_group_link_is_not_active">Ovaj link za grupu nije aktivan</string>
     <string name="LinkPreviewView_domain_date">%1$s · %2$s</string>
     <!-- Description for Call Link url previews -->
-    <string name="LinkPreviewView__use_this_link_to_join_a_signal_call">Koristite ovu poveznicu da se pridružite pozivu na Signalu</string>
+    <string name="LinkPreviewView__use_this_link_to_join_a_signal_call">Koristite ovu poveznicu da se pridružite pozivu na Tellomiu</string>
 
     <!-- LinkPreviewRepository -->
     <plurals name="LinkPreviewRepository_d_members">
@@ -1498,7 +1498,7 @@
     <!-- Title of a bottom sheet that is shown when the user is having connectivity issues -->
     <string name="ConnectivityWarningBottomSheet_title">Možda ne primate poruke</string>
     <!-- Body of a bottom sheet that is shown when the user is having connectivity issues -->
-    <string name="ConnectivityWarningBottomSheet_body">Ponovno pokretanje uređaja može pomoći u rješavanju problema s isporukom poruka. Ako se ovaj problem nastavi, kontaktirajte podršku Signala.</string>
+    <string name="ConnectivityWarningBottomSheet_body">Ponovno pokretanje uređaja može pomoći u rješavanju problema s isporukom poruka. Ako se ovaj problem nastavi, kontaktirajte podršku Tellomia.</string>
     <!-- Text for a button in a bottom sheet that is shown when the user is having connectivity issues. Clicking it will dismiss the bottom sheet. -->
     <string name="ConnectivityWarningBottomSheet_dismiss_button">Razumijem</string>
 
@@ -1595,7 +1595,7 @@
     </plurals>
 
     <string name="ManageGroupActivity_you_dont_have_the_rights_to_do_this">Niste ovlašteni za to</string>
-    <string name="ManageGroupActivity_not_capable">Neko koga ste uvrstili ne podržava nove grupe i treba ažurirati verziju Signala</string>
+    <string name="ManageGroupActivity_not_capable">Neko koga ste uvrstili ne podržava nove grupe i treba ažurirati verziju Tellomia</string>
     <string name="ManageGroupActivity_not_announcement_capable">Neko koga ste uvrstili nema podrške za proglasne grupe i treba ažurirati Tellomi</string>
     <string name="ManageGroupActivity_failed_to_update_the_group">Neuspjelo ažuriranje grupe</string>
     <string name="ManageGroupActivity_youre_not_a_member_of_the_group">Niste član ove grupe</string>
@@ -1659,7 +1659,7 @@
     <!-- Dialog title displayed when remote restore failed because of an outdated backup version. -->
     <string name="RemoteRestoreActivity__couldnt_restore">Nije moguće vratiti ovu sigurnosnu kopiju</string>
     <!-- Dialog message explaining that an update to Signal is required to restore the backup. -->
-    <string name="RemoteRestoreActivity__update_latest">Ova verzija Signala ne može vratiti vašu sigurnosnu kopiju. Ažurirajte na najnoviju verziju i pokušajte ponovo.</string>
+    <string name="RemoteRestoreActivity__update_latest">Ova verzija Tellomia ne može vratiti vašu sigurnosnu kopiju. Ažurirajte na najnoviju verziju i pokušajte ponovo.</string>
     <!-- Text on button that when pressed will redirect them to update Signal -->
     <string name="RemoteRestoreActivity__update_signal">Ažurirajte Tellomi</string>
     <!-- Text label button to dismiss the dialog -->
@@ -1797,7 +1797,7 @@
 
     <!-- GroupJoinUpdateRequiredBottomSheetDialogFragment -->
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal_to_use_group_links">Ažurirajte Tellomi da biste mogli koristiti grupne linkove</string>
-    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">Verzija Signala koju koristite ne podržava ovaj link za grupu. Instalirajte zadnju verziju da biste se mogli priključiti ovoj grupi putem linka.</string>
+    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">Verzija Tellomia koju koristite ne podržava ovaj link za grupu. Instalirajte zadnju verziju da biste se mogli priključiti ovoj grupi putem linka.</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Ažurirajte Tellomi</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_group_link_is_not_valid">Link za grupu nije ispravan</string>
 
@@ -1974,7 +1974,7 @@
     <!-- NotificationBarManager -->
     <string name="NotificationBarManager__establishing_signal_call">Uspostavljam Tellomi poziv</string>
     <!-- Temporary notification shown when starting the calling service -->
-    <string name="NotificationBarManager__starting_signal_call_service">Pokretanje usluge poziva Signala</string>
+    <string name="NotificationBarManager__starting_signal_call_service">Pokretanje usluge poziva Tellomia</string>
     <string name="NotificationBarManager__stopping_signal_call_service">Zaustavljam servis za Tellomi pozive</string>
     <string name="NotificationBarManager__cancel_call">Prekini poziv</string>
 
@@ -1998,7 +1998,7 @@
 
     <!-- MessageRecord -->
     <string name="MessageRecord_unknown">Nepoznato</string>
-    <string name="MessageRecord_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Primljena je poruka koja je šifrirana u starijoj verziji Signala koja više nije podržana. Molimo zatražite od pošiljaoca da instalira najnoviju verziju i ponovo pošalje poruku.</string>
+    <string name="MessageRecord_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Primljena je poruka koja je šifrirana u starijoj verziji Tellomia koja više nije podržana. Molimo zatražite od pošiljaoca da instalira najnoviju verziju i ponovo pošalje poruku.</string>
     <string name="MessageRecord_left_group">Napustili ste grupu.</string>
     <string name="MessageRecord_you_updated_group">Ažurirali ste grupu.</string>
     <string name="MessageRecord_the_group_was_updated">Grupa je ažurirana.</string>
@@ -2035,7 +2035,7 @@
     <!-- Call update formatter string to place the update message next to a time stamp. e.g., \'Incoming voice call · 11:11am\' -->
     <string name="MessageRecord_call_message_with_date">%1$s · %2$s</string>
     <string name="MessageRecord_s_updated_group">%1$s je ažurirao/la grupu.</string>
-    <string name="MessageRecord_s_joined_signal">%1$s je na Signalu!</string>
+    <string name="MessageRecord_s_joined_signal">%1$s je na Tellomiu!</string>
     <string name="MessageRecord_you_disabled_disappearing_messages">Isključili ste nestajuće poruke.</string>
     <string name="MessageRecord_s_disabled_disappearing_messages">%1$s je isključio/la nestajuće poruke.</string>
     <string name="MessageRecord_you_set_disappearing_message_time_to_s">Vrijeme za nestajanje poruka postavili ste na %1$s.</string>
@@ -2332,9 +2332,9 @@
     </plurals>
 
     <!-- In-conversation update message to indicate that the current contact is sms only and will need to migrate to signal to continue the conversation in signal. -->
-    <string name="MessageRecord__you_will_no_longer_be_able_to_send_sms_messages_from_signal_soon">Uskoro više nećete moći slati SMS poruke pomoću Signala. Pozovite korisnika %1$s u Tellomi da zadržite razgovor ovdje.</string>
+    <string name="MessageRecord__you_will_no_longer_be_able_to_send_sms_messages_from_signal_soon">Uskoro više nećete moći slati SMS poruke pomoću Tellomia. Pozovite korisnika %1$s u Tellomi da zadržite razgovor ovdje.</string>
     <!-- In-conversation update message to indicate that the current contact is sms only and will need to migrate to signal to continue the conversation in signal. -->
-    <string name="MessageRecord__you_can_no_longer_send_sms_messages_in_signal">Više ne možete slati SMS poruke pomoću Signala. Pozovite korisnika %1$s u Tellomi da zadržite razgovor ovdje.</string>
+    <string name="MessageRecord__you_can_no_longer_send_sms_messages_in_signal">Više ne možete slati SMS poruke pomoću Tellomia. Pozovite korisnika %1$s u Tellomi da zadržite razgovor ovdje.</string>
     <!-- Body for quote when message being quoted is an in-app payment message -->
     <string name="MessageRecord__payment_s">Plaćanje: %1$s</string>
     <!-- Body for quote when message being quoted is an in-app payment message tombstone without an amount -->
@@ -2354,7 +2354,7 @@
     <!-- Update message shown in chat after you unblock a group -->
     <string name="MessageRecord_you_unblocked_this_group">Odblokirali ste grupu</string>
     <!-- Update message shown when you receive a message that cannot be processed because your Signal version is too old. %1$s is the sender\'s name -->
-    <string name="MessageRecord_unsupported_feature">%1$s vam je poslao/la poruku koja se ne može obraditi niti prikazati jer koristi novu funkciju Signala.</string>
+    <string name="MessageRecord_unsupported_feature">%1$s vam je poslao/la poruku koja se ne može obraditi niti prikazati jer koristi novu funkciju Tellomia.</string>
     <!-- Update message shown when someone ends the poll. %1$s is the person who ended the poll and %2$s is the poll question. -->
     <string name="MessageRecord_ended_the_poll">%1$s je završio/la anketu: \"%2$s\"</string>
     <!-- Update message shown when you end the poll. %1$s is the poll question. -->
@@ -2479,19 +2479,19 @@
     <string name="DeviceProvisioningActivity_sorry_you_have_too_many_devices_linked_already">Povezali ste previše uređaja, molimo pokušajte ukloniti neke od njih</string>
     <string name="DeviceActivity_sorry_this_is_not_a_valid_device_link_qr_code">Ovo nije ispravan QR kōd za povezivanje uređaja.</string>
     <string name="DeviceProvisioningActivity_link_a_signal_device">Povezati Tellomi uređaj?</string>
-    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">Da povežete desktop ili iPad sa ovim Tellomi računom, idite na Povezani uređaji i dodirnite \"Poveži novi uređaj\" i ponovo skenirajte QR kod. Vodite računa da skenirate samo QR kodove koji dolaze direktno iz Signala.</string>
+    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">Da povežete desktop ili iPad sa ovim Tellomi računom, idite na Povezani uređaji i dodirnite \"Poveži novi uređaj\" i ponovo skenirajte QR kod. Vodite računa da skenirate samo QR kodove koji dolaze direktno iz Tellomia.</string>
 
-    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Signalu je potrebno dopuštenje da pristupi kameri kako bi mogao skenirati QR kōd, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kamera\".</string>
+    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Tellomiu je potrebno dopuštenje da pristupi kameri kako bi mogao skenirati QR kōd, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kamera\".</string>
     <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">Nije moguće skenirati QR kōd bez dopuštenja za pristup kameri.</string>
 
     <!-- OutdatedBuildReminder -->
     <string name="OutdatedBuildReminder_update_now">Ažuriraj sada</string>
-    <string name="OutdatedBuildReminder_your_version_of_signal_will_expire_today">Ova verzija Signala ističe danas. Ažurirajte aplikaciju na posljednju verziju.</string>
+    <string name="OutdatedBuildReminder_your_version_of_signal_will_expire_today">Ova verzija Tellomia ističe danas. Ažurirajte aplikaciju na posljednju verziju.</string>
     <plurals name="OutdatedBuildReminder_your_version_of_signal_will_expire_in_n_days">
-        <item quantity="one">Ova verzija Signala ističe sutra. Ažurirajte aplikaciju na posljednju verziju.</item>
-        <item quantity="few">Ova verzija Signala ističe za %1$d dana. Ažurirajte aplikaciju na posljednju verziju.</item>
-        <item quantity="many">Ova verzija Signala ističe za %1$d dana. Ažurirajte aplikaciju na posljednju verziju.</item>
-        <item quantity="other">Ova verzija Signala ističe za %1$d dana. Ažurirajte aplikaciju na posljednju verziju.</item>
+        <item quantity="one">Ova verzija Tellomia ističe sutra. Ažurirajte aplikaciju na posljednju verziju.</item>
+        <item quantity="few">Ova verzija Tellomia ističe za %1$d dana. Ažurirajte aplikaciju na posljednju verziju.</item>
+        <item quantity="many">Ova verzija Tellomia ističe za %1$d dana. Ažurirajte aplikaciju na posljednju verziju.</item>
+        <item quantity="other">Ova verzija Tellomia ističe za %1$d dana. Ažurirajte aplikaciju na posljednju verziju.</item>
     </plurals>
 
     <!-- PassphrasePromptActivity -->
@@ -2572,7 +2572,7 @@
 
     <!-- RecaptchaRequiredBottomSheetFragment -->
     <string name="RecaptchaRequiredBottomSheetFragment_verify_to_continue_messaging">Potvrdite da biste nastavili slanje poruka</string>
-    <string name="RecaptchaRequiredBottomSheetFragment_to_help_prevent_spam_on_signal">Radi sprečavanja neželjenih poruka na Signalu, molimo dovršite proces verifikacije.</string>
+    <string name="RecaptchaRequiredBottomSheetFragment_to_help_prevent_spam_on_signal">Radi sprečavanja neželjenih poruka na Tellomiu, molimo dovršite proces verifikacije.</string>
     <string name="RecaptchaRequiredBottomSheetFragment_after_verifying_you_can_continue_messaging">Nakon verifikacije, možete nastaviti sa slanjem poruka. Pauzirane poruke automatski će se poslati.</string>
 
     <!-- Recipient -->
@@ -2616,7 +2616,7 @@
 
     <!-- WebRtcCallActivity -->
     <string name="WebRtcCallActivity__tap_here_to_turn_on_your_video">Pritisnite ovdje da uključite video</string>
-    <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">Da biste nazvali %1$s, Signalu je potreban pristup Vašoj kameri</string>
+    <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">Da biste nazvali %1$s, Tellomiu je potreban pristup Vašoj kameri</string>
     <!-- Subtitle shown at top of call where %s is the elapsed time of the call -->
     <string name="WebRtcCallActivity__signal_s">Tellomi %1$s</string>
     <string name="WebRtcCallActivity__calling">Pozivam…</string>
@@ -2693,7 +2693,7 @@
     <!-- Dialog description explaining why camera and microphone permissions are needed to start or join a call -->
     <string name="WebRtcCallActivity__to_start_call_camera_microphone">Da započnete poziv ili mu se pridružite, dozvolite da Tellomi pristupi vašoj kameri i mikrofonu.</string>
     <!-- Dialog description explaining why microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__to_start_call_microphone">Da započnete poziv ili mu se pridružite, dozvolite Signalu da pristupi vašem mikrofonu.</string>
+    <string name="WebRtcCallActivity__to_start_call_microphone">Da započnete poziv ili mu se pridružite, dozvolite Tellomiu da pristupi vašem mikrofonu.</string>
     <!-- Dialog description explaining why camera permissions are needed to enable a user\'s video in a call -->
     <string name="WebRtcCallActivity__to_enable_video_allow_camera">Da omogućite svoj video, dozvolite da Tellomi pristupi vašoj kameri.</string>
     <!-- Toast describing why microphone permissions are needed to start or join a call -->
@@ -3017,12 +3017,12 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Primit ćete poziv da potvrdite ovaj broj.</string>
     <string name="RegistrationActivity_edit_number">Ispravite broj</string>
     <string name="RegistrationActivity_missing_google_play_services">Nedostaju Google Play Services</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Na ovom uređaju nisu instalirani Google Play Services. I dalje ćete moći koristiti Signal, ali ova konfiguracija može dovesti do manje pouzdanosti i lošijih performansi.\n\nAko niste napredni korisnik, ako nemate ručno instaliranu verziju Android ROM-a ili smatrate da je ova poruka greška, molimo kontaktirajte support@signal.org za pomoć.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Na ovom uređaju nisu instalirani Google Play Services. I dalje ćete moći koristiti Tellomi, ali ova konfiguracija može dovesti do manje pouzdanosti i lošijih performansi.\n\nAko niste napredni korisnik, ako nemate ručno instaliranu verziju Android ROM-a ili smatrate da je ova poruka greška, molimo kontaktirajte support@tellomi.app za pomoć.</string>
     <string name="RegistrationActivity_i_understand">Razumijem</string>
     <string name="RegistrationActivity_play_services_error">Play Services greška</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play Services se ažuriraju ili su privremeno nedostupni. Pokušajte ponovo.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Signalu je potrebno dopuštenje da pristupi kontaktima i multimediji kako bi Vam pomogao u povezivanju s prijateljima i slanju poruka. Vaši su kontakti preneseni na Tellomi server putem Signalovog privatnog uvezivanja kontakata, što znači da su šifrirani s kraja na kraj i nisu nikada vidljivi Tellomi servisu.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Signalu je potrebno dopuštenje da pristupi kontaktima kako bi Vam pomogao u povezivanju s prijateljima. Vaši su kontakti preneseni na Tellomi server putem Signalovog privatnog uvezivanja kontakata, što znači da su šifrirani s kraja na kraj i nisu nikada vidljivi Tellomi servisu.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomiu je potrebno dopuštenje da pristupi kontaktima i multimediji kako bi Vam pomogao u povezivanju s prijateljima i slanju poruka. Vaši su kontakti preneseni na Tellomi server putem Tellomiovog privatnog uvezivanja kontakata, što znači da su šifrirani s kraja na kraj i nisu nikada vidljivi Tellomi servisu.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomiu je potrebno dopuštenje da pristupi kontaktima kako bi Vam pomogao u povezivanju s prijateljima. Vaši su kontakti preneseni na Tellomi server putem Tellomiovog privatnog uvezivanja kontakata, što znači da su šifrirani s kraja na kraj i nisu nikada vidljivi Tellomi servisu.</string>
     <string name="RegistrationActivity_rate_limited_to_service">Pokušali ste previše puta registrovati ovaj broj. Molimo pokušajte ponovo kasnije.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Previše puta ste pokušali registrirati ovaj broj. Pokušajte ponovo za %1$s.</string>
@@ -3311,7 +3311,7 @@
     <string name="ThreadRecord_you_activated_payments">Aktivirali ste Plaćanja</string>
     <!-- Displayed in the notification when the recipient can accept payments -->
     <string name="ThreadRecord_can_accept_payments">%1$s sada može prihvatiti Plaćanja</string>
-    <string name="ThreadRecord_s_is_on_signal">%1$s je na Signalu!</string>
+    <string name="ThreadRecord_s_is_on_signal">%1$s je na Tellomiu!</string>
     <string name="ThreadRecord_disappearing_messages_disabled">Nestajuće poruke su isključene</string>
     <string name="ThreadRecord_disappearing_message_time_updated_to_s">Vrijeme za nestajanje poruka: %1$s</string>
     <string name="ThreadRecord_safety_number_changed">Sigurnosni broj promijenjen</string>
@@ -3353,8 +3353,8 @@
     <string name="ThreadRecord_blocked_group">Blokirano</string>
 
     <!-- ApkUpdateNotifications -->
-    <string name="ApkUpdateNotifications_prompt_install_title">Nova verzija Signala</string>
-    <string name="ApkUpdateNotifications_prompt_install_body">Dostupna je nova verzija Signala. Dodirnite za ažuriranje.</string>
+    <string name="ApkUpdateNotifications_prompt_install_title">Nova verzija Tellomia</string>
+    <string name="ApkUpdateNotifications_prompt_install_body">Dostupna je nova verzija Tellomia. Dodirnite za ažuriranje.</string>
     <string name="ApkUpdateNotifications_failed_general_title">Ažuriranje signala nije uspjelo</string>
     <string name="ApkUpdateNotifications_failed_general_body">Pokušat ćemo ponovo kasnije.</string>
     <string name="ApkUpdateNotifications_auto_update_success_title">Tellomi je uspješno ažuriran</string>
@@ -3414,10 +3414,10 @@
     <string name="UsernameEditFragment_continue">Nastavi</string>
 
     <plurals name="UserNotificationMigrationJob_d_contacts_are_on_signal">
-        <item quantity="one">%1$d kontakt je na Signalu!</item>
-        <item quantity="few">%1$d kontakta su na Signalu!</item>
-        <item quantity="many">%1$d kontakata je na Signalu!</item>
-        <item quantity="other">%1$d kontakata je na Signalu!</item>
+        <item quantity="one">%1$d kontakt je na Tellomiu!</item>
+        <item quantity="few">%1$d kontakta su na Tellomiu!</item>
+        <item quantity="many">%1$d kontakata je na Tellomiu!</item>
+        <item quantity="other">%1$d kontakata je na Tellomiu!</item>
     </plurals>
 
     <!-- UsernameShareBottomSheet -->
@@ -3425,13 +3425,13 @@
     <string name="UsernameShareBottomSheet__copy_or_share_a_username_link">Kopirajte ili dijelite poveznicu korisničkog imena</string>
 
     <!-- VerifyIdentityActivity -->
-    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">Ova osoba koristi noviju verziju Signala, sa nekompatibilnim QR kōdom. Molimo nadogradite Tellomi da uporedite.</string>
+    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">Ova osoba koristi noviju verziju Tellomia, sa nekompatibilnim QR kōdom. Molimo nadogradite Tellomi da uporedite.</string>
     <string name="VerifyIdentityActivity_the_scanned_qr_code_is_not_a_correctly_formatted_safety_number">Skenirani QR kōd nije ispravno oblikovan kōd za provjeru sigurnosnog broja. Molimo pokušajte skenirati ponovo.</string>
     <string name="VerifyIdentityActivity_share_safety_number_via">Podijeli sigurnosni broj putem…</string>
     <string name="VerifyIdentityActivity_our_signal_safety_number">Naš Tellomi sigurnosni broj:</string>
     <string name="VerifyIdentityActivity_no_app_to_share_to">Izgleda da nemate nijednu aplikaciju s kojom je moguće dijeljenje.</string>
     <string name="VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard">U spremniku nije pronađen sigurnosni broj za upoređivanje</string>
-    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Signalu je potrebno dopuštenje da pristupi kameri kako bi mogao skenirati QR kōd, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kamera\".</string>
+    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Tellomiu je potrebno dopuštenje da pristupi kameri kako bi mogao skenirati QR kōd, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kamera\".</string>
     <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">Nije moguće skenirati QR kōd bez dopuštenja za pristup kameri.</string>
     <string name="VerifyIdentityActivity_you_must_first_exchange_messages_in_order_to_view">Morate prvo razmijeniti poruke sa %1$s da biste vidjeli njegov ili njen sigurnosni broj.</string>
     <!-- Dialog message explaining to user they must exchange messages first to create a safety number -->
@@ -3641,7 +3641,7 @@
     </plurals>
 
     <!-- Message shown when the app requests permission to save media to the device storage, but that permission has been permanently denied by the user. -->
-    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Signalu je potrebno dopuštenje da pristupi memoriji uređaja kako bi mogao pohranjivati podatke, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Prostor za pohranu\".</string>
+    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Tellomiu je potrebno dopuštenje da pristupi memoriji uređaja kako bi mogao pohranjivati podatke, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Prostor za pohranu\".</string>
 
     <!-- Message explaining that it is not possible to save media to the device storage after the user denied the system save to storage permission. -->
     <string name="AttachmentSaver__unable_to_write_to_external_storage_without_permission">Nije moguće bez dopuštenja pohraniti podatke u memoriju uređaja</string>
@@ -3649,11 +3649,11 @@
     <!-- Dialog title shown when attempting to save media that has been offloaded from the device by the storage optimization feature. -->
     <string name="AttachmentSaver__cant_save_media">Nije moguće sačuvati medije</string>
     <!-- Dialog message explaining that media cannot be saved because it has been offloaded from the device by the storage optimization feature. -->
-    <string name="AttachmentSaver__media_offloaded_message">Ovaj medijski sadržaj je premješten s vašeg uređaja jer je opcija \"Optimiziraj pohranu na Signalu\" uključena. Možete sačuvati stavke jednu po jednu ili isključiti \"Optimiziraj pohranu na Signalu\" kako biste preuzeli sve medije na uređaj.</string>
+    <string name="AttachmentSaver__media_offloaded_message">Ovaj medijski sadržaj je premješten s vašeg uređaja jer je opcija \"Optimiziraj pohranu na Tellomiu\" uključena. Možete sačuvati stavke jednu po jednu ili isključiti \"Optimiziraj pohranu na Tellomiu\" kako biste preuzeli sve medije na uređaj.</string>
     <!-- Dialog title shown when attempting to save multiple media items, some of which have been offloaded from the device by the storage optimization feature. -->
     <string name="AttachmentSaver__cant_save_all_items">Nije moguće sačuvati sve stavke</string>
     <!-- Dialog message explaining that some selected media cannot be saved because it has been offloaded from the device by the storage optimization feature. -->
-    <string name="AttachmentSaver__some_media_offloaded_message">Određeni medijski sadržaj koji ste odabrali je premješten s vašeg uređaja jer je opcija \"Optimiziraj pohranu na Signalu\" uključena. Možete sačuvati stavke jednu po jednu ili isključiti \"Optimiziraj pohranu na Signalu\" kako biste preuzeli sve medije na uređaj.</string>
+    <string name="AttachmentSaver__some_media_offloaded_message">Određeni medijski sadržaj koji ste odabrali je premješten s vašeg uređaja jer je opcija \"Optimiziraj pohranu na Tellomiu\" uključena. Možete sačuvati stavke jednu po jednu ili isključiti \"Optimiziraj pohranu na Tellomiu\" kako biste preuzeli sve medije na uređaj.</string>
     <!-- Button label in the offloaded media dialog that navigates to the storage settings screen. -->
     <string name="AttachmentSaver__view_storage_settings">Prikaži postavke pohrane</string>
 
@@ -3721,7 +3721,7 @@
 
     <!-- UnauthorizedReminder -->
     <!-- Message shown in a reminder banner when the user\'s device is no longer registered -->
-    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">Ovaj uređaj više nije registriran. To je vjerovatno zato što ste registrovali broj telefona u Signalu na drugom uređaju.</string>
+    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">Ovaj uređaj više nije registriran. To je vjerovatno zato što ste registrovali broj telefona u Tellomiu na drugom uređaju.</string>
     <!-- Action in reminder banner that will take user to re-register -->
     <string name="UnauthorizedReminder_reregister_action">Ponovo registrirajte uređaj</string>
     <!-- Message shown in a reminder banner when this linked device is no longer linked to a primary device -->
@@ -3730,7 +3730,7 @@
     <string name="UnauthorizedReminder_relink_action">Ponovo poveži uređaj</string>
 
     <!-- Push notification when the app is forcibly logged out by the server. -->
-    <string name="LoggedOutNotification_you_have_been_logged_out">Odjavljeni ste sa Signala na ovom uređaju.</string>
+    <string name="LoggedOutNotification_you_have_been_logged_out">Odjavljeni ste sa Tellomia na ovom uređaju.</string>
 
     <!-- EnclaveFailureReminder -->
     <!-- Banner message to update app to use payments -->
@@ -3738,10 +3738,10 @@
     <!-- Banner button to update now -->
 
     <!-- WebRtcCallActivity -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">Da biste odgovorili na poziv, dozvolite Signalu pristup Vašem mikrofonu.</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">Da biste odgovorili na poziv, dozvolite Tellomiu pristup Vašem mikrofonu.</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
-    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">Da odgovorite na video poziv, dozvolite Signalu pristup mikrofonu i kameri.</string>
-    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Signalu je potrebno dopuštenje da pristupi mikrofonu i kameri kako bi mogao slati i primati pozive, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavke \"Mikrofon\" i \"Kamera\".</string>
+    <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">Da odgovorite na video poziv, dozvolite Tellomiu pristup mikrofonu i kameri.</string>
+    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Tellomiu je potrebno dopuštenje da pristupi mikrofonu i kameri kako bi mogao slati i primati pozive, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavke \"Mikrofon\" i \"Kamera\".</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">Odgovoreno na povezanom uređaju.</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">Odbijeno na povezanom uređaju.</string>
     <string name="WebRtcCallActivity__busy_on_a_linked_device">Zauzeto na povezanom uređaju.</string>
@@ -3796,7 +3796,7 @@
     <!-- Row item description for refreshing contacts -->
     <string name="contact_selection_activity__missing_someone">Neko nedostaje? Pokušajte osvježiti</string>
     <!-- Row item title for finding people on Signal via your contacts -->
-    <string name="contact_selection_activity__find_people_you_know">Pronađite ljude koje poznajete na Signalu</string>
+    <string name="contact_selection_activity__find_people_you_know">Pronađite ljude koje poznajete na Tellomiu</string>
     <!-- Row item description asking users for access to their contacts to find people they know -->
     <string name="contact_selection_activity__allow_access_to_contacts">Dozvolite pristup kontaktima</string>
     <!-- Row header title for more section -->
@@ -3815,7 +3815,7 @@
     <string name="SingleContactSelectionActivity_contact_photo">Slika kontakta</string>
 
     <!-- ContactSelectionListFragment-->
-    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Signalu je potrebno dopuštenje da pristupi kontaktima kako bi mogao prikazati Vaše kontakte, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kontakti\".</string>
+    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">Tellomiu je potrebno dopuštenje da pristupi kontaktima kako bi mogao prikazati Vaše kontakte, ali je ono trajno uskraćeno. Molimo nastavite do postavki aplikacije, odaberite \"Dozvole\" i aktivirajte stavku \"Kontakti\".</string>
     <string name="ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection">Greška prilikom preuzimanja kontakta, provjerite internet-konekciju</string>
     <string name="ContactSelectionListFragment_username_not_found">Korisničko ime nije pronađeno</string>
     <string name="ContactSelectionListFragment_s_is_not_a_signal_user">"\"%1$s\" ne koristi Tellomi. Provjerite korisničko ime i pokušajte ponovo."</string>
@@ -3837,7 +3837,7 @@
     <!-- Dialog title asking users for contact permission -->
     <string name="ContactSelectionListFragment_allow_access_contacts">Dozvolite pristup kontaktima</string>
     <!-- Dialog description that will explain the steps needed to give contact permissions -->
-    <string name="ContactSelectionListFragment_to_find_people">Da pronađete osobe koje poznajete na Signalu:</string>
+    <string name="ContactSelectionListFragment_to_find_people">Da pronađete osobe koje poznajete na Tellomiu:</string>
     <!-- Text on button prompting users to give Signal contact permissions -->
     <string name="ContactSelectionListFragment__allow_access">Dozvoli pristup</string>
     <!-- Text on button to dismiss Signal\'s request for contact permissions -->
@@ -3846,7 +3846,7 @@
     <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">Dozvolite pristup kontaktima. Vaši kontakti su šifrirani i nisu vidljivi usluzi Tellomi.</string>
 
     <!-- contact_selection_list_fragment -->
-    <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">Signalu je potreban pristup Vašim kontaktima kako bi ih mogao prikazati.</string>
+    <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">Tellomiu je potreban pristup Vašim kontaktima kako bi ih mogao prikazati.</string>
     <string name="contact_selection_list_fragment__show_contacts">Prikaži kontakte</string>
 
     <!-- contact_selection_list_item -->
@@ -4182,7 +4182,7 @@
     <!-- The title of a dialog prompting user to update to the latest version of Signal. -->
     <string name="EditProfileFragment_deprecated_dialog_title">Ažurirajte Tellomi</string>
     <!-- The body of a dialog prompting user to update to the latest version of Signal. -->
-    <string name="EditProfileFragment_deprecated_dialog_body">Ova verzija Signala je istekla. Ažurirajte sada da nastavite koristiti Tellomi.</string>
+    <string name="EditProfileFragment_deprecated_dialog_body">Ova verzija Tellomia je istekla. Ažurirajte sada da nastavite koristiti Tellomi.</string>
     <!-- The button on a dialog prompting user to update to the latest version of Signal. When clicked, the user will be taken to the store to update their app. -->
     <string name="EditProfileFragment_deprecated_dialog_update_button">Ažuriraj</string>
     <!-- The title of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
@@ -4505,13 +4505,13 @@
     <!-- Title for the confirmation dialog of changing the app icon. -->
     <string name="preferences__app_icon_dialog_title">Promijenite ikonu i naziv aplikacije u \"%1$s\"</string>
     <!-- Description for the confirmation dialog of changing the app icon. -->
-    <string name="preferences__app_icon_dialog_description">Tellomi će se morati zatvoriti da promijenite ikonu i naziv aplikacije. Obavijesti će uvijek prikazivati zadanu ikonu i ime Signala.</string>
+    <string name="preferences__app_icon_dialog_description">Tellomi će se morati zatvoriti da promijenite ikonu i naziv aplikacije. Obavijesti će uvijek prikazivati zadanu ikonu i ime Tellomia.</string>
     <!-- Visible warning label for the limitations of changing the app icon with learn more call to action. -->
-    <string name="preferences__app_icon_warning_learn_more">Odaberite ikonu i naziv aplikacije koji će biti vidljivi na početnom ekranu vašeg telefona i ladici za aplikacije. Obavijesti će uvijek prikazivati zadanu ikonu i ime Signala. Saznaj više</string>
+    <string name="preferences__app_icon_warning_learn_more">Odaberite ikonu i naziv aplikacije koji će biti vidljivi na početnom ekranu vašeg telefona i ladici za aplikacije. Obavijesti će uvijek prikazivati zadanu ikonu i ime Tellomia. Saznaj više</string>
     <!-- Visible warning label for the limitations of changing the app icon. -->
     <string name="preferences__app_icon_warning">Ikone i nazivi aplikacija vidljivi su na početnom ekranu i ladici aplikacija.</string>
     <!-- Visible warning label explaining that changing the app icon and name does not affect notifications. -->
-    <string name="preferences__app_icon_notification_warning">Obavijesti će uvijek prikazivati zadanu ikonu i ime Signala.</string>
+    <string name="preferences__app_icon_notification_warning">Obavijesti će uvijek prikazivati zadanu ikonu i ime Tellomia.</string>
     <!--Call to action to get more information about the limitations of the change app icon functionality. -->
     <string name="preferences__app_icon_learn_more">Saznaj više</string>
     <!--Text description of a graphic illustrating the limitations of the app icon change. -->
@@ -4519,13 +4519,13 @@
     <string name="preferences__disable_pin">Isključi PIN</string>
     <string name="preferences__enable_pin">Uključi PIN</string>
     <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">Ako isključite PIN, svi Vaši podaci bit će izbrisani kada se ponovo registrujete na Tellomi, izuzev ako ručno kreirate rezervnu kopiju i koristite je za povrat podataka. Nećete moći aktivirati zaključavanje registracije dok god je PIN isključen.</string>
-    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">PIN služi za šifriranje informacija na Signalu tako da im samo Vi možete pristupiti. Vaš profil, podešavanja i kontakti bit će sačuvani i učitani kad ponovo instalirate Tellomi. PIN Vam neće trebati da otvorite aplikaciju.</string>
+    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">PIN služi za šifriranje informacija na Tellomiu tako da im samo Vi možete pristupiti. Vaš profil, podešavanja i kontakti bit će sačuvani i učitani kad ponovo instalirate Tellomi. PIN Vam neće trebati da otvorite aplikaciju.</string>
     <string name="preferences__system_default">Sistemske postavke</string>
     <string name="preferences__language">Jezik</string>
     <string name="preferences__signal_messages_and_calls">Tellomi poruke i pozivi</string>
     <!-- Title of toolbar for the advanced pin settings screen -->
     <string name="preferences__advanced_pin_settings_title">Napredna podešavanja PIN-a</string>
-    <string name="preferences__free_private_messages_and_calls">Besplatne privatne poruke i pozivi za korisnike Signala</string>
+    <string name="preferences__free_private_messages_and_calls">Besplatne privatne poruke i pozivi za korisnike Tellomia</string>
     <string name="preferences__submit_debug_log">Pošaljite zapis za ispravljanje grešaka</string>
     <string name="preferences__support_wifi_calling">\'WiFi pozivanje\' kompatibilni način rada</string>
     <string name="preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi">Aktivirajte ukoliko Vaš uređaj isporučuje SMS/MMS poruke preko WiFi-a (aktivirajte samo kad je na Vašem uređaju aktivno i \'WiFi pozivanje\')</string>
@@ -4634,7 +4634,7 @@
     <string name="preferences_off">Isključeno</string>
     <string name="preferences_on">Uključeno</string>
     <string name="preferences_proxy_address">Proxy adresa</string>
-    <string name="preferences_only_use_a_proxy_if">Koristite proxy samo ako se ne može uspostaviti veza sa Signalom preko mobilnog interneta ili Wi-Fi mreže.</string>
+    <string name="preferences_only_use_a_proxy_if">Koristite proxy samo ako se ne može uspostaviti veza sa Tellomiom preko mobilnog interneta ili Wi-Fi mreže.</string>
     <string name="preferences_share">Dijeli</string>
     <string name="preferences_save">Pohrani</string>
     <string name="preferences_connecting_to_proxy">Povezivanje s proxyjem…</string>
@@ -4702,7 +4702,7 @@
     <string name="PaymentsHomeFragment__payments_is_not_available_in_your_region">Plaćanja nisu dostupna u Vašem regionu.</string>
     <string name="PaymentsHomeFragment__could_not_enable_payments">Neuspjelo aktiviranje plaćanja. Pokušajte ponovo kasnije.</string>
     <string name="PaymentsHomeFragment__deactivate_payments_question">Deaktivirati plaćanja?</string>
-    <string name="PaymentsHomeFragment__you_will_not_be_able_to_send">Nećete moći slati ni primati MobileCoin preko Signala ako deaktivirate plaćanja.</string>
+    <string name="PaymentsHomeFragment__you_will_not_be_able_to_send">Nećete moći slati ni primati MobileCoin preko Tellomia ako deaktivirate plaćanja.</string>
     <string name="PaymentsHomeFragment__deactivate">Deaktiviraj</string>
     <string name="PaymentsHomeFragment__continue">Nastavi</string>
     <string name="PaymentsHomeFragment__balance_is_not_currently_available">Stanje na računu trenutno nije dostupno.</string>
@@ -4714,7 +4714,7 @@
     <string name="PaymentsHomeFragment__you_can_use_signal_to_send_and">Tellomi možete koristiti za slanje i primanje MobileCoina. Sva plaćanja podliježu Uslovima korištenja za MobileCoins i MobileCoin Wallet. Možda ćete naići na neke probleme i uplate ili stanja koja možete izgubiti se ne mogu vratiti. </string>
     <string name="PaymentsHomeFragment__activate">Aktiviraj</string>
     <string name="PaymentsHomeFragment__view_mobile_coin_terms">Pregledaj uslove korištenja MobileCoina</string>
-    <string name="PaymentsHomeFragment__payments_not_available">Plaćanja preko Signala više nisu dostupna. Još uvijek možete prenijeti sredstva na berzu, ali više ne možete vršiti isplate i uplate niti dodavati sredstva.</string>
+    <string name="PaymentsHomeFragment__payments_not_available">Plaćanja preko Tellomia više nisu dostupna. Još uvijek možete prenijeti sredstva na berzu, ali više ne možete vršiti isplate i uplate niti dodavati sredstva.</string>
 
   <!-- Removed by excludeNonTranslatables <string name="PaymentsHomeFragment__mobile_coin_terms_url" translatable="false">https://www.mobilecoin.com/terms-of-use.html</string> -->
     <!-- Alert dialog title which shows up after a payment to turn on payment lock -->
@@ -4798,9 +4798,9 @@
     <string name="PaymentsTransferFragment__invalid_address">Adresa nije valjana</string>
     <string name="PaymentsTransferFragment__check_the_wallet_address">Provjerite adresu novčanika na koju pokušavate prenijeti sredstva i pokušajte ponovo.</string>
     <string name="PaymentsTransferFragment__you_cant_transfer_to_your_own_signal_wallet_address">Ne možete izvršiti prenos sredstava na adresu vlastitog Tellomi novčanika. Unesite adresu novčanika sa svoga računa na podržanoj berzi.</string>
-    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs">Da bi mogao skenirati QR kōd, Signalu je potreban pristup kameri.</string>
-    <string name="PaymentsTransferFragment__signal_needs_the_camera_permission_to_capture_qr_code_go_to_settings">Signalu je potrebno odobrenje za pristup kameri kako bi mogao skenirati QR kōd. Idite na sistemska podešavanja, izaberite \"Dopuštenja\" i uključite \"Kamera\".</string>
-    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs_access_to_the_camera">Da bi mogao skenirati QR kōd, Signalu je potreban pristup kameri.</string>
+    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs">Da bi mogao skenirati QR kōd, Tellomiu je potreban pristup kameri.</string>
+    <string name="PaymentsTransferFragment__signal_needs_the_camera_permission_to_capture_qr_code_go_to_settings">Tellomiu je potrebno odobrenje za pristup kameri kako bi mogao skenirati QR kōd. Idite na sistemska podešavanja, izaberite \"Dopuštenja\" i uključite \"Kamera\".</string>
+    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs_access_to_the_camera">Da bi mogao skenirati QR kōd, Tellomiu je potreban pristup kameri.</string>
     <string name="PaymentsTransferFragment__settings">Podešavanja</string>
 
     <!-- PaymentsTransferQrScanFragment -->
@@ -5047,11 +5047,11 @@
     <string name="reminder_header_service_outage_text">Tellomi ima tehničkih poteškoća. Trudimo se da što prije uslugu ponovo osposobimo.</string>
     <string name="reminder_header_progress">%1$d%%</string>
     <!-- Body text of a banner that will show at the top of the chat list when we temporarily cannot process the user\'s contacts -->
-    <string name="reminder_cds_warning_body">Otkrivanje privatnih kontakata Signala privremeno ne može obraditi kontakte vašeg telefona.</string>
+    <string name="reminder_cds_warning_body">Otkrivanje privatnih kontakata Tellomia privremeno ne može obraditi kontakte vašeg telefona.</string>
     <!-- Label for a button in a banner to learn more about why we temporarily can\'t process the user\'s contacts -->
     <string name="reminder_cds_warning_learn_more">Saznajte više</string>
     <!-- Body text of a banner that will show at the top of the chat list when the user has so many contacts that we cannot ever process them -->
-    <string name="reminder_cds_permanent_error_body">Otkrivanje privatnih kontakata Signala ne može obraditi kontakte vašeg telefona.</string>
+    <string name="reminder_cds_permanent_error_body">Otkrivanje privatnih kontakata Tellomia ne može obraditi kontakte vašeg telefona.</string>
     <!-- Label for a button in a banner to learn more about why we cannot process the user\'s contacts -->
     <string name="reminder_cds_permanent_error_learn_more">Saznajte više</string>
 
@@ -5094,7 +5094,7 @@
     <string name="CreateKbsPinFragment__create_a_new_pin">Kreirajte novi PIN</string>
     <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">Možete promijeniti PIN sve dok je ovaj uređaj registrovan.</string>
     <string name="CreateKbsPinFragment__create_your_pin">Kreirajte svoj PIN</string>
-    <string name="CreateKbsPinFragment__pins_can_help_you_restore_your_account">PIN-ovi vam mogu pomoći da vratite račun i zadržite podatke šifriranim pomoću Signala. </string>
+    <string name="CreateKbsPinFragment__pins_can_help_you_restore_your_account">PIN-ovi vam mogu pomoći da vratite račun i zadržite podatke šifriranim pomoću Tellomia. </string>
     <string name="CreateKbsPinFragment__choose_a_stronger_pin">Izaberite snažniji PIN</string>
 
     <!-- ConfirmKbsPinFragment -->
@@ -5112,7 +5112,7 @@
 
     <!-- KbsSplashFragment -->
     <string name="KbsSplashFragment__introducing_pins">Novo: PIN-ovi</string>
-    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">PIN služi za šifriranje informacija na Signalu tako da im samo Vi možete pristupiti. Vaš profil, podešavanja i kontakti bit će sačuvani i učitani kad ponovo instalirate Tellomi. PIN Vam neće trebati da otvorite aplikaciju.</string>
+    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">PIN služi za šifriranje informacija na Tellomiu tako da im samo Vi možete pristupiti. Vaš profil, podešavanja i kontakti bit će sačuvani i učitani kad ponovo instalirate Tellomi. PIN Vam neće trebati da otvorite aplikaciju.</string>
     <string name="KbsSplashFragment__learn_more">Saznaj više</string>
   <!-- Removed by excludeNonTranslatables <string name="KbsSplashFragment__learn_more_link" translatable="false">https://tellomi.app/help/360007059792</string> -->
     <string name="KbsSplashFragment__registration_lock_equals_pin">Zaključavanje registracije = PIN</string>
@@ -5189,7 +5189,7 @@
 
     <!-- KBS Megaphone -->
     <string name="KbsMegaphone__create_a_pin">Kreiraj PIN</string>
-    <string name="KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped">PIN služi za šifriranje informacija na Signalu.</string>
+    <string name="KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped">PIN služi za šifriranje informacija na Tellomiu.</string>
     <string name="KbsMegaphone__create_pin">Kreiraj PIN</string>
 
     <!-- Title for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
@@ -5216,7 +5216,7 @@
     <!-- transport_selection_list_item -->
     <string name="ConversationListFragment_loading">Učitavanje…</string>
     <string name="CallNotificationBuilder_connecting">Povezivanje…</string>
-    <string name="SQLCipherMigrationHelper_migrating_signal_database">Prenosim Signalovu bazu podataka</string>
+    <string name="SQLCipherMigrationHelper_migrating_signal_database">Prenosim Tellomiovu bazu podataka</string>
     <string name="enter_backup_passphrase_dialog__backup_passphrase">Lozinka za rezervne kopije</string>
     <string name="backup_enable_dialog__backups_will_be_saved_to_external_storage_and_encrypted_with_the_passphrase_below_you_must_have_this_passphrase_in_order_to_restore_a_backup">Rezervne kopije bit će pohranjene u memoriju uređaja i šifrirane lozinkom navedenom dolje. Morate znati lozinku da biste mogli vratiti podatke iz rezervne kopije.</string>
     <string name="backup_enable_dialog__you_must_have_this_passphrase">Morate imati ovu lozinku kako biste mogli vratiti podatke iz rezervne kopije.</string>
@@ -5232,7 +5232,7 @@
     <!-- Title for dialog to enter in the backup passphrase -->
     <string name="RegistrationActivity_enter_backup_passphrase">Unesite lozinku za rezervne kopije</string>
     <string name="RegistrationActivity_restore">Vrati</string>
-    <string name="RegistrationActivity_backup_failure_downgrade">Ne mogu se preuzeti sig. kopije u novoj verziji Signala</string>
+    <string name="RegistrationActivity_backup_failure_downgrade">Ne mogu se preuzeti sig. kopije u novoj verziji Tellomia</string>
     <!-- Error message indicating that we could not restore the user\'s backup. Displayed in a toast at the bottom of the screen. -->
     <string name="RegistrationActivity_backup_failure_foreign_key">Sigurnosna kopija sadrži pogrešno oblikovane podatke</string>
     <string name="RegistrationActivity_incorrect_backup_passphrase">Netačna lozinka za rezervne kopije</string>
@@ -5260,9 +5260,9 @@
     <string name="BackupDialog_verify">Verifikuj</string>
     <string name="BackupDialog_you_successfully_entered_your_backup_passphrase">Uspješno ste unijeli svoju lozinku za rezervne kopije</string>
     <string name="BackupDialog_passphrase_was_not_correct">Lozinka nije tačna</string>
-    <string name="LocalBackupJob_creating_signal_backup">Kreiram rezervnu kopiju Signalovih podataka…</string>
+    <string name="LocalBackupJob_creating_signal_backup">Kreiram rezervnu kopiju Tellomiovih podataka…</string>
     <!-- Title for progress notification shown in a system notification while verifying a recent backup. -->
-    <string name="LocalBackupJob_verifying_signal_backup">Provjera sigurnosne kopije Signala…</string>
+    <string name="LocalBackupJob_verifying_signal_backup">Provjera sigurnosne kopije Tellomia…</string>
     <string name="LocalBackupJobApi29_backup_failed">Neuspjelo kreiranje rezervne kopije</string>
     <string name="LocalBackupJobApi29_your_backup_directory_has_been_deleted_or_moved">Direktorij sa sigurnosnim kopijama je izbrisan ili premješten.</string>
     <string name="LocalBackupJobApi29_your_backup_file_is_too_large">Vaša rezervna kopija prevelika je za pohranjivanje na ovoj lokaciji.</string>
@@ -5277,7 +5277,7 @@
     <string name="RegistrationActivity_call_me_instead_available_in">Pozovi me (%1$02d:%2$02d)</string>
     <!--    Countdown to when the user can request a new SMS code during registration.-->
     <string name="RegistrationActivity_resend_sms_available_in">Ponovo pošalji kȏd ( %1$02d : %2$02d )</string>
-    <string name="RegistrationActivity_contact_signal_support">Kontaktirajte Signalovu podršku</string>
+    <string name="RegistrationActivity_contact_signal_support">Kontaktirajte Tellomiovu podršku</string>
     <string name="RegistrationActivity_code_support_subject">Tellomi registracija – potvrda kōda za Android</string>
     <string name="RegistrationActivity_incorrect_code">Pogrešan kôd</string>
     <string name="BackupUtil_never">Nikad</string>
@@ -5286,7 +5286,7 @@
     <!-- Phone number heading displayed as a screen title -->
     <string name="preferences_app_protection__phone_number">Broj telefona</string>
     <!-- Subtext below option to launch into phone number privacy settings screen -->
-    <string name="preferences_app_protection__choose_who_can_see">Odaberite ko može vidjeti vaš broj telefona i ko vas može kontaktirati na Signalu pomoću njega.</string>
+    <string name="preferences_app_protection__choose_who_can_see">Odaberite ko može vidjeti vaš broj telefona i ko vas može kontaktirati na Tellomiu pomoću njega.</string>
     <!-- Section title above two radio buttons for enabling and disabling phone number display -->
     <string name="PhoneNumberPrivacySettingsFragment_who_can_see_my_number_heading">Ko može vidjeti moj broj</string>
     <!-- Subtext below radio buttons when who can see my number is set to everybody -->
@@ -5298,21 +5298,21 @@
     <!-- Section title above two radio buttons for enabling and disabling whether users can find me by my phone number  -->
     <string name="PhoneNumberPrivacySettingsFragment_who_can_find_me_by_number_heading">Ko me može pronaći po broju</string>
     <!-- Subtext below radio buttons when who can find me by number is set to everyone -->
-    <string name="PhoneNumberPrivacySettingsFragment_discovery_on_description">Svako ko ima vaš broj telefona vidjet će da ste na Signalu i može započeti razgovor s vama.</string>
+    <string name="PhoneNumberPrivacySettingsFragment_discovery_on_description">Svako ko ima vaš broj telefona vidjet će da ste na Tellomiu i može započeti razgovor s vama.</string>
     <!-- Subtext below radio buttons when who can find me by number is set to nobody -->
-    <string name="PhoneNumberPrivacySettingsFragment_discovery_off_description">Niko neće moći vidjeti da ste na Signalu osim ako toj osobi ne pošaljete poruku ili ne razgovarate s njom.</string>
+    <string name="PhoneNumberPrivacySettingsFragment_discovery_off_description">Niko neće moći vidjeti da ste na Tellomiu osim ako toj osobi ne pošaljete poruku ili ne razgovarate s njom.</string>
     <!-- Snackbar text when pressing invalid radio item -->
     <string name="PhoneNumberPrivacySettingsFragment__to_change_this_setting">"Da promijenite ovu postavku, postavite opciju Ko može vidjeti moj broj na Niko."</string>
     <!-- Dialog title shown when selecting "Nobody" in phone number privacy settings for who can find me by number -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Jeste li sigurni?</string>
     <!-- Dialog warning message shown when selecting "Nobody" in phone number privacy settings for who can find me by number -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Ako postavite opciju \"Ko me može pronaći po broju\" na \"Niko\" će otežati ljudima da vas pronađu na Signalu.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Ako postavite opciju \"Ko me može pronaći po broju\" na \"Niko\" će otežati ljudima da vas pronađu na Tellomiu.</string>
     <!-- Dialog button text for canceling change action -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Otkaži</string>
     <string name="PhoneNumberPrivacy_everyone">Svako</string>
     <string name="PhoneNumberPrivacy_nobody">Niko</string>
     <string name="preferences_app_protection__screen_lock">Zaključavanje ekrana</string>
-    <string name="preferences_app_protection__lock_signal_access_with_android_screen_lock_or_fingerprint">Zaključaj pristup Signalu pomoću Androidovog zaključavanja ekrana ili otiska prsta</string>
+    <string name="preferences_app_protection__lock_signal_access_with_android_screen_lock_or_fingerprint">Zaključaj pristup Tellomiu pomoću Androidovog zaključavanja ekrana ili otiska prsta</string>
     <string name="preferences_app_protection__screen_lock_inactivity_timeout">Zaključavanje ekrana nakon neaktivnosti</string>
     <!-- Snackbar text shown when trying to enable screen lock but the user does not have a password or biometrics enabled -->
     <string name="preferences_app_protection__to_use_screen_lock">Za korištenje zaključavanja ekrana postavite PIN, uzorak ili lozinku na ovom uređaju.</string>
@@ -5344,7 +5344,7 @@
     <!-- Text shown with toggle that when switched on will enable screen lock -->
     <string name="ScreenLockSettingsFragment__use_screen_lock">Koristite zaključavanje ekrana</string>
     <!-- Description of what screen locking will do and how notification content will not be shown when screen is locked -->
-    <string name="ScreenLockSettingsFragment__your_android_device">Postavke zaključavanja vašeg Android uređaja će biti potrebne za otključavanje Signala kada napustite ili promijenite aplikaciju. Kada je uređaj zaključan, pregledi obavještenja neće prikazati sadržaj poruke.</string>
+    <string name="ScreenLockSettingsFragment__your_android_device">Postavke zaključavanja vašeg Android uređaja će biti potrebne za otključavanje Tellomia kada napustite ili promijenite aplikaciju. Kada je uređaj zaključan, pregledi obavještenja neće prikazati sadržaj poruke.</string>
     <!-- Title text explaining when users should start the screen lock -->
     <string name="ScreenLockSettingsFragment__start_screen_lock">Pokreni zaključavanje ekrana</string>
     <!-- Option text explaining that screen lock should start immediately -->
@@ -5404,7 +5404,7 @@
     <string name="TransferOrRestoreFragment__restore_from_backup">Vrati iz rezervne kopije</string>
     <string name="TransferOrRestoreFragment__restore_your_messages_from_a_local_backup">Vratite svoje poruke iz lokalne rezervne kopije. Ako to ne učinite sada, nećete biti u mogućnosti vratiti poruke kasnije.</string>
     <string name="TransferOrRestoreFragment__restore_from_local_backup">Vratite lokalnu sigurnosnu kopiju</string>
-    <string name="TransferOrRestoreFragment__restore_from_signal_backup">Vratite sigurnosnu kopiju Signala</string>
+    <string name="TransferOrRestoreFragment__restore_from_signal_backup">Vratite sigurnosnu kopiju Tellomia</string>
     <!-- Button label for more options -->
     <string name="TransferOrRestoreFragment__more_options">Više opcija</string>
 
@@ -5426,18 +5426,18 @@
     <string name="NewDeviceTransferSetup__preparing_to_connect_to_old_android_device">U toku su pripreme za povezivanje sa starim Android uređajem…</string>
     <string name="NewDeviceTransferSetup__take_a_moment_should_be_ready_soon">Trenutak, uskoro će biti spremno</string>
     <string name="NewDeviceTransferSetup__waiting_for_old_device_to_connect">Čekam na stari Android uređaj da se poveže…</string>
-    <string name="NewDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_old_device">Signalu je potrebno dopuštenje za pristup lokaciji kako bi pronašao i povezao se s Vašim starim Android uređajem.</string>
-    <string name="NewDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_old_device">Signalu je potrebno da lokacija na telefonu bude aktivna kako bi mogao pronaći i povezati se s Vašim starim Android uređajem.</string>
-    <string name="NewDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_old_device">Signalu je potrebno da Wi-Fi konekcija bude aktivna kako bi mogao pronaći i povezati se sa Vašim starim Android uređajem. Wi-Fi treba biti uključen, ali ne mora biti povezan na Wi-Fi mrežu.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_old_device">Tellomiu je potrebno dopuštenje za pristup lokaciji kako bi pronašao i povezao se s Vašim starim Android uređajem.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_old_device">Tellomiu je potrebno da lokacija na telefonu bude aktivna kako bi mogao pronaći i povezati se s Vašim starim Android uređajem.</string>
+    <string name="NewDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_old_device">Tellomiu je potrebno da Wi-Fi konekcija bude aktivna kako bi mogao pronaći i povezati se sa Vašim starim Android uređajem. Wi-Fi treba biti uključen, ali ne mora biti povezan na Wi-Fi mrežu.</string>
     <string name="NewDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">Nažalost, izgleda da ovaj uređaj ne podržava Wi-Fi Direct. Tellomi koristi Wi-Fi Direct da pronađe i poveže se s Vašim starim Android uređajem. I dalje možete vratiti podatke iz rezervne kopije kako biste prenijeli račun sa svog starog Android uređaja.</string>
     <string name="NewDeviceTransferSetup__restore_a_backup">Vrati podatke iz rezervne kopije</string>
     <string name="NewDeviceTransferSetup__an_unexpected_error_occurred_while_attempting_to_connect_to_your_old_device">Došlo je do neočekivane greške prilikom pokušaja da se poveže s Vašim starim Android uređajem.</string>
 
     <!-- OldDeviceTransferSetupFragment -->
     <string name="OldDeviceTransferSetup__searching_for_new_android_device">Tražim novi Android uređaj…</string>
-    <string name="OldDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_new_device">Signalu je potrebno dopuštenje za pristup lokaciji kako bi pronašao i povezao se s Vašim novim Android uređajem.</string>
-    <string name="OldDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_new_device">Signalu je potrebno da lokacija na telefonu bude aktivna kako bi mogao pronaći i povezati se s Vašim novim Android uređajem.</string>
-    <string name="OldDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_new_device">Signalu je potrebno da Wi-Fi konekcija bude aktivna kako bi mogao pronaći i povezati se sa Vašim novim Android uređajem. Wi-Fi treba biti uključen, ali ne mora biti povezan na Wi-Fi mrežu.</string>
+    <string name="OldDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_new_device">Tellomiu je potrebno dopuštenje za pristup lokaciji kako bi pronašao i povezao se s Vašim novim Android uređajem.</string>
+    <string name="OldDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_new_device">Tellomiu je potrebno da lokacija na telefonu bude aktivna kako bi mogao pronaći i povezati se s Vašim novim Android uređajem.</string>
+    <string name="OldDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_new_device">Tellomiu je potrebno da Wi-Fi konekcija bude aktivna kako bi mogao pronaći i povezati se sa Vašim novim Android uređajem. Wi-Fi treba biti uključen, ali ne mora biti povezan na Wi-Fi mrežu.</string>
     <string name="OldDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">Nažalost, izgleda da ovaj uređaj ne podržava Wi-Fi Direct. Tellomi koristi Wi-Fi Direct da pronađe i poveže se s Vašim novim Android uređajem. I dalje možete kreirati rezervnu kopiju podataka kako biste prenijeli račun na svoj novi Android uređaj.</string>
     <string name="OldDeviceTransferSetup__create_a_backup">Kreiraj rezervnu kopiju</string>
     <string name="OldDeviceTransferSetup__an_unexpected_error_occurred_while_attempting_to_connect_to_your_old_device">Došlo je do neočekivane greške prilikom pokušaja da se poveže s Vašim novim Android uređajem.</string>
@@ -5475,7 +5475,7 @@
     <string name="DeviceTransferSetup__tap_continue_on_your_other_device">Pritisnite \"Nastavi\" na svom drugom uređaju…</string>
 
     <!-- NewDeviceTransferFragment -->
-    <string name="NewDeviceTransfer__cannot_transfer_from_a_newer_version_of_signal">Nije moguće prenijeti sa novije verzije Signala</string>
+    <string name="NewDeviceTransfer__cannot_transfer_from_a_newer_version_of_signal">Nije moguće prenijeti sa novije verzije Tellomia</string>
     <!-- Error message indicating that we could not finish the user\'s device transfer. Displayed in a toast at the bottom of the screen. -->
     <string name="NewDeviceTransfer__failure_foreign_key">Preneseni podaci su bili pogrešno oblikovani</string>
 
@@ -5575,13 +5575,13 @@
     <string name="GroupsLearnMore_what_are_legacy_groups">Šta su stare gurpe?</string>
     <string name="GroupsLearnMore_paragraph_1">Stare su one grupe koje nisu kompatibilne s novim grupnim opcijama poput administratora i detaljnih grupnih izvještaja.</string>
     <string name="GroupsLearnMore_can_i_upgrade_a_legacy_group">Mogu li nadograditi staru grupu?</string>
-    <string name="GroupsLearnMore_paragraph_2">Stare grupe ne mogu se još uvijek nadograditi u nove, ali možete oformiti novu grupu sa istim članovima, ako oni koriste posljednju verziju Signala.</string>
+    <string name="GroupsLearnMore_paragraph_2">Stare grupe ne mogu se još uvijek nadograditi u nove, ali možete oformiti novu grupu sa istim članovima, ako oni koriste posljednju verziju Tellomia.</string>
     <string name="GroupsLearnMore_paragraph_3">Tellomi će u budućnosti nuditi mogućnost za nadogradnju starih grupa.</string>
 
     <!-- GroupLinkBottomSheetDialogFragment -->
     <string name="GroupLinkBottomSheet_share_hint_requiring_approval">Svako ko dobije ovaj link može vidjeti naziv i sliku grupe, kao i zatražiti da se pridruži grupi. Podijelite ga samo s osobama u koje imate povjerenja.</string>
     <string name="GroupLinkBottomSheet_share_hint_not_requiring_approval">Svako ko dobije ovaj link može vidjeti naziv i sliku grupe, a može se i pridružiti grupi. Podijelite ga samo s osobama u koje imate povjerenja.</string>
-    <string name="GroupLinkBottomSheet_share_via_signal">Podijeli preko Signala</string>
+    <string name="GroupLinkBottomSheet_share_via_signal">Podijeli preko Tellomia</string>
     <string name="GroupLinkBottomSheet_copy">Kopiraj</string>
     <string name="GroupLinkBottomSheet_qr_code">QR kōd</string>
     <string name="GroupLinkBottomSheet_share">Dijeli</string>
@@ -5785,7 +5785,7 @@
     <string name="payment_info_card_about_mobilecoin">O MobileCoinu</string>
     <string name="payment_info_card_mobilecoin_is_a_new_privacy_focused_digital_currency">MobileCoin je nova digitalna valuta s fokusom na privatnost.</string>
     <string name="payment_info_card_adding_funds">Uplata sredstava</string>
-    <string name="payment_info_card_you_can_add_funds_for_use_in">Možete dodati sredstva za korištenje putem Signala tako što ćete poslati MobileCoin na adresu svoga novčanika.</string>
+    <string name="payment_info_card_you_can_add_funds_for_use_in">Možete dodati sredstva za korištenje putem Tellomia tako što ćete poslati MobileCoin na adresu svoga novčanika.</string>
     <string name="payment_info_card_cashing_out">Unovčavanje</string>
     <string name="payment_info_card_you_can_cash_out_mobilecoin">U svakom trenutku možete unovčiti MobileCoin na nekoj od berzi koje ga podržavaju. Jednostavno izvršite prenos na svoj račun koji imate otvoren na toj berzi.</string>
     <string name="payment_info_card_hide_this_card">Sakriti ovu karticu?</string>
@@ -5806,12 +5806,12 @@
     <!-- DeactivateWalletFragment -->
     <string name="DeactivateWalletFragment__deactivate_wallet">Deaktivirajte novčanik</string>
     <string name="DeactivateWalletFragment__your_balance">Vaša sredstva</string>
-    <string name="DeactivateWalletFragment__its_recommended_that_you">Preporučuje se da svoja sredstva prenesete na adresu drugog novčanika prije nego što deaktivirate plaćanja. Ako odlučite da nećete sada prenijeti sredstva, ona će ostati u vašem novčaniku koji je povezan sa Signalom i biti dostupna kad ponovo aktivirate plaćanja.</string>
+    <string name="DeactivateWalletFragment__its_recommended_that_you">Preporučuje se da svoja sredstva prenesete na adresu drugog novčanika prije nego što deaktivirate plaćanja. Ako odlučite da nećete sada prenijeti sredstva, ona će ostati u vašem novčaniku koji je povezan sa Tellomiom i biti dostupna kad ponovo aktivirate plaćanja.</string>
     <string name="DeactivateWalletFragment__transfer_remaining_balance">Prenesi ostatak sredstava</string>
     <string name="DeactivateWalletFragment__deactivate_without_transferring">Deaktiviraj bez prenosa sredstava</string>
     <string name="DeactivateWalletFragment__deactivate">Deaktiviraj</string>
     <string name="DeactivateWalletFragment__deactivate_without_transferring_question">Deaktivirati bez prenosa sredstava?</string>
-    <string name="DeactivateWalletFragment__your_balance_will_remain">Vaša će sredstva ostati u vašem novčaniku povezanom sa Signalom, ako odlučite ponovo aktivirati plaćanja.</string>
+    <string name="DeactivateWalletFragment__your_balance_will_remain">Vaša će sredstva ostati u vašem novčaniku povezanom sa Tellomiom, ako odlučite ponovo aktivirati plaćanja.</string>
     <string name="DeactivateWalletFragment__error_deactivating_wallet">Greška prilikom deaktiviranja novčanika.</string>
   <!-- Removed by excludeNonTranslatables <string name="DeactivateWalletFragment__learn_more__we_recommend_transferring_your_funds" translatable="false">https://tellomi.app/help/360057625692#payments_deactivate</string> -->
 
@@ -6235,7 +6235,7 @@
     <string name="NotificationsSettingsFragment__sounds">Zvukovi</string>
     <string name="NotificationsSettingsFragment__contact_joins_signal">Kontakt je počeo koristiti Tellomi</string>
     <!-- Notification body to get notified when someone joins Signal -->
-    <string name="NotificationsSettingsFragment__notify_contact">Prikaži obavještenje kada kontakt iz telefona pristupi Signalu</string>
+    <string name="NotificationsSettingsFragment__notify_contact">Prikaži obavještenje kada kontakt iz telefona pristupi Tellomiu</string>
     <!-- Option to reset their notification settings -->
     <string name="NotificationsSettingsFragment__reset">Resetiraj postavke obavještenja</string>
     <!-- Option body to reset their notification settings -->
@@ -6604,15 +6604,15 @@
     <!-- Snackbar message when blocking a contact has failed -->
     <string name="NewConversationActivity__block_failed">Blokiranje nije uspjelo</string>
     <!-- Error message shown when looking up a person by phone number and that phone number is not associated with a signal account -->
-    <string name="RecipientLookup_error__s_is_not_a_signal_user">%1$s nije korisnik/ca Signala</string>
+    <string name="RecipientLookup_error__s_is_not_a_signal_user">%1$s nije korisnik/ca Tellomia</string>
     <!-- Accessibility label for opening the screen specific dropdown menu. -->
     <string name="NewConversationActivity__accessibility_open_top_bar_menu">Otvaranje menija</string>
     <!-- Error message shown in a dialog when trying to create a new group with non-signal users (e.g., unregistered or phone number only contacts) -->
     <plurals name="RecipientLookup_error__not_signal_users">
-        <item quantity="one">%1$s nije korisnik Signala</item>
-        <item quantity="few">%1$s nisu korisnici Signala</item>
-        <item quantity="many">%1$s nisu korisnici Signala</item>
-        <item quantity="other">%1$s nisu korisnici Signala</item>
+        <item quantity="one">%1$s nije korisnik Tellomia</item>
+        <item quantity="few">%1$s nisu korisnici Tellomia</item>
+        <item quantity="many">%1$s nisu korisnici Tellomia</item>
+        <item quantity="other">%1$s nisu korisnici Tellomia</item>
     </plurals>
 
     <!-- Hint text that shows in the recipient search bar when no text is entered yet. -->
@@ -6843,7 +6843,7 @@
     <!-- Title of dialog telling user they need to update signal as it expired -->
     <string name="UpdateSignalExpiredDialog__title">Ažurirajte Tellomi</string>
     <!-- Message of dialog telling user they need to update signal as it expired -->
-    <string name="UpdateSignalExpiredDialog__message">Ova verzija Signala je istekla. Ažurirajte sada da nastavite koristiti Tellomi.</string>
+    <string name="UpdateSignalExpiredDialog__message">Ova verzija Tellomia je istekla. Ažurirajte sada da nastavite koristiti Tellomi.</string>
     <!-- Button text of expiration dialog, will take user to update the app -->
     <string name="UpdateSignalExpiredDialog__update_action">Ažuriraj</string>
     <!-- Button text of expiration dialog to cancel the dialog.  -->
@@ -6866,7 +6866,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_boost_badge_has_expired_and">Vaša značka Boost istekla je i više nije vidljiva na Vašem profilu.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_reactivate">Možete ponovo aktivirati značku Boost na period od 30 dana tako što ćete izvršiti jednokratnu uplatu.</string>
     <!-- Displayed when we do not think the user is a subscriber when their boost expires -->
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Možete nastaviti s korištenjem Signala, ali kako biste podržali tehnologiju koja je kreirana zbog Vas razmislite o tome da postanete pokrovitelj kroz mjesečnu donaciju.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can_keep">Možete nastaviti s korištenjem Tellomia, ali kako biste podržali tehnologiju koja je kreirana zbog Vas razmislite o tome da postanete pokrovitelj kroz mjesečnu donaciju.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__become_a_sustainer">Postanite pokrovitelj</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__add_a_boost">Dodaj Boost</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__not_now">Ne sada</string>
@@ -6876,7 +6876,7 @@
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled">Vaša redovna mjesečna donacija otkazana je jer nismo mogli obraditi Vašu uplatu. Vaša značka više nije prikazana na Vašem profilu.</string>
     <!-- Copy displayed when badge expires after a payment failure and we have a displayable charge failure reason -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__your_recurring_monthly_donation_was_canceled_s">Vaša ponavljajuća mjesečna donacija je otkazana. %1$s Vaša značka %2$s više nije vidljiva na profilu.</string>
-    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Možete nastaviti s korištenjem Signala, ali ako želite pružiti podršku aplikaciji i ponovo aktivirati značku, obnovite pretplatu.</string>
+    <string name="ExpiredBadgeBottomSheetDialogFragment__you_can">Možete nastaviti s korištenjem Tellomia, ali ako želite pružiti podršku aplikaciji i ponovo aktivirati značku, obnovite pretplatu.</string>
     <string name="ExpiredBadgeBottomSheetDialogFragment__renew_subscription">Obnovi pretplatu</string>
     <!-- Button label to send user to Google Pay website -->
     <string name="ExpiredBadgeBottomSheetDialogFragment__go_to_google_pay">Idi na Google Pay</string>
@@ -6952,7 +6952,7 @@
     <!-- Gift message view title -->
     <string name="GiftMessageView__donation_on_behalf_of_s">Donacija u ime korisnika %1$s</string>
     <!-- Gift message view title for incoming donations -->
-    <string name="GiftMessageView__s_donated_to_signal_on">%1$s je donirao/la Signalu u vaše ime</string>
+    <string name="GiftMessageView__s_donated_to_signal_on">%1$s je donirao/la Tellomiu u vaše ime</string>
     <!-- Gift badge redeem action label -->
     <string name="GiftMessageView__redeem">Prihvati</string>
     <!-- Gift badge view action label -->
@@ -7176,7 +7176,7 @@
     <string name="NotificationSettingsFragment__turn_on">Uključi</string>
 
     <!-- Text description in Signal Release channel details explaining that it is the only chat from Signal -->
-    <string name="ReleaseNotes__this_is_official_chat">Ovo je službeni i jedini chat od Signala</string>
+    <string name="ReleaseNotes__this_is_official_chat">Ovo je službeni i jedini chat od Tellomia</string>
     <!-- Text description in Signal Release channel details explaining what the channel is for -->
     <string name="ReleaseNotes__keep_up_to_date">Budite u toku s vijestima i napomenama o izdanjima</string>
     <!-- Subtitle for the Signal Release channel explaining that it is the only chat from Signal -->
@@ -7646,9 +7646,9 @@
     <!-- Title for sheet shown when opening a sent gift -->
     <string name="ViewSentGiftBottomSheet__thanks_for_your_support">Hvala Vam za Vašu podršku!</string>
     <!-- Description for sheet shown when opening a redeemed gift -->
-    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$s je donirao/la Signalu u vaše ime! Pokažite da podržavate Tellomi na svom profilu.</string>
+    <string name="ViewReceivedGiftBottomSheet__s_made_a_donation_to_signal">%1$s je donirao/la Tellomiu u vaše ime! Pokažite da podržavate Tellomi na svom profilu.</string>
     <!-- Description for sheet shown when opening a sent gift -->
-    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Donirali ste Signalu u ime korisnika/ce %1$s. Imat će opciju da pokažu svoju podršku na svom profilu.</string>
+    <string name="ViewSentGiftBottomSheet__youve_made_a_donation_to_signal">Donirali ste Tellomiu u ime korisnika/ce %1$s. Imat će opciju da pokažu svoju podršku na svom profilu.</string>
     <!-- Primary action for pending gift sheet to redeem badge now -->
     <string name="ViewReceivedGiftSheet__redeem">Prihvati</string>
     <!-- Primary action for pending gift sheet to redeem badge later -->
@@ -7656,7 +7656,7 @@
     <!-- Dialog text while redeeming a gift -->
     <string name="ViewReceivedGiftSheet__redeeming_badge">Prihvatanje značke…</string>
     <!-- Description text in gift thanks sheet -->
-    <string name="GiftThanksSheet__youve_made_a_donation">Donirali ste Signalu u ime korisnika/ce %1$s. Imat će opciju da pokažu svoju podršku na svom profilu.</string>
+    <string name="GiftThanksSheet__youve_made_a_donation">Donirali ste Tellomiu u ime korisnika/ce %1$s. Imat će opciju da pokažu svoju podršku na svom profilu.</string>
     <!-- Expired gift sheet title -->
     <string name="ExpiredGiftSheetConfiguration__your_badge_has_expired">Vaša je značka istekla</string>
     <!-- Expired gift sheet top description text -->
@@ -7925,11 +7925,11 @@
 
     <!-- GatewaySelectorBottomSheet -->
     <!-- Sheet title when subscribing -->
-    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Donirajte %1$s/mjesečno Signalu</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_month_to_signal">Donirajte %1$s/mjesečno Tellomiu</string>
     <!-- Sheet summary when subscribing -->
     <string name="GatewaySelectorBottomSheet__get_a_s_badge">Preuzmite značku %1$s</string>
     <!-- Sheet title when giving a one-time donation -->
-    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Donirajte %1$s Signalu</string>
+    <string name="GatewaySelectorBottomSheet__donate_s_to_signal">Donirajte %1$s Tellomiu</string>
     <!-- Sheet summary when giving a one-time donation -->
     <plurals name="GatewaySelectorBottomSheet__get_a_s_badge_for_d_days">
         <item quantity="one">Nosite značku %1$s u trajanju od %2$d dana</item>
@@ -7956,7 +7956,7 @@
     <!-- Title of screen displaying the bank transfer mandate -->
     <string name="BankTransferMandateFragment__bank_transfer">Bankovni transfer</string>
     <!-- Subtitle of screen displaying the bank transfer mandate, placeholder is \'Learn more\' -->
-    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe obrađuje donacije upućene Signalu. Tellomi ne prikuplja niti pohranjuje vaše lične podatke. %1$s</string>
+    <string name="BankTransferMandateFragment__stripe_processes_donations">Stripe obrađuje donacije upućene Tellomiu. Tellomi ne prikuplja niti pohranjuje vaše lične podatke. %1$s</string>
     <!-- Subtitle learn more of screen displaying bank transfer mandate -->
     <string name="BankTransferMandateFragment__learn_more">Saznaj više</string>
     <!-- Button label to continue with transfer -->
@@ -8076,7 +8076,7 @@
     <!-- The title of a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_title">Nije moguće obraditi vaše kontakte</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
-    <string name="CdsPermanentErrorBottomSheet_body">Broj kontakata na vašem telefonu prelazi ograničenje koje Tellomi može obraditi. Da pronađete kontakte na Signalu, razmotrite uklanjanje kontakata ili računa na telefonu koji sinhroniziraju mnogo kontakata.</string>
+    <string name="CdsPermanentErrorBottomSheet_body">Broj kontakata na vašem telefonu prelazi ograničenje koje Tellomi može obraditi. Da pronađete kontakte na Tellomiu, razmotrite uklanjanje kontakata ili računa na telefonu koji sinhroniziraju mnogo kontakata.</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_learn_more">Saznajte više</string>
     <!-- A button label in a bottom sheet that will navigate the user to their contacts settings. -->
@@ -8352,7 +8352,7 @@
     <!-- Toggle to require approval for all members before joining -->
     <string name="CreateCallLinkBottomSheetDialogFragment__require_admin_approval">Zatraži odobrenje administratora</string>
     <!-- Row label to share the link via Signal -->
-    <string name="CreateCallLinkBottomSheetDialogFragment__share_link_via_signal">Podijelite poveznicu putem Signala</string>
+    <string name="CreateCallLinkBottomSheetDialogFragment__share_link_via_signal">Podijelite poveznicu putem Tellomia</string>
     <!-- Row label to copy the link to the clipboard -->
     <string name="CreateCallLinkBottomSheetDialogFragment__copy_link">Kopiraj poveznicu</string>
     <!-- Row label to share the link with the external share sheet -->
@@ -8464,11 +8464,11 @@
     <!-- Body of a dialog that is displayed when we successfully reset you username link. -->
     <string name="UsernameLinkSettings_reset_link_result_success">Vaš QR kod i link su poništeni i novi QR kod i link su kreirani.</string>
     <!-- Shown on the generated username qr code image to explain how to use it. -->
-    <string name="UsernameLinkSettings_scan_this_qr_code">Skenirajte ovaj QR kod telefonom da razgovarate sa mnom na Signalu.</string>
+    <string name="UsernameLinkSettings_scan_this_qr_code">Skenirajte ovaj QR kod telefonom da razgovarate sa mnom na Tellomiu.</string>
     <!-- Dialog title shown when scanning an image from the gallery for a username QR code and there is no qr code in the image. -->
     <string name="UsernameLinkSettings_qr_code_not_found">QR kod nije pronađen</string>
     <!-- Dialog message shown when scanning an image from the gallery for a username QR code and there is no qr code in the image. -->
-    <string name="UsernameLinkSettings_try_scanning_another_image_containing_a_signal_qr_code">Pokušajte skenirati drugu sliku koja sadrži QR kod Signala.</string>
+    <string name="UsernameLinkSettings_try_scanning_another_image_containing_a_signal_qr_code">Pokušajte skenirati drugu sliku koja sadrži QR kod Tellomia.</string>
 
     <!-- Explanatory text at the top of a bottom sheet describing how username links work -->
     <string name="UsernameLinkShareBottomSheet_title">Svako s ovom poveznicom može vidjeti vaše korisničko ime i započeti chat s vama. Podijelite ga samo sa ljudima kojima vjerujete.</string>
@@ -8573,7 +8573,7 @@
     <!-- Body of the backup setup complete bottom sheet -->
     <string name="BackupSetupCompleteBottomSheet__body">Ovo bi moglo potrajati. Možete koristiti Tellomi normalno tokom kreiranja rezervne kopije.</string>
     <!-- Label for the optimize storage toggle -->
-    <string name="BackupSetupCompleteBottomSheet__optimize_storage">Optimizirajte pohranu Signala</string>
+    <string name="BackupSetupCompleteBottomSheet__optimize_storage">Optimizirajte pohranu Tellomia</string>
     <!-- Subtitle for the optimize storage toggle -->
     <string name="BackupSetupCompleteBottomSheet__optimize_subtitle">Stariji medijski sadržaji će biti uklonjeni, ali se mogu preuzeti iz vaše sigurnosne kopije u bilo koje vrijeme.</string>
     <!-- Primary button on the setup complete bottom sheet -->
@@ -8598,9 +8598,9 @@
     <string name="InactivePrimary__got_it">Razumijem</string>
 
     <!-- Text describing how to restore a backup displayed on the on-device backups screen -->
-    <string name="OnDeviceBackupsScreen__to_restore_a_backup">"Da biste vratili sigurnosnu kopiju, instalirajte novu kopiju Signala. Otvorite aplikaciju i dodirnite Vrati sigurnosnu kopiju, a zatim pronađite folder sigurnosne kopije."</string>
+    <string name="OnDeviceBackupsScreen__to_restore_a_backup">"Da biste vratili sigurnosnu kopiju, instalirajte novu kopiju Tellomia. Otvorite aplikaciju i dodirnite Vrati sigurnosnu kopiju, a zatim pronađite folder sigurnosne kopije."</string>
     <!-- Body of a dialog shown when turning on on-device backups while "Optimize Signal storage" is enabled, warning that optimized media won\'t be included -->
-    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Uključena je opcija \"Optimiziraj pohranu Signala\". Ako želite uključiti sve medijske sadržaje u sigurnosnu kopiju na uređaju, isključite ovu postavku.</string>
+    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Uključena je opcija \"Optimiziraj pohranu Tellomia\". Ako želite uključiti sve medijske sadržaje u sigurnosnu kopiju na uređaju, isključite ovu postavku.</string>
     <!-- Dialog action that takes the user to the "Optimize Signal storage" setting -->
     <string name="OnDeviceBackupsScreen__view_setting">Prikaži postavku</string>
     <!-- Dialog action to proceed with turning on on-device backups without turning off "Optimize Signal storage" -->
@@ -8677,7 +8677,7 @@
     <!-- Dialog body for not found username -->
     <string name="FindByActivity__s_is_not_a_signal_user">\"%1$s\" ne koristi Tellomi. Provjerite korisničko ime i pokušajte ponovo.</string>
     <!-- Dialog body for not found phone number -->
-    <string name="FindByActivity__s_is_not_a_signal_user_would">%1$s nije korisnik/ca Signala. Želite li pozvati ovaj broj?</string>
+    <string name="FindByActivity__s_is_not_a_signal_user_would">%1$s nije korisnik/ca Tellomia. Želite li pozvati ovaj broj?</string>
     <!-- Dialog action to invite the phone number to Signal -->
     <string name="FindByActivity__invite">Pozovi</string>
     <!-- Button label for a button that will launch a camera to scan a username QR code -->
@@ -8703,7 +8703,7 @@
     <!-- Title displayed at the top of the screen -->
     <string name="NicknameActivity__nickname">Nadimak</string>
     <!-- Subtitle displayed under title -->
-    <string name="NicknameActivity__nicknames_amp_notes">Nadimci i bilješke se pohranjuju u Signalu i sveobuhvatno su šifrirani. Samo ih vi možete vidjeti.</string>
+    <string name="NicknameActivity__nicknames_amp_notes">Nadimci i bilješke se pohranjuju u Tellomiu i sveobuhvatno su šifrirani. Samo ih vi možete vidjeti.</string>
     <!-- Field label for given name -->
     <string name="NicknameActivity__first_name">Ime</string>
     <!-- Content description for first name clear button -->
@@ -8754,7 +8754,7 @@
     <!-- Sheet title when user does not have enough space to download their backup. Placeholder is formatted byte size, for example 12GB. -->
     <string name="BackupAlertBottomSheet__free_up_s_on_this_device">Oslobodite %1$s na ovom uređaju</string>
     <!-- Sheet body part 1 when user does not have enough space to download their backup. Placeholder is the amount of space needed. -->
-    <string name="BackupAlertBottomSheet__to_finish_downloading_your_signal_backup">Da završite preuzimanje sigurnosne kopije Signala, vašem uređaju je potrebno %1$s prostora za pohranu.</string>
+    <string name="BackupAlertBottomSheet__to_finish_downloading_your_signal_backup">Da završite preuzimanje sigurnosne kopije Tellomia, vašem uređaju je potrebno %1$s prostora za pohranu.</string>
     <!-- Sheet body part 2 when user does not have enough space to download their backup. -->
     <string name="BackupAlertBottomSheet__to_free_up_space_offload">Da oslobodite prostor, skinite ili izbrišite nekorištene aplikacije ili sadržaj velike veličine datoteke.</string>
     <!-- Sheet title when user payment failed to process -->
@@ -8819,7 +8819,7 @@
     <!-- Dialog title when a backup redemption fails -->
     <string name="BackupAlertBottomSheet__couldnt_redeem_your_backups_subscription">Nije moguće iskoristiti vašu pretplatu na sigurnosne kopije</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it -->
-    <string name="BackupAlertBottomSheet__an_error_occurred">Došlo je do greške i vaša sigurnosna kopija nije mogla biti dovršena. Provjerite koristite li najnoviju verziju Signala i pokušajte ponovo. Ako se ovaj problem ne riješi, kontaktirajte podršku.</string>
+    <string name="BackupAlertBottomSheet__an_error_occurred">Došlo je do greške i vaša sigurnosna kopija nije mogla biti dovršena. Provjerite koristite li najnoviju verziju Tellomia i pokušajte ponovo. Ako se ovaj problem ne riješi, kontaktirajte podršku.</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it. Used for out of remote storage space error. -->
     <string name="BackupAlertBottomSheet__an_error_occurred_and">Došlo je do greške i vaša sigurnosna kopija nije mogla biti dovršena. Ako se ovaj problem ne riješi, kontaktirajte podršku.</string>
     <!-- Dialog action button that will allow you to check for any Signal version updates -->
@@ -8901,7 +8901,7 @@
     <!-- Text displayed when a backup could not be completed -->
     <string name="BackupStatusRow__your_last_backup">Vaša posljednja sigurnosna kopija nije mogla biti dovršena. Provjerite je li vaš telefon povezan na Wi-Fi i dodirnite \"Kreiraj sigurnosnu kopiju sada\" da pokušate ponovo.</string>
     <!-- Text displayed when a backup could not be completed and to check that they are on the latest version of Signal -->
-    <string name="BackupStatusRow__your_last_backup_latest_version">Vaša posljednja sigurnosna kopija nije mogla biti dovršena. Provjerite koristite li najnoviju verziju Signala i pokušajte ponovo.</string>
+    <string name="BackupStatusRow__your_last_backup_latest_version">Vaša posljednja sigurnosna kopija nije mogla biti dovršena. Provjerite koristite li najnoviju verziju Tellomia i pokušajte ponovo.</string>
     <!-- Text displayed when a backup file exceeds the storage limit during upload. -->
     <string name="BackupStatusRow__backup_file_too_large">Broj poruka koje imate premašuje ograničenje pohrane. Izbriši neke poruke i pokušaj ponovo.</string>
     <!-- Text displayed when we\'re not backing up all messages. The placeholder represents the cutoff date for the messages we\'re backing up. -->
@@ -8951,27 +8951,27 @@
     <!-- Dialog title when Google Play services are missing from the device -->
     <string name="GooglePlayServicesAvailability__service_missing_title">Nedostaju Google Play usluge</string>
     <!-- Dialog message explaining that Google Play services are required for Signal Secure backups subscription -->
-    <string name="GooglePlayServicesAvailability__service_missing_message">Da biste se pretplatili na zaštićene kopije podataka Signala, potrebno je da instalirate Google Play usluge na svoj telefon.</string>
+    <string name="GooglePlayServicesAvailability__service_missing_message">Da biste se pretplatili na zaštićene kopije podataka Tellomia, potrebno je da instalirate Google Play usluge na svoj telefon.</string>
     <!-- Dialog button text to install Google Play services -->
     <string name="GooglePlayServicesAvailability__install_play_services">Instalirajte Google Play usluge</string>
     <!-- Dialog title when Google Play services are currently updating -->
     <string name="GooglePlayServicesAvailability__service_updating_title">Google Play usluge se ažuriraju</string>
     <!-- Dialog message asking user to wait while Google Play services finish updating -->
-    <string name="GooglePlayServicesAvailability__service_updating_message">Da biste se pretplatili na zaštićene kopije podataka Signala, pričekajte da se ažuriranje Google Play usluga završi.</string>
+    <string name="GooglePlayServicesAvailability__service_updating_message">Da biste se pretplatili na zaštićene kopije podataka Tellomia, pričekajte da se ažuriranje Google Play usluga završi.</string>
     <!-- Dialog title when Google Play services need to be updated -->
     <string name="GooglePlayServicesAvailability__service_update_required_title">Ažurirajte Google Play usluge</string>
     <!-- Dialog message explaining that Google Play services need to be updated for Signal Secure backups -->
-    <string name="GooglePlayServicesAvailability__service_update_required_message">Da biste se pretplatili na zaštićene kopije podataka Signala, ažurirajte Google Play uslugu na svom telefonu.</string>
+    <string name="GooglePlayServicesAvailability__service_update_required_message">Da biste se pretplatili na zaštićene kopije podataka Tellomia, ažurirajte Google Play uslugu na svom telefonu.</string>
     <!-- Dialog button text to update Google Play services -->
     <string name="GooglePlayServicesAvailability__update">Ažuriraj</string>
     <!-- Dialog title when Google Play services are disabled -->
     <string name="GooglePlayServicesAvailability__service_disabled_title">Za plaćene pretplate potreban je Google Play</string>
     <!-- Dialog message explaining that Google Play services must be enabled for subscriptions -->
-    <string name="GooglePlayServicesAvailability__service_disabled_message">Da biste se pretplatili na zaštićene kopije podataka Signala, omogućite Google Play usluge na svom telefonu i prijavite se u Google Play trgovinu. </string>
+    <string name="GooglePlayServicesAvailability__service_disabled_message">Da biste se pretplatili na zaštićene kopije podataka Tellomia, omogućite Google Play usluge na svom telefonu i prijavite se u Google Play trgovinu. </string>
     <!-- Dialog button text to learn more about enabling Google Play services -->
     <string name="GooglePlayServicesAvailability__learn_more">Saznaj više</string>
     <!-- Dialog message shown when Google Play services is invalid and subscriptions are not available -->
-    <string name="GooglePlayServicesAvailability__service_invalid_message">Ne možete se pretplatiti na zaštićene kopije podataka Signala jer vaš telefon ne podržava Google Play usluge. Za pomoć se obratite proizvođaču telefona.</string>
+    <string name="GooglePlayServicesAvailability__service_invalid_message">Ne možete se pretplatiti na zaštićene kopije podataka Tellomia jer vaš telefon ne podržava Google Play usluge. Za pomoć se obratite proizvođaču telefona.</string>
 
     <!-- ManageStorageSettingsFragment -->
     <!-- Settings section title header show above manage settings options for automatic chat history management (deleting) -->
@@ -8987,9 +8987,9 @@
     <!-- Setting description for syncing automated chat limit trimming (deleting messages automatically by length or date) to linked devices -->
     <string name="ManageStorageSettingsFragment_apply_limits_description">Kada je omogućeno, ograničenja chata će također izbrisati poruke sa vaših povezanih uređaja.</string>
     <!-- Setting section title header for storage optimization -->
-    <string name="ManageStorageSettingsFragment__on_device_storage">Pohrana Signala</string>
+    <string name="ManageStorageSettingsFragment__on_device_storage">Pohrana Tellomia</string>
     <!-- Setting row title for storage optimization -->
-    <string name="ManageStorageSettingsFragment__optimize_on_device_storage">Optimizirajte pohranu Signala</string>
+    <string name="ManageStorageSettingsFragment__optimize_on_device_storage">Optimizirajte pohranu Tellomia</string>
     <!-- Setting row explanation for storage optimization -->
     <string name="ManageStorageSettingsFragment__unused_media_will_be_offloaded">Neiskorišteni medijski sadržaji će biti uklonjeni, ali se mogu preuzeti iz vaše sigurnosne kopije u bilo koje vrijeme.</string>
     <!-- Dialog message for paid tier pending dialog -->
@@ -8997,7 +8997,7 @@
     <!-- Title of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
     <string name="ManageStorageSettingsFragment__media_will_be_removed_from_your_on_device_backup">Medijski sadržaji će biti uklonjeni iz sigurnosne kopije na uređaju.</string>
     <!-- Body of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
-    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Uključivanjem opcije \"Optimiziraj pohranu Signala\" stari medijski sadržaji bit će uklonjeni s uređaja. Možete ga ponovo preuzeti u bilo kojem trenutku. Time će se stari medijski sadržaji ukloniti i iz sigurnosne kopije na uređaju.</string>
+    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Uključivanjem opcije \"Optimiziraj pohranu Tellomia\" stari medijski sadržaji bit će uklonjeni s uređaja. Možete ga ponovo preuzeti u bilo kojem trenutku. Time će se stari medijski sadržaji ukloniti i iz sigurnosne kopije na uređaju.</string>
     <!-- Dialog action to confirm turning on "Optimize Signal storage" -->
     <string name="ManageStorageSettingsFragment__turn_on">Uključi</string>
 
@@ -9014,10 +9014,10 @@
     <string name="UpgradeToStartMediaBackupSheet__this_media_is_no_longer_available">Ovaj medij više nije dostupan</string>
     <!-- Subtitle of bottom sheet detailing that with their current plan, there is a limitation to how many days media is stored for. Placeholder is number of days. -->
     <plurals name="UpgradeToStartMediaBackupSheet__your_current_signal_backup_plan_includes">
-        <item quantity="one">Vaš trenutni paket sigurnosne kopije Signala uključuje vaš posljednji %1$d dan medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
-        <item quantity="few">Vaš trenutni paket sigurnosne kopije Signala uključuje vaš posljednji %1$d dana medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
-        <item quantity="many">Vaš trenutni paket sigurnosne kopije Signala uključuje vaš posljednji %1$d dana medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
-        <item quantity="other">Vaš trenutni paket sigurnosne kopije Signala uključuje vaš posljednji %1$d dana medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
+        <item quantity="one">Vaš trenutni paket sigurnosne kopije Tellomia uključuje vaš posljednji %1$d dan medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
+        <item quantity="few">Vaš trenutni paket sigurnosne kopije Tellomia uključuje vaš posljednji %1$d dana medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
+        <item quantity="many">Vaš trenutni paket sigurnosne kopije Tellomia uključuje vaš posljednji %1$d dana medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
+        <item quantity="other">Vaš trenutni paket sigurnosne kopije Tellomia uključuje vaš posljednji %1$d dana medija. Da započnete kreiranje rezervnih kopija svih svojih medija, nadogradite sada.</item>
     </plurals>
     <!-- Primary action to launch upgrade flow. Placeholder is formatted price. -->
     <string name="UpgradeToStartMediaBackupSheet__subscribe_for_s_month">Pretplatite se za %1$s mjesečno</string>
@@ -9080,9 +9080,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Pretplata je otkazana</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatsko kreiranje rezervnih kopija sa Signalovim sigurnom sveobuhvatnom uslugom pohranjivanja.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatsko kreiranje rezervnih kopija sa Tellomiovim sigurnom sveobuhvatnom uslugom pohranjivanja.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatsko kreiranje rezervnih kopija sa Signalovom sigurnom sveobuhvatnom uslugom pohranjivanja. Započnite na svom telefonu.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatsko kreiranje rezervnih kopija sa Tellomiovom sigurnom sveobuhvatnom uslugom pohranjivanja. Započnite na svom telefonu.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Pretplata nije pronađena na ovom uređaju."</string>
     <!-- Action button label to set up backups -->
@@ -9191,13 +9191,13 @@
     <!-- Subtext on a linked device describing when the primary device last backed up. Placeholder is the formatted date and time. -->
     <string name="RemoteBackupsSettingsFragment__your_phone_s">Vaš telefon · %1$s</string>
     <!-- Message shown on a linked device with a free backup plan explaining that the subscription is managed on the primary device -->
-    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_upgrade_your_subscription_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Signala, ili je nadograditi na primarnom uređaju.</string>
+    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_upgrade_your_subscription_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Tellomia, ili je nadograditi na primarnom uređaju.</string>
     <!-- Message shown on a linked device with a paid backup plan explaining that the subscription is managed on the primary device -->
-    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_cancel_your_subscription_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Signala, ili je otkazati na primarnom uređaju.</string>
+    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_cancel_your_subscription_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Tellomia, ili je otkazati na primarnom uređaju.</string>
     <!-- Message shown on a linked device with a canceled backup subscription explaining that the subscription is managed on the primary device -->
-    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_renew_your_subscription_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Signala, ili je obnoviti na primarnom uređaju.</string>
+    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_renew_your_subscription_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Tellomia, ili je obnoviti na primarnom uređaju.</string>
     <!-- Message shown on a linked device when backups are off or the subscription was not found, explaining that backups are managed on the primary device -->
-    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_upgrade_backups_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Signala, ili je nadograditi na primarnom uređaju.</string>
+    <string name="RemoteBackupsSettingsFragment__you_can_manage_or_upgrade_backups_on_your_primary_device">Sada možete upravljati svojom pretplatom na zaštićene kopije podataka Tellomia, ili je nadograditi na primarnom uređaju.</string>
     <!-- Button label to perform a backup immediately -->
     <string name="RemoteBackupsSettingsFragment__back_up_now">Kreiraj kopiju sada</string>
     <!-- Dialog title when confirming whether to turn off and deleting backups -->
@@ -9227,7 +9227,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">Ponovo omogućite sigurnosne kopije</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sigurnosne kopije su isključene i vaši podaci su izbrisani iz Signalove usluge sigurnog pohranjivanja.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sigurnosne kopije su isključene i vaši podaci su izbrisani iz Tellomiove usluge sigurnog pohranjivanja.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">Preuzimanje vaše sigurnosne kopije</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -9298,17 +9298,17 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">Detalji</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sigurnosne kopije su isključene, ali je došlo do greške prilikom brisanja vaših podataka iz Signalove usluge sigurne pohrane.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sigurnosne kopije su isključene, ali je došlo do greške prilikom brisanja vaših podataka iz Tellomiove usluge sigurne pohrane.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">Brisanje sigurnosne kopije nije uspjelo</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">Dogodila se greška. Molimo kontaktirajte podršku.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sigurnosne kopije su isključene, vaši podaci će se preuzeti na vaš uređaj, a zatim će se izbrisati iz Signalove sigurne usluge pohrane.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sigurnosne kopije su isključene, vaši podaci će se preuzeti na vaš uređaj, a zatim će se izbrisati iz Tellomiove sigurne usluge pohrane.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sigurnosne kopije su isključene i vaši podaci će biti izbrisani iz Signalove usluge sigurne pohrane.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sigurnosne kopije su isključene i vaši podaci će biti izbrisani iz Tellomiove usluge sigurne pohrane.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sigurnosne kopije su isključene i vaši podaci su izbrisani iz Signalove usluge sigurnog pohranjivanja.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sigurnosne kopije su isključene i vaši podaci su izbrisani iz Tellomiove usluge sigurnog pohranjivanja.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">Preuzimanje: %1$s od %2$s (%3$d%%)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -9405,7 +9405,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Kreirajte sigurnosnu kopiju poruka i medija i koristite sigurnu, sveobuhvatno šifriranu uslugu pohrane Signala. Nikada nemojte izgubiti poruku kada dobijete novi telefon ili ponovo instalirate Tellomi.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Kreirajte sigurnosnu kopiju poruka i medija i koristite sigurnu, sveobuhvatno šifriranu uslugu pohrane Tellomia. Nikada nemojte izgubiti poruku kada dobijete novi telefon ili ponovo instalirate Tellomi.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">Sveobuhvatno šifrirano</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->
@@ -9445,9 +9445,9 @@
     <!-- Row label indicating that the recovery key can be used to restore an on-device backup. -->
     <string name="MessageBackupsKeyEducationScreen__restore_on_device_backup">Vraćanje kopije podataka na uređaju</string>
     <!-- Row label indicating that the recovery key can be used to restore a Signal Secure Backup. -->
-    <string name="MessageBackupsKeyEducationScreen__restore_a_signal_secure_backup">Vratite zaštićenu kopiju podataka Signala</string>
+    <string name="MessageBackupsKeyEducationScreen__restore_a_signal_secure_backup">Vratite zaštićenu kopiju podataka Tellomia</string>
     <!-- Row label indicating that the recovery key can be used to restore a Signal Secure Backup. -->
-    <string name="MessageBackupsKeyEducationScreen__restore_your_signal_secure_backup">Vraćanje zaštićene kopije podataka Signala</string>
+    <string name="MessageBackupsKeyEducationScreen__restore_your_signal_secure_backup">Vraćanje zaštićene kopije podataka Tellomia</string>
     <!-- Action button label -->
     <string name="MessageBackupsKeyEducationScreen__view_recovery_key">Pogledajte ključ za oporavak</string>
 
@@ -9495,13 +9495,13 @@
     <!-- Dialog title for confirming you need to disable optimized storage and download media to rotate AEP key -->
     <string name="MessageBackupsKeyRecordScreen__download_media">Preuzmite mediski sadržaj</string>
     <!-- Dialog body for confirming you need to disable optimized storage and download media to rotate AEP key -->
-    <string name="MessageBackupsKeyRecordScreen__to_create_a_new_backup_key">Da biste kreirali novi ključ za oporavak, morate isključiti opciju \"Optimiziraj pohranu na Signalu\" i pričekati da se vaši mediji preuzmu. Kada je preuzimanje završeno, možete kreirati novi ključ.</string>
+    <string name="MessageBackupsKeyRecordScreen__to_create_a_new_backup_key">Da biste kreirali novi ključ za oporavak, morate isključiti opciju \"Optimiziraj pohranu na Tellomiu\" i pričekati da se vaši mediji preuzmu. Kada je preuzimanje završeno, možete kreirati novi ključ.</string>
     <!-- Action label to turn off optimized storage and download media -->
     <string name="MessageBackupsKeyRecordScreen__turn_off_and_download">Isključi i preuzmi</string>
     <!-- Bottom Sheet title for creating a new AEP key -->
     <string name="MessageBackupsKeyRecordScreen__create_a_new_backup_key">Kreirajte novi ključ za oporavak</string>
     <!-- Bottom Sheet body for creating a new AEP key -->
-    <string name="MessageBackupsKeyRecordScreen__creating_a_new_key_is_only_necessary">Kreiranje novog ključa je potrebno samo ako neko drugi zna vaš ključ. Morat ćete ponovo prenijeti sigurnosnu kopiju, uključujući medijski sadržaj. Ako koristite \"Optimizaciju pohrane na Signalu\", prvo ćete morati preuzeti prenesene medije.</string>
+    <string name="MessageBackupsKeyRecordScreen__creating_a_new_key_is_only_necessary">Kreiranje novog ključa je potrebno samo ako neko drugi zna vaš ključ. Morat ćete ponovo prenijeti sigurnosnu kopiju, uključujući medijski sadržaj. Ako koristite \"Optimizaciju pohrane na Tellomiu\", prvo ćete morati preuzeti prenesene medije.</string>
     <!-- Dialog title shown when user attempts to exit backup setup before completion -->
     <string name="MessageBackupsKeyRecordScreen__exit_backup_setup">Izaći iz podešavanja sigurnosne kopije?</string>
     <!-- Dialog body warning user that backup setup is incomplete -->
@@ -9611,7 +9611,7 @@
     <!-- Dialog title when user can\'t upgrade plan due to missing Google Services -->
     <string name="MessageBackupsTypeSelectionScreen__cant_upgrade_plan">Nije moguće nadograditi paket</string>
     <!-- Dialog body text explaining Google Services requirement for backup subscription -->
-    <string name="MessageBackupsTypeSelectionScreen__to_subscribe_to_signal_secure_backups">Da biste se pretplatili na zaštićene kopije podataka Signala, morate imati omogućene Google usluge na svom telefonu i biti prijavljeni u Google Play Store.</string>
+    <string name="MessageBackupsTypeSelectionScreen__to_subscribe_to_signal_secure_backups">Da biste se pretplatili na zaštićene kopije podataka Tellomia, morate imati omogućene Google usluge na svom telefonu i biti prijavljeni u Google Play Store.</string>
 
     <!-- ConfirmBackupCancellationDialog -->
     <!-- Dialog title -->
@@ -9643,9 +9643,9 @@
     <!-- Screen subtitle for selecting which restore method to use during registration -->
     <string name="SelectRestoreMethodFragment__get_your_signal_account">Prenesite svoj Tellomi račun i historiju poruka na ovaj uređaj.</string>
     <!-- Option title for restoring via signal secure backups -->
-    <string name="SelectRestoreMethodFragment__restore_signal_backup">Vratite sigurnosnu kopiju Signala</string>
+    <string name="SelectRestoreMethodFragment__restore_signal_backup">Vratite sigurnosnu kopiju Tellomia</string>
     <!-- Option subtitle for restoring via signal secure backups -->
-    <string name="SelectRestoreMethodFragment__restore_your_text_messages_and_media_from">Vratite svoje tekstualne poruke i medije iz svog plana sigurnosne kopije Signala.</string>
+    <string name="SelectRestoreMethodFragment__restore_your_text_messages_and_media_from">Vratite svoje tekstualne poruke i medije iz svog plana sigurnosne kopije Tellomia.</string>
     <!-- Option title for restoring via a local backup file or folder -->
     <string name="SelectRestoreMethodFragment__restore_on_device_backup">Vratite sigurnosnu kopiju na uređaju</string>
     <!-- Option subtitle fdor restoring via a local backup file or folder -->
@@ -9705,7 +9705,7 @@
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_you_entered_is_correct_but_no_backup">Vaš ključ za oporavak koji ste unijeli je ispravan, ali s njim nije povezana rezervna kopija. Ako još uvijek imate svoj stari telefon, uvjerite se da su sigurnosne kopije omogućene i da je sigurnosna kopija završena i pokušajte ponovo.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
-    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">Moguće je da ste pogrešno unijeli ključ za oporavak ili niste napravili barem jednu sigurnosnu kopiju na starom uređaju.\n\nProvjerite da li se registrujete s istim brojem telefona i ključem za oporavak koji ste sačuvali prilikom omogućavanja zaštićene kopije podataka Signala i potvrdite da je vaš stari uređaj dovršio sigurnosno kopiranje.</string>
+    <string name="EnterBackupKey_backup_key_incorrect_or_backups_not_enabled">Moguće je da ste pogrešno unijeli ključ za oporavak ili niste napravili barem jednu sigurnosnu kopiju na starom uređaju.\n\nProvjerite da li se registrujete s istim brojem telefona i ključem za oporavak koji ste sačuvali prilikom omogućavanja zaštićene kopije podataka Tellomia i potvrdite da je vaš stari uređaj dovršio sigurnosno kopiranje.</string>
     <!-- Dialog message shown during registration and trying to restore a remote backup -->
     <string name="EnterBackupKey_backup_key_check_rate_limited">Iskoristili ste maksimalan broj pokušaja unosa ključa za oporavak. Radi vaše sigurnosti, broj pokušaja koje možete napraviti je ograničen. Sačekajte sat vremena i pokušajte ponovo.</string>
     <!-- Dialog button shown during registration and trying to restore a remote backup to instead skip said backup process -->
@@ -9990,7 +9990,7 @@
     <!-- Notification title for when user is out of remote storage -->
     <string name="Notification_backup_storage_full">Prostor za sigurnosne kopije je pun</string>
     <!-- Notification body for when user is out of remote storage -->
-    <string name="Notification_youve_reached_your_backup_storage_limit">Dostigli ste ograničenje prostora za pohranu sigurnosnih kopija. Oslobodite prostor u Signalu da biste nastavili sa izradom sigurnosnih kopija chatova i medija.</string>
+    <string name="Notification_youve_reached_your_backup_storage_limit">Dostigli ste ograničenje prostora za pohranu sigurnosnih kopija. Oslobodite prostor u Tellomiu da biste nastavili sa izradom sigurnosnih kopija chatova i medija.</string>
     <!-- Notification title for when initial backup failed -->
     <string name="Notification_backup_failed">Neuspjelo kreiranje rezervne kopije</string>
     <!-- Notification body for when initial backup failed -->
@@ -10124,7 +10124,7 @@
     <!-- Label for text field where user describes their call quality issue -->
     <string name="CallQualitySomethingElseScreen__describe_your_issue">Opišite problem</string>
     <!-- Privacy notice explaining that issue details will be kept private and used to improve Signal calls -->
-    <string name="CallQualitySomethingElseScreen__privacy_notice">Molimo vas da navedete sve detalje relevantne za problem. Sve što ovdje podijelite bit će privatno i koristit će se samo za poboljšanje poziva u Signalu.</string>
+    <string name="CallQualitySomethingElseScreen__privacy_notice">Molimo vas da navedete sve detalje relevantne za problem. Sve što ovdje podijelite bit će privatno i koristit će se samo za poboljšanje poziva u Tellomiu.</string>
     <!-- Button to save the call quality issue description -->
     <string name="CallQualitySomethingElseScreen__save">Pohrani</string>
     <!-- Content description for the back navigation button -->
@@ -10134,7 +10134,7 @@
     <!-- Title asking user how their call was -->
     <string name="CallQualitySheet__how_was_your_call">Kakav je bio vaš poziv?</string>
     <!-- Subtitle explaining that feedback helps improve Signal and no PII is stored -->
-    <string name="CallQualitySheet__how_was_your_call_subtitle">Ovo nam pomaže da poboljšamo pozive u Signalu. Neće se pohranjivati nikakvi lični podaci.</string>
+    <string name="CallQualitySheet__how_was_your_call_subtitle">Ovo nam pomaže da poboljšamo pozive u Tellomiu. Neće se pohranjivati nikakvi lični podaci.</string>
     <!-- Button label indicating the call had issues -->
     <string name="CallQualitySheet__had_issues">Bilo je problema</string>
     <!-- Button label indicating the call was great -->
@@ -10305,7 +10305,7 @@
     <!-- Title of the sheet shown when the server reports a verification code was requested for the user\'s phone number -->
     <string name="VerificationCodeRequestedBottomSheet__title">Zatražen je kod za verifikaciju</string>
     <!-- First paragraph of the body of the verification code requested sheet -->
-    <string name="VerificationCodeRequestedBottomSheet__body_1">Kod za verifikaciju ne govorite nikome. Tellomi ga nikad neće tražiti putem poruka. Ako ste primili poruku od nekog ko se pretvara da je iz Signala, radi se o prevari.</string>
+    <string name="VerificationCodeRequestedBottomSheet__body_1">Kod za verifikaciju ne govorite nikome. Tellomi ga nikad neće tražiti putem poruka. Ako ste primili poruku od nekog ko se pretvara da je iz Tellomia, radi se o prevari.</string>
     <!-- Second paragraph of the body of the verification code requested sheet -->
     <string name="VerificationCodeRequestedBottomSheet__body_2">Sa sigurnošću možete zanemariti ovu poruku ako ste vi zatražili kod.</string>
     <!-- Button on the verification code requested sheet that opens the safety tips screen -->
@@ -10318,9 +10318,9 @@
     <!-- Title of the safety tips screen within the verification code requested sheet -->
     <string name="SafetyTipsBottomSheet__title">Sigurnosni savjeti</string>
     <!-- Title of the first safety tip: don\'t respond to chats claiming to be Signal -->
-    <string name="SafetyTipsBottomSheet__tip_1_title">Ne odgovarajte na razgovore koji navodno dolaze od Signala</string>
+    <string name="SafetyTipsBottomSheet__tip_1_title">Ne odgovarajte na razgovore koji navodno dolaze od Tellomia</string>
     <!-- Body of the first safety tip -->
-    <string name="SafetyTipsBottomSheet__tip_1_body">Tellomi vam nikada neće poslati poruku tražeći vaš registracijski kod, PIN ili ključ za oporavak. Ne odgovarajte na razgovore koji navodno dolaze od Signala.</string>
+    <string name="SafetyTipsBottomSheet__tip_1_body">Tellomi vam nikada neće poslati poruku tražeći vaš registracijski kod, PIN ili ključ za oporavak. Ne odgovarajte na razgovore koji navodno dolaze od Tellomia.</string>
     <!-- Title of the second safety tip: keep your verification code safe -->
     <string name="SafetyTipsBottomSheet__tip_2_title">Čuvajte svoj kod za verifikaciju na sigurnom</string>
     <!-- Body of the second safety tip -->
@@ -10337,7 +10337,7 @@
     <!-- Bolded lead-in to the warning sheet body; combined with RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond to form a full sentence -->
     <string name="RecoveryKeyWarningSheetContent__signal_will_never_message_you">Tellomi vam nikad neće slati poruke</string>
     <!-- Remainder of the warning sheet body following the bolded lead-in RecoveryKeyWarningSheetContent__signal_will_never_message_you -->
-    <string name="RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond">tražeći ključ za oporavak. Ne odgovarajte na razgovore koji navodno dolaze od Signala. Sačuvajte ključ za oporavak na sigurnom mjestu i nikad ga ne dijelite ni s kim.</string>
+    <string name="RecoveryKeyWarningSheetContent__for_your_recovery_key_never_respond">tražeći ključ za oporavak. Ne odgovarajte na razgovore koji navodno dolaze od Tellomia. Sačuvajte ključ za oporavak na sigurnom mjestu i nikad ga ne dijelite ni s kim.</string>
     <!-- Button dismissing the recovery key warning sheet after the user has copied their key -->
     <string name="RecoveryKeyWarningSheetContent__got_it">Razumijem</string>
     <!-- Button opening a help article with more information about recovery key safety -->
@@ -10356,7 +10356,7 @@
     <!-- Bolded middle sentence of the final confirmation dialog body -->
     <string name="RecoveryKeyWarningDialog__signal_will_never_message_you_for_your_recovery_key">Tellomi vas nikad neće kontaktirati zbog vašeg ključa za oporavak.</string>
     <!-- Final sentence of the final confirmation dialog body -->
-    <string name="RecoveryKeyWarningDialog__never_respond_to_a_chat">Ne odgovarajte na razgovore koji navodno dolaze od Signala.</string>
+    <string name="RecoveryKeyWarningDialog__never_respond_to_a_chat">Ne odgovarajte na razgovore koji navodno dolaze od Tellomia.</string>
     <!-- Button confirming the user wants to paste the recovery key -->
     <string name="RecoveryKeyWarningDialog__paste_key">Zalijepite ključ</string>
     <!-- Button declining to paste the recovery key -->
@@ -10467,7 +10467,7 @@
     <!-- Toast shown when there is no map app to open a shared address in -->
     <string name="SharedContactDetailsScreen__couldnt_open_maps">Nije moguće otvoriti mape</string>
     <!-- Subject line of an email invitation to Signal -->
-    <string name="SharedContactDetailsScreen__join_me_on_signal">Pridružite mi se na Signalu</string>
+    <string name="SharedContactDetailsScreen__join_me_on_signal">Pridružite mi se na Tellomiu</string>
 
     <!-- EOF -->
 </resources>

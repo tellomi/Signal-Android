@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">Odaberite kako želite vratiti historiju poruka i podatke računa.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Iz sigurnosnih kopija Signala</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Iz sigurnosnih kopija Tellomia</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Vaš besplatni ili plaćeni plan sigurnosne kopije Signala</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">Vaš besplatni ili plaćeni plan sigurnosne kopije Tellomia</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">Vratite sigurnosnu kopiju na uređaju</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -204,7 +204,7 @@
     <!-- Title when no backup is found -->
     <string name="LocalBackupRestoreScreen__no_backup_found">Nije pronađena rezervna kopija</string>
     <!-- Description when no backup is found -->
-    <string name="LocalBackupRestoreScreen__no_backup_found_description">Rezervna kopija Signala nije pronađena u odabranom folderu. Pokušajte s drugim folderom.</string>
+    <string name="LocalBackupRestoreScreen__no_backup_found_description">Rezervna kopija Tellomia nije pronađena u odabranom folderu. Pokušajte s drugim folderom.</string>
     <!-- Button to try a different folder -->
     <string name="LocalBackupRestoreScreen__try_different_folder">Pokušajte s drugim folderom</string>
     <!-- Title for V1 passphrase entry screen -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">Povežite račun</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">Još niste na Signalu?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">Još niste na Tellomiu?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">Kreirajte račun</string>
 
@@ -307,7 +307,7 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Nije moguće vratiti ovu sigurnosnu kopiju</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Ova verzija Signala ne može vratiti vašu sigurnosnu kopiju. Ažurirajte na najnoviju verziju i pokušajte ponovo.</string>
+    <string name="RemoteRestoreScreen__update_latest">Ova verzija Tellomia ne može vratiti vašu sigurnosnu kopiju. Ažurirajte na najnoviju verziju i pokušajte ponovo.</string>
     <!-- Button to update Signal -->
     <string name="RemoteRestoreScreen__update_signal">Ažurirajte Tellomi</string>
     <!-- Button to dismiss update dialog -->
@@ -493,7 +493,7 @@
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
     <string name="LinkAccountScreen__open_signal_on_your_phone">Otvorite Tellomi na telefonu</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
-    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Dodirnite profilnu sliku da otvorite Postavke Signala</string>
+    <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Dodirnite profilnu sliku da otvorite Postavke Tellomia</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
     <string name="LinkAccountScreen__tap_linked_devices_and_link_new_device">Dodirnite \"Povezani uređaji\", a zatim \"Poveži novi uređaj\"</string>
     <!-- Button label opening help content for users who can\'t complete the link-account steps -->
@@ -519,7 +519,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Obrisati podatke aplikacije?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Pokušavate povezati drugi Tellomi račun. Ako nastavite, svi podaci Signala koji se trenutno nalaze na ovom uređaju bit će obrisani.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Pokušavate povezati drugi Tellomi račun. Ako nastavite, svi podaci Tellomia koji se trenutno nalaze na ovom uređaju bit će obrisani.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Obriši i ponovo pokreni</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -542,7 +542,7 @@
     <string name="DeviceTransferSetup__grant_location_permission">Dodijelite dozvolu</string>
     <string name="DeviceTransferSetup__location_services_required">Tellomi treba omogućene lokacijske usluge kako bi pronašao i povezao se s vašim starim uređajem.</string>
     <string name="DeviceTransferSetup__turn_on_location_services">Aktiviraj lokaciju telefona</string>
-    <string name="DeviceTransferSetup__wifi_required">Signalu je potreban Wi-Fi da bi pronašao vaš stari uređaj i povezao se s njim.</string>
+    <string name="DeviceTransferSetup__wifi_required">Tellomiu je potreban Wi-Fi da bi pronašao vaš stari uređaj i povezao se s njim.</string>
     <string name="DeviceTransferSetup__turn_on_wifi">Uključi Wi-Fi</string>
     <string name="DeviceTransferSetup__wifi_direct_unavailable">Nažalost, izgleda da vaš uređaj ne podržava Wi-Fi Direct.</string>
     <string name="DeviceTransferSetup__restore_a_backup">Umjesto toga, vratite sigurnosnu kopiju</string>
@@ -559,7 +559,7 @@
     <string name="DeviceTransferProgress__transferring_data">Prenos podataka</string>
     <string name="DeviceTransferProgress__d_messages_so_far">%1$d poruka do sada</string>
     <string name="DeviceTransferProgress__unable_to_transfer">Prenos nije moguć</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Nije moguće prenijeti podatke s novije verzije Signala.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Nije moguće prenijeti podatke s novije verzije Tellomia.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">Neki podaci nisu mogli biti preneseni zbog ograničenja u bazi podataka.</string>
     <string name="DeviceTransferProgress__transfer_failed">Prijenos nije uspio. Molimo pokušajte ponovno.</string>
     <string name="DeviceTransferProgress__try_again">Pokušajte ponovo</string>
@@ -590,9 +590,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Ko me može pronaći po broju?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Svako ko ima vaš broj telefona vidjet će da ste na Signalu i može započeti razgovor s vama.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Svako ko ima vaš broj telefona vidjet će da ste na Tellomiu i može započeti razgovor s vama.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Niko neće moći vidjeti da ste na Signalu osim ako toj osobi ne pošaljete poruku ili ne razgovarate s njom.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Niko neće moći vidjeti da ste na Tellomiu osim ako toj osobi ne pošaljete poruku ili ne razgovarate s njom.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">Svako</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -600,7 +600,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Jeste li sigurni?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Ako postavite opciju \"Ko me može pronaći po broju\" na \"Niko\" će otežati ljudima da vas pronađu na Signalu.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">Ako postavite opciju \"Ko me može pronaći po broju\" na \"Niko\" će otežati ljudima da vas pronađu na Tellomiu.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Otkaži</string>
     <!-- Save button on the discoverability picker. -->

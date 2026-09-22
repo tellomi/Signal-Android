@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Примићете позив за верфикацију овог броја.</string>
     <string name="RegistrationActivity_edit_number">Измени број</string>
     <string name="RegistrationActivity_missing_google_play_services">Недостају Google Play сервиси</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Овом уређају недостају Google Play сервиси. И даље можете да користите Signal, али таква конфигурација може довести до умањене поузданости или перформансе.\n\nАко нисте напредан корисник, не користите прилагођени Android ROM или верујете да грешком видите ову поруку, обратите се подршци на support@signal.org за помоћ.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Овом уређају недостају Google Play сервиси. И даље можете да користите Tellomi, али таква конфигурација може довести до умањене поузданости или перформансе.\n\nАко нисте напредан корисник, не користите прилагођени Android ROM или верујете да грешком видите ову поруку, обратите се подршци на support@tellomi.app за помоћ.</string>
     <string name="RegistrationActivity_i_understand">Разумем</string>
     <string name="RegistrationActivity_play_services_error">Грешка у Play сервисима</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play сервиси се ажурирају или су привремено недоступни. Пробајте поново касније.</string>

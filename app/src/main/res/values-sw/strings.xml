@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Utapokea simu ya kuthibitisha nambari hii.</string>
     <string name="RegistrationActivity_edit_number">Hariri nambari</string>
     <string name="RegistrationActivity_missing_google_play_services">Huduma za Google Play zinakosekana</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Kifaa hiki kimekosa huduma za Google Play. Bado unaweza kutumia Signal, lakini usanidi huu unaweza kusababisha upungufu wa kutegemewa au utendaji. \\ n\n \\ Kama wewe si mtumiaji wa juu, hautumii Android ROM, au unaamini kwamba unaona hili kimakosa, tafadhali wasiliana na support@signal.org kwa usaidizi wa matatizo.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Kifaa hiki kimekosa huduma za Google Play. Bado unaweza kutumia Tellomi, lakini usanidi huu unaweza kusababisha upungufu wa kutegemewa au utendaji. \\ n\n \\ Kama wewe si mtumiaji wa juu, hautumii Android ROM, au unaamini kwamba unaona hili kimakosa, tafadhali wasiliana na support@tellomi.app kwa usaidizi wa matatizo.</string>
     <string name="RegistrationActivity_i_understand">Nimeelewa</string>
     <string name="RegistrationActivity_play_services_error">Hitilafu katika huduma za Play</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Huduma za Google Play zinasasisha au hazipatikani kwa muda. Tafadhali jaribu tena.</string>

@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Você receberá uma chamada para verificar esse número.</string>
     <string name="RegistrationActivity_edit_number">Editar número</string>
     <string name="RegistrationActivity_missing_google_play_services">Google Play Services está faltando</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Este aparelho não tem Google Play Services. Você ainda pode usar o Signal, mas talvez não consiga a mesma estabilidade e desempenho.\n\nSe você não é um(a) usuário(a) avançado(a), não está usando uma ROM Android customizada, ou acredita que isto é um erro, fale conosco no endereço support@signal.org para que possamos ajudar a resolver o problema.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Este aparelho não tem Google Play Services. Você ainda pode usar o Tellomi, mas talvez não consiga a mesma estabilidade e desempenho.\n\nSe você não é um(a) usuário(a) avançado(a), não está usando uma ROM Android customizada, ou acredita que isto é um erro, fale conosco no endereço support@tellomi.app para que possamos ajudar a resolver o problema.</string>
     <string name="RegistrationActivity_i_understand">Entendi</string>
     <string name="RegistrationActivity_play_services_error">Erro no Play Services</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play Services está sendo atualizado ou temporariamente indisponível. Por favor, tente novamente.</string>

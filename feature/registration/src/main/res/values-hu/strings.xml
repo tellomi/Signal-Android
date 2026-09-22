@@ -142,7 +142,7 @@
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Nincs nálam a régi telefonom</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">Vagy telepítsd újra a Signalt ugyanarra az eszközre</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">Vagy telepítsd újra a Tellomit ugyanarra az eszközre</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -273,7 +273,7 @@
     <!-- Button to link an existing Signal account to this device -->
     <string name="WelcomeScreen__link_your_account">Kösd össze a fiókod</string>
     <!-- Prompt shown to users who don\'t have a Signal account yet -->
-    <string name="WelcomeScreen__not_on_signal_yet">Még nem regisztráltál a Signalra?</string>
+    <string name="WelcomeScreen__not_on_signal_yet">Még nem regisztráltál a Tellomira?</string>
     <!-- Button to create a new Signal account -->
     <string name="WelcomeScreen__create_account">Fiók létrehozása</string>
 
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">Biztonságod és személyes adataid védelme érdekében fiókodat zároltuk. %1$d nap inaktivitást követően újraregisztrálhatod ezt a telefonszámot a PIN kód használata nélkül. Az összes adat törlésre kerül.</string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">Nyisd meg a Signalt a régi eszközödön</string>
+    <string name="QuickRestoreQRScreen__step_1">Nyisd meg a Tellomit a régi eszközödön</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">Koppints a kamera ikonra </string>
     <!-- Step 3 to quick restore -->
@@ -487,7 +487,7 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">A fiókod összekapcsolásához olvasd be ezt a kódot</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">Nyisd meg a Signalt a telefonodon!</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">Nyisd meg a Tellomit a telefonodon!</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
     <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">A Tellomi beállításainak megnyitásához koppints a profilképedre</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->
@@ -523,7 +523,7 @@
 
     <!-- Device transfer: Instructions screen -->
     <string name="DeviceTransferInstructions__transfer_your_account">Helyezd át a fiókodat</string>
-    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">A fiókod áthelyezéséhez nyisd meg a Signalt a régi Android eszközödön, majd válaszd a Fiók áthelyezése lehetőséget.</string>
+    <string name="DeviceTransferInstructions__to_transfer_open_signal_on_your_old_android_device">A fiókod áthelyezéséhez nyisd meg a Tellomit a régi Android eszközödön, majd válaszd a Fiók áthelyezése lehetőséget.</string>
     <string name="DeviceTransferInstructions__continue">Folytatás</string>
 
     <!-- Device transfer: Setup screen -->
@@ -555,7 +555,7 @@
     <string name="DeviceTransferProgress__transferring_data">Adat áttöltése</string>
     <string name="DeviceTransferProgress__d_messages_so_far">Eddig %1$d db üzenet</string>
     <string name="DeviceTransferProgress__unable_to_transfer">Sikertelen az átvitel</string>
-    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Nem lehetséges az átvitel újabb verziójú Signalból.</string>
+    <string name="DeviceTransferProgress__cannot_transfer_from_newer_signal">Nem lehetséges az átvitel újabb verziójú Tellomiból.</string>
     <string name="DeviceTransferProgress__failure_foreign_key">Az adatbázis korlátai miatt egyes adatok átvitele nem sikerült.</string>
     <string name="DeviceTransferProgress__transfer_failed">Az áthelyezés sikertelen. Próbáld újra!</string>
     <string name="DeviceTransferProgress__try_again">Próbáld újra</string>
@@ -586,9 +586,9 @@
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
     <string name="WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number">Ki találhat meg a telefonszámom alapján?</string>
     <!-- Description shown on the picker when "Everyone" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Bárki, aki tudja a telefonszámodat, látni fogja, hogy használod a Signalt, és csevegést kezdeményezhet veled.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__anyone_who_has_your">Bárki, aki tudja a telefonszámodat, látni fogja, hogy használod a Tellomit, és csevegést kezdeményezhet veled.</string>
     <!-- Description shown on the picker when "Nobody" is selected. -->
-    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Senki sem láthatja, hogy használod a Signalt, hacsak nem küldesz valakinek üzenetet, vagy nem folytatsz csevegést valakivel.</string>
+    <string name="WhoCanSeeMyPhoneNumberFragment__nobody_will_be_able">Senki sem láthatja, hogy használod a Tellomit, hacsak nem küldesz valakinek üzenetet, vagy nem folytatsz csevegést valakivel.</string>
     <!-- Radio option label for "Everyone can find me by number". -->
     <string name="PhoneNumberPrivacy_everyone">Mindenki</string>
     <!-- Radio option label for "Nobody can find me by number". -->
@@ -596,7 +596,7 @@
     <!-- Title for the confirmation dialog shown when the user selects "Nobody". -->
     <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_title">Biztos vagy benne?</string>
     <!-- Body for the confirmation dialog shown when the user selects "Nobody". -->
-    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">A „Ki találhat meg a számom alapján” beállítása „Senki” opcióra nehezebbé teszi az emberek számára, hogy megtaláljanak téged a Signalon.</string>
+    <string name="PhoneNumberPrivacySettingsFragment__nobody_can_find_me_warning_message">A „Ki találhat meg a számom alapján” beállítása „Senki” opcióra nehezebbé teszi az emberek számára, hogy megtaláljanak téged a Tellomion.</string>
     <!-- Cancel button on the "Nobody" confirmation dialog. -->
     <string name="PhoneNumberPrivacySettingsFragment__cancel">Mégse</string>
     <!-- Save button on the discoverability picker. -->
@@ -634,7 +634,7 @@
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">Jelentkezz be és állítsd vissza a fiókodat</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
-    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Köszönjük, hogy támogattad a Signalt!</string>
+    <string name="SignalLoginPaymentScreen__thanks_for_supporting_signal">Köszönjük, hogy támogattad a Tellomit!</string>
     <!-- Action button that starts the purchase. Placeholder is the localized price, e.g. "$1.99". -->
     <string name="SignalLoginPaymentScreen__pay_s">Összeg: %1$s</string>
     <!-- Action button that starts the purchase, shown while the price is still loading. -->

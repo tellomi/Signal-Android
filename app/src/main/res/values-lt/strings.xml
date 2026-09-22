@@ -355,7 +355,7 @@
     <!-- ContactsDatabase -->
     <string name="ContactsDatabase_message_s">Žinutė %1$s</string>
     <string name="ContactsDatabase_signal_call_s">„Tellomi“ balso skambutis %1$s</string>
-    <string name="ContactsDatabase_signal_video_call_s">Signalinis vaizdo skambutis %1$s</string>
+    <string name="ContactsDatabase_signal_video_call_s">Tellomiinis vaizdo skambutis %1$s</string>
 
     <!-- ContactNameEditActivity -->
     <!-- Toolbar title for contact name edit activity -->
@@ -3017,7 +3017,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">Sulauksite skambučio, kad patvirtintumėte šį numerį.</string>
     <string name="RegistrationActivity_edit_number">Taisyti numerį</string>
     <string name="RegistrationActivity_missing_google_play_services">Trūksta „Google Play“ paslaugų</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Šiame įrenginyje nėra „Google Play“ paslaugų. Jūs vis tiek galite naudoti Signal, tačiau tokia konfigūracija gali sąlygoti mažesnį patikimumą ir našumą.\n\nJeigu jūs nesate pažengęs naudotojas, nenaudojate atsarginių dalių „Android“ ROM ar manote, jog matote tai per klaidą, tuomet pagalbai ir nesklandumų šalinimui susisiekite su support@signal.org.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">Šiame įrenginyje nėra „Google Play“ paslaugų. Jūs vis tiek galite naudoti Tellomi, tačiau tokia konfigūracija gali sąlygoti mažesnį patikimumą ir našumą.\n\nJeigu jūs nesate pažengęs naudotojas, nenaudojate atsarginių dalių „Android“ ROM ar manote, jog matote tai per klaidą, tuomet pagalbai ir nesklandumų šalinimui susisiekite su support@tellomi.app.</string>
     <string name="RegistrationActivity_i_understand">Aš suprantu</string>
     <string name="RegistrationActivity_play_services_error">„Play“ paslaugų klaida</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">„Google Play“ paslaugos yra atnaujinamos arba laikinai neprieinamos. Prašome bandyti dar kartą.</string>

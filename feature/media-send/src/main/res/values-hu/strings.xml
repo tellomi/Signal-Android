@@ -65,7 +65,7 @@
   <!-- Accessibility description for the button that leaves media selection and opens the camera. -->
   <string name="MediaSelectScreen__go_to_camera">Tovább a Kamerába</string>
   <!-- Message shown in place of the gallery when the user has not granted permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">A Signalnak engedélyre van szüksége a fotók és videók megjelenítéséhez.</string>
+  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">A Tellominak engedélyre van szüksége a fotók és videók megjelenítéséhez.</string>
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">Hozzáférés engedélyezése</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
@@ -83,7 +83,7 @@
   <!-- Subtitle of the sheet shown when the permission to read photos and videos has been permanently denied, introducing the steps that follow. -->
   <string name="MediaSelectScreen__to_show_photos_and_videos">Fotók és videók megjelenítése:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">A Signalnak hozzáférési engedélyre van szüksége a fotók és videók megjelenítéséhez.</string>
+  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">A Tellominak hozzáférési engedélyre van szüksége a fotók és videók megjelenítéséhez.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">Fotó</string>
@@ -148,23 +148,23 @@
   <!-- Dialog title asking users for microphone permission -->
   <string name="CameraXFragment_allow_access_microphone">Hozzáférés engedélyezése a mikrofonodhoz</string>
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Fotók és videók készítéséhez engedélyezd a Signalnak a kamerához való hozzáférést!</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Fotók és videók készítéséhez engedélyezd a Tellominak a kamerához való hozzáférést!</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Fotók és videók készítéséhez engedélyezd a Signalnak a kamerához és a mikrofonhoz való hozzáférést.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Fotók és videók készítéséhez engedélyezd a Tellominak a kamerához és a mikrofonhoz való hozzáférést.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
-  <string name="CameraXFragment_to_capture_videos_with_sound">Hangos videók rögzítéséhez engedélyezd a Signalnak a mikrofonhoz való hozzáférést.</string>
+  <string name="CameraXFragment_to_capture_videos_with_sound">Hangos videók rögzítéséhez engedélyezd a Tellominak a mikrofonhoz való hozzáférést.</string>
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
-  <string name="CameraXFragment_to_scan_qr_code_allow_camera">QR-kód beolvasásához engedélyezd a Signalnak a kamerához való hozzáférést.</string>
+  <string name="CameraXFragment_to_scan_qr_code_allow_camera">QR-kód beolvasásához engedélyezd a Tellominak a kamerához való hozzáférést.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
-  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Fotók készítéséhez a Signalnak hozzá kell férnie a kamerához</string>
+  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Fotók készítéséhez a Tellominak hozzá kell férnie a kamerához</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
-  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">QR-kód beolvasásához a Signalnak hozzá kell férnie a kamerához</string>
+  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">QR-kód beolvasásához a Tellominak hozzá kell férnie a kamerához</string>
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
-  <string name="CameraXFragment_signal_needs_microphone_access_video">Videó rögzítéséhez a Signalnak hozzá kell férnie a mikrofonhoz</string>
+  <string name="CameraXFragment_signal_needs_microphone_access_video">Videó rögzítéséhez a Tellominak hozzá kell férnie a mikrofonhoz</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
-  <string name="CameraXFragment_to_capture_photos">Fotók rögzítése a Signalban:</string>
+  <string name="CameraXFragment_to_capture_photos">Fotók rögzítése a Tellomiban:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
-  <string name="CameraXFragment_to_capture_photos_videos">Fotók és videók rögzítése a Signalban:</string>
+  <string name="CameraXFragment_to_capture_photos_videos">Fotók és videók rögzítése a Tellomiban:</string>
   <!-- Dialog description that explains the steps needed to give microphone permission -->
   <string name="CameraXFragment_to_capture_videos">Videók rögzítése hanggal:</string>
   <!-- Dialog description that explains the steps needed to give Signal camera permissions -->
@@ -186,7 +186,7 @@
   <!-- Label shown below the elapsed time while a video recording is paused -->
   <string name="CameraXFragment_paused">Felfüggesztve</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
-  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">A Signalnak szüksége van mikrofon-hozzáférési engedélyre, de ez jelenleg meg van tagadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd a \"Mikrofon\"-t, valamint a \"Kamera\"-t.</string>
+  <string name="CameraXFragment_signal_needs_the_recording_permissions_to_capture_video">A Tellominak szüksége van mikrofon-hozzáférési engedélyre, de ez jelenleg meg van tagadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd a \"Mikrofon\"-t, valamint a \"Kamera\"-t.</string>
 
   <!-- Displayed when there is an error capturing video -->
   <string name="MediaSendViewModel__error_recording_video">Hiba a videó rögzítése során</string>
@@ -229,7 +229,7 @@
         <item quantity="other">%1$d elem normál minőségre van állítva</item>
     </plurals>
   <!-- Message shown when saving the media being edited requires the storage permission, but that permission has been permanently denied by the user. -->
-  <string name="MediaSendViewModel__signal_needs_the_storage_permission">A Signalnak szüksége van a Tárhely engedélyre ahhoz, hogy külső tárolóra menthessen, de ez jelenleg nincs megadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd a \"Tárhely\"-t.</string>
+  <string name="MediaSendViewModel__signal_needs_the_storage_permission">A Tellominak szüksége van a Tárhely engedélyre ahhoz, hogy külső tárolóra menthessen, de ez jelenleg nincs megadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd a \"Tárhely\"-t.</string>
   <!-- Message shown when the user disables audio on a video -->
   <string name="MediaSendViewModel__video_will_be_sent_without_audio">A videó hang nélkül kerül elküldésre</string>
 

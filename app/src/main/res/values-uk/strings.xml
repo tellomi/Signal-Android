@@ -3017,7 +3017,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">На цей номер буде здійснено виклик для його перевірки.</string>
     <string name="RegistrationActivity_edit_number">Виправити номер</string>
     <string name="RegistrationActivity_missing_google_play_services">Відсутні сервіси Google Play</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">На цьому пристрої не встановлено сервіси Google Play. Ви все одно можете використовувати Signal, проте з такою конфігурацією надійність і ефективність роботи застосунку може знизитися.\n\nЯкщо ви недосвідчений користувач, не використовуєте додатково придбаний ПЗП для Android чи вважаєте, що це повідомлення — помилка, просимо вас написати в службу підтримки за адресою support@signal.org для з\'ясування причин цієї проблеми.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">На цьому пристрої не встановлено сервіси Google Play. Ви все одно можете використовувати Tellomi, проте з такою конфігурацією надійність і ефективність роботи застосунку може знизитися.\n\nЯкщо ви недосвідчений користувач, не використовуєте додатково придбаний ПЗП для Android чи вважаєте, що це повідомлення — помилка, просимо вас написати в службу підтримки за адресою support@tellomi.app для з\'ясування причин цієї проблеми.</string>
     <string name="RegistrationActivity_i_understand">Я розумію</string>
     <string name="RegistrationActivity_play_services_error">Помилка із сервісами Google Play</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Триває оновлення сервісів Google Play або вони тимчасово недоступні. Спробуйте пізніше.</string>

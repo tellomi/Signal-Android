@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">თქვენ მიიღებთ ზარს ამ ნომრის დასამოწმებლად.</string>
     <string name="RegistrationActivity_edit_number">ნომრის რედაქტირება</string>
     <string name="RegistrationActivity_missing_google_play_services">აკლია Google Play-ის სერვისები</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ამ მოწყობილობას აკლია Google Play-ის სერვისები. შეგიძლიათ, კვლავ გამოიყენოთ Signal,მაგრამ ამ კონფიგურაციამ შეიძლება გამოიწვიოს საიმედოობის ან ფუნქციონირების შემცირება.\n\nთუ არ ხართ კვალიფიციური მომხმარებელი, არ სარგებლობთ გაყიდვისშემდგომი მომსახურების Android ROM-ით ან ფიქრობთ, რომ ამას შეცდომით ხედავთ, გთხოვთ დაუკავშირდეთ support@signal.org პრობლემების მოგვარებაში დასახმარებლად.</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ამ მოწყობილობას აკლია Google Play-ის სერვისები. შეგიძლიათ, კვლავ გამოიყენოთ Tellomi,მაგრამ ამ კონფიგურაციამ შეიძლება გამოიწვიოს საიმედოობის ან ფუნქციონირების შემცირება.\n\nთუ არ ხართ კვალიფიციური მომხმარებელი, არ სარგებლობთ გაყიდვისშემდგომი მომსახურების Android ROM-ით ან ფიქრობთ, რომ ამას შეცდომით ხედავთ, გთხოვთ დაუკავშირდეთ support@tellomi.app პრობლემების მოგვარებაში დასახმარებლად.</string>
     <string name="RegistrationActivity_i_understand">გასაგებია</string>
     <string name="RegistrationActivity_play_services_error">სერვისების ჩართვის შეცდომა</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">მიმდინარეობს Google Play-ის სერვისები ს განახლება ან ისინი დროებით მიუწვდომელია. გთხოვთ სცადოთ ხელახლა.</string>
