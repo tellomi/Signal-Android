@@ -69,7 +69,14 @@ public class SubmitDebugLogRepository {
   private static final char   TITLE_DECORATION = '=';
   private static final int    MIN_DECORATIONS  = 5;
   private static final int    SECTION_SPACING  = 3;
-  private static final String API_ENDPOINT     = "https://debuglogs.org";
+  /**
+   * Tellomi：调试日志传我们自己的端点，不传上游的 debuglogs.org（#931）。
+   * 协议与上游完全一致（GET 取预签名表单 → POST multipart），服务端见 deploy/hk/debuglogs.py。
+   * 取表单时要带尾斜杠（{@link #API_FORM_ENDPOINT}），nginx 的 location /debuglogs/ 才匹配；
+   * 结果 URL = API_ENDPOINT + "/" + key。
+   */
+  private static final String API_ENDPOINT      = "https://chat.tellomi.app/debuglogs";
+  private static final String API_FORM_ENDPOINT = API_ENDPOINT + "/";
 
   /** Ordered list of log sections. */
   private static final List<LogSection> SECTIONS = new ArrayList<LogSection>() {{
@@ -327,7 +334,7 @@ public class SubmitDebugLogRepository {
         .writeTimeout(30, TimeUnit.SECONDS)
         .build();
 
-    try (Response response = client.newCall(new Request.Builder().url(API_ENDPOINT).get().build()).execute()) {
+    try (Response response = client.newCall(new Request.Builder().url(API_FORM_ENDPOINT).get().build()).execute()) {
       ResponseBody body = response.body();
 
       if (!response.isSuccessful()) {
@@ -345,6 +352,12 @@ public class SubmitDebugLogRepository {
 
       while (keys.hasNext()) {
         String key = keys.next();
+        // Tellomi：Content-Type 上面已经按真实 mimeType 加过一次；我们自建的 debuglogs
+        // 也会在 fields 里回一个，再加一次就会在同一个 multipart 里出现两个 Content-Type
+        // 字段，服务端取哪一个没有定义（iOS 那边同样的重复直接把 App 打死，#931）。
+        if ("Content-Type".equalsIgnoreCase(key)) {
+          continue;
+        }
         post.addFormDataPart(key, fields.getString(key));
       }
 
@@ -354,7 +367,7 @@ public class SubmitDebugLogRepository {
         if (!postResponse.isSuccessful()) {
           if (RemoteConfig.internalUser()) {
             Log.w(TAG, "Internal user failed to upload log: " + postResponse + ", body: " + postResponse.body().string());
-            Log.w(TAG, "debuglogs.org response: " + json.toString(2));
+            Log.w(TAG, "debuglogs response: " + json.toString(2));
             Log.w(TAG, "RequestBody length: " + requestBody.contentLength());
           }
           throw new IOException("Bad response: " + postResponse);
