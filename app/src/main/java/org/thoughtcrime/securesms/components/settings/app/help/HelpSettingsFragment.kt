@@ -121,12 +121,18 @@ class HelpSettingsFragment : ComposeFragment() {
           ) {
             TextAndLabel(
               label = StringBuilder().apply {
+                // Tellomi（#984，owner 2026-09-23 定）：三行并列。
+                //   1) 上游署名 —— AGPL 要求派生作品保留原作者的版权声明，不能换成我们自己；
+                //   2) 我们对修改部分的署名；
+                //   3) 许可证。
+                // 上游这里还有第四行「Signal is a 501c3 nonprofit」，去掉了：Tellomi 不是
+                // 非营利组织，换个名字就是一句关于自身法律主体的假话。
+                // iOS 的 ABOUT_SECTION_FOOTER_TELLOMI 要和这三行一字一句对齐。
                 append(getString(R.string.HelpFragment__copyright_signal_messenger))
                 append("\n")
+                append(getString(R.string.HelpFragment__modifications_copyright_tellomi))
+                append("\n")
                 append(getString(R.string.HelpFragment__licenced_under_the_agplv3))
-                // Tellomi：上游这里还有一行「Signal is a 501c3 nonprofit」。
-                // Tellomi 不是 501c3 非营利组织，换成「Tellomi」会变成一句关于自身法律主体的假话，
-                // 所以整行去掉。上面两行（Signal 版权 + AGPLv3）是许可证要求，必须留。
               }.toString()
             )
           }
