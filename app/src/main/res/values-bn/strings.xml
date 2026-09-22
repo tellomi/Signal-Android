@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomi-কে সমর্থন করে</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s একটি মাসিক অনুদান প্রদান করে Tellomi-কে সহায়তা করছেন। Tellomi একটি অলাভজনক প্রতিষ্ঠান যার কোনো বিজ্ঞাপনদাতা বা বিনিয়োগকারী নেই, শুধুমাত্র আপনার মতো ব্যক্তিদের সহায়তায় পরিচালিত হয়।</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s একটি মাসিক অনুদান প্রদান করে Signal-কে সহায়তা করছেন। Signal একটি অলাভজনক প্রতিষ্ঠান যার কোনো বিজ্ঞাপনদাতা বা বিনিয়োগকারী নেই, শুধুমাত্র আপনার মতো ব্যক্তিদের সহায়তায় পরিচালিত হয়।</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s একটি মাসিক অনুদান প্রদান করে Tellomi-কে সহায়তা করছেন। Tellomi একটি অলাভজনক প্রতিষ্ঠান যার কোনো বিজ্ঞাপনদাতা বা বিনিয়োগকারী নেই, শুধুমাত্র আপনার মতো ব্যক্তিদের সহায়তায় পরিচালিত হয়।</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s একটি মাসিক অনুদান প্রদান করে Signal-কে সহায়তা করছেন। Signal একটি অলাভজনক প্রতিষ্ঠান যার কোনো বিজ্ঞাপনদাতা বা বিনিয়োগকারী নেই, শুধুমাত্র আপনার মতো ব্যক্তিদের সহায়তায় পরিচালিত হয়।</string>
 
     <string name="ImageView__badge">ব্যাজ</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">%1$s তারিখে মেয়াদ শেষ হবে</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">একটি স্বাধীন অলাভজনক প্রতিষ্ঠান হিসেবে, Tellomi ব্যক্তিগত মেসেজ এবং কলের সার্ভিস প্রদানের জন্য প্রতিশ্রুতিবদ্ধ। নেই কোনো বিজ্ঞাপন, নেই কোনো ট্র্যাকার, নেই কোনো নজরদারি। Tellomi-কে সহায়তা করার জন্য আজই ডোনেট করুন।</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">একটি স্বাধীন অলাভজনক প্রতিষ্ঠান হিসেবে, Signal ব্যক্তিগত মেসেজ এবং কলের সার্ভিস প্রদানের জন্য প্রতিশ্রুতিবদ্ধ। নেই কোনো বিজ্ঞাপন, নেই কোনো ট্র্যাকার, নেই কোনো নজরদারি। Signal-কে সহায়তা করার জন্য আজই ডোনেট করুন।</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">আপনার ব্যাকআপ পরিকল্পনা বেছে নিন</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">সকল ব্যাকআপ এন্ড-টু-এন্ড এনক্রিপ্ট করা। Tellomi একটি অলাভজনক সার্ভিস—ব্যাকআপের জন্য পেমেন্ট করা হলে তা আমাদের মিশনে সহায়তা করবে।</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">সকল ব্যাকআপ এন্ড-টু-এন্ড এনক্রিপ্ট করা। Signal একটি অলাভজনক সার্ভিস—ব্যাকআপের জন্য পেমেন্ট করা হলে তা আমাদের মিশনে সহায়তা করবে।</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">আরো জানুন</string>
     <!-- Primary action button label without a current selection -->

@@ -626,7 +626,7 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Àlies per missatges i trucades</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi és una organització sense ànim de lucre: la teva compra ens ajuda a poder continuar endavant</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal és una organització sense ànim de lucre: la teva compra ens ajuda a poder continuar endavant</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Tinc Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->

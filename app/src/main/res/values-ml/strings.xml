@@ -6040,7 +6040,7 @@
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">ലൈസൻസുകൾ</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">നിബന്ധനകളും സ്വകാര്യതാ നയവും</string>
-    <string name="HelpFragment__copyright_signal_messenger">പകർപ്പവകാശ Tellomi സന്ദേശകന്‍</string>
+    <string name="HelpFragment__copyright_signal_messenger">പകർപ്പവകാശ Signal സന്ദേശകന്‍</string>
     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3-യ്ക്ക് കീഴിൽ ലൈസൻസ് ചെയ്‌തത്</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomi-നെ പിന്തുണയ്‌ക്കുന്നു</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">പ്രതിമാസ സംഭാവന നൽകി %1$s Tellomi-നെ പിന്തുണയ്‌ക്കുന്നു. പരസ്യദാതാക്കളോ നിക്ഷേപകരോ ഇല്ലാതെ, നിങ്ങളെപ്പോലുള്ള ആളുകളുടെ മാത്രം പിന്തുണയോടെ ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്ന ഒരു സ്ഥാപനമാണ് Tellomi.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">പ്രതിമാസ സംഭാവന നൽകി %1$s Signal-നെ പിന്തുണയ്‌ക്കുന്നു. പരസ്യദാതാക്കളോ നിക്ഷേപകരോ ഇല്ലാതെ, നിങ്ങളെപ്പോലുള്ള ആളുകളുടെ മാത്രം പിന്തുണയോടെ ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്ന ഒരു സ്ഥാപനമാണ് Signal.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">ഒരു സംഭാവന നൽകി %1$s Tellomi-നെ പിന്തുണയ്‌ക്കുന്നു. പരസ്യദാതാക്കളോ നിക്ഷേപകരോ ഇല്ലാതെ, നിങ്ങളെപ്പോലുള്ള ആളുകളുടെ മാത്രം പിന്തുണയോടെ ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്ന ഒരു സ്ഥാപനമാണ് Tellomi.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">ഒരു സംഭാവന നൽകി %1$s Signal-നെ പിന്തുണയ്‌ക്കുന്നു. പരസ്യദാതാക്കളോ നിക്ഷേപകരോ ഇല്ലാതെ, നിങ്ങളെപ്പോലുള്ള ആളുകളുടെ മാത്രം പിന്തുണയോടെ ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്ന ഒരു സ്ഥാപനമാണ് Signal.</string>
 
     <string name="ImageView__badge">ബാഡ്‌ജ്</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">കാലഹരണപ്പെടുന്നത് %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ഒരു സ്വതന്ത്ര ലാഭേച്ഛയില്ലാത്ത സ്ഥാപനം എന്ന നിലയിൽ, Tellomi സ്വകാര്യ സന്ദേശമയയ്ക്കലിനും കോളുകൾക്കും പ്രതിജ്ഞാബദ്ധമാണ്. പരസ്യങ്ങളില്ല, ട്രാക്കറുകളില്ല, നിരീക്ഷണമില്ല. Tellomi-നെ പിന്തുണയ്ക്കാൻ ഇന്ന് തന്നെ സംഭാവന നൽകൂ.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ഒരു സ്വതന്ത്ര ലാഭേച്ഛയില്ലാത്ത സ്ഥാപനം എന്ന നിലയിൽ, Signal സ്വകാര്യ സന്ദേശമയയ്ക്കലിനും കോളുകൾക്കും പ്രതിജ്ഞാബദ്ധമാണ്. പരസ്യങ്ങളില്ല, ട്രാക്കറുകളില്ല, നിരീക്ഷണമില്ല. Signal-നെ പിന്തുണയ്ക്കാൻ ഇന്ന് തന്നെ സംഭാവന നൽകൂ.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">നിങ്ങൾക്ക് ഒന്നിലധികം ബാഡ്‌ജുകൾ ഉള്ളപ്പോൾ, നിങ്ങളുടെ പ്രൊഫൈലിൽ മറ്റുള്ളവർക്ക് കാണുന്നതിന് ഫീച്ചർ ചെയ്യുന്നതിനായി നിങ്ങൾക്ക് ഒരെണ്ണം തിരഞ്ഞെടുക്കാം.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Tellomi-നെ പിന്തുണച്ച് നിങ്ങളുടെ പ്രൊഫൈലിനായി ബാഡ്‌ജുകൾ നേടൂ.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">നിങ്ങളെപ്പോലുള്ള ആളുകൾ മാത്രം പിന്തുണയ്ക്കുന്ന, പരസ്യദാതാക്കളോ നിക്ഷേപകരോ ഇല്ലാത്ത ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്ന ഒന്നാണ് Tellomi.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">നിങ്ങളെപ്പോലുള്ള ആളുകൾ മാത്രം പിന്തുണയ്ക്കുന്ന, പരസ്യദാതാക്കളോ നിക്ഷേപകരോ ഇല്ലാത്ത ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്ന ഒന്നാണ് Signal.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tellomi-ന് സംഭാവന നൽകുക</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">നിങ്ങളുടെ ബാക്കപ്പ് പ്ലാൻ തിരഞ്ഞെടുക്കുക</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">എല്ലാ ബാക്കപ്പുകളും എൻഡ്-ടു-എൻഡ് എൻക്രിപ്റ്റ് ചെയ്തിരിക്കുന്നു. Tellomi ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്നു-ബാക്കപ്പുകൾക്ക് പണം നൽകുന്നത് ഞങ്ങളുടെ ദൗത്യത്തെ പിന്തുണയ്ക്കാൻ സഹായിക്കുന്നു.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">എല്ലാ ബാക്കപ്പുകളും എൻഡ്-ടു-എൻഡ് എൻക്രിപ്റ്റ് ചെയ്തിരിക്കുന്നു. Signal ലാഭേച്ഛയില്ലാതെ പ്രവർത്തിക്കുന്നു-ബാക്കപ്പുകൾക്ക് പണം നൽകുന്നത് ഞങ്ങളുടെ ദൗത്യത്തെ പിന്തുണയ്ക്കാൻ സഹായിക്കുന്നു.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">കൂടുതലറിയുക</string>
     <!-- Primary action button label without a current selection -->

@@ -6589,9 +6589,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s atbalsta Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s atbalsta Tellomi ar ikmēneša ziedojumu. Tellomi ir bezpeļņas organizācija bez reklāmdevējiem vai investoriem. Mūsu vienīgais atbalsts ir tādi cilvēki kā jūs.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s atbalsta Signal ar ikmēneša ziedojumu. Signal ir bezpeļņas organizācija bez reklāmdevējiem vai investoriem. Mūsu vienīgais atbalsts ir tādi cilvēki kā jūs.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s atbalsta Tellomi ar ziedojumu. Tellomi ir bezpeļņas organizācija bez reklāmdevējiem vai investoriem. Mūsu vienīgais atbalsts ir tādi cilvēki kā jūs.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s atbalsta Signal ar ziedojumu. Signal ir bezpeļņas organizācija bez reklāmdevējiem vai investoriem. Mūsu vienīgais atbalsts ir tādi cilvēki kā jūs.</string>
 
     <string name="ImageView__badge">Nozīmīte</string>
 
@@ -6613,7 +6613,7 @@
     <string name="Subscription__expires_s">Beigsies: %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Tellomi ir neatkarīga bezpeļņas organizācija, kas ir apņēmusies nodrošināt privātu ziņojumapmaiņu un zvanu pakalpojumu. Bez reklāmām, bez izsekotājiem, bez novērošanas. Ziedojiet šodien, lai atbalstītu Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Signal ir neatkarīga bezpeļņas organizācija, kas ir apņēmusies nodrošināt privātu ziņojumapmaiņu un zvanu pakalpojumu. Bez reklāmām, bez izsekotājiem, bez novērošanas. Ziedojiet šodien, lai atbalstītu Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6634,7 +6634,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Kad jums ir vairāk kā viena nozīmīte, jūs varat izvēlēties vienu, kuru izcelt un ļaut citiem apskatīt Jūsu profilā.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Iegūstiet nozīmītessavam profilam, atbalstot Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi irr bezpeļņas organizācija bez reklāmdevējiem vai investoriem, kuru uztur tikai cilvēki kā jūs.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal irr bezpeļņas organizācija bez reklāmdevējiem vai investoriem, kuru uztur tikai cilvēki kā jūs.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Ziedot Tellomi</string>
@@ -9363,7 +9363,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Izvēlieties rezerves kopiju plānu</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Visas rezerves kopijas ir pilnībā šifrētas. Tellomi ir bezpeļņas organizācija — maksājot par rezerves kopiju izveidi, jūs atbalstāt mūsu misiju.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Visas rezerves kopijas ir pilnībā šifrētas. Signal ir bezpeļņas organizācija — maksājot par rezerves kopiju izveidi, jūs atbalstāt mūsu misiju.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Uzzināt vairāk</string>
     <!-- Primary action button label without a current selection -->

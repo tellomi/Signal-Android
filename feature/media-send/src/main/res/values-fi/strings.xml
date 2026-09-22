@@ -69,9 +69,9 @@
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">Myönnä käyttöoikeus</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
-  <string name="MediaSelectScreen__no_photos_or_videos_found">Kuvia tai videoita ei löytynyt. Signalilla on pääsy vain valitsemiisi valokuviin ja videoihin.</string>
+  <string name="MediaSelectScreen__no_photos_or_videos_found">Kuvia tai videoita ei löytynyt. Tellomilla on pääsy vain valitsemiisi valokuviin ja videoihin.</string>
   <!-- Reminder shown above the gallery when the user only shared selected photos with Signal. -->
-  <string name="MediaSelectScreen__signal_has_limited_access">Signalilla on rajoitettu pääsy kuviin tai videoihin</string>
+  <string name="MediaSelectScreen__signal_has_limited_access">Tellomilla on rajoitettu pääsy kuviin tai videoihin</string>
   <!-- Label for the button that opens the menu for changing which photos and videos Signal can see. -->
   <string name="MediaSelectScreen__manage">Hallinnoi</string>
   <!-- Menu option that re-opens the system picker so the user can share more photos and videos with Signal. -->
@@ -148,13 +148,13 @@
   <!-- Dialog title asking users for microphone permission -->
   <string name="CameraXFragment_allow_access_microphone">Myönnä mikrofonin käyttöoikeus</string>
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Kuvien ja videoiden ottaminen edellyttää, että annat Signalille kameran käyttöoikeuden.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Kuvien ja videoiden ottaminen edellyttää, että annat Tellomille kameran käyttöoikeuden.</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Kuvien ja videoiden ottaminen edellyttää, että annat Signalille kameran ja mikrofonin käyttöoikeuden.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Kuvien ja videoiden ottaminen edellyttää, että annat Tellomille kameran ja mikrofonin käyttöoikeuden.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
-  <string name="CameraXFragment_to_capture_videos_with_sound">Jos haluat tallentaa videoita äänellä, anna Signalille mikrofonin käyttöoikeus.</string>
+  <string name="CameraXFragment_to_capture_videos_with_sound">Jos haluat tallentaa videoita äänellä, anna Tellomille mikrofonin käyttöoikeus.</string>
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
-  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Jotta voit skannata QR-koodin, anna Signalille kameran käyttöoikeus.</string>
+  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Jotta voit skannata QR-koodin, anna Tellomille kameran käyttöoikeus.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
   <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomi tarvitsee kameran käyttöoikeuden kuvien ottamiseksi</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
@@ -162,9 +162,9 @@
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
   <string name="CameraXFragment_signal_needs_microphone_access_video">Tellomi tarvitsee mikrofonin käyttöoikeuden videon tallentamiseksi</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
-  <string name="CameraXFragment_to_capture_photos">Kuvien ottaminen Signalissa:</string>
+  <string name="CameraXFragment_to_capture_photos">Kuvien ottaminen Tellomissa:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
-  <string name="CameraXFragment_to_capture_photos_videos">Valokuvien ja videoiden ottaminen Signalissa:</string>
+  <string name="CameraXFragment_to_capture_photos_videos">Valokuvien ja videoiden ottaminen Tellomissa:</string>
   <!-- Dialog description that explains the steps needed to give microphone permission -->
   <string name="CameraXFragment_to_capture_videos">Videoiden tallentaminen äänellä:</string>
   <!-- Dialog description that explains the steps needed to give Signal camera permissions -->
@@ -229,7 +229,7 @@
         <item quantity="other">%1$d kohdetta asetettu vakiolaatuiseksi</item>
     </plurals>
   <!-- Message shown when saving the media being edited requires the storage permission, but that permission has been permanently denied by the user. -->
-  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa tallentaakseen sinne, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
+  <string name="MediaSendViewModel__signal_needs_the_storage_permission">Tellomi tarvitsee luvan käyttää laitteesi tallennustilaa tallentaakseen sinne, mutta tämä käyttöoikeus on pysyvästi evätty Tellomilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Tallennustila\".</string>
   <!-- Message shown when the user disables audio on a video -->
   <string name="MediaSendViewModel__video_will_be_sent_without_audio">Video lähetetään ilman ääntä</string>
 
@@ -243,7 +243,7 @@
   <!-- The title of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_title">Yhdistä laite?</string>
   <!-- The body of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
-  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Vaikuttaa siltä, että yrität yhdistää laitetta Signaliin. Napauta Jatka ja napauta sitten Yhdistä uusi laite ja skannaa QR-koodi uudelleen.</string>
+  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Vaikuttaa siltä, että yrität yhdistää laitetta Tellomiin. Napauta Jatka ja napauta sitten Yhdistä uusi laite ja skannaa QR-koodi uudelleen.</string>
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">Jatka</string>
 

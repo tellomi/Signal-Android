@@ -150,11 +150,11 @@
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
   <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Za zajemanje fotografij in videov dovolite aplikaciji Tellomi dostop do kamere naprave.</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Za zajemanje fotografij in videov dovolite Signalu dostop do kamere in mikrofona naprave.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Za zajemanje fotografij in videov dovolite Tellomiju dostop do kamere in mikrofona naprave.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
-  <string name="CameraXFragment_to_capture_videos_with_sound">Za zajemanje videov z zvokom dovolite Signalu dostop do mikrofona naprave.</string>
+  <string name="CameraXFragment_to_capture_videos_with_sound">Za zajemanje videov z zvokom dovolite Tellomiju dostop do mikrofona naprave.</string>
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
-  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Za skeniranje QR kode dovolite Signalu dostop do kamere.</string>
+  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Za skeniranje QR kode dovolite Tellomiju dostop do kamere.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
   <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomi potrebuje dostop do kamere za zajemanje fotografij</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
@@ -162,9 +162,9 @@
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
   <string name="CameraXFragment_signal_needs_microphone_access_video">Tellomi potrebuje dostop do mikrofona za zajemanje videoposnetkov</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
-  <string name="CameraXFragment_to_capture_photos">Za zajemanje fotografij v Signalu:</string>
+  <string name="CameraXFragment_to_capture_photos">Za zajemanje fotografij v Tellomiju:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
-  <string name="CameraXFragment_to_capture_photos_videos">Za zajemanje fotografij in videov v Signalu:</string>
+  <string name="CameraXFragment_to_capture_photos_videos">Za zajemanje fotografij in videov v Tellomiju:</string>
   <!-- Dialog description that explains the steps needed to give microphone permission -->
   <string name="CameraXFragment_to_capture_videos">Za zajemanje videov z zvokom:</string>
   <!-- Dialog description that explains the steps needed to give Signal camera permissions -->

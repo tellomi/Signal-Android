@@ -6269,9 +6269,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s mendukung Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s mendukung Tellomi dengan donasi bulanan. Tellomi adalah organisasi nirlaba tanpa pengiklan atau investor, hanya didukung orang baik seperti Anda.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s mendukung Signal dengan donasi bulanan. Signal adalah organisasi nirlaba tanpa pengiklan atau investor, hanya didukung orang baik seperti Anda.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s mendukung Tellomi dengan donasi. Tellomi adalah organisasi nirlaba tanpa pengiklan atau investor, hanya didukung orang baik seperti Anda.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s mendukung Signal dengan donasi. Signal adalah organisasi nirlaba tanpa pengiklan atau investor, hanya didukung orang baik seperti Anda.</string>
 
     <string name="ImageView__badge">Lencana</string>
 
@@ -6293,7 +6293,7 @@
     <string name="Subscription__expires_s">Kedaluwarsa %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Dengan status nirlaba dan independen, Tellomi berkomitmen menyediakan layanan perpesanan dan panggilan privat. Tanpa iklan, tanpa pelacak, tanpa pengawasan. Beri donasi sekarang untuk mendukung Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Dengan status nirlaba dan independen, Signal berkomitmen menyediakan layanan perpesanan dan panggilan privat. Tanpa iklan, tanpa pelacak, tanpa pengawasan. Beri donasi sekarang untuk mendukung Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6314,7 +6314,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Jika punya lebih dari satu lencana, Anda dapat memilih salah satu untuk ditampilkan di profil Anda.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Dapatkan lencana untuk profil Anda dengan mendukung Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi adalah lembaga nirlaba tanpa pengiklan dan investor, didukung hanya oleh orang seperti Anda.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal adalah lembaga nirlaba tanpa pengiklan dan investor, didukung hanya oleh orang seperti Anda.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Donasi ke Tellomi</string>
@@ -8967,7 +8967,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Pilih paket cadangan Anda</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Semua cadangan dienkripsi ujung ke ujung. Tellomi adalah organisasi nirlaba — dengan membayar cadangan, Anda turut membantu mendukung misi kami.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Semua cadangan dienkripsi ujung ke ujung. Signal adalah organisasi nirlaba — dengan membayar cadangan, Anda turut membantu mendukung misi kami.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Selengkapnya</string>
     <!-- Primary action button label without a current selection -->

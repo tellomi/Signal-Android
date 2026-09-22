@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s მხარს უჭერს Tellomi-ს</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s Tellomi-ს მხარს ყოველთვიური დონაციით უჭერს. Tellomi-ი არაკომერციული ორგანიზაციაა, რომელიც მხოლოდ შენნაირ ხალხზე დგას, რეკლამის დამკვეთებისა და ინვესტორების გარეშე.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s Signal-ს მხარს ყოველთვიური დონაციით უჭერს. Signal-ი არაკომერციული ორგანიზაციაა, რომელიც მხოლოდ შენნაირ ხალხზე დგას, რეკლამის დამკვეთებისა და ინვესტორების გარეშე.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s-მა Tellomi-ს მხარი დონაციით დაუჭირა. Tellomi-ი არაკომერციული ორგანიზაციაა, რომელიც მხოლოდ შენნაირ ხალხზე დგას, რეკლამის დამკვეთებისა და ინვესტორების გარეშე.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s-მა Signal-ს მხარი დონაციით დაუჭირა. Signal-ი არაკომერციული ორგანიზაციაა, რომელიც მხოლოდ შენნაირ ხალხზე დგას, რეკლამის დამკვეთებისა და ინვესტორების გარეშე.</string>
 
     <string name="ImageView__badge">ემბლემა</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">ვადის ამოწურვამდე დარჩა %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">როგორც დამოუკიდებელი არაკომერციული ორგანიზაცია, Tellomi-ი კონფიდენციალურ მიმოწერასა და ზარებს უზრუნველყოფს. არანაირი რეკლამა, არანაირი ტრეკერები, არანაირი თვალთვალი. გააკეთე დონაცია დღეს, რომ Tellomi-ს მხარი დაუჭირო.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">როგორც დამოუკიდებელი არაკომერციული ორგანიზაცია, Signal-ი კონფიდენციალურ მიმოწერასა და ზარებს უზრუნველყოფს. არანაირი რეკლამა, არანაირი ტრეკერები, არანაირი თვალთვალი. გააკეთე დონაცია დღეს, რომ Signal-ს მხარი დაუჭირო.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">როცა ერთზე მეტი ემბლემა გაქვს, შეგიძლია აირჩიო რომელი იქნება ხილვადი სხვებისთვის შენს პროფილზე.</string>
 
     <string name="BecomeASustainerFragment__get_badges">მიიღე ემბლემები შენი პროფილისთვის Tellomi-ის მხარდაჭერით.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi-ი არაკომერციული ორგანიზაციაა, რომელიც მხოლოდ შენნაირ ხალხზე დგას, რეკლამის დამკვეთებისა და ინვესტორების გარეშე.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal-ი არაკომერციული ორგანიზაციაა, რომელიც მხოლოდ შენნაირ ხალხზე დგას, რეკლამის დამკვეთებისა და ინვესტორების გარეშე.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tellomi-ისთვის დონაციის გაკეთება</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">აირჩიე სარეზერვო კოპირების ტარიფი</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">ყველა სარეზერვო კოპია ბოლომდე დაშიფრულია. Tellomi-ი არაკომერციულია—სარეზერვო კოპირებაში თანხის გადახდა ჩვენი მისიის მხარდაჭერაში გვეხმარება.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">ყველა სარეზერვო კოპია ბოლომდე დაშიფრულია. Signal-ი არაკომერციულია—სარეზერვო კოპირებაში თანხის გადახდა ჩვენი მისიის მხარდაჭერაში გვეხმარება.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">გაიგე მეტი</string>
     <!-- Primary action button label without a current selection -->

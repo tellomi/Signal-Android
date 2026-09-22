@@ -6040,7 +6040,7 @@
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">లైసెన్స్‌లు</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">నిబంధనలు &amp; గోప్యతా విధానం</string>
-    <string name="HelpFragment__copyright_signal_messenger">కాపీరైట్ Tellomi మెసెంజర్</string>
+    <string name="HelpFragment__copyright_signal_messenger">కాపీరైట్ Signal మెసెంజర్</string>
     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3 కింద లైసెన్స్ పొందింది</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">Tellomi కు %1$s మద్దతు ఇస్తారు</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">నెలవారీ విరాళంతో Tellomi కు %1$s మద్దతు ఇస్తారు. Tellomi ప్రకటనదారులు లేదా పెట్టుబడిదారులు లేని లాభాపేక్ష లేని సంస్థ, మీలాంటి వ్యక్తులచే మాత్రమే మద్దతు ఇవ్వబడుతున్నది.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">నెలవారీ విరాళంతో Signal కు %1$s మద్దతు ఇస్తారు. Signal ప్రకటనదారులు లేదా పెట్టుబడిదారులు లేని లాభాపేక్ష లేని సంస్థ, మీలాంటి వ్యక్తులచే మాత్రమే మద్దతు ఇవ్వబడుతున్నది.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">విరాళంతో Tellomi కు %1$s మద్దతు ఇస్తారు. Tellomi ప్రకటనదారులు లేదా పెట్టుబడిదారులు లేని లాభాపేక్ష లేని సంస్థ, మీలాంటి వ్యక్తులచే మాత్రమే మద్దతు ఇవ్వబడుతున్నది.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">విరాళంతో Signal కు %1$s మద్దతు ఇస్తారు. Signal ప్రకటనదారులు లేదా పెట్టుబడిదారులు లేని లాభాపేక్ష లేని సంస్థ, మీలాంటి వ్యక్తులచే మాత్రమే మద్దతు ఇవ్వబడుతున్నది.</string>
 
     <string name="ImageView__badge">బ్యాడ్జి</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">%1$s న గడువు ముగుస్తుంది</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ఒక స్వతంత్ర లాభాపేక్షలేని సంస్థగా, Tellomi ప్రైవేట్ సందేశాలు పంపడం మరియు కాల్స్‌కు కట్టుబడి ఉంది. ప్రకటనలు లేవు, ట్రాకర్‌లు లేవు, నిఘా లేదు. Tellomi కు మద్దతు ఇవ్వడానికి ఈరోజే విరాళం ఇవ్వండి.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ఒక స్వతంత్ర లాభాపేక్షలేని సంస్థగా, Signal ప్రైవేట్ సందేశాలు పంపడం మరియు కాల్స్‌కు కట్టుబడి ఉంది. ప్రకటనలు లేవు, ట్రాకర్‌లు లేవు, నిఘా లేదు. Signal కు మద్దతు ఇవ్వడానికి ఈరోజే విరాళం ఇవ్వండి.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">మీకు ఒకటి కంటే ఎక్కువ బ్యాడ్జీలు ఉన్నప్పుడు, మీ ప్రొఫైల్‌లో ఇతరులు చూడటానికి ఫీచర్ చేయడానికి మీరు ఒకదాన్ని ఎంచుకోవచ్చు.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Tellomi కు మద్దతు అందించడం ద్వారా మీ ప్రొఫైల్ కొరకు బ్యాడ్జీలను పొందండి.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi ఎలాంటి ప్రకటనదారులు లేదా పెట్టుబడిదారులు లేని లాభాపేక్ష లేని సంస్థ, కేవలం మీలాంటి వ్యక్తులు మాత్రమే మద్దతు అందిస్తున్నారు.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal ఎలాంటి ప్రకటనదారులు లేదా పెట్టుబడిదారులు లేని లాభాపేక్ష లేని సంస్థ, కేవలం మీలాంటి వ్యక్తులు మాత్రమే మద్దతు అందిస్తున్నారు.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tellomi కు విరాళం ఇవ్వండి</string>

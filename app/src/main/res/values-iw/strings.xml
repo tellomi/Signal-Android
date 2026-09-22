@@ -6749,9 +6749,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">Tellomi מקבלת תמיכה מ%1$s</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">Tellomi מקבלת תמיכה מ%1$s באמצעות תרומה חודשית. Tellomi היא ארגון ללא מטרות רווח בלי מפרסמים או משקיעים, והיא נתמכת רק על ידי אנשים כמוך.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">Signal מקבלת תמיכה מ%1$s באמצעות תרומה חודשית. Signal היא ארגון ללא מטרות רווח בלי מפרסמים או משקיעים, והיא נתמכת רק על ידי אנשים כמוך.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">Tellomi קיבלה תמיכה מ%1$s באמצעות תרומה. Tellomi היא ארגון ללא מטרות רווח בלי מפרסמים או משקיעים, והיא נתמכת רק על ידי אנשים כמוך.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">Signal קיבלה תמיכה מ%1$s באמצעות תרומה. Signal היא ארגון ללא מטרות רווח בלי מפרסמים או משקיעים, והיא נתמכת רק על ידי אנשים כמוך.</string>
 
     <string name="ImageView__badge">תג</string>
 
@@ -6773,7 +6773,7 @@
     <string name="Subscription__expires_s">תאריך תפוגה: %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">כעמותה עצמאית ללא מטרות רווח, Tellomi מחויבת להודעות ושיחות פרטיות. ללא פרסומות, ללא מעקב, ללא ריגול. תורמים היום ותומכים ב–Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">כעמותה עצמאית ללא מטרות רווח, Signal מחויבת להודעות ושיחות פרטיות. ללא פרסומות, ללא מעקב, ללא ריגול. תורמים היום ותומכים ב–Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6794,7 +6794,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">כשיהיה לך יותר מתג אחד, תהיה לך אפשרות לבחור אחד להציג בפרופיל כדי שאחרים יראו אותו.</string>
 
     <string name="BecomeASustainerFragment__get_badges">משיגים תגים עבור הפרופיל שלך באמצעות תמיכה ב–Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi הוא ארגון ללא מטרות רווח בלי מפרסמים או משקיעים, שנתמך רק ע״י אנשים כמוך.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal הוא ארגון ללא מטרות רווח בלי מפרסמים או משקיעים, שנתמך רק ע״י אנשים כמוך.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">ביצוע תרומה ל–Tellomi</string>
@@ -9561,7 +9561,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">בחירת תכנית הגיבוי שלך</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">כל הגיבויים מוצפנים מקצה לקצה. Tellomi היא ארגון ללא מטרות רווח—התשלום על גיבויים עוזר לתמוך במשימה שלנו.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">כל הגיבויים מוצפנים מקצה לקצה. Signal היא ארגון ללא מטרות רווח—התשלום על גיבויים עוזר לתמוך במשימה שלנו.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">למידע נוסף</string>
     <!-- Primary action button label without a current selection -->

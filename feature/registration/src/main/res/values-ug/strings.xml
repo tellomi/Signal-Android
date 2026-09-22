@@ -624,7 +624,7 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">ئۇچۇرلىشىش ۋە چاقىرىق قىلىش ئۈچۈن ئىشلىتىلىدىغان ئىشلەتكۈچى نامى</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi پايدا ئالمايدىغان ئەپ — سىزنىڭ سېتىۋېلىشىڭىز بىزنى قوللاشقا ياردەم بېرىدۇ</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal پايدا ئالمايدىغان ئەپ — سىزنىڭ سېتىۋېلىشىڭىز بىزنى قوللاشقا ياردەم بېرىدۇ</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">مەندە بىر «Tellomi Login» ھوقوقى بار</string>
     <!-- Subtitle of the existing-login option. -->

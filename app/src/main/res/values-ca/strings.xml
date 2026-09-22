@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s dona suport a Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s col·labora amb una donació mensual a Tellomi. Tellomi és una organització sense ànim de lucre sense anunciants ni inversors, que se sustenta gràcies al suport de persones com tu.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s col·labora amb una donació mensual a Signal. Signal és una organització sense ànim de lucre sense anunciants ni inversors, que se sustenta gràcies al suport de persones com tu.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s col·labora amb una donació a Tellomi. Tellomi és una organització sense ànim de lucre sense anunciants ni inversors, que se sustenta gràcies al suport de persones com tu.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s col·labora amb una donació a Signal. Signal és una organització sense ànim de lucre sense anunciants ni inversors, que se sustenta gràcies al suport de persones com tu.</string>
 
     <string name="ImageView__badge">Insígnia</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Venciment: %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Com a organització independent sense ànim de lucre, Tellomi té un compromís amb la privacitat en missatges i trucades. Sense anuncis, ni rastrejadors, ni vigilància. Fes avui una donació per ajudar a Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Com a organització independent sense ànim de lucre, Signal té un compromís amb la privacitat en missatges i trucades. Sense anuncis, ni rastrejadors, ni vigilància. Fes avui una donació per ajudar a Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Quan tinguis més d\'una insígnia, pots triar-ne una per mostrar-la perquè altres la vegin al perfil.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Aconsegueix insígnies per al perfil donant suport a Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">El Tellomi és una organització sense ànim de lucre sense anunciants ni inversors, amb el suport només de persones com vós.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">El Signal és una organització sense ànim de lucre sense anunciants ni inversors, amb el suport només de persones com vós.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Fer una donació a Tellomi</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Tria el teu pla de còpia de seguretat</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Totes les còpies de seguretat estan xifrades d\'extrem a extrem. Tellomi és una organització sense ànim de lucre: pagar per les còpies de seguretat ens ajuda a poder continuar endavant.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Totes les còpies de seguretat estan xifrades d\'extrem a extrem. Signal és una organització sense ànim de lucre: pagar per les còpies de seguretat ens ajuda a poder continuar endavant.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Més informació</string>
     <!-- Primary action button label without a current selection -->

@@ -6269,9 +6269,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s正在支持 Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s通过每月定期捐款为 Tellomi 提供支持。Tellomi 是一个非盈利机构，没有广告商或投资方，仅凭您和千千万万的用户提供赞助。</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s通过每月定期捐款为 Signal 提供支持。Signal 是一个非盈利机构，没有广告商或投资方，仅凭您和千千万万的用户提供赞助。</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s正在通过捐款为 Tellomi 提供支持Tellomi 是一个非盈利机构，没有广告商或投资方，仅凭您和千千万万的用户提供赞助。</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s正在通过捐款为 Signal 提供支持Signal 是一个非盈利机构，没有广告商或投资方，仅凭您和千千万万的用户提供赞助。</string>
 
     <string name="ImageView__badge">徽章</string>
 
@@ -6314,7 +6314,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">当您拥有多个徽章时，您可以选择将其中一个徽章设为精选徽章，在个人资料中向他人展示。</string>
 
     <string name="BecomeASustainerFragment__get_badges">支持 Tellomi，为您的个人资料添加徽章吧。</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi 是一个非盈利机构，没有广告商或投资方，仅凭您和千千万万的用户提供赞助。</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal 是一个非盈利机构，没有广告商或投资方，仅凭您和千千万万的用户提供赞助。</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">捐款给 Tellomi</string>

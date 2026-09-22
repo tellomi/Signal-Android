@@ -128,7 +128,7 @@
     <!-- Clickable substring linking to contacting support within VerificationCodeScreen__support_bottom_sheet_body_call_to_action -->
     <string name="VerificationCodeScreen__support_bottom_sheet_cta_contact_support_substring">kontaktujte podporu</string>
     <!-- Email subject used when contacting support from the verification code screen -->
-    <string name="VerificationCodeScreen__contact_support_email_subject">Registrácia v Signali – Overovací kód pre Android</string>
+    <string name="VerificationCodeScreen__contact_support_email_subject">Registrácia v Tellomi – Overovací kód pre Android</string>
     <!-- Text placed in the body of the support email composed from the verification code screen. Used to route the request, so it is not translated. -->
   <!-- Removed by excludeNonTranslatables <string name="VerificationCodeScreen__contact_support_email_filter" translatable="false">Tellomi Registration - Verification Code for Android</string> -->
     <!-- URL opened for troubleshooting steps from the verification code screen -->
@@ -307,7 +307,7 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">Túto zálohu sa nepodarilo obnoviť</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">Táto verzia Signalu nedokáže obnoviť vašu zálohu. Aktualizujte na najnovšiu verziu a skúste to znova.</string>
+    <string name="RemoteRestoreScreen__update_latest">Táto verzia Tellomi nedokáže obnoviť vašu zálohu. Aktualizujte na najnovšiu verziu a skúste to znova.</string>
     <!-- Button to update Signal -->
     <string name="RemoteRestoreScreen__update_signal">Aktualizujte Tellomi</string>
     <!-- Button to dismiss update dialog -->
@@ -400,7 +400,7 @@
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__warning">Varovanie</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__disable_pin_warning">Ak vypnete PIN, opätovnou registráciou Signalu prídete o všetky svoje údaje, pokiaľ ich manuálne nezálohujete a neobnovíte. Kým bude PIN vypnutý, nebudete môcť zapnúť registračný zámok.</string>
+    <string name="PinCreationScreen__disable_pin_warning">Ak vypnete PIN, opätovnou registráciou Tellomi prídete o všetky svoje údaje, pokiaľ ich manuálne nezálohujete a neobnovíte. Kým bude PIN vypnutý, nebudete môcť zapnúť registračný zámok.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
     <string name="PinCreationScreen__disable_pin">Vypnúť PIN</string>
     <!-- Labels the button that cancels disabling the Signal PIN. -->
@@ -417,7 +417,7 @@
     <!-- PIN entry screen title when restoring an account. -->
     <string name="PinEntryScreen__enter_your_pin">Zadajte svoj PIN</string>
     <!-- Describes the PIN that needs to be entered. -->
-    <string name="PinEntryScreen__enter_the_pin_you_created">Zadajte PIN kód, ktorý ste vytvorili pri prvej inštalácii Signalu</string>
+    <string name="PinEntryScreen__enter_the_pin_you_created">Zadajte PIN kód, ktorý ste vytvorili pri prvej inštalácii Tellomi</string>
     <!-- Error shown when the user enters the code used to verify their phone number instead of their PIN, and it was not their actual PIN. -->
     <string name="PinEntryScreen__reentered_verification_code">Znova ste zadali kód, ktorý ste už použili na overenie vášho telefónneho čísla. Zadajte unikátny Tellomi PIN, ktorý ste si predtým vybrali pre svoj účet.</string>
     <!-- Error shown when an incorrect PIN is entered. %1$d is the number of attempts remaining. -->
@@ -519,7 +519,7 @@
     <!-- Title of the confirmation dialog shown when the scanned QR code belongs to a different account than the one this device is currently linked to -->
     <string name="LinkAccountScreen__delete_app_data_question">Vymazať údaje aplikácie?</string>
     <!-- Body of the confirmation dialog warning that continuing will erase all local data before relinking to a different account -->
-    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Pokúšate sa prepojiť iný Tellomi účet. Ak budete pokračovať, všetky údaje Signalu, ktoré sa aktuálne nachádzajú na tomto zariadení, budú vymazané.</string>
+    <string name="LinkAccountScreen__you_are_attempting_to_link_a_different_account">Pokúšate sa prepojiť iný Tellomi účet. Ak budete pokračovať, všetky údaje Tellomi, ktoré sa aktuálne nachádzajú na tomto zariadení, budú vymazané.</string>
     <!-- Destructive confirmation button that deletes all local data and restarts the app so it can be linked to a different account -->
     <string name="LinkAccountScreen__delete_and_restart">Vymazať a reštartovať</string>
     <!-- Content description for the button that closes the maximized QR code overlay -->
@@ -630,7 +630,7 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Používateľské meno na hovory a správy</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi je nezisková organizácia — váš nákup pomôže podporiť naše poslanie</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal je nezisková organizácia — váš nákup pomôže podporiť naše poslanie</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Mám Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->

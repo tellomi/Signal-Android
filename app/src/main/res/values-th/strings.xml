@@ -6269,9 +6269,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s ให้การสนับสนุน Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ให้การสนับสนุน Tellomi ด้วยการบริจาครายเดือน Tellomi เป็นแอปไม่แสวงหาผลกำไรที่ไม่มีโฆษณาหรือนักลงทุน สนับสนุนโดยผู้ใช้เช่นคุณเท่านั้น</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ให้การสนับสนุน Signal ด้วยการบริจาครายเดือน Signal เป็นแอปไม่แสวงหาผลกำไรที่ไม่มีโฆษณาหรือนักลงทุน สนับสนุนโดยผู้ใช้เช่นคุณเท่านั้น</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s ให้การสนับสนุน Tellomi ด้วยการบริจาค Tellomi เป็นแอปไม่แสวงหาผลกำไรที่ไม่มีโฆษณาหรือนักลงทุน สนับสนุนโดยผู้ใช้เช่นคุณเท่านั้น</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s ให้การสนับสนุน Signal ด้วยการบริจาค Signal เป็นแอปไม่แสวงหาผลกำไรที่ไม่มีโฆษณาหรือนักลงทุน สนับสนุนโดยผู้ใช้เช่นคุณเท่านั้น</string>
 
     <string name="ImageView__badge">โล่</string>
 
@@ -6293,7 +6293,7 @@
     <string name="Subscription__expires_s">หมดอายุ %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Tellomi เป็นแอปอิสระที่ไม่แสวงหาผลกำไร เรามุ่งมั่นให้บริการการส่งข้อความและการโทรที่เป็นส่วนตัว ไม่มีโฆษณา ไม่มีการติดตาม และไม่มีการเก็บข้อมูล บริจาควันนี้เพื่อร่วมสนับสนุน Tellomi</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Signal เป็นแอปอิสระที่ไม่แสวงหาผลกำไร เรามุ่งมั่นให้บริการการส่งข้อความและการโทรที่เป็นส่วนตัว ไม่มีโฆษณา ไม่มีการติดตาม และไม่มีการเก็บข้อมูล บริจาควันนี้เพื่อร่วมสนับสนุน Signal</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6314,7 +6314,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">เมื่อคุณมีโล่หลายอัน คุณสามารถเลือกหนึ่งในนั้นเป็นโล่ติดโปรไฟล์เพื่อแสดงให้คนอื่นๆ เห็นได้</string>
 
     <string name="BecomeASustainerFragment__get_badges">รับโล่สำหรับแสดงบนโปรไฟล์ของคุณด้วยการสนับสนุน Tellomi</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi เป็นแอปไม่แสวงผลกำไรที่ไม่มีโฆษณาหรือนักลงทุน สนับสนุนโดยคนแบบคุณเท่านั้น</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal เป็นแอปไม่แสวงผลกำไรที่ไม่มีโฆษณาหรือนักลงทุน สนับสนุนโดยคนแบบคุณเท่านั้น</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">บริจาคให้ Tellomi</string>
@@ -8967,7 +8967,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">เลือกแพ็กเกจสำรองข้อมูลของคุณ</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">การสำรองข้อมูลทั้งหมดจะถูกเข้ารหัสตั้งแต่ต้นทางถึงปลายทาง Tellomi เป็นแอปที่ไม่แสวงผลกำไร ร่วมสนับสนุนภารกิจนี้ของเราได้ด้วยการสมัครบริการสำรองข้อมูล</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">การสำรองข้อมูลทั้งหมดจะถูกเข้ารหัสตั้งแต่ต้นทางถึงปลายทาง Signal เป็นแอปที่ไม่แสวงผลกำไร ร่วมสนับสนุนภารกิจนี้ของเราได้ด้วยการสมัครบริการสำรองข้อมูล</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">เรียนรู้เพิ่มเติม</string>
     <!-- Primary action button label without a current selection -->

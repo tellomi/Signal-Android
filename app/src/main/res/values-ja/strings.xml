@@ -6269,9 +6269,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s さんはTellomiをサポートしています</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s さんは、毎月の寄付でTellomiをサポートしています。Tellomiは広告主や投資家を持たない非営利団体で、ユーザーの皆様によって支えられています。</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s さんは、毎月の寄付でSignalをサポートしています。Signalは広告主や投資家を持たない非営利団体で、ユーザーの皆様によって支えられています。</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s さんは、寄付でTellomiをサポートしています。Tellomiは広告主や投資家を持たない非営利団体で、ユーザーの皆様によって支えられています。</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s さんは、寄付でSignalをサポートしています。Signalは広告主や投資家を持たない非営利団体で、ユーザーの皆様によって支えられています。</string>
 
     <string name="ImageView__badge">バッジ</string>
 
@@ -6293,7 +6293,7 @@
     <string name="Subscription__expires_s">有効期限%1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Tellomiは、独立した非営利団体としてメッセージと通話のプライバシーを守ることに取り組んでいます。広告なし、トラッキングなし、監視なし。Tellomiのこの取り組みのために、ご支援をお願いします。</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Signalは、独立した非営利団体としてメッセージと通話のプライバシーを守ることに取り組んでいます。広告なし、トラッキングなし、監視なし。Signalのこの取り組みのために、ご支援をお願いします。</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6314,7 +6314,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">複数のバッジを持っている場合は、自分のプロフィールに表示するバッジを選ぶことができます。</string>
 
     <string name="BecomeASustainerFragment__get_badges">Tellomiをサポートして、プロフィールにバッジをつけましょう。</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomiは広告主や投資家を持たない非営利団体で、ユーザーの皆様によって支えられています。</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signalは広告主や投資家を持たない非営利団体で、ユーザーの皆様によって支えられています。</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tellomiへの寄付</string>
@@ -8967,7 +8967,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">バックアッププランを選択する</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">すべてのバックアッププランはエンドツーエンドで暗号化されます。Tellomiは非営利団体であり、バックアップを有料でご利用いただくことは私たちの活動をサポートしていただくことに繋がります。</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">すべてのバックアッププランはエンドツーエンドで暗号化されます。Signalは非営利団体であり、バックアップを有料でご利用いただくことは私たちの活動をサポートしていただくことに繋がります。</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">詳しく見る</string>
     <!-- Primary action button label without a current selection -->

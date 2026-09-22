@@ -624,7 +624,7 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">မက်ဆေ့ချ်ပို့ရန်နှင့် ဖုန်းခေါ်ဆိုရန် သုံးစွဲသူအမည်</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi သည် အကျိုးအမြတ်မယူသည့် အဖွဲ့အစည်းဖြစ်သည်— သင့်ဝယ်ယူမှုသည် ကျွန်ုပ်တို့၏ ရည်မှန်းချက်ကို အထောက်အကူပြုပါသည်</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal သည် အကျိုးအမြတ်မယူသည့် အဖွဲ့အစည်းဖြစ်သည်— သင့်ဝယ်ယူမှုသည် ကျွန်ုပ်တို့၏ ရည်မှန်းချက်ကို အထောက်အကူပြုပါသည်</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">ကျွန်ုပ်တွင် Tellomi Login ရှိပါသည်</string>
     <!-- Subtitle of the existing-login option. -->

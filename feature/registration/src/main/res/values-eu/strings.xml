@@ -396,7 +396,7 @@
     <!-- Overflow menu item that opens a help article about Signal PINs. -->
     <string name="PinCreationScreen__learn_more_about_pins">Gehiago ikasi PINei buruz</string>
     <!-- Title of the dialog confirming that the user wants to disable their Signal PIN. -->
-    <string name="PinCreationScreen__warning">Markatutako zenbakia ez dago Signalen erregistratuta. SMS bidez gonbidatu nahiko zenuke?</string>
+    <string name="PinCreationScreen__warning">Markatutako zenbakia ez dago Tellomin erregistratuta. SMS bidez gonbidatu nahiko zenuke?</string>
     <!-- Warning shown in the dialog confirming that the user wants to disable their Signal PIN. -->
     <string name="PinCreationScreen__disable_pin_warning">PINa desgaitzen baduzu, datu guztiak galduko dituzu Tellomi berriro erregistratzen duzunean, babeskopiak eskuz egin eta leheneratu ezean. PINa desgaituta badago, ezin duzu aktibatu erregistratzeko blokeoa.</string>
     <!-- Overflow menu item and dialog button that disables the Signal PIN. -->
@@ -626,7 +626,7 @@
     <!-- Selling point of the purchase option: a username is used to reach the user. -->
     <string name="SignalLoginPaymentScreen__username_for_messaging_and_calls">Erabiltzaile-izena mezu eta deietarako</string>
     <!-- Selling point of the purchase option: the purchase supports Signal. -->
-    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Tellomi irabazi-asmorik gabeko erakunde bat da; erosketa honek gure helburuarekin lagunduko digu</string>
+    <string name="SignalLoginPaymentScreen__signal_is_a_non_profit">Signal irabazi-asmorik gabeko erakunde bat da; erosketa honek gure helburuarekin lagunduko digu</string>
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">Badaukat Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->

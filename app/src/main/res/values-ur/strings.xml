@@ -3858,7 +3858,7 @@
     <string name="IdentityUtil_unverified_banner_two">آپ کا حفاظتی نمبر %1$s اور %2$sکے ساتھ مزید تصدیق شدہ نہیں ہیں</string>
     <string name="IdentityUtil_unverified_banner_many">آپ کا حفاظتی نمبر %1$s ،%2$s، اور %3$s کے ساتھ مزید تصدیق شدہ نہیں ہیں</string>
 
-    <string name="IdentityUtil_unverified_dialog_one">آپ کا تصدیقی نمبر %1$sکے ساتھ تبدیل ہو چکا ہےاور مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے،یا یہ %1$sSignal سادگی سے دوبارہ نصب کریں۔</string>
+    <string name="IdentityUtil_unverified_dialog_one">آپ کا تصدیقی نمبر %1$sکے ساتھ تبدیل ہو چکا ہےاور مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے،یا یہ %1$sTellomi سادگی سے دوبارہ نصب کریں۔</string>
     <string name="IdentityUtil_unverified_dialog_two">آپ کا حفاظتی نمبر %1$sاور %2$sکے ساتھ مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے۔یا یہ Tellomi سادگی سے دوبارہ نصب کریں۔</string>
     <string name="IdentityUtil_unverified_dialog_many">آپ کا حفاظتی نمبر %1$s،%2$s،اور %3$sکے ساتھ مزید تصدیق شدہ نہیں ہے۔اس کا دوسرا مطلب یہ ہےکہ کوئی آپ کے ذرائع ابلاغ کو روکنے کی کوشش کر رہا ہے۔یا یہ Tellomi سادگی سے دوبارہ نصب کریں۔</string>
 
@@ -6040,7 +6040,7 @@
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">لائسنسز</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">شرائط &amp;amp:رازداری کی پالیسی</string>
-    <string name="HelpFragment__copyright_signal_messenger">کاپی رائٹ Tellomi میسنجر</string>
+    <string name="HelpFragment__copyright_signal_messenger">کاپی رائٹ Signal میسنجر</string>
     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3 کے تحت لائسنس یافتہ</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomi کو سپورٹ کرتا ہے</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ماہانہ عطیے کے ساتھ Tellomi کو سپورٹ کرتا ہے۔ Tellomi کسی مشتہرین یا سرمایہ کاران کے بغیر ایک غیر منافع بخش تنظیم ہے، جس کی معاونت صرف آپ جیسے افراد کرتے ہیں۔</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ماہانہ عطیے کے ساتھ Signal کو سپورٹ کرتا ہے۔ Signal کسی مشتہرین یا سرمایہ کاران کے بغیر ایک غیر منافع بخش تنظیم ہے، جس کی معاونت صرف آپ جیسے افراد کرتے ہیں۔</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s عطیے کے ساتھ Tellomi کو سپورٹ کرتا ہے۔ Tellomi کسی مشتہرین یا سرمایہ کاران کے بغیر ایک غیر منافع بخش تنظیم ہے، جس کی معاونت صرف آپ جیسے افراد کرتے ہیں۔</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s عطیے کے ساتھ Signal کو سپورٹ کرتا ہے۔ Signal کسی مشتہرین یا سرمایہ کاران کے بغیر ایک غیر منافع بخش تنظیم ہے، جس کی معاونت صرف آپ جیسے افراد کرتے ہیں۔</string>
 
     <string name="ImageView__badge">بیج</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">%1$s پر زائد المیعاد ہے</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ایک خود مختار غیر منافع بخش ایپ کے طور پر، Tellomi نجی میسجنگ اور کالز کی فراہمی کے لیے پُرعزم ہے۔ کوئی اشتہارات، کوئی ٹریکرز، کوئی نگرانی نہیں۔ Tellomi کو سپورٹ کرنے کے لیے ابھی عطیہ کریں۔</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ایک خود مختار غیر منافع بخش ایپ کے طور پر، Signal نجی میسجنگ اور کالز کی فراہمی کے لیے پُرعزم ہے۔ کوئی اشتہارات، کوئی ٹریکرز، کوئی نگرانی نہیں۔ Signal کو سپورٹ کرنے کے لیے ابھی عطیہ کریں۔</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">جب آپ کے پاس ایک سے زیادہ بیج ہوں، تو آپ اپنی پروفائل پر دوسروں کے دیکھنے کے لیے ایک کو خصوصی بنانے کا انتخاب کر سکتے ہیں۔</string>
 
     <string name="BecomeASustainerFragment__get_badges">Tellomi کی سپورٹ کے ذریعے اپنی پروفائل کے لیے بیجز حاصل کریں۔</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi کسی مشتہرین یا سرمایہ کاران کے بغیر ایک غیر منافع بخش تنظیم ہے، جس کی معاونت صرف آپ جیسے افراد کرتے ہیں۔</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal کسی مشتہرین یا سرمایہ کاران کے بغیر ایک غیر منافع بخش تنظیم ہے، جس کی معاونت صرف آپ جیسے افراد کرتے ہیں۔</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tellomi کے لیے عطیہ کریں</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">اپنا بیک اپ پلان منتخب کریں</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">تمام بیک اپس کلی طور پر تک انکرپٹ کردہ ہیں۔ Tellomi ایک غیر منافع بخش ادارہ ہے—بیک اپس کے لیے ادائیگی ہمارے مشن میں معاونت کے لیے ہیں۔</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">تمام بیک اپس کلی طور پر تک انکرپٹ کردہ ہیں۔ Signal ایک غیر منافع بخش ادارہ ہے—بیک اپس کے لیے ادائیگی ہمارے مشن میں معاونت کے لیے ہیں۔</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">مزید جانیں</string>
     <!-- Primary action button label without a current selection -->

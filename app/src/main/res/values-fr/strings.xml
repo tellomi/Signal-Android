@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s soutient Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s soutient Tellomi chaque mois grâce à un don mensuel. Tellomi est un organisme à but non lucratif.  Ici, ni annonceurs, ni investisseurs. Tellomi n\'existe que grâce à des personnes comme vous.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s soutient Signal chaque mois grâce à un don mensuel. Signal est un organisme à but non lucratif.  Ici, ni annonceurs, ni investisseurs. Signal n\'existe que grâce à des personnes comme vous.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s soutient Tellomi grâce à un don. Tellomi est un organisme à but non lucratif.  Ici, ni annonceurs, ni investisseurs. Tellomi n\'existe que grâce à des personnes comme vous.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s soutient Signal grâce à un don. Signal est un organisme à but non lucratif.  Ici, ni annonceurs, ni investisseurs. Signal n\'existe que grâce à des personnes comme vous.</string>
 
     <string name="ImageView__badge">Macaron</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Date d\'expiration : %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Tellomi est un organisme indépendant à but non lucratif, qui s\'engage à protéger la confidentialité de vos communications. Ici, aucune publicité, aucun cookie de suivi, aucune surveillance. Faites un don pour soutenir Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Signal est un organisme indépendant à but non lucratif, qui s\'engage à protéger la confidentialité de vos communications. Ici, aucune publicité, aucun cookie de suivi, aucune surveillance. Faites un don pour soutenir Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Si vous avez plusieurs macarons, vous pouvez choisir celui que vous voulez afficher sur votre profil.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Soutenez Tellomi et gagnez des macarons à afficher sur votre profil.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi est un organisme à but non lucratif.  Ici, ni annonceurs, ni investisseurs. Tellomi n\'existe que grâce à des personnes comme vous.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal est un organisme à but non lucratif.  Ici, ni annonceurs, ni investisseurs. Signal n\'existe que grâce à des personnes comme vous.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Faire un don à Tellomi</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Choisir un forfait de sauvegarde</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Toutes les sauvegardes sont chiffrées de bout en bout. Tellomi est un organisme à but non lucratif. En souscrivant un forfait de sauvegarde payant, vous contribuez à soutenir notre mission.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Toutes les sauvegardes sont chiffrées de bout en bout. Signal est un organisme à but non lucratif. En souscrivant un forfait de sauvegarde payant, vous contribuez à soutenir notre mission.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">En savoir plus</string>
     <!-- Primary action button label without a current selection -->

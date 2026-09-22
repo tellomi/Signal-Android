@@ -6269,9 +6269,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s គាំទ្រ Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s គាំទ្រ Tellomi តាមរយៈការបរិច្ចាគប្រចាំខែ។ Tellomi គឺជាអង្គការមិនរកប្រាក់ចំណេញ ដែលគ្មានអ្នកផ្សាយពាណិជ្ជកម្ម ឬអ្នកវិនិយោគទេ ហើយគាំទ្រដោយមនុស្សដូចជាអ្នកប៉ុណ្ណោះ។</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s គាំទ្រ Signal តាមរយៈការបរិច្ចាគប្រចាំខែ។ Signal គឺជាអង្គការមិនរកប្រាក់ចំណេញ ដែលគ្មានអ្នកផ្សាយពាណិជ្ជកម្ម ឬអ្នកវិនិយោគទេ ហើយគាំទ្រដោយមនុស្សដូចជាអ្នកប៉ុណ្ណោះ។</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s គាំទ្រ Tellomi តាមរយៈការបរិច្ចាគ។ Tellomi គឺជាអង្គការមិនរកប្រាក់ចំណេញ ដែលគ្មានអ្នកផ្សាយពាណិជ្ជកម្ម ឬអ្នកវិនិយោគទេ ហើយគាំទ្រដោយមនុស្សដូចជាអ្នកប៉ុណ្ណោះ។</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s គាំទ្រ Signal តាមរយៈការបរិច្ចាគ។ Signal គឺជាអង្គការមិនរកប្រាក់ចំណេញ ដែលគ្មានអ្នកផ្សាយពាណិជ្ជកម្ម ឬអ្នកវិនិយោគទេ ហើយគាំទ្រដោយមនុស្សដូចជាអ្នកប៉ុណ្ណោះ។</string>
 
     <string name="ImageView__badge">ស្លាក</string>
 
@@ -6293,7 +6293,7 @@
     <string name="Subscription__expires_s">ផុតកំណត់នៅ %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ក្នុងនាមជាអង្គការមិនស្វែងរកប្រាក់ចំណេញឯករាជ្យមួយ Tellomi ប្តេជ្ញាចិត្តផ្តល់នូវការផ្ញើសារ និងការហៅទូរសព្ទឯកជន។ គ្មានការផ្សាយពាណិជ្ជកម្ម គ្មានកម្មវិធីតាមដាន គ្មានការឃ្លាំមើល។ បរិច្ចាគថ្ងៃនេះដើម្បីឧបត្ថម្ភគាំទ្រដល់ Tellomi។</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">ក្នុងនាមជាអង្គការមិនស្វែងរកប្រាក់ចំណេញឯករាជ្យមួយ Signal ប្តេជ្ញាចិត្តផ្តល់នូវការផ្ញើសារ និងការហៅទូរសព្ទឯកជន។ គ្មានការផ្សាយពាណិជ្ជកម្ម គ្មានកម្មវិធីតាមដាន គ្មានការឃ្លាំមើល។ បរិច្ចាគថ្ងៃនេះដើម្បីឧបត្ថម្ភគាំទ្រដល់ Signal។</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6314,7 +6314,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">នៅពេលអ្នកមានស្លាកលើសពីមួយ អ្នកអាចជ្រើសរើសស្លាកមួយដើម្បីបង្ហាញឲ្យអ្នកផ្សេងទៀតបានឃើញនៅលើប្រូហ្វាល់របស់អ្នក។</string>
 
     <string name="BecomeASustainerFragment__get_badges">ទទួលបានស្លាកសម្រាប់ប្រូហ្វាល់របស់អ្នកតាមរយៈការគាំទ្រដល់ Tellomi។</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi ជាកម្មវិធីដែលមិនរកប្រាក់ចំនូល មិនអ្នកផ្សាយពាណិជ្ជកម្ម ឬអ្នកបណ្ដាក់ទុន តែជាកម្មវិធីដែលគាំទ្រដោយមនុស្សដូចជាអ្នក</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal ជាកម្មវិធីដែលមិនរកប្រាក់ចំនូល មិនអ្នកផ្សាយពាណិជ្ជកម្ម ឬអ្នកបណ្ដាក់ទុន តែជាកម្មវិធីដែលគាំទ្រដោយមនុស្សដូចជាអ្នក</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">បរិច្ចាគទៅ Tellomi</string>
@@ -8967,7 +8967,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">ជ្រើសរើសគម្រោងបម្រុងទុករបស់អ្នក</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">ការបម្រុងទុកទាំងអស់ត្រូវបានអ៊ីនគ្រីបទាំងសងខាង។ Tellomi គឺជាអង្គការមិនរកប្រាក់ចំណេញ—ការបង់ប្រាក់សម្រាប់ការបម្រុងទុកជួយគាំទ្រដល់បេសកកម្មរបស់យើង។</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">ការបម្រុងទុកទាំងអស់ត្រូវបានអ៊ីនគ្រីបទាំងសងខាង។ Signal គឺជាអង្គការមិនរកប្រាក់ចំណេញ—ការបង់ប្រាក់សម្រាប់ការបម្រុងទុកជួយគាំទ្រដល់បេសកកម្មរបស់យើង។</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">ស្វែងយល់បន្ថែម</string>
     <!-- Primary action button label without a current selection -->

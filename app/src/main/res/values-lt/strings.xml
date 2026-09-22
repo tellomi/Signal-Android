@@ -355,7 +355,7 @@
     <!-- ContactsDatabase -->
     <string name="ContactsDatabase_message_s">Žinutė %1$s</string>
     <string name="ContactsDatabase_signal_call_s">„Tellomi“ balso skambutis %1$s</string>
-    <string name="ContactsDatabase_signal_video_call_s">Signalinis vaizdo skambutis %1$s</string>
+    <string name="ContactsDatabase_signal_video_call_s">Tellomi vaizdo skambutis %1$s</string>
 
     <!-- ContactNameEditActivity -->
     <!-- Toolbar title for contact name edit activity -->
@@ -6344,7 +6344,7 @@
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">Licencijos</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Sąlygos ir Privatumo politika</string>
-    <string name="HelpFragment__copyright_signal_messenger">Autorių teisės Tellomi pokalbių programėlė</string>
+    <string name="HelpFragment__copyright_signal_messenger">Autorių teisės Signal pokalbių programėlė</string>
     <string name="HelpFragment__licenced_under_the_agplv3">Licencijuota pagal GNU AGPLv3</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
@@ -6749,9 +6749,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s remia „Tellomi“</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s skiria „Tellomi“ kasmėnesinę paramą. „Tellomi“ yra pelno nesiekianti organizacija be reklamos užsakovų ar investuotojų, ją išlaiko tokie žmonės kaip tu.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s skiria „Signal“ kasmėnesinę paramą. „Signal“ yra pelno nesiekianti organizacija be reklamos užsakovų ar investuotojų, ją išlaiko tokie žmonės kaip tu.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s skiria paramą „Tellomi“. „Tellomi“ yra pelno nesiekianti organizacija be reklamos užsakovų ar investuotojų, ją išlaiko tokie žmonės kaip tu.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s skiria paramą „Signal“. „Signal“ yra pelno nesiekianti organizacija be reklamos užsakovų ar investuotojų, ją išlaiko tokie žmonės kaip tu.</string>
 
     <string name="ImageView__badge">Ženklelis</string>
 
@@ -6773,7 +6773,7 @@
     <string name="Subscription__expires_s">Baigia galioti %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Kaip nepriklausoma ne pelno organizacija „Tellomi“ yra įsipareigojusi užtikrinti žinučių ir skambučių privatumą. Nebrukame reklamų, nesekame ir nestebime. Skirkite paramą šiandien ir palaikykite „Tellomi“.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Kaip nepriklausoma ne pelno organizacija „Signal“ yra įsipareigojusi užtikrinti žinučių ir skambučių privatumą. Nebrukame reklamų, nesekame ir nestebime. Skirkite paramą šiandien ir palaikykite „Signal“.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6794,7 +6794,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Jei turi daugiau nei vieną ženklelį, gali kurį nors pasirinkti kaip pagrindinį, matomą kitiems tavo profilyje.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Gauk ženklelių savo profiliui už paramą „Tellomi“.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi yra pelno nesiekianti organizacija, kuri neturi reklamuotojų ar investuotojų ir, kuri yra palaikoma tik tokių žmonių, kaip jūs.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal yra pelno nesiekianti organizacija, kuri neturi reklamuotojų ar investuotojų ir, kuri yra palaikoma tik tokių žmonių, kaip jūs.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Paremk „Tellomi“</string>
@@ -9561,7 +9561,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Pasirinkite savo atsarginio kopijavimo planą</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Visos atsarginės kopijos yra visiškai užšifruotos. „Tellomi“ yra ne pelno siekianti organizacija – mokėdami už atsarginį kopijavimą palaikote mūsų misiją.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Visos atsarginės kopijos yra visiškai užšifruotos. „Signal“ yra ne pelno siekianti organizacija – mokėdami už atsarginį kopijavimą palaikote mūsų misiją.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Sužinoti daugiau</string>
     <!-- Primary action button label without a current selection -->

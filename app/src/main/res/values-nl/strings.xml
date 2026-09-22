@@ -282,7 +282,7 @@
     <!-- Title for an alert that shows at the bottom of the chat list letting people know that circumvention is no longer needed -->
     <string name="CensorshipCircumventionMegaphone_turn_off_censorship_circumvention">Censuuromzeiling uitschakelen?</string>
     <!-- Body for an alert that shows at the bottom of the chat list letting people know that circumvention is no longer needed -->
-    <string name="CensorshipCircumventionMegaphone_you_can_now_connect_to_the_signal_service">Je kunt vanaf nu weer een directe verbinding maken met Signals servers, Tellomi werkt dan beter.</string>
+    <string name="CensorshipCircumventionMegaphone_you_can_now_connect_to_the_signal_service">Je kunt vanaf nu weer een directe verbinding maken met Tellomi\'s servers, Tellomi werkt dan beter.</string>
     <!-- Action to prompt the user to disable circumvention since it is no longer needed -->
     <string name="CensorshipCircumventionMegaphone_turn_off">Uitschakelen</string>
     <!-- Action to prompt the user to dismiss the alert at the bottom of the chat list -->
@@ -1516,7 +1516,7 @@
     <string name="ManageGroupActivity_legacy_group_upgrade">Dit is een verouderde groep; om nieuwe functionaliteiten te kunnen gebruiken zoals @vermeldingen en beheerders,</string>
     <string name="ManageGroupActivity_legacy_group_too_large">Deze verouderde groep kan niet worden omgezet naar een nieuwe-stijl groep omdat het te veel leden bevat. Het maximum ledenaantal voor een groep is %1$d.</string>
     <string name="ManageGroupActivity_upgrade_this_group">moet je deze groep omzetten.</string>
-    <string name="ManageGroupActivity_this_is_an_insecure_mms_group">Dit is een onbeveiligde mms-groep. Nodig je contacten uit voor Signal Messenger om beveiligde berichten uit te wisselen.</string>
+    <string name="ManageGroupActivity_this_is_an_insecure_mms_group">Dit is een onbeveiligde mms-groep. Nodig je contacten uit voor Tellomi Messenger om beveiligde berichten uit te wisselen.</string>
     <string name="ManageGroupActivity_invite_now">Nu uitnodigen</string>
     <string name="ManageGroupActivity_more">meer</string>
     <string name="ManageGroupActivity_add_group_description">Voeg een groepsomschrijving toe…</string>
@@ -2836,7 +2836,7 @@
     <string name="RegistrationActivity_rate_limited_to_service">Je hebt te vaak geprobeerd dit telefoonnummer te registreren. Probeer het later opnieuw.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Je hebt te vaak geprobeerd dit telefoonnummer te registreren. Probeer het opnieuw over %1$s.</string>
-    <string name="RegistrationActivity_unable_to_connect_to_service">Het lukt niet om te verbinden met Signals servers. Controleer je internetverbinding en probeer het opnieuw.</string>
+    <string name="RegistrationActivity_unable_to_connect_to_service">Het lukt niet om te verbinden met Tellomi\'s servers. Controleer je internetverbinding en probeer het opnieuw.</string>
     <!-- Dialog error message shown when we are unable to send an SMS to the user\'s number -->
     <string name="RegistrationActivity_sms_provider_error">We kunnen geen sms naar je nummer sturen. Probeer het over enkele uren opnieuw.</string>
     <!-- A description text for an alert dialog when the entered phone number is not eligible for a verification SMS. -->
@@ -4271,7 +4271,7 @@
     <string name="preferences__disable_pin">Pincode uitschakelen</string>
     <string name="preferences__enable_pin">Pincode inschakelen</string>
     <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">Als je de pincode uitschakelt zul je wanneer je Tellomi opnieuw registreert alle gegevens kwijtraken, tenzij je handmatig een back-up maakt en herstelt. Daarnaast kun je zolang de pincode is uitgeschakeld de registratievergrendeling niet inschakelen.</string>
-    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">Met een pincode wordt informatie versleuteld opgeslagen op Signals servers zodat alleen jij er toegang toe hebt. Je kunt hierdoor je profiel, instellingen en contacten herstellen wanneer je Tellomi opnieuw installeert. Je hebt de pincode niet nodig om de app te openen.</string>
+    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">Met een pincode wordt informatie versleuteld opgeslagen op Tellomi\'s servers zodat alleen jij er toegang toe hebt. Je kunt hierdoor je profiel, instellingen en contacten herstellen wanneer je Tellomi opnieuw installeert. Je hebt de pincode niet nodig om de app te openen.</string>
     <string name="preferences__system_default">Systeemstandaard</string>
     <string name="preferences__language">Taal</string>
     <string name="preferences__signal_messages_and_calls">Tellomi-berichten en -oproepen</string>
@@ -4371,7 +4371,7 @@
     <!-- Summary text for \'censorship circumvention\' toggle. Indicates that you disabled it even though we believe you\'re in a censored country -->
     <string name="preferences_communication__censorship_circumvention_you_have_manually_disabled">Je hebt censuuromzeiling handmatig uitgeschakeld.</string>
     <!-- Summary text for \'censorship circumvention\' toggle. Indicates that you cannot use it because you\'re already connected to the Signal service -->
-    <string name="preferences_communication__censorship_circumvention_is_not_necessary_you_are_already_connected">Censuuromzeiling is voor jou op dit moment niet nodig, want je bent al verbonden met Signals servers.</string>
+    <string name="preferences_communication__censorship_circumvention_is_not_necessary_you_are_already_connected">Censuuromzeiling is voor jou op dit moment niet nodig, want je bent al verbonden met Tellomi\'s servers.</string>
     <!-- Summary text for \'censorship circumvention\' toggle. Indicates that you cannot use it because you\'re not connected to the internet -->
     <string name="preferences_communication__censorship_circumvention_can_only_be_activated_when_connected_to_the_internet">Censuuromzeiling kan alleen worden ingeschakeld als je apparaat met het internet is verbonden.</string>
     <string name="preferences_communication__category_sealed_sender">Verzegelde afzender</string>
@@ -4389,7 +4389,7 @@
     <string name="preferences_connected_to_proxy">Verbonden met de proxy</string>
     <string name="preferences_connection_failed">Verbinding mislukt</string>
     <string name="preferences_couldnt_connect_to_the_proxy">Verbinding maken is mislukt. Controleer of je het juiste proxyadres het ingevuld en probeer het opnieuw.</string>
-    <string name="preferences_you_are_connected_to_the_proxy">Tellomi is verbonden met de proxy. Je kunt de proxy op elk gewenst moment uitschakelen vanuit Signals instellingen.</string>
+    <string name="preferences_you_are_connected_to_the_proxy">Tellomi is verbonden met de proxy. Je kunt de proxy op elk gewenst moment uitschakelen vanuit Tellomi\'s instellingen.</string>
     <!-- Title of alert dialog after a successful connection to the proxy -->
     <string name="preferences_success">Succesvol</string>
     <string name="preferences_failed_to_connect">Verbinding maken is mislukt</string>
@@ -4791,11 +4791,11 @@
     <string name="reminder_header_service_outage_text">Tellomi ondervindt momenteel technische problemen. We zijn hard aan het werk om de service zo snel mogelijk te herstellen.</string>
     <string name="reminder_header_progress">%1$d%%</string>
     <!-- Body text of a banner that will show at the top of the chat list when we temporarily cannot process the user\'s contacts -->
-    <string name="reminder_cds_warning_body">Signals private contact discovery kan tijdelijk de contacten van je telefoon niet verwerken.</string>
+    <string name="reminder_cds_warning_body">Tellomi\'s private contact discovery kan tijdelijk de contacten van je telefoon niet verwerken.</string>
     <!-- Label for a button in a banner to learn more about why we temporarily can\'t process the user\'s contacts -->
     <string name="reminder_cds_warning_learn_more">Meer informatie</string>
     <!-- Body text of a banner that will show at the top of the chat list when the user has so many contacts that we cannot ever process them -->
-    <string name="reminder_cds_permanent_error_body">Signals private contact discovery kan de contacten van je telefoon niet verwerken.</string>
+    <string name="reminder_cds_permanent_error_body">Tellomi\'s private contact discovery kan de contacten van je telefoon niet verwerken.</string>
     <!-- Label for a button in a banner to learn more about why we cannot process the user\'s contacts -->
     <string name="reminder_cds_permanent_error_learn_more">Meer informatie</string>
 
@@ -4852,7 +4852,7 @@
 
     <!-- KbsSplashFragment -->
     <string name="KbsSplashFragment__introducing_pins">We introduceren pincodes</string>
-    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">Met een pincode wordt informatie versleuteld opgeslagen op Signals servers zodat alleen jij er toegang toe hebt. Je kunt hierdoor je profiel, instellingen en contacten herstellen wanneer je Tellomi opnieuw installeert. Je hebt de pincode niet nodig om de app te openen.</string>
+    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">Met een pincode wordt informatie versleuteld opgeslagen op Tellomi\'s servers zodat alleen jij er toegang toe hebt. Je kunt hierdoor je profiel, instellingen en contacten herstellen wanneer je Tellomi opnieuw installeert. Je hebt de pincode niet nodig om de app te openen.</string>
     <string name="KbsSplashFragment__learn_more">Meer informatie</string>
   <!-- Removed by excludeNonTranslatables <string name="KbsSplashFragment__learn_more_link" translatable="false">https://tellomi.app/help/360007059792</string> -->
     <string name="KbsSplashFragment__registration_lock_equals_pin">Registratievergrendeling = Pincode</string>
@@ -5054,7 +5054,7 @@
     <string name="RegistrationActivity_too_many_attempts">Te veel pogingen</string>
     <string name="RegistrationActivity_you_have_made_too_many_incorrect_registration_lock_pin_attempts_please_try_again_in_a_day">Je hebt te veel pogingen gedaan om met een onjuiste pincode de registratievergrendeling uit te schakelen. Probeer het morgen opnieuw.</string>
     <string name="RegistrationActivity_you_have_made_too_many_attempts_please_try_again_later">Je hebt te veel pogingen gedaan. Probeer het later opnieuw.</string>
-    <string name="RegistrationActivity_error_connecting_to_service">Fout bij het verbinden met Signals servers</string>
+    <string name="RegistrationActivity_error_connecting_to_service">Fout bij het verbinden met Tellomi\'s servers</string>
     <string name="preferences_chats__backups">Back-ups</string>
 
     <!-- Title text shown when Signal is locked and needs to be unlocked -->
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s steunt Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s steunt Tellomi met een maandelijkse donatie. Tellomi is een organisatie zonder winstoogmerk, zonder advertenties en zonder investeerders. Tellomi wordt uitsluitend mogelijk gemaakt door donaties van mensen zoals jij.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s steunt Signal met een maandelijkse donatie. Signal is een organisatie zonder winstoogmerk, zonder advertenties en zonder investeerders. Signal wordt uitsluitend mogelijk gemaakt door donaties van mensen zoals jij.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s steunde Tellomi met een donatie. Tellomi is een organisatie zonder winstoogmerk, zonder advertenties en zonder investeerders. Tellomi wordt uitsluitend mogelijk gemaakt door donaties van mensen zoals jij.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s steunde Signal met een donatie. Signal is een organisatie zonder winstoogmerk, zonder advertenties en zonder investeerders. Signal wordt uitsluitend mogelijk gemaakt door donaties van mensen zoals jij.</string>
 
     <string name="ImageView__badge">Badge</string>
 
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Als je meerdere badges hebt dan kun je er één kiezen om voor anderen op je profiel weer te geven.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Door Tellomi te ondersteunen verdien je badges om op je profiel weer te geven.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi is een organisatie zonder winstoogmerk, zonder advertenties en zonder investeerders. Tellomi wordt uitsluitend mogelijk gemaakt door donaties van mensen zoals jij.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal is een organisatie zonder winstoogmerk, zonder advertenties en zonder investeerders. Signal wordt uitsluitend mogelijk gemaakt door donaties van mensen zoals jij.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Aan Tellomi doneren</string>

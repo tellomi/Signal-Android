@@ -6269,9 +6269,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomi نى قوللايدۇ</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s Tellomi نى ئايلىق ئىئانە بىلەن قوللايدۇ. Tellomi خۇددى سىزگە ئوخشاش كىشىلەرلا قوللايدىغان، ئېلان بەرگۈچىسى ياكى مەبلەغ سالغۇچىسى يوق، پايدا ئالمايدىغان ئەپ.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s Signal نى ئايلىق ئىئانە بىلەن قوللايدۇ. Signal خۇددى سىزگە ئوخشاش كىشىلەرلا قوللايدىغان، ئېلان بەرگۈچىسى ياكى مەبلەغ سالغۇچىسى يوق، پايدا ئالمايدىغان ئەپ.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Tellomi نى ئىئانە بىلەن قوللىدى. Tellomi خۇددى سىزگە ئوخشاش كىشىلەرلا قوللايدىغان، ئېلان بەرگۈچىسى ياكى مەبلەغ سالغۇچىسى يوق، پايدا ئالمايدىغان ئەپ.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Signal نى ئىئانە بىلەن قوللىدى. Signal خۇددى سىزگە ئوخشاش كىشىلەرلا قوللايدىغان، ئېلان بەرگۈچىسى ياكى مەبلەغ سالغۇچىسى يوق، پايدا ئالمايدىغان ئەپ.</string>
 
     <string name="ImageView__badge">ئىزناك</string>
 
@@ -6293,7 +6293,7 @@
     <string name="Subscription__expires_s">مۇددىتى %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">مۇستەقىل پايدا ئالمايدىغان تەشكىلات بولۇش سۈپىتى بىلەن، Tellomi شەخسىي ئۇچۇر ۋە تېلېفونلىشىشقا كاپالەتلىك قىلىدۇ. ئېلان، ئىز قوغلاش، نازارەت قىلىنىشتىن خالىي. Tellomiنى قوللاش ئۈچۈن بۈگۈنلا ئىئانە قىلىڭ.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">مۇستەقىل پايدا ئالمايدىغان تەشكىلات بولۇش سۈپىتى بىلەن، Signal شەخسىي ئۇچۇر ۋە تېلېفونلىشىشقا كاپالەتلىك قىلىدۇ. ئېلان، ئىز قوغلاش، نازارەت قىلىنىشتىن خالىي. Signalنى قوللاش ئۈچۈن بۈگۈنلا ئىئانە قىلىڭ.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6314,7 +6314,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">ئىزنەك سانىڭىز بىردىن كۆپ بولغاندا، بىر ئىزنەكنى تاللاپ ئۇنى ئارخىپىڭىزدا باشقىلار كۆرەلەيدىغان قىلالايسىز.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Tellomi نى قوللاپ ئارخىپىڭىزدا كۆرۈنىدىغان ئىزنەكلەرگە ئېرىشىڭ.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi خۇددى سىزگە ئوخشاش كىشىلەرلا قوللايدىغان، ئېلان بەرگۈچىسى ياكى مەبلەغ سالغۇچىسى يوق، پايدا ئالمايدىغان ئەپ.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal خۇددى سىزگە ئوخشاش كىشىلەرلا قوللايدىغان، ئېلان بەرگۈچىسى ياكى مەبلەغ سالغۇچىسى يوق، پايدا ئالمايدىغان ئەپ.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">‫Tellomi غا ئىئانە قىلىڭ</string>

@@ -2831,8 +2831,8 @@
     <string name="RegistrationActivity_i_understand">Forstået</string>
     <string name="RegistrationActivity_play_services_error">Play Services fejl</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google Play-tjenester opdateres eller er midlertidigt utilgængelig. Prøv venligst igen.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi har brug for tilladelse til at tilgå kontakter og lagerplads for at du kan oprette forbindelse til venner og sende beskeder. Dine kontakter uploades ved hjælp af Signals private kontaktopdagelse, hvilket betyder, at de er end-to-end-krypteret og aldrig synlige for Tellomi-tjenesten.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi har brug for tilladelse til at tilgå kontakter for at du kan oprette forbindelse til venner. Dine kontakter uploades ved hjælp af Signals private kontaktopdagelse, hvilket betyder, at de er end-to-end-krypteret og aldrig synlige for Tellomi-tjenesten.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi har brug for tilladelse til at tilgå kontakter og lagerplads for at du kan oprette forbindelse til venner og sende beskeder. Dine kontakter uploades ved hjælp af Tellomis private kontaktopdagelse, hvilket betyder, at de er end-to-end-krypteret og aldrig synlige for Tellomi-tjenesten.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi har brug for tilladelse til at tilgå kontakter for at du kan oprette forbindelse til venner. Dine kontakter uploades ved hjælp af Tellomis private kontaktopdagelse, hvilket betyder, at de er end-to-end-krypteret og aldrig synlige for Tellomi-tjenesten.</string>
     <string name="RegistrationActivity_rate_limited_to_service">Du har foretaget for mange forsøg på at registrere dette nummer. Prøv igen senere.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Du har forsøgt at registrere dette nummer for mange gange. Prøv igen om %1$s.</string>
@@ -4257,13 +4257,13 @@
     <!-- Title for the confirmation dialog of changing the app icon. -->
     <string name="preferences__app_icon_dialog_title">Skift appikon og -navn til \"%1$s\"</string>
     <!-- Description for the confirmation dialog of changing the app icon. -->
-    <string name="preferences__app_icon_dialog_description">Tellomi skal lukkes for at ændre appens ikon og navn. Notifikationer viser altid Signals standardikon og -navn.</string>
+    <string name="preferences__app_icon_dialog_description">Tellomi skal lukkes for at ændre appens ikon og navn. Notifikationer viser altid Tellomis standardikon og -navn.</string>
     <!-- Visible warning label for the limitations of changing the app icon with learn more call to action. -->
-    <string name="preferences__app_icon_warning_learn_more">Vælg et appikon og -navn, som vil være synligt på telefonens startskærm og i appskuffen. Notifikationer viser altid Signals standardikon og -navn. Få mere at vide</string>
+    <string name="preferences__app_icon_warning_learn_more">Vælg et appikon og -navn, som vil være synligt på telefonens startskærm og i appskuffen. Notifikationer viser altid Tellomis standardikon og -navn. Få mere at vide</string>
     <!-- Visible warning label for the limitations of changing the app icon. -->
     <string name="preferences__app_icon_warning">Appikoner og -navne er synlige på startskærmen og i appskuffen.</string>
     <!-- Visible warning label explaining that changing the app icon and name does not affect notifications. -->
-    <string name="preferences__app_icon_notification_warning">Notifikationer viser altid Signals standardikon og -navn.</string>
+    <string name="preferences__app_icon_notification_warning">Notifikationer viser altid Tellomis standardikon og -navn.</string>
     <!--Call to action to get more information about the limitations of the change app icon functionality. -->
     <string name="preferences__app_icon_learn_more">Få mere at vide</string>
     <!--Text description of a graphic illustrating the limitations of the app icon change. -->
@@ -4791,11 +4791,11 @@
     <string name="reminder_header_service_outage_text">Tellomi har tekniske problemer. Vi arbejder hårdt på at genoprette servicen så hurtigt som muligt!</string>
     <string name="reminder_header_progress">%1$d %%</string>
     <!-- Body text of a banner that will show at the top of the chat list when we temporarily cannot process the user\'s contacts -->
-    <string name="reminder_cds_warning_body">Signals private kontaktopdagelse kan midlertidigt ikke behandle telefonens kontakter.</string>
+    <string name="reminder_cds_warning_body">Tellomis private kontaktopdagelse kan midlertidigt ikke behandle telefonens kontakter.</string>
     <!-- Label for a button in a banner to learn more about why we temporarily can\'t process the user\'s contacts -->
     <string name="reminder_cds_warning_learn_more">Lær mere</string>
     <!-- Body text of a banner that will show at the top of the chat list when the user has so many contacts that we cannot ever process them -->
-    <string name="reminder_cds_permanent_error_body">Signals private kontaktopdagelse kan ikke behandle telefonens kontakter.</string>
+    <string name="reminder_cds_permanent_error_body">Tellomis private kontaktopdagelse kan ikke behandle telefonens kontakter.</string>
     <!-- Label for a button in a banner to learn more about why we cannot process the user\'s contacts -->
     <string name="reminder_cds_permanent_error_learn_more">Lær mere</string>
 
@@ -4946,7 +4946,7 @@
     <!-- transport_selection_list_item -->
     <string name="ConversationListFragment_loading">Indlæser…</string>
     <string name="CallNotificationBuilder_connecting">Forbinder…</string>
-    <string name="SQLCipherMigrationHelper_migrating_signal_database">Overførsel af Signals database</string>
+    <string name="SQLCipherMigrationHelper_migrating_signal_database">Overførsel af Tellomis database</string>
     <string name="enter_backup_passphrase_dialog__backup_passphrase">Adgangssætning til sikkerhedskopi</string>
     <string name="backup_enable_dialog__backups_will_be_saved_to_external_storage_and_encrypted_with_the_passphrase_below_you_must_have_this_passphrase_in_order_to_restore_a_backup">Sikkerhedskopier vil blive gemt på eksternt lager og krypteret med adgangssætningen herunder. Du skal kende adgangssætningen for at kunne gendanne fra sikkerhedskopi.</string>
     <string name="backup_enable_dialog__you_must_have_this_passphrase">Du skal have denne adgangssætning for at kunne gendanne fra sikkerhedskopi.</string>
@@ -8145,7 +8145,7 @@
     <!-- Title of Megaphone B: upsell to enable backups when user has many messages -->
     <string name="BackupMessagesUpsell__title">Mist aldrig en besked</string>
     <!-- Body of Megaphone B: upsell to enable backups when user has many messages -->
-    <string name="BackupMessagesUpsell__body">Slå Signals \"Sikre sikkerhedskopier\" til for at bevare dine beskeder og medier.</string>
+    <string name="BackupMessagesUpsell__body">Slå Tellomis \"Sikre sikkerhedskopier\" til for at bevare dine beskeder og medier.</string>
     <!-- Primary button of Megaphone B -->
     <string name="BackupMessagesUpsell__turn_on">Aktiver</string>
     <!-- Secondary button of Megaphone B -->
@@ -8197,7 +8197,7 @@
     <!-- Body of the backup setup complete bottom sheet -->
     <string name="BackupSetupCompleteBottomSheet__body">Dette kan tage lidt tid. Du kan bruge Tellomi normalt, mens du sikkerhedskopierer.</string>
     <!-- Label for the optimize storage toggle -->
-    <string name="BackupSetupCompleteBottomSheet__optimize_storage">Optimer Signals lagerplads</string>
+    <string name="BackupSetupCompleteBottomSheet__optimize_storage">Optimer Tellomis lagerplads</string>
     <!-- Subtitle for the optimize storage toggle -->
     <string name="BackupSetupCompleteBottomSheet__optimize_subtitle">Ældre medier vil blive fjernet, men kan downloades fra din sikkerhedskopi når som helst.</string>
     <!-- Primary button on the setup complete bottom sheet -->
@@ -8224,7 +8224,7 @@
     <!-- Text describing how to restore a backup displayed on the on-device backups screen -->
     <string name="OnDeviceBackupsScreen__to_restore_a_backup">"For at gendanne en sikkerhedskopi skal du installere Tellomi igen. Åbn appen, og tryk på \"Gendan sikkerhedskopi\". Vælg derefter sikkerhedskopimappen."</string>
     <!-- Body of a dialog shown when turning on on-device backups while "Optimize Signal storage" is enabled, warning that optimized media won\'t be included -->
-    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Funktionen \"Optimer Signals lagerplads\" er slået til. Hvis du vil inkludere alle medier i sikkerhedskopien på denne enhed, skal du slå indstillingen fra.</string>
+    <string name="OnDeviceBackupsScreen__you_have_optimize_signal_storage_on">Funktionen \"Optimer Tellomis lagerplads\" er slået til. Hvis du vil inkludere alle medier i sikkerhedskopien på denne enhed, skal du slå indstillingen fra.</string>
     <!-- Dialog action that takes the user to the "Optimize Signal storage" setting -->
     <string name="OnDeviceBackupsScreen__view_setting">Vis indstilling</string>
     <!-- Dialog action to proceed with turning on on-device backups without turning off "Optimize Signal storage" -->
@@ -8607,7 +8607,7 @@
     <!-- Setting section title header for storage optimization -->
     <string name="ManageStorageSettingsFragment__on_device_storage">Lagerplads på Tellomi</string>
     <!-- Setting row title for storage optimization -->
-    <string name="ManageStorageSettingsFragment__optimize_on_device_storage">Optimer Signals lagerplads</string>
+    <string name="ManageStorageSettingsFragment__optimize_on_device_storage">Optimer Tellomis lagerplads</string>
     <!-- Setting row explanation for storage optimization -->
     <string name="ManageStorageSettingsFragment__unused_media_will_be_offloaded">Ubrugte medier fjernes, men kan downloades fra din sikkerhedskop når som helst.</string>
     <!-- Dialog message for paid tier pending dialog -->
@@ -8615,7 +8615,7 @@
     <!-- Title of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
     <string name="ManageStorageSettingsFragment__media_will_be_removed_from_your_on_device_backup">Medier fjernes fra sikkerhedskopien på denne enhed</string>
     <!-- Body of a dialog shown when turning on "Optimize Signal storage" while on-device backups are enabled -->
-    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Når \"Optimer Signals lagerplads\" slås til, fjernes ældre medier fra din enhed for at frigøre plads. Du kan downloade det igen når som helst. Det fjerner også ældre medier fra sikkerhedskopien på denne enhed.</string>
+    <string name="ManageStorageSettingsFragment__turning_on_optimize_signal_storage_will_offload">Når \"Optimer Tellomis lagerplads\" slås til, fjernes ældre medier fra din enhed for at frigøre plads. Du kan downloade det igen når som helst. Det fjerner også ældre medier fra sikkerhedskopien på denne enhed.</string>
     <!-- Dialog action to confirm turning on "Optimize Signal storage" -->
     <string name="ManageStorageSettingsFragment__turn_on">Aktiver</string>
 
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Abonnement annulleret</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatiske sikkerhedskopier med Signals sikre E2E-krypterede lagertjeneste.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatiske sikkerhedskopier med Tellomis sikre E2E-krypterede lagertjeneste.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatiske sikkerhedskopier med Signals sikre E2E-krypterede lagertjeneste. Kom i gang på din telefon.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatiske sikkerhedskopier med Tellomis sikre E2E-krypterede lagertjeneste. Kom i gang på din telefon.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Der blev ikke fundet noget abonnement på denne enhed."</string>
     <!-- Action button label to set up backups -->
@@ -8837,7 +8837,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">Slå sikkerhedskopiering til igen</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sikkerhedskopiering er slået fra, og dine data er blevet slettet fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sikkerhedskopiering er slået fra, og dine data er blevet slettet fra Tellomis sikre lagringstjeneste.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">Downloader din sikkerhedskopi</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -8902,17 +8902,17 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">Detaljer</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sikkerhedskopiering er slået fra, men der opstod en fejl under sletning af dine data fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sikkerhedskopiering er slået fra, men der opstod en fejl under sletning af dine data fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">Kunne ikke slette din sikkerhedskopiering</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">Der opstod en fejl. Kontakt support.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sikkerhedskopier er blevet slået fra. Dine data downloades til din enhed og slettes derefter fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sikkerhedskopier er blevet slået fra. Dine data downloades til din enhed og slettes derefter fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sikkerhedskopiering er slået fra, og dine data er blevet slettet fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sikkerhedskopiering er slået fra, og dine data er blevet slettet fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sikkerhedskopiering er slået fra, og dine data er blevet slettet fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sikkerhedskopiering er slået fra, og dine data er blevet slettet fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">Downloader: %1$s af %2$s (%3$d %%)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -9009,7 +9009,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Opret en sikkerhedskopi af dine beskeder og medier, og brug Signals sikre E2E-krypterede lagringstjeneste. Mist aldrig en besked, når du får en ny telefon eller geninstallerer Tellomi.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Opret en sikkerhedskopi af dine beskeder og medier, og brug Tellomis sikre E2E-krypterede lagringstjeneste. Mist aldrig en besked, når du får en ny telefon eller geninstallerer Tellomi.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">E2E-krypteret</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->

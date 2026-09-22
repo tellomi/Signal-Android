@@ -148,23 +148,23 @@
   <!-- Dialog title asking users for microphone permission -->
   <string name="CameraXFragment_allow_access_microphone">Omogućite pristup mikrofonu</string>
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Za snimanje slika i videozapisa omogućite Signalu pristup vašoj kameri.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">Za snimanje slika i videozapisa omogućite Tellomiju pristup vašoj kameri.</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Za snimanje fotografija i videozapisa omogućite Signalu pristup kameri i mikrofonu.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">Za snimanje fotografija i videozapisa omogućite Tellomiju pristup kameri i mikrofonu.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
-  <string name="CameraXFragment_to_capture_videos_with_sound">Za snimanje videozapisa sa zvukom omogućite Signalu pristup vašem mikrofonu.</string>
+  <string name="CameraXFragment_to_capture_videos_with_sound">Za snimanje videozapisa sa zvukom omogućite Tellomiju pristup vašem mikrofonu.</string>
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
-  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Za skeniranje QR koda omogućite Signalu pristup vašoj kameri.</string>
+  <string name="CameraXFragment_to_scan_qr_code_allow_camera">Za skeniranje QR koda omogućite Tellomiju pristup vašoj kameri.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
-  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Signalu je potreban pristup vašoj kameri za snimanje fotografija</string>
+  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">Tellomiju je potreban pristup vašoj kameri za snimanje fotografija</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
-  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Signalu je potreban pristup vašoj kameri za skeniranje QR kodova</string>
+  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">Tellomiju je potreban pristup vašoj kameri za skeniranje QR kodova</string>
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
-  <string name="CameraXFragment_signal_needs_microphone_access_video">Signalu je potreban pristup vašem mikrofonu za snimanje videozapisa</string>
+  <string name="CameraXFragment_signal_needs_microphone_access_video">Tellomiju je potreban pristup vašem mikrofonu za snimanje videozapisa</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
-  <string name="CameraXFragment_to_capture_photos">Za snimanje fotografija na Signalu:</string>
+  <string name="CameraXFragment_to_capture_photos">Za snimanje fotografija na Tellomiju:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
-  <string name="CameraXFragment_to_capture_photos_videos">Za snimanje fotografija i videozapisa na Signalu:</string>
+  <string name="CameraXFragment_to_capture_photos_videos">Za snimanje fotografija i videozapisa na Tellomiju:</string>
   <!-- Dialog description that explains the steps needed to give microphone permission -->
   <string name="CameraXFragment_to_capture_videos">Za snimanje videozapisa sa zvukom:</string>
   <!-- Dialog description that explains the steps needed to give Signal camera permissions -->
@@ -247,7 +247,7 @@
   <!-- The title of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_title">Povezati uređaj?</string>
   <!-- The body of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
-  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Čini se da pokušavate povezati uređaj sa Signalom. Dodirnite „Nastavi“, zatim „Poveži novi uređaj“ i ponovno skenirajte QR kôd.</string>
+  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">Čini se da pokušavate povezati uređaj sa Tellomijem. Dodirnite „Nastavi“, zatim „Poveži novi uređaj“ i ponovno skenirajte QR kôd.</string>
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">Nastavi</string>
 

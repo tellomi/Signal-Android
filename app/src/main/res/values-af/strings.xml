@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s ondersteun Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ondersteun Tellomi met \'n maandelikse skenking. Tellomi is ’n niewinsgewende organisasie sonder adverteerders of beleggers en word slegs deur mense soos jy ondersteun.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ondersteun Signal met \'n maandelikse skenking. Signal is ’n niewinsgewende organisasie sonder adverteerders of beleggers en word slegs deur mense soos jy ondersteun.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s ondersteun Tellomi met \'n skenking. Tellomi is ’n niewinsgewende organisasie sonder adverteerders of beleggers en word slegs deur mense soos jy ondersteun.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s ondersteun Signal met \'n skenking. Signal is ’n niewinsgewende organisasie sonder adverteerders of beleggers en word slegs deur mense soos jy ondersteun.</string>
 
     <string name="ImageView__badge">Wapen</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Verstryk %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">As \'n onafhanklike niewinsgewende organisasie is Tellomi verbind tot privaat boodskappe en oproepe. Geen advertensies, geen naspoorders, geen observasie nie. Maak vandag \'n skenking om Tellomi te ondersteun.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">As \'n onafhanklike niewinsgewende organisasie is Signal verbind tot privaat boodskappe en oproepe. Geen advertensies, geen naspoorders, geen observasie nie. Maak vandag \'n skenking om Signal te ondersteun.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Wanneer jy meer as een wapen het, kan jy een kies om te vertoon sodat ander dit op jou profiel kan sien.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Kry wapens vir jou profiel deur Tellomi te ondersteun.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi is ’n niewinsgewende organisasie sonder adverteerders of beleggers en word slegs deur mense soos jy ondersteun.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal is ’n niewinsgewende organisasie sonder adverteerders of beleggers en word slegs deur mense soos jy ondersteun.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Skenk aan Tellomi</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Kies jou rugsteunplan</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Alle rugsteun word end-tot-end geënkripteer. Tellomi is nie-winsgewend—om vir rugsteun te betaal, help om ons missie te ondersteun.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Alle rugsteun word end-tot-end geënkripteer. Signal is nie-winsgewend—om vir rugsteun te betaal, help om ons missie te ondersteun.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Vind meer uit</string>
     <!-- Primary action button label without a current selection -->

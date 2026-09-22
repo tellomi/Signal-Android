@@ -6040,7 +6040,7 @@
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">Лицензиялар</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Шарттар және Құпиялық саясаты</string>
-    <string name="HelpFragment__copyright_signal_messenger">Авторлық құқығы қорғалған Tellomi мессенджері</string>
+    <string name="HelpFragment__copyright_signal_messenger">Авторлық құқығы қорғалған Signal мессенджері</string>
     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3 лицензиясымен жұмыс істейді</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomi-ға демеушілік жасайды</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ай сайын ақша салып, Tellomi-ға қолдау көрсетеді. Tellomi – сіз сияқты адамдардың арқасында жұмыс істеп тұрған жарнама берушілері немесе инвесторлары жоқ коммерциялық емес жоба.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s ай сайын ақша салып, Signal-ға қолдау көрсетеді. Signal – сіз сияқты адамдардың арқасында жұмыс істеп тұрған жарнама берушілері немесе инвесторлары жоқ коммерциялық емес жоба.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Tellomi-ға демеушілік жасайды. Tellomi – сіз сияқты адамдардың арқасында жұмыс істеп тұрған жарнама берушілері немесе инвесторлары жоқ коммерциялық емес жоба.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Signal-ға демеушілік жасайды. Signal – сіз сияқты адамдардың арқасында жұмыс істеп тұрған жарнама берушілері немесе инвесторлары жоқ коммерциялық емес жоба.</string>
 
     <string name="ImageView__badge">Таңба</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Мерзімі %1$s күні өтеді</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Тәуелсіз коммерциялық емес жоба ретінде Tellomi хабарлар мен қоңыраулардың құпия болуын міндет көреді. Жарнамалар жоқ, трекерлер жоқ, бақылау жоқ. Tellomi-ға бүгін қаржылай қолдау көрсетіңіз.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Тәуелсіз коммерциялық емес жоба ретінде Signal хабарлар мен қоңыраулардың құпия болуын міндет көреді. Жарнамалар жоқ, трекерлер жоқ, бақылау жоқ. Signal-ға бүгін қаржылай қолдау көрсетіңіз.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Бірнеше таңбаңыз болса, олардың біреуін таңдап, басқаларға профиліңізде көрсетуіңізге болады.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Tellomi-ға қолдау көрсету арқылы профиліңізге таңбалар алыңыз.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi – сіз сияқты адамдардың арқасында жұмыс істеп тұрған жарнама берушілері немесе инвесторлары жоқ коммерциялық емес жоба.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal – сіз сияқты адамдардың арқасында жұмыс істеп тұрған жарнама берушілері немесе инвесторлары жоқ коммерциялық емес жоба.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tellomi-ды демеу</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Резервтік жоспарды таңдау</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Барлық резервтік көшірмелер өтпелі шифрлаумен қорғалған. Tellomi – коммерциялық емес ұйым. Резервтік көшірмелер үшін төлеу міндетімізді орындауға көмектеседі.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Барлық резервтік көшірмелер өтпелі шифрлаумен қорғалған. Signal – коммерциялық емес ұйым. Резервтік көшірмелер үшін төлеу міндетімізді орындауға көмектеседі.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Толық ақпарат</string>
     <!-- Primary action button label without a current selection -->

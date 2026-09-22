@@ -293,7 +293,7 @@
     <string name="ClientDeprecatedActivity_this_version_of_the_app_is_no_longer_supported">Aplikazioaren bertsio honek jadanik ez dauka bermerik. Mezuak jasotzen eta bidaltzen jarraitzeko, eguneratu azken bertsiora.</string>
     <string name="ClientDeprecatedActivity_update">Eguneratu</string>
     <string name="ClientDeprecatedActivity_dont_update">Ez Eguneratu</string>
-    <string name="ClientDeprecatedActivity_warning">Markatutako zenbakia ez dago Signalen erregistratuta. SMS bidez gonbidatu nahiko zenuke?</string>
+    <string name="ClientDeprecatedActivity_warning">Markatutako zenbakia ez dago Tellomin erregistratuta. SMS bidez gonbidatu nahiko zenuke?</string>
     <string name="ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history">Tellomi-en bertsio hau iraungi egin da. Zure mezuen historia ikusi dezakezu, baina, aplikazioa eguneratu arte, ezingo duzu mezurik bidali edo jaso.</string>
 
     <!-- ClockSkewActivity -->
@@ -456,7 +456,7 @@
     <string name="ConversationActivity_transport_signal">Tellomi mezua</string>
     <!-- The content description for button to send a message in a conversation -->
     <string name="ConversationActivity_send_message_content_description">Bidali mezua</string>
-    <string name="ConversationActivity_lets_switch_to_signal">Signalera aldatu dezagun %1$s</string>
+    <string name="ConversationActivity_lets_switch_to_signal">Tellomira aldatu dezagun %1$s</string>
     <string name="ConversationActivity_specify_recipient">Kontaktu bat aukeratu, mesedez</string>
     <string name="ConversationActivity_attachment_exceeds_size_limits">Eranskina handiegia da bidaltzen ari zaren mezu motarako.</string>
     <string name="ConversationActivity_unable_to_record_audio">Ezgai audioa grabatzeko!</string>
@@ -480,12 +480,12 @@
     <string name="ConversationActivity_to_send_voice_messages_allow_signal_access_to_your_microphone">Ahots-mezuak bidaltzeko, eman Tellomi-i mikrofonoa atzitzeko baimena.</string>
     <!-- Toast text explaining Signal\'s need for microphone access -->
     <string name="ConversationActivity_signal_needs_microphone_access_voice_message">Tellomi-ek mikrofonoa atzitu behar du ahots-mezua grabatzeko.</string>
-    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Signalek Mikrofonorako baimena behar du audio mezuak bidaltzeko, baina ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Mikrofonoa\"</string>
+    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Tellomik Mikrofonorako baimena behar du audio mezuak bidaltzeko, baina ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Mikrofonoa\"</string>
 
     <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">Tellomi aplikazioak Mikronofoa eta Kamera baimenak behar ditu %1$skontaktuari deitzeko, baina ukatu egin dizkiozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Mikrofonoa\" eta \"Kamera\"</string>
-    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Argazkiak eta bideoak grabatzeko, eman baimena Signali kamera erabiltzeko.</string>
+    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Argazkiak eta bideoak grabatzeko, eman baimena Tellomiri kamera erabiltzeko.</string>
     <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Tellomi aplikazioak Kamera baimena behar du argazkiak eta bideoak egiteko, baina ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Kamera\".</string>
-    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Signalek Kamera baimena behar du argazkiak eta bideoak egiteko</string>
+    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Tellomik Kamera baimena behar du argazkiak eta bideoak egiteko</string>
     <string name="ConversationActivity_enable_the_microphone_permission_to_capture_videos_with_sound">Gaitu mikrofonorako baimena soinua duten bideoak grabatu ahal izateko.</string>
     <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Tellomi aplikazioak mikrofonorako baimena behar du bideoak grabatu ahal izateko.</string>
 
@@ -1066,7 +1066,7 @@
 
     <!-- DecryptionFailedDialog -->
     <string name="DecryptionFailedDialog_chat_session_refreshed">Txat-saioa eguneratu da</string>
-    <string name="DecryptionFailedDialog_signal_uses_end_to_end_encryption">Signalek muturretik-muturrerako enkriptatzea erabiltzen du eta noizbehinka txat-saioa eguneratu beharko duzu. Horrek ez du eraginik zure txataren segurtasunean, baina agian kontaktu horren mezuren bat galdu duzu, eta berriz bidaltzeko eskatu beharko zenioke.</string>
+    <string name="DecryptionFailedDialog_signal_uses_end_to_end_encryption">Tellomik muturretik-muturrerako enkriptatzea erabiltzen du eta noizbehinka txat-saioa eguneratu beharko duzu. Horrek ez du eraginik zure txataren segurtasunean, baina agian kontaktu horren mezuren bat galdu duzu, eta berriz bidaltzeko eskatu beharko zenioke.</string>
 
     <!-- LinkDeviceFragment -->
     <!-- Description for how Signal will work with a linked device (eg desktop, iPad) -->
@@ -1235,7 +1235,7 @@
     <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">Gailu honek ez du onartzen Play Services. Tellomi inaktibo dagoenean mezuak eskuratzea galarazten dioten sistemaren bateria-optimizazioak desgaitzeko, sakatu hau.</string>
 
     <!-- ExpiredBuildReminder -->
-    <string name="ExpiredBuildReminder_this_version_of_signal_has_expired">Signalen bertsio hau iraungi da. Eguneratu orain mezuak bidali eta jaso ahal izateko.</string>
+    <string name="ExpiredBuildReminder_this_version_of_signal_has_expired">Tellomin bertsio hau iraungi da. Eguneratu orain mezuak bidali eta jaso ahal izateko.</string>
     <string name="ExpiredBuildReminder_update_now">Eguneratu orain</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->
@@ -1750,7 +1750,7 @@
         <item quantity="one">Bidali SMS gonbidapen %1$d?</item>
         <item quantity="other">Bidali %1$d SMS gonbidapen?</item>
     </plurals>
-    <string name="InviteActivity_lets_switch_to_signal">Signalera alda dezagun: %1$s</string>
+    <string name="InviteActivity_lets_switch_to_signal">Tellomira alda dezagun: %1$s</string>
     <!-- Toast shown when Signal is unable to find an external app to share the Invite text string to -->
     <string name="InviteActivity_no_app_to_share_to">Dirudienez ez duzu partekatzeko aplikazio bakar bat ere.</string>
 
@@ -2337,7 +2337,7 @@
     <string name="DeviceProvisioningActivity_link_a_signal_device">Lotu Tellomi gailu bat?</string>
     <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">Mahaigaineko ordenagailu bat edo iPad bat Tellomi-eko kontu honekin lotzeko, joan lotutako gailuetara eta sakatu \"Lotu beste gailu bat\". Ondoren, eskaneatu QR kodea berriro. Eskaneatu Tellomi-etik datozen QR kodeak bakarrik.</string>
 
-    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Signalek Kamera baimena behar du QR kodea eskaneatzeko baina ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Kamera\".</string>
+    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">Tellomik Kamera baimena behar du QR kodea eskaneatzeko baina ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Kamera\".</string>
     <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">Ezin da QR koderik eskaneatu Kamera baimen gabe</string>
 
     <!-- OutdatedBuildReminder -->
@@ -2468,7 +2468,7 @@
 
     <!-- WebRtcCallActivity -->
     <string name="WebRtcCallActivity__tap_here_to_turn_on_your_video">Sakatu hau bideoa aktibatzeko</string>
-    <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">%1$s erabiltzaileari deitzeko, Signalek zure kamera erabiltzeko baimena behar du</string>
+    <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">%1$s erabiltzaileari deitzeko, Tellomik zure kamera erabiltzeko baimena behar du</string>
     <!-- Subtitle shown at top of call where %s is the elapsed time of the call -->
     <string name="WebRtcCallActivity__signal_s">Tellomi %1$s</string>
     <string name="WebRtcCallActivity__calling">Deitzen…</string>
@@ -3214,8 +3214,8 @@
     <string name="UsernameEditFragment_continue">Jarraitu</string>
 
     <plurals name="UserNotificationMigrationJob_d_contacts_are_on_signal">
-        <item quantity="one">Kontaktu %1$d Signalen dago!</item>
-        <item quantity="other">%1$d kontaktu Signalen daude!</item>
+        <item quantity="one">Kontaktu %1$d Tellomin dago!</item>
+        <item quantity="other">%1$d kontaktu Tellomin daude!</item>
     </plurals>
 
     <!-- UsernameShareBottomSheet -->
@@ -3229,7 +3229,7 @@
     <string name="VerifyIdentityActivity_our_signal_safety_number">Gure Tellomi-en segurtasun zenbakia:</string>
     <string name="VerifyIdentityActivity_no_app_to_share_to">Dirudienez ez duzu partekatzeko aplikazio bakar bat ere.</string>
     <string name="VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard">Ez da aurkitu konparantzeko segurtasun zenbakirik arbelean</string>
-    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Signalek Kamera baimena behar du QR kodea eskaneatzeko baina ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Kamera\".</string>
+    <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Tellomik Kamera baimena behar du QR kodea eskaneatzeko baina ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Kamera\".</string>
     <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">Ezin da QR kodea eskaneatu Kamera baimen gabe</string>
     <string name="VerifyIdentityActivity_you_must_first_exchange_messages_in_order_to_view">Mezuak trukatu behar duzu %1$s erabiltzailearen segurtasun zenbakia ikusi ahal izateko.</string>
     <!-- Dialog message explaining to user they must exchange messages first to create a safety number -->
@@ -3375,7 +3375,7 @@
     <string name="NotificationChannel_group_chats">Txatak</string>
     <string name="NotificationChannel_missing_display_name">Ezezaguna</string>
     <string name="NotificationChannel_voice_notes">Ahots Oharrak</string>
-    <string name="NotificationChannel_contact_joined_signal">Kontaktua orain Signalen dago</string>
+    <string name="NotificationChannel_contact_joined_signal">Kontaktua orain Tellomin dago</string>
     <!-- Toast shown when there is no application available to open the settings -->
     <string name="NotificationChannels__no_activity_available_to_open_notification_channel_settings">Ez dago jakinarazpen-kanalaren ezarpenak irekitzeko jarduerarik.</string>
     <!-- Notification channel name for showing persistent background connection on devices without push notifications -->
@@ -3427,7 +3427,7 @@
     </plurals>
 
     <!-- Message shown when the app requests permission to save media to the device storage, but that permission has been permanently denied by the user. -->
-    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Signalek Gordailu baimena behar du kanpoko gordailuan datuak idazteko baina baimena ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Gordailua\".</string>
+    <string name="AttachmentSaver__signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">Tellomik Gordailu baimena behar du kanpoko gordailuan datuak idazteko baina baimena ukatu egin diozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Gordailua\".</string>
 
     <!-- Message explaining that it is not possible to save media to the device storage after the user denied the system save to storage permission. -->
     <string name="AttachmentSaver__unable_to_write_to_external_storage_without_permission">Ezin izan da kanpoko gordailuan idatzi baimen faltagatik</string>
@@ -3525,7 +3525,7 @@
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone">Deiari erantzuteko, eman Tellomi-i mikrofonoa atzitzeko baimena.</string>
     <!-- Message shown in permission dialog when attempting to answer a video call without camera or microphone permissions already granted. -->
     <string name="WebRtcCallActivity_to_answer_the_call_give_signal_access_to_your_microphone_and_camera">Bideo-deiari erantzuteko, eman Tellomi-i mikrofonorako eta kamerarako sarbidea.</string>
-    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Signalek Mikronofoa eta Kamera baimenak behar ditu deiak egin edo jasotzeko baina ukatu egin dizkiozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Mikrofonoa\" eta \"Kamera\"</string>
+    <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">Tellomik Mikronofoa eta Kamera baimenak behar ditu deiak egin edo jasotzeko baina ukatu egin dizkiozu. Joan aplikazioaren ezarpenetara, aukeratu \"Baimenak\" eta aktibatu \"Mikrofonoa\" eta \"Kamera\"</string>
     <string name="WebRtcCallActivity__answered_on_a_linked_device">Erantzunda lotutako gailu batean.</string>
     <string name="WebRtcCallActivity__declined_on_a_linked_device">Ukatuta lotutako gailu batean.</string>
     <string name="WebRtcCallActivity__busy_on_a_linked_device">Okupatuta lotutako gailu batean.</string>
@@ -3903,7 +3903,7 @@
     <string name="prompt_passphrase_activity__unlock">Desblokeatu</string>
 
     <!-- prompt_mms_activity -->
-    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">Signalek MMS ezarpenak behar ditu media eta taldeko mezuak banatu ahal izateko zure hari-gabeko hornitzailearen bitartez. Zure gailuak ez dauka informazio hau eskuragarri. Hau batzuetan gertatzen da blokeatuta dauden eta beste konfigurazio murrizgarriak dituzten gailuetan.</string>
+    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">Tellomik MMS ezarpenak behar ditu media eta taldeko mezuak banatu ahal izateko zure hari-gabeko hornitzailearen bitartez. Zure gailuak ez dauka informazio hau eskuragarri. Hau batzuetan gertatzen da blokeatuta dauden eta beste konfigurazio murrizgarriak dituzten gailuetan.</string>
     <string name="prompt_mms_activity__to_send_media_and_group_messages_tap_ok">Multimedia-edukiak eta taldeko mezuak bidaltzeko, sakatu \"Ados\" eta osatu beharrezkoak diren ezarpenak. Operadorearen MMS ezarpenak \"zure operadorearen APNa\" bilatuta aurki daitezke, normalean. Behin bakarrik egin beharko duzu hori.</string>
 
     <!-- BadDecryptLearnMoreDialog -->
@@ -4548,7 +4548,7 @@
     <string name="PaymentsTransferFragment__you_cant_transfer_to_your_own_signal_wallet_address">Ezin duzu zure Tellomi diru-zorroaren helbidera transferitu. Sartu diru-zorroaren helbidean zure kontutik, baliozko trukean.</string>
     <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs">QR kode bat eskaneatzeko, Tellomi-ek zure kamera erabiltzeko baimena behar du</string>
     <string name="PaymentsTransferFragment__signal_needs_the_camera_permission_to_capture_qr_code_go_to_settings">Tellomi-ek kamera erabiltzeko baimena behar du QR kode bat harrapatzeko. Joan ezarpenetara, aukeratu \"baimenak\" eta ahalbidetu \"kamera\".</string>
-    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs_access_to_the_camera">QR kode bat eskaneatzeko, Signalek zure kamera erabiltzeko baimena behar du</string>
+    <string name="PaymentsTransferFragment__to_scan_a_qr_code_signal_needs_access_to_the_camera">QR kode bat eskaneatzeko, Tellomik zure kamera erabiltzeko baimena behar du</string>
     <string name="PaymentsTransferFragment__settings">Ezarpenak</string>
 
     <!-- PaymentsTransferQrScanFragment -->
@@ -4919,7 +4919,7 @@
 
     <!-- KBS Megaphone -->
     <string name="KbsMegaphone__create_a_pin">PIN bat sortu</string>
-    <string name="KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped">PIN-ek Signalekin batera gordetako informazioa enkriptatuta mantentzen dute.</string>
+    <string name="KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped">PIN-ek Tellomirekin batera gordetako informazioa enkriptatuta mantentzen dute.</string>
     <string name="KbsMegaphone__create_pin">PINa sortu</string>
 
     <!-- Title for megaphone shown after registration without a pin but with aep to prompt the user to enter their pin -->
@@ -5305,8 +5305,8 @@
     <string name="GroupsLearnMore_what_are_legacy_groups">Zer dira Jarauntsitako Taldeak?</string>
     <string name="GroupsLearnMore_paragraph_1">Jarauntsitako Taldeak ez dira taldeen ezaugarri berriekin bateragarriak; esate baterako, administratzaileak eta taldeen egunerapenei buruzko informazio zehatzagoa izateko aukerak.</string>
     <string name="GroupsLearnMore_can_i_upgrade_a_legacy_group">Eguneratu dezaket Jarauntsitako Taldea?</string>
-    <string name="GroupsLearnMore_paragraph_2">Jarauntsitako Taldeak oraindik ezin dira Talde Berrietara eguneratu, baina Signalen azkenengo bertsioa baduzu, kide berak dituen Talde Berri bat sortu dezakezu.</string>
-    <string name="GroupsLearnMore_paragraph_3">Signalek Jarauntsitako Taldeak eguneratzeko modu bat eskainiko du aurrerantzean.</string>
+    <string name="GroupsLearnMore_paragraph_2">Jarauntsitako Taldeak oraindik ezin dira Talde Berrietara eguneratu, baina Tellomin azkenengo bertsioa baduzu, kide berak dituen Talde Berri bat sortu dezakezu.</string>
+    <string name="GroupsLearnMore_paragraph_3">Tellomik Jarauntsitako Taldeak eguneratzeko modu bat eskainiko du aurrerantzean.</string>
 
     <!-- GroupLinkBottomSheetDialogFragment -->
     <string name="GroupLinkBottomSheet_share_hint_requiring_approval">Esteka hau duen edonork ikus ditzake taldearen izena eta argazkia eta sartzeko eska dezake. Partekatu konfiantzako jendearekin.</string>
@@ -5931,7 +5931,7 @@
     <string name="NotificationsSettingsFragment__calls">Deiak</string>
     <!-- Notification header for sounds -->
     <string name="NotificationsSettingsFragment__sounds">Soinuak</string>
-    <string name="NotificationsSettingsFragment__contact_joins_signal">Kontaktua Signalen dago</string>
+    <string name="NotificationsSettingsFragment__contact_joins_signal">Kontaktua Tellomin dago</string>
     <!-- Notification body to get notified when someone joins Signal -->
     <string name="NotificationsSettingsFragment__notify_contact">Jakinarazi telefonoko kontaktu bat Tellomi-era batzen denean</string>
     <!-- Option to reset their notification settings -->
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s(e)k Tellomi-i laguntzen dio</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s(e)k Tellomi-i laguntzen dio hileroko dohaintza batekin. Tellomi zu bezalako pertsonek sostengatutako erakunde bat da, eta ez du irabazi-asmorik, iragarlerik edo inbertitzailerik.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s(e)k Signal-i laguntzen dio hileroko dohaintza batekin. Signal zu bezalako pertsonek sostengatutako erakunde bat da, eta ez du irabazi-asmorik, iragarlerik edo inbertitzailerik.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s(e)k Tellomi-i laguntzen dio dohaintza batekin. Tellomi zu bezalako pertsonek sostengatutako erakunde bat da, eta ez du irabazi-asmorik, iragarlerik edo inbertitzailerik.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s(e)k Signal-i laguntzen dio dohaintza batekin. Signal zu bezalako pertsonek sostengatutako erakunde bat da, eta ez du irabazi-asmorik, iragarlerik edo inbertitzailerik.</string>
 
     <string name="ImageView__badge">Bereizgarria</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Iraungitze-data: %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Irabazi asmorik agbeko erakunde independente gisa, Tellomi-ek konpromisoa du mezu pribatuekiko. Iragarkirik gabe, jarraipen-tresnarik gabe, zaintzarik gabe. Egin dohaintza bat gaur Tellomi-i laguntzeko.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Irabazi asmorik agbeko erakunde independente gisa, Signal-ek konpromisoa du mezu pribatuekiko. Iragarkirik gabe, jarraipen-tresnarik gabe, zaintzarik gabe. Egin dohaintza bat gaur Signal-i laguntzeko.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Bereizgarri bat baino gehiago dituzunean, bat nabarmen dezakezu, beste erabiltzaileek zure profilean ikus dezaten.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Lortu profilerako bereizgarriak Tellomi-i lagunduta.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi irabazi-asmorik gabeko iragarlerik edo inbertitzailerik gabekoa da, zu bezalako pertsonek soilik sostengatzen dute.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal irabazi-asmorik gabeko iragarlerik edo inbertitzailerik gabekoa da, zu bezalako pertsonek soilik sostengatzen dute.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Egin dohaintza bat Tellomi-i</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Aukeratu babeskopia-plan bat</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Babeskopia guztiak muturretik muturrera enkriptatuta daude. Tellomi irabazi-asmorik gabeko erakunde bat da; bera—z, babeskopia-zerbitzua ordainduta, gure helburuekin lagunduko diguzu.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Babeskopia guztiak muturretik muturrera enkriptatuta daude. Signal irabazi-asmorik gabeko erakunde bat da; bera—z, babeskopia-zerbitzua ordainduta, gure helburuekin lagunduko diguzu.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Informazio gehiago</string>
     <!-- Primary action button label without a current selection -->

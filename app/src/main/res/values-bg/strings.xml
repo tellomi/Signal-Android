@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s подкрепя Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s подкрепя Tellomi с месечно дарение. Tellomi е организация с нестопанска цел, без рекламодатели или инвеститори, подкрепяна само от хора като вас.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s подкрепя Signal с месечно дарение. Signal е организация с нестопанска цел, без рекламодатели или инвеститори, подкрепяна само от хора като вас.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s подкрепя Tellomi с дарение. Tellomi е организация с нестопанска цел, без рекламодатели или инвеститори, подкрепяна само от хора като вас.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s подкрепя Signal с дарение. Signal е организация с нестопанска цел, без рекламодатели или инвеститори, подкрепяна само от хора като вас.</string>
 
     <string name="ImageView__badge">Значка</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Изтича на %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Като независима организация с нестопанска цел, Tellomi се ангажира да предоставя поверителни съобщения и разговори. Без реклами, без тракери, без следене. Дарете днес, за да подкрепите Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Като независима организация с нестопанска цел, Signal се ангажира да предоставя поверителни съобщения и разговори. Без реклами, без тракери, без следене. Дарете днес, за да подкрепите Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Когато имате повече от една значка, можете да изберете една от тях, която да бъде представена в профила ви, за да я виждат другите.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Получете значки за профила си, като подкрепяте Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi е организация с нестопанска цел, без рекламодатели или инвеститори, подкрепяна само от хора като вас.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal е организация с нестопанска цел, без рекламодатели или инвеститори, подкрепяна само от хора като вас.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Дарете на Tellomi</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Изберете своя план за резервно копие</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Всички резервни копия са криптирани от край до край. Tellomi е организация с нестопанска цел – плащането за резервни копия подкрепя нашата мисия.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Всички резервни копия са криптирани от край до край. Signal е организация с нестопанска цел – плащането за резервни копия подкрепя нашата мисия.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Научете повече</string>
     <!-- Primary action button label without a current selection -->

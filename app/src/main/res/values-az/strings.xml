@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s Tellomi-ı dəstəkləyir</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s Tellomi-a aylıq ianə köçürərək dəstək verir. Tellomi reklamlaçıları, yaxud da investorları olmayan və yalnız sizin kimi insanlardan dəstək alan bir qeyri-kommersiya təşkilatıdır.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s Signal-a aylıq ianə köçürərək dəstək verir. Signal reklamlaçıları, yaxud da investorları olmayan və yalnız sizin kimi insanlardan dəstək alan bir qeyri-kommersiya təşkilatıdır.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Siqnal-a ianə ilə dəstək verir. Tellomi, reklamlaçıları, yaxud da investorları olmayan və yalnız sizin kimi insanlardan dəstək alan bir qeyri-kommersiya təşkilatıdır.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s Siqnal-a ianə ilə dəstək verir. Signal, reklamlaçıları, yaxud da investorları olmayan və yalnız sizin kimi insanlardan dəstək alan bir qeyri-kommersiya təşkilatıdır.</string>
 
     <string name="ImageView__badge">Nişan</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Abunəliyin bitmə vaxtı: %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Müstəqil qeyri-kommersiya təşkilatı kimi Tellomi mesajlaşma və zənglərin məxfiliyini qoruyur. Reklamsız, təqibsiz və nəzarətsiz. Tellomi-ı dəstəkləmək üçün bu gün ianə verin.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Müstəqil qeyri-kommersiya təşkilatı kimi Signal mesajlaşma və zənglərin məxfiliyini qoruyur. Reklamsız, təqibsiz və nəzarətsiz. Signal-ı dəstəkləmək üçün bu gün ianə verin.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Bir neçə nişana sahib olduğunuz zaman, profilinizdə başqalarının görməsi üçün onlardan birini seçə bilərsiniz.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Tellomi-ı dəstəkləyərək profiliniz üçün nişanlar qazanın.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi, reklamları və ya investoru olmayan və yalnız sizin kimi insanlardan dəstək alan qeyri-kommersiya təşkilatıdır.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal, reklamları və ya investoru olmayan və yalnız sizin kimi insanlardan dəstək alan qeyri-kommersiya təşkilatıdır.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tellomi-a ianə verin</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Ehtiyat nüsxə planınızı seçin</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Bütün ehtiyat nüsxələr tam şəkildə şifrələnib. Tellomi ehtiyat nüsxə xərclərinin ödənilməsi missiyamızı dəstəkləyən bir qeyri-kommersiya təşkilatıdır.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Bütün ehtiyat nüsxələr tam şəkildə şifrələnib. Signal ehtiyat nüsxə xərclərinin ödənilməsi missiyamızı dəstəkləyən bir qeyri-kommersiya təşkilatıdır.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Daha ətraflı</string>
     <!-- Primary action button label without a current selection -->

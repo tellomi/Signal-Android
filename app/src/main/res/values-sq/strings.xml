@@ -4852,7 +4852,7 @@
 
     <!-- KbsSplashFragment -->
     <string name="KbsSplashFragment__introducing_pins">Ju paraqesim PIN-et</string>
-    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">PIN-et i mbajnë të koduara të dhëna e depozituara me Tellomi, që kështu të mund t’i përdorni vetëm ju. Profili, parametrat dhe kontaktet tuaja do të rikthehen, kur të riinstaloni Signaln. S’do t’ju duhet PIN-i për të hapur aplikacionin.</string>
+    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">PIN-et i mbajnë të koduara të dhëna e depozituara me Tellomi, që kështu të mund t’i përdorni vetëm ju. Profili, parametrat dhe kontaktet tuaja do të rikthehen, kur të riinstaloni Tellomi. S’do t’ju duhet PIN-i për të hapur aplikacionin.</string>
     <string name="KbsSplashFragment__learn_more">Mësoni Më Tepër</string>
   <!-- Removed by excludeNonTranslatables <string name="KbsSplashFragment__learn_more_link" translatable="false">https://tellomi.app/help/360007059792</string> -->
     <string name="KbsSplashFragment__registration_lock_equals_pin">Kyçje Regjistrimi = PIN</string>
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s mbështesin Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s mbështet Tellomi me një donacion të përmuajshëm. Tellomi është një ent jofitimprurës pa reklama dhe investues, i përkrahur vetëm nga njerëz si ti.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s mbështet Signal me një donacion të përmuajshëm. Signal është një ent jofitimprurës pa reklama dhe investues, i përkrahur vetëm nga njerëz si ti.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s e mbështeti Tellomi me një donacion. Tellomi është një ent jofitimprurës pa reklama dhe investues, i përkrahur vetëm nga njerëz si ti.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s e mbështeti Signal me një donacion. Signal është një ent jofitimprurës pa reklama dhe investues, i përkrahur vetëm nga njerëz si ti.</string>
 
     <string name="ImageView__badge">Distinktiv</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Skadon më %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Si një ent jofitimprurës i pavarur, Tellomi është i përkushtuar ndaj mesazheve dhe thirrjeve private. Pa reklama, pa gjurmues, pa mbikëqyrje. Dhuro sot për të mbështetur Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Si një ent jofitimprurës i pavarur, Signal është i përkushtuar ndaj mesazheve dhe thirrjeve private. Pa reklama, pa gjurmues, pa mbikëqyrje. Dhuro sot për të mbështetur Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Kur ke më shumë se një distinktiv, mund të zgjedhësh një, që të tjerët ta shohin në profilin tënd.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Merr distinktivë për profilin, duke përkrahur Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi-i është një ent jofitimprurës pa rrjete reklamash dhe investues, i përkrahur vetëm nga njerëz si ju.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal-i është një ent jofitimprurës pa rrjete reklamash dhe investues, i përkrahur vetëm nga njerëz si ju.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Dhuro për Tellomi</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Zgjidh planin e kopjeruajtjes</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Të gjitha kopjeruajtjet janë të koduara nga skaji në skaj. Tellomi është organizatë jofitimprurëse—pagesa për kopjeruajtjet ndihmon në mbështetjen e misionit tonë.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Të gjitha kopjeruajtjet janë të koduara nga skaji në skaj. Signal është organizatë jofitimprurëse—pagesa për kopjeruajtjet ndihmon në mbështetjen e misionit tonë.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Mëso më shumë</string>
     <!-- Primary action button label without a current selection -->

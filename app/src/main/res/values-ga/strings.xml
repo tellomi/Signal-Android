@@ -6909,9 +6909,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">Tacaíonn %1$s le Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">Tugann %1$s tabhartas do Tellomi gach mí chun tacú leis. Cuideachta neamhbhrabúis is ea Tellomi nach bhfuil aon fhógróirí ná infheisteoirí aici, lena dtacaíonn daoine mar a dhéanann tusa.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">Tugann %1$s tabhartas do Signal gach mí chun tacú leis. Cuideachta neamhbhrabúis is ea Signal nach bhfuil aon fhógróirí ná infheisteoirí aici, lena dtacaíonn daoine mar a dhéanann tusa.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">Tacaíonn %1$s le Tellomi le tabhartas. Cuideachta neamhbhrabúis is ea Tellomi nach bhfuil aon fhógróirí ná infheisteoirí aici, lena dtacaíonn daoine mar a dhéanann tusa.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">Tacaíonn %1$s le Signal le tabhartas. Cuideachta neamhbhrabúis is ea Signal nach bhfuil aon fhógróirí ná infheisteoirí aici, lena dtacaíonn daoine mar a dhéanann tusa.</string>
 
     <string name="ImageView__badge">Suaitheantas</string>
 
@@ -6933,7 +6933,7 @@
     <string name="Subscription__expires_s">As feidhm %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Mar eagraíocht neamhbhrabúis neamhspleách, tá Tellomi tiomanta do theachtaireachtaí agus do ghlaonna príobháideacha. Gan aon fhógraí, gan aon rianairí, gan aon fhaireachas. Tabhair airgead inniu chun tacú le Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Mar eagraíocht neamhbhrabúis neamhspleách, tá Signal tiomanta do theachtaireachtaí agus do ghlaonna príobháideacha. Gan aon fhógraí, gan aon rianairí, gan aon fhaireachas. Tabhair airgead inniu chun tacú le Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6954,7 +6954,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Nuair a bhíonn níos mó ná suaitheantas amháin agat, is féidir leat ceann a roghnú le cur faoi thrácht, infheicthe ar do phróifíl.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Faigh suaitheantais do do phróifíl trí thacú le Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Cuideachta neamhbhrabúis is ea Tellomi nach bhfuil aon fhógróirí ná infheisteoirí aici, lena dtacaíonn daoine mar a dhéanann tusa.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Cuideachta neamhbhrabúis is ea Signal nach bhfuil aon fhógróirí ná infheisteoirí aici, lena dtacaíonn daoine mar a dhéanann tusa.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Tabhair airgead do Tellomi</string>
@@ -9759,7 +9759,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Roghnaigh do phlean cúltaca</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Tá gach cúltaca criptithe ó cheann ceann. Eagraíocht neamhbhrabúis is é Tellomi — cuidíonn íoc as cúltacaí le tacú lenár misean.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Tá gach cúltaca criptithe ó cheann ceann. Eagraíocht neamhbhrabúis is é Signal — cuidíonn íoc as cúltacaí le tacú lenár misean.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Tuilleadh faisnéise</string>
     <!-- Primary action button label without a current selection -->

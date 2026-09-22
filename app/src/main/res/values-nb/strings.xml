@@ -727,7 +727,7 @@
     <!-- Detail tip 0 title -->
     <string name="SafetyTips_detail_tip0_title">Ikke svar på meldinger fra Tellomi</string>
     <!-- Detail tip 0 message -->
-    <string name="SafetyTips_detail_tip0_message">Tellomi kommer aldri til å be deg om å sende registreringskoden, PIN-koden eller sikkerhetskoden din. Ikke svar på meldinger som tilsynelatende kommer fra Tellomi eller Signals brukerstøtte. Svindlere kan lage falske samtaler for å hacke kontoen din.</string>
+    <string name="SafetyTips_detail_tip0_message">Tellomi kommer aldri til å be deg om å sende registreringskoden, PIN-koden eller sikkerhetskoden din. Ikke svar på meldinger som tilsynelatende kommer fra Tellomi eller Tellomis brukerstøtte. Svindlere kan lage falske samtaler for å hacke kontoen din.</string>
     <!-- Detail tip 1 title -->
     <string name="SafetyTips_detail_tip1_title">Gå gjennom navn og bilder</string>
     <!-- Detail tip 1 message -->
@@ -1412,7 +1412,7 @@
     <!-- Title of a bottom sheet that is shown when the user is having connectivity issues -->
     <string name="ConnectivityWarningBottomSheet_title">Det kan hende at du ikke mottar meldinger</string>
     <!-- Body of a bottom sheet that is shown when the user is having connectivity issues -->
-    <string name="ConnectivityWarningBottomSheet_body">Det kan hende at problemet løser seg hvis du starter enheten på nytt. Hvis det vedvarer, kan du ta kontakt med Signals brukerstøtte.</string>
+    <string name="ConnectivityWarningBottomSheet_body">Det kan hende at problemet løser seg hvis du starter enheten på nytt. Hvis det vedvarer, kan du ta kontakt med Tellomis brukerstøtte.</string>
     <!-- Text for a button in a bottom sheet that is shown when the user is having connectivity issues. Clicking it will dismiss the bottom sheet. -->
     <string name="ConnectivityWarningBottomSheet_dismiss_button">Skjønner</string>
 
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s støtter Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s støtter Tellomi med et månedlig pengebeløp. Tellomi er en ideell organisasjon uten annonsører og investorer som drives kun av folk som deg.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s støtter Signal med et månedlig pengebeløp. Signal er en ideell organisasjon uten annonsører og investorer som drives kun av folk som deg.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s støttet Tellomi med et pengebeløp. Tellomi er en ideell organisasjon uten annonsører og investorer som drives kun av folk som deg.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s støttet Signal med et pengebeløp. Signal er en ideell organisasjon uten annonsører og investorer som drives kun av folk som deg.</string>
 
     <string name="ImageView__badge">Merke</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Utløper %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Tellomi er en uavhengig, ideell organisasjon som tilbyr private chatter og samtaler. Ingen annonser, ingen sporing, ingen overvåking. Vil du støtte Tellomi med en pengegave?</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Signal er en uavhengig, ideell organisasjon som tilbyr private chatter og samtaler. Ingen annonser, ingen sporing, ingen overvåking. Vil du støtte Signal med en pengegave?</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Når du har mer enn ett merke, kan du velge ett som vises frem på profilen din.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Få merker på profilen din ved å støtte Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi er en ideell organisasjon uten annonsører og investorer som drives kun av folk som deg.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal er en ideell organisasjon uten annonsører og investorer som drives kun av folk som deg.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Gi penger til Tellomi</string>
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Abonnementet er sagt opp</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatisk sikkerhetskopiering med Signals trygge, ende-til-ende-krypterte lagringstjeneste.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatisk sikkerhetskopiering med Tellomis trygge, ende-til-ende-krypterte lagringstjeneste.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatisk sikkerhetskopiering med Signals sikre, ende-til-ende-krypterte lagringstjeneste. Kom i gang på mobilen din.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatisk sikkerhetskopiering med Tellomis sikre, ende-til-ende-krypterte lagringstjeneste. Kom i gang på mobilen din.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Fant ingen abonnementer på denne enheten."</string>
     <!-- Action button label to set up backups -->
@@ -8837,7 +8837,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">Slå på sikkerhetskopiering</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sikkerhetskopiering er slått av, og dataene ble slettet fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">Sikkerhetskopiering er slått av, og dataene ble slettet fra Tellomis sikre lagringstjeneste.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">Nedlasting av sikkerhetskopi</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -8902,17 +8902,17 @@
     <!-- Button label to see more details about redemption error -->
     <string name="RemoteBackupsSettingsFragment__details">Detaljer</string>
     <!-- Text displayed when there was an error deleting backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sikkerhetskopiering er slått av, men det oppsto en feil da dataene dine skulle slettes fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_but_there_was_an_error">Sikkerhetskopiering er slått av, men det oppsto en feil da dataene dine skulle slettes fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed as the title in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__failed_to_delete_backup">Sikkerhetskopien kunne ikke slettes</string>
     <!-- Text displayed as the body in a card when backup fails to delete -->
     <string name="RemoteBackupsSettingsFragment__an_error_occurred_please_contact_support">Det har oppstått en feil. Ta kontakt med brukerstøtten vår.</string>
     <!-- Text displayed while we are processing a backup delete but are or need to download optimized media -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sikkerhetskopiering er slått av. Dataene dine lastes ned på enheten og slettes så fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_your_data_will_be">Sikkerhetskopiering er slått av. Dataene dine lastes ned på enheten og slettes så fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed while we are processing a backup delete -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sikkerhetskopiering er slått av, og dataene blir slettet fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data">Sikkerhetskopiering er slått av, og dataene blir slettet fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed after we have deleted a user\'s backup -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sikkerhetskopiering er slått av, og dataene ble slettet fra Signals sikre lagringstjeneste.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off_and_your_data_has_been_deleted">Sikkerhetskopiering er slått av, og dataene ble slettet fra Tellomis sikre lagringstjeneste.</string>
     <!-- Text displayed while downloading backup during deletion. First placeholder is amount downloaded, second is amount remaining, last is percentage. -->
     <string name="RemoteBackupsSettingsFragment__downloading_s_of_s_d">Laster ned %1$s av %2$s (%3$d %%)</string>
     <!-- Text displayed when user is out of storage space. Placeholder is storage limit in human readable form (ex. 1GB) -->
@@ -9009,7 +9009,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Sikkerhetskopier meldingene og mediefilene dine med Signals sikre ende-til-ende-krypterte lagringstjeneste. Behold alt innholdet ditt når du må bytte mobil eller installere Tellomi på nytt.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">Sikkerhetskopier meldingene og mediefilene dine med Tellomis sikre ende-til-ende-krypterte lagringstjeneste. Behold alt innholdet ditt når du må bytte mobil eller installere Tellomi på nytt.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">Ende-til-ende-kryptert</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Velg et abonnement for sikkerhetskopiering</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Alle sikkerhetskopier er ende-til-ende-kryptert. Tellomi er en ideell organisasjon, og du bidrar til å holde hjulene i gang ved å betale for sikkerhetskopiering.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Alle sikkerhetskopier er ende-til-ende-kryptert. Signal er en ideell organisasjon, og du bidrar til å holde hjulene i gang ved å betale for sikkerhetskopiering.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Les mer</string>
     <!-- Primary action button label without a current selection -->

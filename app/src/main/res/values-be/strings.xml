@@ -6749,9 +6749,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s падтрымлівае Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s падтрымлівае Tellomi штомесячным ахвяраваннем. Tellomi - гэта некамерцыйная арганізацыя без рэкламадаўцаў і інвестараў, якую падтрымліваюць толькі такія людзі, як вы.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s падтрымлівае Signal штомесячным ахвяраваннем. Signal - гэта некамерцыйная арганізацыя без рэкламадаўцаў і інвестараў, якую падтрымліваюць толькі такія людзі, як вы.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s падтрымлівае Tellomi разавым ахвяраваннем. Tellomi - гэта некамерцыйная арганізацыя без рэкламадаўцаў і інвестараў, якую падтрымліваюць толькі такія людзі, як вы.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s падтрымлівае Signal разавым ахвяраваннем. Signal - гэта некамерцыйная арганізацыя без рэкламадаўцаў і інвестараў, якую падтрымліваюць толькі такія людзі, як вы.</string>
 
     <string name="ImageView__badge">Значок</string>
 
@@ -6773,7 +6773,7 @@
     <string name="Subscription__expires_s">Сканчаецца: %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Як незалежная некамерцыйная арганізацыя, Tellomi захоўвае канфідэнцыйнасць паведамленняў і званкоў. Без рэкламы, без трэкераў, без сачэння. Зрабіце ахвяраванне сёння, каб падтрымаць Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Як незалежная некамерцыйная арганізацыя, Signal захоўвае канфідэнцыйнасць паведамленняў і званкоў. Без рэкламы, без трэкераў, без сачэння. Зрабіце ахвяраванне сёння, каб падтрымаць Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6794,7 +6794,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Калі вы маеце некалькі значкоў, вы можаце выбраць асаблівы значок, каб іншыя змаглі бачыць яго ў вашым профілі.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Падтрымлівайце Tellomi і атрымлівайце значкі для свайго профілю.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi - гэта некамерцыйная арганізацыя без рэкламадаўцаў і інвестараў, якую падтрымліваюць толькі такія людзі, як вы.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal - гэта некамерцыйная арганізацыя без рэкламадаўцаў і інвестараў, якую падтрымліваюць толькі такія людзі, як вы.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Ахвяраваць для Tellomi</string>
@@ -9561,7 +9561,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Выберыце план для рэзервовага капiравання</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Усе рэзервовыя копіі абаронены скразным шыфраваннем. Tellomi — некамерцыйная арганізацыя, таму аплата за рэзервовае капіраванне дапамагае падтрымліваць нашу місію.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Усе рэзервовыя копіі абаронены скразным шыфраваннем. Signal — некамерцыйная арганізацыя, таму аплата за рэзервовае капіраванне дапамагае падтрымліваць нашу місію.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Даведацца больш</string>
     <!-- Primary action button label without a current selection -->

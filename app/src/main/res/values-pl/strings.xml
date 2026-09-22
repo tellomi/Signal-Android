@@ -6749,9 +6749,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s wspiera Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s wspiera Tellomi comiesięczną darowizną. Tellomi jest organizacją non profit. Nie mamy reklamodawców ani inwestorów. Utrzymujemy się dzięki wsparciu osób takich jak Ty.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s wspiera Signal comiesięczną darowizną. Signal jest organizacją non profit. Nie mamy reklamodawców ani inwestorów. Utrzymujemy się dzięki wsparciu osób takich jak Ty.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s jest naszym darczyńcą. Tellomi jest organizacją non profit. Nie mamy reklamodawców ani inwestorów. Utrzymujemy się dzięki wsparciu osób takich jak Ty.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s jest naszym darczyńcą. Signal jest organizacją non profit. Nie mamy reklamodawców ani inwestorów. Utrzymujemy się dzięki wsparciu osób takich jak Ty.</string>
 
     <string name="ImageView__badge">Odznaka</string>
 
@@ -6773,7 +6773,7 @@
     <string name="Subscription__expires_s">Wygasa %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Jako niezależna organizacja non profit stawiamy na poufność wiadomości i połączeń. Bez reklam, bez śledzenia, bez inwigilacji. Wpłać darowiznę i wesprzyj Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Jako niezależna organizacja non profit stawiamy na poufność wiadomości i połączeń. Bez reklam, bez śledzenia, bez inwigilacji. Wpłać darowiznę i wesprzyj Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6794,7 +6794,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Kiedy masz więcej niż jedną odznakę, możesz zdecydować, którą chcesz pokazać w swoim profilu.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Wspieraj Tellomi, a otrzymasz odznakę w swoim profilu.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi jest organizacją non profit. Nie mamy reklamodawców ani inwestorów. Utrzymujemy się dzięki wsparciu osób takich jak Ty.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal jest organizacją non profit. Nie mamy reklamodawców ani inwestorów. Utrzymujemy się dzięki wsparciu osób takich jak Ty.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Wesprzyj Tellomi</string>

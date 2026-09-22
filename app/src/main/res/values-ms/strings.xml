@@ -6269,9 +6269,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s menyokong Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s menyokong Tellomi dengan derma bulanan. Tellomi adalah organisasi bukan berasaskan keuntungan tanpa pengiklan atau pelabur, hanya disokong oleh orang ramai seperti anda.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s menyokong Signal dengan derma bulanan. Signal adalah organisasi bukan berasaskan keuntungan tanpa pengiklan atau pelabur, hanya disokong oleh orang ramai seperti anda.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s menyokong Tellomi dengan derma. Tellomi adalah aplikasi bukan berasaskan keuntungan tanpa pengiklan atau pelabur, hanya disokong oleh orang ramai seperti anda.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s menyokong Signal dengan derma. Signal adalah aplikasi bukan berasaskan keuntungan tanpa pengiklan atau pelabur, hanya disokong oleh orang ramai seperti anda.</string>
 
     <string name="ImageView__badge">Lencana</string>
 
@@ -6293,7 +6293,7 @@
     <string name="Subscription__expires_s">Tamat tempoh pada %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Sebagai organisasi bukan untung bebas, Tellomi komited terhadap pemesejan dan panggilan peribadi. Tiada iklan, tiada penjejak, tiada pengawasan. Derma hari ini untuk menyokong Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Sebagai organisasi bukan untung bebas, Signal komited terhadap pemesejan dan panggilan peribadi. Tiada iklan, tiada penjejak, tiada pengawasan. Derma hari ini untuk menyokong Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6314,7 +6314,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Apabila anda memiliki lebih daripada satu lencana, anda boleh memilih satu untuk dipamerkan agar dapat dilihat oleh orang lain di profil anda.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Dapatkan lencana untuk profil anda dengan menyokong Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi adalah organisasi bukan untung tanpa pengiklan atau pelabur, hanya disokong oleh orang ramai seperti anda.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal adalah organisasi bukan untung tanpa pengiklan atau pelabur, hanya disokong oleh orang ramai seperti anda.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Derma kepada Tellomi</string>
@@ -8967,7 +8967,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Pilih pelan sandaran anda</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Semua sandaran disulitkan dari hujung ke hujung. Tellomi bukan berasaskan keuntungan—membayar untuk sandaran membantu menyokong misi kami.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Semua sandaran disulitkan dari hujung ke hujung. Signal bukan berasaskan keuntungan—membayar untuk sandaran membantu menyokong misi kami.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Ketahui lebih lanjut</string>
     <!-- Primary action button label without a current selection -->

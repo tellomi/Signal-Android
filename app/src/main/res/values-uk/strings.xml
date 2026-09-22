@@ -6749,9 +6749,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s підтримує Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s підтримує Tellomi, здійснюючи щомісячний донат. Tellomi — неприбуткова організація, що не має ні доходів від реклами, ні інвесторів. Її підтримують лише такі люди, як ви.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s підтримує Signal, здійснюючи щомісячний донат. Signal — неприбуткова організація, що не має ні доходів від реклами, ні інвесторів. Її підтримують лише такі люди, як ви.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s підтримує Tellomi, здійснюючи щомісячний донат. Tellomi — неприбуткова організація, що не має ні доходів від реклами, ні інвесторів. Її підтримують лише такі люди, як ви.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s підтримує Signal, здійснюючи щомісячний донат. Signal — неприбуткова організація, що не має ні доходів від реклами, ні інвесторів. Її підтримують лише такі люди, як ви.</string>
 
     <string name="ImageView__badge">Значок</string>
 
@@ -6773,7 +6773,7 @@
     <string name="Subscription__expires_s">Дійсний до %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Tellomi — це незалежна неприбуткова організація, віддана ідеї конфіденційного спілкування. Без реклами, відстежування й нагляду. Підтримайте Tellomi донатом.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Signal — це незалежна неприбуткова організація, віддана ідеї конфіденційного спілкування. Без реклами, відстежування й нагляду. Підтримайте Signal донатом.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6794,7 +6794,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Коли у вас є декілька значків, ви можете обрати, який саме показувати у своєму профілі.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Отримуйте значки для профілю за підтримку Tellomi.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi — неприбуткова організація, що не має ні доходів від реклами, ні інвесторів. Її підтримують лише такі люди, як ви.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal — неприбуткова організація, що не має ні доходів від реклами, ні інвесторів. Її підтримують лише такі люди, як ви.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Підтримати Tellomi</string>
@@ -9561,7 +9561,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Оберіть план резервного копіювання</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Усі резервні копії захищені наскрізним шифруванням. Tellomi — неприбуткова організація, тож сплачуючи за резервне копіювання, ви підтримуєте нашу місію.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Усі резервні копії захищені наскрізним шифруванням. Signal — неприбуткова організація, тож сплачуючи за резервне копіювання, ви підтримуєте нашу місію.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Докладніше</string>
     <!-- Primary action button label without a current selection -->

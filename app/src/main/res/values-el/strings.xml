@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">Ο χρήστης %1$s στηρίζει το Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">Ο χρήστης %1$s στηρίζει το Tellomi με μηνιαία δωρεά. Το Tellomi είναι μη κερδοσκοπικός οργανισμός, χωρίς διαφημιστές και επενδυτές, που υποστηρίζεται από άτομα όπως εσύ.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">Ο χρήστης %1$s στηρίζει το Signal με μηνιαία δωρεά. Το Signal είναι μη κερδοσκοπικός οργανισμός, χωρίς διαφημιστές και επενδυτές, που υποστηρίζεται από άτομα όπως εσύ.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">O χρήστης %1$s στηρίζει το Tellomi με δωρεά. Το Tellomi είναι μη κερδοσκοπικός οργανισμός, χωρίς διαφημιστές και επενδυτές, που υποστηρίζεται από άτομα όπως εσύ.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">O χρήστης %1$s στηρίζει το Signal με δωρεά. Το Signal είναι μη κερδοσκοπικός οργανισμός, χωρίς διαφημιστές και επενδυτές, που υποστηρίζεται από άτομα όπως εσύ.</string>
 
     <string name="ImageView__badge">Σήμα</string>
 
@@ -6453,7 +6453,7 @@
     <string name="Subscription__expires_s">Λήγει στις %1$s</string>
 
     <!-- Title of learn more sheet -->
-    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Ως ανεξάρτητος μη κερδοσκοπικός οργανισμός, το Tellomi έχει δεσμευτεί για ιδιωτικά μηνύματα και κλήσεις. Χωρίς διαφημίσεις, παρακολούθηση, επιτήρηση. Κάνε σήμερα μια δωρεά για να στηρίξεις το Tellomi.</string>
+    <string name="SubscribeLearnMoreBottomSheetDialogFragment__signal_is_different">Ως ανεξάρτητος μη κερδοσκοπικός οργανισμός, το Signal έχει δεσμευτεί για ιδιωτικά μηνύματα και κλήσεις. Χωρίς διαφημίσεις, παρακολούθηση, επιτήρηση. Κάνε σήμερα μια δωρεά για να στηρίξεις το Signal.</string>
     <!-- First small text blurb on learn more sheet -->
     <string name="SubscribeLearnMoreBottomSheetDialogFragment__private_messaging">No ads, no trackers, no surveillance. Donate today to support Tellomi.</string>
     <!-- Second small text blurb on learn more sheet -->
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Όταν έχεις πάνω από ένα σήματα, μπορείς να επιλέξεις ποιο μπορούν να δουν τα άλλα άτομα στο προφίλ σου.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Στηρίζοντας το Tellomi παίρνεις σήματα για το προφίλ σου.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Το Tellomi είναι μια μη κερδοσκοπική οργάνωση, χωρίς διαφημιστές και επενδυτές, που υποστηρίζεται από άτομα σαν κι εσένα.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Το Signal είναι μια μη κερδοσκοπική οργάνωση, χωρίς διαφημιστές και επενδυτές, που υποστηρίζεται από άτομα σαν κι εσένα.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">Κάνε μια δωρεά στο Tellomi</string>
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Διάλεξε το πρόγραμμα των αντιγράφων ασφαλείας σου</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Όλα τα αντίγραφα ασφαλείας είναι κρυπτογραφημένα από άκρο σε άκρο. Το Tellomi είναι μη κερδοσκοπικό—η πληρωμή για αντίγραφα ασφαλείας βοηθά στην υποστήριξη της αποστολής μας.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Όλα τα αντίγραφα ασφαλείας είναι κρυπτογραφημένα από άκρο σε άκρο. Το Signal είναι μη κερδοσκοπικό—η πληρωμή για αντίγραφα ασφαλείας βοηθά στην υποστήριξη της αποστολής μας.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Μάθε περισσότερα</string>
     <!-- Primary action button label without a current selection -->

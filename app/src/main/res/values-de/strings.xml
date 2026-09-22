@@ -2831,8 +2831,8 @@
     <string name="RegistrationActivity_i_understand">Verstanden</string>
     <string name="RegistrationActivity_play_services_error">Fehler bei den Google-Play-Diensten</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">Google-Play-Dienste werden aktualisiert oder sind vorübergehend nicht verfügbar. Bitte versuche es erneut.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigungen »Kontakte« und »Speicher«, damit du deine Kontakte einfacher erreichen und ihnen Nachrichten senden kannst. Deine Kontakte werden mittels Signals vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigung »Kontakte«, damit du deine Kontakte einfacher erreichen kannst. Deine Kontakte werden mittels Signals vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigungen »Kontakte« und »Speicher«, damit du deine Kontakte einfacher erreichen und ihnen Nachrichten senden kannst. Deine Kontakte werden mittels Tellomis vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi benötigt die Berechtigung »Kontakte«, damit du deine Kontakte einfacher erreichen kannst. Deine Kontakte werden mittels Tellomis vertraulicher Kontaktsuche auf die Tellomi-Server hochgeladen. Das heißt, sie sind Ende-zu-Ende-verschlüsselt und somit zu keiner Zeit dem Tellomi-Dienst bekannt.</string>
     <string name="RegistrationActivity_rate_limited_to_service">Du hast zu oft versucht, diese Telefonnummer zu registrieren. Bitte versuche es später erneut.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">Du hast zu oft versucht, diese Nummer zu registrieren. Bitte versuche es erneut in %1$s.</string>
@@ -6429,9 +6429,9 @@
     <!-- Title of a page in the bottom sheet. Placeholder is a user\'s short-name -->
     <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal">%1$s unterstützt Tellomi</string>
     <!-- Description of a page in the bottom sheet of a monthly badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s unterstützt Tellomi mit einer monatlichen Spende. Tellomi ist eine gemeinnützige Organisation ohne Werbekunden oder Investoren, die nur von Menschen wie dir unterstützt wird.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_monthly">%1$s unterstützt Signal mit einer monatlichen Spende. Signal ist eine gemeinnützige Organisation ohne Werbekunden oder Investoren, die nur von Menschen wie dir unterstützt wird.</string>
     <!-- Description of a page in the bottom sheet of a one-time badge. Placeholder is a user\'s short-name -->
-    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s unterstützt Tellomi mit einer Spende. Tellomi ist eine gemeinnützige Organisation ohne Werbekunden oder Investoren, die nur von Menschen wie dir unterstützt wird.</string>
+    <string name="ViewBadgeBottomSheetDialogFragment__s_supports_signal_with_a_donation">%1$s unterstützt Signal mit einer Spende. Signal ist eine gemeinnützige Organisation ohne Werbekunden oder Investoren, die nur von Menschen wie dir unterstützt wird.</string>
 
     <string name="ImageView__badge">Abzeichen</string>
 
@@ -6474,7 +6474,7 @@
     <string name="ThanksForYourSupportBottomSheetFragment__when_you_have_more">Falls du mehrere Abzeichen hast, kannst du eines davon auswählen, das andere in deinem Profil sehen können.</string>
 
     <string name="BecomeASustainerFragment__get_badges">Unterstütze Tellomi und erhalte Abzeichen für dein Profil.</string>
-    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Tellomi ist eine gemeinnützige Organisation ohne Werbekunden oder Investoren, die nur von Menschen wie dir unterstützt wird.</string>
+    <string name="BecomeASustainerFragment__signal_is_a_non_profit">Signal ist eine gemeinnützige Organisation ohne Werbekunden oder Investoren, die nur von Menschen wie dir unterstützt wird.</string>
 
     <!-- Button label for creating a donation -->
     <string name="ManageDonationsFragment__donate_to_signal">An Tellomi spenden</string>
@@ -8692,9 +8692,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">Abo gekündigt</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatische Backups mit Signals sicherem Ende-zu-Ende-verschlüsselten Speicherservice.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Automatische Backups mit Tellomis sicherem Ende-zu-Ende-verschlüsselten Speicherservice.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatische Backups mit Signals sicherem Ende-zu-Ende-verschlüsselten Speicherservice. Leg einfach auf deinem Smartphone los.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Automatische Backups mit Tellomis sicherem Ende-zu-Ende-verschlüsselten Speicherservice. Leg einfach auf deinem Smartphone los.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"Kein Abo auf diesem Gerät gefunden."</string>
     <!-- Action button label to set up backups -->
@@ -9165,7 +9165,7 @@
     <!-- Screen headline -->
     <string name="MessagesBackupsTypeSelectionScreen__choose_your_backup_plan">Wie möchtest du deine Daten sichern?</string>
     <!-- Screen subhead -->
-    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Alle Backups sind immer Ende-zu-Ende verschlüsselt. Tellomi ist eine gemeinnützige Organisation – indem du für Backups bezahlst, unterstützt du unsere Arbeit.</string>
+    <string name="MessageBackupsTypeSelectionScreen__all_backups_are_end_to_end_encrypted">Alle Backups sind immer Ende-zu-Ende verschlüsselt. Signal ist eine gemeinnützige Organisation – indem du für Backups bezahlst, unterstützt du unsere Arbeit.</string>
     <!-- Screen subhead highlighted read-more button -->
     <string name="MessageBackupsTypeSelectionScreen__learn_more">Mehr erfahren</string>
     <!-- Primary action button label without a current selection -->
