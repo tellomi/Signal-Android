@@ -76,15 +76,9 @@ class SignalServiceNetworkAccess(context: Context) {
     private const val COUNTRY_CODE_VENEZUELA = 58
     private const val COUNTRY_CODE_PAKISTAN = 92
 
-    private const val G_HOST = "reflector-nrgwuv7kwq-uc.a.run.app"
-    private const val F_SERVICE_HOST = "chat-signal.global.ssl.fastly.net"
-    private const val F_STORAGE_HOST = "storage.signal.org.global.prod.fastly.net"
-    private const val F_CDN_HOST = "cdn.signal.org.global.prod.fastly.net"
-    private const val F_CDN2_HOST = "cdn2.signal.org.global.prod.fastly.net"
-    private const val F_CDN3_HOST = "cdn3-signal.global.ssl.fastly.net"
-    private const val F_CDSI_HOST = "cdsi-signal.global.ssl.fastly.net"
-    private const val F_SVR2_HOST = "svr2-signal.global.ssl.fastly.net"
-
+    // Tellomi（#1025）：上游在这里放 reflector / Fastly fronted 主机名（全是 Signal 的基础设施），
+    // 连同下面用它们组装的 buildGConfiguration / fConfig 一起删了。下面这几个 ConnectionSpec
+    // 留着：它们只是 TLS 参数，没有主机名，将来我们自己做规避入口时还要用。
     private val GMAPS_CONNECTION_SPEC = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
       .tlsVersions(TlsVersion.TLS_1_2)
       .cipherSuites(
@@ -170,7 +164,6 @@ class SignalServiceNetworkAccess(context: Context) {
 
   private val serviceTrustStore: TrustStore = SignalServiceTrustStore(context)
   private val gTrustStore: TrustStore = DomainFrontingTrustStore(context)
-  private val fTrustStore: TrustStore = DomainFrontingDigicertTrustStore(context)
 
   private val interceptors: List<Interceptor> = listOf(
     StandardUserAgentInterceptor(),
@@ -198,63 +191,28 @@ class SignalServiceNetworkAccess(context: Context) {
     throw AssertionError(e)
   }
 
-  private val baseGHostConfigs: List<HostConfig> = listOf(
-    HostConfig("https://www.google.com", G_HOST, GMAIL_CONNECTION_SPEC),
-    HostConfig("https://android.clients.google.com", G_HOST, PLAY_CONNECTION_SPEC),
-    HostConfig("https://clients3.google.com", G_HOST, GMAPS_CONNECTION_SPEC),
-    HostConfig("https://clients4.google.com", G_HOST, GMAPS_CONNECTION_SPEC),
-    HostConfig("https://googlemail.com", G_HOST, GMAIL_CONNECTION_SPEC)
-  )
+  // ── Tellomi（#1025）：删掉上游的「审查规避」配置 ─────────────────────────────
+  // 上游这里有两套规避通道，全部指向 **Signal 自己的基础设施**：
+  //   · 域名前置到 Google（reflector-nrgwuv7kwq-uc.a.run.app）
+  //   · Fastly 的 fronted 主机（storage.signal.org.global.prod.fastly.net 等 7 个）
+  // 我们没有任何 fronted 入口，留着它们只有坏处：用户在连不上的时候最可能去按
+  // 设置里那个「审查规避」开关，按下去之后客户端会改去连 Signal 的主机——
+  // 结果是更连不上，而且没有任何提示说明原因。
+  //
+  // 所以：规避模式下仍然用**我们自己的端点**，只保留 censored = true 这个标记，
+  // 让 isCensored() / 前台服务 / FCM 取数策略等依赖它的地方行为不变。
+  // 判据：发版包的 DEX 里 signal.org.global.prod.fastly.net 出现次数 = 0（原来 3）。
+  //
+  // 真要做规避，得先有我们自己的 fronted 入口（域名 + CDN，服务端那半），
+  // 那时把这段按上游的形状重建、并把 86 加进 defaultCensoredCountryCodes 才有意义。
+  // 上游原文见 v8.26.4 的同一文件（G_HOST / F_* 常量 + buildGConfiguration + fConfig）。
+  private val censorshipConfiguration: Map<Int, SignalServiceConfiguration> = emptyMap()
 
-  private val fUrls = arrayOf("https://github.githubassets.com", "https://pinterest.com", "https://www.redditstatic.com")
-
-  private val fConfig: SignalServiceConfiguration = SignalServiceConfiguration(
-    signalServiceUrls = fUrls.map { SignalServiceUrl(it, F_SERVICE_HOST, fTrustStore, APP_CONNECTION_SPEC) }.toTypedArray(),
-    signalCdnUrlMap = mapOf(
-      0 to fUrls.map { SignalCdnUrl(it, F_CDN_HOST, fTrustStore, APP_CONNECTION_SPEC) }.toTypedArray(),
-      2 to fUrls.map { SignalCdnUrl(it, F_CDN2_HOST, fTrustStore, APP_CONNECTION_SPEC) }.toTypedArray(),
-      3 to fUrls.map { SignalCdnUrl(it, F_CDN3_HOST, fTrustStore, APP_CONNECTION_SPEC) }.toTypedArray()
-    ),
-    signalStorageUrls = fUrls.map { SignalStorageUrl(it, F_STORAGE_HOST, fTrustStore, APP_CONNECTION_SPEC) }.toTypedArray(),
-    signalCdsiUrls = fUrls.map { SignalCdsiUrl(it, F_CDSI_HOST, fTrustStore, APP_CONNECTION_SPEC) }.toTypedArray(),
-    signalSvr2Urls = fUrls.map { SignalSvr2Url(it, fTrustStore, F_SVR2_HOST, APP_CONNECTION_SPEC) }.toTypedArray(),
-    networkInterceptors = interceptors,
-    dns = Optional.of(DNS),
-    signalProxy = Optional.empty(),
-    systemHttpProxy = Optional.empty(),
-    zkGroupServerPublicParams = zkGroupServerPublicParams,
-    genericServerPublicParams = genericServerPublicParams,
-    backupServerPublicParams = backupServerPublicParams,
-    censored = true
-  )
-
-  private val censorshipConfiguration: Map<Int, SignalServiceConfiguration> = mapOf(
-    COUNTRY_CODE_EGYPT to buildGConfiguration(
-      listOf(HostConfig("https://www.google.com.eg", G_HOST, GMAIL_CONNECTION_SPEC)) + baseGHostConfigs
-    ),
-    COUNTRY_CODE_UAE to buildGConfiguration(
-      listOf(HostConfig("https://www.google.ae", G_HOST, GMAIL_CONNECTION_SPEC)) + baseGHostConfigs
-    ),
-    COUNTRY_CODE_OMAN to buildGConfiguration(
-      listOf(HostConfig("https://www.google.com.om", G_HOST, GMAIL_CONNECTION_SPEC)) + baseGHostConfigs
-    ),
-    COUNTRY_CODE_QATAR to buildGConfiguration(
-      listOf(HostConfig("https://www.google.com.qa", G_HOST, GMAIL_CONNECTION_SPEC)) + baseGHostConfigs
-    ),
-    COUNTRY_CODE_UZBEKISTAN to buildGConfiguration(
-      listOf(HostConfig("https://www.google.co.uz", G_HOST, GMAIL_CONNECTION_SPEC)) + baseGHostConfigs
-    ),
-    COUNTRY_CODE_VENEZUELA to buildGConfiguration(
-      listOf(HostConfig("https://www.google.co.ve", G_HOST, GMAIL_CONNECTION_SPEC)) + baseGHostConfigs
-    ),
-    COUNTRY_CODE_PAKISTAN to buildGConfiguration(
-      listOf(HostConfig("https://www.google.com.pk", G_HOST, GMAIL_CONNECTION_SPEC)) + baseGHostConfigs
-    ),
-    COUNTRY_CODE_IRAN to fConfig,
-    COUNTRY_CODE_CUBA to fConfig
-  )
-
-  private val defaultCensoredConfiguration: SignalServiceConfiguration = buildGConfiguration(baseGHostConfigs) + fConfig
+  // 注意 **不能**写成 `private val ... = uncensoredConfiguration.copy(...)`：
+  // uncensoredConfiguration 在本文件里声明得更靠后，属性初始化顺序会让它在这里是 null。
+  // 用 get() 每次取，避开初始化顺序。
+  private val defaultCensoredConfiguration: SignalServiceConfiguration
+    get() = uncensoredConfiguration.copy(censored = true)
 
   private val defaultCensoredCountryCodes: Set<Int> = setOf(
     COUNTRY_CODE_EGYPT,
@@ -330,37 +288,5 @@ class SignalServiceNetworkAccess(context: Context) {
     return defaultCensoredCountryCodes.contains(countryCode)
   }
 
-  private fun buildGConfiguration(
-    hostConfigs: List<HostConfig>
-  ): SignalServiceConfiguration {
-    val serviceUrls: Array<SignalServiceUrl> = hostConfigs.map { SignalServiceUrl("${it.baseUrl}/service", it.host, gTrustStore, it.connectionSpec) }.toTypedArray()
-    val cdnUrls: Array<SignalCdnUrl> = hostConfigs.map { SignalCdnUrl("${it.baseUrl}/cdn", it.host, gTrustStore, it.connectionSpec) }.toTypedArray()
-    val cdn2Urls: Array<SignalCdnUrl> = hostConfigs.map { SignalCdnUrl("${it.baseUrl}/cdn2", it.host, gTrustStore, it.connectionSpec) }.toTypedArray()
-    val cdn3Urls: Array<SignalCdnUrl> = hostConfigs.map { SignalCdnUrl("${it.baseUrl}/cdn3", it.host, gTrustStore, it.connectionSpec) }.toTypedArray()
-    val storageUrls: Array<SignalStorageUrl> = hostConfigs.map { SignalStorageUrl("${it.baseUrl}/storage", it.host, gTrustStore, it.connectionSpec) }.toTypedArray()
-    val cdsiUrls: Array<SignalCdsiUrl> = hostConfigs.map { SignalCdsiUrl("${it.baseUrl}/cdsi", it.host, gTrustStore, it.connectionSpec) }.toTypedArray()
-    val svr2Urls: Array<SignalSvr2Url> = hostConfigs.map { SignalSvr2Url("${it.baseUrl}/svr2", gTrustStore, it.host, it.connectionSpec) }.toTypedArray()
 
-    return SignalServiceConfiguration(
-      signalServiceUrls = serviceUrls,
-      signalCdnUrlMap = mapOf(
-        0 to cdnUrls,
-        2 to cdn2Urls,
-        3 to cdn3Urls
-      ),
-      signalStorageUrls = storageUrls,
-      signalCdsiUrls = cdsiUrls,
-      signalSvr2Urls = svr2Urls,
-      networkInterceptors = interceptors,
-      dns = Optional.of(DNS),
-      signalProxy = Optional.empty(),
-      systemHttpProxy = Optional.empty(),
-      zkGroupServerPublicParams = zkGroupServerPublicParams,
-      genericServerPublicParams = genericServerPublicParams,
-      backupServerPublicParams = backupServerPublicParams,
-      censored = true
-    )
-  }
-
-  private data class HostConfig(val baseUrl: String, val host: String, val connectionSpec: ConnectionSpec)
 }
