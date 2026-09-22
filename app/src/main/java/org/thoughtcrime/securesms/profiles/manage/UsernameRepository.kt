@@ -88,7 +88,14 @@ import java.util.UUID
 object UsernameRepository {
   private val TAG = Log.tag(UsernameRepository::class.java)
 
+  // Tellomi：新旧两种「加密用户名链接」都认（见 docs/signal/LINKS_AND_SCHEMES.md）
+  //   旧：https://signal.me/#eu/<加密块>
+  //   新：https://tell.cc/u#eu/<加密块>（也接 tellomi:// 这个自定义 scheme）
+  // 注意：上游这个正则里的 `.` 没转义，`signal.me` 其实会匹配到 `signalXme`。
+  // 照抄形状但把新的那条写严（`tell\.cc`），不去动旧的那条 —— 改它属于另一回事，
+  // 而且放宽到严格会让原本能打开的旧链接突然打不开。
   private val URL_REGEX = """(https://)?signal.me/?#eu/([a-zA-Z0-9+\-_/]+)""".toRegex()
+  private val URL_REGEX_TELLOMI = """(https://|tellomi://)?tell\.cc/u/?#eu/([a-zA-Z0-9+\-_/]+)""".toRegex()
 
   private const val BASE_URL = "https://signal.me/#eu/"
   private const val USERNAME_SYNC_ERROR_THRESHOLD = 3
@@ -308,7 +315,7 @@ object UsernameRepository {
    */
   @JvmStatic
   fun parseLink(url: String): UsernameLinkComponents? {
-    val match: MatchResult = URL_REGEX.find(url) ?: return null
+    val match: MatchResult = URL_REGEX.find(url) ?: URL_REGEX_TELLOMI.find(url) ?: return null
     val path: String = match.groups[2]?.value ?: return null
     val allBytes: ByteArray = try {
       Base64.decode(path)

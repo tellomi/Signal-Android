@@ -28,6 +28,7 @@ import org.thoughtcrime.securesms.jobs.LinkedDeviceInactiveCheckJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.linkdevice.LinkDeviceRepository.createAndUploadArchive
 import org.thoughtcrime.securesms.net.SignalNetwork
+import org.thoughtcrime.securesms.util.TellomiLinks
 import org.whispersystems.signalservice.api.link.LinkedDeviceVerificationCodeResponse
 import org.whispersystems.signalservice.api.link.TransferArchiveError
 import org.whispersystems.signalservice.api.link.WaitForLinkedDeviceResponse
@@ -189,7 +190,9 @@ object LinkDeviceRepository {
       return false
     }
 
-    if (uri.scheme != "sgnl") {
+    // Tellomi：tellomi:// 与 sgnl:// 都认。Desktop 目前**仍发 sgnl://linkdevice 二维码**
+    // （见它的 signalRoutes.std.ts 注释），等三端都接受新形状后才会翻，所以旧的必须留着。
+    if (!TellomiLinks.isAppScheme(uri.scheme)) {
       return false
     }
 

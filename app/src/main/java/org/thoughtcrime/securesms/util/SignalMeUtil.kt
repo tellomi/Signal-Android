@@ -4,7 +4,12 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import java.util.Locale
 
 internal object SignalMeUtil {
+  // Tellomi：新旧两种形状都认（见 docs/signal/LINKS_AND_SCHEMES.md）
+  //   旧：https|sgnl    ://signal.me/#p/<E.164>
+  //   新：https|tellomi ://tell.cc/u#p/<E.164>
+  // `/u` 这个路径不是随便挑的：R2 自定义域不服务根路径 `/`，所以联系人链接定在 `/u`。
   private val E164_REGEX = """^(https|sgnl)://signal\.me/#p/(\+[0-9]+)$""".toRegex()
+  private val E164_REGEX_TELLOMI = """^(https|tellomi)://tell\.cc/u/?#p/(\+[0-9]+)$""".toRegex()
 
   /**
    * If this is a valid signal.me link and has a valid e164, it will return the e164. Otherwise, it will return null.
@@ -15,7 +20,8 @@ internal object SignalMeUtil {
       return null
     }
 
-    return E164_REGEX.find(link)?.let { match ->
+    val match0 = E164_REGEX.find(link) ?: E164_REGEX_TELLOMI.find(link)
+    return match0?.let { match ->
       val e164: String = match.groups[2]?.value ?: return@let null
 
       if (PhoneNumberUtil.getInstance().isPossibleNumber(e164, Locale.getDefault().country)) {

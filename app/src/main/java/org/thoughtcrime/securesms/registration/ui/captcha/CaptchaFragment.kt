@@ -16,6 +16,7 @@ import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.databinding.FragmentRegistrationCaptchaBinding
+import org.thoughtcrime.securesms.util.TellomiLinks
 import org.thoughtcrime.securesms.registration.fragments.RegistrationConstants
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter
 
@@ -33,8 +34,9 @@ abstract class CaptchaFragment : LoggingFragment(R.layout.fragment_registration_
     binding.registrationCaptchaWebView.webViewClient = object : WebViewClient() {
       @Deprecated("Deprecated in Java")
       override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-        if (url.startsWith(RegistrationConstants.SIGNAL_CAPTCHA_SCHEME)) {
-          val token = url.substring(RegistrationConstants.SIGNAL_CAPTCHA_SCHEME.length)
+        // Tellomi：新旧两种 captcha 回跳都认（tellomicaptcha:// 与 signalcaptcha://），见 TellomiLinks。
+        if (TellomiLinks.isCaptchaUrl(url)) {
+          val token = TellomiLinks.stripCaptchaScheme(url)
           handleCaptchaToken(token)
           findNavController().navigateUp()
           return true

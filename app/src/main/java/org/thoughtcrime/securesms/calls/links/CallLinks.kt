@@ -27,6 +27,11 @@ object CallLinks {
   private const val HTTPS_LINK_PREFIX = "https://signal.link/call/#key="
   private const val SNGL_LINK_PREFIX = "sgnl://signal.link/call/#key="
 
+  // Tellomi：新形状 https|tellomi://tell.cc/call#key=…（见 docs/signal/LINKS_AND_SCHEMES.md）。
+  // 通话是阶段三才有，这里先让解析认得，`url()` 生成的仍是旧形状，等三端都接受后再翻。
+  private const val TELLOMI_HTTPS_LINK_PREFIX = "https://tell.cc/call#key="
+  private const val TELLOMI_SCHEME_LINK_PREFIX = "tellomi://tell.cc/call#key="
+
   private val TAG = Log.tag(CallLinks::class.java)
 
   fun url(rootKeyBytes: ByteArray): String = "$HTTPS_LINK_PREFIX${CallLinkRootKey(rootKeyBytes)}"
@@ -58,7 +63,9 @@ object CallLinks {
     return url.startsWith(HTTPS_LINK_PREFIX) ||
       url.startsWith(SNGL_LINK_PREFIX) ||
       url.startsWith(LEGACY_HTTPS_LINK_PREFIX) ||
-      url.startsWith(LEGACY_SGNL_LINK_PREFIX)
+      url.startsWith(LEGACY_SGNL_LINK_PREFIX) ||
+      url.startsWith(TELLOMI_HTTPS_LINK_PREFIX) ||
+      url.startsWith(TELLOMI_SCHEME_LINK_PREFIX)
   }
 
   @JvmStatic

@@ -24,6 +24,7 @@ import org.thoughtcrime.securesms.PassphraseRequiredActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.net.SignalNetwork;
+import org.thoughtcrime.securesms.util.TellomiLinks;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.ExceptionHelper;
 import org.signal.core.util.Util;
@@ -71,8 +72,9 @@ public class RecaptchaProofActivity extends PassphraseRequiredActivity {
     webView.setWebViewClient(new WebViewClient() {
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        if (url != null && url.startsWith(RECAPTCHA_SCHEME)) {
-          handleToken(url.substring(RECAPTCHA_SCHEME.length()));
+        // Tellomi：新旧两种 captcha 回跳都认，见 TellomiLinks。
+        if (TellomiLinks.isCaptchaUrl(url)) {
+          handleToken(TellomiLinks.stripCaptchaScheme(url));
           return true;
         }
         return false;

@@ -20,7 +20,13 @@ import kotlin.Pair;
  */
 public class StickerUrl {
 
+  // Tellomi：新旧两种形状都认（见 docs/signal/LINKS_AND_SCHEMES.md）
+  //   旧：https://signal.art/addstickers/#pack_id=…&pack_key=…
+  //   新：https://tell.cc/s#pack_id=…&pack_key=…
+  // 「发出」这一侧（createShareLink / createActionUri）暂时仍是旧形状：
+  // 按两阶段策略，等三端都能接受新形状之后再统一翻。
   private static final Pattern STICKER_URL_PATTERN = Pattern.compile("^https://signal\\.art/addstickers/#pack_id=(.*)&pack_key=(.*)$");
+  private static final Pattern STICKER_URL_PATTERN_TELLOMI = Pattern.compile("^https://tell\\.cc/s/?#pack_id=(.*)&pack_key=(.*)$");
 
   public static Optional<Pair<String, String>> parseExternalUri(@Nullable Uri uri) {
     if (uri == null) return Optional.empty();
@@ -53,6 +59,10 @@ public class StickerUrl {
     if (url == null) return Optional.empty();
 
     Matcher matcher = STICKER_URL_PATTERN.matcher(url);
+
+    if (!matcher.matches()) {
+      matcher = STICKER_URL_PATTERN_TELLOMI.matcher(url);
+    }
 
     if (matcher.matches() && matcher.groupCount() == 2) {
       String packId  = matcher.group(1);

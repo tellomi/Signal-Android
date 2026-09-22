@@ -163,6 +163,22 @@
                     android:host="linkdevice"
                     android:scheme="sgnl" />
             </intent-filter>
+            <!-- Tellomi：新形状与旧形状**并存**（两阶段策略见 docs/signal/LINKS_AND_SCHEMES.md：
+                 先三端都「接受」，等都到位了再把「发出」翻过来）。
+                 每个新形状单独开一个 <intent-filter>，**不能**往旧 filter 里再加一个 <data>：
+                 同一个 filter 内多个 <data> 是**交叉相乘**的，那样会额外产生
+                 `tellomi://signal.group`、`sgnl://tell.cc` 这种谁也不会用的组合。 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="linkdevice"
+                    android:scheme="tellomi" />
+            </intent-filter>
+
         </activity>
 
         <activity
@@ -228,6 +244,17 @@
                     android:host="addstickers"
                     android:scheme="sgnl" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="addstickers"
+                    android:scheme="tellomi" />
+            </intent-filter>
+
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -239,6 +266,29 @@
                     android:pathPrefix="/addstickers"
                     android:scheme="https" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/s"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/s"
+                    android:scheme="tellomi" />
+            </intent-filter>
+
         </activity>
 
         <activity
@@ -257,6 +307,18 @@
                     android:host="signal.group"
                     android:scheme="sgnl" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/g"
+                    android:scheme="tellomi" />
+            </intent-filter>
+
 
             <intent-filter
                 android:autoVerify="true"
@@ -270,6 +332,18 @@
                     android:host="signal.group"
                     android:scheme="https" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/g"
+                    android:scheme="https" />
+            </intent-filter>
+
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -321,6 +395,18 @@
                 <data android:scheme="https" />
                 <data android:host="signal.me" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/u"
+                    android:scheme="https" />
+            </intent-filter>
+
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -331,6 +417,18 @@
                 <data android:scheme="sgnl" />
                 <data android:host="signal.me" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/u"
+                    android:scheme="tellomi" />
+            </intent-filter>
+
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -341,6 +439,18 @@
                 <data android:scheme="https" />
                 <data android:host="signal.link" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/call"
+                    android:scheme="https" />
+            </intent-filter>
+
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -351,6 +461,18 @@
                 <data android:scheme="sgnl" />
                 <data android:host="signal.link" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPrefix="/call"
+                    android:scheme="tellomi" />
+            </intent-filter>
+
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -361,6 +483,16 @@
                 <data android:scheme="sgnl" />
                 <data android:host="rereg" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tellomi" />
+                <data android:host="rereg" />
+            </intent-filter>
+
         </activity>
 
         <activity

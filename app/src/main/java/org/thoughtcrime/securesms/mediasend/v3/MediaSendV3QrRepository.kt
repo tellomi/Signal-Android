@@ -13,6 +13,7 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.registration.data.QuickRegistrationRepository
+import org.thoughtcrime.securesms.util.TellomiLinks
 
 object MediaSendV3QrRepository : MediaSendQrRepository {
 
@@ -21,11 +22,16 @@ object MediaSendV3QrRepository : MediaSendQrRepository {
   override suspend fun checkQrData(qrData: String): MediaSendQrRepository.QrCheckResult {
     return when {
       UsernameRepository.isValidLink(qrData) -> handleUsernameLink(qrData)
-      qrData.startsWith("sgnl://linkdevice") && SignalStore.account.isPrimaryDevice -> handleLinkDevice()
-      qrData.startsWith("sgnl://rereg") && QuickRegistrationRepository.isValidReRegistrationQr(qrData) && SignalStore.account.isPrimaryDevice -> handleReReg(qrData)
+      // Tellomi：tellomi:// 与 sgnl:// 都认（两阶段策略见 docs/signal/LINKS_AND_SCHEMES.md）
+      isAppUri(qrData, "linkdevice") && SignalStore.account.isPrimaryDevice -> handleLinkDevice()
+      isAppUri(qrData, "rereg") && QuickRegistrationRepository.isValidReRegistrationQr(qrData) && SignalStore.account.isPrimaryDevice -> handleReReg(qrData)
       else -> MediaSendQrRepository.QrCheckResult.None
     }
   }
+
+  /** `tellomi://<host>` 与 `sgnl://<host>` 都算。二维码内容是裸字符串，所以按前缀比。 */
+  private fun isAppUri(qrData: String, host: String): Boolean =
+    qrData.startsWith("${TellomiLinks.SCHEME}://$host") || qrData.startsWith("${TellomiLinks.LEGACY_SCHEME}://$host")
 
   private suspend fun handleUsernameLink(qrData: String): MediaSendQrRepository.QrCheckResult {
     return when (val result = UsernameRepository.fetchUsernameAndAciFromLink(qrData).await()) {

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.thoughtcrime.securesms.util.TellomiLinks;
 import okio.ByteString;
 
 public final class GroupInviteLinkUrl {
@@ -89,15 +90,29 @@ public final class GroupInviteLinkUrl {
     try {
       URI url = new URI(urlString);
 
+      // Tellomi：新旧两种形状都认（见 docs/signal/LINKS_AND_SCHEMES.md）
+      //   旧：https|sgnl    ://signal.group/#<invite>
+      //   新：https|tellomi ://tell.cc/g#<invite>
       if (!"https".equalsIgnoreCase(url.getScheme()) &&
-          !"sgnl".equalsIgnoreCase(url.getScheme()))
+          !TellomiLinks.isAppScheme(url.getScheme()))
       {
         return null;
       }
 
-      return GROUP_URL_HOST.equalsIgnoreCase(url.getHost())
-             ? url
-             : null;
+      // 注意**必须连路径一起判**：tell.cc 下还有 /u（找人）、/s（贴纸）、/call（通话链接）。
+      // 只看 host 的话，`tell.cc/u#p/+86…` 也会走进来，然后被当成群邀请去 Base64 解片段，
+      // 解不动就抛 InvalidGroupLinkException —— 用户看到的是「群链接无效」，而他点的根本不是群链接。
+      // 旧的 signal.group 是整个域名专用，没有路径，保持原样只判 host。
+      if (TellomiLinks.LEGACY_HOST_GROUP.equalsIgnoreCase(url.getHost())) {
+        return url;
+      }
+
+      if (TellomiLinks.HOST.equalsIgnoreCase(url.getHost())) {
+        String path = url.getPath();
+        return "/g".equals(path) || "/g/".equals(path) ? url : null;
+      }
+
+      return null;
 
     } catch (URISyntaxException e) {
       return null;

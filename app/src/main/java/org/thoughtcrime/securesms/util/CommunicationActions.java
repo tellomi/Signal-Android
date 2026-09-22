@@ -321,12 +321,43 @@ public class CommunicationActions {
   public static void handlePotentialSignalMeUrl(@NonNull FragmentActivity activity, @NonNull String potentialUrl) {
     String                 e164     = SignalMeUtil.parseE164FromLink(potentialUrl);
     UsernameLinkComponents username = UsernameRepository.parseLink(potentialUrl);
+    String                 plainUsername = TellomiLinks.parsePlainUsernameFromLink(potentialUrl);
 
     if (e164 != null) {
       handleE164Link(activity, e164);
     } else if (username != null) {
       handleUsernameLink(activity, potentialUrl);
+    } else if (plainUsername != null) {
+      // Tellomi 新增：`tell.cc/<username>` 这种 t.me 式的明文用户名链接
+      // （落地页改写成 `tellomi://tell.cc/u#u/<username>`，见 docs/signal/LINKS_AND_SCHEMES.md）。
+      // 上游只有 `#eu/` 那种加密链接；明文这种是 owner 2026-09-22 要的形状。
+      // 关掉 CDSI 之后按号码找人整条路是死的，用户名是**唯一**能用的找人方式，所以这条很要紧。
+      handlePlainUsernameLink(activity, plainUsername);
     }
+  }
+
+  /** `tell.cc/u#u/<username>`：拿明文用户名直接问服务端要 ACI。 */
+  private static void handlePlainUsernameLink(@NonNull FragmentActivity activity, @NonNull String username) {
+    SimpleProgressDialog.DismissibleDialog dialog = SimpleProgressDialog.showDelayed(activity, 500, 500);
+
+    SimpleTask.run(() -> {
+      UsernameRepository.UsernameAciFetchResult result = UsernameRepository.fetchAciForUsername(username);
+      if (result instanceof UsernameRepository.UsernameAciFetchResult.Success success) {
+        return Recipient.externalUsername(success.getAci(), username);
+      }
+      return null;
+    }, recipient -> {
+      dialog.dismiss();
+
+      if (recipient != null && recipient.isRegistered() && recipient.getHasServiceId()) {
+        startConversation(activity, recipient, null);
+      } else {
+        new MaterialAlertDialogBuilder(activity)
+            .setMessage(activity.getString(R.string.UsernameLinkSettings_qr_result_not_found_no_username))
+            .setPositiveButton(android.R.string.ok, null)
+            .show();
+      }
+    });
   }
 
   public static void handlePotentialCallLinkUrl(@NonNull FragmentActivity activity, @NonNull String potentialUrl, @NonNull OnUserAlreadyInAnotherCall onUserAlreadyInAnotherCall) {
@@ -355,7 +386,8 @@ public class CommunicationActions {
   public static boolean handlePotentialQuickRestoreUrl(@NonNull FragmentActivity activity, @NonNull String potentialQuickRestoreUrl, @NonNull Runnable onContinue) {
     Uri uri = Uri.parse(potentialQuickRestoreUrl);
 
-    if ("sgnl".equalsIgnoreCase(uri.getScheme()) && "rereg".equalsIgnoreCase(uri.getHost())) {
+    // Tellomi：tellomi:// 与 sgnl:// 都认。
+    if (TellomiLinks.isAppScheme(uri.getScheme()) && "rereg".equalsIgnoreCase(uri.getHost())) {
       new MaterialAlertDialogBuilder(activity)
           .setTitle(R.string.CommunicationActions__transfer_dialog_title)
           .setMessage(R.string.CommunicationActions__transfer_dialog_message)

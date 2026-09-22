@@ -531,8 +531,10 @@ android {
       buildConfigField("String", "MOBILE_COIN_ENVIRONMENT", "\"testnet\"")
       // 自建服务端：香港 nginx 上的开发用 captcha 页（打开即跳 signalcaptcha://noop...，服务端 stub 接受）。
       // 上生产换成真 hCaptcha（服务端 captcha.allowHCaptcha + site keys）。
-      buildConfigField("String", "SIGNAL_CAPTCHA_URL", "\"https://chat.tellomi.app/captcha/registration/generate.html\"")
-      buildConfigField("String", "RECAPTCHA_PROOF_URL", "\"https://chat.tellomi.app/captcha/challenge/generate.html\"")
+      // 2026-09-22 #882：切到回调 `tellomicaptcha://` 的那一份（客户端已能同时接住新旧两种回调，
+      // 见 util/TellomiLinks.kt）。旧的 /captcha/… 回 `signalcaptcha://`，三端切完前服务端仍保留。
+      buildConfigField("String", "SIGNAL_CAPTCHA_URL", "\"https://chat.tellomi.app/captcha-tellomi/registration/generate.html\"")
+      buildConfigField("String", "RECAPTCHA_PROOF_URL", "\"https://chat.tellomi.app/captcha-tellomi/challenge/generate.html\"")
       buildConfigField("org.signal.libsignal.net.Network.Environment", "LIBSIGNAL_NET_ENV", "org.signal.libsignal.net.Network.Environment.STAGING")
       // 自建服务端：libsignal 的 chat 连接走 Omnibus 主机（与上面的 REST 主机不是同一台虚拟主机）。
       // 空字符串 = 沿用上面的 LIBSIGNAL_NET_ENV（Signal 自己的 staging）；非空 = Network.customServer(...)。
