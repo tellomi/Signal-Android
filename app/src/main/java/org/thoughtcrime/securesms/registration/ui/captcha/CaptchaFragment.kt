@@ -16,9 +16,8 @@ import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.databinding.FragmentRegistrationCaptchaBinding
-import org.thoughtcrime.securesms.util.TellomiLinks
-import org.thoughtcrime.securesms.registration.fragments.RegistrationConstants
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter
+import org.thoughtcrime.securesms.util.TellomiLinks
 
 abstract class CaptchaFragment : LoggingFragment(R.layout.fragment_registration_captcha) {
 

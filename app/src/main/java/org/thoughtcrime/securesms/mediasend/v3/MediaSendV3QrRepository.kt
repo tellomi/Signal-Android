@@ -30,8 +30,7 @@ object MediaSendV3QrRepository : MediaSendQrRepository {
   }
 
   /** `tellomi://<host>` 与 `sgnl://<host>` 都算。二维码内容是裸字符串，所以按前缀比。 */
-  private fun isAppUri(qrData: String, host: String): Boolean =
-    qrData.startsWith("${TellomiLinks.SCHEME}://$host") || qrData.startsWith("${TellomiLinks.LEGACY_SCHEME}://$host")
+  private fun isAppUri(qrData: String, host: String): Boolean = qrData.startsWith("${TellomiLinks.SCHEME}://$host") || qrData.startsWith("${TellomiLinks.LEGACY_SCHEME}://$host")
 
   private suspend fun handleUsernameLink(qrData: String): MediaSendQrRepository.QrCheckResult {
     return when (val result = UsernameRepository.fetchUsernameAndAciFromLink(qrData).await()) {

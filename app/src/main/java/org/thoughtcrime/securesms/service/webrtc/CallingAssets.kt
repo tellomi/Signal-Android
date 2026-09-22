@@ -5,11 +5,11 @@
 
 package org.thoughtcrime.securesms.service.webrtc
 
-import org.thoughtcrime.securesms.BuildConfig
 import android.content.Context
 import okio.IOException
 import org.signal.core.util.logging.Log
 import org.signal.ringrtc.CallException
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.s3.S3
 import java.io.File

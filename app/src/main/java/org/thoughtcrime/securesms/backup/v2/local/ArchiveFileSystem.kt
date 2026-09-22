@@ -67,8 +67,7 @@ class ArchiveFileSystem private constructor(private val context: Context, root: 
 
     /** 快照目录名的前缀（新旧都算）。 */
     @JvmStatic
-    fun isBackupDirectoryName(name: String?): Boolean =
-      name != null && (name.startsWith(BACKUP_DIRECTORY_PREFIX) || name.startsWith(LEGACY_BACKUP_DIRECTORY_PREFIX))
+    fun isBackupDirectoryName(name: String?): Boolean = name != null && (name.startsWith(BACKUP_DIRECTORY_PREFIX) || name.startsWith(LEGACY_BACKUP_DIRECTORY_PREFIX))
     const val TEMP_BACKUP_DIRECTORY_SUFFIX: String = "tmp"
     private const val NO_MEDIA_FILE_NAME = ".nomedia"
 

@@ -73,8 +73,7 @@ object TellomiLinks {
 
   /** 自定义 scheme：新旧都认。 */
   @JvmStatic
-  fun isAppScheme(scheme: String?): Boolean =
-    SCHEME.equals(scheme, ignoreCase = true) || LEGACY_SCHEME.equals(scheme, ignoreCase = true)
+  fun isAppScheme(scheme: String?): Boolean = SCHEME.equals(scheme, ignoreCase = true) || LEGACY_SCHEME.equals(scheme, ignoreCase = true)
 
   /**
    * 是不是**设备配对二维码**（`tellomi://linkdevice…` / `sgnl://linkdevice…`）。
@@ -100,8 +99,7 @@ object TellomiLinks {
 
   /** captcha 回跳：新旧都认。 */
   @JvmStatic
-  fun isCaptchaUrl(url: String?): Boolean =
-    url != null && (url.startsWith(CAPTCHA_SCHEME) || url.startsWith(LEGACY_CAPTCHA_SCHEME))
+  fun isCaptchaUrl(url: String?): Boolean = url != null && (url.startsWith(CAPTCHA_SCHEME) || url.startsWith(LEGACY_CAPTCHA_SCHEME))
 
   /**
    * 去掉 captcha 回跳的 scheme 前缀，拿到 token。

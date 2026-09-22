@@ -60,6 +60,7 @@ class SupportArticleTest {
 
   companion object {
     private val MAIN_STRINGS_PATH = Path("src/main/res/values/strings.xml")
+
     // Tellomi：上游这两条盯的是 support.signal.org/hc/articles/<id>。品牌清理之后
     // strings.xml 里一条都没有了（全改成 tellomi.app/help/<id>，形状相同只是换了域名），
     // 于是 seen 恒为 0，`assertThat(seen).isGreaterThan(0)` 必红 —— 这条用例**在所有机器上**

@@ -287,6 +287,4 @@ class SignalServiceNetworkAccess(context: Context) {
   fun isCountryCodeCensoredByDefault(countryCode: Int): Boolean {
     return defaultCensoredCountryCodes.contains(countryCode)
   }
-
-
 }

@@ -56,9 +56,9 @@ import org.signal.registration.VerificationCodeRequest
 import org.signal.registration.screens.localbackuprestore.LocalBackupRestoreResult
 import org.signal.registration.screens.shared.AccountIdError
 import java.io.IOException
+import java.util.Locale
 import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
-import java.util.Locale
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PhoneNumberEntryViewModelTest {

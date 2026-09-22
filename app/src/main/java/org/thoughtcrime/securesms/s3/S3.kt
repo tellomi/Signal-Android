@@ -1,6 +1,5 @@
 package org.thoughtcrime.securesms.s3
 
-import org.thoughtcrime.securesms.BuildConfig
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
@@ -12,6 +11,7 @@ import org.signal.core.util.Hex
 import org.signal.core.util.JsonUtils
 import org.signal.core.util.logging.Log
 import org.signal.network.exceptions.NonSuccessfulResponseCodeException
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.util.EncryptedStreamUtils
 import org.whispersystems.signalservice.internal.ServiceResponse

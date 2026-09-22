@@ -321,44 +321,44 @@ private fun AppSettingsContent(
 
         // Tellomi：阶段一不做捐赠，隐藏这一行。见 Environment.DONATIONS_ENABLED。
         if (Environment.DONATIONS_ENABLED) {
-        item {
-          val context = LocalContext.current
-          val donateUrl = stringResource(R.string.donate_url)
+          item {
+            val context = LocalContext.current
+            val donateUrl = stringResource(R.string.donate_url)
 
-          Rows.TextRow(
-            text = {
-              Text(
-                text = stringResource(R.string.preferences__donate_to_signal),
-                modifier = Modifier.weight(1f)
-              )
-
-              if (state.hasExpiredGiftBadge) {
-                Icon(
-                  painter = painterResource(R.drawable.symbol_info_fill_24),
-                  tint = colorResource(R.color.signal_accent_primary),
-                  contentDescription = null
+            Rows.TextRow(
+              text = {
+                Text(
+                  text = stringResource(R.string.preferences__donate_to_signal),
+                  modifier = Modifier.weight(1f)
                 )
+
+                if (state.hasExpiredGiftBadge) {
+                  Icon(
+                    painter = painterResource(R.drawable.symbol_info_fill_24),
+                    tint = colorResource(R.color.signal_accent_primary),
+                    contentDescription = null
+                  )
+                }
+              },
+              icon = {
+                Icon(
+                  painter = painterResource(R.drawable.symbol_heart_24),
+                  contentDescription = null,
+                  tint = MaterialTheme.colorScheme.onSurface
+                )
+              },
+              onClick = {
+                if (state.allowUserToGoToDonationManagementScreen) {
+                  callbacks.navigate(AppSettingsRoute.DonationsRoute.Donations())
+                } else {
+                  CommunicationActions.openBrowserLink(context, donateUrl)
+                }
+              },
+              onLongClick = {
+                callbacks.copyDonorBadgeSubscriberIdToClipboard()
               }
-            },
-            icon = {
-              Icon(
-                painter = painterResource(R.drawable.symbol_heart_24),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface
-              )
-            },
-            onClick = {
-              if (state.allowUserToGoToDonationManagementScreen) {
-                callbacks.navigate(AppSettingsRoute.DonationsRoute.Donations())
-              } else {
-                CommunicationActions.openBrowserLink(context, donateUrl)
-              }
-            },
-            onLongClick = {
-              callbacks.copyDonorBadgeSubscriberIdToClipboard()
-            }
-          )
-        }
+            )
+          }
         }
 
         item {

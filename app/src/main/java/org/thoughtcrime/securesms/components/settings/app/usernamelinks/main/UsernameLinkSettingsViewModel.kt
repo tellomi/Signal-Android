@@ -35,7 +35,6 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.signal.core.util.logging.Log
-import org.thoughtcrime.securesms.util.TellomiLinks
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.settings.app.usernamelinks.QrCodeData
 import org.thoughtcrime.securesms.components.settings.app.usernamelinks.QrCodeState
@@ -46,6 +45,7 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository.toLink
 import org.thoughtcrime.securesms.util.NetworkUtil
+import org.thoughtcrime.securesms.util.TellomiLinks
 import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import java.util.Optional
 import java.util.UUID
