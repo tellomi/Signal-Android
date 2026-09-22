@@ -266,7 +266,7 @@
                     android:pathPrefix="/addstickers"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -332,7 +332,7 @@
                     android:host="signal.group"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -395,7 +395,7 @@
                 <data android:scheme="https" />
                 <data android:host="signal.me" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -414,7 +414,7 @@
                  真正的形状校验在 TellomiLinks.PLAIN_USERNAME_PATH_REGEX 里（要求 `^/[A-Za-z0-9_]+\.[0-9]+$`）。
                  保留路径 /u /g /s /call 不含点，不会被这条捞走；
                  `/.well-known/assetlinks.json` 含点会被捞进来，但解析会判掉。 -->
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -470,7 +470,7 @@
                 <data android:scheme="https" />
                 <data android:host="signal.link" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
