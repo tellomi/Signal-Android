@@ -30,8 +30,39 @@ object TellomiLinks {
   const val CAPTCHA_SCHEME = "tellomicaptcha://"
   const val LEGACY_CAPTCHA_SCHEME = "signalcaptcha://"
 
-  /** 短域名。按路径区分用途：`/u` 找人、`/g` 群邀请、`/s` 贴纸、`/call` 通话链接。 */
+  /**
+   * 短域名。**一个域名承载全部链接类型，靠第一段路径区分**（owner 2026-09-22：
+   * tell.cc 以后不只是用户名地址，群邀请 / 贴纸 / 通话链接 / 邀请链接都要走它）。
+   *
+   * 路径命名空间 —— **新增用途一律在这里登记**，不要随手占用：
+   *
+   * | 路径 | 用途 | 状态 |
+   * | --- | --- | --- |
+   * | `/u` | 找人：`#p/<E164>`、`#eu/<加密用户名链接>`、`#u/<明文用户名>` | 已用 |
+   * | `/g` | 群邀请：`#<invite>` | 已用 |
+   * | `/s` | 贴纸包：`#pack_id=…&pack_key=…` | 已用 |
+   * | `/call` | 通话链接：`#key=…` | 已用（通话本身是阶段三） |
+   * | `/i` | **邀请下载**（邀请朋友装 Tellomi） | **预留，未实现** |
+   * | `/` | 不用 —— R2 自定义域对根路径只会 404（2026-09-22 上线时踩到） |
+   *
+   * 秘密一律放 `#` 后面，不进服务器日志 —— 沿用 Signal 的形状，别改。
+   *
+   * 每加一种，要同时动三处，缺一不可：
+   * 1. 这张表 + 对应常量；
+   * 2. `AndroidManifest.xml` 的 intent-filter（**每种单开一个 filter**，见文件末尾的说明）；
+   * 3. 落地页 `deploy/tellcc/site/`（没装 App 的人要有地方落）。
+   * 只加 1 不加 2，链接点了没反应；只加 2 不加 3，没装 App 的人看到 404。
+   */
   const val HOST = "tell.cc"
+
+  const val PATH_CONTACT = "/u"
+  const val PATH_GROUP = "/g"
+  const val PATH_STICKER = "/s"
+  const val PATH_CALL = "/call"
+
+  /** 预留：邀请朋友下载。还没有处理逻辑，所以 manifest 里**故意没有**对应的 intent-filter
+   *  —— 声明了却不处理的话，用户点链接会打开 App 然后什么也不发生，比直接落网页更糟。 */
+  const val PATH_INVITE_RESERVED = "/i"
 
   const val LEGACY_HOST_CONTACT = "signal.me"
   const val LEGACY_HOST_GROUP = "signal.group"
