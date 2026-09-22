@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.service.webrtc
 
+import org.thoughtcrime.securesms.BuildConfig
 import android.content.Context
 import okio.IOException
 import org.signal.core.util.logging.Log
@@ -32,7 +33,8 @@ object CallingAssets {
       assetGroup = "opus-dred",
       name = "calling-dred_weights-1_6_1-f4aed08a.bin",
       digest = "sdfpdb/u3wiTfBr2s0gx1LJX6jii4tquyax/UBThTGWTEXyOCSKjYmYV+9tKQZcO+Q1B1ReoGSW3VbvzeMGKaQ==",
-      url = "https://updates2.signal.org/static/android/calling/deep_plc-dred_weights-1_6_1-f4aed08a.bin",
+      // Tellomi（#1017）：这条是**写死的整串 URL**，不走 S3.kt，改端点时最容易漏
+      url = "https://${BuildConfig.UPDATES2_HOST}/static/android/calling/deep_plc-dred_weights-1_6_1-f4aed08a.bin",
       size = 1998208
     )
   )

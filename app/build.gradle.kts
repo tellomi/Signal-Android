@@ -339,6 +339,10 @@ android {
     // 门禁在 scripts/release/publish-android.sh：打完包对 DEX 做端点 grep，
     // 出现 signal.org 的服务端点就直接失败（带反向判据）。
     // staging flavor 里那份同名覆盖保留着（值一样），改的时候两边一起改。
+    // 动态资源（emoji 数据与搜索索引 · 故事字体 · 通话 DRED 权重）的主机。
+    // 上游把它写死在 s3/S3.kt 与 service/webrtc/CallingAssets.kt 两处（后者是整条 URL），
+    // 收成一个常量是为了：① 两处不会再各走各的；② check-client-constants.py 能查它（#1017）。
+    buildConfigField("String", "UPDATES2_HOST", "\"updates.tellomi.app\"")
     buildConfigField("String", "SIGNAL_URL", "\"https://chat.tellomi.app\"")
     buildConfigField("String", "STORAGE_URL", "\"https://storage.tellomi.app\"")
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.tellomi.app\"")

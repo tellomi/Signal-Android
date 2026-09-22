@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.s3
 
+import org.thoughtcrime.securesms.BuildConfig
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
@@ -240,7 +241,8 @@ object S3 {
   @VisibleForTesting
   fun s3Url(path: String): URL {
     try {
-      return URI("https", "updates2.signal.org", path, null).toURL()
+      // Tellomi（#1017）：资源镜像在我们自己的更新源上，路径与上游一一对应
+      return URI("https", BuildConfig.UPDATES2_HOST, path, null).toURL()
     } catch (e: URISyntaxException) {
       throw IOException(e)
     }
