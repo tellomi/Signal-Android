@@ -511,8 +511,10 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
     val folder = DocumentFile.fromTreeUri(context, folderUri) ?: return@withContext emptyList()
     val children = folder.listFiles()
 
-    // If the selected folder contains a SignalBackups directory, use that instead
-    val signalBackupsDir = children.firstOrNull { it.isDirectory && it.name == "SignalBackups" }
+    // If the selected folder contains a backups directory, use that instead.
+    // Tellomi（#984）：新名字是 TellomiBackups，旧的 SignalBackups 也要认，否则
+    // 用改名之前的版本做的备份会在恢复时找不到。
+    val signalBackupsDir = children.firstOrNull { it.isDirectory && ArchiveFileSystem.isMainDirectoryName(it.name) }
     val effectiveChildren = if (signalBackupsDir != null) {
       Log.d(TAG, "Found SignalBackups directory, using it as the effective folder")
       signalBackupsDir.listFiles()

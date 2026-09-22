@@ -51,8 +51,24 @@ class ArchiveFileSystem private constructor(private val context: Context, root: 
   companion object {
     val TAG = Log.tag(ArchiveFileSystem::class.java)
 
-    const val MAIN_DIRECTORY_NAME = "SignalBackups"
-    const val BACKUP_DIRECTORY_PREFIX: String = "signal-backup"
+    // Tellomi（#984）：这两个名字**用户看得见**——本地备份就是在用户自己挑的目录下
+    // 建一个 SignalBackups/，里面是 signal-backup-2026-09-22-…/，在文件管理器里一目了然。
+    //
+    // 现在改是免费的（还没上线，没有真实用户的备份）；上线之后再改会让用户已有的备份找不到。
+    // 写入一律用新名字；**读取新旧都认**（LEGACY_*），这样自己机器上已有的测试备份不会失联。
+    const val MAIN_DIRECTORY_NAME = "TellomiBackups"
+    const val BACKUP_DIRECTORY_PREFIX: String = "tellomi-backup"
+    const val LEGACY_MAIN_DIRECTORY_NAME = "SignalBackups"
+    const val LEGACY_BACKUP_DIRECTORY_PREFIX: String = "signal-backup"
+
+    /** 目录名是不是我们的备份根目录（新旧都算）。 */
+    @JvmStatic
+    fun isMainDirectoryName(name: String?): Boolean = name == MAIN_DIRECTORY_NAME || name == LEGACY_MAIN_DIRECTORY_NAME
+
+    /** 快照目录名的前缀（新旧都算）。 */
+    @JvmStatic
+    fun isBackupDirectoryName(name: String?): Boolean =
+      name != null && (name.startsWith(BACKUP_DIRECTORY_PREFIX) || name.startsWith(LEGACY_BACKUP_DIRECTORY_PREFIX))
     const val TEMP_BACKUP_DIRECTORY_SUFFIX: String = "tmp"
     private const val NO_MEDIA_FILE_NAME = ".nomedia"
 
@@ -100,7 +116,7 @@ class ArchiveFileSystem private constructor(private val context: Context, root: 
 
     @VisibleForTesting
     fun openForRestore(context: Context, root: DocumentFile): ArchiveFileSystem? {
-      if (root.findFile(MAIN_DIRECTORY_NAME) == null && !looksLikeSignalBackupsDirectory(root)) return null
+      if (root.findFile(MAIN_DIRECTORY_NAME) == null && root.findFile(LEGACY_MAIN_DIRECTORY_NAME) == null && !looksLikeSignalBackupsDirectory(root)) return null
       return try {
         ArchiveFileSystem(context, root, readOnly = true)
       } catch (e: IOException) {
@@ -122,11 +138,11 @@ class ArchiveFileSystem private constructor(private val context: Context, root: 
         return false
       }
 
-      if (dir.name == MAIN_DIRECTORY_NAME) {
+      if (isMainDirectoryName(dir.name)) {
         return true
       }
 
-      return dir.listFiles().any { it.isDirectory && it.name?.startsWith(BACKUP_DIRECTORY_PREFIX) == true }
+      return dir.listFiles().any { it.isDirectory && isBackupDirectoryName(it.name) }
     }
 
     /**
@@ -217,7 +233,7 @@ class ArchiveFileSystem private constructor(private val context: Context, root: 
 
   init {
     if (readOnly) {
-      val child = root.findFile(MAIN_DIRECTORY_NAME)
+      val child = root.findFile(MAIN_DIRECTORY_NAME) ?: root.findFile(LEGACY_MAIN_DIRECTORY_NAME)
       if (child != null) {
         signalBackups = child
         isRootedAtSignalBackups = false
@@ -246,7 +262,7 @@ class ArchiveFileSystem private constructor(private val context: Context, root: 
     for (file in signalBackups.listFiles()) {
       if (file.isDirectory) {
         val name = file.name
-        if (name != null && name.startsWith(BACKUP_DIRECTORY_PREFIX) && name.endsWith(TEMP_BACKUP_DIRECTORY_SUFFIX)) {
+        if (isBackupDirectoryName(name) && name!!.endsWith(TEMP_BACKUP_DIRECTORY_SUFFIX)) {
           if (file.delete()) {
             Log.w(TAG, "Deleted old temporary backup folder")
           } else {
@@ -305,9 +321,9 @@ class ArchiveFileSystem private constructor(private val context: Context, root: 
       .asSequence()
       .filter { it.isDirectory }
       .mapNotNull { f -> f.name?.let { it to f } }
-      .filter { (name, _) -> name.startsWith(BACKUP_DIRECTORY_PREFIX) }
+      .filter { (name, _) -> isBackupDirectoryName(name) }
       .map { (name, file) ->
-        val timestamp = name.replace(BACKUP_DIRECTORY_PREFIX, "").toMilliseconds()
+        val timestamp = name.replace(BACKUP_DIRECTORY_PREFIX, "").replace(LEGACY_BACKUP_DIRECTORY_PREFIX, "").toMilliseconds()
         SnapshotInfo(timestamp, name, file)
       }
       .sortedByDescending { it.timestamp }
