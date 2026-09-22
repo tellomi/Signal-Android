@@ -43,6 +43,16 @@ object Environment {
   const val PHONENUMBERLESS_REGISTRATION: Boolean = IS_STAGING
 
   object Backups {
+    /**
+     * Tellomi：**不做付费备份档**（没有计费通道，也没有备份订阅服务）。
+     *
+     * 这些界面与推广气泡上写着「X 是一个非营利组织——付费备份有助于支持我们的使命」
+     * 这类对 Tellomi 不成立的说法（#984）。上游把它们挡在 `RemoteConfig.backupsMegaphone()`
+     * 后面，默认 false——但那是**服务端下发的**，服务端一旦下发就会冒出来；
+     * 我们要的是本地保证，所以加这个常量。要做的时候翻成 true，上游代码原样留着没删。
+     */
+    const val PAID_BACKUPS_ENABLED = false
+
     @JvmStatic
     fun supportsGooglePlayBilling(): Boolean {
       return BuildConfig.APPLICATION_ID == GOOGLE_PLAY_BILLING_APPLICATION_ID

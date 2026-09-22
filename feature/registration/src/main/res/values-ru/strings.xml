@@ -321,7 +321,7 @@
     <!-- Subject line of the support email composed when the user contacts support about an unrecoverable backup. -->
     <string name="RemoteRestoreScreen__contact_support_email_subject">Постоянный сбой восстановления резервной копии Tellomi Android</string>
     <!-- Text placed in the body of the support email composed when the user contacts support about an unrecoverable backup. Used to route the request, so it is not translated. -->
-  <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android SignalBackups Import Permanent Failure</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RemoteRestoreScreen__contact_support_email_filter" translatable="false">Android TellomiBackups Import Permanent Failure</string> -->
     <!-- Shown while downloading the backup from the server -->
     <string name="RemoteRestoreScreen__downloading_backup">Загружаем резервную копию…</string>
     <!-- Shown while restoring messages from the downloaded backup -->

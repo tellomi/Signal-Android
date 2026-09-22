@@ -621,6 +621,12 @@ public final class Megaphones {
   }
 
   private static boolean shouldShowGenericBackupsMegaphone(@NonNull Context context) {
+    // Tellomi（#984）：付费备份档没做，这条气泡的文案里写着「非营利组织 / 付费备份支持我们的使命」。
+    // 上游只靠服务端下发的 RemoteConfig 挡着，这里加本地保证。见 Environment.Backups.PAID_BACKUPS_ENABLED。
+    if (!Environment.Backups.PAID_BACKUPS_ENABLED) {
+      return false;
+    }
+
     if (!RemoteConfig.backupsMegaphone()) {
       return false;
     }
@@ -673,6 +679,12 @@ public final class Megaphones {
   }
 
   private static boolean shouldShowBackupMessageCountUpsell(@NonNull Context context) {
+    // Tellomi（#984）：付费备份档没做，这条气泡的文案里写着「非营利组织 / 付费备份支持我们的使命」。
+    // 上游只靠服务端下发的 RemoteConfig 挡着，这里加本地保证。见 Environment.Backups.PAID_BACKUPS_ENABLED。
+    if (!Environment.Backups.PAID_BACKUPS_ENABLED) {
+      return false;
+    }
+
     if (!SignalStore.account().isRegistered() || TextSecurePreferences.isUnauthorizedReceived(context) || SignalStore.account().isLinkedDevice()) {
       return false;
     }
@@ -685,6 +697,12 @@ public final class Megaphones {
   }
 
   private static boolean shouldShowBackupMediaSizeUpsell() {
+    // Tellomi（#984）：付费备份档没做，这条气泡的文案里写着「非营利组织 / 付费备份支持我们的使命」。
+    // 上游只靠服务端下发的 RemoteConfig 挡着，这里加本地保证。见 Environment.Backups.PAID_BACKUPS_ENABLED。
+    if (!Environment.Backups.PAID_BACKUPS_ENABLED) {
+      return false;
+    }
+
     if (!SignalStore.account().isRegistered() || SignalStore.account().isLinkedDevice() || !Environment.Backups.supportsGooglePlayBilling()) {
       return false;
     }
@@ -697,6 +715,12 @@ public final class Megaphones {
   }
 
   private static boolean shouldShowBackupLowStorageUpsell(@NonNull Context context) {
+    // Tellomi（#984）：付费备份档没做，这条气泡的文案里写着「非营利组织 / 付费备份支持我们的使命」。
+    // 上游只靠服务端下发的 RemoteConfig 挡着，这里加本地保证。见 Environment.Backups.PAID_BACKUPS_ENABLED。
+    if (!Environment.Backups.PAID_BACKUPS_ENABLED) {
+      return false;
+    }
+
     if (!SignalStore.account().isRegistered() || TextSecurePreferences.isUnauthorizedReceived(context) || SignalStore.account().isLinkedDevice() || !Environment.Backups.supportsGooglePlayBilling()) {
       return false;
     }
