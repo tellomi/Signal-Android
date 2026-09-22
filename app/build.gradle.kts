@@ -42,6 +42,19 @@ val debugKeystorePropertiesProvider: Provider<Properties> = providers.of(Propert
   parameters.file.set(rootProject.layout.projectDirectory.file("keystore.debug.properties"))
 }
 
+// Tellomi：release 签名（#921）。上游的 release 档没有 signingConfig（他们在 CI 外部签），
+// 我们要出侧载包，所以按 debug 的同一套机制加一个。
+//
+// **密钥与口令都不在仓库里**：keystore.release.properties 已进 .gitignore，
+// 它指向的 .jks 放在 ~/.config/nexi/signal/（0600）。
+// 这个文件**不在就跳过**（release 档退回不签名），这样别的机器 / CI 不配置也能编译。
+//
+// 丢了这把 key = 这个 applicationId 再也发不出能被现有安装接受的更新（Android 按签名认身份）。
+// 所以 owner 手上必须有一份离线备份 —— 见 docs/signal/BUILD_ANDROID.md「release 签名」。
+val releaseKeystorePropertiesProvider: Provider<Properties> = providers.of(PropertiesFileValueSource::class.java) {
+  parameters.file.set(rootProject.layout.projectDirectory.file("keystore.release.properties"))
+}
+
 val languagesProvider: Provider<List<String>> = providers.of(LanguageListValueSource::class.java) {
   parameters.resDir.set(layout.projectDirectory.dir("src/main/res"))
 }
@@ -166,6 +179,16 @@ android {
   debugKeystorePropertiesProvider.get().takeIf { it.isNotEmpty() }?.let { properties ->
     signingConfigs.getByName("debug").apply {
       storeFile = file("${project.rootDir}/${properties.getProperty("storeFile")}")
+      storePassword = properties.getProperty("storePassword")
+      keyAlias = properties.getProperty("keyAlias")
+      keyPassword = properties.getProperty("keyPassword")
+    }
+  }
+
+  releaseKeystorePropertiesProvider.get().takeIf { it.isNotEmpty() }?.let { properties ->
+    signingConfigs.create("release").apply {
+      // storeFile 写绝对路径（密钥不在仓库里，没法相对 rootDir 定位）
+      storeFile = file(properties.getProperty("storeFile"))
       storePassword = properties.getProperty("storePassword")
       keyAlias = properties.getProperty("keyAlias")
       keyPassword = properties.getProperty("keyPassword")
@@ -404,6 +427,8 @@ android {
       isMinifyEnabled = true
       proguardFiles(*buildTypes["debug"].proguardFiles.toTypedArray())
       buildConfigField("String", "BUILD_VARIANT_TYPE", "\"Release\"")
+      // Tellomi：配了 keystore.release.properties 才签；没配就不签（别的机器仍能编译出未签名包）。
+      signingConfigs.findByName("release")?.let { signingConfig = it }
     }
 
     create("spinner") {
