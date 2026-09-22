@@ -7,8 +7,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!-- Removed by excludeNonTranslatables <string name="app_name" translatable="false">Tellomi</string> -->
 
-  <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="donate_url" translatable="false">https://signal.org/donate</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://tellomi.app/download/</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="donate_url" translatable="false">https://tellomi.app/</string> -->
   <!-- Removed by excludeNonTranslatables <string name="backup_support_url" translatable="false">https://tellomi.app/help/360007059752</string> -->
   <!-- Removed by excludeNonTranslatables <string name="remote_backup_support_url" translatable="false">https://tellomi.app/help/9708267671322</string> -->
   <!-- Removed by excludeNonTranslatables <string name="transfer_support_url" translatable="false">https://tellomi.app/help/360007059752</string> -->
@@ -17,7 +17,7 @@
   <!-- Removed by excludeNonTranslatables <string name="google_pay_url" translatable="false">https://pay.google.com</string> -->
   <!-- Removed by excludeNonTranslatables <string name="donation_decline_code_error_url" translatable="false">https://tellomi.app/help/4408365318426#errors</string> -->
   <!-- Removed by excludeNonTranslatables <string name="sms_export_url" translatable="false">https://tellomi.app/help/360007321171</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="signal_me_username_url" translatable="false">https://signal.me/#u/%1$s</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="signal_me_username_url" translatable="false">https://tell.cc/%1$s</string> -->
   <!-- Removed by excludeNonTranslatables <string name="username_support_url" translatable="false">https://tellomi.app/help/5389476324250</string> -->
   <!-- Removed by excludeNonTranslatables <string name="export_account_data_url" translatable="false">https://tellomi.app/help/5538911756954</string> -->
   <!-- Removed by excludeNonTranslatables <string name="pending_transfer_url" translatable="false">https://tellomi.app/help/360031949872#pending</string> -->
@@ -2827,7 +2827,7 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">ఈ సంఖ్యను ధృవీకరించడానికి మీకు కాల్ వస్తుంది.</string>
     <string name="RegistrationActivity_edit_number">సంఖ్య మార్చు</string>
     <string name="RegistrationActivity_missing_google_play_services">గూగుల్ ఫ్లే సేవలు అందుబాటులో లేవు.</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ఈ పరికరంలో Google Play సేవలు లేవు. మీరు ఇప్పటికీ Signal ఉపయోగించవచ్చు, కానీ ఈ కాన్ఫిగరేషన్ తగ్గిన విశ్వసనీయత లేదా పనితీరును కలిగించవచ్చు. \\ N \\ n మీరు అధునాతన వినియోగదారు కానట్లయితే, ఒక యాడ్మార్కెట్ Android ROM ను అమలు చేయకపోయినా లేదా మీరు దీనిని తప్పుగా చూస్తున్నారని విశ్వసిస్తారు, దయచేసి support@signal.org</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">ఈ పరికరంలో Google Play సేవలు లేవు. మీరు ఇప్పటికీ Tellomi ఉపయోగించవచ్చు, కానీ ఈ కాన్ఫిగరేషన్ తగ్గిన విశ్వసనీయత లేదా పనితీరును కలిగించవచ్చు. \\ N \\ n మీరు అధునాతన వినియోగదారు కానట్లయితే, ఒక యాడ్మార్కెట్ Android ROM ను అమలు చేయకపోయినా లేదా మీరు దీనిని తప్పుగా చూస్తున్నారని విశ్వసిస్తారు, దయచేసి support@tellomi.app</string>
     <string name="RegistrationActivity_i_understand">నాకు అర్దం అయ్యినది</string>
     <string name="RegistrationActivity_play_services_error">ప్లే సేవల దోషం.</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">గూగల్ ేవలను నవీకరించుటకు లేదా తాత్కాలికంగా అందుబాటులో చేస్తున్నారు. మళ్ళి ప్రయత్నించండి.</string>
@@ -3072,7 +3072,7 @@
   <!-- Removed by excludeNonTranslatables <string name="SubmitDebugLogActivity_slow_log_message" translatable="false">Generating the debug log header took %1$d seconds. We should figure out what\&apos;s slowing things down.</string> -->
 
     <!-- SupportEmailUtil -->
-  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_support_email" translatable="false">support@signal.org</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="SupportEmailUtil_support_email" translatable="false">support@tellomi.app</string> -->
     <string name="SupportEmailUtil_filter">ఫిల్టర్:</string>
     <string name="SupportEmailUtil_device_info">పరికర సమాచారం:</string>
     <string name="SupportEmailUtil_android_version">ఆండ్రాయిడ్ వెర్షన్:</string>
@@ -6005,7 +6005,7 @@
     <!-- Alert dialog button to cancel the dialog -->
 
     <!-- AdvancedPrivacySettingsFragment -->
-  <!-- Removed by excludeNonTranslatables <string name="AdvancedPrivacySettingsFragment__sealed_sender_link" translatable="false">https://signal.org/blog/sealed-sender</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="AdvancedPrivacySettingsFragment__sealed_sender_link" translatable="false">https://tellomi.app/help/</string> -->
     <string name="AdvancedPrivacySettingsFragment__show_status_icon">స్టేటస్ ఐకాన్‌ని చూపించడం</string>
     <string name="AdvancedPrivacySettingsFragment__show_an_icon">సీల్డ్ సెండర్‌ని ఉపయోగించి అవి డెలివరీ చేయబడినప్పుడు సందేశం వివరాల్లో ఐకాన్‌ని చూపించండి.</string>
 
