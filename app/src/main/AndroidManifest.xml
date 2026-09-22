@@ -407,6 +407,37 @@
                     android:scheme="https" />
             </intent-filter>
 
+            <!-- Tellomi：用户实际会分享的联系人链接是 `https://tell.cc/ceshi.57`（t.me 式，owner 2026-09-22）。
+                 装了 App 的人点它应当**直接**进 App，而不是先闪一下浏览器再被落地页唤起。
+                 pathPattern 用 Android 的 SIMPLE_GLOB：`.` 是任意字符、`*` 是「前一个字符零次或多次」，
+                 所以这里只能收到「至少一个字符 + 一个点 + 至少一个字符」这么松，
+                 真正的形状校验在 TellomiLinks.PLAIN_USERNAME_PATH_REGEX 里（要求 `^/[A-Za-z0-9_]+\.[0-9]+$`）。
+                 保留路径 /u /g /s /call 不含点，不会被这条捞走；
+                 `/.well-known/assetlinks.json` 含点会被捞进来，但解析会判掉。 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPattern="/.*\\..*"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tell.cc"
+                    android:pathPattern="/.*\\..*"
+                    android:scheme="tellomi" />
+            </intent-filter>
+
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -93,20 +93,36 @@ object TellomiLinks {
   }
 
   /**
-   * `tell.cc/u#u/<username>` 里的明文用户名，没有就返回 null。
+   * 明文用户名链接里的用户名，没有就返回 null。**两种写法都认**：
    *
-   * 这是 Tellomi 新增的一种（t.me 式），上游没有：Signal 的 `#eu/` 是加密块。
-   * 落地页把 `tell.cc/<username>` 改写成这个形状，App 自己拿用户名去问服务端要 ACI。
-   * 只允许 `a-z 0-9 _ .`（用户名字符集 + 判别数字前的那个点），避免把别的片段误当用户名。
+   * 1. `https://tell.cc/ceshi.57` —— **用户看到、会去分享的就是这一种**（t.me 式，
+   *    owner 2026-09-22 定）。用户名带判别数字，所以一定含 `.`。
+   * 2. `tellomi://tell.cc/u#u/ceshi.57` —— 落地页把 1 改写成的内部形状。
+   *
+   * 两种都要认：装了 App 的人点 1 应当**直接**进 App（不闪一下浏览器），
+   * 没装的人才走落地页；而落地页唤起 App 时用的是 2。只认 2 的话，
+   * 第一种链接永远要绕一次浏览器。
+   *
+   * 上游没有这种明文形状：Signal 的 `#eu/` 是加密块。
+   *
+   * 形状收得很紧（`^/[A-Za-z0-9_]+\.[0-9]+$`），原因有两条：
+   * - 排除保留路径 `/u` `/g` `/s` `/call`（它们不含 `.`）；
+   * - 排除 `/.well-known/assetlinks.json` —— 它含 `.`，但以 `.` 开头且带 `/`。
    */
   @JvmStatic
   fun parsePlainUsernameFromLink(link: String?): String? {
     if (link == null) return null
-    return PLAIN_USERNAME_REGEX.find(link)?.groups?.get(2)?.value
+    PLAIN_USERNAME_FRAGMENT_REGEX.find(link)?.let { return it.groups[2]?.value }
+    return PLAIN_USERNAME_PATH_REGEX.find(link)?.groups?.get(2)?.value
   }
 
-  private val PLAIN_USERNAME_REGEX =
-    """(https://|tellomi://)?tell\.cc/u/?#u/([a-zA-Z0-9_.]+)$""".toRegex()
+  /** 内部形状：`tellomi://tell.cc/u#u/<username>`（落地页唤起 App 用的） */
+  private val PLAIN_USERNAME_FRAGMENT_REGEX =
+    """^(https://|tellomi://)tell\.cc/u/?#u/([A-Za-z0-9_]+\.[0-9]+)$""".toRegex()
+
+  /** 用户看到的形状：`https://tell.cc/<username>` */
+  private val PLAIN_USERNAME_PATH_REGEX =
+    """^(https://|tellomi://)tell\.cc/([A-Za-z0-9_]+\.[0-9]+)/?$""".toRegex()
 
   // 这里**故意不提供** `isGroupHost(host)` 之类只看 host 的便利方法：
   // tell.cc 一个域名承载 /u /g /s /call 四种用途，只判 host 会把联系人链接
