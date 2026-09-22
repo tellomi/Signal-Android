@@ -56,7 +56,7 @@ class ManageDonationsFragment :
 
   companion object {
     private val alertedIdealDonations = mutableSetOf<Long>()
-    const val DONATE_TROUBLESHOOTING_URL = "https://support.signal.org/hc/articles/360031949872#fix"
+    const val DONATE_TROUBLESHOOTING_URL = "https://tellomi.app/help/360031949872#fix"
   }
 
   private val args: ManageDonationsFragmentArgs by navArgs()

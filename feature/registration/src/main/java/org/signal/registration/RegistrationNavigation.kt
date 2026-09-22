@@ -386,10 +386,10 @@ private const val AEP_FOR_LOCAL_BACKUP_RESULT = "aep_for_local_backup_result"
 private const val LOCAL_BACKUP_RESTORE_RESULT = "local_backup_restore_result"
 private const val PHONE_NUMBER_DISCOVERABILITY_RESULT = "phone_number_discoverability_result"
 private const val TWO_FACTOR_CODE_RESULT = "two_factor_code_result"
-private const val PIN_LEARN_MORE_URL = "https://support.signal.org/hc/articles/360007059792"
+private const val PIN_LEARN_MORE_URL = "https://tellomi.app/help/360007059792"
 
 // TODO [phonenumberless] Point at the real support article once it exists.
-private const val SIGNAL_LOGIN_LEARN_MORE_URL = "https://support.signal.org/"
+private const val SIGNAL_LOGIN_LEARN_MORE_URL = "https://tellomi.app/support/"
 
 /** Opens [url] in a browser, surfacing a toast if the device has none. */
 private fun openUrl(context: Context, url: String) {
@@ -561,7 +561,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val url = "https://support.signal.org/hc/en-us/articles/360007320551"
+    val url = "https://tellomi.app/help/360007320551"
     CollectActions(viewModel.actions) { action ->
       when (action) {
         LinkAccountScreenAction.OpenGetHelpArticle -> openUrl(context, url)
@@ -585,7 +585,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val url = "https://support.signal.org/hc/articles/360007320391"
+    val url = "https://tellomi.app/help/360007320391"
     CollectActions(viewModel.actions) { action ->
       when (action) {
         MessageSyncScreenAction.OpenLearnMoreArticle -> openUrl(context, url)

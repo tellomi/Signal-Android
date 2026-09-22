@@ -127,7 +127,7 @@ class BackupsSettingsFragment : ComposeFragment() {
         }
       },
       onBackupTierInternalOverrideChanged = { viewModel.onBackupTierInternalOverrideChanged(it) },
-      onLearnMoreClick = { CommunicationActions.openBrowserLink(requireContext(), "https://support.signal.org/hc/articles/360007059752") }
+      onLearnMoreClick = { CommunicationActions.openBrowserLink(requireContext(), "https://tellomi.app/help/360007059752") }
     )
   }
 }
