@@ -495,8 +495,30 @@ public class ApplicationContext extends Application implements AppForegroundObse
                                       .then(new RefreshAttributesJob())
                                       .enqueue();
     } else if (playServicesStatus == PlayServicesUtil.PlayServicesStatus.MISSING && SignalStore.account().isFcmEnabled()) {
-      Log.w(TAG, "Play Services are no longer available. Attempting to get an FCM token anyway.");
-      AppDependencies.getJobManager().add(new FcmRefreshJob());
+      if (FcmRefreshJob.neverHadAnFcmToken()) {
+        // Tellomi（#952）：全新安装时 fcmEnabled 会被写成 true，**与有没有 GMS 无关**——
+        // AccountValues.migrateFromSharedPrefsV1（KV 首次迁移，全新安装也跑）里是
+        //   putBoolean(KEY_FCM_ENABLED, !getBooleanPreference(context, "pref_gcm_disabled", false))
+        // 全新安装取不到 pref_gcm_disabled → 默认 false → !false = true。
+        // 属性声明上那个 booleanValue(KEY_FCM_ENABLED, false) 的默认值**永远用不上**。
+        //
+        // 上游靠下面这个 FcmRefreshJob 重试耗尽后自己纠正，实测约 51 秒。这 51 秒里
+        // fcmEnabled=true，IncomingMessageObserver 认为不需要常驻连接，用户一切后台就收不到消息
+        // （2026-09-22 实测：06:35 发出，直到 06:41 切回前台才出现）。
+        //
+        // 没装 GMS **而且从来没拿到过 token** 的机器，等多久都不会拿到，没有任何理由等：
+        // 立刻改对，并补一个 RefreshAttributesJob 让服务端知道 fetchesMessages=true。
+        // 「以前拿到过、现在 GMS 没了」不走这条——那种情况按上游的样子再试一次。
+        Log.w(TAG, "No Play Services and we never had an FCM token, but fcmEnabled was true. Fixing it now instead of waiting for the job to exhaust its retries.");
+        SignalStore.account().setFcmEnabled(false);
+        SignalStore.account().setFcmToken(null);
+        AppDependencies.getJobManager().add(new RefreshAttributesJob());
+        AppDependencies.resetNetwork();
+        AppDependencies.startNetwork();
+      } else {
+        Log.w(TAG, "Play Services are no longer available. Attempting to get an FCM token anyway.");
+        AppDependencies.getJobManager().add(new FcmRefreshJob());
+      }
     } else if (playServicesStatus == PlayServicesUtil.PlayServicesStatus.MISSING && (System.currentTimeMillis() - SignalStore.misc().getLastMissingPlayServicesFcmVerificationTime()) > TimeUnit.DAYS.toMillis(3)) {
       Log.i(TAG, "Play Services are unavailable, but it's been long enough that we should check and see if we can get an FCM token anyway.");
       AppDependencies.getJobManager().add(new FcmRefreshJob());

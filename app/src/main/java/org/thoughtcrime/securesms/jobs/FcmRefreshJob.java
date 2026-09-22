@@ -166,7 +166,7 @@ public class FcmRefreshJob extends BaseJob {
    * 与「拿到过、现在失效了」要区别对待：后者可能是偶发抖动，值得等；前者等多久都不会好
    * （典型就是大陆装着 GMS 但连不上 Google 的手机）。
    */
-  private boolean neverHadAnFcmToken() {
+  public static boolean neverHadAnFcmToken() {
     return SignalStore.account().getFcmToken() == null && SignalStore.account().getFcmTokenLastSetTime() == 0;
   }
 

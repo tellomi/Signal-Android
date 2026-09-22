@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.signal.core.util.PlayServicesUtil;
 import org.signal.core.util.logging.Log;
 
 import java.util.Optional;
@@ -34,6 +35,16 @@ public final class FcmUtil {
   @WorkerThread
   public static Optional<String> getToken(Context context) {
     String token = null;
+
+    // Tellomi（#952）：没装 GMS 的机器上，下面那个 await 一定会走满 15 秒超时——
+    // 不是"可能拿不到"，是**结构上不可能拿到**。注册流程里会取两次 token
+    // （创建会话一次、注册账号一次），于是无 GMS 用户凭空多等 30 秒，界面上没有任何解释。
+    // 先问一次 Play Services 在不在，MISSING 就直接当作没有 FCM 返回。
+    // 只短路 MISSING：NEEDS_UPDATE / TRANSIENT_ERROR 仍然照常去取，因为那两种情况真有可能拿到。
+    if (PlayServicesUtil.getPlayServicesStatus(context) == PlayServicesUtil.PlayServicesStatus.MISSING) {
+      Log.i(TAG, "No Play Services; skipping the " + TOKEN_TIMEOUT_SECONDS + "s token wait entirely.");
+      return Optional.empty();
+    }
 
     // Must be called manually if running outside of main process
     FirebaseApp.initializeApp(context);
