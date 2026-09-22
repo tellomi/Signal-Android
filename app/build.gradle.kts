@@ -30,8 +30,17 @@ plugins {
 val staticIps = Properties().apply { file("static-ips.properties").reader().use { load(it) } }
 staticIps.stringPropertyNames().forEach { rootProject.extra[it] = staticIps.getProperty(it) }
 
-val canonicalVersionCode = 1748
-val canonicalVersionName = "8.26.4"
+// Tellomi 自己的版本线（ADR-0024「客户端版本治理」/ TR-PLAT-13）。
+// **不跟上游 Signal 的版本号**：用户看到的是「版本 0.1.0」，不是 8.26.4。
+// 基于哪个上游 release 记在超级仓库 docs/signal/VERSIONS.md，不占用面向用户的版本号。
+// Desktop 走的是同一条线（package.json 0.1.x）。
+//
+// canonicalVersionCode：ADR 要求的「单调递增整数」，最低版本判定用它。
+// **不从 1 重新开始**：现有测试安装的 versionCode 已经是 174801（上游 1748 派生的），
+// 降号会让 Android 直接拒绝覆盖升级，测试机得卸载重装、本地聊天记录一起丢。
+// 所以从当前值之上继续。以后要重排号，只能挑一个「所有人反正都要重装」的节点。
+val canonicalVersionCode = 1749
+val canonicalVersionName = "0.1.0"
 val currentHotfixVersion = 0
 val maxHotfixVersions = 100
 
@@ -305,7 +314,9 @@ android {
     targetSdk = libs.versions.targetSdk.get().toInt()
 
     vectorDrawables.useSupportLibrary = true
-    project.ext.set("archivesBaseName", "Signal")
+    // Tellomi：决定产物文件名（Signal-Android-play-staging-….apk → Tellomi-play-staging-….apk）。
+    // owner 2026-09-22 指出拿到手的安装包名字还是 Signal。
+    project.ext.set("archivesBaseName", "Tellomi")
 
     manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
 
