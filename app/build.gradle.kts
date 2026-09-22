@@ -388,7 +388,19 @@ android {
     buildConfigField("String", "BUILD_DISTRIBUTION_TYPE", "\"unset\"")
     buildConfigField("String", "BUILD_ENVIRONMENT_TYPE", "\"unset\"")
     buildConfigField("String", "BUILD_VARIANT_TYPE", "\"unset\"")
-    buildConfigField("String", "BADGE_STATIC_ROOT", "\"https://updates2.signal.org/static/badges/\"")
+    // Tellomi（#1017）：徽章图片也走我们自己的更新源。
+    //
+    // 这条和 UPDATES2_HOST 那几条不一样，值得写清楚：**它不受 DONATIONS_ENABLED 控制**。
+    // 拼 URL 的 Badges.fromServiceBadge() 是被 RetrieveProfileJob / RefreshOwnProfileJob 调的——
+    // 也就是**每次拉任何人的 profile 都会走**，只要服务端在 profile 里回了 badges 就会去取图。
+    // 捐赠入口关掉只是让用户点不到捐赠页，挡不住这条路。
+    //
+    // 我们的服务端目前应该不会签发徽章（没有订阅后端），但那是**服务端的状态**、不是客户端保证，
+    // 而且我在这台机器上核不了（服务端配置在香港主机上）。所以不赌它：指向我们自己的主机，
+    // 哪怕镜像还没铺好（updates.tellomi.app/static/badges/ 现在是 404）。
+    // 404 的后果是徽章图片加载不出来；指着上游的后果是用户 IP 直接落到 Signal 的 CDN 上。
+    // 前者可接受，后者正是 #1023 / #1030 那一类问题。
+    buildConfigField("String", "BADGE_STATIC_ROOT", "\"https://updates.tellomi.app/static/badges/\"")
     buildConfigField("String", "STRIPE_BASE_URL", "\"https://api.stripe.com/v1\"")
     buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"pk_test_sngOd8FnXNkpce9nPXawKrJD00kIDngZkD\"")
     buildConfigField("boolean", "TRACING_ENABLED", "false")
