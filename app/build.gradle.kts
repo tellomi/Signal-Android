@@ -168,6 +168,11 @@ screenshotTests {
   imageDifferenceThreshold = 0.0001f
 }
 
+// 产物名：Tellomi-play-staging-arm64-v8a-debug-0.1.0.apk
+base {
+  archivesName.set("Tellomi")
+}
+
 android {
   namespace = "org.thoughtcrime.securesms"
 
@@ -314,9 +319,11 @@ android {
     targetSdk = libs.versions.targetSdk.get().toInt()
 
     vectorDrawables.useSupportLibrary = true
-    // Tellomi：决定产物文件名（Signal-Android-play-staging-….apk → Tellomi-play-staging-….apk）。
-    // owner 2026-09-22 指出拿到手的安装包名字还是 Signal。
-    project.ext.set("archivesBaseName", "Tellomi")
+    // 上游这里写的是 project.ext.set("archivesBaseName", "Signal")，**早就不起作用了**：
+    // Gradle 8 删掉了 archivesBaseName 这个约定属性，往 ext 里塞同名值没人读。
+    // 产物名实际来自 Gradle 模块名（settings.gradle.kts 把 :app 改名成 Signal-Android），
+    // 所以包一直叫 Signal-Android-play-staging-….apk（owner 2026-09-22 指出）。
+    // 模块名有 build.gradle.kts / CI 多处引用，不动；改现行的 base.archivesName。
 
     manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
 
