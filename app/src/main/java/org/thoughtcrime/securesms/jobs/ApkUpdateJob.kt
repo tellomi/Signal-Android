@@ -161,9 +161,11 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
 
     val downloadRequest = DownloadManager.Request(Uri.parse(uri)).apply {
       setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
-      setTitle("Downloading Signal update")
-      setDescription("Downloading Signal $versionName")
-      setDestinationInExternalFilesDir(context, null, "signal-update.apk")
+      // Tellomi：这三行是系统下载通知里用户能看到的字，上游写死了 Signal。
+      // 文件名与下面 deleteExistingDownloadedApks 的前缀必须一起改，否则旧包清不掉、越攒越多。
+      setTitle("正在下载 Tellomi 更新")
+      setDescription("Tellomi $versionName")
+      setDestinationInExternalFilesDir(context, null, "tellomi-update.apk")
       setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
     }
 
@@ -198,7 +200,7 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
     }
 
     for (file in directory.listFiles() ?: emptyArray()) {
-      if (file.name.startsWith("signal-update")) {
+      if (file.name.startsWith("tellomi-update")) {
         if (file.delete()) {
           Log.d(TAG, "Deleted " + file.name)
         }

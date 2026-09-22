@@ -523,8 +523,12 @@ android {
 
     create("website") {
       dimension = "distribution"
+      // Tellomi 侧载走的就是这个 flavor（#921）：iOS 没有付费开发者账号，Android 也不上架，
+      // 所以对外发的包必须是 website 档——只有它 MANAGES_APP_UPDATES=true，装了旧版才会弹更新提示。
+      // 清单格式由 ApkUpdateJob.UpdateDescriptor 定死：{versionCode, versionName, url, sha256sum, uploadTimestamp}，
+      // **不是**三端共用的 versions.json（那份给官网下载页看）。两份都由 scripts/release/publish-android.sh 写。
       buildConfigField("boolean", "MANAGES_APP_UPDATES", "true")
-      buildConfigField("String", "APK_UPDATE_MANIFEST_URL", "\"https://updates.signal.org/android/latest.json\"")
+      buildConfigField("String", "APK_UPDATE_MANIFEST_URL", "\"https://updates.tellomi.app/android/latest.json\"")
       buildConfigField("String", "BUILD_DISTRIBUTION_TYPE", "\"website\"")
     }
 
