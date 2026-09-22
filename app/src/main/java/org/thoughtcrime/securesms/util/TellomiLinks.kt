@@ -120,9 +120,14 @@ object TellomiLinks {
   private val PLAIN_USERNAME_FRAGMENT_REGEX =
     """^(https://|tellomi://)tell\.cc/u/?#u/([A-Za-z0-9_]+\.[0-9]+)$""".toRegex()
 
-  /** 用户看到的形状：`https://tell.cc/<username>` */
+  /**
+   * 用户看到的形状：`https://tell.cc/<username>`。
+   *
+   * **允许尾随 `?…` / `#…`** —— 与 iOS 对齐（taishi 在 #975 的正则比我第一版稳：
+   * 真实分享出去的链接常带 utm / 来源参数，`tell.cc/ceshi.57?from=wechat` 我原来会漏掉）。
+   */
   private val PLAIN_USERNAME_PATH_REGEX =
-    """^(https://|tellomi://)tell\.cc/([A-Za-z0-9_]+\.[0-9]+)/?$""".toRegex()
+    """^(https://|tellomi://)tell\.cc/([A-Za-z0-9_]+\.[0-9]+)/?([?#].*)?$""".toRegex()
 
   // 这里**故意不提供** `isGroupHost(host)` 之类只看 host 的便利方法：
   // tell.cc 一个域名承载 /u /g /s /call 四种用途，只判 host 会把联系人链接
