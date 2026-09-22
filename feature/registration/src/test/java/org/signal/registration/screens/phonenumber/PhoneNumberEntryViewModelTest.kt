@@ -78,6 +78,9 @@ class PhoneNumberEntryViewModelTest {
   fun setup() {
     Dispatchers.setMain(testDispatcher)
     mockRepository = mockk(relaxed = true)
+    // Tellomi：relaxed mock 的 Boolean 默认 false，而 false 现在意味着「没有 SVR enclave，
+    // 不走 SMS bypass 那条路」（#999）。上游这批用例都假设有 enclave，所以显式打开。
+    every { mockRepository.svrEnclaveAvailable } returns true
     every { mockRepository.getDefaultRegionCode() } returns "US"
 
     parentState = MutableStateFlow(RegistrationFlowState())
@@ -1969,6 +1972,32 @@ class PhoneNumberEntryViewModelTest {
       .isInstanceOf<RegistrationFlowEvent.NavigateToScreen>()
       .prop(RegistrationFlowEvent.NavigateToScreen::route)
       .isInstanceOf<RegistrationRoute.PinEntryForSmsBypass>()
+  }
+
+  @Test
+  fun `no SVR enclave skips the SMS bypass path even with valid SVR credentials`() = runTest {
+    // Tellomi（#999）：没有 enclave 时不能进 SMS bypass 的 PIN 页——那一页的终点是拿 PIN 去
+    // enclave 换 master key。服务端的 v2/svr/auth/check 只查凭证不查 enclave，会回 200，
+    // 所以不能指望它自己失败。反向对照就是上面那条 `navigates to PinEntryForSmsBypass`：
+    // 同样的输入 + svrEnclaveAvailable=true → 会进那一页。
+    every { mockRepository.svrEnclaveAvailable } returns false
+
+    val svrCredentials = listOf(SvrCredentials(username = "u", password = "p"))
+    val initialState = PhoneNumberEntryState(
+      countryCode = "1",
+      nationalNumber = "5551234567",
+      restoredSvrCredentials = svrCredentials
+    )
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.PhoneNumberConfirmed, parentEventEmitter, stateEmitter)
+
+    assertThat(
+      emittedEvents
+        .filterIsInstance<RegistrationFlowEvent.NavigateToScreen>()
+        .map { it.route }
+        .filterIsInstance<RegistrationRoute.PinEntryForSmsBypass>()
+    ).hasSize(0)
+    coVerify(exactly = 0) { mockRepository.checkSvrCredentials(any(), any()) }
   }
 
   @Test

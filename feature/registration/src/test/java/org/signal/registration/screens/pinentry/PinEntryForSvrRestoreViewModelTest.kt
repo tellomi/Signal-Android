@@ -14,6 +14,7 @@ import assertk.assertions.isTrue
 import assertk.assertions.prop
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
@@ -43,6 +44,9 @@ class PinEntryForSvrRestoreViewModelTest {
   @Before
   fun setup() {
     mockRepository = mockk(relaxed = true)
+    // Tellomi：relaxed mock 的 Boolean 默认是 false，而 false 现在意味着「没有 SVR enclave，
+    // 直接跳过这一页」（#999）。老用例都是在「有 enclave」的前提下写的，所以显式打开。
+    every { mockRepository.svrEnclaveAvailable } returns true
     parentState = MutableStateFlow(
       RegistrationFlowState(
         sessionMetadata = createSessionMetadata(),
@@ -58,6 +62,41 @@ class PinEntryForSvrRestoreViewModelTest {
       parentState = parentState,
       parentEventEmitter = parentEventEmitter
     )
+  }
+
+  // ==================== Tellomi：没有 SVR enclave 时自动跳过（#999） ====================
+
+  @Test
+  fun `no SVR enclave skips straight to PIN creation`() = runTest {
+    val events = mutableListOf<RegistrationFlowEvent>()
+    val repo = mockk<RegistrationRepository>(relaxed = true)
+    every { repo.svrEnclaveAvailable } returns false
+
+    PinEntryForSvrRestoreViewModel(
+      repository = repo,
+      parentState = parentState,
+      parentEventEmitter = { events.add(it) }
+    )
+
+    assertThat(events.filterIsInstance<RegistrationFlowEvent.NavigateToScreen>().map { it.route })
+      .isEqualTo(listOf(RegistrationRoute.PinCreate))
+  }
+
+  @Test
+  fun `with an SVR enclave the screen is not skipped`() = runTest {
+    // 反向对照：同样的构造，只把 svrEnclaveAvailable 换成 true，就**不该**有任何跳转——
+    // 证明上一条里的跳转是这条规则造成的，不是别的东西。
+    val events = mutableListOf<RegistrationFlowEvent>()
+    val repo = mockk<RegistrationRepository>(relaxed = true)
+    every { repo.svrEnclaveAvailable } returns true
+
+    PinEntryForSvrRestoreViewModel(
+      repository = repo,
+      parentState = parentState,
+      parentEventEmitter = { events.add(it) }
+    )
+
+    assertThat(events.filterIsInstance<RegistrationFlowEvent.NavigateToScreen>()).hasSize(0)
   }
 
   // ==================== PinEntered Success Tests ====================

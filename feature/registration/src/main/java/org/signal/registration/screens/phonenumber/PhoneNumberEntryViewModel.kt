@@ -519,7 +519,12 @@ class PhoneNumberEntryViewModel(
 
     // Detect if we have valid SVR credentials for the current number. If so, we can go right to the PIN entry screen.
     // If they successfully restore the master key at that screen, we can use that to build the RRP and register without SMS.
-    if (state.restoredSvrCredentials.isNotEmpty()) {
+    //
+    // Tellomi（#999）：没有 SVR enclave 时这条路一步都走不通——它的终点是拿用户的 PIN 去 enclave 里
+    // 换 master key。而服务端的 `POST v2/svr/auth/check` **只查凭证本身、不查有没有 enclave**，
+    // 会回 200（iOS 上实测过，#964 就是被这个 200 骗去要 PIN 的），所以不能靠它自己失败。
+    // 直接不进这条路，落到下面的会话验证码流程。
+    if (state.restoredSvrCredentials.isNotEmpty() && repository.svrEnclaveAvailable) {
       when (val result = repository.checkSvrCredentials(e164, state.restoredSvrCredentials)) {
         is RequestResult.Success -> {
           Log.i(TAG, "[CheckSVRCredentials] Successfully validated credentials for $e164.")

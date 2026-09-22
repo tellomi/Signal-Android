@@ -58,6 +58,20 @@ class PinEntryForSvrRestoreViewModel(
     parentState
       .onEach { onEvent(PinEntryScreenEvents.ParentStateChanged(it)) }
       .launchIn(viewModelScope)
+
+    // Tellomi（#999）：没有 SVR enclave 的部署里，这一页要用户输一个「用来从 SVR 恢复」的 PIN——
+    // 而这套部署根本没有 SVR，用户也从来没设过 PIN（首次注册时 PinCreationViewModel 自动 opt-out 了）。
+    // 走上游自己的 Skip 路径（→ PinCreate，那一页在没有 enclave 时同样自动 opt-out），
+    // 和 PinCreationViewModel 里那段是同一个写法。
+    //
+    // 今天（2026-09-22）在我们的服务端上这一页其实进不来：注册返回 storageCapable=false，
+    // 所以 VerificationCodeViewModel / PhoneNumberEntryViewModel 都走 PinCreate 分支。
+    // 但那是**服务端当前的行为**，不是保证——账号一旦有了支持 storage 的关联设备就会变 true，
+    // 到时候重新注册的人会撞上一个他根本没有的 PIN（iOS 上的同类死角见 #964）。
+    if (!repository.svrEnclaveAvailable) {
+      Log.i(TAG, "[Init] No SVR enclave in this deployment; there is nothing to restore. Skipping PIN entry.")
+      handleSkip()
+    }
   }
 
   override suspend fun processEvent(event: PinEntryScreenEvents) {
