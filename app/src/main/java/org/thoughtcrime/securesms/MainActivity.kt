@@ -164,6 +164,7 @@ import org.thoughtcrime.securesms.megaphone.Megaphone
 import org.thoughtcrime.securesms.megaphone.MegaphoneActionController
 import org.thoughtcrime.securesms.megaphone.Megaphones
 import org.thoughtcrime.securesms.net.DeviceTransferBlockingInterceptor
+import org.thoughtcrime.securesms.notifications.TellomiNotificationPrimerBottomSheet
 import org.thoughtcrime.securesms.notifications.VitalsViewModel
 import org.thoughtcrime.securesms.notifications.profiles.NotificationProfile
 import org.thoughtcrime.securesms.notifications.profiles.NotificationProfiles
@@ -739,6 +740,9 @@ class MainActivity :
         }
         .setCancelable(false)
         .show()
+    } else {
+      // Tellomi（#1112 / #1218 F-01）：注册流程里不再要通知权限，改在第一次进首屏时说明一次
+      TellomiNotificationPrimerBottomSheet.showIfNeeded(this)
     }
 
     vitalsViewModel.checkSlowNotificationHeuristics()

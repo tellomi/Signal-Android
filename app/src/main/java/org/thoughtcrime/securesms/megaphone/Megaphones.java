@@ -562,6 +562,13 @@ public final class Megaphones {
   }
 
   private static boolean shouldShowNotificationsMegaphone(@NonNull Context context) {
+    // Tellomi（#1218 F-01）：系统层面通知关着时，由会话列表顶部的 NotificationsDisabledBanner 常驻提示（Android 13+
+    // 上还先有首屏说明页），这里不再每 30 天弹一次「开启通知 / 以后再说」，免得同一件事两处说。
+    // 应用内开关 / 消息频道被关的情况照上游。
+    if (!NotificationChannels.getInstance().areNotificationsEnabled()) {
+      return false;
+    }
+
     boolean shouldShow = !SignalStore.settings().isMessageNotificationsEnabled() ||
                          !NotificationChannels.getInstance().isMessageChannelEnabled() ||
                          !NotificationChannels.getInstance().isMessagesChannelGroupEnabled() ||
