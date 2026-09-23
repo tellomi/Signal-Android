@@ -294,4 +294,18 @@ class RegistrationRepositoryTest {
     assertThat(networkController.lastRegisterAccountRequest?.pniPreKeys).isNull()
     assertThat(networkController.lastRegisterAccountRequest?.pniRegistrationId).isNull()
   }
+
+  // ==================== Tellomi：注册页预选的国家（#1060） ====================
+
+  @Test
+  fun `default region code is CN, not the upstream device-inferred one`() {
+    // 产品决定：注册页预选中国（RegistrationRepository.TELLOMI_DEFAULT_REGION）。
+    // 这条把那个决定钉在**一个**地方：改了它，先红的是这条，而不是 RegistrationEndToEndTest
+    // 里 18 条「Expected committed e164 +1555…」——那种红的症状和根因毫无关联（#1060 的原状）。
+    //
+    // 上游那串 deviceNumberRegionCode() / SIM / locale 推断逻辑被短路在这个常量后面，
+    // 所以这条也顺带证明「推断结果不会反过来盖掉我们的预选」：Robolectric 下没有 SIM、
+    // locale 也不是 zh_CN，返回的仍然是 CN。要恢复上游行为，删掉那一行 return 即可。
+    assertThat(repository.getDefaultRegionCode()).isEqualTo("CN")
+  }
 }
