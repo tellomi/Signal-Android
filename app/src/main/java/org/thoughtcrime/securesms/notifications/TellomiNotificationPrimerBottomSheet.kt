@@ -94,6 +94,7 @@ class TellomiNotificationPrimerBottomSheet : ComposeBottomSheetDialogFragment() 
 
   private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
     Log.i(TAG, "POST_NOTIFICATIONS granted: $granted")
+    TellomiNotificationPrompts.onPermissionAnswered()
     dismissAllowingStateLoss()
   }
 

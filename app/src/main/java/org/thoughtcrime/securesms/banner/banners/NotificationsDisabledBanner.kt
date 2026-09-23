@@ -30,7 +30,7 @@ import org.thoughtcrime.securesms.notifications.TellomiNotificationPrompts
 /**
  * Tellomi（tellomi/tellomi#1218 F-01）：系统通知关着时，会话列表顶部常驻一条「通知已关闭 · 去设置」。
  *
- * - 没有关闭按钮：在系统设置里打开通知后自己消失（会话列表每次 `onResume` 都让 BannerManager 重新判 [enabled]）。
+ * - 没有关闭按钮：在系统设置里打开通知后自己消失（回到 App 经过 STOP / START，BannerManager 重新收集、重判 [enabled]）。
  * - Android 13+ 上要等首屏说明页（`TellomiNotificationPrimerBottomSheet`）处理过才出：还没问过就挂「已关闭」，
  *   等于在说明页后面先把结论写了。更早的系统通知默认开着，关着就是用户自己在系统设置里关的。
  * - 上游的 NOTIFICATIONS megaphone（每 30 天「开启通知 / 以后再说」）在系统通知关着时让给这一条，见 `Megaphones`。
@@ -50,6 +50,10 @@ class NotificationsDisabledBanner(private val context: Context) : Banner<Unit>()
 
   override val dataFlow: Flow<Unit>
     get() = flowOf(Unit)
+
+  /** 说明页的系统框答完时重判（见 [TellomiNotificationPrompts.permissionAnswered]）；从系统设置回来会经过 STOP / START，BannerManager 自己会重判。 */
+  override val stateUpdates: Flow<Unit>
+    get() = TellomiNotificationPrompts.permissionAnswered
 
   @Composable
   override fun DisplayBanner(model: Unit, contentPadding: PaddingValues) {
