@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.UsernameUtil
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository
 import org.thoughtcrime.securesms.recipients.PhoneNumber
@@ -65,10 +66,14 @@ class FindByViewModel(
       return FindByResult.InvalidEntry
     }
 
-    return when (val result = UsernameRepository.fetchAciForUsername(usernameString = username.removePrefix("@"))) {
+    // Tellomi（tellomi/tellomi#1106，ADR-0066）：输 `kaixin` 就查 `kaixin.01`；存进 Recipient 的也是补全后的全名，
+    // 不存裸 nickname（显示时再去掉 `.01`）。
+    val protocolUsername = TellomiUsernames.toProtocolUsername(username)
+
+    return when (val result = UsernameRepository.fetchAciForUsername(usernameString = protocolUsername)) {
       UsernameRepository.UsernameAciFetchResult.NetworkError -> FindByResult.NetworkError
       UsernameRepository.UsernameAciFetchResult.NotFound -> FindByResult.NotFound()
-      is UsernameRepository.UsernameAciFetchResult.Success -> FindByResult.Success(Recipient.externalUsername(result.aci, username).id)
+      is UsernameRepository.UsernameAciFetchResult.Success -> FindByResult.Success(Recipient.externalUsername(result.aci, protocolUsername).id)
     }
   }
 
