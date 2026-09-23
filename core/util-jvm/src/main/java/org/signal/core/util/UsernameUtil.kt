@@ -20,7 +20,18 @@ import java.util.regex.Pattern
 object UsernameUtil {
   private val TAG = Log.tag(UsernameUtil::class.java)
   const val MIN_NICKNAME_LENGTH = 3
-  const val MAX_NICKNAME_LENGTH = 32
+
+  /**
+   * Tellomi（tellomi/tellomi#1181，TR-ID-01）：新建 / 修改用户名时昵称最长 20，与服务端下发的
+   * `global.nicknames.max`（tellomi/tellomi#1169）和 iOS / Desktop 一致。上游是 32；Android 不读那个远程配置，所以写成常量。
+   */
+  const val MAX_NICKNAME_LENGTH = 20
+
+  /**
+   * 协议 / 上游的上限。**搜索**判断「输入的是不是一个用户名」用它，不用上面那个：20 只约束新建，
+   * 之前已有的 21–32 位用户名必须还能被搜到（「已有更长的不受影响」）。
+   */
+  private const val MAX_NICKNAME_LENGTH_FOR_SEARCH = 32
   const val MIN_DISCRIMINATOR_LENGTH = 2
   const val MAX_DISCRIMINATOR_LENGTH = 9
   private val FULL_PATTERN = Pattern.compile(String.format(Locale.US, "^[a-zA-Z_][a-zA-Z0-9_]{%d,%d}$", MIN_NICKNAME_LENGTH - 1, MAX_NICKNAME_LENGTH - 1), Pattern.CASE_INSENSITIVE)
@@ -33,7 +44,7 @@ object UsernameUtil {
       Locale.US,
       "^@?[a-zA-Z_][a-zA-Z0-9_]{%d,%d}(.[0-9]+)?$",
       MIN_NICKNAME_LENGTH - 1,
-      MAX_NICKNAME_LENGTH - 1,
+      MAX_NICKNAME_LENGTH_FOR_SEARCH - 1,
       Pattern.CASE_INSENSITIVE
     )
   )
