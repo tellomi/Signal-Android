@@ -61,7 +61,7 @@ public class GiphyActivity extends PassphraseRequiredActivity implements Keyboar
   @SuppressLint("MissingInflatedId")
   @Override
   public void onCreate(Bundle bundle, boolean ready) {
-    if (!RemoteConfig.gifSearchAvailable()) {
+    if (!RemoteConfig.gifAvailable()) {
       finish();
     }
     setContentView(R.layout.giphy_activity);

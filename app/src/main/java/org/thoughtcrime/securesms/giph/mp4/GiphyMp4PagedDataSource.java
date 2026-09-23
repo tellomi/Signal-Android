@@ -13,6 +13,7 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.giph.model.GiphyImage;
 import org.thoughtcrime.securesms.giph.model.GiphyResponse;
 import org.thoughtcrime.securesms.net.ContentProxySelector;
+import org.thoughtcrime.securesms.util.RemoteConfig;
 import org.signal.core.util.JsonUtils;
 
 import java.io.IOException;
@@ -29,18 +30,33 @@ import okhttp3.Response;
  */
 final class GiphyMp4PagedDataSource implements PagedDataSource<String, GiphyImage> {
 
-  private static final Uri BASE_GIPHY_URI = Uri.parse("https://api.giphy.com/v1/gifs/")
-                                               .buildUpon()
-                                               .appendQueryParameter("api_key", BuildConfig.GIPHY_API_KEY)
-                                               .build();
+  /**
+   * Tellomi（#1078，ADR-0064 §4.4）：api_key 优先用服务端下发的那把，无值才回落编译期常量。
+   *
+   * **不能再做成 `static final`**：`static final` 在类加载时求值，那时 RemoteConfig 可能
+   * 还没初始化，而且服务端换 key 之后（`hotSwappable = true`）这个进程再也拿不到新值——
+   * 表现是「后台改了 key，用户还得杀进程重开」。每次取 URI 时现算，成本是拼一个字符串。
+   *
+   * 上游那把 key 是 **Signal 自己的**，我们一直在用它请求 GIPHY。
+   */
+  private static @NonNull Uri baseGiphyUri() {
+    String apiKey = RemoteConfig.gifApiKey();
+    if (TextUtils.isEmpty(apiKey)) {
+      apiKey = BuildConfig.GIPHY_API_KEY;
+    }
+    return Uri.parse("https://api.giphy.com/v1/gifs/")
+              .buildUpon()
+              .appendQueryParameter("api_key", apiKey)
+              .build();
+  }
 
-  private static final Uri TRENDING_URI = BASE_GIPHY_URI.buildUpon()
-                                                        .appendPath("trending")
-                                                        .build();
+  private static @NonNull Uri trendingUri() {
+    return baseGiphyUri().buildUpon().appendPath("trending").build();
+  }
 
-  private static final Uri SEARCH_URI = BASE_GIPHY_URI.buildUpon()
-                                                      .appendPath("search")
-                                                      .build();
+  private static @NonNull Uri searchUri() {
+    return baseGiphyUri().buildUpon().appendPath("search").build();
+  }
 
 
   private static final String TAG = Log.tag(GiphyMp4PagedDataSource.class);
@@ -109,7 +125,7 @@ final class GiphyMp4PagedDataSource implements PagedDataSource<String, GiphyImag
   }
 
   private String getTrendingUrl(int start, int length) {
-    return TRENDING_URI.buildUpon()
+    return trendingUri().buildUpon()
                        .appendQueryParameter("offset", String.valueOf(start))
                        .appendQueryParameter("limit", String.valueOf(length))
                        .build()
@@ -117,7 +133,7 @@ final class GiphyMp4PagedDataSource implements PagedDataSource<String, GiphyImag
   }
 
   private String getSearchUrl(int start, int length, @NonNull String query) {
-    return SEARCH_URI.buildUpon()
+    return searchUri().buildUpon()
                      .appendQueryParameter("offset", String.valueOf(start))
                      .appendQueryParameter("limit", String.valueOf(length))
                      .appendQueryParameter("q", query)
