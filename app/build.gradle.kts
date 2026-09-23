@@ -355,7 +355,13 @@ android {
     buildConfigField("String", "SIGNAL_CDN2_URL", "\"https://cdn2.tellomi.app\"")
     buildConfigField("String", "SIGNAL_CDN3_URL", "\"https://cdn3.tellomi.app\"")
     buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\"")
-    buildConfigField("String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\"")
+    // 服务故障探测（ServiceOutageDetectionJob）：对这个名字做 DNS 解析，127.0.0.1 = 正常、
+    // 127.0.0.2 = 挂「服务故障」横幅。上游值是 Signal 自己的 uptime 主机，那是 **Signal 的**运维信号——
+    // 境外会跟着 Signal 的故障挂横幅；大陆那个名字被 DNS 污染（随机公网 IP），探测永远判不出结果，
+    // 还每轮连查 5 次一个被封域名（#1101）。记录还没建时是 UnknownHost → 重试 → 按「正常」收场，
+    // 和今天大陆的实际行为一样，只是不再去问 Signal。
+    // （故意不写上游的字面主机名：#1101 的判据之一是源码 grep 它 = 0。）
+    buildConfigField("String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.tellomi.app\"")
     buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\"")
     // 群通话的 SFU 走我们自己的（docs/signal/BUILD_CALLING.md）：香港那台上 calling_frontend
     // 听 127.0.0.1:9010，nginx 以 /callingService/ 暴露；Desktop 的 config/production.json
