@@ -73,6 +73,8 @@ import org.signal.core.ui.rememberWindowBreakpoint
 import org.signal.registration.R
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
+import org.signal.registration.screens.shared.TellomiCrossBorderConsent
+import org.signal.registration.screens.shared.TellomiCrossBorderNotice
 import org.signal.registration.screens.shared.TellomiFirstLaunchNotice
 import org.signal.registration.test.TestTags
 import kotlin.math.pow
@@ -89,6 +91,19 @@ fun WelcomeScreen(
   modifier: Modifier = Modifier
 ) {
   var showBottomSheet by remember { mutableStateOf(false) }
+
+  // Tellomi：「我可以用旧手机」（扫码恢复）和「关联设备」都要连服务端，同意跨境之前网络是关着的，先问（tellomi/tellomi#1133）。
+  // 走号码注册的在号码页确认之前问。
+  val context = LocalContext.current
+  var pendingNetworkEvent by remember { mutableStateOf<WelcomeScreenEvents?>(null) }
+  val gatedOnEvent: (WelcomeScreenEvents) -> Unit = { event ->
+    val needsNetwork = event == WelcomeScreenEvents.HasOldPhone || event == WelcomeScreenEvents.LinkDevice
+    if (needsNetwork && !TellomiCrossBorderConsent.hasAgreed(context)) {
+      pendingNetworkEvent = event
+    } else {
+      onEvent(event)
+    }
+  }
   val windowBreakpoint = rememberWindowBreakpoint()
   val onRestoreOrTransferClick = { showBottomSheet = true }
   val displayLinkAsPrimaryOption by rememberDisplayLinkAndSyncAsPrimaryPath(state.isLinkAndSyncAvailable)
@@ -97,7 +112,7 @@ fun WelcomeScreen(
     is WindowBreakpoint.Small -> {
       CompactLayout(
         state = state,
-        onEvent = onEvent,
+        onEvent = gatedOnEvent,
         onRestoreOrTransferClick = onRestoreOrTransferClick,
         modifier = modifier
       )
@@ -106,7 +121,7 @@ fun WelcomeScreen(
     is WindowBreakpoint.Medium -> {
       MediumLayout(
         state = state,
-        onEvent = onEvent,
+        onEvent = gatedOnEvent,
         onRestoreOrTransferClick = onRestoreOrTransferClick,
         modifier = modifier
       )
@@ -115,7 +130,7 @@ fun WelcomeScreen(
     is WindowBreakpoint.Large -> {
       LargeLayout(
         state = state,
-        onEvent = onEvent,
+        onEvent = gatedOnEvent,
         displayLinkAsPrimaryOption = displayLinkAsPrimaryOption,
         onRestoreOrTransferClick = onRestoreOrTransferClick,
         modifier = modifier
@@ -127,7 +142,7 @@ fun WelcomeScreen(
     RestoreOrTransferBottomSheet(
       onEvent = {
         showBottomSheet = false
-        onEvent(it)
+        gatedOnEvent(it)
       },
       onDismiss = { showBottomSheet = false }
     )
@@ -135,6 +150,17 @@ fun WelcomeScreen(
 
   // Tellomi：第一次打开先弹一次隐私提示；同意之前，这一页的按钮都在提示后面（tellomi/tellomi#1211）。
   TellomiFirstLaunchNotice()
+
+  pendingNetworkEvent?.let { event ->
+    TellomiCrossBorderNotice(
+      onAgree = {
+        TellomiCrossBorderConsent.recordAgreement(context)
+        pendingNetworkEvent = null
+        onEvent(event)
+      },
+      onCancel = { pendingNetworkEvent = null }
+    )
+  }
 }
 
 @Composable

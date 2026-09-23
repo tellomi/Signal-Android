@@ -27,6 +27,8 @@ import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.registration.screens.shared.TellomiCrossBorderConsent
+import org.signal.registration.screens.shared.TellomiLegalConsent
 import org.signal.registration.screens.util.MockMultiplePermissionsState
 import org.signal.registration.screens.util.MockPermissionsState
 import org.signal.registration.test.TestTags
@@ -51,6 +53,11 @@ class RegistrationNavigationTest {
 
   @Before
   fun setup() {
+    // Tellomi：首次启动提示和跨境告知另有用例（TellomiLegalConsentTest）；这里测导航，先当作都同意过（tellomi/tellomi#1211、#1133）。
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    TellomiCrossBorderConsent.recordAgreement(context)
+
     mockRepository = mockk<RegistrationRepository>(relaxed = true)
     coEvery { mockRepository.restoreFlowState() } returns null
     coEvery { mockRepository.getPreExistingRegistrationData() } returns null

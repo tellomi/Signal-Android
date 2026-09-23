@@ -28,7 +28,9 @@ import org.signal.registration.screens.phonenumber.PhoneNumberEntryScreenEvents
 import org.signal.registration.screens.phonenumber.PhoneNumberEntryState
 import org.signal.registration.screens.phonenumber.PhoneNumberScreen
 import org.signal.registration.screens.welcome.WelcomeScreen
+import org.signal.registration.screens.welcome.WelcomeScreenEvents
 import org.signal.registration.screens.welcome.WelcomeScreenState
+import org.signal.registration.test.TestTags
 
 /**
  * Tellomi：注册同意（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。
@@ -203,6 +205,44 @@ class TellomiLegalConsentTest {
     setWelcomeScreen()
 
     composeTestRule.onNodeWithText(context.getString(R.string.TellomiConsent__first_launch_title)).assertDoesNotExist()
+  }
+
+  @Test
+  fun `restoring from the old phone asks for cross-border consent first`() {
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    val events = setWelcomeScreenCollecting()
+
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_OR_TRANSFER_BUTTON).performClick()
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    assert(events.isEmpty()) { "Nothing may go out before cross-border consent, but got $events" }
+
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
+
+    assert(TellomiCrossBorderConsent.hasAgreed(context))
+    assert(events == listOf<WelcomeScreenEvents>(WelcomeScreenEvents.HasOldPhone)) { "Unexpected events: $events" }
+  }
+
+  @Test
+  fun `continuing to the phone number does not ask for cross-border consent yet`() {
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    val events = setWelcomeScreenCollecting()
+
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_GET_STARTED_BUTTON).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    assert(events == listOf<WelcomeScreenEvents>(WelcomeScreenEvents.Continue)) { "Unexpected events: $events" }
+  }
+
+  private fun setWelcomeScreenCollecting(): List<WelcomeScreenEvents> {
+    val events = mutableListOf<WelcomeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        WelcomeScreen(state = WelcomeScreenState(), onEvent = { events += it })
+      }
+    }
+    return events
   }
 
   private fun setPhoneNumberScreen(state: PhoneNumberEntryState): List<PhoneNumberEntryScreenEvents> {

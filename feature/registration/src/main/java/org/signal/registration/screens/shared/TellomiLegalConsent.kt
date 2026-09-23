@@ -116,16 +116,24 @@ object TellomiCrossBorderConsent {
   private const val VERSION_KEY = "cross_border.version"
   private const val DATE_KEY = "cross_border.date"
 
+  /**
+   * 同意之后要重新放开网络（应用层的 TellomiCrossBorderNetworkGate 负责：重建连接、唤醒等网络的任务）。
+   * 注册模块碰不到应用层的依赖，所以由应用在启动时挂上这个回调。
+   */
+  @Volatile
+  var onAgreed: (() -> Unit)? = null
+
   fun hasAgreed(context: Context): Boolean {
     return TellomiLegalConsent.prefs(context).getString(VERSION_KEY, null) == NOTICE_VERSION
   }
 
   /** 本机记一份（版本 + 时间）。服务端的最小记录点由 taishi 设计（tellomi/tellomi#1133）。 */
   fun recordAgreement(context: Context) {
-    TellomiLegalConsent.prefs(context).edit {
+    TellomiLegalConsent.prefs(context).edit(commit = true) {
       putString(VERSION_KEY, NOTICE_VERSION)
       putLong(DATE_KEY, System.currentTimeMillis())
     }
+    onAgreed?.invoke()
   }
 }
 
