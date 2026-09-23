@@ -18,8 +18,13 @@ import java.util.Locale
 class CountryCodePickerRepository {
 
   companion object {
-    /** A hardcoded list of countries to suggest during registration. Can change at any time. */
-    private val COMMON_COUNTRIES = listOf("US", "DE", "IN", "NL", "UA")
+    /**
+     * A hardcoded list of countries to suggest during registration. Can change at any time.
+     *
+     * Tellomi（tellomi/tellomi#1210）：上游是 US / DE / IN / NL / UA；Tellomi 的用户在中国大陆、香港、澳门、台湾。
+     * 显示名走系统语言的 CLDR 名称。
+     */
+    private val COMMON_COUNTRIES = listOf("CN", "HK", "MO", "TW")
   }
 
   suspend fun getCountries(): List<Country> = withContext(Dispatchers.IO) {

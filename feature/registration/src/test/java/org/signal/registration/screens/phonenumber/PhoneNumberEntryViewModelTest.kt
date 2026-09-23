@@ -1166,9 +1166,10 @@ class PhoneNumberEntryViewModelTest {
         )
       )
 
+    // Tellomi（#1210）：上游用的是 +1；非 +86 现在走「暂未开放该地区」（下一条），+86 遇到 440 仍按上游弹框
     val initialState = PhoneNumberEntryState(
-      countryCode = "1",
-      nationalNumber = "5551234567"
+      countryCode = "86",
+      nationalNumber = "13800000061"
     )
 
     viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.PhoneNumberConfirmed, parentEventEmitter, stateEmitter)
@@ -1178,6 +1179,48 @@ class PhoneNumberEntryViewModelTest {
     assertThat(emittedStates.last().showSpinner).isFalse()
 
     assertThat(emittedStates.last().dialogs.unableToSendSms).isTrue()
+    assertThat(emittedStates.last().isRegionUnavailable).isFalse()
+  }
+
+  /** Tellomi（tellomi/tellomi#1210）：香港只开放中国大陆号码；别的地区 440 等多久都不会好，行内提示而不是「几小时后重试」。 */
+  @Test
+  fun `PhoneNumberSubmitted with a non +86 number and a third party service error shows the region inline error`() = runTest {
+    val sessionMetadata = createSessionMetadata()
+
+    coEvery { mockRepository.createSession(any()) } returns
+      RequestResult.Success(sessionMetadata)
+    coEvery { mockRepository.requestVerificationCode(any(), any(), any()) } returns
+      RequestResult.NonSuccess(
+        RequestVerificationCodeError.ThirdPartyServiceError(
+          ThirdPartyServiceErrorResponse("providerUnavailable", false)
+        )
+      )
+
+    val initialState = PhoneNumberEntryState(
+      countryCode = "1",
+      nationalNumber = "5551234567"
+    )
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.PhoneNumberConfirmed, parentEventEmitter, stateEmitter)
+
+    assertThat(emittedStates.last().showSpinner).isFalse()
+    assertThat(emittedStates.last().isRegionUnavailable).isTrue()
+    assertThat(emittedStates.last().dialogs.unableToSendSms).isFalse()
+  }
+
+  @Test
+  fun `editing the number clears the region inline error`() = runTest {
+    val initialState = PhoneNumberEntryState(
+      countryCode = "1",
+      nationalNumber = "5551234567",
+      isRegionUnavailable = true
+    )
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.NationalNumberChanged(oldValue = "5551234567", newValue = "555123456"), parentEventEmitter, stateEmitter)
+    assertThat(emittedStates.last().isRegionUnavailable).isFalse()
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.CountryCodeChanged("86"), parentEventEmitter, stateEmitter)
+    assertThat(emittedStates.last().isRegionUnavailable).isFalse()
   }
 
   // ==================== Push Challenge Tests ====================

@@ -40,9 +40,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import org.signal.core.ui.WindowBreakpoint
 import org.signal.core.ui.compose.AllDevicePreviews
@@ -152,7 +155,15 @@ private fun CompactLayout(
         OutlinedTextField(
           value = state.givenName,
           onValueChange = { onEvent(CreateProfileScreenEvents.GivenNameChanged(it)) },
-          label = { Text(stringResource(R.string.CreateProfileScreen__first_name_required)) },
+          // Tellomi（tellomi/tellomi#1210）：上游「名字（必需）」→「名字」+ 红色必填星号
+          label = {
+            Text(
+              buildAnnotatedString {
+                append(stringResource(R.string.TellomiRegistration__first_name))
+                withStyle(SpanStyle(color = MaterialTheme.colorScheme.error)) { append(" *") }
+              }
+            )
+          },
           singleLine = true,
           enabled = !state.isSubmitting,
           keyboardOptions = KeyboardOptions(
