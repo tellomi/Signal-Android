@@ -47,6 +47,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.signal.core.ui.logging.LoggingFragment;
 import org.signal.core.ui.permissions.Permissions;
+import org.signal.core.util.TellomiUsernames;
 import org.signal.core.util.UsernameUtil;
 import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.util.concurrent.SimpleTask;
@@ -647,17 +648,19 @@ public final class ContactSelectionListFragment extends LoggingFragment {
 
         if (contact instanceof ContactSearchKey.UnknownRecipientKey && ((ContactSearchKey.UnknownRecipientKey) contact).getSectionKey() == ContactSearchConfiguration.SectionKey.USERNAME) {
           String      username      = ((ContactSearchKey.UnknownRecipientKey) contact).getQuery();
+          // Tellomi（tellomi/tellomi#1106，ADR-0066）：搜 `kaixin` 就查 `kaixin.01`，存进 Recipient 的也是补全后的全名。
+          String      protocolUsername = TellomiUsernames.toProtocolUsername(UsernameUtil.sanitizeUsernameFromSearch(username));
           AlertDialog loadingDialog = SimpleProgressDialog.show(requireContext());
 
           SimpleTask.run(getViewLifecycleOwner().getLifecycle(), () -> {
-            return UsernameRepository.fetchAciForUsername(UsernameUtil.sanitizeUsernameFromSearch(username));
+            return UsernameRepository.fetchAciForUsername(protocolUsername);
           }, result -> {
             loadingDialog.dismiss();
 
             // TODO Could be more specific with errors
             if (result instanceof UsernameAciFetchResult.Success success) {
-              Recipient       recipient = Recipient.externalUsername(success.getAci(), username);
-              SelectedContact selected  = SelectedContact.forUsername(recipient.getId(), username);
+              Recipient       recipient = Recipient.externalUsername(success.getAci(), protocolUsername);
+              SelectedContact selected  = SelectedContact.forUsername(recipient.getId(), protocolUsername);
 
               if (onContactSelectedListener != null) {
                 onContactSelectedListener.onBeforeContactSelected(true, Optional.of(recipient.getId()), null, Optional.empty(), allowed -> {

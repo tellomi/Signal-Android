@@ -10,6 +10,7 @@ import org.signal.core.util.Base64
 import org.signal.core.util.Result
 import org.signal.core.util.Result.Companion.failure
 import org.signal.core.util.Result.Companion.success
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.UuidUtil
 import org.signal.core.util.logging.Log
 import org.signal.core.util.toByteArray
@@ -287,7 +288,9 @@ object UsernameRepository {
   @JvmStatic
   fun fetchAciForUsername(usernameString: String): UsernameAciFetchResult {
     val username = try {
-      Username(usernameString)
+      // Tellomi（tellomi/tellomi#1106，ADR-0066）：不带「.数字」的名字补 .01 再查——上游这里直接 Username(…)，
+      // 没有点就抛异常、当成「找不到」。所有找人入口（找人页、联系人搜索、tell.cc 链接）都汇到这里。
+      Username(TellomiUsernames.toProtocolUsername(usernameString))
     } catch (e: BaseUsernameException) {
       Log.w(TAG, "[fetchAciFromUsername] Invalid username", e)
       return UsernameAciFetchResult.NotFound

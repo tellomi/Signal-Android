@@ -6,6 +6,7 @@
 package org.thoughtcrime.securesms.util
 
 import android.net.Uri
+import org.signal.core.util.TellomiUsernames
 
 /**
  * Tellomi 的链接 scheme / 域名，以及「同时接受新旧两种形状」的判定。
@@ -127,20 +128,36 @@ object TellomiLinks {
    *
    * 上游没有这种明文形状：Signal 的 `#eu/` 是加密块。
    *
-   * 形状收得很紧（`^/[A-Za-z0-9_]+\.[0-9]+$`），原因有两条：
-   * - 排除保留路径 `/u` `/g` `/s` `/call`（它们不含 `.`）；
-   * - 排除 `/.well-known/assetlinks.json` —— 它含 `.`，但以 `.` 开头且带 `/`。
+   * **不带「.数字」的也认**（tellomi/tellomi#1106，ADR-0066）：`tell.cc/kaixin` → `kaixin.01`。
+   * 返回的**总是协议层的完整用户名**（裸 nickname 补 `.01`，已带后缀的原样），调用方可以直接拿去查、存进 Recipient。
+   *
+   * 原来靠「必须含 `.`」挡保留路径，放开裸 nickname 之后改成显式挡：
+   * - 裸 nickname 至少 3 位、首字符是字母或下划线：1–2 位的保留路径 `/u` `/g` `/s` `/i` … 和
+   *   `/.well-known/assetlinks.json`（以 `.` 开头）天然匹配不上；
+   * - 3 位以上的保留路径（`call`、`app`，ADR-0066 §五「命名空间」）在 [RESERVED_FIRST_LEVEL_PATHS] 里显式排除。
    */
   @JvmStatic
   fun parsePlainUsernameFromLink(link: String?): String? {
     if (link == null) return null
-    PLAIN_USERNAME_FRAGMENT_REGEX.find(link)?.let { return it.groups[2]?.value }
-    return PLAIN_USERNAME_PATH_REGEX.find(link)?.groups?.get(2)?.value
+    val raw = PLAIN_USERNAME_FRAGMENT_REGEX.find(link)?.groups?.get(2)?.value
+      ?: PLAIN_USERNAME_PATH_REGEX.find(link)?.groups?.get(2)?.value
+      ?: return null
+    if (!raw.contains('.') && raw.lowercase() in RESERVED_FIRST_LEVEL_PATHS) return null
+    return TellomiUsernames.toProtocolUsername(raw)
   }
+
+  /**
+   * tell.cc 的一级路径与预留路径（ADR-0066 §五：它们都进了用户名保留词，服务端也拒 `call.01` 之类）。
+   * 1–2 位的其实已被长度规则挡住，列全是为了让这张表和 ADR 一一对得上。
+   */
+  private val RESERVED_FIRST_LEVEL_PATHS = setOf("u", "g", "s", "call", "i", "m", "e", "a", "app", "b")
+
+  /** 用户名：带后缀的旧形状，或 3–32 位、首字符为字母 / 下划线的裸 nickname。 */
+  private const val USERNAME_IN_LINK = """[A-Za-z0-9_]+\.[0-9]+|[A-Za-z_][A-Za-z0-9_]{2,31}"""
 
   /** 内部形状：`tellomi://tell.cc/u#u/<username>`（落地页唤起 App 用的） */
   private val PLAIN_USERNAME_FRAGMENT_REGEX =
-    """^(https://|tellomi://)tell\.cc/u/?#u/([A-Za-z0-9_]+\.[0-9]+)$""".toRegex()
+    """^(https://|tellomi://)tell\.cc/u/?#u/($USERNAME_IN_LINK)$""".toRegex()
 
   /**
    * 用户看到的形状：`https://tell.cc/<username>`。
@@ -149,7 +166,7 @@ object TellomiLinks {
    * 真实分享出去的链接常带 utm / 来源参数，`tell.cc/ceshi.57?from=wechat` 我原来会漏掉）。
    */
   private val PLAIN_USERNAME_PATH_REGEX =
-    """^(https://|tellomi://)tell\.cc/([A-Za-z0-9_]+\.[0-9]+)/?([?#].*)?$""".toRegex()
+    """^(https://|tellomi://)tell\.cc/($USERNAME_IN_LINK)/?([?#].*)?$""".toRegex()
 
   // 这里**故意不提供** `isGroupHost(host)` 之类只看 host 的便利方法：
   // tell.cc 一个域名承载 /u /g /s /call 四种用途，只判 host 会把联系人链接
