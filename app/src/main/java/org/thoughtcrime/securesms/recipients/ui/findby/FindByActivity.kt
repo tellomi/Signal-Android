@@ -190,7 +190,7 @@ class FindByActivity : PassphraseRequiredActivity() {
             }
 
             val body = if (state.mode == FindByMode.USERNAME) {
-              stringResource(id = R.string.FindByActivity__s_is_not_a_valid_username, state.userEntry)
+              stringResource(id = R.string.FindByActivity__tellomi_s_is_not_a_valid_username, state.userEntry) // Tellomi（#1106 第四刀）：不再要人补「一组数字」
             } else {
               stringResource(id = R.string.FindByActivity__s_is_not_a_valid_phone_number, state.userEntry)
             }
@@ -381,7 +381,7 @@ private fun Content(
 
     if (state.mode == FindByMode.USERNAME) {
       Text(
-        text = stringResource(id = R.string.FindByActivity__enter_username_description),
+        text = stringResource(id = R.string.FindByActivity__tellomi_enter_username_description), // Tellomi（#1106 第四刀）：输 kaixin 就能找到
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier
