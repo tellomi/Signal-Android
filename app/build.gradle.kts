@@ -287,11 +287,17 @@ android {
     versionName = canonicalVersionName
 
     // Tellomi：上游没写 applicationId，于是它默认等于 namespace（org.thoughtcrime.securesms）。
-    // 商店身份按 ADR-0019 定为 app.tellomi。namespace 不动——那是 Java 包名与 R 类的位置，
+    // 商店身份按 ADR-0019 定为 app.tellomi；**2026-09-23 owner 改成 app.tellomi.chat**，
+    // 与 iOS 对齐（iOS 那边 app.tellomi 系列被两个免费个人团队占着，见 docs/signal/APPLE_TEAMS.md）。
+    // ⚠️ 改包名 = 换身份：Android 按「包名 + 签名」认安装，**现有安装收不到这个包的升级**，
+    //    必须卸载重装（本地聊天记录会丢）。现在没有正式用户，这个代价 owner 已确认可以付。
+    // ⚠️ Firebase 也要跟着：google-services.json 里必须有 package_name=app.tellomi.chat 的 client，
+    //    否则 scripts/release/publish-android.sh 的注入这一步会直接 fail（fail-closed，不会静默）。
+    // namespace 不动——那是 Java 包名与 R 类的位置，
     // 改它等于把整棵源码树搬家，跟品牌无关，而且会让以后合并上游变得极痛苦。
     // provider 的 authority、自定义权限、FileProvider 全都是从 applicationId 派生的
     // （manifest 里是 ${'$'}{applicationId}.xxx，代码里是 BuildConfig.APPLICATION_ID），所以改这一处就够。
-    applicationId = "app.tellomi"
+    applicationId = "app.tellomi.chat"
 
     // 系统联系人账号的 accountType 必须与代码里用的那一个一字不差（代码用 BuildConfig.APPLICATION_ID），
     // 否则 AccountManager 不认。上游把它硬写在 res/xml/{authenticator,syncadapter}.xml 里，
@@ -300,7 +306,7 @@ android {
     // （试过 onVariants 里的 variant.applicationId：实测拿到的是 namespace 派生值而不是这里的
     //   applicationId，产物里核出来还是 org.thoughtcrime.securesms.staging，所以不用它。）
     // test_run / benchmark 这两个后缀不覆盖：那是测试变体，不跑联系人同步。
-    resValue("string", "contact_account_type", "app.tellomi")
+    resValue("string", "contact_account_type", "app.tellomi.chat")
 
     // Tellomi：这套部署有没有 SVR（SGX enclave）。见 docs/signal/ENCLAVES.md 与
     // NetworkController.svrEnclaveAvailable。prod 档保持上游行为（连 Signal 自己的 svr2）；
@@ -624,7 +630,7 @@ android {
       buildConfigField("int", "LIBSIGNAL_CUSTOM_SERVER_PORT", "443")
       buildConfigField("int", "LIBSIGNAL_LOG_LEVEL", "org.signal.libsignal.protocol.logging.SignalProtocolLogger.DEBUG")
 
-      resValue("string", "contact_account_type", "app.tellomi.staging")
+      resValue("string", "contact_account_type", "app.tellomi.chat.staging")
       buildConfigField("boolean", "SVR_ENCLAVE_AVAILABLE", "false")
       buildConfigField("boolean", "CDSI_AVAILABLE", "false")
       buildConfigField("boolean", "KEY_TRANSPARENCY_AVAILABLE", "false")
