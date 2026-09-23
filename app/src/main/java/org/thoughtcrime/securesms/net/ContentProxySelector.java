@@ -3,11 +3,13 @@ package org.thoughtcrime.securesms.net;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import org.conscrypt.ConscryptSignal;
 import org.signal.core.util.logging.Log;
 import org.signal.network.util.HttpsProxySocketFactory;
 import org.thoughtcrime.securesms.BuildConfig;
+import org.thoughtcrime.securesms.util.RemoteConfig;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,7 +20,7 @@ import java.net.SocketException;
 import java.net.URI;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +31,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 public class ContentProxySelector extends ProxySelector {
@@ -40,12 +43,17 @@ public class ContentProxySelector extends ProxySelector {
     WHITELISTED_DOMAINS.add("giphy.com");
   }
 
-  private final List<Proxy> CONTENT = new ArrayList<Proxy>(1) {{
-    add(new Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved(BuildConfig.CONTENT_PROXY_HOST,
-                                                                      BuildConfig.CONTENT_PROXY_PORT)));
-  }};
-
   private static volatile InnerTls innerTls;
+
+  private final List<Proxy> content;
+
+  public ContentProxySelector() {
+    this(currentEndpoint());
+  }
+
+  private ContentProxySelector(@NonNull Endpoint endpoint) {
+    this.content = Collections.singletonList(new Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved(endpoint.host, endpoint.port)));
+  }
 
   /**
    * Tellomi（#1078）：把一个 OkHttpClient.Builder 配成「经内容代理，而且和代理之间**先做 TLS，再在里面发 CONNECT**」。
@@ -54,7 +62,7 @@ public class ContentProxySelector extends ProxySelector {
    *
    * 1. {@code proxySelector}：白名单内一律走代理，白名单外直接抛异常，**从不返回 DIRECT**。
    * 2. {@code socketFactory}：{@link HttpsProxySocketFactory}，在 connect 那一刻和代理做 TLS（SNI 与证书都按
-   *    {@code CONTENT_PROXY_HOST}）。上游只设 {@code Proxy.Type.HTTP}，对 443 端口发的是**明文** CONNECT，
+   *    代理主机）。上游只设 {@code Proxy.Type.HTTP}，对 443 端口发的是**明文** CONNECT，
    *    目标主机名（api.giphy.com）和隧道里 TLS 的 SNI 都在明文里——从大陆出发会被墙 reset，换成我们自己的代理也一样。
    *    香港那台的 nginx 按 SNI 分流：SNI = contentproxy.tellomi.app 的进 4444 终结 TLS 再交给 tinyproxy。
    *    2026-09-23 大陆直连实测（OkHttp 5.3.2）：明文 → api.giphy.com {@code Connection reset}；外层 TLS →
@@ -66,10 +74,15 @@ public class ContentProxySelector extends ProxySelector {
    *    **2026-09-23 在 Android 16 模拟器上实测：不开也能通**（红控制没能复现失败：两种都是 HTTP 401、里层 TLS 1.3）。
    *    保留它是保险：Conscrypt 选 FileDescriptor 还是 engine 实现，取决于能不能反射到 socket 的文件描述符，
    *    这在旧版本 Android（minSdk 23）上没有实测过。
+   *
+   * 代理地址优先用服务端下发的 {@code global.gif.proxyUrl}（{@link #parseProxyUrl}），没下发或不合法才用编译期常量。
    */
   public static @NonNull OkHttpClient.Builder configure(@NonNull OkHttpClient.Builder builder) {
-    builder.proxySelector(new ContentProxySelector())
-           .socketFactory(new HttpsProxySocketFactory(BuildConfig.CONTENT_PROXY_HOST));
+    // 代理选择器和 TLS 工厂必须用同一个主机：一个指 A、一个按 B 做 TLS，证书校验会失败。
+    Endpoint endpoint = currentEndpoint();
+
+    builder.proxySelector(new ContentProxySelector(endpoint))
+           .socketFactory(new HttpsProxySocketFactory(endpoint.host));
 
     InnerTls inner = innerTls();
     if (inner != null) {
@@ -77,6 +90,42 @@ public class ContentProxySelector extends ProxySelector {
     }
 
     return builder;
+  }
+
+  /** 服务端下发的地址能用就用，否则回落到编译期常量。 */
+  private static @NonNull Endpoint currentEndpoint() {
+    String  remote = RemoteConfig.gifProxyUrl();
+    Endpoint parsed = parseProxyUrl(remote);
+
+    if (parsed != null) {
+      return parsed;
+    }
+
+    if (remote != null && !remote.isEmpty()) {
+      Log.w(TAG, "Ignoring global.gif.proxyUrl, not an https:// URL with a host. Falling back to the build-time proxy.");
+    }
+    return new Endpoint(BuildConfig.CONTENT_PROXY_HOST, BuildConfig.CONTENT_PROXY_PORT);
+  }
+
+  /**
+   * 解析服务端下发的 {@code global.gif.proxyUrl}（形如 {@code https://contentproxy.tellomi.app:443}）。
+   *
+   * **只认 https**：和代理之间必须先做 TLS（见 {@link #configure}），下发一个 {@code http://} 进来等于让服务端
+   * 一行配置就把所有客户端降回明文 CONNECT——那在大陆直接不通，所以宁可回落到编译期常量。
+   * 不认路径以外的东西也不报错：host + port 就是这里要的全部。
+   */
+  @VisibleForTesting
+  static @Nullable Endpoint parseProxyUrl(@Nullable String url) {
+    if (url == null) {
+      return null;
+    }
+
+    HttpUrl parsed = HttpUrl.parse(url.trim());
+    if (parsed == null || !"https".equals(parsed.scheme()) || parsed.host().isEmpty()) {
+      return null;
+    }
+
+    return new Endpoint(parsed.host(), parsed.port());
   }
 
   /** 和 OkHttp 默认的构造方式一致（平台默认 TrustManager + {@code SSLContext.getInstance("TLS")}），只多开 engine 模式。 */
@@ -119,7 +168,7 @@ public class ContentProxySelector extends ProxySelector {
     if (host != null) {
       for (String domain : WHITELISTED_DOMAINS) {
         if (host.equals(domain) || host.endsWith("." + domain)) {
-          return CONTENT;
+          return content;
         }
       }
     }
@@ -132,6 +181,17 @@ public class ContentProxySelector extends ProxySelector {
       Log.d(TAG, "Socket exception. Likely a cancellation.");
     } else {
       Log.w(TAG, "Connection failed.", failure);
+    }
+  }
+
+  @VisibleForTesting
+  static final class Endpoint {
+    final String host;
+    final int    port;
+
+    Endpoint(@NonNull String host, int port) {
+      this.host = host;
+      this.port = port;
     }
   }
 
