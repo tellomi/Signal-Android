@@ -16,7 +16,7 @@ class KeyboardPagerViewModel : ViewModel() {
   init {
     val startingPages: MutableSet<KeyboardPage> = KeyboardPage.entries.toMutableSet()
 
-    if (!RemoteConfig.gifSearchAvailable) {
+    if (!RemoteConfig.gifAvailable) {
       startingPages.remove(KeyboardPage.GIF)
     }
 
@@ -29,7 +29,7 @@ class KeyboardPagerViewModel : ViewModel() {
   fun resetPages() {
     val defaultPages: MutableSet<KeyboardPage> = KeyboardPage.entries.toMutableSet()
 
-    if (!RemoteConfig.gifSearchAvailable) {
+    if (!RemoteConfig.gifAvailable) {
       defaultPages.remove(KeyboardPage.GIF)
     }
 

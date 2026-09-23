@@ -2477,7 +2477,7 @@ class ConversationFragment :
     val keyboardPage = when (keyboardMode) {
       TextSecurePreferences.MediaKeyboardMode.EMOJI -> KeyboardPage.EMOJI
       TextSecurePreferences.MediaKeyboardMode.STICKER -> KeyboardPage.STICKER
-      TextSecurePreferences.MediaKeyboardMode.GIF -> if (RemoteConfig.gifSearchAvailable) KeyboardPage.GIF else KeyboardPage.STICKER
+      TextSecurePreferences.MediaKeyboardMode.GIF -> if (RemoteConfig.gifAvailable) KeyboardPage.GIF else KeyboardPage.STICKER
     }
 
     inputPanel.setMediaKeyboardToggleMode(keyboardPage)

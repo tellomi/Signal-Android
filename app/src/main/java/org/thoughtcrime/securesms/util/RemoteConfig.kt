@@ -1058,6 +1058,64 @@ object RemoteConfig {
     hotSwappable = true
   )
 
+  /**
+   * Tellomi（#1078，ADR-0064 §4.4）：服务端下发的 GIF provider。
+   *
+   * `null`（没下发）或 `"giphy"` = 走 GIPHY；`"none"` = 这个部署不提供 GIF。
+   * 大陆发行的包用的就是 `none`：GIPHY 域在大陆不可直连，而目前**没有**有公开 API 的
+   * 合规大陆 GIF 源（ADR-0065 第七节「不做 CN 版」那一行），所以正解是整条关掉，
+   * 不是换一个代理。**关掉之后包里就不会再有指向 `contentproxy.tellomi.app` 的连接**，
+   * 那是一个境外、未备案的域——这条因此是大陆上架备案链路上的一环，不只是功能开关。
+   *
+   * 无值回落到「可用」，和 Desktop 的 `FunProvider.isGifsEnabled`（#1065）同口径。
+   */
+  val gifProvider: String? by remoteString(
+    key = "global.gif.provider",
+    defaultValue = null,
+    hotSwappable = true
+  )
+
+  /**
+   * Tellomi（#1078）：服务端下发的 GIPHY API key（Android 那一份）。
+   *
+   * 无值回落到编译期常量 `BuildConfig.GIPHY_API_KEY`——上游那把 key 是 Signal 自己的，
+   * 换 key 不该要发版。服务端下发见 `deploy/hk/gen-config.py` 的 `gif.apiKey.android`。
+   */
+  @JvmStatic
+  @get:JvmName("gifApiKey")
+  val gifApiKey: String? by remoteString(
+    key = "global.gif.apiKey.android",
+    defaultValue = null,
+    hotSwappable = true
+  )
+
+  /**
+   * Tellomi（#1078）：GIF 功能到底能不能用 = 上游开关 **且** provider 不是 `none`。
+   *
+   * 两个条件分开留着：`global.gifSearch` 是上游的（整体开关），`global.gif.provider`
+   * 是我们的（这个部署有没有 GIF 源）。合并成一个值是为了让四个调用点不会各判一半——
+   * 判一半的后果是「标签藏了但后台还在预取」，那在备案口径下**不算关掉**。
+   */
+  @JvmStatic
+  @get:JvmName("gifAvailable")
+  val gifAvailable: Boolean
+    get() = isGifAvailable(gifSearchAvailable, gifProvider)
+
+  /**
+   * [gifAvailable] 的判断本身，抽出来是为了**能被单测直接调**。
+   *
+   * 读 `by remoteBoolean`/`by remoteString` 这些 delegate 会触发 `RemoteConfig.init()`，
+   * 那需要 app context，在纯 JVM 单测里直接 NPE。把「两个值 → 一个结论」这一步拿出来，
+   * 判据就能钉住**决定**本身，而不是去测 delegate 的读取机制（那是上游的事）。
+   *
+   * `provider == null`（服务端没下发）按可用处理，和 Desktop 的
+   * `FunProvider.isGifsEnabled`（#1065）同口径。
+   */
+  @VisibleForTesting
+  fun isGifAvailable(upstreamGifSearch: Boolean, provider: String?): Boolean {
+    return upstreamGifSearch && !"none".equals(provider, ignoreCase = true)
+  }
+
   /** Allow media converters to remux audio instead of transcoding it.  */
   @JvmStatic
   @get:JvmName("allowAudioRemuxing")

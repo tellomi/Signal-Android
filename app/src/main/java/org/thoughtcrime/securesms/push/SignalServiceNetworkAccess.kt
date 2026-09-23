@@ -53,8 +53,17 @@ class SignalServiceNetworkAccess(context: Context) {
           BuildConfig.STORAGE_URL.stripProtocol() to BuildConfig.SIGNAL_STORAGE_IPS.toSet(),
           BuildConfig.SIGNAL_CDN_URL.stripProtocol() to BuildConfig.SIGNAL_CDN_IPS.toSet(),
           BuildConfig.SIGNAL_CDN2_URL.stripProtocol() to BuildConfig.SIGNAL_CDN2_IPS.toSet(),
+          // cdn3 的 IP 表**故意是空的**（#1077）：cdn3.tellomi.app 在 Cloudflare 后面，
+          // 边缘 IP 会变，写死等于给自己做一张会过期的劫持表——DNS 正常时根本用不到，
+          // DNS 失效时反而把流量送到一个可能早已不属于我们的地址。
+          // 空集在 StaticDns 里和"没有这个 key"是同一个结果（UnknownHostException），
+          // 留着这一行是为了让下一个人看见这是**决定**，不是漏填。
           BuildConfig.SIGNAL_CDN3_URL.stripProtocol() to BuildConfig.SIGNAL_CDN3_IPS.toSet(),
-          BuildConfig.SIGNAL_SFU_URL.stripProtocol() to BuildConfig.SIGNAL_SFU_IPS.toSet(),
+          // Tellomi（#1077）：上游这里是 `sfu.voip.signal.org`（纯主机名）。我们把 SFU 并进了
+          // chat.tellomi.app，`SIGNAL_SFU_URL` 因此带上了路径（".../callingService"），
+          // 而 `stripProtocol()` 只去 scheme 不去路径 —— 组出来的 key 是
+          // `chat.tellomi.app/callingService`，**永远等不上任何一次 DNS 查询的主机名**。
+          // 它要解析的主机就是上面那条 SIGNAL_URL 已经覆盖的 chat.tellomi.app，所以直接去掉。
           BuildConfig.CONTENT_PROXY_HOST.stripProtocol() to BuildConfig.SIGNAL_CONTENT_PROXY_IPS.toSet(),
           BuildConfig.SIGNAL_CDSI_URL.stripProtocol() to BuildConfig.SIGNAL_CDSI_IPS.toSet(),
           BuildConfig.SIGNAL_SVR2_URL.stripProtocol() to BuildConfig.SIGNAL_SVR2_IPS.toSet()
