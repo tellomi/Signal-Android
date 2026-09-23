@@ -362,7 +362,7 @@ android {
     // 和今天大陆的实际行为一样，只是不再去问 Signal。
     // （故意不写上游的字面主机名：#1101 的判据之一是源码 grep 它 = 0。）
     buildConfigField("String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.tellomi.app\"")
-    buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\"")
+    buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.tellomi.invalid\"")
     // 群通话的 SFU 走我们自己的（docs/signal/BUILD_CALLING.md）：香港那台上 calling_frontend
     // 听 127.0.0.1:9010，nginx 以 /callingService/ 暴露；Desktop 的 config/production.json
     // 早就写的是这个地址，Android 这边一直还是上游的 —— 而 InternalValues.groupCallingServer
@@ -626,7 +626,7 @@ android {
       buildConfigField("String", "SIGNAL_CDN2_URL", "\"https://cdn2.tellomi.app\"")
       buildConfigField("String", "SIGNAL_CDN3_URL", "\"https://cdn3.tellomi.app\"")
       buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\"")
-      buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\"")
+      buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.tellomi.invalid\"")
       buildConfigField("String", "SVR2_MRENCLAVE_LEGACY", "\"97f151f6ed078edbbfd72fa9cae694dcc08353f1f5e8d9ccd79a971b10ffc535\"")
       buildConfigField("String", "SVR2_MRENCLAVE", "\"3c699f4975aaa3d172c0aad042f94f031b2b03e10b9c19a45116a01693d83302\"")
       buildConfigField("String[]", "UNIDENTIFIED_SENDER_TRUST_ROOTS", "new String[]{\"BcLYlMOrgCUTLuLXSvW5I1FiBAub5uoawfHDNzrzyNg3\"}")
