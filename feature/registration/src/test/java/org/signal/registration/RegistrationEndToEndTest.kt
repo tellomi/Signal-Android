@@ -91,7 +91,29 @@ class RegistrationEndToEndTest {
 
   companion object {
     private const val PHONE_NUMBER = "5550123456"
-    private const val E164 = "+1$PHONE_NUMBER"
+
+    /**
+     * Tellomi（#1060）：注册页预选的国家是中国，不是上游的 US
+     * （[RegistrationRepository.getDefaultRegionCode] → `TELLOMI_DEFAULT_REGION = "CN"`）。
+     *
+     * 下面这批用例都是**往号码框里敲裸号码**（[submitPhoneNumber]），区号由当前选中的国家补，
+     * 所以组出来的是 `+86…` 而不是上游的 `+1…`。上游写死 `+1` 的那一版在我们这儿 18 条全红，
+     * 而症状（「Expected committed e164 +1555…」）和根因（一行默认区号常量）毫无关联。
+     *
+     * 这里跟着默认区号走、而不是去驱动国家选择器改回 US：这批用例判的是**注册流程**，
+     * 让它们跑在真实的默认区号上更接近用户实际走的那条路。默认区号本身单独钉在
+     * `RegistrationRepositoryTest`「默认区号是 CN」那条里——改了那个常量，那条会先红，
+     * 指向的是常量本身而不是 18 条流程用例。
+     */
+    private const val DEFAULT_COUNTRY_CALLING_CODE = "+86"
+    private const val E164 = "$DEFAULT_COUNTRY_CALLING_CODE$PHONE_NUMBER"
+
+    /**
+     * 例外：号码框从「上一次注册的号码」（`+1…`）预填时，国家选择器也跟着预填成那个号码的区域，
+     * 于是清空重打裸号码组出来的仍然是 `+1`——这不是漏改，是**预填生效的证据**。
+     * 只有下面那条「re-registering with pre-existing data」用得到。
+     */
+    private const val E164_FROM_PREFILLED_REGION = "+1$PHONE_NUMBER"
     private const val VERIFICATION_CODE = FakeNetworkController.DEFAULT_VERIFICATION_CODE
     private const val PIN = "9182"
     private const val WAIT_TIMEOUT_MS = 30_000L
@@ -782,7 +804,7 @@ class RegistrationEndToEndTest {
 
     val committed = storageController.committedData
     assert(committed != null) { "Expected registration data to be committed" }
-    assert(committed!!.accountData?.e164 == E164) { "Expected committed e164 $E164 but was ${committed.accountData?.e164}" }
+    assert(committed!!.accountData?.e164 == E164_FROM_PREFILLED_REGION) { "Expected committed e164 $E164_FROM_PREFILLED_REGION but was ${committed.accountData?.e164}" }
     assert(committed.pin == PIN) { "Expected committed pin $PIN but was ${committed.pin}" }
   }
 

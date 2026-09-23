@@ -15,6 +15,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -55,6 +56,12 @@ class PinCreationViewModelTest {
   fun setup() {
     Dispatchers.setMain(testDispatcher)
     mockRepository = mockk(relaxed = true)
+    // Tellomi：relaxed mock 的 Boolean 默认是 false，而 false 现在意味着「这个部署没有 SVR
+    // enclave，创建 PIN 必然卡死，直接走 opt-out」（#999，见 PinCreationViewModel 的 init）。
+    // 下面这批用例全是在「有 enclave」的前提下写的，所以显式打开——否则每个用例都会在构造
+    // ViewModel 的那一刻先收到一条 RegistrationComplete（#1060 的 10 条红就是这个）。
+    // 没有 enclave 的那条路单独有用例，见本文件末尾的「Tellomi：没有 SVR enclave」一节。
+    every { mockRepository.svrEnclaveAvailable } returns true
     parentState = MutableStateFlow(RegistrationFlowState())
     emittedParentEvents = mutableListOf()
     parentEventEmitter = { event -> emittedParentEvents.add(event) }
@@ -421,5 +428,44 @@ class PinCreationViewModelTest {
     parentState.value = RegistrationFlowState(accountEntropyPool = aep)
 
     assertThat(states.last().accountEntropyPool).isEqualTo(aep)
+  }
+
+  // ==================== Tellomi：没有 SVR enclave 时自动 opt-out（#999 / #1060） ====================
+
+  @Test
+  fun `no SVR enclave opts out of PIN creation and completes registration`() = runTest(testDispatcher) {
+    val events = mutableListOf<RegistrationFlowEvent>()
+    val repo = mockk<RegistrationRepository>(relaxed = true)
+    every { repo.svrEnclaveAvailable } returns false
+
+    PinCreationViewModel(
+      repository = repo,
+      parentState = parentState,
+      parentEventEmitter = { events.add(it) }
+    )
+
+    assertThat(events).containsExactly(RegistrationFlowEvent.RegistrationComplete)
+    coVerify(exactly = 1) { repo.setPinOptedOut() }
+    coVerify(exactly = 1) { repo.setRestoreDecision(RestoreDecision.NEW_ACCOUNT) }
+  }
+
+  @Test
+  fun `with an SVR enclave PIN creation is not skipped`() = runTest(testDispatcher) {
+    // 反向对照：同样的构造，只把 svrEnclaveAvailable 换成 true，构造时就**不该**有任何事件——
+    // 证明上一条里的 RegistrationComplete 是这条规则造成的，不是别的东西。
+    // 这条也是 setup() 里那行 `every { … } returns true` 的护栏：那行要是被删掉，
+    // 上面整批用例会以「多一条 RegistrationComplete」的形式集体变红（#1060 的原状）。
+    val events = mutableListOf<RegistrationFlowEvent>()
+    val repo = mockk<RegistrationRepository>(relaxed = true)
+    every { repo.svrEnclaveAvailable } returns true
+
+    PinCreationViewModel(
+      repository = repo,
+      parentState = parentState,
+      parentEventEmitter = { events.add(it) }
+    )
+
+    assertThat(events).hasSize(0)
+    coVerify(exactly = 0) { repo.setPinOptedOut() }
   }
 }
