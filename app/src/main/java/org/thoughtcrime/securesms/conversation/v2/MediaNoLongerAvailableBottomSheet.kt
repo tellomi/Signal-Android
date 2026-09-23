@@ -32,6 +32,7 @@ import org.signal.core.ui.compose.horizontalGutters
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.backup.v2.MessageBackupTier
 import org.thoughtcrime.securesms.components.settings.app.subscription.MessageBackupsCheckoutLauncher.createBackupsCheckoutLauncher
+import org.thoughtcrime.securesms.util.Environment
 
 /**
  * Bottom sheet displayed when the user taps media that is not available for download,
@@ -50,6 +51,7 @@ class MediaNoLongerAvailableBottomSheet : ComposeBottomSheetDialogFragment() {
   @Composable
   override fun SheetContent() {
     MediaNoLongerAvailableBottomSheetContent(
+      showBackupsUpsell = Environment.Backups.PAID_BACKUPS_ENABLED,
       onContinueClick = {
         checkoutLauncher.launch(MessageBackupTier.PAID)
       },
@@ -58,8 +60,14 @@ class MediaNoLongerAvailableBottomSheet : ComposeBottomSheetDialogFragment() {
   }
 }
 
+/**
+ * Tellomi（#984）：付费备份档不做时（[Environment.Backups.PAID_BACKUPS_ENABLED]），只告诉用户「此媒体已不可用」，
+ * 不再推付费备份——「继续」会直接进付费档的结账流程，那一页写着「Signal 是一个非营利性平台」。
+ * 附件在服务端过期后点它就会弹这张表，是正常使用就能走到的入口（`ConversationFragment.onDisplayMediaNoLongerAvailableSheet`）。
+ */
 @Composable
 private fun MediaNoLongerAvailableBottomSheetContent(
+  showBackupsUpsell: Boolean = true,
   onContinueClick: () -> Unit = {},
   onNotNowClick: () -> Unit = {}
 ) {
@@ -81,25 +89,27 @@ private fun MediaNoLongerAvailableBottomSheetContent(
       text = stringResource(R.string.MediaNoLongerAvailableSheet__this_media_is_no_longer_available),
       style = MaterialTheme.typography.titleLarge,
       textAlign = TextAlign.Center,
-      modifier = Modifier.padding(bottom = 10.dp)
+      modifier = Modifier.padding(bottom = if (showBackupsUpsell) 10.dp else 32.dp)
     )
 
-    Text(
-      text = stringResource(R.string.MediaNoLongerAvailableSheet__to_start_backing_up_all_your_media),
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-      textAlign = TextAlign.Center,
-      modifier = Modifier.padding(bottom = 92.dp)
-    )
-
-    Buttons.LargeTonal(
-      onClick = onContinueClick,
-      modifier = Modifier
-        .padding(bottom = 22.dp)
-        .defaultMinSize(minWidth = 220.dp)
-    ) {
+    if (showBackupsUpsell) {
       Text(
-        text = stringResource(R.string.MediaNoLongerAvailableSheet__continue)
+        text = stringResource(R.string.MediaNoLongerAvailableSheet__to_start_backing_up_all_your_media),
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(bottom = 92.dp)
       )
+
+      Buttons.LargeTonal(
+        onClick = onContinueClick,
+        modifier = Modifier
+          .padding(bottom = 22.dp)
+          .defaultMinSize(minWidth = 220.dp)
+      ) {
+        Text(
+          text = stringResource(R.string.MediaNoLongerAvailableSheet__continue)
+        )
+      }
     }
 
     TextButton(
@@ -109,7 +119,7 @@ private fun MediaNoLongerAvailableBottomSheetContent(
         .defaultMinSize(minWidth = 220.dp)
     ) {
       Text(
-        text = stringResource(R.string.MediaNoLongerAvailableSheet__not_now)
+        text = stringResource(if (showBackupsUpsell) R.string.MediaNoLongerAvailableSheet__not_now else android.R.string.ok)
       )
     }
   }
