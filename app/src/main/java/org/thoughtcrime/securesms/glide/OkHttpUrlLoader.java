@@ -46,11 +46,10 @@ public class OkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
       if (internalClient == null) {
         synchronized (Factory.class) {
           if (internalClient == null) {
-            internalClient = new OkHttpClient.Builder()
-                                             .proxySelector(new ContentProxySelector())
-                                             .addInterceptor(new StandardUserAgentInterceptor())
-                                             .dns(SignalServiceNetworkAccess.DNS)
-                                             .build();
+            internalClient = ContentProxySelector.configure(new OkHttpClient.Builder())
+                                                 .addInterceptor(new StandardUserAgentInterceptor())
+                                                 .dns(SignalServiceNetworkAccess.DNS)
+                                                 .build();
           }
         }
       }

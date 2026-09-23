@@ -66,7 +66,7 @@ final class GiphyMp4PagedDataSource implements PagedDataSource<String, GiphyImag
 
   GiphyMp4PagedDataSource(@Nullable String searchQuery) {
     this.searchString = Optional.ofNullable(searchQuery).map(String::trim).orElse("");
-    this.client       = AppDependencies.getOkHttpClient().newBuilder().proxySelector(new ContentProxySelector()).build();
+    this.client       = ContentProxySelector.configure(AppDependencies.getOkHttpClient().newBuilder()).build();
   }
 
   @Override
