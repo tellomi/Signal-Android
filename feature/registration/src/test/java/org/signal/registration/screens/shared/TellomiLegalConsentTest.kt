@@ -28,7 +28,9 @@ import org.signal.registration.screens.phonenumber.PhoneNumberEntryScreenEvents
 import org.signal.registration.screens.phonenumber.PhoneNumberEntryState
 import org.signal.registration.screens.phonenumber.PhoneNumberScreen
 import org.signal.registration.screens.welcome.WelcomeScreen
+import org.signal.registration.screens.welcome.WelcomeScreenEvents
 import org.signal.registration.screens.welcome.WelcomeScreenState
+import org.signal.registration.test.TestTags
 
 /**
  * Tellomi：注册同意（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。
@@ -86,6 +88,8 @@ class TellomiLegalConsentTest {
 
   @Test
   fun `agree checks the box, records consent, then shows the confirm number dialog`() {
+    // 这条只测协议勾选；跨境告知另有用例
+    TellomiCrossBorderConsent.recordAgreement(context)
     val events = setPhoneNumberScreen(confirmingState)
 
     composeTestRule.onNodeWithTag(Dialogs.TEST_TAG_ALERT_DIALOG_CONFIRM_BUTTON).performClick()
@@ -104,12 +108,61 @@ class TellomiLegalConsentTest {
   @Test
   fun `with earlier consent, the confirm number dialog shows directly`() {
     TellomiLegalConsent.setAgreedToTerms(context, true)
+    TellomiCrossBorderConsent.recordAgreement(context)
 
     setPhoneNumberScreen(confirmingState)
 
     composeTestRule.onNodeWithTag(TellomiLegalConsent.CHECKBOX_TEST_TAG).assertIsOn()
     composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_is_the_phone_number)).assertIsDisplayed()
     composeTestRule.onNodeWithText(context.getString(R.string.TellomiConsent__dialog_title)).assertDoesNotExist()
+  }
+
+  @Test
+  fun `after the terms, the cross-border notice comes before the confirm number dialog`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+
+    setPhoneNumberScreen(confirmingState)
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_is_the_phone_number)).assertDoesNotExist()
+  }
+
+  @Test
+  fun `agreeing to the cross-border notice records it and shows the confirm number dialog`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    val events = setPhoneNumberScreen(confirmingState)
+
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
+
+    assert(TellomiCrossBorderConsent.hasAgreed(context))
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_is_the_phone_number)).assertIsDisplayed()
+    assert(events.isEmpty()) { "Agreeing must not submit the number by itself, but got $events" }
+  }
+
+  @Test
+  fun `disagreeing keeps the cross-border notice open with a hint and records nothing`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    val events = setPhoneNumberScreen(confirmingState)
+
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__disagree_hint)).assertIsDisplayed()
+    assert(!TellomiCrossBorderConsent.hasAgreed(context))
+    assert(events.isEmpty()) { "Disagreeing must not send or cancel anything, but got $events" }
+  }
+
+  @Test
+  fun `a new cross-border notice version asks again`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    // 模拟「同意过的是旧版本」
+    TellomiLegalConsent.prefs(context).edit().putString("cross_border.version", "0.0.9").commit()
+    assert(!TellomiCrossBorderConsent.hasAgreed(context))
+
+    setPhoneNumberScreen(confirmingState)
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
   }
 
   @Test
@@ -152,6 +205,44 @@ class TellomiLegalConsentTest {
     setWelcomeScreen()
 
     composeTestRule.onNodeWithText(context.getString(R.string.TellomiConsent__first_launch_title)).assertDoesNotExist()
+  }
+
+  @Test
+  fun `restoring from the old phone asks for cross-border consent first`() {
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    val events = setWelcomeScreenCollecting()
+
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_OR_TRANSFER_BUTTON).performClick()
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    assert(events.isEmpty()) { "Nothing may go out before cross-border consent, but got $events" }
+
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
+
+    assert(TellomiCrossBorderConsent.hasAgreed(context))
+    assert(events == listOf<WelcomeScreenEvents>(WelcomeScreenEvents.HasOldPhone)) { "Unexpected events: $events" }
+  }
+
+  @Test
+  fun `continuing to the phone number does not ask for cross-border consent yet`() {
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    val events = setWelcomeScreenCollecting()
+
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_GET_STARTED_BUTTON).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    assert(events == listOf<WelcomeScreenEvents>(WelcomeScreenEvents.Continue)) { "Unexpected events: $events" }
+  }
+
+  private fun setWelcomeScreenCollecting(): List<WelcomeScreenEvents> {
+    val events = mutableListOf<WelcomeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        WelcomeScreen(state = WelcomeScreenState(), onEvent = { events += it })
+      }
+    }
+    return events
   }
 
   private fun setPhoneNumberScreen(state: PhoneNumberEntryState): List<PhoneNumberEntryScreenEvents> {

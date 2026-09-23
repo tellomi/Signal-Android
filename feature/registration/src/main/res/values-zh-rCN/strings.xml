@@ -777,4 +777,28 @@
     <string name="TellomiConsent__first_launch_body">我们按%1$s处理您的个人信息：注册只需要手机号；消息、资料和附件都是端到端加密的，我们读不到。</string>
     <string name="TellomiConsent__first_launch_agree">同意</string>
     <string name="TellomiConsent__first_launch_disagree_hint">需要同意后才能使用 Tellomi；不同意的话，我们不会收集任何信息。</string>
+
+    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。文字是草稿，以 #1132 的法务定稿为准 -->
+    <string name="TellomiCrossBorder__title">您的信息将传输到中国大陆境外（香港）处理</string>
+    <string name="TellomiCrossBorder__intro">注册和使用 Tellomi 时，您的部分个人信息会发送到位于中国大陆境外的服务器处理。请读完下面几项，再决定是否同意。</string>
+    <string name="TellomiCrossBorder__item_where_title">是否出境</string>
+    <string name="TellomiCrossBorder__item_where_body">是。Tellomi 的服务器在香港；附件存放在 Cloudflare R2，存储节点可能不在中国大陆。</string>
+    <string name="TellomiCrossBorder__item_recipients_title">境外接收方</string>
+    <string name="TellomiCrossBorder__item_recipients_body">Tellomi 在香港部署的服务，以及为我们提供基础设施的阿里云（香港）、Cloudflare, Inc.（附件存储、通话中继）、Google（安卓推送 FCM，仅限装有 Google 服务的手机）；使用 GIF 搜索时，搜索词经我们的代理发给 GIPHY。</string>
+    <string name="TellomiCrossBorder__item_contact_title">联系方式</string>
+    <string name="TellomiCrossBorder__item_contact_body">个人信息保护相关问题，请发邮件至 privacy@tellomi.app。</string>
+    <string name="TellomiCrossBorder__item_purpose_title">处理目的</string>
+    <string name="TellomiCrossBorder__item_purpose_body">注册和登录；投递和暂存消息与附件；推送通知；接通语音和视频通话；GIF 搜索。</string>
+    <string name="TellomiCrossBorder__item_method_title">处理方式</string>
+    <string name="TellomiCrossBorder__item_method_body">消息正文、个人资料、群信息和附件内容都经过端到端加密，服务器和附件存储里只有密文，我们无法读取。以明文处理的只有注册用的手机号、连接所需的网络信息等少数几项。</string>
+    <string name="TellomiCrossBorder__item_kinds_title">涉及的个人信息</string>
+    <string name="TellomiCrossBorder__item_kinds_body">手机号；账号和设备标识；推送令牌；连接时的 IP 地址等网络信息；加密后的消息、附件和资料（密文）；使用 GIF 搜索时的搜索词。</string>
+    <string name="TellomiCrossBorder__item_rights_title">您的权利</string>
+    <string name="TellomiCrossBorder__item_rights_body">您可以按《隐私政策》第二十六、二十七节的方式查阅、更正、删除个人信息，注销账号，或者撤回本同意；也可以发邮件至 privacy@tellomi.app。</string>
+    <string name="TellomiCrossBorder__item_procedure_title">出境的法定程序</string>
+    <string name="TellomiCrossBorder__item_procedure_body">我们会依法完成个人信息出境所需的程序，具体方式待法务确认后在这里写明。</string>
+    <string name="TellomiCrossBorder__item_consent_title">单独同意</string>
+    <string name="TellomiCrossBorder__item_consent_body">点「同意并继续」即表示您单独同意上述跨境传输。您可以随时撤回；撤回后，在中国大陆服务上线之前将无法继续使用 Tellomi。</string>
+    <string name="TellomiCrossBorder__privacy_link">查看《隐私政策》第二十、二十一节</string>
+    <string name="TellomiCrossBorder__disagree_hint">不同意的话，在中国大陆服务上线之前您将无法使用 Tellomi，我们也不会发送您的任何信息。您可以退出 App，或者之后回到这一页再同意。</string>
 </resources>

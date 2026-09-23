@@ -20,6 +20,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.registration.screens.shared.TellomiCrossBorderConsent
 import org.signal.registration.screens.shared.TellomiLegalConsent
 import org.signal.registration.test.TestTags
 
@@ -39,8 +40,9 @@ class WelcomeScreenTest {
 
   @Before
   fun setup() {
-    // Tellomi：首次启动的隐私提示另有用例（TellomiLegalConsentTest）；这里测欢迎页本身，先当作已经同意过（tellomi/tellomi#1211）。
+    // Tellomi：首次启动提示和跨境告知另有用例（TellomiLegalConsentTest）；这里测欢迎页本身，先当作都同意过（tellomi/tellomi#1211、#1133）。
     TellomiLegalConsent.acceptFirstLaunchNotice(ApplicationProvider.getApplicationContext())
+    TellomiCrossBorderConsent.recordAgreement(ApplicationProvider.getApplicationContext())
   }
 
   @Test
