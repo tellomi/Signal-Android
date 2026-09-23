@@ -12,6 +12,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import org.signal.core.util.Result
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.UsernameUtil.InvalidReason
 import org.signal.core.util.UsernameUtil.checkDiscriminator
 import org.signal.core.util.UsernameUtil.checkNickname
@@ -253,8 +254,11 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
 
     val newLower = state.nickname.lowercase()
     val oldLower = SignalStore.account.username?.split(Usernames.DELIMITER)?.firstOrNull()?.lowercase()
+    // Tellomi（tellomi/tellomi#1106，ADR-0066）：「只改大小写 → 沿用原判别位」这条上游捷径，只在原判别位就是 01 时走。
+    // 带 `.37` 这类旧后缀的账号输入同一个 nickname，要走正常 reserve 拿 `nickname.01`——否则老数据永远改不成不带数字的。
+    val oldDiscriminator = SignalStore.account.username?.split(Usernames.DELIMITER)?.lastOrNull()
 
-    return newLower == oldLower
+    return newLower == oldLower && oldDiscriminator == TellomiUsernames.FIXED_DISCRIMINATOR
   }
 
   /** Triggered when the debounced nickname event stream fires. */
@@ -340,11 +344,15 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
                 UsernameStatus.TAKEN
               }
 
+              // Tellomi（tellomi/tellomi#1106）：用户没填判别位时 discriminator 是 null，上游这里会拼出 `kaixin.null`，
+              // libsignal 的 Username(…) 当场抛 BaseUsernameException（Rx 回调里没接 → 闪退）。上游靠随机候选几乎走不到这里；
+              // 判别位固定 01 之后「被占 / 命中保留词」都是 409，这里就成了常见路径。
+              val attempted = discriminator ?: TellomiUsernames.FIXED_DISCRIMINATOR
               uiState.update {
                 State(
                   ButtonState.SUBMIT_DISABLED,
                   status,
-                  usernameState = UsernameState.CaseChange(Username("${state.nickname}${Usernames.DELIMITER}$discriminator"))
+                  usernameState = UsernameState.CaseChange(Username("${state.nickname}${Usernames.DELIMITER}$attempted"))
                 )
               }
             }

@@ -23,13 +23,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.signal.core.util.EditTextUtil;
+import org.signal.core.util.TellomiUsernames;
 import org.signal.core.util.UsernameUtil;
 import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.ui.logging.LoggingFragment;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.contactshare.SimpleTextWatcher;
 import org.thoughtcrime.securesms.databinding.UsernameEditFragmentBinding;
-import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.util.FragmentResultContract;
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
 import org.thoughtcrime.securesms.util.ViewUtil;
@@ -130,8 +130,20 @@ public class UsernameEditFragment extends LoggingFragment {
       return false;
     });
 
+    // Tellomi（tellomi/tellomi#1106，ADR-0066）：数字栏藏起来了，昵称框就是最后一个输入框，「完成」直接提交
+    // （布局里 imeOptions 同步改成 actionDone；上游是 actionNext，跳到数字栏）。
+    binding.usernameText.setOnEditorActionListener((v, actionId, event) -> {
+      if (actionId == EditorInfo.IME_ACTION_DONE) {
+        promptOrSubmitUsername();
+        return true;
+      }
+      return false;
+    });
+
     binding.usernameDescription.setLinkColor(ContextCompat.getColor(requireContext(), org.signal.core.ui.R.color.signal_colorPrimary));
-    binding.usernameDescription.setLearnMoreVisible(true);
+    // Tellomi（tellomi/tellomi#1106）：上游的说明是「用户名始终搭配一组数字」，「了解更多」弹的是「这个号码是什么？」——
+    // 去掉后缀之后两段都不成立。说明换成布局里的 Tellomi 文案，「了解更多」不再显示。
+    binding.usernameDescription.setLearnMoreVisible(false);
     binding.usernameDescription.setOnLinkClickListener(this::onLearnMore);
 
     ViewUtil.focusAndShowKeyboard(binding.usernameText);
@@ -199,13 +211,10 @@ public class UsernameEditFragment extends LoggingFragment {
     binding.usernameError.setText(error);
     binding.root.setLayoutTransition(STATIC_LAYOUT);
 
-    if (state.usernameState.getDiscriminator() == null && SignalStore.account().getUsername() == null) {
-      binding.discriminatorText.setVisibility(View.GONE);
-      binding.divider.setVisibility(View.GONE);
-    } else {
-      binding.discriminatorText.setVisibility(View.VISIBLE);
-      binding.divider.setVisibility(View.VISIBLE);
-    }
+    // Tellomi（tellomi/tellomi#1106，ADR-0066）：判别位固定 01、界面隐藏——数字栏和它前面的分隔线一律不显示。
+    // 上游只在「还没有用户名、也还没拿到判别位」时藏，其余时候显示并允许自己改数字。
+    binding.discriminatorText.setVisibility(View.GONE);
+    binding.divider.setVisibility(View.GONE);
   }
 
   private void presentButtonState(@NonNull UsernameEditViewModel.ButtonState buttonState) {
@@ -262,7 +271,8 @@ public class UsernameEditFragment extends LoggingFragment {
 
   private void presentSummary(@NonNull UsernameState usernameState) {
     if (usernameState.getUsername() != null) {
-      binding.summary.setText(usernameState.getUsername().getUsername());
+      // Tellomi（tellomi/tellomi#1106）：预览按显示规则走——`.01` 结尾只露 nickname，别的后缀完整显示。
+      binding.summary.setText(TellomiUsernames.toDisplayUsername(usernameState.getUsername().getUsername()));
       binding.summary.setAlpha(1f);
     } else if (!(usernameState instanceof UsernameState.Loading)) {
       binding.summary.setText(R.string.UsernameEditFragment__choose_your_username);
