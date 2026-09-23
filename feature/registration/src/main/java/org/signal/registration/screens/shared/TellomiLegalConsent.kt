@@ -8,9 +8,18 @@ package org.signal.registration.screens.shared
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,14 +33,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.edit
+import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
 import org.signal.core.util.LinkActions
 import org.signal.core.util.LinkActions.OpenUrlError
@@ -84,7 +98,35 @@ object TellomiLegalConsent {
     prefs(context).edit { putString(NOTICE_VERSION_KEY, DOCUMENTS_VERSION) }
   }
 
-  private fun prefs(context: Context) = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+  internal fun prefs(context: Context) = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+}
+
+/**
+ * Tellomi：跨境单独告知与同意（tellomi/tellomi#1133；需求 `docs/product/specs/privacy-compliance-hk-cross-border.md` 第二节）。
+ * 服务端还在香港的这段时间，手机号、推送令牌、网络信息等会出境，这一页就是出境前的单独告知与单独同意。iOS 同一套在 Signal-iOS#15。
+ * **文字是草稿**：9 项以 tellomi/tellomi#1132 的法务定稿为准，owner 审定后才能对外发布。
+ */
+object TellomiCrossBorderConsent {
+  /** 告知文本的版本。定稿后与 `docs/legal/manifest.json` 对齐；文本有实质变化就改这里，已同意的人会被重新询问。 */
+  const val NOTICE_VERSION = "0.1.0-draft"
+
+  const val AGREE_TEST_TAG = "tellomi-cross-border-agree"
+  const val DISAGREE_TEST_TAG = "tellomi-cross-border-disagree"
+
+  private const val VERSION_KEY = "cross_border.version"
+  private const val DATE_KEY = "cross_border.date"
+
+  fun hasAgreed(context: Context): Boolean {
+    return TellomiLegalConsent.prefs(context).getString(VERSION_KEY, null) == NOTICE_VERSION
+  }
+
+  /** 本机记一份（版本 + 时间）。服务端的最小记录点由 taishi 设计（tellomi/tellomi#1133）。 */
+  fun recordAgreement(context: Context) {
+    TellomiLegalConsent.prefs(context).edit {
+      putString(VERSION_KEY, NOTICE_VERSION)
+      putLong(DATE_KEY, System.currentTimeMillis())
+    }
+  }
 }
 
 /**
@@ -165,6 +207,111 @@ fun TellomiFirstLaunchNotice() {
     )
   }
 }
+
+/**
+ * 跨境单独告知（tellomi/tellomi#1133）：全屏独立一页，9 项 + 隐私政策链接 + 两个同样醒目的按钮。
+ * 不预选、不倒计时、不默认聚焦「同意」。「不同意」留在这一页、说明后果；返回键 = 关掉这一页，号码不发出。
+ */
+@Composable
+fun TellomiCrossBorderNotice(
+  onAgree: () -> Unit,
+  onCancel: () -> Unit
+) {
+  val context = LocalContext.current
+  var showDisagreeHint by rememberSaveable { mutableStateOf(false) }
+  val linkStyles = TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
+  val privacyLinkText = stringResource(R.string.TellomiCrossBorder__privacy_link)
+
+  Dialog(
+    onDismissRequest = onCancel,
+    properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)
+  ) {
+    Surface(modifier = Modifier.fillMaxSize()) {
+      Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+          modifier = Modifier
+            .weight(1f)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 24.dp, vertical = 24.dp)
+        ) {
+          Text(
+            text = stringResource(R.string.TellomiCrossBorder__title),
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.semantics { heading() }
+          )
+          Spacer(modifier = Modifier.height(8.dp))
+          Text(
+            text = stringResource(R.string.TellomiCrossBorder__intro),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+          )
+
+          crossBorderItems().forEach { (title, body) ->
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = title, style = MaterialTheme.typography.titleSmall)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = body, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+          }
+
+          Spacer(modifier = Modifier.height(20.dp))
+          Text(
+            text = buildAnnotatedString {
+              withLink(LinkAnnotation.Clickable(tag = "privacy", styles = linkStyles) { openUrl(context, TellomiLegalConsent.PRIVACY_URL) }) {
+                append(privacyLinkText)
+              }
+            },
+            style = MaterialTheme.typography.bodyMedium
+          )
+        }
+
+        Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
+          if (showDisagreeHint) {
+            Text(
+              text = stringResource(R.string.TellomiCrossBorder__disagree_hint),
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+          }
+
+          // 两个按钮同样的样式、同样宽，谁也不比谁醒目（需求 2.2）。
+          Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Buttons.LargeTonal(
+              onClick = { showDisagreeHint = true },
+              modifier = Modifier
+                .weight(1f)
+                .testTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG)
+            ) {
+              Text(stringResource(R.string.TellomiConsent__disagree))
+            }
+            Buttons.LargeTonal(
+              onClick = onAgree,
+              modifier = Modifier
+                .weight(1f)
+                .testTag(TellomiCrossBorderConsent.AGREE_TEST_TAG)
+            ) {
+              Text(stringResource(R.string.TellomiConsent__agree_and_continue))
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/** 需求 2.3 的 9 项，顺序与隐私政策第二十一节一致。 */
+@Composable
+private fun crossBorderItems(): List<Pair<String, String>> = listOf(
+  stringResource(R.string.TellomiCrossBorder__item_where_title) to stringResource(R.string.TellomiCrossBorder__item_where_body),
+  stringResource(R.string.TellomiCrossBorder__item_recipients_title) to stringResource(R.string.TellomiCrossBorder__item_recipients_body),
+  stringResource(R.string.TellomiCrossBorder__item_contact_title) to stringResource(R.string.TellomiCrossBorder__item_contact_body),
+  stringResource(R.string.TellomiCrossBorder__item_purpose_title) to stringResource(R.string.TellomiCrossBorder__item_purpose_body),
+  stringResource(R.string.TellomiCrossBorder__item_method_title) to stringResource(R.string.TellomiCrossBorder__item_method_body),
+  stringResource(R.string.TellomiCrossBorder__item_kinds_title) to stringResource(R.string.TellomiCrossBorder__item_kinds_body),
+  stringResource(R.string.TellomiCrossBorder__item_rights_title) to stringResource(R.string.TellomiCrossBorder__item_rights_body),
+  stringResource(R.string.TellomiCrossBorder__item_procedure_title) to stringResource(R.string.TellomiCrossBorder__item_procedure_body),
+  stringResource(R.string.TellomiCrossBorder__item_consent_title) to stringResource(R.string.TellomiCrossBorder__item_consent_body)
+)
 
 private data class ConsentLink(val text: String, val url: String)
 
