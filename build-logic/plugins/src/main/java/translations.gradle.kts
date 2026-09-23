@@ -532,7 +532,7 @@ tasks.register("resolveStaticIps") {
       cdn2_ips=${staticIpResolver.resolveToBuildConfig("cdn2.signal.org")}
       cdn3_ips=${staticIpResolver.resolveToBuildConfig("cdn3.signal.org")}
       sfu_ips=${staticIpResolver.resolveToBuildConfig("sfu.voip.signal.org")}
-      content_proxy_ips=${staticIpResolver.resolveToBuildConfig("contentproxy.signal.org")}
+      content_proxy_ips=${staticIpResolver.resolveToBuildConfig("contentproxy.tellomi.app")}
       svr2_ips=${staticIpResolver.resolveToBuildConfig("svr2.signal.org")}
       cdsi_ips=${staticIpResolver.resolveToBuildConfig("cdsi.signal.org")}
     """.trimIndent() + "\n"
