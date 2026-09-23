@@ -255,17 +255,9 @@
                     android:scheme="tellomi" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="signal.art"
-                    android:pathPrefix="/addstickers"
-                    android:scheme="https" />
-            </intent-filter>
+            <!-- Tellomi：上游 https://signal.art 的 App Links 声明去掉。那不是我们的域名，assetlinks 永远不会有我们的包名；
+                 GMS 的校验器把一个包的所有 autoVerify 域名放一批验、一个失败全批失败，它在就会连带 tell.cc 验不过
+                 （emulator-5554 实测 legacy_failure，tellomi/tellomi#1226）。站内收到的这类链接照旧由 App 内解析处理。 -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -320,18 +312,9 @@
             </intent-filter>
 
 
-            <intent-filter
-                android:autoVerify="true"
-                tools:targetApi="23">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="signal.group"
-                    android:scheme="https" />
-            </intent-filter>
+            <!-- Tellomi：上游 https://signal.group 的 App Links 声明去掉。那不是我们的域名，assetlinks 永远不会有我们的包名；
+                 GMS 的校验器把一个包的所有 autoVerify 域名放一批验、一个失败全批失败，它在就会连带 tell.cc 验不过
+                 （emulator-5554 实测 legacy_failure，tellomi/tellomi#1226）。站内收到的这类链接照旧由 App 内解析处理。 -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -345,16 +328,9 @@
             </intent-filter>
 
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="signaldonations.org" />
-                <data android:pathPrefix="/stripe/return/ideal" />
-            </intent-filter>
+            <!-- Tellomi：上游 https://signaldonations.org 的 App Links 声明去掉。那不是我们的域名，assetlinks 永远不会有我们的包名；
+                 GMS 的校验器把一个包的所有 autoVerify 域名放一批验、一个失败全批失败，它在就会连带 tell.cc 验不过
+                 （emulator-5554 实测 legacy_failure，tellomi/tellomi#1226）。站内收到的这类链接照旧由 App 内解析处理。 -->
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -366,15 +342,9 @@
                 <data android:host="ideal" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="signal.tube" />
-            </intent-filter>
+            <!-- Tellomi：上游 https://signal.tube 的 App Links 声明去掉。那不是我们的域名，assetlinks 永远不会有我们的包名；
+                 GMS 的校验器把一个包的所有 autoVerify 域名放一批验、一个失败全批失败，它在就会连带 tell.cc 验不过
+                 （emulator-5554 实测 legacy_failure，tellomi/tellomi#1226）。站内收到的这类链接照旧由 App 内解析处理。 -->
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -386,15 +356,9 @@
                 <data android:host="signal.tube" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="signal.me" />
-            </intent-filter>
+            <!-- Tellomi：上游 https://signal.me 的 App Links 声明去掉。那不是我们的域名，assetlinks 永远不会有我们的包名；
+                 GMS 的校验器把一个包的所有 autoVerify 域名放一批验、一个失败全批失败，它在就会连带 tell.cc 验不过
+                 （emulator-5554 实测 legacy_failure，tellomi/tellomi#1226）。站内收到的这类链接照旧由 App 内解析处理。 -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -461,15 +425,9 @@
             </intent-filter>
 
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="signal.link" />
-            </intent-filter>
+            <!-- Tellomi：上游 https://signal.link 的 App Links 声明去掉。那不是我们的域名，assetlinks 永远不会有我们的包名；
+                 GMS 的校验器把一个包的所有 autoVerify 域名放一批验、一个失败全批失败，它在就会连带 tell.cc 验不过
+                 （emulator-5554 实测 legacy_failure，tellomi/tellomi#1226）。站内收到的这类链接照旧由 App 内解析处理。 -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
