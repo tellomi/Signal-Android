@@ -1090,6 +1090,24 @@ object RemoteConfig {
   )
 
   /**
+   * Tellomi（#1078，ADR-0064 §4.4）：服务端下发的内容代理地址，形如 `https://contentproxy.tellomi.app:443`
+   * （`deploy/hk/gen-config.py` 的 `gif.proxyUrl`，Desktop 读的是同一个键）。
+   *
+   * 解析与回落在 `ContentProxySelector.configure()`：只认 `https://`，没下发或不合法就用编译期常量
+   * `CONTENT_PROXY_HOST`。有了它，备案之后换成 `contentproxy.tellomi.cn` 不用发版。
+   *
+   * **不热切换**：内容代理的几个 OkHttpClient（Glide / Giphy / ExoPlayer）都是长寿命的，只在创建时读一次，
+   * 改了要等进程重启才生效——所以这里如实写 `hotSwappable = false`。
+   */
+  @JvmStatic
+  @get:JvmName("gifProxyUrl")
+  val gifProxyUrl: String? by remoteString(
+    key = "global.gif.proxyUrl",
+    defaultValue = null,
+    hotSwappable = false
+  )
+
+  /**
    * Tellomi（#1078）：GIF 功能到底能不能用 = 上游开关 **且** provider 不是 `none`。
    *
    * 两个条件分开留着：`global.gifSearch` 是上游的（整体开关），`global.gif.provider`
