@@ -3200,6 +3200,16 @@
     <string name="UsernameEditFragment__usernames_let_others_message">Usernames are always paired with a set of numbers.</string>
     <!-- Tellomi（#1106，ADR-0066）：用户名不再带「.数字」，上面那句「用户名始终搭配一组数字」不成立，编辑页改用这句。 -->
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">People can find and message you by your username, without knowing your phone number.</string>
+    <!-- Tellomi（#1106 第四刀，ADR-0066 §6.2）：30 天改名冷却期内想换用户名时，输入框下的提示。%d 为还剩的天数（向上取整，至少 1）。与 Desktop#2 同一句。 -->
+    <plurals name="UsernameEditFragment__tellomi_change_cooldown">
+        <item quantity="one">You changed your username recently. You can change it again in %d day.</item>
+        <item quantity="other">You changed your username recently. You can change it again in %d days.</item>
+    </plurals>
+    <!-- Tellomi（#1106 第四刀）：已有用户名、要换成别的时的确认框。每次换名都会开始改名冷却，%d 为冷却天数（30）。与 Desktop#2 同一句。 -->
+    <plurals name="UsernameEditFragment__tellomi_change_confirmation">
+        <item quantity="one">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d day. Are you sure?</item>
+        <item quantity="other">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d days. Are you sure?</item>
+    </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">What is this number?</string>
     <string name="UsernameEditFragment__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>

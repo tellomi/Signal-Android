@@ -3091,6 +3091,14 @@
     <string name="UsernameEditFragment__usernames_let_others_message">用户名始终搭配一组数字。</string>
     <!-- Tellomi（#1106） -->
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">别人可以通过用户名找到你、给你发消息，不需要知道你的手机号。</string>
+    <!-- Tellomi（#1106 第四刀） -->
+    <plurals name="UsernameEditFragment__tellomi_change_cooldown">
+        <item quantity="other">你最近改过用户名，%d 天后可以再改。</item>
+    </plurals>
+    <!-- Tellomi（#1106 第四刀） -->
+    <plurals name="UsernameEditFragment__tellomi_change_confirmation">
+        <item quantity="other">更改用户名会重置你现有的二维码和链接，而且之后 %d 天内不能再改。确定要更改吗？</item>
+    </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">这个号码是什么？</string>
     <string name="UsernameEditFragment__these_digits_help_keep">这些数字可以将您的用户名保密，以免您收到骚扰消息。请仅将您的用户名分享给您想要聊天的对象和群组。如果您更改用户名，您将会收到一组新的数字。</string>

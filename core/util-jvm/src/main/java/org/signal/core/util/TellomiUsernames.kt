@@ -5,6 +5,11 @@
 
 package org.signal.core.util
 
+import kotlin.math.ceil
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.DurationUnit
+
 /**
  * Tellomi（tellomi/tellomi#1106，ADR-0066）：用户名不带「.数字」。
  *
@@ -42,5 +47,24 @@ object TellomiUsernames {
   @JvmStatic
   fun toDisplayUsername(username: String): String {
     return username.removeSuffix("$DELIMITER$FIXED_DISCRIMINATOR")
+  }
+
+  /**
+   * ADR-0066 §6.2：换用户名之后 30 天内不能再换（服务端 `USERNAME_CHANGE_COOLDOWN`，tellomi/Signal-Server#4；首次设置不计）。
+   * 只用在改名前的提醒；还剩多久永远以服务端 429 的 `Retry-After` 为准。
+   */
+  const val RENAME_COOLDOWN_DAYS = 30
+
+  /**
+   * reserve 回 429 时分辨「改名冷却」和普通限流：限流桶（`usernameReserve`，100 次 / 15 分钟）的 `Retry-After` 是秒级，
+   * 冷却的是天级，**超过一小时就是冷却**。与 Desktop `isRenameCooldown`（tellomi/Signal-Desktop#2）同一条线，三端一致。
+   */
+  fun isRenameCooldown(retryAfter: Duration?): Boolean {
+    return retryAfter != null && retryAfter > 1.hours
+  }
+
+  /** 冷却还剩几天：向上取整、至少 1（刚改完的 `Retry-After` 2591999 秒是 30 天，还剩两小时是 1 天）。与 Desktop 同一算法。 */
+  fun renameCooldownDaysLeft(retryAfter: Duration): Int {
+    return ceil(retryAfter.toDouble(DurationUnit.DAYS)).toInt().coerceAtLeast(1)
   }
 }
