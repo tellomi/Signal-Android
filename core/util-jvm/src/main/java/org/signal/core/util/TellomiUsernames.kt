@@ -33,4 +33,14 @@ object TellomiUsernames {
     val trimmed = input.trim().removePrefix("@")
     return if (trimmed.contains(DELIMITER)) trimmed else "$trimmed$DELIMITER$FIXED_DISCRIMINATOR"
   }
+
+  /**
+   * 协议层的完整用户名 → 界面上显示的样子：**只有 `.01` 结尾的去掉后缀**（`kaixin.01` → `kaixin`）；
+   * 别的后缀**完整显示**（`kaixin.57` 原样）——ADR-0066 §九的反向用例：别人用 `kaixin.57` 注册，
+   * 官方客户端必须显示 `kaixin.57`，不能显示成 `kaixin`，否则就是冒充。
+   */
+  @JvmStatic
+  fun toDisplayUsername(username: String): String {
+    return username.removeSuffix("$DELIMITER$FIXED_DISCRIMINATOR")
+  }
 }

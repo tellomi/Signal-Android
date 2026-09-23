@@ -37,4 +37,17 @@ class TellomiUsernamesTest {
   fun malformedInputIsPassedThroughForUsernameToReject() {
     assertThat(TellomiUsernames.toProtocolUsername("kaixin.")).isEqualTo("kaixin.")
   }
+
+  @Test
+  fun displayDropsOnlyTheFixedDiscriminator() {
+    assertThat(TellomiUsernames.toDisplayUsername("kaixin.01")).isEqualTo("kaixin")
+  }
+
+  /** ADR-0066 §九反向用例：别人的 `kaixin.57` 必须完整显示，不能显示成 `kaixin`。 */
+  @Test
+  fun otherDiscriminatorsAreShownInFull() {
+    assertThat(TellomiUsernames.toDisplayUsername("kaixin.57")).isEqualTo("kaixin.57")
+    assertThat(TellomiUsernames.toDisplayUsername("kaixin.101")).isEqualTo("kaixin.101")
+    assertThat(TellomiUsernames.toDisplayUsername("kaixin.001")).isEqualTo("kaixin.001")
+  }
 }

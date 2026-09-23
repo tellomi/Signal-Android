@@ -5,6 +5,7 @@
 
 package org.signal.network.service
 
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.UsernameUtil
 import org.signal.core.util.censor
 import org.signal.core.util.logging.Log
@@ -41,7 +42,10 @@ class UsernameService(private val accountApi: AccountApiV2) {
   suspend fun reserveUsername(nickname: String, discriminator: String? = null): RequestResult<Username, ReserveUsernameError> {
     val candidates: List<Username> = try {
       if (discriminator == null) {
-        Username.candidatesFrom(nickname, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH)
+        // Tellomi（tellomi/tellomi#1106，ADR-0066）：判别位固定 01，只试 `<nickname>.01` 这一个。上游这里用
+        // candidatesFrom 随机生成一批（01–99 被拒绝表挡住时还会落到三位数），我们要的是「nickname 唯一」：
+        // 被占 / 命中保留词都是 409「该用户名已被占用」，不换数字。
+        listOf(Username.fromParts(nickname, TellomiUsernames.FIXED_DISCRIMINATOR, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH))
       } else {
         listOf(Username("$nickname${Usernames.DELIMITER}$discriminator"))
       }
