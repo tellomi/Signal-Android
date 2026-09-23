@@ -517,6 +517,25 @@ tasks.register("excludeNonTranslatables") {
   }
 }
 
+// Tellomi（#1077）：这张表是 SignalServiceNetworkAccess.DNS 里 StaticDns 的值，
+// key 是同名的 *_URL 常量去掉 scheme。**URL 那一侧早就换成我们的域名了，IP 这一侧一直是上游的**，
+// 于是这张表把「我们的主机名」映射到「Signal 的 IP」——DNS 被污染 / 被墙时（正是最需要这一档的时候）
+// 100% 连不上。下面六条已改成解析我们自己的域名。
+//
+// ⚠️ **别在被污染的 DNS 后面跑这个 task。** 2026-09-23 在 Pro 的 Mac 上实测，
+// 对 *.signal.org 的应答是伪造的，**而且每次都不一样**（同一台机器、同一条出口，三次采样）：
+//   svr2.signal.org          → 65.49.68.152 / 74.86.151.167 / 199.59.150.12
+//   svr2.staging.signal.org  → 31.13.96.194（Facebook 的地址）/ 185.45.7.185
+//   chat.signal.org          → 199.59.149.244 / 173.255.209.47（真值是 13.248.212.111 / 76.223.92.165）
+//   而 StaticIpResolver 有时直接报 "Failed to resolve host! Lookup did not return any records"。
+// **应答不稳定这一点比"被污染"更要紧**：它意味着两个人跑同一个 task 会得到两份不同的文件，
+// 而且写进包里之后从产物上完全看不出对错。下面 svr2 / cdsi 两条仍指向上游主机，
+// 只能在干净出口上重新生成；我们自己的 *.tellomi.app 在这台机器上解析是干净的（都指向香港 EIP）。
+//
+// 还有一处**对不上**（本次没动，因为两条路都已关闭、这一档走不到）：
+//   SIGNAL_CDSI_URL = https://cdsi.staging.signal.org  ← StaticDns 的 key
+//   cdsi_ips        = resolveToBuildConfig("cdsi.signal.org")  ← 值来自**非** staging 的主机
+// svr2 同理。要修得连 URL 一起对齐，或者干脆把这两条从 StaticDns 里删掉（#999 / #1030 已把两条路关死）。
 tasks.register("resolveStaticIps") {
   group = "Static Files"
   description = "Fetches static IPs for core hosts and writes them to static-ips.properties"
@@ -526,13 +545,16 @@ tasks.register("resolveStaticIps") {
   doLast {
     val staticIpResolver = StaticIpResolver()
     val content = """
-      service_ips=${staticIpResolver.resolveToBuildConfig("chat.signal.org")}
-      storage_ips=${staticIpResolver.resolveToBuildConfig("storage.signal.org")}
-      cdn_ips=${staticIpResolver.resolveToBuildConfig("cdn.signal.org")}
-      cdn2_ips=${staticIpResolver.resolveToBuildConfig("cdn2.signal.org")}
-      cdn3_ips=${staticIpResolver.resolveToBuildConfig("cdn3.signal.org")}
-      sfu_ips=${staticIpResolver.resolveToBuildConfig("sfu.voip.signal.org")}
-      content_proxy_ips=${staticIpResolver.resolveToBuildConfig("contentproxy.signal.org")}
+      service_ips=${staticIpResolver.resolveToBuildConfig("chat.tellomi.app")}
+      storage_ips=${staticIpResolver.resolveToBuildConfig("storage.tellomi.app")}
+      cdn_ips=${staticIpResolver.resolveToBuildConfig("cdn.tellomi.app")}
+      cdn2_ips=${staticIpResolver.resolveToBuildConfig("cdn2.tellomi.app")}
+      // cdn3 / updates 在 Cloudflare（橙云），不是香港源站。**边缘 IP 绝不能写死进包里**：
+      // 它会变，写死等于给自己做一张会过期的劫持表——DNS 正常时用不到，DNS 失效时把流量送到
+      // 一个可能早已不属于我们的地址。这里固定给空表，让这一档对 cdn3 直接"不知道"。
+      cdn3_ips=new String[]{}
+      sfu_ips=${staticIpResolver.resolveToBuildConfig("chat.tellomi.app")}
+      content_proxy_ips=${staticIpResolver.resolveToBuildConfig("contentproxy.tellomi.app")}
       svr2_ips=${staticIpResolver.resolveToBuildConfig("svr2.signal.org")}
       cdsi_ips=${staticIpResolver.resolveToBuildConfig("cdsi.signal.org")}
     """.trimIndent() + "\n"
