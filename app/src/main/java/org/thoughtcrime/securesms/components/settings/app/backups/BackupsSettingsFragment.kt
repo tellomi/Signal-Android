@@ -92,7 +92,8 @@ class BackupsSettingsFragment : ComposeFragment() {
       findNavController().safeNavigate(R.id.action_backupsSettingsFragment_to_remoteBackupsSettingsFragment)
     }
 
-    if (savedInstanceState == null && args.launchCheckoutFlow && SignalStore.account.isPrimaryDevice) {
+    // Tellomi（#984）：付费备份档不做，结账流程（档位选择页写着「Signal 是一个非营利性平台」）一律不从这里拉起。
+    if (savedInstanceState == null && args.launchCheckoutFlow && SignalStore.account.isPrimaryDevice && Environment.Backups.PAID_BACKUPS_ENABLED) {
       checkoutLauncher.launch(null)
     }
   }
@@ -109,7 +110,7 @@ class BackupsSettingsFragment : ComposeFragment() {
           is BackupState.Error -> Unit
 
           BackupState.None -> {
-            if (!state.isLinkedDevice) {
+            if (!state.isLinkedDevice && Environment.Backups.PAID_BACKUPS_ENABLED) {
               checkoutLauncher.launch(null)
             }
           }
@@ -139,7 +140,8 @@ private fun BackupsSettingsContent(
   onBackupsRowClick: () -> Unit = {},
   onOnDeviceBackupsRowClick: () -> Unit = {},
   onBackupTierInternalOverrideChanged: (MessageBackupTier?) -> Unit = {},
-  onLearnMoreClick: () -> Unit = {}
+  onLearnMoreClick: () -> Unit = {},
+  showRemoteBackups: Boolean = Environment.Backups.PAID_BACKUPS_ENABLED
 ) {
   Scaffolds.Settings(
     title = stringResource(R.string.preferences_chats__backups),
@@ -166,7 +168,10 @@ private fun BackupsSettingsContent(
         }
       }
 
-      item {
+      // Tellomi（#984）：远程备份这两段（说明 + 状态行）只在付费备份打开时出现。新用户的状态是 None，
+      // 点那一行就进结账流程；PAID_BACKUPS_ENABLED 原来只挡了推广气泡，这个入口一直开着。
+      // 免费档也在这两段里，一起藏：Tellomi 的远程备份服务端从没验证过。本地备份（下面那一行）不受影响。
+      if (showRemoteBackups) item {
         Text(
           text = stringResource(R.string.RemoteBackupsSettingsFragment__back_up_your_message_history),
           color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -175,7 +180,7 @@ private fun BackupsSettingsContent(
         )
       }
 
-      item {
+      if (showRemoteBackups) item {
         val displayActionButton = !backupsSettingsState.isLinkedDevice
 
         when (backupsSettingsState.backupState) {
