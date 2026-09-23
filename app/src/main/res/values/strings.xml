@@ -3200,6 +3200,16 @@
     <string name="UsernameEditFragment__usernames_let_others_message">Usernames are always paired with a set of numbers.</string>
     <!-- Tellomi（#1106，ADR-0066）：用户名不再带「.数字」，上面那句「用户名始终搭配一组数字」不成立，编辑页改用这句。 -->
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">People can find and message you by your username, without knowing your phone number.</string>
+    <!-- Tellomi（#1106 第四刀，ADR-0066 §6.2）：30 天改名冷却期内想换用户名时，输入框下的提示。%d 为还剩的天数（向上取整，至少 1）。与 Desktop#2 同一句。 -->
+    <plurals name="UsernameEditFragment__tellomi_change_cooldown">
+        <item quantity="one">You changed your username recently. You can change it again in %d day.</item>
+        <item quantity="other">You changed your username recently. You can change it again in %d days.</item>
+    </plurals>
+    <!-- Tellomi（#1106 第四刀）：已有用户名、要换成别的时的确认框。每次换名都会开始改名冷却，%d 为冷却天数（30）。与 Desktop#2 同一句。 -->
+    <plurals name="UsernameEditFragment__tellomi_change_confirmation">
+        <item quantity="one">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d day. Are you sure?</item>
+        <item quantity="other">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d days. Are you sure?</item>
+    </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">What is this number?</string>
     <string name="UsernameEditFragment__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>
@@ -8297,6 +8307,8 @@
     <string name="FindByActivity__phone_number">Phone number</string>
     <!-- Help text under user entry for find by username -->
     <string name="FindByActivity__enter_username_description">Enter a username followed by a dot and its set of numbers.</string>
+    <!-- Tellomi（#1106 第四刀）：找人页说明。用户名不再带「.数字」，输 kaixin 就能找到，不再要求「后跟一个点和一组数字」。与 Desktop#2 同一句。 -->
+    <string name="FindByActivity__tellomi_enter_username_description">Enter the person’s username.</string>
     <!-- Content description for next action button -->
     <string name="FindByActivity__next">Next</string>
     <!-- Placeholder text for search input for selecting country code -->
@@ -8311,6 +8323,8 @@
     <string name="FindByActivity__username_not_found">Username not found</string>
     <!-- Dialog body for invalid username. Placeholder is the entered username. -->
     <string name="FindByActivity__s_is_not_a_valid_username">%1$s is not a valid username. Make sure you\'ve entered the complete username followed by its set of digits.</string>
+    <!-- Tellomi（#1106 第四刀）：输入的不可能是用户名时的提示，不再要人补「一组数字」。%1$s 为输入内容。与 Desktop#2 同一句。 -->
+    <string name="FindByActivity__tellomi_s_is_not_a_valid_username">%1$s is not a valid username.</string>
     <!-- Dialog body for an invalid phone number. Placeholder is the entered phone number. -->
     <string name="FindByActivity__s_is_not_a_valid_phone_number">%1$s is not valid phone number. Try again with a valid phone number</string>
     <!-- Dialog body for not found username -->

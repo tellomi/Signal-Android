@@ -22,6 +22,7 @@ import org.signal.core.util.logging.Log
 import org.signal.libsignal.usernames.Username
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.profiles.manage.UsernameRepository.ReserveFailure
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository.UsernameDeleteResult
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository.UsernameSetResult
 import org.thoughtcrime.securesms.util.NetworkUtil
@@ -210,7 +211,8 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
           events.onNext(Event.NETWORK_FAILURE)
         }
 
-        UsernameSetResult.RATE_LIMIT_ERROR -> {
+        // Tellomi（#1106 第四刀）：CHANGE_COOLDOWN 只会出现在 reserve；confirm 回 429 照上游当限流
+        UsernameSetResult.RATE_LIMIT_ERROR, UsernameSetResult.CHANGE_COOLDOWN -> {
           uiState.update { State(ButtonState.SUBMIT, UsernameStatus.NONE, it.usernameState) }
           events.onNext(Event.RATE_LIMIT_EXCEEDED)
         }
@@ -323,7 +325,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
 
     uiState.update { State(ButtonState.SUBMIT_DISABLED, UsernameStatus.NONE, UsernameState.Loading) }
 
-    disposables += UsernameRepository.reserveUsername(nickname, discriminator).subscribe { result: Result<UsernameState.Reserved, UsernameSetResult> ->
+    disposables += UsernameRepository.reserveUsername(nickname, discriminator).subscribe { result: Result<UsernameState.Reserved, ReserveFailure> ->
       result.either(
         onSuccess = { reserved: UsernameState.Reserved ->
           uiState.update { State(ButtonState.SUBMIT, UsernameStatus.NONE, reserved) }
@@ -333,8 +335,8 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
             stateMachineStore.update { s -> s.onSystemChangedDiscriminator(d) }
           }
         },
-        onFailure = { failure: UsernameSetResult ->
-          when (failure) {
+        onFailure = { failure: ReserveFailure ->
+          when (failure.result) {
             UsernameSetResult.SUCCESS -> {
               throw AssertionError()
             }
@@ -373,6 +375,14 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
               events.onNext(Event.RATE_LIMIT_EXCEEDED)
             }
 
+            // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：冷却期内要别的名字——输入框下直接说「N 天后可以再改」，
+            // 不再是泛泛的「尝试次数过多」（与 Desktop#2 同一句）
+            UsernameSetResult.CHANGE_COOLDOWN -> {
+              uiState.update {
+                State(ButtonState.SUBMIT_DISABLED, UsernameStatus.CHANGE_COOLDOWN, UsernameState.NoUsername, renameCooldownDaysLeft = failure.renameCooldownDaysLeft)
+              }
+            }
+
             UsernameSetResult.CANDIDATE_GENERATION_ERROR -> {
               // TODO -- Retry
               uiState.update { State(ButtonState.SUBMIT_DISABLED, UsernameStatus.TAKEN, UsernameState.NoUsername) }
@@ -386,7 +396,9 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
   data class State(
     @JvmField val buttonState: ButtonState,
     @JvmField val usernameStatus: UsernameStatus,
-    @JvmField val usernameState: UsernameState
+    @JvmField val usernameState: UsernameState,
+    /** Tellomi（#1106 第四刀）：[UsernameStatus.CHANGE_COOLDOWN] 时还剩几天。 */
+    @JvmField val renameCooldownDaysLeft: Int = 0
   )
 
   enum class UsernameStatus {
@@ -402,7 +414,10 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     DISCRIMINATOR_TOO_LONG,
     DISCRIMINATOR_HAS_INVALID_CHARACTERS,
     DISCRIMINATOR_CANNOT_BE_00,
-    DISCRIMINATOR_CANNOT_START_WITH_0
+    DISCRIMINATOR_CANNOT_START_WITH_0,
+
+    /** Tellomi（tellomi/tellomi#1106 第四刀）：30 天改名冷却期内，天数见 [State.renameCooldownDaysLeft]。 */
+    CHANGE_COOLDOWN
   }
 
   enum class ButtonState {

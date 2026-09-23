@@ -7,7 +7,11 @@ package org.signal.core.util
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import org.junit.Test
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.seconds
 
 /** Tellomi（tellomi/tellomi#1106，ADR-0066）：输入里的名字怎么变成协议层的完整用户名。 */
 class TellomiUsernamesTest {
@@ -49,5 +53,23 @@ class TellomiUsernamesTest {
     assertThat(TellomiUsernames.toDisplayUsername("kaixin.57")).isEqualTo("kaixin.57")
     assertThat(TellomiUsernames.toDisplayUsername("kaixin.101")).isEqualTo("kaixin.101")
     assertThat(TellomiUsernames.toDisplayUsername("kaixin.001")).isEqualTo("kaixin.001")
+  }
+
+  @Test
+  fun renameCooldownIsTheLong429() {
+    // 限流桶的 Retry-After 是秒级；改名冷却是天级。一小时是分界线（与 Desktop 相同）
+    assertThat(TellomiUsernames.isRenameCooldown(null)).isFalse()
+    assertThat(TellomiUsernames.isRenameCooldown(9.seconds)).isFalse()
+    assertThat(TellomiUsernames.isRenameCooldown(3600.seconds)).isFalse()
+    assertThat(TellomiUsernames.isRenameCooldown(3601.seconds)).isTrue()
+    assertThat(TellomiUsernames.isRenameCooldown(2591999.seconds)).isTrue()
+  }
+
+  @Test
+  fun renameCooldownDaysRoundUp() {
+    assertThat(TellomiUsernames.renameCooldownDaysLeft(2591999.seconds)).isEqualTo(30)
+    assertThat(TellomiUsernames.renameCooldownDaysLeft(86400.seconds)).isEqualTo(1)
+    assertThat(TellomiUsernames.renameCooldownDaysLeft(86401.seconds)).isEqualTo(2)
+    assertThat(TellomiUsernames.renameCooldownDaysLeft(2.hours)).isEqualTo(1)
   }
 }
