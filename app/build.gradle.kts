@@ -370,7 +370,18 @@ android {
     // （而且它们会作为字符串留在包里）。留空——菜单里选主 SFU 的那一项还在。
     buildConfigField("String[]", "SIGNAL_SFU_INTERNAL_NAMES", "new String[]{}")
     buildConfigField("String[]", "SIGNAL_SFU_INTERNAL_URLS", "new String[]{}")
-    buildConfigField("String", "CONTENT_PROXY_HOST", "\"contentproxy.signal.org\"")
+    // Tellomi（#1072）：GIF 搜索 / 播放和**所有走 Glide 的远程图片**（链接预览缩略图等）都经这台代理中转
+    // （ContentProxySelector → GiphyMp4Repository / GiphyMp4PagedDataSource / OkHttpUrlLoader / ChunkedImageUrlLoader）。
+    // 留着上游的话，我们用户的 GIF 关键词和 IP 就打到 Signal 的代理上，用的还是 Signal 写在客户端里的那把 Giphy key。
+    // 我们自己的那台在香港（deploy/hk/install-contentproxy.sh：nginx stream 按有没有 SNI 分流到 tinyproxy，
+    // 只放行 giphy 域名）。Desktop 在 #1065 已经换过去了（contentProxyUrl = https://contentproxy.tellomi.app:443）。
+    //
+    // **这是编译期兜底值**，不是最终来源：ADR-0064 §4.4 定的是服务端 remoteConfig 下发 `gif.proxyUrl` /
+    // `gif.apiKey`，客户端有值用值、无值回退到这里。Android 侧接 remoteConfig 是另一件（见 #1072 的跟进）。
+    //
+    // 这一行**只在 defaultConfig 里出现一次，没有任何 flavor 覆盖**（全文件 grep CONTENT_PROXY_HOST 就这一处），
+    // 所以改这里就够——和 #1023 的形状一样。
+    buildConfigField("String", "CONTENT_PROXY_HOST", "\"contentproxy.tellomi.app\"")
     buildConfigField("int", "CONTENT_PROXY_PORT", "443")
     buildConfigField("String[]", "SIGNAL_SERVICE_IPS", rootProject.extra["service_ips"] as String)
     buildConfigField("String[]", "SIGNAL_STORAGE_IPS", rootProject.extra["storage_ips"] as String)
