@@ -54,7 +54,11 @@ class SignalServiceNetworkAccess(context: Context) {
           BuildConfig.SIGNAL_CDN_URL.stripProtocol() to BuildConfig.SIGNAL_CDN_IPS.toSet(),
           BuildConfig.SIGNAL_CDN2_URL.stripProtocol() to BuildConfig.SIGNAL_CDN2_IPS.toSet(),
           BuildConfig.SIGNAL_CDN3_URL.stripProtocol() to BuildConfig.SIGNAL_CDN3_IPS.toSet(),
-          BuildConfig.SIGNAL_SFU_URL.stripProtocol() to BuildConfig.SIGNAL_SFU_IPS.toSet(),
+          // Tellomi（#1077）：上游这里是 `sfu.voip.signal.org`（纯主机名）。我们把 SFU 并进了
+          // chat.tellomi.app，`SIGNAL_SFU_URL` 因此带上了路径（".../callingService"），
+          // 而 `stripProtocol()` 只去 scheme 不去路径 —— 组出来的 key 是
+          // `chat.tellomi.app/callingService`，**永远等不上任何一次 DNS 查询的主机名**。
+          // 它要解析的主机就是上面那条 SIGNAL_URL 已经覆盖的 chat.tellomi.app，所以直接去掉。
           BuildConfig.CONTENT_PROXY_HOST.stripProtocol() to BuildConfig.SIGNAL_CONTENT_PROXY_IPS.toSet(),
           BuildConfig.SIGNAL_CDSI_URL.stripProtocol() to BuildConfig.SIGNAL_CDSI_IPS.toSet(),
           BuildConfig.SIGNAL_SVR2_URL.stripProtocol() to BuildConfig.SIGNAL_SVR2_IPS.toSet()

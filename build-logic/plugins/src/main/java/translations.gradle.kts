@@ -517,6 +517,22 @@ tasks.register("excludeNonTranslatables") {
   }
 }
 
+// Tellomi（#1077）：这张表是 SignalServiceNetworkAccess.DNS 里 StaticDns 的值，
+// key 是同名的 *_URL 常量去掉 scheme。**URL 那一侧早就换成我们的域名了，IP 这一侧一直是上游的**，
+// 于是这张表把「我们的主机名」映射到「Signal 的 IP」——DNS 被污染 / 被墙时（正是最需要这一档的时候）
+// 100% 连不上。下面六条已改成解析我们自己的域名。
+//
+// ⚠️ **别在被污染的 DNS 后面跑这个 task。** 2026-09-23 在 Pro 的 Mac 上实测：
+//   dig svr2.signal.org      → 65.49.68.152      （假的）
+//   dig svr2.staging.signal.org → 31.13.96.194   （Facebook 的地址）
+//   而 StaticIpResolver 当场报 "Failed to resolve host! Lookup did not return any records"。
+// 跑下去会把污染结果写进包里，而且看不出来。下面 svr2 / cdsi 两条仍指向上游主机，
+// 只能在干净出口上重新生成；我们自己的 *.tellomi.app 在这台机器上解析是干净的（都指向香港 EIP）。
+//
+// 还有一处**对不上**（本次没动，因为两条路都已关闭、这一档走不到）：
+//   SIGNAL_CDSI_URL = https://cdsi.staging.signal.org  ← StaticDns 的 key
+//   cdsi_ips        = resolveToBuildConfig("cdsi.signal.org")  ← 值来自**非** staging 的主机
+// svr2 同理。要修得连 URL 一起对齐，或者干脆把这两条从 StaticDns 里删掉（#999 / #1030 已把两条路关死）。
 tasks.register("resolveStaticIps") {
   group = "Static Files"
   description = "Fetches static IPs for core hosts and writes them to static-ips.properties"
@@ -526,13 +542,13 @@ tasks.register("resolveStaticIps") {
   doLast {
     val staticIpResolver = StaticIpResolver()
     val content = """
-      service_ips=${staticIpResolver.resolveToBuildConfig("chat.signal.org")}
-      storage_ips=${staticIpResolver.resolveToBuildConfig("storage.signal.org")}
-      cdn_ips=${staticIpResolver.resolveToBuildConfig("cdn.signal.org")}
-      cdn2_ips=${staticIpResolver.resolveToBuildConfig("cdn2.signal.org")}
-      cdn3_ips=${staticIpResolver.resolveToBuildConfig("cdn3.signal.org")}
-      sfu_ips=${staticIpResolver.resolveToBuildConfig("sfu.voip.signal.org")}
-      content_proxy_ips=${staticIpResolver.resolveToBuildConfig("contentproxy.signal.org")}
+      service_ips=${staticIpResolver.resolveToBuildConfig("chat.tellomi.app")}
+      storage_ips=${staticIpResolver.resolveToBuildConfig("storage.tellomi.app")}
+      cdn_ips=${staticIpResolver.resolveToBuildConfig("cdn.tellomi.app")}
+      cdn2_ips=${staticIpResolver.resolveToBuildConfig("cdn2.tellomi.app")}
+      cdn3_ips=${staticIpResolver.resolveToBuildConfig("cdn3.tellomi.app")}
+      sfu_ips=${staticIpResolver.resolveToBuildConfig("chat.tellomi.app")}
+      content_proxy_ips=${staticIpResolver.resolveToBuildConfig("contentproxy.tellomi.app")}
       svr2_ips=${staticIpResolver.resolveToBuildConfig("svr2.signal.org")}
       cdsi_ips=${staticIpResolver.resolveToBuildConfig("cdsi.signal.org")}
     """.trimIndent() + "\n"
