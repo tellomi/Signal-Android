@@ -2,7 +2,9 @@ package org.signal.core.util
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import org.junit.Test
 import org.signal.core.util.UsernameUtil.checkDiscriminator
 import org.signal.core.util.UsernameUtil.checkNickname
@@ -41,10 +43,30 @@ class UsernameUtilTest {
   @Test
   fun checkUsername_validUsernames() {
     assertThat(checkNickname("abcd")).isNull()
-    assertThat(checkNickname("abcdefghijklmnopqrstuvwxyz")).isNull()
-    assertThat(checkNickname("ABCDEFGHIJKLMNOPQRSTUVWXYZ")).isNull()
+    // Tellomi（tellomi/tellomi#1181）：上游这两条是 26 个字母；新建上限改成 20 之后换成 20 个
+    assertThat(checkNickname("abcdefghijklmnopqrst")).isNull()
+    assertThat(checkNickname("ABCDEFGHIJKLMNOPQRST")).isNull()
     assertThat(checkNickname("web_head")).isNull()
     assertThat(checkNickname("Spider_Fan_1991")).isNull()
+  }
+
+  /** Tellomi（tellomi/tellomi#1181，TR-ID-01）：新建 / 修改时昵称最长 20——21 位起就是 TOO_LONG，上游认为合法的 26 位也是。 */
+  @Test
+  fun checkUsername_tellomiMaxIs20() {
+    assertThat(checkNickname("abcdefghijklmnopqrst")).isNull()
+    assertThat(checkNickname("abcdefghijklmnopqrstu")).isEqualTo(UsernameUtil.InvalidReason.TOO_LONG)
+    assertThat(checkNickname("abcdefghijklmnopqrstuvwxyz")).isEqualTo(UsernameUtil.InvalidReason.TOO_LONG)
+  }
+
+  /** Tellomi（tellomi/tellomi#1181）：搜索仍按协议上限 32——之前已有的长用户名必须还能搜到，20 只约束新建。 */
+  @Test
+  fun isValidUsernameForSearch_existingLongUsernamesStillSearchable() {
+    assertThat(UsernameUtil.isValidUsernameForSearch("abcdefghijklmnopqrstuvwxyz_12345")).isTrue()
+    assertThat(UsernameUtil.isValidUsernameForSearch("abcdefghijklmnopqrstuvwxyz_12345.01")).isTrue()
+    assertThat(UsernameUtil.isValidUsernameForSearch("abcdefghijklmnopqrstu.01")).isTrue()
+    // 反例用纯字母：上游 SEARCH_PATTERN 的后缀是 `(.[0-9]+)?`，点没转义、能吃任意字符，
+    // 于是带数字的 33 位串会被拆成「30 位昵称 + 任意字符 + 数字」而判成合法（上游行为，这里不动它）
+    assertThat(UsernameUtil.isValidUsernameForSearch("abcdefghijklmnopqrstuvwxyzabcdefg")).isFalse()
   }
 
   @Test
