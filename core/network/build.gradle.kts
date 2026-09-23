@@ -79,4 +79,7 @@ dependencies {
 
   testImplementation(testLibs.junit.junit)
   testImplementation(testLibs.assertk)
+  // Tellomi（#1078）：HttpsProxySocketFactoryTest 现场签一张自签证书起本机 TLS 代理（app 的测试依赖里是同一版本）
+  testImplementation(testLibs.bouncycastle.bcprov.jdk15on)
+  testImplementation(testLibs.bouncycastle.bcpkix.jdk15on)
 }

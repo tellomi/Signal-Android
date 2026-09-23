@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 @OptIn(markerClass = [UnstableApi::class])
 class SimpleExoPlayerPool(context: Context) : ExoPlayerPool<ExoPlayer>(MAXIMUM_RESERVED_PLAYERS) {
   private val context: Context = context.applicationContext
-  private val okHttpClient = AppDependencies.okHttpClient.newBuilder().proxySelector(ContentProxySelector()).build()
+  private val okHttpClient = ContentProxySelector.configure(AppDependencies.okHttpClient.newBuilder()).build()
   private val dataSourceFactory: DataSource.Factory = SignalDataSource.Factory(AppDependencies.application, okHttpClient, DataSourceTransferListener)
   private val mediaSourceFactory: MediaSource.Factory = DefaultMediaSourceFactory(dataSourceFactory)
   private val renderersFactory = DefaultRenderersFactory(this.context).setEnableDecoderFallback(true)

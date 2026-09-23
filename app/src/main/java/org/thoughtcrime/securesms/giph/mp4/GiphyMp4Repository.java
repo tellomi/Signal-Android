@@ -31,10 +31,10 @@ final class GiphyMp4Repository {
   private final OkHttpClient client;
 
   GiphyMp4Repository() {
-    this.client = new OkHttpClient.Builder().proxySelector(new ContentProxySelector())
-                                            .addInterceptor(new StandardUserAgentInterceptor())
-                                            .dns(SignalServiceNetworkAccess.DNS)
-                                            .build();
+    this.client = ContentProxySelector.configure(new OkHttpClient.Builder())
+                                      .addInterceptor(new StandardUserAgentInterceptor())
+                                      .dns(SignalServiceNetworkAccess.DNS)
+                                      .build();
   }
 
   void saveToBlob(@NonNull GiphyImage giphyImage, boolean isForMms, @NonNull Consumer<GiphyMp4SaveResult> resultConsumer) {

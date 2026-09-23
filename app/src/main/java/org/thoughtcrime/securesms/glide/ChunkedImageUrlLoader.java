@@ -41,14 +41,13 @@ public class ChunkedImageUrlLoader implements ModelLoader<ChunkedImageUrl, Input
     private final OkHttpClient client;
 
     public Factory() {
-      this.client  = new OkHttpClient.Builder()
-                                     .proxySelector(new ContentProxySelector())
-                                     .cache(null)
-                                     .addInterceptor(new StandardUserAgentInterceptor())
-                                     .addNetworkInterceptor(new ContentProxySafetyInterceptor())
-                                     .addNetworkInterceptor(new PaddedHeadersInterceptor())
-                                     .dns(SignalServiceNetworkAccess.DNS)
-                                     .build();
+      this.client  = ContentProxySelector.configure(new OkHttpClient.Builder())
+                                         .cache(null)
+                                         .addInterceptor(new StandardUserAgentInterceptor())
+                                         .addNetworkInterceptor(new ContentProxySafetyInterceptor())
+                                         .addNetworkInterceptor(new PaddedHeadersInterceptor())
+                                         .dns(SignalServiceNetworkAccess.DNS)
+                                         .build();
     }
 
     @Override
