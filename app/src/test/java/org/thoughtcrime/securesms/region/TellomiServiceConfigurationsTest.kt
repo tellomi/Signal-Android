@@ -68,8 +68,8 @@ class TellomiServiceConfigurationsTest {
       for (censored in listOf(false, true)) {
         val configuration = build(profile, censored)
         assertThat(configuration.signalCdnUrlMap[3]!!.size).isEqualTo(1)
-        // SignalServiceNetworkAccess 的规避配置是 copy(censored = true)，同样要过
-        TellomiServiceConfigurations.requireSingleCdn3(configuration.copy(censored = !censored))
+        // 规避配置的保护不在这里（copy 共用同一个 map，在这里再断言一次是空转）：
+        // 由 SignalServiceNetworkAccess 的 init 在构造时断言，用例见 SignalServiceNetworkAccessCdn3Test。
       }
     }
   }

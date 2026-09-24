@@ -212,6 +212,8 @@ class SignalServiceNetworkAccess(context: Context) {
   // 真要做规避，得先有我们自己的 fronted 入口（域名 + CDN，服务端那半），
   // 那时把这段按上游的形状重建、并把 86 加进 defaultCensoredCountryCodes 才有意义。
   // 上游原文见 v8.26.4 的同一文件（G_HOST / F_* 常量 + buildGConfiguration + fConfig）。
+  // 重建时每个 CDN 只能放一个 URL，并且经 TellomiServiceConfigurations 组装：照抄上游的 fUrls / buildGConfiguration
+  // （每个 CDN 3–6 个 URL）会在构造时被下面的 init 拒绝（RegionProfile 契约第五节第 3 条，tellomi/tellomi#1055）。
   private val censorshipConfiguration: Map<Int, SignalServiceConfiguration> = emptyMap()
 
   // 注意 **不能**写成 `private val ... = uncensoredConfiguration.copy(...)`：
@@ -247,6 +249,12 @@ class SignalServiceNetworkAccess(context: Context) {
     backupServerPublicParams = backupServerPublicParams,
     censored = false
   )
+
+  init {
+    // 契约第五节第 3 条：getConfiguration() 可能返回的每一份都要 cdn3 恰好一个，含将来按上游形状重建的规避配置。
+    // 必须放在 uncensoredConfiguration 之后：defaultCensoredConfiguration 的 getter 要读它。
+    (censorshipConfiguration.values + defaultCensoredConfiguration).forEach(TellomiServiceConfigurations::requireSingleCdn3)
+  }
 
   fun getConfiguration(): SignalServiceConfiguration {
     return getConfiguration(SignalStore.account.e164)
