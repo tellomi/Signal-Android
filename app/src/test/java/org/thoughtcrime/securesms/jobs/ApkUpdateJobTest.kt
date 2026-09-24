@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -32,5 +32,36 @@ class ApkUpdateJobTest {
 
     assertThat(job.serialize()).isNull()
     assertThat(ApkUpdateJob.Factory().create(Job.Parameters.Builder().build(), null).allowMeteredNetwork).isFalse()
+  }
+
+  // ==================== taishi 审查 b14（包 4）====================
+
+  @Test
+  fun `only a Wi-Fi-only download that is not running gets re-enqueued for mobile data`() {
+    // 要改 3：已经允许流量的（暂停中也算）不删、不从 0 重下；正在下的不打断；后台检查不改排。
+    assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = true, existingIsRunning = false, existingAllowsMetered = false)).isTrue()
+    assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = true, existingIsRunning = false, existingAllowsMetered = true)).isFalse()
+    assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = true, existingIsRunning = true, existingAllowsMetered = false)).isFalse()
+    assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = false, existingIsRunning = false, existingAllowsMetered = false)).isFalse()
+  }
+
+  @Test
+  fun `the manifest's version name and download address are checked before they are shown or used`() {
+    // 不阻塞 3：清单还没签名（#1136），版本号会原样显示，下载地址会被拿去下。
+    val manifest = "https://updates.tellomi.app/android/latest.json"
+    val apk = "https://updates.tellomi.app/android/Tellomi-website-prod-universal-release-0.1.3.apk"
+
+    assertThat(ApkUpdateJob.isTrustedDescriptor("0.1.3", apk, manifest)).isTrue()
+    assertThat(ApkUpdateJob.isTrustedDescriptor("1.2.3.4", apk, manifest)).isTrue()
+
+    assertThat(ApkUpdateJob.isTrustedDescriptor("0.1.3 请立即转账", apk, manifest)).isFalse()
+    assertThat(ApkUpdateJob.isTrustedDescriptor("1", apk, manifest)).isFalse()
+    assertThat(ApkUpdateJob.isTrustedDescriptor("1.2.3.4.5", apk, manifest)).isFalse()
+    assertThat(ApkUpdateJob.isTrustedDescriptor(null, apk, manifest)).isFalse()
+
+    assertThat(ApkUpdateJob.isTrustedDescriptor("0.1.3", "https://updates.tellomi.app.evil.example/x.apk", manifest)).isFalse()
+    assertThat(ApkUpdateJob.isTrustedDescriptor("0.1.3", "http://updates.tellomi.app/android/x.apk", manifest)).isFalse()
+    assertThat(ApkUpdateJob.isTrustedDescriptor("0.1.3", "https://example.com/x.apk", manifest)).isFalse()
+    assertThat(ApkUpdateJob.isTrustedDescriptor("0.1.3", null, manifest)).isFalse()
   }
 }

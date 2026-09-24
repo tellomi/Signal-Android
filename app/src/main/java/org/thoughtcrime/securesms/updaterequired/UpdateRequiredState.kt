@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -37,6 +37,12 @@ data class UpdateRequiredState(
 
     /** 检查清单 / 排队中 / 下载中；[percent] 为 null 表示还不知道进度。 */
     data class InProgress(val percent: Int?) : Download
+
+    /**
+     * 跟着的是一条只许 Wi-Fi 的下载（上游后台检查排的），现在没在下：说清楚，主按钮给「用移动数据下载」。
+     * 不把它当成下载中，否则按钮点了没反应、页面一直卡着（taishi 审查 b14 要改 1）。
+     */
+    data object WaitingForWifi : Download
 
     /** 下载完成并已调起系统安装器；用户在系统安装界面取消时可以再点一次。 */
     data object ReadyToInstall : Download

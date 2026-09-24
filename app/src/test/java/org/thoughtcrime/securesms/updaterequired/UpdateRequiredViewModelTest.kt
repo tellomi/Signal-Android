@@ -1,16 +1,18 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 package org.thoughtcrime.securesms.updaterequired
 
+import androidx.lifecycle.viewModelScope
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -57,7 +59,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `without the install permission it explains first, then opens settings`() = runTest(testDispatcher) {
+  fun `without the install permission it explains first, then opens settings`() = runViewModelTest {
     repository.canInstall = false
     val viewModel = createViewModel()
     val actions = collectActions(viewModel)
@@ -77,7 +79,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `coming back from settings with the permission granted carries on with the update`() = runTest(testDispatcher) {
+  fun `coming back from settings with the permission granted carries on with the update`() = runViewModelTest {
     repository.canInstall = false
     val viewModel = createViewModel()
     viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
@@ -93,7 +95,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `download progress is drawn in the button and the installer opens once it finishes`() = runTest(testDispatcher) {
+  fun `download progress is drawn in the button and the installer opens once it finishes`() = runViewModelTest {
     val viewModel = createViewModel()
     repository.script(
       snapshot(Status.PENDING, 0, -1),
@@ -119,7 +121,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `tapping install again after cancelling the system installer does not download again`() = runTest(testDispatcher) {
+  fun `tapping install again after cancelling the system installer does not download again`() = runViewModelTest {
     val viewModel = createViewModel()
     repository.script(snapshot(Status.SUCCESSFUL, 100, 100))
     viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
@@ -133,7 +135,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `a failed check turns the button into retry`() = runTest(testDispatcher) {
+  fun `a failed check turns the button into retry`() = runViewModelTest {
     repository.checkResult = false
     val viewModel = createViewModel()
 
@@ -147,7 +149,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `a failed download turns the button into retry`() = runTest(testDispatcher) {
+  fun `a failed download turns the button into retry`() = runViewModelTest {
     val viewModel = createViewModel()
     repository.script(snapshot(Status.RUNNING, 10, 100), snapshot(Status.FAILED, 10, 100))
 
@@ -161,7 +163,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `a manifest with nothing newer says so instead of spinning`() = runTest(testDispatcher) {
+  fun `a manifest with nothing newer says so instead of spinning`() = runViewModelTest {
     repository.availableVersion = null
     val viewModel = createViewModel()
 
@@ -172,7 +174,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `a download that never shows up ends in retry`() = runTest(testDispatcher) {
+  fun `a download that never shows up ends in retry`() = runViewModelTest {
     val viewModel = createViewModel()
 
     viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
@@ -185,7 +187,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `a package the background job already finished waits for the user before installing`() = runTest(testDispatcher) {
+  fun `a package the background job already finished waits for the user before installing`() = runViewModelTest {
     repository.script(snapshot(Status.SUCCESSFUL, 100, 100))
     val viewModel = createViewModel()
     runCurrent()
@@ -201,7 +203,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `builds that do not update themselves send the user to the download page`() = runTest(testDispatcher) {
+  fun `builds that do not update themselves send the user to the download page`() = runViewModelTest {
     repository.managesAppUpdates = false
     val viewModel = createViewModel()
     val actions = collectActions(viewModel)
@@ -215,7 +217,7 @@ class UpdateRequiredViewModelTest {
   }
 
   @Test
-  fun `the offline hint follows the connection`() = runTest(testDispatcher) {
+  fun `the offline hint follows the connection`() = runViewModelTest {
     repository.online = false
     val viewModel = createViewModel()
     assertThat(viewModel.state.value.isOffline).isEqualTo(true)
@@ -225,8 +227,114 @@ class UpdateRequiredViewModelTest {
     assertThat(viewModel.state.value.isOffline).isEqualTo(false)
   }
 
+  // ==================== taishi 审查 b14（包 4）====================
+
+  @Test
+  fun `when a Wi-Fi-only download takes over, the page offers mobile data instead of hanging`() = runViewModelTest {
+    // 要改 1 (a)：流量下载失败后，上游收到广播就改排了一条只许 Wi-Fi 的下载，SignalStore 里的 id 换成了它。
+    val viewModel = createViewModel()
+    repository.script(
+      snapshot(Status.RUNNING, 10, 100),
+      snapshot(Status.PENDING, 0, -1, id = 8, allowsMetered = false)
+    )
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.InProgress(percent = 10))
+
+    advanceTimeBy(POLL_MS)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.WaitingForWifi)
+
+    // 按钮点了有用：重新走一次允许流量的检查（任务里会把那条只许 Wi-Fi 的改排）。
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+    assertThat(repository.checks).isEqualTo(2)
+  }
+
+  @Test
+  fun `a background download that pauses off Wi-Fi offers mobile data`() = runViewModelTest {
+    // 要改 1 (b)：打开页面时后台的 Wi-Fi 下载正在跑，之后离开了 Wi-Fi。
+    // 初始化读一次、轮询第一轮再读一次，所以 RUNNING 放两份。
+    repository.script(
+      snapshot(Status.RUNNING, 30, 100, allowsMetered = false),
+      snapshot(Status.RUNNING, 30, 100, allowsMetered = false),
+      snapshot(Status.PAUSED, 30, 100, allowsMetered = false)
+    )
+    val viewModel = createViewModel()
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.InProgress(percent = 30))
+
+    advanceTimeBy(POLL_MS)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.WaitingForWifi)
+  }
+
+  @Test
+  fun `a download picked up on open is not installed until the user taps`() = runViewModelTest {
+    // 要改 2：打开页面时后台下载在跑，下完不能替用户点安装。
+    repository.script(
+      snapshot(Status.RUNNING, 50, 100, allowsMetered = false),
+      snapshot(Status.SUCCESSFUL, 100, 100, allowsMetered = false)
+    )
+    val viewModel = createViewModel()
+    runCurrent()
+    advanceTimeBy(POLL_MS)
+    runCurrent()
+
+    assertThat(viewModel.state.value.download).isEqualTo(Download.ReadyToInstall)
+    assertThat(repository.installs).isEmpty()
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+    assertThat(repository.installs).containsExactly(DOWNLOAD_ID)
+  }
+
+  @Test
+  fun `a paused mobile-data download is picked up on open instead of starting over`() = runViewModelTest {
+    // 要改 3：上次点出来的流量下载因为信号差暂停着，重开 App 后接着显示进度，不需要再点、也不会被从 0 重下。
+    repository.script(snapshot(Status.PAUSED, 40, 100, allowsMetered = true))
+    val viewModel = createViewModel()
+    runCurrent()
+
+    assertThat(viewModel.state.value.download).isEqualTo(Download.InProgress(percent = 40))
+    assertThat(repository.checks).isEqualTo(0)
+  }
+
+  @Test
+  fun `a download that stops moving turns into retry`() = runViewModelTest {
+    val viewModel = createViewModel()
+    repository.script(snapshot(Status.RUNNING, 20, 100))
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.InProgress(percent = 20))
+
+    advanceTimeBy(UpdateRequiredViewModel.STALL_TIMEOUT_MS - POLL_MS)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.InProgress(percent = 20))
+
+    advanceTimeBy(POLL_MS)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.Failed)
+  }
+
+  private val viewModels = mutableListOf<UpdateRequiredViewModel>()
+
+  /**
+   * 页面开着时轮询不会自己停：「等 Wi-Fi」要一直看着，连上了就接着显示进度。
+   * runTest 在用例体跑完后会把调度器推到空闲，轮询还在就永远推不完，所以先关掉 ViewModel 的作用域，和页面关掉时一样。
+   */
+  private fun runViewModelTest(body: suspend TestScope.() -> Unit) = runTest(testDispatcher) {
+    try {
+      body()
+    } finally {
+      viewModels.forEach { it.viewModelScope.cancel() }
+    }
+  }
+
   private fun createViewModel(): UpdateRequiredViewModel {
-    return UpdateRequiredViewModel(repository, pollIntervalMs = POLL_MS)
+    return UpdateRequiredViewModel(repository, pollIntervalMs = POLL_MS).also { viewModels += it }
   }
 
   private fun TestScope.collectActions(viewModel: UpdateRequiredViewModel): List<UpdateRequiredScreenAction> {
@@ -236,8 +344,9 @@ class UpdateRequiredViewModelTest {
     return actions
   }
 
-  private fun snapshot(status: Status, bytesSoFar: Long, totalBytes: Long): UpdateDownloadSnapshot {
-    return UpdateDownloadSnapshot(DOWNLOAD_ID, status, bytesSoFar, totalBytes)
+  /** 默认是阻断页点出来的流量下载；后台检查排的只许 Wi-Fi 的下载传 allowsMetered = false。 */
+  private fun snapshot(status: Status, bytesSoFar: Long, totalBytes: Long, id: Long = DOWNLOAD_ID, allowsMetered: Boolean = true): UpdateDownloadSnapshot {
+    return UpdateDownloadSnapshot(id, status, bytesSoFar, totalBytes, allowsMetered)
   }
 
   private class FakeRepository : UpdateRequiredRepository {

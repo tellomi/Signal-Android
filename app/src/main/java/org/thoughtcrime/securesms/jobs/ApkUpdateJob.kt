@@ -49,6 +49,34 @@ class ApkUpdateJob private constructor(
     private val TAG = Log.tag(ApkUpdateJob::class.java)
 
     private const val KEY_ALLOW_METERED_NETWORK = "allow_metered_network"
+
+    private val TRUSTED_VERSION_NAME = Regex("^\\d+(\\.\\d+){1,3}$")
+
+    /**
+     * Tellomi（tellomi/tellomi#1138，taishi 审查 b14 要改 3）：阻断页发起的检查遇到一条已存在、还没在下的下载时，
+     * 要不要删掉它、改排成可用流量的。只改排只许 Wi-Fi 的那种；已经允许流量的（比如信号差暂停着）不动，
+     * 否则网络越差越从 0 重下、越费流量。
+     */
+    @JvmStatic
+    fun shouldReenqueueForMeteredNetwork(allowMeteredNetwork: Boolean, existingIsRunning: Boolean, existingAllowsMetered: Boolean): Boolean {
+      return allowMeteredNetwork && !existingIsRunning && !existingAllowsMetered
+    }
+
+    /**
+     * Tellomi（tellomi/tellomi#1138，taishi 审查 b14 不阻塞 3）：清单还没签名（#1136），versionName 会原样显示在阻断页和「关于」页，
+     * url 会被拿去下载。存之前先卡一下形状：版本号只许「数字.数字」，下载地址只许和清单同一个 https 源。
+     */
+    @JvmStatic
+    fun isTrustedDescriptor(versionName: String?, url: String?, manifestUrl: String): Boolean {
+      if (versionName == null || versionName.length > 20 || !TRUSTED_VERSION_NAME.matches(versionName)) {
+        return false
+      }
+      val manifest = runCatching { java.net.URI(manifestUrl) }.getOrNull() ?: return false
+      if (manifest.scheme != "https" || manifest.host.isNullOrEmpty()) {
+        return false
+      }
+      return url != null && url.startsWith("https://${manifest.host}/")
+    }
   }
 
   @JvmOverloads
@@ -93,6 +121,9 @@ class ApkUpdateJob private constructor(
     if (updateDescriptor.versionCode <= 0 || updateDescriptor.versionName == null || updateDescriptor.url == null || updateDescriptor.digest == null) {
       Log.w(TAG, "Invalid update descriptor! $updateDescriptor")
       return
+    } else if (!isTrustedDescriptor(updateDescriptor.versionName, updateDescriptor.url, BuildConfig.APK_UPDATE_MANIFEST_URL)) {
+      Log.w(TAG, "Update descriptor has an unexpected version name or download URL! $updateDescriptor")
+      return
     } else {
       Log.d(TAG, "Got descriptor: $updateDescriptor")
     }
@@ -118,10 +149,10 @@ class ApkUpdateJob private constructor(
       } else if (downloadStatus.status == DownloadStatus.Status.MISSING) {
         Log.i(TAG, "Download status missing, starting download...")
         handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest, updateDescriptor.uploadTimestamp ?: 0)
-      } else if (allowMeteredNetwork && !downloadStatus.isRunning) {
+      } else if (shouldReenqueueForMeteredNetwork(allowMeteredNetwork, downloadStatus.isRunning, SignalStore.apkUpdate.downloadAllowsMetered)) {
         // Tellomi（#1138）：后台排的下载只许走 Wi-Fi，没有 Wi-Fi 时会一直停在排队状态。必须更新时改排成可用流量的。
-        // 还没开始下（或暂停中）才这样做，正在下的不打断。
-        Log.i(TAG, "Required update: re-enqueuing a download that is not running so it may use metered networks.")
+        // 只动只许 Wi-Fi、又不在下的那条；已经允许流量的（暂停中也算）不动（taishi 审查 b14 要改 3）。
+        Log.i(TAG, "Required update: re-enqueuing a Wi-Fi-only download that is not running so it may use metered networks.")
         context.getDownloadManager().remove(downloadStatus.downloadId)
         SignalStore.apkUpdate.clearDownloadAttributes()
         handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest, updateDescriptor.uploadTimestamp ?: 0)
@@ -193,6 +224,8 @@ class ApkUpdateJob private constructor(
       if (allowMeteredNetwork) {
         // Tellomi（#1138）：必须更新允许用流量。Request 的默认值就是任何网络、计费网络也可以，这里写明。
         setAllowedOverMetered(true)
+        // 默认允许漫游；上游只许 Wi-Fi，等于不漫游。国际漫游时别下这约 120 MB（taishi 审查 b14 不阻塞 1）。
+        setAllowedOverRoaming(false)
       } else {
         setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
       }
@@ -201,13 +234,14 @@ class ApkUpdateJob private constructor(
       setTitle("正在下载 Tellomi 更新")
       setDescription("Tellomi $versionName")
       setDestinationInExternalFilesDir(context, null, "tellomi-update.apk")
-      setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
+      // 上游为 Wi-Fi 后台下载设了 HIDDEN。用户点出来的流量下载要看得见进度、能在通知里取消（taishi 审查 b14 不阻塞 2）。
+      setNotificationVisibility(if (allowMeteredNetwork) DownloadManager.Request.VISIBILITY_VISIBLE else DownloadManager.Request.VISIBILITY_HIDDEN)
     }
 
     val downloadId = context.getDownloadManager().enqueue(downloadRequest)
     // DownloadManager will trigger [UpdateApkReadyListener] when finished via a broadcast
 
-    SignalStore.apkUpdate.setDownloadAttributes(downloadId, digest, uploadTimestamp)
+    SignalStore.apkUpdate.setDownloadAttributes(downloadId, digest, uploadTimestamp, allowsMetered = allowMeteredNetwork)
   }
 
   private fun handleDownloadComplete(downloadId: Long) {

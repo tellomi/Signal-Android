@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -8,8 +8,11 @@ package org.thoughtcrime.securesms.updaterequired
 import android.app.Application
 import android.content.Context
 import android.text.format.Formatter
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
@@ -107,6 +110,44 @@ class UpdateRequiredScreenTest {
     setContent(UpdateRequiredState(isOffline = true))
 
     composeTestRule.onNodeWithText(context.getString(R.string.TellomiUpdateRequired__offline)).assertIsDisplayed()
+  }
+
+  // ==================== taishi 审查 b14（包 4）====================
+
+  @Test
+  fun `waiting for Wi-Fi says so and offers mobile data`() {
+    val events = mutableListOf<UpdateRequiredScreenEvent>()
+    setContent(UpdateRequiredState(download = Download.WaitingForWifi), events)
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiUpdateRequired__waiting_for_wifi)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(UpdateRequiredTestTags.PRIMARY_BUTTON)
+      .assertTextContains(context.getString(R.string.TellomiUpdateRequired__use_mobile_data))
+      .performClick()
+
+    assert(events == listOf(UpdateRequiredScreenEvent.PrimaryClicked)) { "Expected PrimaryClicked but got $events" }
+  }
+
+  @Test
+  fun `ready to install still offers the website in case installing fails`() {
+    setContent(UpdateRequiredState(download = Download.ReadyToInstall))
+
+    composeTestRule.onNodeWithTag(UpdateRequiredTestTags.DOWNLOAD_FROM_WEBSITE).assertIsDisplayed()
+  }
+
+  @Test
+  fun `no newer version says so`() {
+    setContent(UpdateRequiredState(download = Download.NoNewerVersion))
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiUpdateRequired__no_newer_version)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(UpdateRequiredTestTags.DOWNLOAD_FROM_WEBSITE).assertIsDisplayed()
+  }
+
+  @Test
+  fun `the title is a heading and the button reads as unavailable while downloading`() {
+    setContent(UpdateRequiredState(download = Download.InProgress(percent = 42)))
+
+    composeTestRule.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading)).assertTextContains(context.getString(R.string.TellomiUpdateRequired__title))
+    composeTestRule.onNodeWithTag(UpdateRequiredTestTags.PRIMARY_BUTTON).assertIsNotEnabled()
   }
 
   private fun setContent(state: UpdateRequiredState, events: MutableList<UpdateRequiredScreenEvent> = mutableListOf()) {

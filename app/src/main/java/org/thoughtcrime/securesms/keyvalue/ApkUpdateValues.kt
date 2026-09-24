@@ -20,6 +20,7 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
     private const val PENDING_APK_UPLOAD_TIME = "apk_update.pending_apk_upload_time"
     private const val AVAILABLE_UPDATE_VERSION_NAME = "apk_update.available_update_version_name"
     private const val AVAILABLE_UPDATE_VERSION_CODE = "apk_update.available_update_version_code"
+    private const val DOWNLOAD_ALLOWS_METERED = "apk_update.download_allows_metered"
   }
 
   public override fun onFirstEverAppLaunch() = Unit
@@ -40,6 +41,12 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
 
   /** The upload time of the APK we're trying to install */
   val pendingApkUploadTime: Long by longValue(PENDING_APK_UPLOAD_TIME, 0)
+
+  /**
+   * Tellomi（tellomi/tellomi#1138，taishi 审查 b14 要改 1 / 3）：[downloadId] 这条下载是否允许用流量。
+   * 阻断页发起的是 true；上游的后台检查只许 Wi-Fi，是 false（旧记录没有这个键，也按 false）。
+   */
+  val downloadAllowsMetered: Boolean by booleanValue(DOWNLOAD_ALLOWS_METERED, false)
 
   /**
    * Tellomi（tellomi/tellomi#1138）：最近一次清单检查看到的、比当前安装更新的版本号（清单的 versionName）；没有则为 null。
@@ -66,14 +73,15 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
       .commit()
   }
 
-  fun setDownloadAttributes(id: Long, digest: ByteArray?, apkUploadTime: Long) {
-    Log.d(TAG, "Saving download attributes. id: $id, apkUploadTime: $apkUploadTime")
+  fun setDownloadAttributes(id: Long, digest: ByteArray?, apkUploadTime: Long, allowsMetered: Boolean = false) {
+    Log.d(TAG, "Saving download attributes. id: $id, apkUploadTime: $apkUploadTime, allowsMetered: $allowsMetered")
 
     store
       .beginWrite()
       .putLong(DOWNLOAD_ID, id)
       .putBlob(DIGEST, digest)
       .putLong(PENDING_APK_UPLOAD_TIME, apkUploadTime)
+      .putBoolean(DOWNLOAD_ALLOWS_METERED, allowsMetered)
       .commit()
   }
 
@@ -85,6 +93,7 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
       .putLong(DOWNLOAD_ID, -1)
       .putBlob(DIGEST, null)
       .putLong(PENDING_APK_UPLOAD_TIME, 0)
+      .putBoolean(DOWNLOAD_ALLOWS_METERED, false)
       .commit()
   }
 }

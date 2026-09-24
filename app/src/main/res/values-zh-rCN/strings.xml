@@ -311,6 +311,8 @@
     <string name="TellomiUpdateRequired__no_newer_version">暂时还没有可用的新版本，请过几分钟再试，或去官网下载。</string>
     <string name="TellomiUpdateRequired__offline">连接网络后即可更新。</string>
     <string name="TellomiUpdateRequired__download_from_website">去官网下载</string>
+    <string name="TellomiUpdateRequired__waiting_for_wifi">这个安装包原本只在连上 Wi-Fi 时下载。</string>
+    <string name="TellomiUpdateRequired__use_mobile_data">用移动数据下载</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->

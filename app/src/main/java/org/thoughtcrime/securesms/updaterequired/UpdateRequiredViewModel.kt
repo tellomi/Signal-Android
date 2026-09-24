@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -37,6 +37,12 @@ class UpdateRequiredViewModel(
 
     /** 清单检查成功、确有新版本，但这么久还没在 DownloadManager 里看到下载 → 按失败处理，让用户能重试。 */
     const val NO_DOWNLOAD_TIMEOUT_MS = 15_000L
+
+    /**
+     * 一条在下（或暂停着）的下载这么久没有新字节 → 按失败处理，给「重试」和「去官网下载」（taishi 审查 b14 要改 1）。
+     * DownloadManager 自己的重试（首轮约 30 秒）会在这之前发生；「等 Wi-Fi」是明示的状态，不算卡住。
+     */
+    const val STALL_TIMEOUT_MS = 90_000L
   }
 
   private val _state = MutableStateFlow(
@@ -57,16 +63,14 @@ class UpdateRequiredViewModel(
 
   init {
     if (repository.managesAppUpdates) {
-      // 后台的定期检查可能正在下、或已经下完：接上进度。已下完的不自动弹安装器，等用户点「安装更新」。
-      // 还在排队的（多半是只许 Wi-Fi 的后台下载）不接，用户点「立即更新」时会改排成可用流量的。
+      // 后台的定期检查、或上次打开时点出来的下载，可能正在下、暂停着、或已经下完：接上。
+      // 不管哪种都不替用户点安装：下完显示「安装更新」，等用户点（taishi 审查 b14 要改 2——
+      // 官网版有 UPDATE_PACKAGES_WITHOUT_USER_ACTION，Android 12+ 上可能不弹系统界面就直接装完重启）。
+      // 只许 Wi-Fi、又没在下的，轮询里会显示「等 Wi-Fi」并给出「用移动数据下载」。
       downloadJob = viewModelScope.launch(SignalDispatchers.IO) {
-        when (repository.currentDownload()?.status) {
-          UpdateDownloadSnapshot.Status.RUNNING -> {
-            _state.update { it.copy(download = Download.InProgress(percent = null)) }
-            pollDownload(installWhenDone = true)
-          }
-          UpdateDownloadSnapshot.Status.SUCCESSFUL -> pollDownload(installWhenDone = false)
-          else -> Unit
+        val existing = repository.currentDownload() ?: return@launch
+        if (existing.status != UpdateDownloadSnapshot.Status.FAILED) {
+          pollDownload(installWhenDone = false)
         }
       }
     }
@@ -96,7 +100,7 @@ class UpdateRequiredViewModel(
     }
 
     when (_state.value.download) {
-      Download.Idle, Download.Failed, Download.NoNewerVersion -> {
+      Download.Idle, Download.Failed, Download.NoNewerVersion, Download.WaitingForWifi -> {
         if (repository.canRequestPackageInstalls()) {
           startDownload()
         } else {
@@ -142,9 +146,18 @@ class UpdateRequiredViewModel(
 
   private suspend fun pollDownload(installWhenDone: Boolean) {
     var waitedWithoutDownloadMs = 0L
+    var stalledMs = 0L
+    var lastDownloadId = -1L
+    var lastBytes = -1L
 
     while (currentCoroutineContext().isActive) {
       val download = repository.currentDownload()
+
+      if (download != null && (download.downloadId != lastDownloadId || download.bytesSoFar != lastBytes)) {
+        lastDownloadId = download.downloadId
+        lastBytes = download.bytesSoFar
+        stalledMs = 0
+      }
 
       when (download?.status) {
         null -> {
@@ -172,16 +185,42 @@ class UpdateRequiredViewModel(
         }
 
         UpdateDownloadSnapshot.Status.PENDING,
-        UpdateDownloadSnapshot.Status.RUNNING,
         UpdateDownloadSnapshot.Status.PAUSED -> {
-          val total = download.totalBytes.takeIf { it > 0 }
-          val percent = total?.let { (download.bytesSoFar * 100 / it).toInt().coerceIn(0, 100) }
-          _state.update { it.copy(download = Download.InProgress(percent), totalBytes = total ?: it.totalBytes, isOffline = !repository.isOnline()) }
+          if (!download.allowsMetered) {
+            // 只许 Wi-Fi 的下载没在下（没连 Wi-Fi，或者流量下载失败后上游改排了一条只许 Wi-Fi 的）：
+            // 说清楚，主按钮给「用移动数据下载」（taishi 审查 b14 要改 1）。有 Wi-Fi 了它会自己开始下，轮询接着看。
+            stalledMs = 0
+            _state.update { it.copy(download = Download.WaitingForWifi, totalBytes = download.totalBytes.takeIf { total -> total > 0 } ?: it.totalBytes, isOffline = !repository.isOnline()) }
+          } else if (onProgress(download, stalledMs)) {
+            return
+          }
+        }
+
+        UpdateDownloadSnapshot.Status.RUNNING -> {
+          if (onProgress(download, stalledMs)) {
+            return
+          }
         }
       }
 
+      stalledMs += pollIntervalMs
+
       delay(pollIntervalMs)
     }
+  }
+
+  /** 显示进度；卡住太久（没有新字节）就转失败并返回 true，结束轮询。 */
+  private fun onProgress(download: UpdateDownloadSnapshot, stalledMs: Long): Boolean {
+    if (stalledMs >= STALL_TIMEOUT_MS) {
+      Log.w(TAG, "Download ${download.downloadId} made no progress for ${stalledMs}ms.")
+      _state.update { it.copy(download = Download.Failed, isOffline = !repository.isOnline()) }
+      return true
+    }
+
+    val total = download.totalBytes.takeIf { it > 0 }
+    val percent = total?.let { (download.bytesSoFar * 100 / it).toInt().coerceIn(0, 100) }
+    _state.update { it.copy(download = Download.InProgress(percent), totalBytes = total ?: it.totalBytes, isOffline = !repository.isOnline()) }
+    return false
   }
 
   /** 用户在系统安装界面点了取消，或安装失败：再点一次按钮重新调起。包没了就从头检查、下载。 */

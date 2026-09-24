@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -35,6 +35,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.disabled
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.signal.core.ui.compose.AllDevicePreviews
@@ -93,7 +98,9 @@ fun UpdateRequiredScreen(
             text = stringResource(R.string.TellomiUpdateRequired__title),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+              .fillMaxWidth()
+              .semantics { heading() }
           )
 
           Spacer(modifier = Modifier.height(16.dp))
@@ -127,16 +134,20 @@ fun UpdateRequiredScreen(
 
       StatusMessage(state)
 
+      val inProgress = state.managesAppUpdates && state.download is Download.InProgress
       Buttons.LargePrimary(
         onClick = { onEvent(UpdateRequiredScreenEvent.PrimaryClicked) },
         modifier = Modifier
           .fillMaxWidth()
           .testTag(UpdateRequiredTestTags.PRIMARY_BUTTON)
+          // 下载中点了没有作用，读屏要报「不可用」而不是「双击激活」；不用 enabled = false，免得按钮变灰、看不清里面的进度。
+          .semantics { if (inProgress) disabled() }
       ) {
         PrimaryButtonContent(state)
       }
 
-      if (state.managesAppUpdates && (state.download == Download.Failed || state.download == Download.NoNewerVersion)) {
+      // 装不上（比如签名不符）时系统只发一条通知，页面上也要留一条出路（taishi 审查 b14 不阻塞 8）。
+      if (state.managesAppUpdates && (state.download == Download.Failed || state.download == Download.NoNewerVersion || state.download == Download.ReadyToInstall)) {
         TextButton(
           onClick = { onEvent(UpdateRequiredScreenEvent.DownloadFromWebsiteClicked) },
           modifier = Modifier
@@ -176,6 +187,7 @@ private fun StatusMessage(state: UpdateRequiredState) {
     state.download == Download.NeedsInstallPermission -> R.string.TellomiUpdateRequired__install_permission
     state.download == Download.Failed -> R.string.TellomiUpdateRequired__download_failed
     state.download == Download.NoNewerVersion -> R.string.TellomiUpdateRequired__no_newer_version
+    state.download == Download.WaitingForWifi -> R.string.TellomiUpdateRequired__waiting_for_wifi
     state.isOffline && state.managesAppUpdates -> R.string.TellomiUpdateRequired__offline
     else -> null
   } ?: return
@@ -188,6 +200,7 @@ private fun StatusMessage(state: UpdateRequiredState) {
     modifier = Modifier
       .fillMaxWidth()
       .padding(bottom = 16.dp)
+      .semantics { liveRegion = LiveRegionMode.Polite }
   )
 }
 
@@ -202,6 +215,7 @@ private fun PrimaryButtonContent(state: UpdateRequiredState) {
     Download.Idle -> Text(text = stringResource(R.string.TellomiUpdateRequired__update_now))
     Download.NeedsInstallPermission -> Text(text = stringResource(R.string.TellomiUpdateRequired__open_settings))
     Download.ReadyToInstall -> Text(text = stringResource(R.string.TellomiUpdateRequired__install))
+    Download.WaitingForWifi -> Text(text = stringResource(R.string.TellomiUpdateRequired__use_mobile_data))
     Download.Failed, Download.NoNewerVersion -> Text(text = stringResource(R.string.TellomiUpdateRequired__retry))
     is Download.InProgress -> {
       // 进度画在按钮里（需求 3.4）。

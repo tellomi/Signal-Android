@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -59,7 +59,9 @@ data class UpdateDownloadSnapshot(
   val status: Status,
   val bytesSoFar: Long,
   /** 服务端没给长度时为 -1。 */
-  val totalBytes: Long
+  val totalBytes: Long,
+  /** 这条下载是否允许用流量（阻断页发起的是 true，上游后台检查排的是 false）。 */
+  val allowsMetered: Boolean
 ) {
   enum class Status { PENDING, RUNNING, PAUSED, SUCCESSFUL, FAILED }
 }
@@ -122,25 +124,35 @@ class DefaultUpdateRequiredRepository(private val context: Context) : UpdateRequ
       return null
     }
 
-    context.getDownloadManager().query(DownloadManager.Query().setFilterById(downloadId)).use { cursor ->
-      if (!cursor.moveToFirst()) {
-        return null
-      }
+    val allowsMetered = SignalStore.apkUpdate.downloadAllowsMetered
 
-      val status = when (cursor.requireInt(DownloadManager.COLUMN_STATUS)) {
-        DownloadManager.STATUS_PENDING -> UpdateDownloadSnapshot.Status.PENDING
-        DownloadManager.STATUS_RUNNING -> UpdateDownloadSnapshot.Status.RUNNING
-        DownloadManager.STATUS_PAUSED -> UpdateDownloadSnapshot.Status.PAUSED
-        DownloadManager.STATUS_SUCCESSFUL -> UpdateDownloadSnapshot.Status.SUCCESSFUL
-        else -> UpdateDownloadSnapshot.Status.FAILED
-      }
+    // 部分 ROM 可以停用「下载管理器」，这时 query 会抛异常；阻断页不能因此一打开就崩，按下载失败处理
+    // （给「重试」和「去官网下载」，taishi 审查 b14 不阻塞 7）。
+    return runCatching {
+      context.getDownloadManager().query(DownloadManager.Query().setFilterById(downloadId)).use { cursor ->
+        if (!cursor.moveToFirst()) {
+          return@runCatching null
+        }
 
-      return UpdateDownloadSnapshot(
-        downloadId = downloadId,
-        status = status,
-        bytesSoFar = cursor.requireLong(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR),
-        totalBytes = cursor.requireLong(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)
-      )
+        val status = when (cursor.requireInt(DownloadManager.COLUMN_STATUS)) {
+          DownloadManager.STATUS_PENDING -> UpdateDownloadSnapshot.Status.PENDING
+          DownloadManager.STATUS_RUNNING -> UpdateDownloadSnapshot.Status.RUNNING
+          DownloadManager.STATUS_PAUSED -> UpdateDownloadSnapshot.Status.PAUSED
+          DownloadManager.STATUS_SUCCESSFUL -> UpdateDownloadSnapshot.Status.SUCCESSFUL
+          else -> UpdateDownloadSnapshot.Status.FAILED
+        }
+
+        UpdateDownloadSnapshot(
+          downloadId = downloadId,
+          status = status,
+          bytesSoFar = cursor.requireLong(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR),
+          totalBytes = cursor.requireLong(DownloadManager.COLUMN_TOTAL_SIZE_BYTES),
+          allowsMetered = allowsMetered
+        )
+      }
+    }.getOrElse { e ->
+      Log.w(TAG, "Couldn't query the download manager.", e)
+      UpdateDownloadSnapshot(downloadId, UpdateDownloadSnapshot.Status.FAILED, bytesSoFar = 0, totalBytes = -1, allowsMetered = allowsMetered)
     }
   }
 
