@@ -12,6 +12,10 @@ import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
+import android.media.MediaCodec
+import android.media.MediaCodecInfo
+import android.media.MediaFormat
+import android.media.MediaMuxer
 import android.net.Uri
 import android.os.SystemClock
 import android.view.KeyEvent
@@ -25,6 +29,7 @@ import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.media3.common.Player
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -55,6 +60,9 @@ import org.thoughtcrime.securesms.database.MessageType
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.groups.GroupId
+import org.thoughtcrime.securesms.mediapreview.MediaPreviewCenterControlsView
+import org.thoughtcrime.securesms.mediapreview.MediaPreviewPlayerControlView
+import org.thoughtcrime.securesms.mediapreview.VideoScrubPreviewView
 import org.thoughtcrime.securesms.mediapreview.mediarail.AlbumScrubberView
 import org.thoughtcrime.securesms.mms.IncomingMessage
 import org.thoughtcrime.securesms.mms.OutgoingMessage
@@ -417,6 +425,122 @@ class AlbumCarouselScreenshots {
     }
   }
 
+  /**
+   * owner 2026-09-25「多个视频点开时完全参考 Telegram 的设计」：两个视频的相册点开后——打开时什么都不显示，轻点后中间播放 / 暂停、
+   * 进度胶囊（已播 / 总时长）、本组缩略条一起出现；倍速 1.5x 生效、齿轮上有角标；拖进度条时拇指上方出现那个位置的一帧、松手消失；
+   * 转发 / 删除都问「这个视频 / 全部 2 个视频」；30 秒以内循环。
+   */
+  @Test
+  fun videoViewerTelegramControls() {
+    val other = harness.others[3]
+    val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
+    insertIncomingVideoAlbum(other, threadId, listOf(makeVideo(seconds = 6, hue = 200f), makeVideo(seconds = 6, hue = 20f)))
+
+    val conversation = openConversation(other, threadId)
+    try {
+      waitForCarousels(conversation, 1)
+      settle(1500)
+      conversation.onActivity { activity -> liveCarousels(activity)[0].findItemView(0)!!.performClick() }
+      settle(3000)
+
+      val viewer = resumedActivity()
+      val controls = viewer.findViewById<MediaPreviewPlayerControlView>(R.id.media_preview_playback_controls)
+      val center = viewer.findViewById<MediaPreviewCenterControlsView>(R.id.media_preview_center_controls)
+      onMain {
+        report.appendLine("video: opened centerShown=${chromeShown(center)} toolbarShown=${chromeShown(viewer.findViewById(R.id.toolbar_layout))}")
+        assertFalse("打开时中间的播放键不显示", chromeShown(center))
+        assertFalse("打开时四角按钮不显示", chromeShown(viewer.findViewById(R.id.toolbar_layout)))
+      }
+      shot("video-1-opened")
+
+      val width = harness.context.resources.displayMetrics.widthPixels.toFloat()
+      val height = harness.context.resources.displayMetrics.heightPixels.toFloat()
+      tap(width / 2f, height * 0.3f)
+      settle(1200)
+      onMain {
+        val player = controls.player!!
+        val (elapsed, total) = controls.timeLabelsForTesting()
+        report.appendLine("video: afterTap centerShown=${chromeShown(center)} pause=${center.isShowingPauseForTesting()} elapsed=$elapsed total=$total repeatMode=${player.repeatMode} duration=${player.duration}")
+        assertTrue("轻点后中间的播放键出现", chromeShown(center))
+        // 设备上现编的视频实际时长约 6–7 秒（按投帧的真实时间），右边要等于总时长、不是剩余时间
+        assertEquals("进度胶囊右边是总时长", MediaPreviewPlayerControlView.formatPlaybackTime(player.duration), total.toString())
+        assertEquals("30 秒以内循环播放", Player.REPEAT_MODE_ONE, player.repeatMode)
+      }
+      shot("video-2-tapped-controls")
+
+      // 倍速：面板里选 1.5x → 播放器 1.5 倍、齿轮角标 1.5x
+      onMain { viewer.findViewById<View>(R.id.media_preview_speed_button).performClick() }
+      settle(800)
+      shot("video-3-speed-menu")
+      onMain {
+        val popupShown = controls.findViewById<View>(R.id.media_preview_speed_button).isShown
+        report.appendLine("video: speedButtonShown=$popupShown")
+      }
+      clickText(harness.context.getString(R.string.MediaPreviewFragment__speed_normal))
+      settle(400)
+      onMain { viewer.findViewById<View>(R.id.media_preview_speed_button).performClick() }
+      settle(800)
+      clickText("1.5x")
+      settle(600)
+      onMain {
+        val speed = controls.player!!.playbackParameters.speed
+        report.appendLine("video: speed=$speed badge=${controls.speedBadgeForTesting()}")
+        assertEquals(1.5f, speed, 0.001f)
+        assertEquals("1.5x", controls.speedBadgeForTesting()?.toString())
+      }
+
+      // 拖进度条：按住、拖到 60%，停住等预览帧；松手后预览消失
+      var barLeft = 0f
+      var barRight = 0f
+      var barY = 0f
+      onMain {
+        val bar = controls.timeBarForTesting()
+        val location = IntArray(2).also { bar.getLocationOnScreen(it) }
+        barLeft = location[0].toFloat()
+        barRight = (location[0] + bar.width).toFloat()
+        barY = location[1] + bar.height / 2f
+      }
+      val down = SystemClock.uptimeMillis()
+      val startX = barLeft + (barRight - barLeft) * 0.2f
+      instrumentation.sendPointerSync(MotionEvent.obtain(down, down, MotionEvent.ACTION_DOWN, startX, barY, 0))
+      for (step in 1..10) {
+        val x = startX + (barRight - barLeft) * 0.4f * step / 10f
+        instrumentation.sendPointerSync(MotionEvent.obtain(down, down + step * 30L, MotionEvent.ACTION_MOVE, x, barY, 0))
+      }
+      settle(1500)
+      val preview = viewer.findViewById<VideoScrubPreviewView>(R.id.media_preview_scrub_preview)
+      onMain {
+        report.appendLine("video: scrubbing previewHasFrame=${preview.hasFrameForTesting()} previewTop=${IntArray(2).also { preview.getLocationOnScreen(it) }[1]} barY=$barY")
+        assertTrue("拖动时拇指上方有那个位置的一帧", preview.hasFrameForTesting())
+      }
+      shot("video-4-scrub-preview")
+      val endX = startX + (barRight - barLeft) * 0.4f
+      instrumentation.sendPointerSync(MotionEvent.obtain(down, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, endX, barY, 0))
+      settle(800)
+      onMain {
+        report.appendLine("video: afterRelease previewVisible=${preview.visibility == View.VISIBLE}")
+        assertEquals("松手后预览消失", View.GONE, preview.visibility)
+      }
+
+      // 转发 / 删除：先问「这个视频 / 全部 2 个视频」
+      onMain { viewer.findViewById<View>(R.id.exo_forward).performClick() }
+      settle(800)
+      assertTrue(isTextOnScreen(harness.context.resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_videos, 2, 2)))
+      shot("video-5-forward-choice")
+      instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
+      settle(600)
+      onMain { viewer.findViewById<View>(R.id.media_preview_delete_button).performClick() }
+      settle(800)
+      assertTrue(isTextOnScreen(harness.context.resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_videos, 2, 2)))
+      shot("video-6-delete-choice")
+      instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
+      settle(600)
+    } finally {
+      File(outDir, "metrics-video.txt").writeText(report.toString())
+      conversation.close()
+    }
+  }
+
   /** C-12、长按、渐变聊天色：一张都没下载 / 下了一部分；长按快照带上整行相册；渐变色只画在上下两段。 */
   @Test
   fun downloadStatesLongPressAndGradient() {
@@ -634,6 +758,121 @@ class AlbumCarouselScreenshots {
       activity = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).firstOrNull()
     }
     return activity!!
+  }
+
+  private fun isTextOnScreen(text: String): Boolean {
+    return instrumentation.uiAutomation.rootInActiveWindow?.findAccessibilityNodeInfosByText(text)?.isNotEmpty() == true
+  }
+
+  /**
+   * 在设备上现编一个 H.264 小视频（每秒换一个颜色、画上秒数），[seconds] 秒、10 fps。输入走编码器的 Surface，
+   * 时间戳按投帧的真实时间，所以每帧之间等 1/10 秒。
+   */
+  private fun makeVideo(seconds: Int, hue: Float, width: Int = 320, height: Int = 568, fps: Int = 10): ByteArray {
+    val file = File.createTempFile("tellomi-video", ".mp4", harness.context.cacheDir)
+    val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, width, height).apply {
+      setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface)
+      setInteger(MediaFormat.KEY_BIT_RATE, 800_000)
+      setInteger(MediaFormat.KEY_FRAME_RATE, fps)
+      setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1)
+    }
+    val codec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
+    codec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
+    val surface = codec.createInputSurface()
+    codec.start()
+    val muxer = MediaMuxer(file.path, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
+    var track = -1
+    val info = MediaCodec.BufferInfo()
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+      color = Color.WHITE
+      textAlign = Paint.Align.CENTER
+      textSize = width * 0.5f
+    }
+
+    fun drain(endOfStream: Boolean) {
+      while (true) {
+        val index = codec.dequeueOutputBuffer(info, 10_000)
+        when {
+          index == MediaCodec.INFO_TRY_AGAIN_LATER -> if (!endOfStream) return
+          index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED -> {
+            track = muxer.addTrack(codec.outputFormat)
+            muxer.start()
+          }
+          index >= 0 -> {
+            val buffer = codec.getOutputBuffer(index)!!
+            if (info.flags and MediaCodec.BUFFER_FLAG_CODEC_CONFIG != 0) info.size = 0
+            if (info.size > 0 && track >= 0) {
+              buffer.position(info.offset)
+              buffer.limit(info.offset + info.size)
+              muxer.writeSampleData(track, buffer, info)
+            }
+            codec.releaseOutputBuffer(index, false)
+            if (info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM != 0) return
+          }
+        }
+      }
+    }
+
+    for (frame in 0 until seconds * fps) {
+      val second = frame / fps
+      val canvas = surface.lockHardwareCanvas()
+      canvas.drawColor(Color.HSVToColor(floatArrayOf((hue + second * 40f) % 360f, 0.6f, 0.85f)))
+      canvas.drawText("${second + 1}", width / 2f, height / 2f + paint.textSize * 0.35f, paint)
+      surface.unlockCanvasAndPost(canvas)
+      drain(endOfStream = false)
+      SystemClock.sleep(1000L / fps)
+    }
+    codec.signalEndOfInputStream()
+    drain(endOfStream = true)
+    codec.stop()
+    codec.release()
+    surface.release()
+    muxer.stop()
+    muxer.release()
+    return file.readBytes().also { file.delete() }
+  }
+
+  private fun insertIncomingVideoAlbum(from: RecipientId, threadId: Long, videos: List<ByteArray>) {
+    val now = System.currentTimeMillis()
+    val pointers = videos.map { videoPointer(320, 568) }
+    val message = IncomingMessage(
+      type = MessageType.NORMAL,
+      from = from,
+      sentTimeMillis = now,
+      serverTimeMillis = now,
+      receivedTimeMillis = now,
+      body = null,
+      attachments = PointerAttachment.forPointers(Optional.of(pointers))
+    )
+    val insert = SignalDatabase.messages.insertMessageInbox(message, threadId).get()
+    SignalDatabase.attachments.getAttachmentsForMessage(insert.messageId).sortedBy { it.displayOrder }.forEachIndexed { i, attachment ->
+      SignalDatabase.attachments.finalizeAttachmentAfterDownload(insert.messageId, attachment.attachmentId, ByteArrayInputStream(videos[i]))
+    }
+    SystemClock.sleep(5)
+  }
+
+  private fun videoPointer(width: Int, height: Int): SignalServiceAttachmentPointer {
+    return SignalServiceAttachmentPointer(
+      Cdn.CDN_3.cdnNumber,
+      SignalServiceAttachmentRemoteId.from("", Cdn.CDN_3.cdnNumber),
+      "video/mp4",
+      ByteArray(64).also { SecureRandom().nextBytes(it) },
+      Optional.empty(),
+      Optional.empty(),
+      width,
+      height,
+      Optional.empty(),
+      Optional.empty(),
+      0,
+      Optional.empty(),
+      false,
+      false,
+      false,
+      Optional.empty(),
+      Optional.empty(),
+      System.currentTimeMillis(),
+      null
+    )
   }
 
   private fun allFragments(manager: FragmentManager): List<Fragment> {

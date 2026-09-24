@@ -3339,6 +3339,11 @@
         <item quantity="one">All %d item</item>
         <item quantity="other">All %d items</item>
     </plurals>
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频查看器的倍速按钮与面板；分享挪进「···」 -->
+    <string name="MediaPreviewFragment__playback_speed">Playback speed</string>
+    <string name="MediaPreviewFragment__speed">Speed</string>
+    <string name="MediaPreviewFragment__speed_normal">Normal</string>
+    <string name="MediaPreviewFragment__share">Share</string>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->

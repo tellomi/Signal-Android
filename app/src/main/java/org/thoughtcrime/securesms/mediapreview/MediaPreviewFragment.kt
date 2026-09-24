@@ -43,6 +43,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.signal.core.models.database.AttachmentId
 import org.signal.core.models.media.Media
 import org.signal.core.ui.logging.LoggingFragment
 import org.signal.core.util.Debouncer
@@ -66,12 +67,14 @@ import org.thoughtcrime.securesms.databinding.FragmentMediaPreviewBinding
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.mediapreview.caption.ExpandingCaptionView
+import org.thoughtcrime.securesms.mediapreview.mediarail.AlbumScrubberView
 import org.thoughtcrime.securesms.mediasend.MediaSendLauncher
 import org.thoughtcrime.securesms.mms.PartAuthority
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.sharing.v2.ShareActivity
 import org.thoughtcrime.securesms.util.DateUtils
+import org.thoughtcrime.securesms.util.DeleteDialog
 import org.thoughtcrime.securesms.util.FullscreenHelper
 import org.thoughtcrime.securesms.util.MediaUtil
 import org.thoughtcrime.securesms.util.MessageConstraintsUtil
@@ -104,6 +107,15 @@ class MediaPreviewFragment :
   private var currentAlbum: List<Media> = emptyList()
   private var currentAlbumMessageId: Long = -1
   private var chromeHiddenUntilTap = false
+
+  // Tellomi（#1257，owner 2026-09-25，照 Telegram）：这次查看器里的倍速（翻到下一个视频也沿用，不写全局）、拖进度条时的取帧器、倍速面板。
+  private var playbackSpeed = 1f
+  private var frameExtractor: VideoFrameExtractor? = null
+  private var speedPopup: PlaybackSpeedPopup? = null
+
+  /** 本组缩略条在播放控件里（照 Telegram 在进度条下面、按钮上面）。 */
+  private val albumScrubber: AlbumScrubberView
+    get() = binding.mediaPreviewPlaybackControls.findViewById(R.id.media_preview_album_scrubber)
   private var dbChangeObserver: DatabaseObserver.Observer? = null
 
   override fun onAttach(context: Context) {
@@ -200,31 +212,32 @@ class MediaPreviewFragment :
 
   private fun initializeAlbumRail() {
     // Tellomi（#1257）：拖动缩略条时直接跳到那一张（不做翻页动画，跟手）。
-    binding.mediaPreviewAlbumScrubber.onItemSelected = { index ->
+    albumScrubber.onItemSelected = { index ->
       currentAlbum.getOrNull(index)?.let { jumpViewPagerToMedia(it, smooth = false) }
     }
   }
 
   /**
-   * Tellomi（#1257，owner 2026-09-25，对照 Telegram）：打开图片时什么都不显示（四角按钮、缩略条、k / N），轻点图片一起出现、
-   * 再点一起收起。视频照常先显示播放控件（开始播放后上游会自己收起）；开着读屏时也照常显示，不然找不到转发 / 保存。
+   * Tellomi（#1257，owner 2026-09-25，对照 Telegram）：打开时什么都不显示（四角按钮、缩略条、k / N、视频的播放键与进度条），
+   * 轻点一起出现、再点一起收起；视频照常自动播放。开着读屏时照常显示，不然找不到转发 / 保存。
    */
   private fun hideChromeUntilTapIfNeeded() {
-    val isVideo = MediaUtil.isVideoType(args.initialMediaType) && !args.isVideoGif
     val touchExploration = requireContext().getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled == true
-    if (isVideo || touchExploration) {
+    if (touchExploration) {
       return
     }
 
     chromeHiddenUntilTap = true
     binding.toolbarLayout.alpha = 0f
     binding.toolbarLayout.visibility = View.INVISIBLE
+    binding.mediaPreviewCenterControls.alpha = 0f
+    binding.mediaPreviewCenterControls.visibility = View.INVISIBLE
     fullscreenHelper.hideSystemUI()
   }
 
   private fun initializeFullScreenUi() {
     fullscreenHelper.configureToolbarLayout(binding.toolbarCutoutSpacer, binding.toolbar)
-    fullscreenHelper.showAndHideWithSystemUI(requireActivity().window, binding.toolbarLayout, binding.mediaPreviewDetailsContainer)
+    fullscreenHelper.showAndHideWithSystemUI(requireActivity().window, binding.toolbarLayout, binding.mediaPreviewDetailsContainer, binding.mediaPreviewCenterControls)
   }
 
   private fun bindCurrentState(currentState: MediaPreviewState) {
@@ -381,6 +394,10 @@ class MediaPreviewFragment :
     binding.toolbar.setOnMenuItemClickListener {
       when (it.itemId) {
         R.id.reply -> replyToCurrentItem(currentItem)
+        R.id.share -> currentItem.attachment?.uri?.let { uri ->
+          pauseCurrentMediaIfVideo()
+          share(uri, currentItem.contentType)
+        }
         R.id.edit -> editMediaItem(currentItem)
         R.id.save -> saveToDisk(currentItem)
         R.id.delete -> deleteMedia(currentItem)
@@ -413,19 +430,108 @@ class MediaPreviewFragment :
     }
     binding.mediaPreviewPlaybackControls.setMediaMode(mediaType)
     bindShareAndForwardButtons(currentItem.threadId, currentItem.attachment?.uri, currentItem.contentType)
+    bindVideoControls(currentItem, mediaType == MediaPreviewPlayerControlView.MediaMode.VIDEO)
     currentFragment?.setBottomButtonControls(binding.mediaPreviewPlaybackControls)
+    binding.mediaPreviewCenterControls.bind(binding.mediaPreviewPlaybackControls.player)
     currentFragment?.autoPlayIfNeeded()
+  }
+
+  /**
+   * Tellomi（#1257，owner 2026-09-25「多个视频点开时完全参考 Telegram」）：中间的播放 / 暂停、倍速（本次查看器沿用）、
+   * 删除（相册里先问「这一个 / 全部」）、拖进度条时的预览帧。
+   */
+  private fun bindVideoControls(currentItem: MediaTable.MediaRecord, isVideo: Boolean) {
+    val controls = binding.mediaPreviewPlaybackControls
+    binding.mediaPreviewCenterControls.setIsVideo(isVideo)
+    controls.playbackSpeed = playbackSpeed
+    controls.onPlayerChanged = { player -> binding.mediaPreviewCenterControls.bind(player) }
+    controls.setSpeedButtonListener { showSpeedPopup() }
+    controls.setDeleteButtonVisible(currentItem.threadId != MediaIntentFactory.NOT_IN_A_THREAD.toLong())
+    controls.setDeleteButtonListener { deleteWithAlbumChoice(currentItem) }
+    controls.scrubListener = if (isVideo) currentItem.attachment?.attachmentId?.let { scrubPreviewListener(it) } else null
+  }
+
+  private fun scrubPreviewListener(attachmentId: AttachmentId): MediaPreviewPlayerControlView.ScrubListener {
+    return object : MediaPreviewPlayerControlView.ScrubListener {
+      override fun onScrubStart(positionMs: Long, thumbCenterXOnScreen: Float, pillTopOnScreen: Float) {
+        frameExtractor?.release()
+        frameExtractor = VideoFrameExtractor(attachmentId, ViewUtil.dpToPx(VideoScrubPreviewView.LONG_SIDE_DP))
+        binding.mediaPreviewScrubPreview.showAt(thumbCenterXOnScreen, pillTopOnScreen)
+        requestScrubFrame(positionMs)
+      }
+
+      override fun onScrubMove(positionMs: Long, thumbCenterXOnScreen: Float, pillTopOnScreen: Float) {
+        binding.mediaPreviewScrubPreview.moveTo(thumbCenterXOnScreen, pillTopOnScreen)
+        requestScrubFrame(positionMs)
+      }
+
+      override fun onScrubStop(positionMs: Long) {
+        binding.mediaPreviewScrubPreview.dismiss()
+        frameExtractor?.release()
+        frameExtractor = null
+      }
+    }
+  }
+
+  private fun requestScrubFrame(positionMs: Long) {
+    frameExtractor?.request(positionMs) { bitmap ->
+      if (view != null) {
+        binding.mediaPreviewScrubPreview.setFrame(bitmap)
+      }
+    }
+  }
+
+  private fun showSpeedPopup() {
+    speedPopup?.dismiss()
+    speedPopup = PlaybackSpeedPopup(requireContext(), playbackSpeed) { speed ->
+      playbackSpeed = speed
+      if (view != null) {
+        binding.mediaPreviewPlaybackControls.playbackSpeed = speed
+      }
+    }.also { it.showAbove(binding.mediaPreviewPlaybackControls.speedButtonView) }
+  }
+
+  /** 相册里的一张：先问「这一张 / 全部 N 张」（照 Telegram）；「全部」走会话里长按删除的同一个对话框（仅自己 / 所有人）。 */
+  private fun deleteWithAlbumChoice(currentItem: MediaTable.MediaRecord) {
+    val attachment = currentItem.attachment ?: return
+    val album = currentAlbum
+    if (album.size <= 1 || currentAlbumMessageId != attachment.mmsId) {
+      deleteMedia(currentItem)
+      return
+    }
+
+    pauseCurrentMediaIfVideo()
+    val (thisLabel, allLabel) = albumChoiceLabels(currentItem.contentType, album)
+    MaterialAlertDialogBuilder(requireContext())
+      .setTitle(R.string.delete)
+      .setItems(arrayOf(thisLabel, allLabel)) { _, which ->
+        if (which == 0) {
+          deleteMedia(currentItem)
+        } else {
+          deleteWholeMessage(attachment.mmsId)
+        }
+      }
+      .setNegativeButton(android.R.string.cancel, null)
+      .show()
+  }
+
+  private fun deleteWholeMessage(messageId: Long) {
+    viewLifecycleOwner.lifecycleScope.launch {
+      val record = withContext(Dispatchers.IO) { SignalDatabase.messages.getMessageRecordOrNull(messageId) } ?: return@launch
+      lifecycleDisposable += DeleteDialog.show(requireActivity(), setOf(record))
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe { (deleted, _) ->
+          if (deleted) {
+            activity?.finish()
+          }
+        }
+    }
   }
 
   private fun bindShareAndForwardButtons(threadId: Long, uri: Uri?, contentType: String?) {
     if (uri == null) {
-      binding.mediaPreviewPlaybackControls.setShareButtonListener(null)
       binding.mediaPreviewPlaybackControls.setForwardButtonListener(null)
       return
-    }
-    binding.mediaPreviewPlaybackControls.setShareButtonListener {
-      pauseCurrentMediaIfVideo()
-      share(uri, contentType)
     }
     binding.mediaPreviewPlaybackControls.setForwardButtonListener {
       pauseCurrentMediaIfVideo()
@@ -445,14 +551,7 @@ class MediaPreviewFragment :
       return
     }
 
-    val thisLabel = getString(
-      if (MediaUtil.isVideoType(contentType)) R.string.MediaPreviewFragment__forward_this_video else R.string.MediaPreviewFragment__forward_this_photo
-    )
-    val allLabel = when {
-      album.all { MediaUtil.isVideoType(it.contentType) } -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_videos, album.size, album.size)
-      album.none { MediaUtil.isVideoType(it.contentType) } -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_photos, album.size, album.size)
-      else -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_items, album.size, album.size)
-    }
+    val (thisLabel, allLabel) = albumChoiceLabels(contentType, album)
 
     MaterialAlertDialogBuilder(requireContext())
       .setTitle(R.string.conversation_selection__menu_forward)
@@ -465,6 +564,19 @@ class MediaPreviewFragment :
       }
       .setNegativeButton(android.R.string.cancel, null)
       .show()
+  }
+
+  /** 「这张图片 / 这个视频」与「全部 N 张 / N 个 / N 项」（转发、删除共用）。 */
+  private fun albumChoiceLabels(contentType: String?, album: List<Media>): Pair<String, String> {
+    val thisLabel = getString(
+      if (MediaUtil.isVideoType(contentType)) R.string.MediaPreviewFragment__forward_this_video else R.string.MediaPreviewFragment__forward_this_photo
+    )
+    val allLabel = when {
+      album.all { MediaUtil.isVideoType(it.contentType) } -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_videos, album.size, album.size)
+      album.none { MediaUtil.isVideoType(it.contentType) } -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_photos, album.size, album.size)
+      else -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_items, album.size, album.size)
+    }
+    return thisLabel to allLabel
   }
 
   private fun forwardWholeMessage(messageId: Long) {
@@ -510,7 +622,7 @@ class MediaPreviewFragment :
   }
 
   private fun bindAlbumRail(albumThumbnailMedia: List<Media>, currentItem: MediaTable.MediaRecord) {
-    val scrubber = binding.mediaPreviewAlbumScrubber
+    val scrubber = albumScrubber
     if (albumThumbnailMedia.size > 1) {
       currentAlbum = albumThumbnailMedia
       currentAlbumMessageId = currentItem.attachment?.mmsId ?: -1
@@ -801,9 +913,14 @@ class MediaPreviewFragment :
   override fun onPause() {
     super.onPause()
     getMediaPreviewFragmentFromChildFragmentManager(binding.mediaPager.currentItem)?.pause()
+    speedPopup?.dismiss()
   }
 
   override fun onDestroyView() {
+    speedPopup?.dismiss()
+    speedPopup = null
+    frameExtractor?.release()
+    frameExtractor = null
     super.onDestroyView()
     viewModel.onDestroyView()
   }
