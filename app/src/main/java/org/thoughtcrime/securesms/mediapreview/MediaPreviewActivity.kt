@@ -2,6 +2,8 @@ package org.thoughtcrime.securesms.mediapreview
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -14,12 +16,16 @@ import androidx.core.transition.addListener
 import androidx.core.view.animation.PathInterpolatorCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.commit
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.logging.Log
+import org.signal.glide.decryptableuri.DecryptableUri
 import org.thoughtcrime.securesms.PassphraseRequiredActivity
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.voice.VoiceNoteMediaController
@@ -40,6 +46,12 @@ class MediaPreviewActivity : PassphraseRequiredActivity(), VoiceNoteMediaControl
   private lateinit var transitionImageView: ImageView
 
   private var isWindowStarted = false
+
+  // Tellomi（#1257 C-9）：共享元素转场可用时，预载「同一相册里当前这一张」，关闭时缩回到它。
+  private var sharedElementTransitionEnabled = false
+  private var initialTransitionDrawable: Drawable? = null
+  private var albumSiblingDrawable: Drawable? = null
+  private var albumSiblingUri: Uri? = null
 
   override fun attachBaseContext(newBase: Context) {
     delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
@@ -116,6 +128,13 @@ class MediaPreviewActivity : PassphraseRequiredActivity(), VoiceNoteMediaControl
       transitionImageView.setImageDrawable(cacheDrawable)
       cacheDrawable.callback = originalCallback
 
+      sharedElementTransitionEnabled = true
+      initialTransitionDrawable = cacheDrawable
+      lifecycleDisposable += viewModel.state
+        .map { it.currentMediaUri ?: Uri.EMPTY }
+        .distinctUntilChanged()
+        .subscribe { onCurrentMediaChangedForReturn() }
+
       var hasMediaBeenReady = false
       lifecycleDisposable += viewModel.state.map {
         it.isInSharedAnimation to it.loadState
@@ -185,9 +204,84 @@ class MediaPreviewActivity : PassphraseRequiredActivity(), VoiceNoteMediaControl
     isWindowStarted = false
     if (viewModel.shouldFinishAfterTransition(args.initialMediaUri)) {
       super.finishAfterTransition()
+    } else if (prepareAlbumSiblingReturn()) {
+      super.finishAfterTransition()
     } else {
       super.finish()
     }
+  }
+
+  /**
+   * Tellomi（#1257 C-9）：当前页换到了同一条消息（横滑相册）里的另一张时，转场用的图换成这一张，
+   * 并把它的 uri 交给会话页：会话页先把相册滚到它，再做缩回动画。回到点开的那张时换回原图。
+   */
+  private fun onCurrentMediaChangedForReturn() {
+    val siblingUri = viewModel.currentAlbumSiblingUri(args.initialMediaUri)
+
+    if (siblingUri == null) {
+      initialTransitionDrawable?.let { showTransitionDrawable(it) }
+      return
+    }
+
+    if (siblingUri == albumSiblingUri && albumSiblingDrawable != null) {
+      showTransitionDrawable(albumSiblingDrawable!!)
+      return
+    }
+
+    val metrics = resources.displayMetrics
+    Glide.with(this)
+      .load(DecryptableUri(siblingUri))
+      .override(metrics.widthPixels, metrics.heightPixels)
+      .fitCenter()
+      .into(object : CustomTarget<Drawable>() {
+        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+          albumSiblingUri = siblingUri
+          albumSiblingDrawable = resource
+          if (viewModel.currentAlbumSiblingUri(args.initialMediaUri) == siblingUri) {
+            showTransitionDrawable(resource)
+          }
+        }
+
+        override fun onLoadCleared(placeholder: Drawable?) {
+          if (albumSiblingUri == siblingUri) {
+            albumSiblingUri = null
+            albumSiblingDrawable = null
+          }
+        }
+      })
+  }
+
+  /** 只换图和尺寸；透明度不动（媒体就绪后它本来就是 0，只在转场时显示）。 */
+  private fun showTransitionDrawable(drawable: Drawable) {
+    val width = drawable.intrinsicWidth
+    val height = drawable.intrinsicHeight
+    if (width > 0 && height > 0) {
+      val aspectRatio = width.toFloat() / height
+      val screenRatio = resources.displayMetrics.widthPixels.toFloat() / resources.displayMetrics.heightPixels
+      transitionImageView.updateLayoutParams<LayoutParams> {
+        if (aspectRatio > screenRatio) {
+          this.width = LayoutParams.MATCH_PARENT
+          this.height = LayoutParams.WRAP_CONTENT
+        } else {
+          this.width = LayoutParams.WRAP_CONTENT
+          this.height = LayoutParams.MATCH_PARENT
+        }
+      }
+    }
+    transitionImageView.setImageDrawable(drawable)
+  }
+
+  private fun prepareAlbumSiblingReturn(): Boolean {
+    if (!sharedElementTransitionEnabled) return false
+
+    val siblingUri = viewModel.currentAlbumSiblingUri(args.initialMediaUri) ?: return false
+    val drawable = albumSiblingDrawable?.takeIf { albumSiblingUri == siblingUri } ?: return false
+
+    showTransitionDrawable(drawable)
+    transitionImageView.clearAnimation()
+    transitionImageView.alpha = 1f
+    MediaPreviewCache.returnMediaUri = siblingUri
+    return true
   }
 
   /**

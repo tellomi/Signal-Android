@@ -100,6 +100,13 @@
             android:layout_height="wrap_content"
             android:layout="@layout/conversation_item_sent_thumbnail" />
 
+        <!-- Tellomi（#1257）：横滑相册在气泡里只占一条等高的位置，相册本身是下面的 album_carousel_stub，铺满整条消息的宽度。 -->
+        <View
+            android:id="@+id/album_carousel_spacer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+
         <ViewStub
             android:id="@+id/sticker_view_stub"
             android:layout_width="wrap_content"
@@ -276,6 +283,15 @@
             app:srcCompat="@drawable/symbol_chat_arrow_24" />
 
     </FrameLayout>
+
+    <!-- Tellomi（#1257）：横滑相册。画在气泡之上、表情回应之下；位置由 ConversationItem.onLayout 对齐到 album_carousel_spacer。 -->
+    <ViewStub
+        android:id="@+id/album_carousel_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/body_bubble"
+        android:inflatedId="@+id/album_carousel"
+        android:layout="@layout/conversation_item_album_carousel" />
 
     <org.thoughtcrime.securesms.reactions.ReactionsConversationView
         android:id="@+id/reactions_view"

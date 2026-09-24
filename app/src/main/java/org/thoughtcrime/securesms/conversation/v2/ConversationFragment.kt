@@ -311,6 +311,7 @@ import org.thoughtcrime.securesms.main.MainSnackbarHostKey
 import org.thoughtcrime.securesms.mediaoverview.MediaOverviewActivity
 import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewActivity
+import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache
 import org.thoughtcrime.securesms.mediasend.MediaSendActivityResult
 import org.thoughtcrime.securesms.messagerequests.MessageRequestRepository
 import org.thoughtcrime.securesms.mms.AttachmentManager
@@ -4077,7 +4078,24 @@ class ConversationFragment :
       container.hideAll(composeText)
 
       sharedElement.transitionName = MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME
-      requireActivity().setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+      MediaPreviewCache.returnMediaUri = null
+      val openedMessageId = parent.conversationMessage.messageRecord.id
+      requireActivity().setExitSharedElementCallback(object : MaterialContainerTransformSharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
+          // Tellomi（#1257 C-9）：查看器里换到了同一个横滑相册的另一张：先把相册滚到它、让它完整露出，缩回动画落在它上面。
+          val returnUri = MediaPreviewCache.returnMediaUri
+          if (returnUri != null) {
+            MediaPreviewCache.returnMediaUri = null
+            if (parent.conversationMessage.messageRecord.id == openedMessageId) {
+              parent.revealAlbumItemForMediaUri(returnUri)?.let { target ->
+                target.transitionName = MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME
+                sharedElements[MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME] = target
+              }
+            }
+          }
+          super.onMapSharedElements(names, sharedElements)
+        }
+      })
       val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(), sharedElement, MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME)
       requireActivity().startActivity(MediaIntentFactory.create(requireActivity(), args), options.toBundle())
     }
@@ -4237,10 +4255,7 @@ class ConversationFragment :
         audioUri = audioUri,
         isOutgoing = messageRecord.isOutgoing,
         focusedView = focusedView,
-        snapshotMetrics = target.getSnapshotStrategy()?.snapshotMetrics ?: InteractiveConversationElement.SnapshotMetrics(
-          snapshotOffset = bodyBubble.x,
-          contextMenuPadding = bodyBubble.x
-        )
+        snapshotMetrics = ConversationItemSelection.snapshotMetricsFor(target)
       )
 
       bodyBubble.visibility = View.INVISIBLE

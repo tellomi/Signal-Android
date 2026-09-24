@@ -118,6 +118,11 @@ public final class Projection {
     return set(x, y, (int) (width * scale), (int) (height * scale), newCorners);
   }
 
+  /** Tellomi（#1257）：换一组圆角（分段后的气泡两段各自都是完整圆角）。 */
+  public @NonNull Projection withCorners(@Nullable Corners corners) {
+    return set(x, y, width, height, corners);
+  }
+
   public @NonNull Projection insetTop(int boundary) {
     Corners newCorners = this.corners == null ? null : new Corners(0,
                                                                    0,

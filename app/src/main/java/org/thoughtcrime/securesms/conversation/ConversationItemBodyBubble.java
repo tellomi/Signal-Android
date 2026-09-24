@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -22,8 +23,13 @@ import java.util.stream.Stream;
 
 public class ConversationItemBodyBubble extends LinearLayout {
 
-  @Nullable private List<Outliner>        outliners = Collections.emptyList();
-  @Nullable private OnSizeChangedListener sizeChangedListener;
+  @Nullable private List<Outliner>              outliners = Collections.emptyList();
+  @Nullable private OnSizeChangedListener       sizeChangedListener;
+  @Nullable private OnVisibilityChangedListener visibilityChangedListener;
+
+  /** Tellomi（#1257）：[backgroundGapTop, backgroundGapBottom) 这一条不画气泡背景（横滑相册铺在那里）。 */
+  private int backgroundGapTop    = -1;
+  private int backgroundGapBottom = -1;
 
   private ClipProjectionDrawable clipProjectionDrawable;
   private Projection             quoteViewProjection;
@@ -66,12 +72,34 @@ public class ConversationItemBodyBubble extends LinearLayout {
     this.sizeChangedListener = listener;
   }
 
+  public void setOnVisibilityChangedListener(@Nullable OnVisibilityChangedListener listener) {
+    this.visibilityChangedListener = listener;
+  }
+
   @Override
   public void setBackground(Drawable background) {
     clipProjectionDrawable = new ClipProjectionDrawable(background);
 
     clipProjectionDrawable.setProjections(getProjections());
+    clipProjectionDrawable.setGap(backgroundGapTop, backgroundGapBottom);
     super.setBackground(clipProjectionDrawable);
+  }
+
+  /**
+   * Tellomi（#1257）：横滑相册从气泡里拆出去之后，气泡被它分成上下两段：上面群昵称 / 引用，下面说明。
+   * 这一条（含上下的缝）不画背景，上下两段各自画成完整的气泡形状。传 -1 取消。
+   */
+  public void setBackgroundGap(int top, int bottom) {
+    if (backgroundGapTop == top && backgroundGapBottom == bottom) {
+      return;
+    }
+
+    backgroundGapTop    = top;
+    backgroundGapBottom = bottom;
+
+    if (clipProjectionDrawable != null) {
+      clipProjectionDrawable.setGap(top, bottom);
+    }
   }
 
   public void setQuoteViewProjection(@Nullable Projection quoteViewProjection) {
@@ -114,6 +142,15 @@ public class ConversationItemBodyBubble extends LinearLayout {
   }
 
   @Override
+  protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+    super.onVisibilityChanged(changedView, visibility);
+
+    if (changedView == this && visibilityChangedListener != null) {
+      visibilityChangedListener.onVisibilityChanged(visibility);
+    }
+  }
+
+  @Override
   protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
     if (sizeChangedListener != null) {
       post(() -> {
@@ -126,6 +163,10 @@ public class ConversationItemBodyBubble extends LinearLayout {
 
   public interface OnSizeChangedListener {
     void onSizeChanged(int width, int height);
+  }
+
+  public interface OnVisibilityChangedListener {
+    void onVisibilityChanged(int visibility);
   }
 }
 

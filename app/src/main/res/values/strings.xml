@@ -50,6 +50,21 @@
     <!-- AlbumThumbnailView -->
     <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string>
 
+    <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
+    <!-- Accessibility label for a horizontally scrolling album in a message -->
+    <plurals name="AlbumCarouselView__album_with_d_items">
+        <item quantity="one">Album, %d item</item>
+        <item quantity="other">Album, %d items</item>
+    </plurals>
+    <!-- Accessibility: which item of the album is current -->
+    <string name="AlbumCarouselView__item_d_of_d">Item %1$d of %2$d</string>
+    <!-- Accessibility action: move to the next item of the album -->
+    <string name="AlbumCarouselView__next_item">Next item</string>
+    <!-- Accessibility action: move to the previous item of the album -->
+    <string name="AlbumCarouselView__previous_item">Previous item</string>
+    <!-- Accessibility: album label followed by the current item, e.g. "Album, 5 items, Item 1 of 5" -->
+    <string name="AlbumCarouselView__s_s">%1$s, %2$s</string>
+
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi is updating…</string>
 
