@@ -21,7 +21,7 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
  *   落到系统 DNS，所以不用重建。
  * - 内容代理的几个长寿命 OkHttpClient（Glide / Giphy / ExoPlayer，`RemoteConfig.gifProxyUrl` 那条写明了不热切换）：
  *   要等重启才跟。GIF 以后要移除（owner 2026-09-23）；而且服务端下发的代理地址优先，本来就绕过区（#1252，M6）。
- * - 在途的续传：同一刀的下一个提交处理（开始时的区和现在的不一样，就当规格过期，从头传）。
+ * - 在途的续传：见 [TellomiUploadPin]。开始时的区和现在的不一样，就当规格过期，从头传。
  *
  * 驻留时间、失败阈值这些策略归选路器（下一刀），不在这里。
  */
