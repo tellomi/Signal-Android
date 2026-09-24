@@ -359,6 +359,14 @@ public class Util {
     }
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1138）：阻断页要分辨「构建过期」与「服务端拒绝」，而过期标记置真后
+   * {@link #getTimeUntilBuildExpiry} 恒为 0，只能自己比构建年龄。
+   */
+  public static long getBuildLifespan() {
+    return BUILD_LIFESPAN;
+  }
+
   public static <T> T getRandomElement(List<T> elements) {
     return elements.get(new SecureRandom().nextInt(elements.size()));
   }

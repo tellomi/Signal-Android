@@ -27,6 +27,7 @@ import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceTransferActi
 import org.thoughtcrime.securesms.keyvalue.RestoreDecisionStateUtil;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity;
+import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrationActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrations;
 import org.thoughtcrime.securesms.pin.PinRestoreActivity;
@@ -36,6 +37,7 @@ import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.registration.ui.RegistrationActivity;
 import org.thoughtcrime.securesms.restore.RestoreActivity;
 import org.thoughtcrime.securesms.service.KeyCachingService;
+import org.thoughtcrime.securesms.updaterequired.UpdateRequired;
 import org.thoughtcrime.securesms.util.AppStartup;
 import org.thoughtcrime.securesms.util.Environment;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
@@ -63,6 +65,7 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   private static final int STATE_RESUME_LINKING_REG  = 12;
   private static final int STATE_CLOCK_SKEW          = 13;
   private static final int STATE_RESUME_REGISTRATION = 14;
+  private static final int STATE_UPDATE_REQUIRED     = 15;
 
   private SignalServiceNetworkAccess networkAccess;
   private BroadcastReceiver          clearKeyReceiver;
@@ -90,6 +93,17 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
 
   protected void onPreCreate() {}
   protected void onCreate(Bundle savedInstanceState, boolean ready) {}
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    // Tellomi（tellomi/tellomi#1138）：页面开着的时候服务端才回 499，路由（只在创建时跑）拦不到；
+    // 回到前台就盖上阻断页（需求 3.4「每次回到前台重新出现」）。阻断页是 singleTask，重复启动只会带到前台。
+    if (UpdateRequired.isRequired()) {
+      startActivity(ClientDeprecatedActivity.createIntent(this));
+    }
+  }
 
   @Override
   protected void onDestroy() {
@@ -164,6 +178,7 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
       case STATE_RESUME_LINKING_REG:  return getResumeLinkedRegistrationIntent();
       case STATE_CLOCK_SKEW:          return getClockSkewIntent();
       case STATE_RESUME_REGISTRATION: return getResumeRegistrationIntent();
+      case STATE_UPDATE_REQUIRED:     return ClientDeprecatedActivity.createIntent(this);
       default:                        return null;
     }
   }
@@ -171,6 +186,10 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   private int getApplicationState(boolean locked) {
     if (!MasterSecretUtil.isPassphraseInitialized(this)) {
       return STATE_CREATE_PASSPHRASE;
+    } else if (UpdateRequired.isRequired()) {
+      // Tellomi（tellomi/tellomi#1138）：必须更新盖在应用锁之上（需求 3.4），所以排在 locked 前面。
+      // 阻断页不继承本类，不会被自己路由回来。
+      return STATE_UPDATE_REQUIRED;
     } else if (locked) {
       return STATE_PROMPT_PASSPHRASE;
     } else if (ApplicationMigrations.isUpdate(this) && ApplicationMigrations.isUiBlockingMigrationRunning()) {

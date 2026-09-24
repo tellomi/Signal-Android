@@ -17,6 +17,7 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
     private const val LAST_SUCCESSFUL_CHECK = "apk_update.last_successful_check"
     private const val LAST_APK_UPLOAD_TIME = "apk_update.last_apk_upload_time"
     private const val PENDING_APK_UPLOAD_TIME = "apk_update.pending_apk_upload_time"
+    private const val AVAILABLE_UPDATE_VERSION_NAME = "apk_update.available_update_version_name"
   }
 
   public override fun onFirstEverAppLaunch() = Unit
@@ -37,6 +38,12 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
 
   /** The upload time of the APK we're trying to install */
   val pendingApkUploadTime: Long by longValue(PENDING_APK_UPLOAD_TIME, 0)
+
+  /**
+   * Tellomi（tellomi/tellomi#1138）：最近一次清单检查看到的、比当前安装更新的版本号（清单的 versionName）；
+   * 清单里的版本不比当前新时为 null。只有官网版（MANAGES_APP_UPDATES）会写。「关于」页的「有新版本」读这里。
+   */
+  var availableUpdateVersionName: String? by stringValue(AVAILABLE_UPDATE_VERSION_NAME, null as String?)
 
   fun setDownloadAttributes(id: Long, digest: ByteArray?, apkUploadTime: Long) {
     Log.d(TAG, "Saving download attributes. id: $id, apkUploadTime: $apkUploadTime")
