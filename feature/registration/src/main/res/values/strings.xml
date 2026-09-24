@@ -784,6 +784,10 @@
     <string name="TellomiRegistration__old_phone_here_description">Scan a QR code with Tellomi on your old Android phone to move your account and messages over directly</string>
     <string name="TellomiRegistration__old_phone_not_here">My old phone isn\'t here, or it\'s an iPhone</string>
     <string name="TellomiRegistration__old_phone_not_here_description">Reinstalling on this phone? You can restore an on-device backup. Otherwise just register. Your earlier messages won\'t come with you, and Tellomi on your old phone will be logged out.</string>
+    <!-- Tellomi: shown after scanning the QR code with an iPhone when there is no backup service; messages can't be moved from an iPhone to an Android phone -->
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">Messages can\'t be moved from an iPhone</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">Messages on an iPhone can\'t be transferred to an Android phone yet. You can just register: your earlier messages won\'t come with you, and Tellomi on your old phone will be logged out.</string>
+    <string name="TellomiRegistration__register_directly">Register without transferring</string>
     <!-- Confirmation dialog before continuing registration without restoring messages (there is no backup service) -->
     <string name="TellomiRegistration__skip_restore_dialog_title">Continue without restoring?</string>
     <string name="TellomiRegistration__skip_restore_dialog_body">Your earlier messages won\'t appear on this phone.</string>

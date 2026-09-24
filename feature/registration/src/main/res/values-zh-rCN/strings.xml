@@ -777,6 +777,9 @@
     <string name="TellomiRegistration__old_phone_here_description">用旧 Android 手机上的 Tellomi 扫一个二维码，把账户和聊天记录直接传过来</string>
     <string name="TellomiRegistration__old_phone_not_here">旧手机不在身边，或者是 iPhone</string>
     <string name="TellomiRegistration__old_phone_not_here_description">在这台手机上重装的话，可以用本地备份恢复；否则直接注册，只是以前的聊天记录不会跟过来，旧手机上的 Tellomi 也会退出登录</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">没法从 iPhone 传过来</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">iPhone 上的聊天记录目前没法传到 Android 手机。直接注册就行，只是以前的聊天记录不会跟过来，旧手机上的 Tellomi 也会退出登录。</string>
+    <string name="TellomiRegistration__register_directly">直接注册</string>
     <string name="TellomiRegistration__skip_restore_dialog_title">不恢复聊天记录？</string>
     <string name="TellomiRegistration__skip_restore_dialog_body">以前的聊天记录不会出现在这台手机上。</string>
     <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">旧手机上的 Tellomi 会退出登录，以前的聊天记录也不会出现在这台手机上。</string>
