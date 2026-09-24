@@ -71,11 +71,22 @@ class TellomiRegionsTest {
   }
 
   @Test
+  fun `every cn endpoint is the global one with the host moved to tellomi cn`() {
+    // 整张核（不只抽查）：今天 global 的端点路径里都不含 tellomi.app，所以整串替换就是正确答案
+    assertThat(cn.endpoints()).isEqualTo(global.endpoints().map { it.replace(".tellomi.app", ".tellomi.cn") })
+    assertThat(cn.contentProxyPort).isEqualTo(global.contentProxyPort)
+    assertThat(cn.apkUpdateManifestUrl == null).isEqualTo(global.apkUpdateManifestUrl == null)
+  }
+
+  @Test
   fun `host rewrite keeps scheme port and path and leaves other domains alone`() {
     assertThat(TellomiRegions.toCnHost("https://updates.tellomi.app/android/latest.json")).isEqualTo("https://updates.tellomi.cn/android/latest.json")
     assertThat(TellomiRegions.toCnHost("contentproxy.tellomi.app:443")).isEqualTo("contentproxy.tellomi.cn:443")
     assertThat(TellomiRegions.toCnHost("https://api.stripe.com/v1")).isEqualTo("https://api.stripe.com/v1")
     assertThat(TellomiRegions.toCnHost("https://tellomi.app/download")).isEqualTo("https://tellomi.app/download")
+    // 只换主机：端口、路径、query、fragment 里的 tellomi.app 都不动
+    assertThat(TellomiRegions.toCnHost("https://chat.tellomi.app:8443/x.tellomi.app/y?q=z.tellomi.app#f.tellomi.app"))
+      .isEqualTo("https://chat.tellomi.cn:8443/x.tellomi.app/y?q=z.tellomi.app#f.tellomi.app")
 
     assertThat(TellomiRegions.hostOf("https://chat.tellomi.app/callingService")).isEqualTo("chat.tellomi.app")
     assertThat(TellomiRegions.hostOf("grpc.chat.tellomi.app")).isEqualTo("grpc.chat.tellomi.app")

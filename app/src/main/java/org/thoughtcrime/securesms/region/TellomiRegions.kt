@@ -23,6 +23,11 @@ enum class TellomiRegionId(val id: String) {
  * URL 字段带 scheme；名字以 `Host` 结尾的只写主机名。
  *
  * 不进区域的：`svr2` / `cdsi`（没有自建，见 `ENCLAVES.md`）、zk 参数、UD 信任根、CA——两个区连的是同一套服务端。
+ *
+ * 契约第三节有、这里没有字段的两样：
+ * - staticIps（Android 独有，只属于 global 档）：`StaticDns` 仍按 GLOBAL 的主机名建表，CN 的主机查不到就落到系统 DNS，
+ *   和今天没有静态 IP 的主机一样；切区那一刀连 static-ips 一起收。
+ * - grpcChat 的端口（`BuildConfig.LIBSIGNAL_CUSTOM_SERVER_PORT`）：两个区相同，暂不进表。
  */
 data class TellomiRegionProfile(
   val id: TellomiRegionId,
@@ -120,6 +125,13 @@ object TellomiRegions {
   @JvmField
   val ALL: List<TellomiRegionProfile> = listOf(GLOBAL, CN)
 
+  init {
+    // 契约第五节第 8 条：包内配置坏了就拒绝启动（和 Desktop 启动时抛同一语义）。
+    // 单测只覆盖跑过的变体，而发版只打 website 档、不跑单测（它多一个 APK 清单端点），所以类加载时再核一次。
+    val broken = problems(ALL)
+    check(broken.isEmpty()) { "packaged region table is broken: $broken" }
+  }
+
   /**
    * 当前区。各调用点在用的时候取，不在类加载时存下来，这样切区（`AppDependencies.resetNetwork()`）之后新建的连接就用新区。
    * 现在 CN 关着，所以恒为 global。
@@ -188,7 +200,7 @@ object TellomiRegions {
 
   /**
    * 包内区域表的不变量（契约第四节，第五节第 2、4 条）。空列表 = 合法。
-   * 表是编进包里的，不合法是构建缺陷，由单测把关（契约第五节第 8 条：包内配置坏了应该直接失败）。
+   * 表是编进包里的，不合法是构建缺陷：单测把关，[TellomiRegions] 类加载时再核一次（契约第五节第 8 条：包内配置坏了拒绝启动）。
    */
   fun problems(profiles: List<TellomiRegionProfile>): List<String> {
     val problems = mutableListOf<String>()
