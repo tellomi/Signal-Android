@@ -331,7 +331,12 @@ android {
     // 所以包一直叫 Signal-Android-play-staging-….apk（owner 2026-09-22 指出）。
     // 模块名有 build.gradle.kts / CI 多处引用，不动；改现行的 base.archivesName。
 
-    manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
+    // Tellomi（#1235）：上游这里写死的是 **Signal 自己的** Google Maps key——用它等于让用户选点、查地址的请求
+    // 走 Signal 的 Google 账号和配额，法律文件里也没有这个接收方。现在只认 getMapsKey()（gradle 属性 mapsKey /
+    // 环境变量 MAPS_KEY），没有就为空：MAPS_AVAILABLE = false，附件面板不显示「位置」。大陆版以后接高德（#1124）。
+    val tellomiMapsKey = getMapsKey()
+    manifestPlaceholders["mapsKey"] = tellomiMapsKey
+    buildConfigField("boolean", "MAPS_AVAILABLE", "${tellomiMapsKey.isNotEmpty()}")
 
     buildConfigField("long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L")
     buildConfigField("String", "GIT_HASH", "\"${getGitHash()}\"")
@@ -408,7 +413,6 @@ android {
     buildConfigField("String[]", "LANGUAGES", "new String[]{ ${languagesForBuildConfigProvider.get()} }")
     buildConfigField("int", "CANONICAL_VERSION_CODE", "$canonicalVersionCode")
     buildConfigField("String", "DEFAULT_CURRENCIES", "\"EUR,AUD,GBP,CAD,CNY\"")
-    buildConfigField("String", "GIPHY_API_KEY", "\"3o6ZsYH6U6Eri53TXy\"")
     buildConfigField("String", "SIGNAL_CAPTCHA_URL", "\"https://chat.tellomi.app/captcha-tellomi/registration/generate.html\"")
     buildConfigField("String", "RECAPTCHA_PROOF_URL", "\"https://chat.tellomi.app/captcha-tellomi/challenge/generate.html\"")
     buildConfigField("org.signal.libsignal.net.Network.Environment", "LIBSIGNAL_NET_ENV", "org.signal.libsignal.net.Network.Environment.STAGING")
@@ -1080,7 +1084,7 @@ fun getMapsKey(): String {
   return providers
     .gradleProperty("mapsKey")
     .orElse(providers.environmentVariable("MAPS_KEY"))
-    .orElse("AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U")
+    .orElse("") // Tellomi（#1235）：不再回落到 Signal 的 key
     .get()
 }
 

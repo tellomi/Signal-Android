@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 
+import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.animation.AnimationCompleteListener;
 import org.thoughtcrime.securesms.components.InputAwareLayout;
@@ -40,7 +41,10 @@ public class AttachmentKeyboard extends FrameLayout implements InputAwareLayout.
       AttachmentKeyboardButton.CONTACT,
       AttachmentKeyboardButton.LOCATION,
       AttachmentKeyboardButton.PAYMENT
-  );
+  ).stream()
+   // Tellomi（#1235）：没有我们自己的 Google Maps key 时不显示「位置」，见 build.gradle.kts 的 MAPS_AVAILABLE。
+   .filter(button -> BuildConfig.MAPS_AVAILABLE || button != AttachmentKeyboardButton.LOCATION)
+   .collect(Collectors.toList());
 
   private View                            container;
   private AttachmentKeyboardMediaAdapter  mediaAdapter;

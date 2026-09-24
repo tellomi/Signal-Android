@@ -40,6 +40,7 @@ import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.LongClickCopySpan;
 import org.thoughtcrime.securesms.util.LongClickMovementMethod;
 import org.signal.core.ui.util.ThemeUtil;
+import org.thoughtcrime.securesms.util.SupportEmailUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
 
@@ -451,7 +452,7 @@ public class SubmitDebugLogActivity extends BaseActivity {
           ShareCompat.IntentBuilder.from(this)
                                    .setText(url)
                                    .setType("text/plain")
-                                   .setEmailTo(new String[] { "support@signal.org" })
+                                   .setEmailTo(new String[] { SupportEmailUtil.getSupportEmailAddress(this) })
                                    .startChooser();
         });
 
