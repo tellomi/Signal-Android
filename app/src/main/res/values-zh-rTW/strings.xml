@@ -3106,7 +3106,7 @@
         <item quantity="other">你在 %1$d 天內刪除過用戶名稱，現在設定也算一次更改：之後 %2$d 天內不能再更改。你確定嗎？</item>
     </plurals>
     <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
-        <item quantity="other">這將刪除你的用戶名稱及停用你的二維碼和連結。「%1$s」會為你保留 %2$d 天；這期間再設定用戶名稱，之後 %3$d 天內不能再更改。你確定嗎？</item>
+        <item quantity="other">這將刪除你的用戶名稱及停用你的二維碼和連結。「%1$s」會為你保留 %2$d 天；這期間再設定用戶名稱，之後 %3$d 天內不能再更改。如果你 %3$d 天內改過用戶名稱，刪除後只能改回原來的名稱。你確定嗎？</item>
     </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">這組號碼是什麼？</string>

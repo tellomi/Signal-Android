@@ -1560,7 +1560,7 @@
     <!-- The body of a pop-up dialog asking the user to confirm deleting their username -->
     <string name="ManageProfileFragment__delete_username_dialog_body">"咁做嘅話，系統會移除你嘅用戶名稱，同埋停用你嘅二維碼同連結。 其他用戶就可以攞「%1$s」呢個名嚟用㗎喇。 你係咪確定？"</string>
     <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
-        <item quantity="other">咁做嘅話，系統就會移除你嘅用戶名稱同埋停用你嘅二維碼同連結。「%1$s」會幫你保留 %2$d 日；呢段時間再設定用戶名稱，之後 %3$d 日內唔可以再改。你係咪確定？</item>
+        <item quantity="other">咁做嘅話，系統就會移除你嘅用戶名稱同埋停用你嘅二維碼同連結。「%1$s」會幫你保留 %2$d 日；呢段時間再設定用戶名稱，之後 %3$d 日內唔可以再改。如果你 %3$d 日內改過用戶名稱，刪除之後只可以改返原本個名。你係咪確定？</item>
     </plurals>
 
     <!-- UsernameOutOfSyncReminder -->

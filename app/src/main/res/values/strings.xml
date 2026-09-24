@@ -3222,8 +3222,8 @@
     </plurals>
     <!-- Tellomi（ADR-0066 §6.2）：删除用户名的确认框。删掉的名字服务端给原主人保留 %2$d 天，不是「可供其他人申请」；保留期内再设用户名也算改名。%1$s 为用户名，%3$d 为改名冷却天数。与 Desktop#4 同一句。 -->
     <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
-        <item quantity="one">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d day. Are you sure?</item>
-        <item quantity="other">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d days. Are you sure?</item>
+        <item quantity="one">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d day. If you changed your username in the last %3$d day, you can only change back to your original username after deleting it. Are you sure?</item>
+        <item quantity="other">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d days. If you changed your username in the last %3$d days, you can only change back to your original username after deleting it. Are you sure?</item>
     </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">What is this number?</string>
