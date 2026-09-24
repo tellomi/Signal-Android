@@ -333,7 +333,8 @@ android {
 
     // Tellomi（#1235）：上游这里写死的是 **Signal 自己的** Google Maps key——用它等于让用户选点、查地址的请求
     // 走 Signal 的 Google 账号和配额，法律文件里也没有这个接收方。现在只认 getMapsKey()（gradle 属性 mapsKey /
-    // 环境变量 MAPS_KEY），没有就为空：MAPS_AVAILABLE = false，附件面板不显示「位置」。大陆版以后接高德（#1124）。
+    // 环境变量 MAPS_KEY），没有就为空：MAPS_AVAILABLE = false，附件面板的「位置」置灰、点了提示即将支持。
+    // owner 2026-09-24：等高德（#1124），暂时不开谷歌账单。
     val tellomiMapsKey = getMapsKey()
     manifestPlaceholders["mapsKey"] = tellomiMapsKey
     buildConfigField("boolean", "MAPS_AVAILABLE", "${tellomiMapsKey.isNotEmpty()}")

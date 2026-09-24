@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.R;
 
 import java.util.ArrayList;
@@ -88,6 +89,11 @@ class AttachmentKeyboardButtonAdapter extends RecyclerView.Adapter<AttachmentKey
     void bind(@NonNull AttachmentKeyboardButton button, boolean wallpaperEnabled, @NonNull Listener listener) {
       image.setImageResource(button.getIconRes());
       title.setText(button.getTitleRes());
+
+      // Tellomi（tellomi/tellomi#1235、#1124）：高德接上之前「位置」置灰，点了提示「即将支持」（ConversationFragment），
+      // 不走大陆打不开、又要用 Signal 的 key 的谷歌地图。owner 2026-09-24：等高德，暂时不开谷歌账单。
+      boolean comingSoon = button == AttachmentKeyboardButton.LOCATION && !BuildConfig.MAPS_AVAILABLE;
+      itemView.setAlpha(comingSoon ? 0.38f : 1f);
 
       itemView.setOnClickListener(v -> listener.onClick(button));
     }
