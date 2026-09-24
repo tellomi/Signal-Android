@@ -46,22 +46,23 @@ class SignalServiceNetworkAccess(context: Context) {
       CustomDns("1.1.1.1"),
       StaticDns(
         mapOf(
-          BuildConfig.SIGNAL_URL.stripProtocol() to BuildConfig.SIGNAL_SERVICE_IPS.toSet(),
-          BuildConfig.STORAGE_URL.stripProtocol() to BuildConfig.SIGNAL_STORAGE_IPS.toSet(),
-          BuildConfig.SIGNAL_CDN_URL.stripProtocol() to BuildConfig.SIGNAL_CDN_IPS.toSet(),
-          BuildConfig.SIGNAL_CDN2_URL.stripProtocol() to BuildConfig.SIGNAL_CDN2_IPS.toSet(),
+          // Tellomi（#1055）：静态 IP 只属于 global 档（REGION_PROFILE.md 第三节 staticIps），CN 档暂无回落，所以这里固定按 GLOBAL
+          TellomiRegions.GLOBAL.chat.stripProtocol() to BuildConfig.SIGNAL_SERVICE_IPS.toSet(),
+          TellomiRegions.GLOBAL.storage.stripProtocol() to BuildConfig.SIGNAL_STORAGE_IPS.toSet(),
+          TellomiRegions.GLOBAL.cdn0.stripProtocol() to BuildConfig.SIGNAL_CDN_IPS.toSet(),
+          TellomiRegions.GLOBAL.cdn2.stripProtocol() to BuildConfig.SIGNAL_CDN2_IPS.toSet(),
           // cdn3 的 IP 表**故意是空的**（#1077）：cdn3.tellomi.app 在 Cloudflare 后面，
           // 边缘 IP 会变，写死等于给自己做一张会过期的劫持表——DNS 正常时根本用不到，
           // DNS 失效时反而把流量送到一个可能早已不属于我们的地址。
           // 空集在 StaticDns 里和"没有这个 key"是同一个结果（UnknownHostException），
           // 留着这一行是为了让下一个人看见这是**决定**，不是漏填。
-          BuildConfig.SIGNAL_CDN3_URL.stripProtocol() to BuildConfig.SIGNAL_CDN3_IPS.toSet(),
+          TellomiRegions.GLOBAL.cdn3.stripProtocol() to BuildConfig.SIGNAL_CDN3_IPS.toSet(),
           // Tellomi（#1077）：上游这里是 `sfu.voip.signal.org`（纯主机名）。我们把 SFU 并进了
           // chat.tellomi.app，`SIGNAL_SFU_URL` 因此带上了路径（".../callingService"），
           // 而 `stripProtocol()` 只去 scheme 不去路径 —— 组出来的 key 是
           // `chat.tellomi.app/callingService`，**永远等不上任何一次 DNS 查询的主机名**。
           // 它要解析的主机就是上面那条 SIGNAL_URL 已经覆盖的 chat.tellomi.app，所以直接去掉。
-          BuildConfig.CONTENT_PROXY_HOST.stripProtocol() to BuildConfig.SIGNAL_CONTENT_PROXY_IPS.toSet(),
+          TellomiRegions.GLOBAL.contentProxyHost.stripProtocol() to BuildConfig.SIGNAL_CONTENT_PROXY_IPS.toSet(),
           BuildConfig.SIGNAL_CDSI_URL.stripProtocol() to BuildConfig.SIGNAL_CDSI_IPS.toSet(),
           BuildConfig.SIGNAL_SVR2_URL.stripProtocol() to BuildConfig.SIGNAL_SVR2_IPS.toSet()
         )
@@ -153,7 +154,7 @@ class SignalServiceNetworkAccess(context: Context) {
 
     fun ProxyInfo?.toApplicableSystemHttpProxy(): HttpProxy? {
       return this
-        ?.takeIf { !it.exclusionList.contains(BuildConfig.SIGNAL_URL.stripProtocol()) }
+        ?.takeIf { !it.exclusionList.contains(TellomiRegions.current().chat.stripProtocol()) }
         // NB: Edit carefully, dear reader, as the line below is written from hard won experience.
         // It turns out, that despite being documented *nowhere*, if a PAC file is set
         //   as the system proxy, proxyInfo.host will return "localhost" and proxyInfo.port
@@ -234,9 +235,10 @@ class SignalServiceNetworkAccess(context: Context) {
     COUNTRY_CODE_PAKISTAN
   )
 
-  // Tellomi（#1055）：按区域表组装（RegionProfile 契约），global 档 = 原来这里的常量，逐字节一致；组装时断言 cdn3 恰好一个
+  // Tellomi（#1055）：按当前区组装（RegionProfile 契约；现在 CN 关着，恒为 global = 原来这里的常量），组装时断言 cdn3 恰好一个。
+  // 切区走 AppDependencies.resetNetwork()：它会重建整个 NetworkDependenciesModule，连同这个对象。
   val uncensoredConfiguration: SignalServiceConfiguration = TellomiServiceConfigurations.build(
-    profile = TellomiRegions.GLOBAL,
+    profile = TellomiRegions.current(),
     trustStore = serviceTrustStore,
     cdsiUrl = BuildConfig.SIGNAL_CDSI_URL,
     svr2Url = BuildConfig.SIGNAL_SVR2_URL,

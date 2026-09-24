@@ -6,6 +6,7 @@
 package org.thoughtcrime.securesms.region
 
 import org.thoughtcrime.securesms.BuildConfig
+import org.thoughtcrime.securesms.keyvalue.SignalStore
 
 /**
  * Tellomi：区域 id（RegionProfile 契约 v2 第二节，超级仓库 `docs/signal/REGION_PROFILE.md`；tellomi/tellomi#1055）。
@@ -118,6 +119,29 @@ object TellomiRegions {
 
   @JvmField
   val ALL: List<TellomiRegionProfile> = listOf(GLOBAL, CN)
+
+  /**
+   * 当前区。各调用点在用的时候取，不在类加载时存下来，这样切区（`AppDependencies.resetNetwork()`）之后新建的连接就用新区。
+   * 现在 CN 关着，所以恒为 global。
+   */
+  @JvmStatic
+  fun current(): TellomiRegionProfile {
+    val storedId: String? = try {
+      SignalStore.tellomiRegion.currentId
+    } catch (e: Exception) {
+      // SignalStore 还没初始化（进程刚起的早期路径、单测）或者读库失败：回落 global，绝不抛（契约第五节第 8 条）
+      null
+    }
+    return resolve(storedId)
+  }
+
+  /**
+   * 记住的区 id → 区。没有记录、不认识、或者那个区被关了，一律回落 global
+   * （契约第五节第 8 条：运行时来源坏了只回落，绝不抛）。
+   */
+  fun resolve(storedId: String?, profiles: List<TellomiRegionProfile> = ALL): TellomiRegionProfile {
+    return profiles.firstOrNull { it.id.id == storedId && it.enabled } ?: GLOBAL
+  }
 
   /**
    * 契约第四节：同名标签挂到 `tellomi.cn`。scheme、端口、路径都不变，只把主机名里的 `.tellomi.app` 换成 `.tellomi.cn`。

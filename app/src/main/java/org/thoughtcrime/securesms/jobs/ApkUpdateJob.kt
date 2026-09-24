@@ -21,6 +21,7 @@ import org.thoughtcrime.securesms.apkupdate.ApkUpdateDownloadManagerReceiver
 import org.thoughtcrime.securesms.jobmanager.Job
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.FileUtils
 import java.io.FileInputStream
@@ -61,10 +62,12 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
       return
     }
 
-    Log.d(TAG, "Checking for APK update at ${BuildConfig.APK_UPDATE_MANIFEST_URL}")
+    // Tellomi（#1055）：清单地址从当前区取（只有 website 档有）
+    val manifestUrl = TellomiRegions.current().apkUpdateManifestUrl
+    Log.d(TAG, "Checking for APK update at $manifestUrl")
 
     val client = OkHttpClient()
-    val request = Request.Builder().url(BuildConfig.APK_UPDATE_MANIFEST_URL).build()
+    val request = Request.Builder().url(manifestUrl!!).build()
 
     val rawUpdateDescriptor: String = client.newCall(request).execute().use { response ->
       if (!response.isSuccessful || response.body == null) {

@@ -82,6 +82,24 @@ class TellomiRegionsTest {
   }
 
   @Test
+  fun `current region falls back to global for anything unusable`() {
+    assertThat(TellomiRegions.resolve(null)).isEqualTo(global)
+    assertThat(TellomiRegions.resolve("global")).isEqualTo(global)
+    // CN 关着：就算记住的是 cn，也回落 global
+    assertThat(TellomiRegions.resolve("cn")).isEqualTo(global)
+    assertThat(TellomiRegions.resolve("mars")).isEqualTo(global)
+    assertThat(TellomiRegions.resolve("")).isEqualTo(global)
+  }
+
+  @Test
+  fun `an enabled cn region is used once it is switched on`() {
+    val enabledCn = cn.copy(enabled = true)
+
+    assertThat(TellomiRegions.resolve("cn", listOf(global, enabledCn))).isEqualTo(enabledCn)
+    assertThat(TellomiRegions.resolve("global", listOf(global, enabledCn))).isEqualTo(global)
+  }
+
+  @Test
   fun `packaged regions satisfy the invariants`() {
     assertThat(TellomiRegions.problems(TellomiRegions.ALL)).isEmpty()
   }

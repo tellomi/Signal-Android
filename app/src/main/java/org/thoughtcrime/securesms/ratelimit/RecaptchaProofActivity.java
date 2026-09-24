@@ -19,11 +19,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import org.signal.core.util.concurrent.SimpleTask;
 import org.signal.core.util.logging.Log;
-import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.PassphraseRequiredActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.net.SignalNetwork;
+import org.thoughtcrime.securesms.region.TellomiRegions;
 import org.thoughtcrime.securesms.util.TellomiLinks;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.ExceptionHelper;
@@ -82,7 +82,7 @@ public class RecaptchaProofActivity extends PassphraseRequiredActivity {
     });
 
     SignalStore.misc().setCaptchaLastViewedAt(System.currentTimeMillis());
-    webView.loadUrl(BuildConfig.RECAPTCHA_PROOF_URL);
+    webView.loadUrl(TellomiRegions.current().getCaptchaChallenge());
   }
 
   @Override
