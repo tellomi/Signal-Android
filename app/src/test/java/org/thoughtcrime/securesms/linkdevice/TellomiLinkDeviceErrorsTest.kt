@@ -43,11 +43,10 @@ class TellomiLinkDeviceErrorsTest {
   }
 
   @Test
-  fun `expired or foreign code names the other app through the placeholder`() {
+  fun `expired or foreign code gets its own text and a way to scan again`() {
     val dialog = TellomiLinkDeviceErrors.failureDialogFor(LinkDeviceResult.ExpiredOrForeignCode)!!
 
     assertThat(dialog.body).isEqualTo(R.string.AddLinkDeviceFragment__tellomi_code_expired_or_foreign)
-    assertThat(dialog.bodyArg).isEqualTo("Signal")
     assertThat(dialog.canScanAgain).isTrue()
   }
 

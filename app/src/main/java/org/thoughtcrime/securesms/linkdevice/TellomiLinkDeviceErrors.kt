@@ -23,12 +23,6 @@ import org.thoughtcrime.securesms.linkdevice.LinkDeviceRepository.LinkDeviceResu
 object TellomiLinkDeviceErrors {
 
   /**
-   * 「这是 Signal 的码」那句里的名字，从代码传进文案的占位符。
-   * 不直接写进 strings.xml：品牌脚本（超级仓库 scripts/brand/rename-strings.py）会把文案里的 Signal 一律换成 Tellomi。
-   */
-  const val SIGNAL_NAME = "Signal"
-
-  /**
    * `PUT /v1/provisioning/{address}` 的状态码 → 结果。
    *
    * 404 是服务端上这个关联地址当时没有设备在等（服务端 ProvisioningController.sendProvisioningMessage）：
@@ -47,7 +41,6 @@ object TellomiLinkDeviceErrors {
 
   data class FailureDialog(
     @StringRes val body: Int,
-    val bodyArg: String? = null,
     val canScanAgain: Boolean = true
   )
 
@@ -55,7 +48,8 @@ object TellomiLinkDeviceErrors {
   fun failureDialogFor(result: LinkDeviceResult): FailureDialog? {
     return when (result) {
       LinkDeviceResult.None, is LinkDeviceResult.Success -> null
-      LinkDeviceResult.ExpiredOrForeignCode -> FailureDialog(R.string.AddLinkDeviceFragment__tellomi_code_expired_or_foreign, bodyArg = SIGNAL_NAME)
+      // 不点名别的 App（taishi 中转包 8：界面上出不出现「Signal」是品牌决定，先不点名）
+      LinkDeviceResult.ExpiredOrForeignCode -> FailureDialog(R.string.AddLinkDeviceFragment__tellomi_code_expired_or_foreign)
       is LinkDeviceResult.NetworkError -> FailureDialog(R.string.AddLinkDeviceFragment__tellomi_network_error)
       LinkDeviceResult.NoDevice -> FailureDialog(R.string.DeviceProvisioningActivity_content_progress_no_device)
       LinkDeviceResult.KeyError -> FailureDialog(R.string.DeviceProvisioningActivity_content_progress_key_error)
@@ -77,7 +71,7 @@ fun TellomiLinkDeviceFailureDialog(
 ) {
   val dialog = TellomiLinkDeviceErrors.failureDialogFor(result) ?: return
   val title = stringResource(R.string.AddLinkDeviceFragment__linking_device_failed)
-  val body = if (dialog.bodyArg != null) stringResource(dialog.body, dialog.bodyArg) else stringResource(dialog.body)
+  val body = stringResource(dialog.body)
 
   if (dialog.canScanAgain) {
     Dialogs.SimpleAlertDialog(

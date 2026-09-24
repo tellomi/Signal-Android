@@ -15,6 +15,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.containsExactly
+import assertk.assertions.doesNotContain
 import assertk.assertions.isEmpty
 import org.junit.Rule
 import org.junit.Test
@@ -46,7 +47,11 @@ class TellomiLinkDeviceFailureDialogTest {
     val events = setContent(LinkDeviceResult.ExpiredOrForeignCode)
 
     composeTestRule.onNodeWithText(context.getString(R.string.AddLinkDeviceFragment__linking_device_failed)).assertIsDisplayed()
-    composeTestRule.onNodeWithText(context.getString(R.string.AddLinkDeviceFragment__tellomi_code_expired_or_foreign, "Signal")).assertIsDisplayed()
+    val body = context.getString(R.string.AddLinkDeviceFragment__tellomi_code_expired_or_foreign)
+    // 不点名别的 App，也不留占位符（taishi 中转包 8）
+    assertThat(body).doesNotContain("Signal")
+    assertThat(body).doesNotContain("%1")
+    composeTestRule.onNodeWithText(body).assertIsDisplayed()
     composeTestRule.onNodeWithText(context.getString(R.string.AddLinkDeviceFragment__tellomi_scan_again)).performClick()
 
     assertThat(events).containsExactly("dismiss", "scanAgain")
