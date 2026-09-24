@@ -138,10 +138,16 @@ class VerificationCodeViewModel(
         // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 1）：会话已失效时先清掉父状态里的旧会话（号码保留），
         // 手机号页再点「下一步」才会开新会话；不清的话会复用旧会话 → 404 → 整个流程被重置回欢迎页，没有任何提示。
         // 「验证码已不能用」那种会话还在，照旧复用。
-        if (state.dialogs.sessionExpired) {
+        // 发 SessionExpired 的同时记下「正在因会话过期退回」：父状态马上会变成没有会话，本页 ViewModel 在出栈动画结束前还在收，
+        // 不能把它当成要重置整个流程（taishi 审查 b19 要改 1）。
+        val leavingForExpiredSession = state.dialogs.sessionExpired
+        if (leavingForExpiredSession) {
           parentEventEmitter(RegistrationFlowEvent.SessionExpired)
         }
-        state.copy(dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false)).also { parentEventEmitter.navigateBack() }
+        state.copy(
+          dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false),
+          leavingForExpiredSession = state.leavingForExpiredSession || leavingForExpiredSession
+        ).also { parentEventEmitter.navigateBack() }
       }
       is VerificationCodeScreenEvents.ResendSms -> applyResendCode(state, VerificationCodeTransport.SMS)
       is VerificationCodeScreenEvents.CallMe -> applyResendCode(state, VerificationCodeTransport.VOICE)
@@ -209,6 +215,12 @@ class VerificationCodeViewModel(
   }
 
   private fun applyParentState(state: VerificationCodeState, parentState: RegistrationFlowState): VerificationCodeState {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 要改 1）：关掉「会话已过期」框以后，父状态先清了会话、号码还在，
+    // 本页正在退回手机号页；这时不重置，否则号码也跟着清掉、整个流程回到欢迎页。
+    if (parentState.sessionMetadata == null && parentState.sessionE164 != null && state.leavingForExpiredSession) {
+      return state
+    }
+
     if (parentState.sessionMetadata == null || parentState.sessionE164 == null) {
       Log.w(TAG, "Parent state is missing session metadata or e164! Resetting.")
       parentEventEmitter(RegistrationFlowEvent.ResetState)
@@ -226,7 +238,8 @@ class VerificationCodeViewModel(
     return state.copy(
       sessionMetadata = parentState.sessionMetadata,
       e164 = parentState.sessionE164,
-      rateLimits = rateLimits
+      rateLimits = rateLimits,
+      leavingForExpiredSession = false
     )
   }
 

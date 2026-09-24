@@ -5,6 +5,8 @@
 
 package org.signal.registration.screens.verificationcode
 
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
@@ -12,6 +14,7 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
@@ -20,6 +23,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -49,6 +53,7 @@ import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import org.signal.registration.RegistrationViewModel
 import org.signal.registration.VerificationCodeRequest
 import java.util.UUID
 import kotlin.time.Duration.Companion.minutes
@@ -1457,10 +1462,11 @@ class VerificationCodeViewModelTest {
   @Test
   fun `a rate-limited resend records the retry-after deadline, so coming back later still counts down`() = runTest {
     // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 2）：限流给 60 秒，10 秒后回到前台应显示 50 秒，而不是 0。
+    // 会话里的 nextSms 故意和 retryAfter 不同（45 对 60），才钉得住「被限流的那一路用 retryAfter」（taishi 审查 b19 不阻塞 2）。
     val e164 = "+15551234567"
     var now = 100.minutes.inWholeMilliseconds
     coEvery { mockRepository.getInProgressRegistrationDataLastUpdated() } answers { now - 1.minutes.inWholeMilliseconds }
-    val session = createSessionMetadata(nextSms = 60, nextCall = 30)
+    val session = createSessionMetadata(nextSms = 45, nextCall = 30)
     coEvery { mockRepository.requestVerificationCode(any(), any(), eq(VerificationCodeTransport.SMS)) } returns
       RequestResult.NonSuccess(RequestVerificationCodeError.RateLimited(60.seconds, session))
 
@@ -1521,6 +1527,56 @@ class VerificationCodeViewModelTest {
     viewModel.applyEvent(VerificationCodeState(), VerificationCodeScreenEvents.Foregrounded, stateEmitter)
 
     assertThat(emittedEvents).hasSize(0)
+  }
+
+  @Test
+  fun `dismissing the expired dialog does not reset the flow when the parent drops the session`() = runTest {
+    // taishi 审查 b19 要改 1 附的用例：RegistrationViewModel 处理完 SessionExpired 后父状态没有会话、号码还在，
+    // 出栈动画结束前本 ViewModel 还在收；这时不能发 ResetState。
+    coEvery { mockRepository.requestVerificationCode(any(), any(), eq(VerificationCodeTransport.SMS)) } returns
+      RequestResult.NonSuccess(RequestVerificationCodeError.SessionNotFound("gone"))
+    viewModel.applyEvent(VerificationCodeState(sessionMetadata = createSessionMetadata(), e164 = "+15551234567"), VerificationCodeScreenEvents.ResendSms, stateEmitter)
+    viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
+    viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.ParentStateChanged(RegistrationFlowState(sessionMetadata = null, sessionE164 = "+15551234567")), stateEmitter)
+    assertThat(emittedEvents).containsExactly(RegistrationFlowEvent.SessionExpired, RegistrationFlowEvent.NavigateBack)
+  }
+
+  @Test
+  fun `dismissing the expired dialog with the real parent flow lands on phone number entry with the number kept`() = runTest(testDispatcher) {
+    // taishi 审查 b19 要改 1：把真的 RegistrationViewModel 接上，父状态真的跟着事件变，本页 ViewModel 也真的在收。
+    val e164 = "+15551234567"
+    val session = createSessionMetadata()
+    coEvery { mockRepository.restoreFlowState() } returns RegistrationFlowState(
+      backStack = listOf(RegistrationRoute.Welcome, RegistrationRoute.PhoneNumberEntry, RegistrationRoute.VerificationCodeEntry),
+      sessionMetadata = session,
+      sessionE164 = e164
+    )
+    coEvery { mockRepository.validateSession(session.id) } returns session
+    coEvery { mockRepository.requestVerificationCode(any(), any(), eq(VerificationCodeTransport.SMS)) } returns
+      RequestResult.NonSuccess(RequestVerificationCodeError.SessionNotFound("gone"))
+
+    val registrationViewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+    val codeViewModel = VerificationCodeViewModel(mockRepository, registrationViewModel.state, registrationViewModel::onEvent)
+    try {
+      advanceUntilIdle()
+      assertThat(codeViewModel.state.value.sessionMetadata).isNotNull()
+
+      codeViewModel.onEvent(VerificationCodeScreenEvents.ResendSms)
+      advanceUntilIdle()
+      assertThat(codeViewModel.state.value.dialogs.sessionExpired).isTrue()
+
+      codeViewModel.onEvent(VerificationCodeScreenEvents.SessionExpiredDialogDismissed)
+      advanceUntilIdle()
+
+      val parent = registrationViewModel.state.value
+      assertThat(parent.backStack).isEqualTo(listOf(RegistrationRoute.Welcome, RegistrationRoute.PhoneNumberEntry))
+      assertThat(parent.sessionE164).isEqualTo(e164)
+      assertThat(parent.sessionMetadata).isNull()
+    } finally {
+      codeViewModel.viewModelScope.cancel()
+      registrationViewModel.viewModelScope.cancel()
+    }
   }
 
   // ==================== Helper Functions ====================

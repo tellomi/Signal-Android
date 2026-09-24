@@ -22,7 +22,12 @@ data class VerificationCodeState(
   val showContactSupportSheet: Boolean = false,
   val showContactSupportDialog: Boolean = false,
   val snackbars: Snackbars = Snackbars(),
-  val dialogs: Dialogs = Dialogs()
+  val dialogs: Dialogs = Dialogs(),
+  /**
+   * Tellomi（tellomi/tellomi#1214，taishi 审查 b19 要改 1）：关掉「会话已过期」框、正在退回手机号页。这一页的 ViewModel 要等出栈动画
+   * 结束才销毁，这期间父状态里的会话已经清空；有这个标记时不把「没有会话」当成要重置整个流程。收到新会话时清掉。
+   */
+  val leavingForExpiredSession: Boolean = false
 ) {
   override fun toString(): String = "VerificationCodeState(sessionMetadata=$sessionMetadata, e164=$e164, isSubmittingCode=$isSubmittingCode, rateLimits=$rateLimits, incorrectCodeAttempts=$incorrectCodeAttempts, autoFillCode=${autoFillCode?.let { "present" }}, digitsEntered=${digits.count { it.isNotEmpty() }}, focusedDigitIndex=$focusedDigitIndex, showContactSupportSheet=$showContactSupportSheet,  showContactSupportDialog=$showContactSupportDialog, snackbars=$snackbars, dialogs=$dialogs)"
 
