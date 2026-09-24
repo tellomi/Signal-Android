@@ -86,7 +86,10 @@ object TellomiNames {
       .allMatch { Character.UnicodeScript.of(it) in CJKV_SCRIPTS }
   }
 
-  /** `Character.isWhitespace` 不算不换行空格（U+00A0 / U+2007 / U+202F），`isSpaceChar` 算；两个都认，与 iOS 的 `\s` 一致。 */
+  /**
+   * `Character.isWhitespace` 不算不换行空格（U+00A0 / U+2007 / U+202F），`isSpaceChar` 算；两个都认，这样不换行空格和 iOS 的 `\s` 一致。
+   * 和 iOS 只差两处控制符（taishi 中转包 8 实测）：U+001C–U+001F 这边算空白、ICU 的 `\s` 不算；U+0085 正相反。名字里几乎不会出现。
+   */
   private fun isSpace(codePoint: Int): Boolean {
     return Character.isWhitespace(codePoint) || Character.isSpaceChar(codePoint)
   }

@@ -85,7 +85,10 @@ class TellomiNamesTest {
       "e\u0301mile Zola" to "e\u0301Z",
       "${zalgo}algo Name" to "\uFFFDN",
       "$sixteenCodePoints Smith" to "${sixteenCodePoints}S",
-      "$seventeenCodePoints Smith" to "\uFFFDS"
+      "$seventeenCodePoints Smith" to "\uFFFDS",
+      // taishi 中转包 8：汉字名后面拖着组合符（Zalgo）、汉字带异体字选择符，都不算「全是汉字」，按首字取
+      "张三${marks.joinToString("")}" to "张",
+      "葛\uDB40\uDD00城 太郎" to "葛\uDB40\uDD00太"
     )
     samples.forEach { (input, expected) -> assertEquals(input, expected, TellomiNames.abbreviation(input)) }
   }
