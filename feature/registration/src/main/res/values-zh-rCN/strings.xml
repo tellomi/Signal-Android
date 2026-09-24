@@ -770,4 +770,14 @@
     <string name="TellomiRegistration__a_verification_code_will_be_sent">我们会向这个号码发一条短信验证码，确认它是你的。</string>
     <string name="TellomiRegistration__captcha_retry">重试</string>
     <string name="TellomiRegistration__first_name">名字</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <string name="TellomiRegistration__new_phone">换了新手机？</string>
+    <string name="TellomiRegistration__old_phone_here">旧 Android 手机还在身边</string>
+    <string name="TellomiRegistration__old_phone_here_description">用旧 Android 手机上的 Tellomi 扫一个二维码，把账户和聊天记录直接传过来</string>
+    <string name="TellomiRegistration__old_phone_not_here">旧手机不在身边，或者是 iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在这台手机上重装的话，可以用本地备份恢复；否则直接注册，只是以前的聊天记录不会跟过来</string>
+    <string name="TellomiRegistration__skip_restore_dialog_title">不恢复聊天记录？</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">以前的聊天记录不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">继续</string>
 </resources>

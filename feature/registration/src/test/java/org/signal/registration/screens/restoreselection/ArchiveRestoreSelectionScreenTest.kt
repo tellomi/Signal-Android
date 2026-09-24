@@ -8,10 +8,13 @@ package org.signal.registration.screens.restoreselection
 import android.app.Application
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ApplicationProvider
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +22,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.test.TestTags
 
 @RunWith(RobolectricTestRunner::class)
@@ -128,5 +132,49 @@ class ArchiveRestoreSelectionScreenTest {
     composeTestRule.onNodeWithTag(TestTags.ARCHIVE_RESTORE_SELECTION_NONE).performScrollTo().performClick()
 
     assert(emittedEvent == ArchiveRestoreSelectionScreenEvents.RestoreOptionSelected(ArchiveRestoreOption.None))
+  }
+
+  @After
+  fun resetRemoteBackups() {
+    TellomiRegistration.remoteBackupsAvailableForTesting = null
+  }
+
+  // Tellomi（tellomi/tellomi#1216）：没有备份服务时，跳过确认不再说「以后将无法进行恢复…重启备份」，只说真实后果。
+
+  @Test
+  fun `without a backup service the skip dialog states the real consequence`() {
+    TellomiRegistration.remoteBackupsAvailableForTesting = false
+    composeTestRule.setContent {
+      SignalTheme {
+        ArchiveRestoreSelectionScreen(
+          state = ArchiveRestoreSelectionState(
+            restoreOptions = listOf(ArchiveRestoreOption.LocalBackup, ArchiveRestoreOption.None),
+            showSkipWarningDialog = true
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithText("Continue without restoring?").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Your earlier messages won't appear on this phone.").assertIsDisplayed()
+    assert(composeTestRule.onAllNodesWithText("Skip restore?").fetchSemanticsNodes().isEmpty())
+    assert(composeTestRule.onAllNodesWithText("If you skip restore now", substring = true).fetchSemanticsNodes().isEmpty())
+  }
+
+  @Test
+  fun `with a backup service the skip dialog keeps the upstream warning`() {
+    TellomiRegistration.remoteBackupsAvailableForTesting = true
+    composeTestRule.setContent {
+      SignalTheme {
+        ArchiveRestoreSelectionScreen(
+          state = allOptionsState.copy(showSkipWarningDialog = true),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithText("Skip restore?").assertIsDisplayed()
+    composeTestRule.onNodeWithText("If you skip restore now", substring = true).assertIsDisplayed()
   }
 }
