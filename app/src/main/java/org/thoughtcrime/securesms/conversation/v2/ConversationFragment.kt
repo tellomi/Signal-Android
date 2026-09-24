@@ -257,6 +257,7 @@ import org.thoughtcrime.securesms.conversation.v2.items.ChatColorsDrawable
 import org.thoughtcrime.securesms.conversation.v2.items.InteractiveConversationElement
 import org.thoughtcrime.securesms.conversation.v2.keyboard.AttachmentKeyboardFragment
 import org.thoughtcrime.securesms.database.DraftTable
+import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.database.model.IdentityRecord
 import org.thoughtcrime.securesms.database.model.InMemoryMessageRecord
 import org.thoughtcrime.securesms.database.model.Mention
@@ -265,6 +266,7 @@ import org.thoughtcrime.securesms.database.model.MessageRecord
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord
 import org.thoughtcrime.securesms.database.model.Quote
 import org.thoughtcrime.securesms.database.model.databaseprotos.BodyRangeList
+import org.thoughtcrime.securesms.database.withAttachments
 import org.thoughtcrime.securesms.databinding.V2ConversationBackgroundBinding
 import org.thoughtcrime.securesms.databinding.V2ConversationFragmentBinding
 import org.thoughtcrime.securesms.dependencies.AppDependencies
@@ -914,6 +916,54 @@ class ConversationFragment :
 
     if (SignalStore.rateLimit.needsRecaptcha()) {
       RecaptchaProofBottomSheetFragment.show(childFragmentManager)
+    }
+
+    MediaPreviewCache.consumePendingReply(args.threadId)?.let { replyToAlbumItem(it) }
+  }
+
+  /**
+   * Tellomi（#1257，owner 2026-09-25）：在查看器里点了「回复」——引用的是整条相册消息（协议里引用只认消息），
+   * 但引用框里、发出去的引用缩略图都是正在看的那一张。
+   */
+  private fun replyToAlbumItem(reply: MediaPreviewCache.PendingReply) {
+    val recipient = viewModel.recipientSnapshot ?: return
+    val appContext = requireContext().applicationContext
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      val message = withContext(Dispatchers.IO) {
+        val record = SignalDatabase.messages.getMessageRecordOrNull(reply.messageId)?.withAttachments() ?: return@withContext null
+        ConversationMessage.ConversationMessageFactory.createWithUnresolvedData(appContext, record, recipient)
+      } ?: return@launch
+
+      val canReply = !isActionModeStarted() &&
+        MenuState.canReplyToMessage(
+          recipient,
+          MenuState.isActionMessage(message.messageRecord),
+          message.messageRecord,
+          viewModel.hasMessageRequestState,
+          conversationGroupViewModel.isNonAdminInAnnouncementGroup()
+        )
+      if (!canReply) {
+        return@launch
+      }
+
+      val (slideDeck, body) = viewModel.getSlideDeckAndBodyForReply(requireContext(), message)
+      val slide = slideDeck.slides.firstOrNull { it.displayUri == reply.attachmentUri || it.uri == reply.attachmentUri }
+      val quoteDeck = slide?.let { SlideDeck(it.asAttachment()) } ?: slideDeck
+
+      if (inputPanel.inEditMessageMode()) {
+        inputPanel.exitEditMessageMode()
+      }
+
+      inputPanel.setQuote(
+        Glide.with(this@ConversationFragment),
+        message.messageRecord.dateSent,
+        message.messageRecord.fromRecipient,
+        body,
+        quoteDeck,
+        message.messageRecord.getRecordQuoteType()
+      )
+      inputPanel.clickOnComposeInput()
     }
   }
 
@@ -4079,6 +4129,7 @@ class ConversationFragment :
 
       sharedElement.transitionName = MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME
       MediaPreviewCache.returnMediaUri = null
+      MediaPreviewCache.replyTargetThreadId = args.threadId
       val openedMessageId = parent.conversationMessage.messageRecord.id
       requireActivity().setExitSharedElementCallback(object : MaterialContainerTransformSharedElementCallback() {
         override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {

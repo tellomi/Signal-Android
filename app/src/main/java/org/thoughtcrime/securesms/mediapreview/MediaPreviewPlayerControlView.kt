@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.LegacyPlayerControlView
 import androidx.media3.ui.TimeBar
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.model.KeyPath
@@ -29,7 +28,8 @@ import org.signal.core.ui.R as CoreUiR
 
 /**
  * The bottom bar for the media preview. This includes the standard seek bar as well as playback controls,
- * but adds forward and share buttons as well as a recyclerview that can be populated with a rail of thumbnails.
+ * but adds forward and share buttons. (Tellomi #1257: the album rail moved out to AlbumScrubberView, which stays
+ * visible while these controls are hidden.)
  */
 @OptIn(UnstableApi::class)
 class MediaPreviewPlayerControlView @JvmOverloads constructor(
@@ -39,7 +39,6 @@ class MediaPreviewPlayerControlView @JvmOverloads constructor(
   playbackAttrs: AttributeSet? = null
 ) : LegacyPlayerControlView(context, attrs, defStyleAttr, playbackAttrs) {
 
-  val recyclerView: RecyclerView = findViewById(R.id.media_preview_album_rail)
   private val durationBar: LinearLayout = findViewById(R.id.exo_duration_viewgroup)
   private val videoControls: LinearLayout = findViewById(R.id.exo_button_viewgroup)
   private val exoProgress: TimeBar = findViewById(R.id.exo_progress)

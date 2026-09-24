@@ -3207,6 +3207,18 @@
     <string name="MediaPreviewFragment_media_delete_error">删除消息时出错，消息可能仍然存在。</string>
     <!-- A suffix to be attached to truncated captions that the user may tap onto to view the entire text caption -->
     <string name="MediaPreviewFragment_read_more_overflow_text">查看更多</string>
+    <!-- Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：查看器里转发相册中的一张，先问「这张 / 全部 N 张」 -->
+    <string name="MediaPreviewFragment__forward_this_photo">这张图片</string>
+    <string name="MediaPreviewFragment__forward_this_video">这个视频</string>
+    <plurals name="MediaPreviewFragment__forward_all_d_photos">
+        <item quantity="other">全部 %d 张图片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_videos">
+        <item quantity="other">全部 %d 个视频</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_items">
+        <item quantity="other">全部 %d 项</item>
+    </plurals>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->

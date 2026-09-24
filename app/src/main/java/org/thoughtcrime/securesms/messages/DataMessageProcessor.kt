@@ -18,6 +18,7 @@ import org.signal.emoji.EmojiUtil
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.network.util.Preconditions
 import org.thoughtcrime.securesms.attachments.Attachment
+import org.thoughtcrime.securesms.attachments.DatabaseAttachment
 import org.thoughtcrime.securesms.attachments.LocalStickerAttachment
 import org.thoughtcrime.securesms.attachments.PointerAttachment
 import org.thoughtcrime.securesms.attachments.TombstoneAttachment
@@ -1549,6 +1550,9 @@ object DataMessageProcessor {
         }
         .firstOrNull { it.hasData }
 
+      // Tellomi（#1257）：回复的是相册里的某一张时，用发送方带来的那一张的缩略图
+      albumItemQuoteThumbnail(quote, targetMessageAttachments)?.let { thumbnailAttachment = it }
+
       if (quotedMessage.isViewOnce) {
         thumbnailAttachment = TombstoneAttachment.forQuote()
       } else if (thumbnailAttachment == null) {
@@ -1591,6 +1595,21 @@ object DataMessageProcessor {
       type = QuoteModel.Type.fromProto(quote.type),
       bodyRanges = cappedQuoteRanges.filter { Util.allAreNull(it.mentionAci, it.mentionAciBinary) }.toBodyRangeList()
     )
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1257）：在查看器里回复相册的某一张。协议里引用只指向整条消息（不改），
+   * 发送方在引用里带的缩略图是那一张；本地找到原消息后上游一律取第一张，对方看到的就不是被回复的那张。
+   * 被引用的是相册（≥ 2 张图片 / 视频）且对方带了缩略图时改用它；否则返回 null，走上游逻辑。
+   */
+  private fun albumItemQuoteThumbnail(quote: DataMessage.Quote, targetMessageAttachments: List<DatabaseAttachment>): Attachment? {
+    val mediaCount = targetMessageAttachments.count { MediaUtil.isImageType(it.contentType) || MediaUtil.isVideoType(it.contentType) }
+    if (mediaCount < 2) {
+      return null
+    }
+
+    val quoted = quote.attachments.firstOrNull { it.thumbnail != null && it.contentType != null } ?: return null
+    return PointerAttachment.forPointer(quoted).orNull()
   }
 
   private fun isSenderValid(quotedMessage: MmsMessageRecord, timestamp: Long, senderRecipient: Recipient, threadRecipient: Recipient): Boolean {

@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager
 import android.view.animation.PathInterpolator
 import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
@@ -28,9 +29,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -40,9 +38,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.signal.core.models.media.Media
 import org.signal.core.ui.logging.LoggingFragment
 import org.signal.core.util.Debouncer
@@ -54,19 +54,18 @@ import org.thoughtcrime.securesms.attachments.AttachmentSaver
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.components.mention.MentionAnnotation
+import org.thoughtcrime.securesms.conversation.ConversationMessage
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
 import org.thoughtcrime.securesms.database.DatabaseObserver
 import org.thoughtcrime.securesms.database.MediaTable
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.database.model.MessageRecord
+import org.thoughtcrime.securesms.database.withAttachments
 import org.thoughtcrime.securesms.databinding.FragmentMediaPreviewBinding
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.mediapreview.caption.ExpandingCaptionView
-import org.thoughtcrime.securesms.mediapreview.mediarail.CenterDecoration
-import org.thoughtcrime.securesms.mediapreview.mediarail.MediaRailAdapter
-import org.thoughtcrime.securesms.mediapreview.mediarail.MediaRailAdapter.ImageLoadingListener
 import org.thoughtcrime.securesms.mediasend.MediaSendLauncher
 import org.thoughtcrime.securesms.mms.PartAuthority
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -99,16 +98,17 @@ class MediaPreviewFragment :
   private val args: MediaIntentFactory.MediaPreviewArgs by lazy { MediaIntentFactory.requireArguments(requireArguments()) }
 
   private lateinit var pagerAdapter: MediaPreviewAdapter
-  private lateinit var albumRailAdapter: MediaRailAdapter
   private lateinit var fullscreenHelper: FullscreenHelper
 
-  private var individualItemWidth: Int = 0
+  // Tellomi（#1257）：底部缩略条当前显示的那一组（及它所在的消息）；四角按钮在第一次轻点之前保持隐藏。
+  private var currentAlbum: List<Media> = emptyList()
+  private var currentAlbumMessageId: Long = -1
+  private var chromeHiddenUntilTap = false
   private var dbChangeObserver: DatabaseObserver.Observer? = null
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
     fullscreenHelper = FullscreenHelper(requireActivity(), true)
-    individualItemWidth = context.resources.getDimension(R.dimen.media_rail_item_size).roundToInt()
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -127,6 +127,7 @@ class MediaPreviewFragment :
     initializeViewPager()
     initializeAlbumRail()
     initializeFullScreenUi()
+    hideChromeUntilTapIfNeeded()
     anchorPaddingToBottomInsets(binding.mediaPreviewDetailsContainer)
     lifecycleDisposable +=
       viewModel
@@ -198,23 +199,27 @@ class MediaPreviewFragment :
   }
 
   private fun initializeAlbumRail() {
-    binding.mediaPreviewPlaybackControls.recyclerView.apply {
-      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-      addItemDecoration(CenterDecoration(0))
-      albumRailAdapter = MediaRailAdapter(
-        Glide.with(this@MediaPreviewFragment),
-        { media -> jumpViewPagerToMedia(media) },
-        object : ImageLoadingListener() {
-          override fun onAllRequestsFinished() {
-            val willAnimateIn = crossfadeViewIn(this@apply)
-            if (!willAnimateIn) {
-              visible = true
-            }
-          }
-        }
-      )
-      adapter = albumRailAdapter
+    // Tellomi（#1257）：拖动缩略条时直接跳到那一张（不做翻页动画，跟手）。
+    binding.mediaPreviewAlbumScrubber.onItemSelected = { index ->
+      currentAlbum.getOrNull(index)?.let { jumpViewPagerToMedia(it, smooth = false) }
     }
+  }
+
+  /**
+   * Tellomi（#1257，owner 2026-09-25，对照 Telegram）：打开图片时什么都不显示（四角按钮、缩略条、k / N），轻点图片一起出现、
+   * 再点一起收起。视频照常先显示播放控件（开始播放后上游会自己收起）；开着读屏时也照常显示，不然找不到转发 / 保存。
+   */
+  private fun hideChromeUntilTapIfNeeded() {
+    val isVideo = MediaUtil.isVideoType(args.initialMediaType) && !args.isVideoGif
+    val touchExploration = requireContext().getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled == true
+    if (isVideo || touchExploration) {
+      return
+    }
+
+    chromeHiddenUntilTap = true
+    binding.toolbarLayout.alpha = 0f
+    binding.toolbarLayout.visibility = View.INVISIBLE
+    fullscreenHelper.hideSystemUI()
   }
 
   private fun initializeFullScreenUi() {
@@ -366,8 +371,16 @@ class MediaPreviewFragment :
       menu.findItem(R.id.delete).isVisible = false
     }
 
+    // Tellomi（#1257）：从会话里打开时可以「回复」正在看的这一张
+    val replyAttachment = currentItem.attachment
+    menu.findItem(R.id.reply)?.isVisible = replyAttachment != null &&
+      replyAttachment.mmsId > 0 &&
+      currentItem.threadId > 0 &&
+      currentItem.threadId == MediaPreviewCache.replyTargetThreadId
+
     binding.toolbar.setOnMenuItemClickListener {
       when (it.itemId) {
+        R.id.reply -> replyToCurrentItem(currentItem)
         R.id.edit -> editMediaItem(currentItem)
         R.id.save -> saveToDisk(currentItem)
         R.id.delete -> deleteMedia(currentItem)
@@ -416,7 +429,61 @@ class MediaPreviewFragment :
     }
     binding.mediaPreviewPlaybackControls.setForwardButtonListener {
       pauseCurrentMediaIfVideo()
+      forwardWithAlbumChoice(threadId, uri, contentType)
+    }
+  }
+
+  /**
+   * Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：看的是相册里的一张时，先问「这张 / 全部 N 张」。
+   * 「全部」转发整条消息（全部图片与说明），和长按消息转发一样。
+   */
+  private fun forwardWithAlbumChoice(threadId: Long, uri: Uri, contentType: String?) {
+    val album = currentAlbum
+    val messageId = currentAlbumMessageId
+    if (album.size <= 1 || messageId <= 0) {
       forward(threadId, uri, contentType)
+      return
+    }
+
+    val thisLabel = getString(
+      if (MediaUtil.isVideoType(contentType)) R.string.MediaPreviewFragment__forward_this_video else R.string.MediaPreviewFragment__forward_this_photo
+    )
+    val allLabel = when {
+      album.all { MediaUtil.isVideoType(it.contentType) } -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_videos, album.size, album.size)
+      album.none { MediaUtil.isVideoType(it.contentType) } -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_photos, album.size, album.size)
+      else -> resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_items, album.size, album.size)
+    }
+
+    MaterialAlertDialogBuilder(requireContext())
+      .setTitle(R.string.conversation_selection__menu_forward)
+      .setItems(arrayOf(thisLabel, allLabel)) { _, which ->
+        if (which == 0) {
+          forward(threadId, uri, contentType)
+        } else {
+          forwardWholeMessage(messageId)
+        }
+      }
+      .setNegativeButton(android.R.string.cancel, null)
+      .show()
+  }
+
+  private fun forwardWholeMessage(messageId: Long) {
+    val appContext = requireContext().applicationContext
+    viewLifecycleOwner.lifecycleScope.launch {
+      val conversationMessage = withContext(Dispatchers.IO) {
+        val record = SignalDatabase.messages.getMessageRecordOrNull(messageId)?.withAttachments() ?: return@withContext null
+        val threadRecipient = SignalDatabase.threads.getRecipientForThreadId(record.threadId) ?: return@withContext null
+        ConversationMessage.ConversationMessageFactory.createWithUnresolvedData(appContext, record, threadRecipient)
+      }
+
+      if (conversationMessage == null) {
+        Toast.makeText(appContext, R.string.MediaPreviewActivity_error_finding_message, Toast.LENGTH_LONG).show()
+        return@launch
+      }
+
+      MultiselectForwardFragmentArgs.create(requireContext(), conversationMessage.multiselectCollection.toSet()) { args ->
+        MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+      }
     }
   }
 
@@ -443,57 +510,32 @@ class MediaPreviewFragment :
   }
 
   private fun bindAlbumRail(albumThumbnailMedia: List<Media>, currentItem: MediaTable.MediaRecord) {
-    val albumRail: RecyclerView = binding.mediaPreviewPlaybackControls.recyclerView
+    val scrubber = binding.mediaPreviewAlbumScrubber
     if (albumThumbnailMedia.size > 1) {
-      val firstRailDisplay = albumRail.visibility == View.GONE
-      if (firstRailDisplay) {
-        albumRail.visibility = View.INVISIBLE
-        albumRail.alpha = 0f
-      }
-      val railItems = albumThumbnailMedia.map { MediaRailAdapter.MediaRailItem(it, it.uri == currentItem.attachment?.uri) }
-      albumRailAdapter.submitList(railItems) {
-        albumRail.post {
-          scrollAlbumRailToCurrentAdapterPosition(!firstRailDisplay)
-          crossfadeViewIn(albumRail)
-        }
-      }
+      currentAlbum = albumThumbnailMedia
+      currentAlbumMessageId = currentItem.attachment?.mmsId ?: -1
+      val selected = albumThumbnailMedia.indexOfFirst { it.uri == currentItem.attachment?.uri }.coerceAtLeast(0)
+      scrubber.setItems(Glide.with(this), albumThumbnailMedia, selected)
+      scrubber.visible = true
     } else {
-      albumRail.visibility = View.GONE
-      albumRailAdapter.submitList(emptyList())
-    }
-  }
-
-  private fun scrollAlbumRailToCurrentAdapterPosition(smooth: Boolean = true) {
-    if (!isResumed) {
-      return
-    }
-
-    val currentItemPosition = albumRailAdapter.findSelectedItemPosition()
-    val albumRail: RecyclerView = binding.mediaPreviewPlaybackControls.recyclerView
-    val offsetFromStart = (albumRail.width - individualItemWidth) / 2
-    val smoothScroller = OffsetSmoothScroller(requireContext(), offsetFromStart)
-    smoothScroller.targetPosition = currentItemPosition
-    val layoutManager = albumRail.layoutManager as LinearLayoutManager
-    if (smooth) {
-      layoutManager.scrollToPosition(currentItemPosition)
-      layoutManager.startSmoothScroll(smoothScroller)
-    } else {
-      layoutManager.scrollToPositionWithOffset(currentItemPosition, offsetFromStart)
+      // owner 2026-09-25：只有一张时不显示缩略条（k / N 也一起不显示）。
+      currentAlbum = emptyList()
+      currentAlbumMessageId = -1
+      scrubber.visible = false
     }
   }
 
   private fun crossfadeViewIn(view: View, duration: Long = 200): Boolean {
+    if (chromeHiddenUntilTap && view == binding.mediaPreviewDetailsContainer) {
+      return false
+    }
+
     return if (!view.isVisible && fullscreenHelper.isSystemUiVisible) {
       val viewPropertyAnimator = view.animate()
         .alpha(1f)
         .setDuration(duration)
         .withStartAction {
           view.visibility = View.VISIBLE
-        }
-        .withEndAction {
-          if (getView() != null && view == binding.mediaPreviewPlaybackControls.recyclerView) {
-            scrollAlbumRailToCurrentAdapterPosition()
-          }
         }
       viewPropertyAnimator.interpolator = PathInterpolator(0.17f, 0.17f, 0f, 1f)
       viewPropertyAnimator.start()
@@ -507,9 +549,9 @@ class MediaPreviewFragment :
     return childFragmentManager.findFragmentByTag(pagerAdapter.getFragmentTag(currentPosition)) as? MediaPreviewPageFragment
   }
 
-  private fun jumpViewPagerToMedia(media: Media) {
+  private fun jumpViewPagerToMedia(media: Media, smooth: Boolean = true) {
     val position = pagerAdapter.findItemPosition(media)
-    binding.mediaPager.setCurrentItem(position, true)
+    binding.mediaPager.setCurrentItem(position, smooth)
   }
 
   private fun getTitleText(fromRecipientId: RecipientId, threadRecipientId: RecipientId, isOutgoing: Boolean, showThread: Boolean): String {
@@ -568,6 +610,11 @@ class MediaPreviewFragment :
   }
 
   override fun singleTapOnMedia(): Boolean {
+    if (chromeHiddenUntilTap) {
+      chromeHiddenUntilTap = false
+      fullscreenHelper.showSystemUI()
+      return true
+    }
     fullscreenHelper.toggleUiVisibility()
     return true
   }
@@ -728,6 +775,15 @@ class MediaPreviewFragment :
     return attachmentCount <= 1 && MessageConstraintsUtil.isValidRemoteDeleteSend(listOf(messageRecord), System.currentTimeMillis())
   }
 
+  /** Tellomi（#1257）：记下「回复哪条消息的哪一张」，关掉查看器；会话页回到前台时接手（ConversationFragment.onResume）。 */
+  private fun replyToCurrentItem(currentItem: MediaTable.MediaRecord) {
+    val attachment = currentItem.attachment ?: return
+    val uri = attachment.displayUri ?: attachment.uri ?: return
+    pauseCurrentMediaIfVideo()
+    MediaPreviewCache.pendingReply = MediaPreviewCache.PendingReply(currentItem.threadId, attachment.mmsId, uri)
+    requireActivity().finish()
+  }
+
   private fun editMediaItem(currentItem: MediaTable.MediaRecord) {
     val media = currentItem.toMedia()
     if (media == null) {
@@ -750,16 +806,6 @@ class MediaPreviewFragment :
   override fun onDestroyView() {
     super.onDestroyView()
     viewModel.onDestroyView()
-  }
-
-  private class OffsetSmoothScroller(context: Context, val offset: Int) : LinearSmoothScroller(context) {
-    override fun getHorizontalSnapPreference(): Int {
-      return SNAP_TO_START
-    }
-
-    override fun calculateDxToMakeVisible(view: View?, snapPreference: Int): Int {
-      return offset + super.calculateDxToMakeVisible(view, snapPreference)
-    }
   }
 
   companion object {

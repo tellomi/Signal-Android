@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
+import android.net.Uri
 import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -19,9 +20,16 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityNodeInfo
+import androidx.appcompat.widget.Toolbar
+import androidx.core.os.BundleCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -34,14 +42,20 @@ import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.attachments.Cdn
 import org.thoughtcrime.securesms.attachments.PointerAttachment
 import org.thoughtcrime.securesms.attachments.UriAttachment
+import org.thoughtcrime.securesms.components.InputPanel
+import org.thoughtcrime.securesms.components.ThumbnailView
 import org.thoughtcrime.securesms.components.albumcarousel.AlbumCarouselGeometry
 import org.thoughtcrime.securesms.components.albumcarousel.AlbumCarouselView
 import org.thoughtcrime.securesms.conversation.colors.ChatColorsPalette
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardBottomSheet
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
 import org.thoughtcrime.securesms.database.AttachmentTable
 import org.thoughtcrime.securesms.database.MessageType
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.groups.GroupId
+import org.thoughtcrime.securesms.mediapreview.mediarail.AlbumScrubberView
 import org.thoughtcrime.securesms.mms.IncomingMessage
 import org.thoughtcrime.securesms.mms.OutgoingMessage
 import org.thoughtcrime.securesms.mms.QuoteModel
@@ -224,7 +238,10 @@ class AlbumCarouselScreenshots {
     File(outDir, "metrics-group.txt").writeText(report.toString())
   }
 
-  /** 判据 5（C-9）：点第 7 张，查看器从第 7 张开始；在查看器里翻一张再关，相册已滚到那一张、它整张露出。 */
+  /**
+   * 判据 5（C-9）+ owner 2026-09-25 补充的查看器：点第 7 张，查看器从第 7 张开始、四角按钮默认隐藏、底部缩略条与「7 / 12」在；
+   * 在缩略条上往右拖，查看器跟着切到后面几张；轻点图片后按钮出现；关闭后相册停在拖到的那一张、它整张露出。
+   */
   @Test
   fun viewerOpensAtTappedItemAndReturnsToCurrentOne() {
     val other = harness.others[4]
@@ -239,25 +256,74 @@ class AlbumCarouselScreenshots {
       settle(1500)
       conversation.onActivity { activity -> liveCarousels(activity)[0].findItemView(6)!!.performClick() }
       settle(2500)
+
+      val viewer = resumedActivity()
+      onMain {
+        val toolbar = viewer.findViewById<View>(R.id.toolbar_layout)
+        val scrubber = viewer.findViewById<AlbumScrubberView>(R.id.media_preview_album_scrubber)
+        report.appendLine("viewer: opened toolbarShown=${chromeShown(toolbar)} scrubberShown=${chromeShown(scrubber)} selected=${scrubber.selectedIndexForTesting()}")
+        // owner 2026-09-25（对照 Telegram）：打开时什么都不显示——四角按钮、缩略条都不在
+        assertFalse("打开时四角按钮不显示", chromeShown(toolbar))
+        assertFalse("打开时缩略条不显示", chromeShown(scrubber))
+        assertEquals(6, scrubber.selectedIndexForTesting())
+      }
       shot("viewer-1-opened-on-7")
 
-      // 查看器里横向滑一张，再返回
+      // 轻点图片：四角按钮和缩略条一起出现
       val width = harness.context.resources.displayMetrics.widthPixels.toFloat()
       val height = harness.context.resources.displayMetrics.heightPixels.toFloat()
-      drag(width * 0.85f, height * 0.5f, width * 0.15f)
+      tap(width / 2f, height * 0.4f)
+      settle(1200)
+      var scrubberCenterY = 0f
+      onMain {
+        val toolbar = viewer.findViewById<View>(R.id.toolbar_layout)
+        val scrubber = viewer.findViewById<AlbumScrubberView>(R.id.media_preview_album_scrubber)
+        report.appendLine("viewer: afterTap toolbarShown=${chromeShown(toolbar)} scrubberShown=${chromeShown(scrubber)}")
+        assertTrue("轻点后四角按钮出现", chromeShown(toolbar))
+        assertTrue("轻点后缩略条出现", chromeShown(scrubber))
+        scrubberCenterY = screenY(scrubber) + scrubber.paddingTop + 22f * density
+      }
+      shot("viewer-2-tapped-chrome-and-strip")
+
+      // 在缩略条上从当前那张往右拖 90dp：指到哪张就是哪张
+      drag(width / 2f, scrubberCenterY, width / 2f + 90f * density)
+      settle(1200)
+      var scrubbedTo = -1
+      onMain {
+        scrubbedTo = viewer.findViewById<AlbumScrubberView>(R.id.media_preview_album_scrubber).selectedIndexForTesting()
+        report.appendLine("viewer: afterScrub selected=$scrubbedTo")
+        assertTrue("拖缩略条能切到后面的图", scrubbedTo >= 7)
+      }
+      shot("viewer-3-scrubbed")
+
+      // 转发：相册里的一张先问「这张 / 全部 N 张」；选「全部」后转发面板里是整组 12 张
+      onMain { viewer.findViewById<View>(R.id.exo_forward).performClick() }
+      settle(800)
+      shot("viewer-3b-forward-choice")
+      clickText(harness.context.resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_photos, 12, 12))
       settle(1500)
-      shot("viewer-2-swiped")
+      onMain {
+        val sheet = allFragments((viewer as FragmentActivity).supportFragmentManager).filterIsInstance<MultiselectForwardBottomSheet>().firstOrNull()
+        val args = sheet?.arguments?.let { BundleCompat.getParcelable(it, MultiselectForwardFragment.ARGS, MultiselectForwardFragmentArgs::class.java) }
+        val mediaCount = args?.multiShareArgs?.sumOf { it.media.size } ?: -1
+        report.appendLine("viewer: forwardAll sheetShown=${sheet != null} mediaCount=$mediaCount")
+        assertEquals("「全部 12 张」转发的是整组", 12, mediaCount)
+      }
+      shot("viewer-3c-forward-all-sheet")
+      instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
+      settle(800)
+
       instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
       settle(2000)
-      shot("viewer-3-closed")
+      shot("viewer-4-closed")
 
       conversation.onActivity { activity ->
         val carousel = liveCarousels(activity)[0]
         val current = carousel.currentItemIndexForTesting()
         val item = carousel.findItemView(current)!!
         report.appendLine("viewer: afterReturn currentIndex=$current itemLeftDp=${dp(screenX(item))} itemRightDp=${dp(screenX(item) + item.width)}")
-        // 查看器里从第 7 张（下标 6）翻到了相邻的一张：关掉后相册停在那一张，而且它整张在屏幕里
-        assertTrue(current == 5 || current == 7)
+        // 关掉后相册停在查看器最后那一张，而且它整张在屏幕里
+        assertEquals(scrubbedTo, current)
         assertTrue(screenX(item) >= 0 && screenX(item) + item.width <= activity.resources.displayMetrics.widthPixels)
       }
     } finally {
@@ -265,6 +331,90 @@ class AlbumCarouselScreenshots {
     }
 
     File(outDir, "metrics-viewer.txt").writeText(report.toString())
+  }
+
+  /** owner 2026-09-25：只有一张图时，查看器底部不显示缩略条（也没有 k / N）。 */
+  @Test
+  fun singleImageViewerHasNoScrubber() {
+    val other = harness.others[7]
+    val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
+    insertIncomingAlbum(other, threadId, sizes(1, portraitOnly = false), body = null)
+
+    val conversation = openConversation(other, threadId)
+    try {
+      settle(2500)
+      conversation.onActivity { activity ->
+        val thumbnail = collectThumbnails(activity.window.decorView).first { it.isShown && it.width > 0 }
+        thumbnail.performClick()
+      }
+      settle(2500)
+      val viewer = resumedActivity()
+      onMain {
+        val scrubber = viewer.findViewById<AlbumScrubberView>(R.id.media_preview_album_scrubber)
+        report.appendLine("single: scrubberVisibility=${scrubber.visibility}")
+        assertEquals(View.GONE, scrubber.visibility)
+      }
+      shot("single-1-viewer-no-scrubber")
+      instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
+      settle(1500)
+    } finally {
+      conversation.close()
+    }
+
+    File(outDir, "metrics-single.txt").writeText(report.toString())
+  }
+
+  /**
+   * owner 2026-09-25（对照 Telegram）：查看器「···」里的「回复」回复的是正在看的那一张——回到会话后，
+   * 输入框上方的引用是整条相册消息，缩略图是那一张（不是第一张）。
+   */
+  @Test
+  fun viewerReplyQuotesTheItemOnScreen() {
+    val other = harness.others[6]
+    val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
+    val (sentAt, author) = insertIncomingAlbum(other, threadId, sizes(5, portraitOnly = false), body = null)
+    val album = SignalDatabase.messages.getMessageFor(sentAt, author)!!
+    val third = SignalDatabase.attachments.getAttachmentsForMessage(album.id).sortedBy { it.displayOrder }[2]
+
+    val conversation = openConversation(other, threadId)
+    try {
+      waitForCarousels(conversation, 1)
+      conversation.onActivity { activity -> liveCarousels(activity)[0].revealItem(2) }
+      settle(1500)
+      conversation.onActivity { activity -> liveCarousels(activity)[0].findItemView(2)!!.performClick() }
+      settle(2500)
+
+      val viewer = resumedActivity()
+      val width = harness.context.resources.displayMetrics.widthPixels.toFloat()
+      val height = harness.context.resources.displayMetrics.heightPixels.toFloat()
+      tap(width / 2f, height * 0.4f)
+      settle(1200)
+      onMain {
+        val toolbar = viewer.findViewById<Toolbar>(R.id.toolbar)
+        val reply = toolbar.menu.findItem(R.id.reply)
+        report.appendLine("reply: menuItemVisible=${reply?.isVisible}")
+        assertTrue("从会话打开的相册，「···」里有回复", reply?.isVisible == true)
+        toolbar.menu.performIdentifierAction(R.id.reply, 0)
+      }
+      settle(2500)
+
+      var quotedId = 0L
+      var quotedUri: Uri? = null
+      conversation.onActivity { activity ->
+        val quote = collectInputPanels(activity.window.decorView).first().quote.orElse(null)
+        quotedId = quote?.id ?: 0L
+        quotedUri = quote?.attachment?.uri
+        report.appendLine("reply: quoteAttachment=${quote?.attachment?.javaClass?.simpleName} contentType=${quote?.attachment?.contentType} displayUri=${quote?.attachment?.displayUri} thumbnailUri=${quote?.attachment?.thumbnailUri}")
+      }
+      report.appendLine("reply: quoteShown=${isReplyQuoteShown(conversation)} quotedId=$quotedId expectedId=$sentAt quotedUri=$quotedUri expectedUri=${third.uri}")
+      assertTrue("回到会话后输入框上方出现引用", isReplyQuoteShown(conversation))
+      assertEquals("引用的是整条相册消息", sentAt, quotedId)
+      assertEquals("引用缩略图是查看器里正在看的第 3 张", third.uri, quotedUri)
+      shot("reply-1-quote-is-third-item")
+    } finally {
+      File(outDir, "metrics-reply.txt").writeText(report.toString())
+      conversation.close()
+    }
   }
 
   /** C-12、长按、渐变聊天色：一张都没下载 / 下了一部分；长按快照带上整行相册；渐变色只画在上下两段。 */
@@ -447,6 +597,70 @@ class AlbumCarouselScreenshots {
     }
     drag(fromX, y, fromX + 110f * density)
     settle(900)
+  }
+
+  /** 视图真的在屏幕上可见（自己和所有上层都可见、不透明度不为 0）。 */
+  private fun chromeShown(view: View): Boolean {
+    var v: View? = view
+    while (v != null) {
+      if (v.visibility != View.VISIBLE || v.alpha == 0f) return false
+      v = v.parent as? View
+    }
+    return true
+  }
+
+  private fun tap(x: Float, y: Float) {
+    val down = SystemClock.uptimeMillis()
+    instrumentation.sendPointerSync(MotionEvent.obtain(down, down, MotionEvent.ACTION_DOWN, x, y, 0))
+    instrumentation.sendPointerSync(MotionEvent.obtain(down, down + 60, MotionEvent.ACTION_UP, x, y, 0))
+  }
+
+  private fun onMain(block: () -> Unit) {
+    var error: Throwable? = null
+    instrumentation.runOnMainSync {
+      try {
+        block()
+      } catch (t: Throwable) {
+        error = t
+      }
+    }
+    error?.let { throw it }
+  }
+
+  /** 当前在前台的 Activity（查看器是另一个 Activity）。 */
+  private fun resumedActivity(): Activity {
+    var activity: Activity? = null
+    instrumentation.runOnMainSync {
+      activity = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).firstOrNull()
+    }
+    return activity!!
+  }
+
+  private fun allFragments(manager: FragmentManager): List<Fragment> {
+    return manager.fragments.flatMap { listOf(it) + allFragments(it.childFragmentManager) }
+  }
+
+  /** 按文字点一下（对话框的列表项在另一个窗口里，走无障碍节点点它可点的那一层）。 */
+  private fun clickText(text: String) {
+    val node = instrumentation.uiAutomation.rootInActiveWindow?.findAccessibilityNodeInfosByText(text)?.firstOrNull()
+    assertTrue("屏幕上找不到「$text」", node != null)
+    var target = node
+    while (target != null && !target.isClickable) {
+      target = target.parent
+    }
+    assertTrue("「$text」没有可点的一层", target?.performAction(AccessibilityNodeInfo.ACTION_CLICK) == true)
+  }
+
+  private fun collectInputPanels(view: View): List<InputPanel> {
+    if (view is InputPanel) return listOf(view)
+    if (view !is ViewGroup) return emptyList()
+    return (0 until view.childCount).flatMap { collectInputPanels(view.getChildAt(it)) }
+  }
+
+  private fun collectThumbnails(view: View): List<ThumbnailView> {
+    if (view is ThumbnailView) return listOf(view)
+    if (view !is ViewGroup) return emptyList()
+    return (0 until view.childCount).flatMap { collectThumbnails(view.getChildAt(it)) }
   }
 
   private fun drag(fromX: Float, y: Float, toX: Float) {

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Tellomi（#1257，owner 2026-09-25）：回复正在看的这一张（只在从会话里打开时出现） -->
+    <item android:id="@+id/reply"
+          android:title="@string/conversation_selection__menu_reply"
+          android:icon="@drawable/symbol_reply_24"
+          android:visible="false"
+          app:showAsAction="never"/>
     <item android:id="@+id/edit"
           android:title="@string/media_preview__edit_title"
           android:icon="@drawable/ic_editmedia_outline_24"
