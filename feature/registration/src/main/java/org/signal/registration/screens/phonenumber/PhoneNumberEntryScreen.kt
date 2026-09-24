@@ -616,6 +616,8 @@ private fun PhoneNumberInputFields(
             onClick = {
               onEvent(PhoneNumberEntryScreenEvents.NationalNumberChanged(oldValue = phoneNumberTextFieldValue.text, newValue = ""))
               phoneNumberTextFieldValue = TextFieldValue("")
+              // 框没有焦点时 × 也显示；清完就能接着输，和 iOS 一致（taishi 审查 b13 不阻塞）。
+              focusRequester.requestFocus()
             },
             modifier = Modifier.testTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON)
           ) {

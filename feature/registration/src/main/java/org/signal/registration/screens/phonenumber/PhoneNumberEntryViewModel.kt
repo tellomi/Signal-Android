@@ -287,6 +287,7 @@ class PhoneNumberEntryViewModel(
 
     // Only attempt to split out a country code / trunk prefix on a bulk entry (paste or autofill)
     if (insertedCharCount(oldValue, newValue) > 1) {
+      tellomiFullNumberInserted(numberState, oldValue, newValue)?.let { return it }
       if (newValue.trimStart().startsWith("+")) {
         redistributeFullPhoneNumber(numberState, "+$digitsOnly")?.let { return it }
       } else {
@@ -922,6 +923,49 @@ class PhoneNumberEntryViewModel(
     } catch (_: NumberParseException) {
       false
     }
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1213）：一次插进来的那一段本身就是完整号码时，整框换成它，不和框里已有的数字拼接；
+   * 「0086…」按「+86…」处理。认三种写法：「+…」「00…」，以及框里已有数字时、以当前区号开头的一串（空框的这种上游已经会拆）。
+   * 去掉前缀后还得是有效号码才算，免得把「0013 8000」这种本地号码片段读成 +1 38000。
+   * 不算就返回 null，交回上游的处理。iOS 的 RegistrationPhoneNumberInputView.tellomiFullPhoneNumber 是同一件事。
+   */
+  private fun tellomiFullNumberInserted(state: PhoneNumberEntryState, oldValue: String, newValue: String): PhoneNumberEntryState? {
+    val inserted = insertedText(oldValue, newValue).filter { it.isDigit() || it == '+' }
+    val digits = inserted.filter { it.isDigit() }
+    val international = when {
+      inserted.startsWith("+") -> digits
+      inserted.startsWith("00") -> digits.drop(2)
+      oldValue.any { it.isDigit() } && inserted == digits && state.countryCode.isNotEmpty() && digits.startsWith(state.countryCode) -> digits
+      else -> return null
+    }
+    return if (isValidFullNumber(international)) redistributeFullPhoneNumber(state, "+$international") else null
+  }
+
+  private fun isValidFullNumber(digits: String): Boolean {
+    return try {
+      phoneNumberUtil.isValidNumber(phoneNumberUtil.parse("+$digits", null))
+    } catch (_: NumberParseException) {
+      false
+    }
+  }
+
+  /** The text that replaced the changed middle part of [old] to make [new]; see [insertedCharCount]. */
+  private fun insertedText(old: String, new: String): String {
+    val max = minOf(old.length, new.length)
+
+    var prefix = 0
+    while (prefix < max && old[prefix] == new[prefix]) {
+      prefix++
+    }
+
+    var suffix = 0
+    while (suffix < max - prefix && old[old.length - 1 - suffix] == new[new.length - 1 - suffix]) {
+      suffix++
+    }
+
+    return new.substring(prefix, (new.length - suffix).coerceAtLeast(prefix))
   }
 
   private fun insertedCharCount(old: String, new: String): Int {

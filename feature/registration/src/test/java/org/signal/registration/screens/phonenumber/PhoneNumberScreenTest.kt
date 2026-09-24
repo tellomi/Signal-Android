@@ -11,7 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -367,5 +369,28 @@ class PhoneNumberScreenTest {
     val change = events.filterIsInstance<PhoneNumberEntryScreenEvents.NationalNumberChanged>().last()
     assert(change.newValue.isEmpty()) { "Expected the number to be cleared but got ${change.newValue}" }
     composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).assertDoesNotExist()
+  }
+
+  @Test
+  fun `clearing the number from an unfocused field puts the cursor back so typing can continue`() {
+    // × 在框没有焦点时也显示（iOS 只在编辑中显示）；清完要能直接接着输（taishi 审查 b13 不阻塞）。
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = PhoneNumberEntryState(
+            countryCode = "86",
+            nationalNumber = "13800138000",
+            formattedNumber = "138 0013 8000",
+            isNumberPossible = true
+          ),
+          onEvent = {}
+        )
+      }
+    }
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_PHONE_FIELD).assertIsNotFocused()
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).performClick()
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_PHONE_FIELD).assertIsFocused()
   }
 }
