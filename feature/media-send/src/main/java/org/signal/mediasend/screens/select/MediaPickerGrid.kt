@@ -113,6 +113,8 @@ internal fun MediaPickerFilesScreen(
   recipientChatColor: Color?
 ) {
   val columns = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 3
+  // 横幅占掉网格的第一格：格子下标 → 媒体（横幅那格是 null，不能选）。
+  val gridItems = List(if (showLimitedAccessBanner) 1 else 0) { null } + state.selectedMediaFolderItems
 
   Scaffold(
     topBar = { PickerTopBar(state = state, onEvent = onEvent, recipientChatColor = recipientChatColor) },
@@ -133,7 +135,23 @@ internal fun MediaPickerFilesScreen(
           modifier = Modifier
             .fillMaxSize()
             .testTag(TestTags.MEDIA_SELECT_GRID)
-            .then(if (showPlaceholders) Modifier else Modifier.dragToSelect(dragToSelectState))
+            .then(
+              if (showPlaceholders) {
+                Modifier
+              } else {
+                Modifier
+                  .swipeToSelect(
+                    gridState = gridState,
+                    isSelected = { index -> gridItems.getOrNull(index)?.let { media -> state.selectedMedia.any { it.uri == media.uri } } },
+                    setSelected = { index, selected ->
+                      gridItems.getOrNull(index)?.let { media ->
+                        onEvent(if (selected) MediaSelectScreenEvents.MediaSelected(setOf(media)) else MediaSelectScreenEvents.MediaUnselected(setOf(media)))
+                      }
+                    }
+                  )
+                  .dragToSelect(dragToSelectState)
+              }
+            )
         ) {
           if (showLimitedAccessBanner) {
             item(key = LIMITED_ACCESS_BANNER_KEY, span = { GridItemSpan(maxLineSpan) }) {
@@ -180,7 +198,7 @@ private object PickerMetrics {
   val roundButtonSize = 44.dp
   val countPillHeight = 44.dp
   val checkTouchSize = 29.dp
-  val checkVisualSize = 22.dp
+  val checkVisualSize = 24.dp
   val checkBorder = 1.5.dp
 }
 
@@ -462,7 +480,7 @@ private fun PickerTile(
   }
 }
 
-/** 编号勾：没选是白色描边的空圈，选中填强调色并显示第几张（照 Telegram 两端的编号勾）。 */
+/** 编号勾：白色 1.5dp 描边 + 阴影；没选是半透明的空圈，选中填强调色并显示第几张（照 Telegram 两端的编号勾，24dp 同 Telegram Android CheckBox2）。 */
 @Composable
 private fun SelectionCheck(
   selectionIndex: Int,
@@ -490,15 +508,8 @@ private fun SelectionCheck(
       modifier = Modifier
         .size(PickerMetrics.checkVisualSize)
         .shadow(elevation = 2.dp, shape = CircleShape, clip = false)
-        .then(
-          if (isSelected) {
-            Modifier.background(color = color, shape = CircleShape)
-          } else {
-            Modifier
-              .background(color = Color.Black.copy(alpha = 0.12f), shape = CircleShape)
-              .border(width = PickerMetrics.checkBorder, color = Color.White, shape = CircleShape)
-          }
-        )
+        .background(color = if (isSelected) color else Color.Black.copy(alpha = 0.12f), shape = CircleShape)
+        .border(width = PickerMetrics.checkBorder, color = Color.White, shape = CircleShape)
     ) {
       if (isSelected) {
         Text(
