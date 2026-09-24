@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.thoughtcrime.securesms.components.settings.app.AppSettingsActivity
 import org.thoughtcrime.securesms.conversationlist.model.Conversation
+import org.thoughtcrime.securesms.keyvalue.AccountValues
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.profiles.manage.EditProfileActivity
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -46,11 +47,18 @@ object TellomiOnboarding {
       return
     }
 
-    val recipientIds = conversations
+    onConversations(threadRecipientIds(conversations), Recipient.self().id, SignalStore.releaseChannel.releaseChannelRecipientId)
+  }
+
+  /**
+   * 列表里真正的会话的对方。列表空时的占位项、页眉、页脚也是 [Conversation]，它们的 recipient 都是 `Recipient.UNKNOWN`，
+   * 不滤掉就会被当成真人会话，新用户一进首屏三张卡就收起（taishi 中转包 7）。
+   */
+  @VisibleForTesting
+  internal fun threadRecipientIds(conversations: List<Conversation>): List<RecipientId> {
+    return conversations
       .filter { it.type == Conversation.Type.THREAD }
       .map { it.threadRecord.recipient.id }
-
-    onConversations(recipientIds, Recipient.self().id, SignalStore.releaseChannel.releaseChannelRecipientId)
   }
 
   @VisibleForTesting
@@ -70,15 +78,20 @@ object TellomiOnboarding {
   }
 
   /**
-   * 「我的二维码」卡：有用户名进二维码页；没有就先去设用户名。注册时用户名是选填的，而二维码页
-   * （`UsernameLinkSettingsViewModel`）取的是 `SignalStore.account.username!!`，没有用户名直接进会闪退——上游只在有用户名时才露出这个入口。
+   * 「我的二维码」卡去哪，分三支，照上游自己的两个入口（资料页、用户名失步横幅）：
+   * - 没有用户名：先去设用户名。注册时用户名是选填的，而二维码页（`UsernameLinkSettingsViewModel`）取的是
+   *   `SignalStore.account.username!!`，没有用户名直接进会闪退；
+   * - 用户名已不再分给这个账号（`USERNAME_AND_LINK_CORRUPTED`）：去修复页（taishi 中转包 7）。上游资料页在这个状态下
+   *   不露二维码入口，失步横幅走的也是 `usernameRecovery`；
+   * - 其余（包括只有链接坏了，二维码页自己会重置链接）：二维码页。
    */
   @JvmStatic
-  fun myQrCodeIntent(context: Context, hasUsername: Boolean = SignalStore.account.username != null): Intent {
-    return if (hasUsername) {
-      AppSettingsActivity.usernameLinkSettings(context)
-    } else {
-      EditProfileActivity.getIntentForUsernameEdit(context)
+  fun myQrCodeIntent(context: Context): Intent {
+    val account = SignalStore.account
+    return when {
+      account.username == null -> EditProfileActivity.getIntentForUsernameEdit(context)
+      account.usernameSyncState == AccountValues.UsernameSyncState.USERNAME_AND_LINK_CORRUPTED -> AppSettingsActivity.usernameRecovery(context)
+      else -> AppSettingsActivity.usernameLinkSettings(context)
     }
   }
 

@@ -6,20 +6,31 @@
 package org.thoughtcrime.securesms.megaphone
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.settings.app.AppSettingsActivity
+import org.thoughtcrime.securesms.conversationlist.model.Conversation
+import org.thoughtcrime.securesms.conversationlist.model.ConversationReader
+import org.thoughtcrime.securesms.database.model.ThreadWithRecipient
+import org.thoughtcrime.securesms.keyvalue.AccountValues
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.profiles.manage.EditProfileActivity
+import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.testutil.SignalStoreRule
+import java.util.Locale
 
 /**
  * Tellomi（tellomi/tellomi#1218 F-02、第 5 条）：首屏「开始使用」= 找朋友三条路（搜索用户名 / 我的二维码 / 邀请朋友）+ 设头像；
@@ -47,6 +58,27 @@ class TellomiOnboardingTest {
 
   private fun shownCards(): List<OnboardingListItem> {
     return OnboardingListItem.entries.filter(OnboardingState.DisplayState()::shouldDisplayListItem)
+  }
+
+  private fun thread(threadId: Long, recipientId: RecipientId): Conversation {
+    return Conversation(
+      ThreadWithRecipient.Builder(threadId)
+        .setRecipient(Recipient(id = recipientId, isResolving = false))
+        .setBody("hi")
+        .build()
+    )
+  }
+
+  /** 两个 intent 去的是同一页：同一个 Activity，extras（起始路由）逐项相同。 */
+  private fun assertSameDestination(expected: Intent, actual: Intent) {
+    assertEquals(expected.component, actual.component)
+    val expectedExtras = expected.extras!!
+    val actualExtras = actual.extras!!
+    assertEquals(expectedExtras.keySet(), actualExtras.keySet())
+    expectedExtras.keySet().forEach {
+      @Suppress("DEPRECATION")
+      assertEquals(it, expectedExtras.get(it), actualExtras.get(it))
+    }
   }
 
   @Test
@@ -119,7 +151,42 @@ class TellomiOnboardingTest {
 
     SignalStore.account.username = "kaixin.01"
 
-    assertEquals(AppSettingsActivity::class.java.name, TellomiOnboarding.myQrCodeIntent(context).component?.className)
+    assertSameDestination(AppSettingsActivity.usernameLinkSettings(context), TellomiOnboarding.myQrCodeIntent(context))
+  }
+
+  /** taishi 中转包 7：用户名已不再分给这个账号时，照上游转去修复页；只有链接坏了还是二维码页（它自己会重置链接）。 */
+  @Test
+  fun `my qr code goes to username recovery when the username is out of sync`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    SignalStore.account.username = "kaixin.01"
+
+    SignalStore.account.usernameSyncState = AccountValues.UsernameSyncState.USERNAME_AND_LINK_CORRUPTED
+    assertSameDestination(AppSettingsActivity.usernameRecovery(context), TellomiOnboarding.myQrCodeIntent(context))
+
+    SignalStore.account.usernameSyncState = AccountValues.UsernameSyncState.LINK_CORRUPTED
+    assertSameDestination(AppSettingsActivity.usernameLinkSettings(context), TellomiOnboarding.myQrCodeIntent(context))
+
+    SignalStore.account.usernameSyncState = AccountValues.UsernameSyncState.IN_SYNC
+    assertSameDestination(AppSettingsActivity.usernameLinkSettings(context), TellomiOnboarding.myQrCodeIntent(context))
+  }
+
+  /** taishi 中转包 7：列表空时的占位项、页眉、页脚也是 Conversation，recipient 都是 Recipient.UNKNOWN，不能算真人会话。 */
+  @Test
+  fun `placeholders headers and footers in the list are not conversations`() {
+    val placeholders = listOf(
+      Conversation.Type.EMPTY,
+      Conversation.Type.PINNED_HEADER,
+      Conversation.Type.UNPINNED_HEADER,
+      Conversation.Type.ARCHIVED_FOOTER,
+      Conversation.Type.CONVERSATION_FILTER_EMPTY
+    ).map { Conversation(ConversationReader.buildThreadRecordForType(it, 0, false)) }
+
+    assertEquals(emptyList<RecipientId>(), TellomiOnboarding.threadRecipientIds(placeholders))
+
+    val onlyNotes = placeholders + thread(1, self)
+    assertFalse(TellomiOnboarding.hasRealConversation(TellomiOnboarding.threadRecipientIds(onlyNotes), self, officialAccount))
+
+    assertEquals(listOf(self, friend), TellomiOnboarding.threadRecipientIds(onlyNotes + thread(2, friend)))
   }
 
   @Test
@@ -131,5 +198,25 @@ class TellomiOnboardingTest {
     assertTrue(SignalStore.onboarding.shouldShowFindByUsername())
     assertTrue(SignalStore.onboarding.shouldShowMyQrCode())
     assertEquals(before + 1, TellomiOnboarding.findFriendsChanges.value)
+  }
+
+  /**
+   * taishi 中转包 7：zh-TW 的卡片要和点进去的页面同一个说法（「使用者名稱」）；粤语两张卡原来没有译文，会显示英文。
+   */
+  @Test
+  fun `card titles match the pages they open in zh-TW and are translated for cantonese`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    fun localized(tag: String): Context {
+      return context.createConfigurationContext(Configuration(context.resources.configuration).apply { setLocale(Locale.forLanguageTag(tag)) })
+    }
+
+    val taiwan = localized("zh-TW")
+    assertTrue(taiwan.getString(R.string.FindByActivity__find_by_username).contains("使用者名稱"))
+    assertTrue(taiwan.getString(R.string.TellomiOnboarding__search_by_username).contains("使用者名稱"))
+
+    val english = localized("en")
+    val cantonese = localized("yue")
+    assertNotEquals(english.getString(R.string.TellomiOnboarding__search_by_username), cantonese.getString(R.string.TellomiOnboarding__search_by_username))
+    assertNotEquals(english.getString(R.string.TellomiOnboarding__my_qr_code), cantonese.getString(R.string.TellomiOnboarding__my_qr_code))
   }
 }
