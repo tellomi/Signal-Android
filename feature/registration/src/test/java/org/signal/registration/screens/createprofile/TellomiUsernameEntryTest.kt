@@ -64,27 +64,28 @@ class TellomiUsernameEntryTest {
   }
 
   /**
-   * taishi 审查包 4：词库的 PREFIX 规则以「非字母数字」为边界，`kefu_58` / `tellomi_58` / `admin_58` 正是要拦的形状，
-   * 而服务端拒绝表只收 EXACT，这种候选能保留成功。候选只在原名后面直接接两位或三位数字。
+   * taishi 审查包 4、中转包 8：词库的 PREFIX 规则以「非字母数字」为边界，`kefu_58`、`tellomi_support27` 都是要拦的形状，
+   * 而服务端拒绝表只收「保留词 × 01–99」，这种候选能保留成功。所以候选只留原名里的字母和数字（中间的 `_` 也去掉），
+   * 后面直接接两位或三位数字。
    */
   @Test
-  fun `candidates only append digits so they never form a reserved prefix with an underscore`() {
-    for (nickname in listOf("kefu", "tellomi", "admin", "Kaixin", "admin_", "kefu__")) {
-      val base = nickname.lowercase().trimEnd('_')
+  fun `candidates keep only letters and digits of the nickname and append digits`() {
+    val pattern = Regex("^[a-z][a-z0-9]*[0-9]{2,3}$")
+    for (nickname in listOf("kefu", "tellomi", "admin", "Kaixin", "admin_", "kefu__", "tellomi_support", "kefu_tellomi", "kai_xin")) {
+      val base = nickname.lowercase().filter { it != '_' }
       for (seed in 0 until 200) {
         val candidates = TellomiUsernameEntry.candidates(nickname, Random(seed))
 
         assertThat(candidates).hasSize(3)
-        assertThat(candidates).each { it.transform { candidate -> Regex("$base[0-9]{2,3}").matches(candidate) }.isTrue() }
-        assertThat(candidates).each { it.transform { candidate -> !candidate.startsWith("${base}_") }.isTrue() }
+        assertThat(candidates).each { it.transform { candidate -> pattern.matches(candidate) && candidate.startsWith(base) && '_' !in candidate }.isTrue() }
       }
     }
   }
 
-  /** taishi 中转包 7：先截到 17 位再去末尾的 `_`；第 17 位是 `_` 的长名，截完末尾不能又是 `_`（两个都是词库里的 PREFIX 词）。 */
+  /** 超长的原名：去掉 `_` 之后截到 17 位，候选不超 20 位（中转包 7 的两个样例）。 */
   @Test
-  fun `a long nickname is cut before its trailing underscore is dropped`() {
-    for ((nickname, base) in listOf("xitongguanliyuan_ab" to "xitongguanliyuan", "customer_service_x" to "customer_service")) {
+  fun `a long nickname is cut to seventeen letters or digits`() {
+    for ((nickname, base) in listOf("xitongguanliyuan_ab" to "xitongguanliyuana", "customer_service_x" to "customerservicex")) {
       for (seed in 0 until 200) {
         val candidates = TellomiUsernameEntry.candidates(nickname, Random(seed))
 
