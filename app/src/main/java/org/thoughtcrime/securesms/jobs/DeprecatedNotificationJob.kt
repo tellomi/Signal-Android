@@ -15,6 +15,7 @@ import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.jobmanager.Job
+import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.NotificationIds
 import kotlin.time.Duration.Companion.days
@@ -51,7 +52,9 @@ class DeprecatedNotificationJob private constructor(parameters: Parameters) : Jo
 
       if (BuildConfig.MANAGES_APP_UPDATES) {
         Log.d(TAG, "Showing deprecated notification for website APK")
-        intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://tellomi.app/download/"))
+        // Tellomi（taishi 审查 b14 包 8 不阻塞 2）：打开 App 内的更新页（阻断页 / 更新页本身会在清单检查失败时给「去官网下载」），
+        // 和只读横幅一致，不直接去浏览器。
+        intent = Intent(context, ClientDeprecatedActivity::class.java)
       } else {
         Log.d(TAG, "Showing deprecated notification for PlayStore")
         val packageName = context.packageName

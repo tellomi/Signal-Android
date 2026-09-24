@@ -43,6 +43,11 @@ class ApkUpdateJobTest {
     assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = true, existingIsRunning = false, existingAllowsMetered = true)).isFalse()
     assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = true, existingIsRunning = true, existingAllowsMetered = false)).isFalse()
     assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = false, existingIsRunning = false, existingAllowsMetered = false)).isFalse()
+
+    // taishi 审查 b14 包 7 不阻塞 2：用户在「重试」上点了重来，已经允许流量却卡着的那条也重排；正在下的照旧不打断，后台检查照旧不动。
+    assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = true, existingIsRunning = false, existingAllowsMetered = true, restartStuckDownload = true)).isTrue()
+    assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = true, existingIsRunning = true, existingAllowsMetered = true, restartStuckDownload = true)).isFalse()
+    assertThat(ApkUpdateJob.shouldReenqueueForMeteredNetwork(allowMeteredNetwork = false, existingIsRunning = false, existingAllowsMetered = true, restartStuckDownload = true)).isFalse()
   }
 
   @Test

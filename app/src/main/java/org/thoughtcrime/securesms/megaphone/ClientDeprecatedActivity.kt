@@ -65,7 +65,13 @@ class ClientDeprecatedActivity : BaseActivity() {
     }
 
     onBackPressedDispatcher.addCallback(this) {
-      moveTaskToBack(true)
+      // Tellomi（taishi 审查 b14 包 8 不阻塞 1）：只有自动盖上的阻断页，返回键才把 App 退到后台；
+      // 从只读横幅 / 输入框 / 通知主动点进来的，返回就关掉这一页，回到原来的地方。
+      if (UpdateRequired.shouldBlock()) {
+        moveTaskToBack(true)
+      } else {
+        finish()
+      }
     }
 
     lifecycleScope.launch {
@@ -76,6 +82,7 @@ class ClientDeprecatedActivity : BaseActivity() {
             UpdateRequiredScreenAction.OpenDownloadPage -> PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(this@ClientDeprecatedActivity)
             UpdateRequiredScreenAction.ConfirmViewChatsOnly -> confirmViewChatsOnly()
             UpdateRequiredScreenAction.EnterReadOnly -> enterReadOnly()
+            UpdateRequiredScreenAction.LeavePage -> finish()
           }
         }
       }

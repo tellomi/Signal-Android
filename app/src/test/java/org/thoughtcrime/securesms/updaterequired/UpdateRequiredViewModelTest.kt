@@ -259,7 +259,7 @@ class UpdateRequiredViewModelTest {
     repository.script(
       snapshot(Status.RUNNING, 30, 100, allowsMetered = false),
       snapshot(Status.RUNNING, 30, 100, allowsMetered = false),
-      snapshot(Status.PAUSED, 30, 100, allowsMetered = false)
+      snapshot(Status.PAUSED, 30, 100, allowsMetered = false, waitingForNetwork = true)
     )
     val viewModel = createViewModel()
     runCurrent()
@@ -345,6 +345,68 @@ class UpdateRequiredViewModelTest {
     assertThat(repository.installs).isEmpty()
   }
 
+  // ==================== taishi 审查 b14（包 7、包 8）====================
+
+  @Test
+  fun `retrying after a stall asks the check to restart the stuck download`() = runViewModelTest {
+    // 包 7 不阻塞 2：卡住转「重试」以后再点，要把那条允许流量、却不动的下载删掉重排，不然 90 秒后又是同一条失败。
+    val viewModel = createViewModel()
+    repository.script(snapshot(Status.RUNNING, 20, 100))
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+    advanceTimeBy(UpdateRequiredViewModel.STALL_TIMEOUT_MS)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.Failed)
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+    assertThat(repository.restartFlags).containsExactly(false, true)
+  }
+
+  @Test
+  fun `a Wi-Fi-only download paused for a server retry is not called waiting for Wi-Fi`() = runViewModelTest {
+    // 包 7 不阻塞 3：连着 Wi-Fi、服务器出错进入 WAITING_TO_RETRY 的只许 Wi-Fi 的下载，不该说「原本只在连上 Wi-Fi 时下载」。
+    val viewModel = createViewModel()
+    repository.script(snapshot(Status.PAUSED, 30, 100, allowsMetered = false, waitingForNetwork = false))
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.InProgress(percent = 30))
+
+    advanceTimeBy(UpdateRequiredViewModel.STALL_TIMEOUT_MS)
+    runCurrent()
+    assertThat(viewModel.state.value.download).isEqualTo(Download.Failed)
+  }
+
+  @Test
+  fun `when the check fails offline, a finished package that is newer is installed`() = runViewModelTest {
+    // 包 8 不阻塞 5 后半：检查失败分支原来只有反向用例；比现在装的新、已经下好的包，没网也照样装。
+    repository.checkResult = false
+    val viewModel = createViewModel()
+    repository.script(snapshot(Status.SUCCESSFUL, 100, 100))
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+
+    assertThat(viewModel.state.value.download).isEqualTo(Download.ReadyToInstall)
+    assertThat(repository.installs).containsExactly(DOWNLOAD_ID)
+  }
+
+  @Test
+  fun `when it is not blocking, only viewing the chats just leaves the page`() = runViewModelTest {
+    // 包 8 不阻塞 1：从只读横幅主动点进来的（已经选过只读，或者构建到期），出口不用再确认，关掉这一页就行。
+    repository.blocking = false
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel)
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyClicked)
+    runCurrent()
+
+    assertThat(actions).containsExactly(UpdateRequiredScreenAction.LeavePage)
+    assertThat(repository.readOnlyChoices).isEqualTo(0)
+  }
+
   // ==================== owner 2026-09-24 规则 1：只读出口 ====================
 
   @Test
@@ -389,9 +451,12 @@ class UpdateRequiredViewModelTest {
     return actions
   }
 
-  /** 默认是阻断页点出来的流量下载；后台检查排的只许 Wi-Fi 的下载传 allowsMetered = false。 */
-  private fun snapshot(status: Status, bytesSoFar: Long, totalBytes: Long, id: Long = DOWNLOAD_ID, allowsMetered: Boolean = true): UpdateDownloadSnapshot {
-    return UpdateDownloadSnapshot(id, status, bytesSoFar, totalBytes, allowsMetered)
+  /**
+   * 默认是阻断页点出来的流量下载；后台检查排的只许 Wi-Fi 的下载传 allowsMetered = false。
+   * [waitingForNetwork] 照真实仓库的算法：PENDING 算在等网络；PAUSED 要看原因，默认不算（服务器出错后的等重试）。
+   */
+  private fun snapshot(status: Status, bytesSoFar: Long, totalBytes: Long, id: Long = DOWNLOAD_ID, allowsMetered: Boolean = true, waitingForNetwork: Boolean = status == Status.PENDING): UpdateDownloadSnapshot {
+    return UpdateDownloadSnapshot(id, status, bytesSoFar, totalBytes, allowsMetered, waitingForNetwork)
   }
 
   private class FakeRepository : UpdateRequiredRepository {
@@ -401,6 +466,8 @@ class UpdateRequiredViewModelTest {
     var checkResult = true
     var availableVersion: String? = "0.1.3"
     var checks = 0
+    val restartFlags = mutableListOf<Boolean>()
+    var blocking = true
     var readOnlyChoices = 0
     val installs = mutableListOf<Long>()
 
@@ -416,10 +483,13 @@ class UpdateRequiredViewModelTest {
     override fun canRequestPackageInstalls(): Boolean = canInstall
     override fun isOnline(): Boolean = online
 
-    override fun runRequiredUpdateCheck(): Boolean {
+    override fun runRequiredUpdateCheck(restartStuckDownload: Boolean): Boolean {
       checks++
+      restartFlags += restartStuckDownload
       return checkResult
     }
+
+    override fun isBlocking(): Boolean = blocking
 
     override fun availableVersionName(): String? = availableVersion
 

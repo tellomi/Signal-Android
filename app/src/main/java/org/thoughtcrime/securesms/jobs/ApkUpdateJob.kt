@@ -42,7 +42,12 @@ class ApkUpdateJob private constructor(
    * Tellomi（tellomi/tellomi#1138）：「必须更新」阻断页发起的检查允许用移动数据下载（需求 3.4「移动网络」），
    * 而且会把一条还在等 Wi-Fi 的旧下载改排成可用流量的。后台定期检查仍只走 Wi-Fi（#1038）。
    */
-  val allowMeteredNetwork: Boolean
+  val allowMeteredNetwork: Boolean,
+  /**
+   * Tellomi（taishi 审查 b14 包 7 不阻塞 2）：用户在阻断页的「重试」上明确点了重来。已经允许流量、却卡着不动（没在下）的那条下载
+   * 也删掉重排；否则重试后页面还跟着同一条卡住的下载，90 秒后又转失败。自动的检查仍不动暂停中的流量下载（要改 3）。
+   */
+  val restartStuckDownload: Boolean = false
 ) : BaseJob(parameters) {
 
   companion object {
@@ -50,6 +55,7 @@ class ApkUpdateJob private constructor(
     private val TAG = Log.tag(ApkUpdateJob::class.java)
 
     private const val KEY_ALLOW_METERED_NETWORK = "allow_metered_network"
+    private const val KEY_RESTART_STUCK_DOWNLOAD = "restart_stuck_download"
 
     private val TRUSTED_VERSION_NAME = Regex("^\\d+(\\.\\d+){1,3}$")
 
@@ -59,8 +65,9 @@ class ApkUpdateJob private constructor(
      * 否则网络越差越从 0 重下、越费流量。
      */
     @JvmStatic
-    fun shouldReenqueueForMeteredNetwork(allowMeteredNetwork: Boolean, existingIsRunning: Boolean, existingAllowsMetered: Boolean): Boolean {
-      return allowMeteredNetwork && !existingIsRunning && !existingAllowsMetered
+    @JvmOverloads
+    fun shouldReenqueueForMeteredNetwork(allowMeteredNetwork: Boolean, existingIsRunning: Boolean, existingAllowsMetered: Boolean, restartStuckDownload: Boolean = false): Boolean {
+      return allowMeteredNetwork && !existingIsRunning && (!existingAllowsMetered || restartStuckDownload)
     }
 
     /**
@@ -81,19 +88,26 @@ class ApkUpdateJob private constructor(
   }
 
   @JvmOverloads
-  constructor(allowMeteredNetwork: Boolean = false) : this(
+  constructor(allowMeteredNetwork: Boolean = false, restartStuckDownload: Boolean = false) : this(
     Parameters.Builder()
       .setQueue(KEY)
       .setMaxInstancesForFactory(2)
       .addConstraint(NetworkConstraint.KEY)
       .setMaxAttempts(2)
       .build(),
-    allowMeteredNetwork
+    allowMeteredNetwork,
+    restartStuckDownload
   )
 
   override fun serialize(): ByteArray? {
     // 上游这里是 null；不带流量标记的仍写 null，和已经排在队列里的旧任务同一种形状。
-    return if (allowMeteredNetwork) JsonJobData.Builder().putBoolean(KEY_ALLOW_METERED_NETWORK, true).serialize() else null
+    if (!allowMeteredNetwork) {
+      return null
+    }
+    return JsonJobData.Builder()
+      .putBoolean(KEY_ALLOW_METERED_NETWORK, true)
+      .putBoolean(KEY_RESTART_STUCK_DOWNLOAD, restartStuckDownload)
+      .serialize()
   }
 
   override fun getFactoryKey(): String = KEY
@@ -150,7 +164,7 @@ class ApkUpdateJob private constructor(
       } else if (downloadStatus.status == DownloadStatus.Status.MISSING) {
         Log.i(TAG, "Download status missing, starting download...")
         handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest, updateDescriptor.uploadTimestamp ?: 0)
-      } else if (shouldReenqueueForMeteredNetwork(allowMeteredNetwork, downloadStatus.isRunning, SignalStore.apkUpdate.downloadAllowsMetered)) {
+      } else if (shouldReenqueueForMeteredNetwork(allowMeteredNetwork, downloadStatus.isRunning, SignalStore.apkUpdate.downloadAllowsMetered, restartStuckDownload)) {
         // Tellomi（#1138）：后台排的下载只许走 Wi-Fi，没有 Wi-Fi 时会一直停在排队状态。必须更新时改排成可用流量的。
         // 只动只许 Wi-Fi、又不在下的那条；已经允许流量的（暂停中也算）不动（taishi 审查 b14 要改 3）。
         Log.i(TAG, "Required update: re-enqueuing a Wi-Fi-only download that is not running so it may use metered networks.")
@@ -236,7 +250,8 @@ class ApkUpdateJob private constructor(
       setTitle(context.getString(R.string.TellomiUpdateRequired__download_notification_title))
       setDescription("Tellomi $versionName")
       setDestinationInExternalFilesDir(context, null, "tellomi-update.apk")
-      // 上游为 Wi-Fi 后台下载设了 HIDDEN。用户点出来的流量下载要看得见进度、能在通知里取消（taishi 审查 b14 不阻塞 2）。
+      // 上游为 Wi-Fi 后台下载设了 HIDDEN。用户点出来的流量下载要在通知栏看得见进度（taishi 审查 b14 不阻塞 2；
+      // 能不能在通知里取消看各家 ROM，不作承诺，taishi 审查包 7 不阻塞 5）。
       setNotificationVisibility(if (allowMeteredNetwork) DownloadManager.Request.VISIBILITY_VISIBLE else DownloadManager.Request.VISIBILITY_HIDDEN)
     }
 
@@ -315,7 +330,7 @@ class ApkUpdateJob private constructor(
   class Factory : Job.Factory<ApkUpdateJob?> {
     override fun create(parameters: Parameters, serializedData: ByteArray?): ApkUpdateJob {
       val data = JsonJobData.deserialize(serializedData)
-      return ApkUpdateJob(parameters, data.getBooleanOrDefault(KEY_ALLOW_METERED_NETWORK, false))
+      return ApkUpdateJob(parameters, data.getBooleanOrDefault(KEY_ALLOW_METERED_NETWORK, false), data.getBooleanOrDefault(KEY_RESTART_STUCK_DOWNLOAD, false))
     }
   }
 }

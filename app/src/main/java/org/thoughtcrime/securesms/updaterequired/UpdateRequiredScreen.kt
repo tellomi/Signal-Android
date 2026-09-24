@@ -6,7 +6,6 @@
 package org.thoughtcrime.securesms.updaterequired
 
 import android.text.format.Formatter
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -66,26 +65,28 @@ fun UpdateRequiredScreen(
   modifier: Modifier = Modifier
 ) {
   Surface(modifier = modifier) {
-    Column(
-      horizontalAlignment = Alignment.CenterHorizontally,
+    // Tellomi（taishi 审查 b14 包 8 不阻塞 3）：整页一起滚。原来只有上半部分能滚，底部的状态、按钮和出口不滚，
+    // 横屏 + 大字号 + 失败态时，最先被裁掉的正是最下面的「暂不更新，只看聊天记录」。
+    // 放得下时仍是原来的样子：上半部分在剩余空间里居中，按钮贴底（最小高度 = 可见高度，两个弹性空白分掉剩余空间）。
+    BoxWithConstraints(
       modifier = Modifier
         .fillMaxSize()
         .systemBarsPadding()
         .displayCutoutPadding()
-        .padding(horizontal = 32.dp, vertical = 24.dp)
     ) {
-      BoxWithConstraints(
+      Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-          .weight(1f)
           .fillMaxWidth()
+          .verticalScroll(rememberScrollState())
+          .heightIn(min = maxHeight)
+          .padding(horizontal = 32.dp, vertical = 24.dp)
       ) {
+        Spacer(modifier = Modifier.weight(1f))
+
         Column(
           horizontalAlignment = Alignment.CenterHorizontally,
-          verticalArrangement = Arrangement.Center,
-          modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = maxHeight)
-            .verticalScroll(rememberScrollState())
+          modifier = Modifier.fillMaxWidth()
         ) {
           Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_signal_logo_large),
@@ -132,39 +133,41 @@ fun UpdateRequiredScreen(
 
           VersionLine(state)
         }
-      }
 
-      StatusMessage(state)
+        Spacer(modifier = Modifier.weight(1f))
 
-      val inProgress = state.managesAppUpdates && state.download is Download.InProgress
-      Buttons.LargePrimary(
-        onClick = { onEvent(UpdateRequiredScreenEvent.PrimaryClicked) },
-        modifier = Modifier
-          .fillMaxWidth()
-          .testTag(UpdateRequiredTestTags.PRIMARY_BUTTON)
-          // 下载中点了没有作用，读屏要报「不可用」而不是「双击激活」；不用 enabled = false，免得按钮变灰、看不清里面的进度。
-          .semantics { if (inProgress) disabled() }
-      ) {
-        PrimaryButtonContent(state)
-      }
+        StatusMessage(state)
 
-      // 装不上（比如签名不符）时系统只发一条通知，页面上也要留一条出路（taishi 审查 b14 不阻塞 8）。
-      if (state.managesAppUpdates && (state.download == Download.Failed || state.download == Download.NoNewerVersion || state.download == Download.ReadyToInstall)) {
-        TextButton(
-          onClick = { onEvent(UpdateRequiredScreenEvent.DownloadFromWebsiteClicked) },
+        val inProgress = state.managesAppUpdates && state.download is Download.InProgress
+        Buttons.LargePrimary(
+          onClick = { onEvent(UpdateRequiredScreenEvent.PrimaryClicked) },
           modifier = Modifier
-            .padding(top = 8.dp)
-            .testTag(UpdateRequiredTestTags.DOWNLOAD_FROM_WEBSITE)
+            .fillMaxWidth()
+            .testTag(UpdateRequiredTestTags.PRIMARY_BUTTON)
+            // 下载中点了没有作用，读屏要报「不可用」而不是「双击激活」；不用 enabled = false，免得按钮变灰、看不清里面的进度。
+            .semantics { if (inProgress) disabled() }
         ) {
-          Text(text = stringResource(R.string.TellomiUpdateRequired__download_from_website))
+          PrimaryButtonContent(state)
         }
-      }
 
-      TextButton(
-        onClick = { onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyClicked) },
-        modifier = Modifier.testTag(UpdateRequiredTestTags.VIEW_CHATS_ONLY)
-      ) {
-        Text(text = stringResource(R.string.TellomiUpdateRequired__view_chats_only))
+        // 装不上（比如签名不符）时系统只发一条通知，页面上也要留一条出路（taishi 审查 b14 不阻塞 8）。
+        if (state.managesAppUpdates && (state.download == Download.Failed || state.download == Download.NoNewerVersion || state.download == Download.ReadyToInstall)) {
+          TextButton(
+            onClick = { onEvent(UpdateRequiredScreenEvent.DownloadFromWebsiteClicked) },
+            modifier = Modifier
+              .padding(top = 8.dp)
+              .testTag(UpdateRequiredTestTags.DOWNLOAD_FROM_WEBSITE)
+          ) {
+            Text(text = stringResource(R.string.TellomiUpdateRequired__download_from_website))
+          }
+        }
+
+        TextButton(
+          onClick = { onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyClicked) },
+          modifier = Modifier.testTag(UpdateRequiredTestTags.VIEW_CHATS_ONLY)
+        ) {
+          Text(text = stringResource(R.string.TellomiUpdateRequired__view_chats_only))
+        }
       }
     }
   }

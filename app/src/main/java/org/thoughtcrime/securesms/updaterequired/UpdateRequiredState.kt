@@ -79,4 +79,7 @@ sealed interface UpdateRequiredScreenAction {
 
   /** 离开阻断页、从路由重新进 App：应用锁上着就先过锁，然后是上游的只读模式。 */
   data object EnterReadOnly : UpdateRequiredScreenAction
+
+  /** 已经是只读了（选过「只看聊天记录」，或者本机构建到期）：出口直接关掉这一页，不再弹确认框（taishi 审查 b14 包 8 不阻塞 1）。 */
+  data object LeavePage : UpdateRequiredScreenAction
 }

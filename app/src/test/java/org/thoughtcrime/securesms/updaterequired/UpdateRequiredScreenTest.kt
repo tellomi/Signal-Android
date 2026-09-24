@@ -8,9 +8,11 @@ package org.thoughtcrime.securesms.updaterequired
 import android.app.Application
 import android.content.Context
 import android.text.format.Formatter
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertCountEquals
@@ -22,7 +24,10 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.unit.Density
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Rule
 import org.junit.Test
@@ -170,6 +175,34 @@ class UpdateRequiredScreenTest {
 
     composeTestRule.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading)).assertTextContains(context.getString(R.string.TellomiUpdateRequired__title))
     composeTestRule.onNodeWithTag(UpdateRequiredTestTags.PRIMARY_BUTTON).assertIsNotEnabled()
+  }
+
+  // ==================== taishi 审查 b14（包 8）不阻塞 3 ====================
+
+  @Config(qualifiers = "w891dp-h411dp-land")
+  @Test
+  fun `the way to the chats can be scrolled to in landscape with a large font`() {
+    // 原来只有上半部分能滚，状态、按钮、官网链接和出口不滚；横屏 + 大字号 + 失败态时最先被裁掉的就是最下面的出口。
+    composeTestRule.setContent {
+      val density = LocalDensity.current
+      CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 2f)) {
+        SignalTheme {
+          UpdateRequiredScreen(state = UpdateRequiredState(download = Download.Failed, newVersionName = "0.1.3", totalBytes = 78_000_000), onEvent = {})
+        }
+      }
+    }
+
+    composeTestRule.onNodeWithTag(UpdateRequiredTestTags.VIEW_CHATS_ONLY).performScrollTo().assertIsDisplayed()
+  }
+
+  @Test
+  fun `when everything fits, the buttons stay at the bottom`() {
+    // 整页一起滚以后，放得下时仍是原来的样子：出口贴着底边（只隔页面的内边距）。
+    setContent(UpdateRequiredState())
+
+    val root = composeTestRule.onRoot().fetchSemanticsNode().boundsInRoot
+    val exit = composeTestRule.onNodeWithTag(UpdateRequiredTestTags.VIEW_CHATS_ONLY).fetchSemanticsNode().boundsInRoot
+    assert(root.bottom - exit.bottom < 200f) { "The way to the chats should sit near the bottom: exit $exit, root $root" }
   }
 
   private fun setContent(state: UpdateRequiredState, events: MutableList<UpdateRequiredScreenEvent> = mutableListOf()) {

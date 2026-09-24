@@ -322,6 +322,8 @@
     <string name="TellomiUpdateRequired__view_chats_only">Not now, just view my chats</string>
     <!-- Body of the banner above the chat list while this build can only show chats (the server requires an update, or the build has expired); tapping it opens the update screen -->
     <string name="TellomiUpdateRequired__read_only_banner">Update Tellomi to keep sending and receiving messages.</string>
+    <!-- Tellomi: shown in place of the conversation input box while this version can no longer send or receive (the server rejects it, or the build expired); not "expired", since a server-side block is not an expiry -->
+    <string name="TellomiUpdateRequired__input_needs_update">This version needs an update to send and receive messages.</string>
     <!-- Message of the confirmation shown before switching to read-only from the update-required screen -->
     <string name="TellomiUpdateRequired__view_chats_only_confirm_message">Until you update, you can view your chats but can\'t send or receive messages.</string>
 

@@ -84,7 +84,12 @@ data class UpdateDownloadSnapshot(
   /** 服务端没给长度时为 -1。 */
   val totalBytes: Long,
   /** 这条下载是否允许用流量（阻断页发起的是 true，上游后台检查排的是 false）。 */
-  val allowsMetered: Boolean
+  val allowsMetered: Boolean,
+  /**
+   * 在等网络 / 等 Wi-Fi（PENDING，或 PAUSED 且原因是 QUEUED_FOR_WIFI / WAITING_FOR_NETWORK）。
+   * 服务器出错后的 WAITING_TO_RETRY 不算：那种不该说「原本只在连上 Wi-Fi 时下载」（taishi 审查 b14 包 7 不阻塞 3）。
+   */
+  val waitingForNetwork: Boolean = false
 ) {
   enum class Status { PENDING, RUNNING, PAUSED, SUCCESSFUL, FAILED }
 }
@@ -100,9 +105,12 @@ interface UpdateRequiredRepository {
 
   fun isOnline(): Boolean
 
-  /** 同步跑一次必须档的清单检查（允许用流量下载）。检查失败或超时返回 false。 */
+  /**
+   * 同步跑一次必须档的清单检查（允许用流量下载）。检查失败或超时返回 false。
+   * [restartStuckDownload]：用户在「重试」上明确点了重来，已经允许流量、却卡着不动的那条下载也删掉重排（taishi 审查 b14 包 7 不阻塞 2）。
+   */
   @WorkerThread
-  fun runRequiredUpdateCheck(): Boolean
+  fun runRequiredUpdateCheck(restartStuckDownload: Boolean = false): Boolean
 
   /** 最近一次清单检查看到的、比当前安装更新的版本号；没有则为 null。 */
   fun availableVersionName(): String?
@@ -115,6 +123,9 @@ interface UpdateRequiredRepository {
 
   /** 用户选了「暂不更新，只看聊天记录」：这个版本不再自动盖阻断页（[UpdateRequired.shouldBlock]）。 */
   fun chooseReadOnly()
+
+  /** 这一页现在是不是自动盖上的阻断页（见 [UpdateRequired.shouldBlock]）；不是的话，出口不用再确认。 */
+  fun isBlocking(): Boolean
 }
 
 class DefaultUpdateRequiredRepository(private val context: Context) : UpdateRequiredRepository {
@@ -136,8 +147,8 @@ class DefaultUpdateRequiredRepository(private val context: Context) : UpdateRequ
 
   override fun isOnline(): Boolean = NetworkConstraint.isMet(context)
 
-  override fun runRequiredUpdateCheck(): Boolean {
-    val result = AppDependencies.jobManager.runSynchronously(ApkUpdateJob(allowMeteredNetwork = true), CHECK_TIMEOUT.inWholeMilliseconds)
+  override fun runRequiredUpdateCheck(restartStuckDownload: Boolean): Boolean {
+    val result = AppDependencies.jobManager.runSynchronously(ApkUpdateJob(allowMeteredNetwork = true, restartStuckDownload = restartStuckDownload), CHECK_TIMEOUT.inWholeMilliseconds)
     Log.i(TAG, "Required update check finished: ${result.orElse(null)}")
     return result.orElse(null) == JobTracker.JobState.SUCCESS
   }
@@ -168,12 +179,21 @@ class DefaultUpdateRequiredRepository(private val context: Context) : UpdateRequ
           else -> UpdateDownloadSnapshot.Status.FAILED
         }
 
+        val waitingForNetwork = when (status) {
+          UpdateDownloadSnapshot.Status.PENDING -> true
+          UpdateDownloadSnapshot.Status.PAUSED -> cursor.requireInt(DownloadManager.COLUMN_REASON).let { reason ->
+            reason == DownloadManager.PAUSED_QUEUED_FOR_WIFI || reason == DownloadManager.PAUSED_WAITING_FOR_NETWORK
+          }
+          else -> false
+        }
+
         UpdateDownloadSnapshot(
           downloadId = downloadId,
           status = status,
           bytesSoFar = cursor.requireLong(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR),
           totalBytes = cursor.requireLong(DownloadManager.COLUMN_TOTAL_SIZE_BYTES),
-          allowsMetered = allowsMetered
+          allowsMetered = allowsMetered,
+          waitingForNetwork = waitingForNetwork
         )
       }
     }.getOrElse { e ->
@@ -187,6 +207,8 @@ class DefaultUpdateRequiredRepository(private val context: Context) : UpdateRequ
     ApkUpdateNotifications.dismissInstallPrompt(context)
     ApkUpdateInstaller.installOrPromptForInstall(context, downloadId, userInitiated = true)
   }
+
+  override fun isBlocking(): Boolean = UpdateRequired.shouldBlock()
 
   override fun chooseReadOnly() {
     UpdateRequired.chooseReadOnly()

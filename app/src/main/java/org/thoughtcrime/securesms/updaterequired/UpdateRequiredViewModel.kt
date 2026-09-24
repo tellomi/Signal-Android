@@ -83,7 +83,7 @@ class UpdateRequiredViewModel(
       UpdateRequiredScreenEvent.ScreenResumed -> onScreenResumed()
       UpdateRequiredScreenEvent.PrimaryClicked -> onPrimaryClicked()
       UpdateRequiredScreenEvent.DownloadFromWebsiteClicked -> _actions.trySend(UpdateRequiredScreenAction.OpenDownloadPage)
-      UpdateRequiredScreenEvent.ViewChatsOnlyClicked -> _actions.trySend(UpdateRequiredScreenAction.ConfirmViewChatsOnly)
+      UpdateRequiredScreenEvent.ViewChatsOnlyClicked -> _actions.trySend(if (repository.isBlocking()) UpdateRequiredScreenAction.ConfirmViewChatsOnly else UpdateRequiredScreenAction.LeavePage)
       UpdateRequiredScreenEvent.ViewChatsOnlyConfirmed -> onViewChatsOnlyConfirmed()
     }
   }
@@ -115,7 +115,8 @@ class UpdateRequiredViewModel(
     when (_state.value.download) {
       Download.Idle, Download.Failed, Download.NoNewerVersion, Download.WaitingForWifi -> {
         if (repository.canRequestPackageInstalls()) {
-          startDownload()
+          // 从「重试」点进来的：卡住不动的那条流量下载也删掉重排，否则再跟 90 秒同一条又转失败（taishi 审查 b14 包 7 不阻塞 2）
+          startDownload(restartStuckDownload = _state.value.download == Download.Failed)
         } else {
           _state.update { it.copy(download = Download.NeedsInstallPermission) }
         }
@@ -126,14 +127,14 @@ class UpdateRequiredViewModel(
     }
   }
 
-  private fun startDownload() {
+  private fun startDownload(restartStuckDownload: Boolean = false) {
     downloadJob?.cancel()
     _state.update { it.copy(download = Download.InProgress(percent = null)) }
-    downloadJob = viewModelScope.launch(SignalDispatchers.IO) { checkAndDownload() }
+    downloadJob = viewModelScope.launch(SignalDispatchers.IO) { checkAndDownload(restartStuckDownload) }
   }
 
-  private suspend fun checkAndDownload() {
-    val checked = repository.runRequiredUpdateCheck()
+  private suspend fun checkAndDownload(restartStuckDownload: Boolean = false) {
+    val checked = repository.runRequiredUpdateCheck(restartStuckDownload)
     val newVersionName = repository.availableVersionName()
     _state.update { it.copy(newVersionName = newVersionName, isOffline = !repository.isOnline()) }
 
@@ -199,7 +200,7 @@ class UpdateRequiredViewModel(
 
         UpdateDownloadSnapshot.Status.PENDING,
         UpdateDownloadSnapshot.Status.PAUSED -> {
-          if (!download.allowsMetered) {
+          if (!download.allowsMetered && download.waitingForNetwork) {
             // 只许 Wi-Fi 的下载没在下（没连 Wi-Fi，或者流量下载失败后上游改排了一条只许 Wi-Fi 的）：
             // 说清楚，主按钮给「用移动数据下载」（taishi 审查 b14 要改 1）。有 Wi-Fi 了它会自己开始下，轮询接着看。
             stalledMs = 0
