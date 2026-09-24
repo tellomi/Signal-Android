@@ -26,7 +26,8 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 /**
- * Shows a QRCode that represents the provided data. Includes a Signal logo in the middle.
+ * Shows a QRCode that represents the provided data. Draws a logo in the middle only when
+ * [QrCodeData.canSupportIconOverlay] is set, which Tellomi no longer does by default (tellomi/tellomi#947).
  */
 @Composable
 fun QrCode(

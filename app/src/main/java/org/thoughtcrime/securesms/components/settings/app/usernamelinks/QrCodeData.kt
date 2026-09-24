@@ -39,9 +39,13 @@ class QrCodeData(
      * @param supportIconOverlay indicates data can be rendered with the icon overlay. Rendering with an icon relies on more error correction
      * data in the QR which requires a denser rendering which is sometimes not easily scanned by our scanner. Set to false if data is expected to be
      * long to prevent scanning issues.
+     *
+     * Tellomi（tellomi/tellomi#947）：默认改成 false——用户名二维码不再挖空、画圈、画中心标。中心的同心标在扫描线上读出来是
+     * 暗 / 亮 / 暗 / 亮 / 暗，和三个定位角的 1:1:3:1:1 一样，扫码器会把它当成定位角：Desktop 离线实测带标 3/12、
+     * 不带 30/30（Signal-Desktop 7f55023）。设备关联码、快速恢复码上游本来就传 false。「二维码版」标做好后（#1146）再议。
      */
     @WorkerThread
-    fun forData(data: String, supportIconOverlay: Boolean = true): QrCodeData {
+    fun forData(data: String, supportIconOverlay: Boolean = false): QrCodeData {
       val qrCodeWriter = QRCodeWriter()
       val hints = mapOf(EncodeHintType.ERROR_CORRECTION to if (supportIconOverlay) ErrorCorrectionLevel.Q.toString() else ErrorCorrectionLevel.L.toString())
 
