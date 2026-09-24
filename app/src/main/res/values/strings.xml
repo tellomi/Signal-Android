@@ -8091,6 +8091,11 @@
     <!-- Tellomi（#947）：扫错入口时的指路。上游只有一句「二维码无效」，用户不知道该去哪。 -->
     <string name="UsernameLinkSettings_qr_result_device_link_title">This is a device pairing code</string>
     <string name="UsernameLinkSettings_qr_result_device_link_body">To link a computer or tablet, go to Settings → Linked devices and scan it there.</string>
+    <!-- Tellomi（#947，需求 share-qr-and-invite §3.2）：扫到的不是 Tellomi 的码时，弹框显示内容；网址可以打开，都可以复制 -->
+    <string name="UsernameLinkSettings__tellomi_qr_result_content_title">Scanned content</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_open_link">Open link</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copy">Copy</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copied">Copied</string>
     <string name="UsernameLinkSettings_qr_result_invalid">The QR code was invalid.</string>
     <!-- Body of a dialog that is displayed when the username we looked up could not be found. -->
     <string name="UsernameLinkSettings_qr_result_not_found">A user with username %1$s could not be found.</string>

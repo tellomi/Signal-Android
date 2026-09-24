@@ -1,5 +1,8 @@
 package org.thoughtcrime.securesms.components.settings.app.usernamelinks.main
 
+import android.content.Context
+import android.content.ContextWrapper
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,14 +19,18 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import org.signal.camera.CameraCaptureMode
 import org.signal.camera.CameraScreen
 import org.signal.camera.CameraScreenEvents
@@ -33,9 +40,11 @@ import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.core.util.Util
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.qr.QrCrosshair
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.util.CommunicationActions
 import org.signal.mediasend.R as MediaSendR
 
 /**
@@ -53,6 +62,8 @@ fun UsernameQrScanScreen(
   hasCameraPermission: Boolean,
   modifier: Modifier = Modifier
 ) {
+  val context = LocalContext.current
+
   when (qrScanResult) {
     QrScanResult.InvalidData -> {
       QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_invalid), onDismiss = onQrResultHandled)
@@ -88,6 +99,18 @@ fun UsernameQrScanScreen(
 
     is QrScanResult.Success -> {
       onRecipientFound(qrScanResult.recipient)
+    }
+
+    // Tellomi（tellomi/tellomi#947，需求 §3.2）：群邀请码直接进加群；不是 Tellomi 的码显示内容，不再一律「二维码无效」
+    is QrScanResult.GroupInvite -> {
+      LaunchedEffect(qrScanResult) {
+        context.findFragmentActivity()?.let { CommunicationActions.handlePotentialGroupLinkUrl(it, qrScanResult.url) }
+        onQrResultHandled()
+      }
+    }
+
+    is QrScanResult.OtherContent -> {
+      ScannedContentDialog(text = qrScanResult.text, onDismiss = onQrResultHandled)
     }
 
     null -> {}
@@ -169,6 +192,35 @@ fun UsernameQrScanScreen(
       )
     }
   }
+}
+
+/** Tellomi（tellomi/tellomi#947）：两个宿主（设置页的 Fragment、找人页的 Activity）里 Compose 的 context 都能解到 FragmentActivity。 */
+private tailrec fun Context.findFragmentActivity(): FragmentActivity? = when (this) {
+  is FragmentActivity -> this
+  is ContextWrapper -> baseContext.findFragmentActivity()
+  else -> null
+}
+
+/** Tellomi（tellomi/tellomi#947）：不是 Tellomi 的码——显示内容，网址可以「打开链接」，都可以「复制」。 */
+@Composable
+private fun ScannedContentDialog(text: String, onDismiss: () -> Unit) {
+  val context = LocalContext.current
+  val isWebLink = remember(text) { text.startsWith("https://", ignoreCase = true) || text.startsWith("http://", ignoreCase = true) }
+  val copiedMessage = stringResource(R.string.UsernameLinkSettings__tellomi_qr_result_copied)
+  val copy = {
+    Util.copyToClipboard(context, text)
+    Toast.makeText(context, copiedMessage, Toast.LENGTH_SHORT).show()
+  }
+
+  Dialogs.SimpleAlertDialog(
+    title = stringResource(R.string.UsernameLinkSettings__tellomi_qr_result_content_title),
+    body = if (text.length > 500) text.take(500) + "…" else text,
+    confirm = stringResource(if (isWebLink) R.string.UsernameLinkSettings__tellomi_qr_result_open_link else R.string.UsernameLinkSettings__tellomi_qr_result_copy),
+    onConfirm = { if (isWebLink) CommunicationActions.openBrowserLink(context, text) else copy() },
+    dismiss = stringResource(if (isWebLink) R.string.UsernameLinkSettings__tellomi_qr_result_copy else android.R.string.cancel),
+    onDeny = { if (isWebLink) copy() },
+    onDismiss = onDismiss
+  )
 }
 
 @Composable
