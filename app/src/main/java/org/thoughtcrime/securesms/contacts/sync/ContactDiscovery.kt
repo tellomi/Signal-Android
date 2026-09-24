@@ -266,8 +266,10 @@ object ContactDiscovery {
       }
   }
 
+  // Tellomi（#1240）：只读通讯录，不再要求 WRITE_CONTACTS（清单里已经去掉）。往系统通讯录写链接的
+  // SyncSystemContactLinksJob 自己仍然检查 WRITE，于是永远跳过——CDSI 关着时它本来也不会被调度。
   private fun hasContactsPermissions(context: Context): Boolean {
-    return Permissions.hasAll(context, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+    return Permissions.hasAll(context, Manifest.permission.READ_CONTACTS)
   }
 
   /**
