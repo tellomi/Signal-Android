@@ -498,6 +498,8 @@ object UsernameRepository {
         SignalStore.account.usernameSyncState = AccountValues.UsernameSyncState.IN_SYNC
         SignalStore.account.usernameSyncErrorCount = 0
         SignalStore.misc.needsUsernameRestore = false
+        // Tellomi（ADR-0066 §6.2）：记下删除时间，保留期内再设用户名前要提醒「这也算改名」
+        SignalStore.account.tellomiUsernameDeletedAt = System.currentTimeMillis()
 
         if (Recipient.self().usernameSyncMessagesCapability.isSupported) {
           MultiDeviceUsernameChangeSyncJob.enqueueUsernameChangeSync()

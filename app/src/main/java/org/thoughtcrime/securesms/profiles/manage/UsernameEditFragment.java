@@ -345,6 +345,17 @@ public class UsernameEditFragment extends LoggingFragment {
             .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))
             .show();
+        break;
+      case NEEDS_CONFIRM_SET_AFTER_DELETE:
+        // Tellomi（ADR-0066 §6.2）：保留期内删过用户名，现在再设也算改名（与 Desktop#4 同一句）
+        new MaterialAlertDialogBuilder(requireContext())
+            .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_set_after_delete_confirmation,
+                                                         TellomiUsernames.RENAME_COOLDOWN_DAYS,
+                                                         TellomiUsernames.USERNAME_HOLD_DAYS,
+                                                         TellomiUsernames.RENAME_COOLDOWN_DAYS))
+            .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+            .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))
+            .show();
     }
   }
 

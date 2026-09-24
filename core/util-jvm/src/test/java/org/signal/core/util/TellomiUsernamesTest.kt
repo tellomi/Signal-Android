@@ -72,4 +72,16 @@ class TellomiUsernamesTest {
     assertThat(TellomiUsernames.renameCooldownDaysLeft(86401.seconds)).isEqualTo(2)
     assertThat(TellomiUsernames.renameCooldownDaysLeft(2.hours)).isEqualTo(1)
   }
+
+  /** ADR-0066 §6.2：删掉的用户名保留 30 天；没有记录不算，时钟往回拨算在内（宁可多提示一次）。与 Desktop 同一判法。 */
+  @Test
+  fun usernameHoldWindow() {
+    val day = 24L * 60 * 60 * 1000
+    val deletedAt = 1_700_000_000_000L
+    assertThat(TellomiUsernames.isWithinUsernameHold(0, deletedAt)).isFalse()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt)).isTrue()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt + 30 * day - 1)).isTrue()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt + 30 * day)).isFalse()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt - day)).isTrue()
+  }
 }
