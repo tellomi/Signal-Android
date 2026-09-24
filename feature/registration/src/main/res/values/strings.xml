@@ -583,6 +583,8 @@
     <string name="CreateProfileScreen__next">Next</string>
     <!-- Content description for the avatar selection control. -->
     <string name="CreateProfileScreen__set_avatar_description">Set avatar</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：替掉「谁可以通过手机号找到我」那一行。phone_number_sharing 默认就是不分享（PhoneNumberPrivacyValues: DEFAULT = 不显示） -->
+    <string name="TellomiRegistration__phone_number_not_shown">Your phone number isn\'t shown to anyone by default.</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
