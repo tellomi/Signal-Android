@@ -459,7 +459,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
 
     /**
      * Tellomi（ADR-0066 §六；taishi 审 a3 与 Signal-Desktop#4 第三版，2026-09-24）：编辑页只对「新起的名字」收紧
-     * 「字母开头」和「最长 20」（#1181）。只有 hash 不变、仍是用户已有的那个用户名时，才放过
+     * 「字母开头」和「最长 20」（#1181）。只有与本机记录的原名 hash 相同、仍是用户已有的那个用户名时，才放过
      * [InvalidReason.STARTS_WITH_UNDERSCORE] 与 [InvalidReason.TOO_LONG]：
      * - 当前判别位是 `.01`、昵称只差大小写：走 [UsernameState.CaseChange]，不预约、不开始冷却；
      * - 修复模式原样认领当前的名字：昵称只差大小写，沿用旧判别位（`_kaixin.57` 认领回 `_kaixin.57`）。
