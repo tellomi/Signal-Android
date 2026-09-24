@@ -95,5 +95,9 @@ class TellomiUsernamesTest {
     assertThat(TellomiUsernames.isUsernameDeletion("", "kaixin.01")).isFalse()
     assertThat(TellomiUsernames.isUsernameDeletion("kaixin.01", "bob.01")).isFalse()
     assertThat(TellomiUsernames.isUsernameDeletion("", "")).isFalse()
+    // 本机原来就没有用户名（previous 为 null，比如刚装好还没同步过）：同步回来什么都不算删（taishi 包 7 不阻塞②）
+    assertThat(TellomiUsernames.isUsernameDeletion(null, null)).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion(null, "")).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion(null, "kaixin.01")).isFalse()
   }
 }
