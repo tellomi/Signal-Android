@@ -97,14 +97,14 @@ data class TellomiUsernameEntry(
      * 不可用时给的候选：原名后面**直接接数字**（两位、三位、再一个不同的两位），三个互不相同、都过得了 [check]。
      * 候选本身不预先向服务端查（保留有频率限制），用户点了照常走一遍检查。
      *
-     * 不用 `原名_数字`，原名末尾的 `_` 也去掉（taishi 审查包 4）：词库的 PREFIX 规则以「非字母数字」为边界（libsignal fork
+     * 不用 `原名_数字`，截到 17 位之后末尾的 `_` 也去掉（taishi 审查包 4；先截再去，包 7：第 17 位是 `_` 的长名截完末尾又是 `_`）：词库的 PREFIX 规则以「非字母数字」为边界（libsignal fork
      * `rust/policy`），`kefu_58`、`tellomi_58`、`admin_58` 正是要拦的形状；而服务端拒绝表只收 EXACT（ADR-0062 §5.4），
      * Android 还没接客户端引擎，这种候选能保留成功——等于客户端主动把冒充词推给恰好输了 `kefu` 的人。
      * 紧跟数字不算边界，`kefu27` 不命中。以后接上客户端引擎，候选再过一遍它。
      */
     @JvmStatic
     fun candidates(nickname: String, random: Random = Random.Default, count: Int = 3): List<String> {
-      val base = nickname.lowercase().filter { it in 'a'..'z' || it in '0'..'9' || it == '_' }.trimEnd('_').take(UsernameUtil.MAX_NICKNAME_LENGTH - 3)
+      val base = nickname.lowercase().filter { it in 'a'..'z' || it in '0'..'9' || it == '_' }.take(UsernameUtil.MAX_NICKNAME_LENGTH - 3).trimEnd('_')
       if (base.isEmpty() || !base.first().isAsciiLetter()) {
         return emptyList()
       }

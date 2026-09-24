@@ -75,8 +75,21 @@ class TellomiUsernameEntryTest {
         val candidates = TellomiUsernameEntry.candidates(nickname, Random(seed))
 
         assertThat(candidates).hasSize(3)
-        assertThat(candidates).each { it.transform { candidate -> Regex("${base}[0-9]{2,3}").matches(candidate) }.isTrue() }
+        assertThat(candidates).each { it.transform { candidate -> Regex("$base[0-9]{2,3}").matches(candidate) }.isTrue() }
         assertThat(candidates).each { it.transform { candidate -> !candidate.startsWith("${base}_") }.isTrue() }
+      }
+    }
+  }
+
+  /** taishi 中转包 7：先截到 17 位再去末尾的 `_`；第 17 位是 `_` 的长名，截完末尾不能又是 `_`（两个都是词库里的 PREFIX 词）。 */
+  @Test
+  fun `a long nickname is cut before its trailing underscore is dropped`() {
+    for ((nickname, base) in listOf("xitongguanliyuan_ab" to "xitongguanliyuan", "customer_service_x" to "customer_service")) {
+      for (seed in 0 until 200) {
+        val candidates = TellomiUsernameEntry.candidates(nickname, Random(seed))
+
+        assertThat(candidates).hasSize(3)
+        assertThat(candidates).each { it.transform { candidate -> Regex("$base[0-9]{2,3}").matches(candidate) && candidate.length <= 20 }.isTrue() }
       }
     }
   }
