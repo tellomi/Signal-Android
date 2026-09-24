@@ -6,6 +6,7 @@
 package org.signal.registration.screens.verificationcode
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
@@ -733,8 +734,7 @@ class VerificationCodeViewModelTest {
 
     viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
 
-    assertThat(emittedEvents).hasSize(1)
-    assertThat(emittedEvents.first()).isEqualTo(RegistrationFlowEvent.NavigateBack)
+    assertThat(emittedEvents).containsExactly(RegistrationFlowEvent.SessionExpired, RegistrationFlowEvent.NavigateBack)
     assertThat(emittedStates.last().dialogs.sessionExpired).isFalse()
   }
 
@@ -1255,8 +1255,8 @@ class VerificationCodeViewModelTest {
 
     viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
 
-    assertThat(emittedEvents).hasSize(1)
-    assertThat(emittedEvents.first()).isEqualTo(RegistrationFlowEvent.NavigateBack)
+    // Tellomi（taishi 审查 b8-v2 不阻塞 1）：先清掉父状态里的旧会话，手机号页才会开新会话。
+    assertThat(emittedEvents).containsExactly(RegistrationFlowEvent.SessionExpired, RegistrationFlowEvent.NavigateBack)
   }
 
   @Test
@@ -1277,8 +1277,7 @@ class VerificationCodeViewModelTest {
 
     viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
 
-    assertThat(emittedEvents).hasSize(1)
-    assertThat(emittedEvents.first()).isEqualTo(RegistrationFlowEvent.NavigateBack)
+    assertThat(emittedEvents).containsExactly(RegistrationFlowEvent.SessionExpired, RegistrationFlowEvent.NavigateBack)
   }
 
   @Test
@@ -1453,6 +1452,53 @@ class VerificationCodeViewModelTest {
 
     assertThat(emittedStates.last().rateLimits.smsResendTimeRemaining).isEqualTo(10.seconds)
     assertThat(emittedStates.last().rateLimits.callRequestTimeRemaining).isNull()
+  }
+
+  @Test
+  fun `a rate-limited resend records the retry-after deadline, so coming back later still counts down`() = runTest {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 2）：限流给 60 秒，10 秒后回到前台应显示 50 秒，而不是 0。
+    val e164 = "+15551234567"
+    var now = 100.minutes.inWholeMilliseconds
+    coEvery { mockRepository.getInProgressRegistrationDataLastUpdated() } answers { now - 1.minutes.inWholeMilliseconds }
+    val session = createSessionMetadata(nextSms = 60, nextCall = 30)
+    coEvery { mockRepository.requestVerificationCode(any(), any(), eq(VerificationCodeTransport.SMS)) } returns
+      RequestResult.NonSuccess(RequestVerificationCodeError.RateLimited(60.seconds, session))
+
+    val vm = VerificationCodeViewModel(mockRepository, parentState, parentEventEmitter, clock = { now })
+    vm.applyEvent(VerificationCodeState(sessionMetadata = session, e164 = e164), VerificationCodeScreenEvents.ResendSms, stateEmitter)
+
+    val requested = emittedEvents.filterIsInstance<RegistrationFlowEvent.VerificationCodeRequested>().single()
+    assertThat(requested).isEqualTo(
+      RegistrationFlowEvent.VerificationCodeRequested(e164 = e164, nextSmsAllowedTimestamp = now + 60_000, nextCallAllowedTimestamp = now + 30_000)
+    )
+
+    // 父状态照 RegistrationViewModel 那样记下截止时刻，然后 App 在后台待了 10 秒。
+    parentState.value = parentState.value.copy(
+      sessionE164 = e164,
+      lastSmsVerificationCodeRequest = VerificationCodeRequest(e164, requested.nextSmsAllowedTimestamp!!),
+      lastCallVerificationCodeRequest = VerificationCodeRequest(e164, requested.nextCallAllowedTimestamp!!)
+    )
+    now += 10.seconds.inWholeMilliseconds
+    vm.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.Foregrounded, stateEmitter)
+
+    assertThat(emittedStates.last().rateLimits.smsResendTimeRemaining).isEqualTo(50.seconds)
+    assertThat(emittedStates.last().rateLimits.callRequestTimeRemaining).isEqualTo(20.seconds)
+  }
+
+  @Test
+  fun `a rate-limited call request records the retry-after deadline for calls`() = runTest {
+    val e164 = "+15551234567"
+    val now = 100.minutes.inWholeMilliseconds
+    val session = createSessionMetadata(nextSms = 20, nextCall = null)
+    coEvery { mockRepository.requestVerificationCode(any(), any(), eq(VerificationCodeTransport.VOICE)) } returns
+      RequestResult.NonSuccess(RequestVerificationCodeError.RateLimited(90.seconds, session))
+
+    val vm = VerificationCodeViewModel(mockRepository, parentState, parentEventEmitter, clock = { now })
+    vm.applyEvent(VerificationCodeState(sessionMetadata = session, e164 = e164), VerificationCodeScreenEvents.CallMe, stateEmitter)
+
+    assertThat(emittedEvents.filterIsInstance<RegistrationFlowEvent.VerificationCodeRequested>().single()).isEqualTo(
+      RegistrationFlowEvent.VerificationCodeRequested(e164 = e164, nextSmsAllowedTimestamp = now + 20_000, nextCallAllowedTimestamp = now + 90_000)
+    )
   }
 
   @Test

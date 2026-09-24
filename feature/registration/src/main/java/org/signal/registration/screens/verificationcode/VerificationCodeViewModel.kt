@@ -134,7 +134,15 @@ class VerificationCodeViewModel(
       is VerificationCodeScreenEvents.CodeAutoFilled -> state.copy(autoFillCode = event.code)
       is VerificationCodeScreenEvents.ConsumeAutoFillCode -> state.copy(autoFillCode = null)
       is VerificationCodeScreenEvents.WrongNumber -> state.also { parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry) }
-      is VerificationCodeScreenEvents.SessionExpiredDialogDismissed -> state.copy(dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false)).also { parentEventEmitter.navigateBack() }
+      is VerificationCodeScreenEvents.SessionExpiredDialogDismissed -> {
+        // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 1）：会话已失效时先清掉父状态里的旧会话（号码保留），
+        // 手机号页再点「下一步」才会开新会话；不清的话会复用旧会话 → 404 → 整个流程被重置回欢迎页，没有任何提示。
+        // 「验证码已不能用」那种会话还在，照旧复用。
+        if (state.dialogs.sessionExpired) {
+          parentEventEmitter(RegistrationFlowEvent.SessionExpired)
+        }
+        state.copy(dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false)).also { parentEventEmitter.navigateBack() }
+      }
       is VerificationCodeScreenEvents.ResendSms -> applyResendCode(state, VerificationCodeTransport.SMS)
       is VerificationCodeScreenEvents.CallMe -> applyResendCode(state, VerificationCodeTransport.VOICE)
       is VerificationCodeScreenEvents.HavingTrouble -> state.copy(showContactSupportSheet = true)
@@ -522,6 +530,18 @@ class VerificationCodeViewModel(
           }
           is RequestVerificationCodeError.RateLimited -> {
             Log.w(TAG, "[RequestCode][$transport] Rate limited (retryAfter: ${error.retryAfter}).")
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 2）：照手机号页 navigateToCodeEntryAfterRateLimit 记下截止时刻
+            // （ADR-0051 §二 F：被限流时采用 retry_after）。不记的话父状态里还是上一次的截止时刻，正是「重新发送」刚亮起那一刻，
+            // 回到前台按它重算，倒计时就成了 0，按钮提前亮起，再点又是「请稍后再试」。
+            val now = clock()
+            val retryAt = now + error.retryAfter.inWholeMilliseconds
+            parentEventEmitter(
+              RegistrationFlowEvent.VerificationCodeRequested(
+                e164 = state.e164,
+                nextSmsAllowedTimestamp = if (transport == VerificationCodeTransport.SMS) retryAt else error.session.nextSms?.let { now + it.seconds.inWholeMilliseconds },
+                nextCallAllowedTimestamp = if (transport == VerificationCodeTransport.VOICE) retryAt else error.session.nextCall?.let { now + it.seconds.inWholeMilliseconds }
+              )
+            )
             parentEventEmitter(RegistrationFlowEvent.SessionUpdated(error.session))
             state.copy(
               dialogs = state.dialogs.copy(rateLimitedRetryAfter = error.retryAfter),
