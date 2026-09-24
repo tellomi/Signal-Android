@@ -282,6 +282,25 @@ class VerificationCodeScreenTest {
     composeTestRule.onNodeWithText("Incorrect code").assertDoesNotExist()
   }
 
+  @Config(qualifiers = "w411dp-h891dp")
+  @Test
+  fun `the didn't get the code entry is there before any wrong code`() {
+    // taishi 审查 b8：收不到短信的人没有码可交，入口不能等连错 3 次才出现（ADR-0051 §二）。
+    val events = mutableListOf<VerificationCodeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(e164 = "+8613800138000", incorrectCodeAttempts = 0),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON).performScrollTo().assertIsDisplayed().performClick()
+
+    assert(VerificationCodeScreenEvents.HavingTrouble in events) { "Expected HavingTrouble but got $events" }
+  }
+
   @Test
   fun `no inline error before a wrong code`() {
     composeTestRule.setContent {
