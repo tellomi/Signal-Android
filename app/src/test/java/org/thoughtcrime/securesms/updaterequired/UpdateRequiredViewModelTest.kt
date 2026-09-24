@@ -319,6 +319,32 @@ class UpdateRequiredViewModelTest {
     assertThat(viewModel.state.value.download).isEqualTo(Download.Failed)
   }
 
+  @Test
+  fun `a package left over from before the last update is not picked up`() = runViewModelTest {
+    // 已经装上那个版本：清单里没有更新的版本了，上一轮下好的包还记着。
+    repository.availableVersion = null
+    repository.script(snapshot(Status.SUCCESSFUL, 100, 100))
+    val viewModel = createViewModel()
+    runCurrent()
+
+    assertThat(viewModel.state.value.download).isEqualTo(Download.Idle)
+    assertThat(repository.installs).isEmpty()
+  }
+
+  @Test
+  fun `when the check fails offline, a leftover package that is not newer is not installed`() = runViewModelTest {
+    repository.checkResult = false
+    repository.availableVersion = null
+    val viewModel = createViewModel()
+    repository.script(snapshot(Status.SUCCESSFUL, 100, 100))
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.PrimaryClicked)
+    runCurrent()
+
+    assertThat(viewModel.state.value.download).isEqualTo(Download.Failed)
+    assertThat(repository.installs).isEmpty()
+  }
+
   // ==================== owner 2026-09-24 规则 1：只读出口 ====================
 
   @Test

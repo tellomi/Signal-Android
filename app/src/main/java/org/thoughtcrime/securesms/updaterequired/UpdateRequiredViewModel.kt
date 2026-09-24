@@ -69,7 +69,9 @@ class UpdateRequiredViewModel(
       // 只许 Wi-Fi、又没在下的，轮询里会显示「等 Wi-Fi」并给出「用移动数据下载」。
       downloadJob = viewModelScope.launch(SignalDispatchers.IO) {
         val existing = repository.currentDownload() ?: return@launch
-        if (existing.status != UpdateDownloadSnapshot.Status.FAILED) {
+        // 装上新版本以后，上一轮下好的包还记在 SignalStore 里，它已经不比现在装的新（availableVersionName 为 null）：
+        // 不接，免得页面显示「安装更新」去重装同一个版本（2026-09-24 模拟器实测发现）。
+        if (existing.status != UpdateDownloadSnapshot.Status.FAILED && repository.availableVersionName() != null) {
           pollDownload(installWhenDone = false)
         }
       }
@@ -136,8 +138,8 @@ class UpdateRequiredViewModel(
     _state.update { it.copy(newVersionName = newVersionName, isOffline = !repository.isOnline()) }
 
     if (!checked) {
-      // 检查没成功（多半是没网），但之前已经完整下好的包仍然可以装。
-      if (repository.currentDownload()?.status == UpdateDownloadSnapshot.Status.SUCCESSFUL) {
+      // 检查没成功（多半是没网），但之前已经完整下好的包仍然可以装——前提是它比现在装的新（同上）。
+      if (repository.currentDownload()?.status == UpdateDownloadSnapshot.Status.SUCCESSFUL && repository.availableVersionName() != null) {
         pollDownload(installWhenDone = true)
       } else {
         Log.w(TAG, "Required update check failed.")
