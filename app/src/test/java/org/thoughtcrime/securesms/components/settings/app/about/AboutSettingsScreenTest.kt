@@ -6,6 +6,7 @@
 package org.thoughtcrime.securesms.components.settings.app.about
 
 import android.app.Application
+import android.content.res.Configuration
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.longClick
@@ -16,7 +17,9 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.containsExactly
+import assertk.assertions.doesNotContain
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,6 +27,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.thoughtcrime.securesms.R
+import java.util.Locale
 
 /**
  * Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」页的每一行都做它该做的事，地址一个字都不能错。
@@ -131,7 +136,25 @@ class AboutSettingsScreenTest {
     setContent()
 
     composeTestRule.onNodeWithTag(AboutSettingsTestTags.LIST).performScrollToNode(hasText("Licensed under the", substring = true))
-    composeTestRule.onNodeWithText("Copyright Signal Messenger", substring = true).assertExists()
-    composeTestRule.onNodeWithText("Modifications Copyright", substring = true).assertExists()
+    composeTestRule.onNodeWithText("Copyright Signal Messenger\nModifications Copyright 重庆半格智能科技有限公司\nLicensed under the GNU AGPLv3").assertExists()
+  }
+
+  /** owner 2026-09-24：四种语言都写公司全称（一字不差，繁体也不转字）和 GNU AGPLv3，不再出现品牌名。 */
+  @Test
+  fun `footer names the company and the full license in every language`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    for (locale in listOf(Locale.ENGLISH, Locale.SIMPLIFIED_CHINESE, Locale("zh", "HK"), Locale.TRADITIONAL_CHINESE)) {
+      val localized = context.createConfigurationContext(Configuration(context.resources.configuration).apply { setLocale(locale) })
+      val footer = listOf(
+        R.string.HelpFragment__copyright_signal_messenger,
+        R.string.HelpFragment__modifications_copyright_tellomi,
+        R.string.HelpFragment__licenced_under_the_agplv3
+      ).joinToString("\n") { localized.getString(it) }
+
+      assertThat(footer, locale.toString()).contains("Signal Messenger")
+      assertThat(footer, locale.toString()).contains("重庆半格智能科技有限公司")
+      assertThat(footer, locale.toString()).contains("GNU AGPLv3")
+      assertThat(footer, locale.toString()).doesNotContain("Tellomi")
+    }
   }
 }

@@ -6074,7 +6074,7 @@
     <string name="HelpSettingsFragment__licenses">Licenses</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
     <string name="HelpFragment__copyright_signal_messenger">Copyright Signal Messenger</string>
-    <string name="HelpFragment__modifications_copyright_tellomi">Modifications Copyright Tellomi</string>
+    <string name="HelpFragment__modifications_copyright_tellomi">Modifications Copyright 重庆半格智能科技有限公司</string>
     <string name="HelpFragment__licenced_under_the_agplv3">Licensed under the GNU AGPLv3</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>

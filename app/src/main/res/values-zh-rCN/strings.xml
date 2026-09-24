@@ -5913,7 +5913,7 @@
     <string name="HelpSettingsFragment__licenses">许可证</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">条款和隐私政策</string>
     <string name="HelpFragment__copyright_signal_messenger">版权所有 Signal Messenger</string>
-    <string name="HelpFragment__modifications_copyright_tellomi">修改部分版权所有 Tellomi</string>
+    <string name="HelpFragment__modifications_copyright_tellomi">修改部分版权所有 重庆半格智能科技有限公司</string>
     <string name="HelpFragment__licenced_under_the_agplv3">根据 GNU AGPLv3 授权许可</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>

@@ -340,8 +340,9 @@ private fun Footer() {
       label = StringBuilder().apply {
         // Tellomi（#984，owner 2026-09-23 定）：三行并列，从「帮助」原样搬过来，一字不改。
         //   1) 上游署名 —— AGPL 要求派生作品保留原作者的版权声明，不能换成我们自己；
-        //   2) 我们对修改部分的署名；
-        //   3) 许可证。
+        //   2) 我们对修改部分的署名：营业执照上的公司全称，不写品牌名（owner 2026-09-24，docs/legal/dev/SOURCE_COPYRIGHT.md；
+        //      键名里的 tellomi 是历史名字，没改）；
+        //   3) 许可证：正式名称 GNU AGPLv3（上游原文，和 LICENSE 第一行一致）。
         // iOS 的 ABOUT_SECTION_FOOTER_TELLOMI 要和这三行一字一句对齐。
         append(context.getString(R.string.HelpFragment__copyright_signal_messenger))
         append("\n")
