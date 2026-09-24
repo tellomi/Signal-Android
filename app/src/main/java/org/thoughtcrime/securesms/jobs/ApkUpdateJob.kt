@@ -17,6 +17,7 @@ import org.signal.core.util.requireInt
 import org.signal.core.util.requireLong
 import org.signal.core.util.requireString
 import org.thoughtcrime.securesms.BuildConfig
+import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.apkupdate.ApkUpdateDownloadManagerReceiver
 import org.thoughtcrime.securesms.jobmanager.Job
 import org.thoughtcrime.securesms.jobmanager.JsonJobData
@@ -231,7 +232,8 @@ class ApkUpdateJob private constructor(
       }
       // Tellomi：这三行是系统下载通知里用户能看到的字，上游写死了 Signal。
       // 文件名与下面 deleteExistingDownloadedApks 的前缀必须一起改，否则旧包清不掉、越攒越多。
-      setTitle("正在下载 Tellomi 更新")
+      // Tellomi（#1138）：流量下载的通知现在看得见了（taishi 审查 b14 不阻塞 2），标题跟着 App 语言，不再写死简体中文。
+      setTitle(context.getString(R.string.TellomiUpdateRequired__download_notification_title))
       setDescription("Tellomi $versionName")
       setDestinationInExternalFilesDir(context, null, "tellomi-update.apk")
       // 上游为 Wi-Fi 后台下载设了 HIDDEN。用户点出来的流量下载要看得见进度、能在通知里取消（taishi 审查 b14 不阻塞 2）。
