@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.calls.links
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -43,5 +44,14 @@ class CallLinksTest {
     assertTrue(CallLinks.isCallLink("tellomi://tell.cc/call/#key=bcdf-ghkm-npqr-stxz-bcdf-ghkm-npqr-stxz"))
     assertTrue(CallLinks.isCallLink("https://signal.link/call/#key=bcdf-ghkm-npqr-stxz-bcdf-ghkm-npqr-stxz"))
     assertFalse(CallLinks.isCallLink("https://tell.cc/g#key=bcdf-ghkm-npqr-stxz-bcdf-ghkm-npqr-stxz"))
+  }
+
+  /** Tellomi（tellomi/tellomi#1113）：生成的是 tell.cc 形状（不带斜杠，LINKS_AND_SCHEMES.md 那张表），且自己认得出来。 */
+  @Test
+  fun `generated call links use the tell cc shape`() {
+    val url = CallLinks.urlForFormattedKey("bcdf-ghkm-npqr-stxz-bcdf-ghkm-npqr-stxz")
+
+    assertEquals("https://tell.cc/call#key=bcdf-ghkm-npqr-stxz-bcdf-ghkm-npqr-stxz", url)
+    assertTrue(CallLinks.isCallLink(url))
   }
 }

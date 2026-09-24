@@ -18,8 +18,8 @@ import okio.ByteString;
 
 public final class GroupInviteLinkUrl {
 
-  private static final String GROUP_URL_HOST   = "signal.group";
-  private static final String GROUP_URL_PREFIX = "https://" + GROUP_URL_HOST + "/#";
+  // Tellomi（tellomi/tellomi#1113）：发出 https://tell.cc/g#<invite>（与 Desktop / iOS 相同）；解析新旧两种都认（getGroupUrl）
+  private static final String GROUP_URL_PREFIX = "https://" + TellomiLinks.HOST + TellomiLinks.PATH_GROUP + "#";
 
   private final GroupMasterKey    groupMasterKey;
   private final GroupLinkPassword password;
