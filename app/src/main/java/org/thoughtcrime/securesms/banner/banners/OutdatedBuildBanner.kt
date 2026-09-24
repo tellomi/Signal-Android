@@ -31,7 +31,8 @@ import kotlin.time.Duration.Companion.milliseconds
 class OutdatedBuildBanner : Banner<Int>() {
 
   companion object {
-    private const val MAX_DAYS_UNTIL_EXPIRE = 10
+    // Tellomi（tellomi/tellomi#1142，需求第 3.6 节）：到期前 14 天开始提示（上游 10 天），与 iOS 一致。
+    private const val MAX_DAYS_UNTIL_EXPIRE = 14
   }
 
   override val enabled: Boolean

@@ -60,7 +60,9 @@ import java.util.concurrent.TimeUnit;
 public class Util {
   private static final String TAG = Log.tag(Util.class);
 
-  private static final long BUILD_LIFESPAN = TimeUnit.DAYS.toMillis(90);
+  // Tellomi（tellomi/tellomi#1142，需求 app-update-and-version-policy 第 3.6 节）：上游 90 天。Tellomi 发版没那么勤，
+  // 90 天不发版所有人会同时停止收发；兜底保留，时长三端统一 180 天（owner 可改）。
+  private static final long BUILD_LIFESPAN = TimeUnit.DAYS.toMillis(180);
 
   public static final String COPY_LABEL = "text\u00AD";
 
