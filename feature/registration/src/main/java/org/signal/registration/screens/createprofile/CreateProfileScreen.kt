@@ -41,8 +41,11 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -176,7 +179,8 @@ private fun CompactLayout(
           enabled = !state.isSubmitting,
           keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Words,
-            imeAction = ImeAction.Done
+            // 下面还有用户名框：「下一项」跳过去（taishi 审查包 4）；用户名已确认、框锁住时没有下一项，仍是「完成」
+            imeAction = if (state.usernameEntry.confirmed == null) ImeAction.Next else ImeAction.Done
           ),
           modifier = Modifier
             .fillMaxWidth()
@@ -307,7 +311,10 @@ private fun TellomiUsernameField(
           text = usernameSupportingText(entry),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          modifier = Modifier.testTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT)
+          modifier = Modifier
+            .testTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT)
+            // 「正在检查 / 不可用 / 你的链接」变了读屏要念出来（taishi 审查包 4）。停顿 500ms 才查，一次输入最多念两回
+            .semantics { liveRegion = LiveRegionMode.Polite }
         )
       },
       modifier = Modifier
@@ -341,20 +348,20 @@ private fun TellomiUsernameField(
 
 @Composable
 private fun usernameSupportingText(entry: TellomiUsernameEntry): String {
-  return when {
-    entry.error != null -> stringResource(
-      when (entry.error) {
-        TellomiUsernameEntry.Error.TOO_SHORT -> R.string.TellomiRegistration__username_too_short
-        TellomiUsernameEntry.Error.TOO_LONG -> R.string.TellomiRegistration__username_too_long
-        TellomiUsernameEntry.Error.INVALID_CHARACTERS -> R.string.TellomiRegistration__username_invalid_characters
-        TellomiUsernameEntry.Error.MUST_START_WITH_LETTER -> R.string.TellomiRegistration__username_must_start_with_letter
-        TellomiUsernameEntry.Error.NOT_AVAILABLE -> R.string.TellomiRegistration__username_not_available
-        TellomiUsernameEntry.Error.CHECK_FAILED -> R.string.TellomiRegistration__username_check_failed
-      }
-    )
-    entry.isChecking -> stringResource(R.string.TellomiRegistration__username_checking)
-    entry.reservation != null -> stringResource(R.string.TellomiRegistration__username_your_link, "tell.cc/" + entry.text.lowercase())
-    else -> ""
+  return when (entry.error) {
+    TellomiUsernameEntry.Error.TOO_SHORT -> stringResource(R.string.TellomiRegistration__username_too_short)
+    TellomiUsernameEntry.Error.TOO_LONG -> stringResource(R.string.TellomiRegistration__username_too_long)
+    TellomiUsernameEntry.Error.INVALID_CHARACTERS -> stringResource(R.string.TellomiRegistration__username_invalid_characters)
+    TellomiUsernameEntry.Error.MUST_START_WITH_LETTER -> stringResource(R.string.TellomiRegistration__username_must_start_with_letter)
+    TellomiUsernameEntry.Error.NOT_AVAILABLE -> stringResource(R.string.TellomiRegistration__username_not_available)
+    TellomiUsernameEntry.Error.CHECK_FAILED -> stringResource(R.string.TellomiRegistration__username_check_failed)
+    TellomiUsernameEntry.Error.TOO_MANY_ATTEMPTS -> stringResource(R.string.TellomiRegistration__username_too_many_attempts)
+    TellomiUsernameEntry.Error.RENAME_COOLDOWN -> pluralStringResource(R.plurals.TellomiRegistration__username_cooldown, entry.cooldownDays, entry.cooldownDays)
+    null -> when {
+      entry.isChecking -> stringResource(R.string.TellomiRegistration__username_checking)
+      entry.reservation != null -> stringResource(R.string.TellomiRegistration__username_your_link, "tell.cc/" + entry.text.lowercase())
+      else -> ""
+    }
   }
 }
 

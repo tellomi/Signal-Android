@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -38,6 +38,7 @@ import org.signal.registration.StoredProfileData
 import org.signal.registration.fakes.SystemOutLogger
 import java.io.IOException
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Tellomi（tellomi/tellomi#1215 第二刀）：资料页上的选填用户名。
@@ -160,6 +161,38 @@ class CreateProfileUsernameTest {
     advanceUntilIdle()
 
     assertThat(viewModel.state.value.isFormValid).isTrue()
+  }
+
+  /** taishi 审查包 4：回收号码的新主人继承了 30 天改名冷却，reserve 回 429 + 以天计的 Retry-After，要说还剩几天。 */
+  @Test
+  fun `an inherited rename cooldown shows the days left and blocks entering until cleared`() = runTest(testDispatcher) {
+    coEvery { repository.reserveUsername("kaixin") } returns RequestResult.NonSuccess(ReserveUsernameError.RateLimited(2591999.seconds))
+
+    viewModel.onEvent(CreateProfileScreenEvents.GivenNameChanged("开心"))
+    viewModel.onEvent(CreateProfileScreenEvents.UsernameChanged("kaixin"))
+    advanceUntilIdle()
+
+    assertThat(entry.error).isEqualTo(TellomiUsernameEntry.Error.RENAME_COOLDOWN)
+    assertThat(entry.cooldownDays).isEqualTo(30)
+    assertThat(entry.candidates).isEmpty()
+    assertThat(viewModel.state.value.isFormValid).isFalse()
+
+    viewModel.onEvent(CreateProfileScreenEvents.UsernameChanged(""))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.isFormValid).isTrue()
+  }
+
+  @Test
+  fun `a short rate limit is too many attempts`() = runTest(testDispatcher) {
+    coEvery { repository.reserveUsername("kaixin") } returns RequestResult.NonSuccess(ReserveUsernameError.RateLimited(9.seconds))
+
+    viewModel.onEvent(CreateProfileScreenEvents.GivenNameChanged("开心"))
+    viewModel.onEvent(CreateProfileScreenEvents.UsernameChanged("kaixin"))
+    advanceUntilIdle()
+
+    assertThat(entry.error).isEqualTo(TellomiUsernameEntry.Error.TOO_MANY_ATTEMPTS)
+    assertThat(viewModel.state.value.isFormValid).isFalse()
   }
 
   @Test

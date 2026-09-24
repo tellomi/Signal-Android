@@ -595,6 +595,13 @@
     <string name="TellomiRegistration__username_invalid_characters">Use only letters, numbers and underscores</string>
     <string name="TellomiRegistration__username_must_start_with_letter">Start with a letter</string>
     <string name="TellomiRegistration__username_check_failed">Couldn\'t check this username. Try again in a moment.</string>
+    <!-- Tellomi（#1215 第二刀，taishi 审查包 4）：保留用户名被限流、Retry-After 在一小时以内时，用户名框下的说明（只有一行） -->
+    <string name="TellomiRegistration__username_too_many_attempts">Too many attempts. Try again later.</string>
+    <!-- Tellomi（#1215 第二刀，taishi 审查包 4）：回收号码的新主人会继承上一个人的 30 天改名冷却（ADR-0066 §6.2），这期间设不了用户名。%d 为还要等的天数（向上取整，至少 1）。说明行只有一行，要短 -->
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="one">You can set a username in %d day</item>
+        <item quantity="other">You can set a username in %d days</item>
+    </plurals>
     <string name="TellomiRegistration__username_try">Try:</string>
 
     <!-- Phone number discoverability picker -->

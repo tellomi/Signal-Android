@@ -211,14 +211,14 @@ class CreateProfileViewModel(
         Log.i(TAG, "[reserveUsername] Reserved.")
         entry.copy(isChecking = false, reservation = result.result, error = null, candidates = emptyList())
       }
-      is RequestResult.NonSuccess -> when (result.error) {
+      is RequestResult.NonSuccess -> when (val error = result.error) {
         is ReserveUsernameError.NotAvailable, is ReserveUsernameError.NicknameInvalid -> {
-          Log.w(TAG, "[reserveUsername] Not available: ${result.error}")
+          Log.w(TAG, "[reserveUsername] Not available: $error")
           entry.copy(isChecking = false, error = TellomiUsernameEntry.Error.NOT_AVAILABLE, candidates = TellomiUsernameEntry.candidates(event.nickname, random))
         }
         is ReserveUsernameError.RateLimited -> {
-          Log.w(TAG, "[reserveUsername] Rate limited.")
-          entry.copy(isChecking = false, error = TellomiUsernameEntry.Error.CHECK_FAILED)
+          Log.w(TAG, "[reserveUsername] Rate limited. Retry after: ${error.retryAfter}")
+          entry.rateLimited(error.retryAfter)
         }
       }
       is RequestResult.RetryableNetworkError -> {
