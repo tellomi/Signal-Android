@@ -10,6 +10,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -22,6 +24,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.registration.R
 import org.signal.registration.test.TestTags
 
 /**
@@ -74,6 +77,22 @@ class CreateProfileScreenTest {
     }
 
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_AVATAR_INITIALS, useUnmergedTree = true).assertTextEquals("娜娜")
+  }
+
+  /** 显示名字时头像整块仍念「设置头像」：照片、相机图标两支本来就有，这一支以前读屏只念出名字（taishi 审查 2026-09-24）。 */
+  @Test
+  fun `avatar with initials is still announced as set avatar`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(givenName = "欧阳娜娜", isLoading = false),
+          onEvent = {}
+        )
+      }
+    }
+
+    val setAvatar = ApplicationProvider.getApplicationContext<Application>().getString(R.string.CreateProfileScreen__set_avatar_description)
+    composeTestRule.onNode(hasClickAction() and hasContentDescription(setAvatar)).assertExists()
   }
 
   @Test

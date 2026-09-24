@@ -63,7 +63,7 @@ object TellomiNames {
 
   private fun hanAbbreviation(name: String): String? {
     val letters = name.codePoints()
-      .filter { !Character.isWhitespace(it) && !isPunctuation(it) }
+      .filter { !isSpace(it) && !isPunctuation(it) }
       .toArray()
 
     if (letters.isEmpty() || letters.any { Character.UnicodeScript.of(it) != Character.UnicodeScript.HAN }) {
@@ -75,8 +75,13 @@ object TellomiNames {
 
   private fun isCjkv(text: String): Boolean {
     return text.codePoints()
-      .filter { !Character.isWhitespace(it) && !isPunctuation(it) }
+      .filter { !isSpace(it) && !isPunctuation(it) }
       .allMatch { Character.UnicodeScript.of(it) in CJKV_SCRIPTS }
+  }
+
+  /** `Character.isWhitespace` 不算不换行空格（U+00A0 / U+2007 / U+202F），`isSpaceChar` 算；两个都认，与 iOS 的 `\s` 一致。 */
+  private fun isSpace(codePoint: Int): Boolean {
+    return Character.isWhitespace(codePoint) || Character.isSpaceChar(codePoint)
   }
 
   private fun isPunctuation(codePoint: Int): Boolean {

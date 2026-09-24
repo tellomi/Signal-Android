@@ -38,6 +38,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
@@ -154,11 +156,12 @@ private fun CompactLayout(
         OutlinedTextField(
           value = state.givenName,
           onValueChange = { onEvent(CreateProfileScreenEvents.GivenNameChanged(it)) },
-          // Tellomi（tellomi/tellomi#1210）：上游「名字（必需）」→「名字」+ 红色必填星号
+          // Tellomi（tellomi/tellomi#1210）：上游「名字（必需）」→「名字」+ 红色必填星号；
+          // #1215 之后这一个框填全名，英文也写「Name」而不是「First name」
           label = {
             Text(
               buildAnnotatedString {
-                append(stringResource(R.string.TellomiRegistration__first_name))
+                append(stringResource(R.string.TellomiRegistration__name))
                 withStyle(SpanStyle(color = MaterialTheme.colorScheme.error)) { append(" *") }
               }
             )
@@ -247,6 +250,7 @@ private fun Avatar(
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
+  val setAvatarDescription = stringResource(R.string.CreateProfileScreen__set_avatar_description)
   val bitmap = remember(avatarBytes) {
     avatarBytes?.let {
       runCatching { BitmapFactory.decodeByteArray(it, 0, it.size) }.getOrNull()
@@ -277,7 +281,10 @@ private fun Avatar(
           style = MaterialTheme.typography.headlineLarge,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
           maxLines = 1,
-          modifier = Modifier.testTag(TestTags.CREATE_PROFILE_AVATAR_INITIALS)
+          // 和照片、相机图标两支一样念「设置头像」，否则读屏只念出名字（taishi 审查 2026-09-24）
+          modifier = Modifier
+            .testTag(TestTags.CREATE_PROFILE_AVATAR_INITIALS)
+            .semantics { contentDescription = setAvatarDescription }
         )
       } else {
         Icon(

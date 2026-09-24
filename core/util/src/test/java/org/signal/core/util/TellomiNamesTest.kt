@@ -39,6 +39,32 @@ class TellomiNamesTest {
     assertEquals("は", TellomiNames.abbreviation("はな"))
   }
 
+  /**
+   * 两端同一组样例（iOS `TellomiAvatarInitialsTest.testSingleFieldSamplesSharedWithAndroid` 逐条相同）。
+   * 注册资料页只剩一个框，全名都存在 given name 里，默认头像上的字只看这一个串（taishi 审查 2026-09-24）。
+   */
+  @Test
+  fun `single field samples shared with ios`() {
+    val samples = listOf(
+      "欧阳娜娜" to "娜娜",
+      "张三" to "张三",
+      "李" to "李",
+      "陈 志明" to "志明",
+      "马克·卡尔" to "卡尔",
+      "张 三" to "张三",
+      "Kevin Zhang" to "KZ",
+      "John Smith" to "JS",
+      "Kevin 张" to "K张",
+      "小明 Wang" to "小W",
+      "娜娜😀" to "娜",
+      "😀" to "😀",
+      "John" to "J",
+      "" to null,
+      "·" to null
+    )
+    samples.forEach { (input, expected) -> assertEquals(input, expected, TellomiNames.abbreviation(input)) }
+  }
+
   @Test
   fun `blank names have no abbreviation`() {
     assertNull(TellomiNames.abbreviation(""))

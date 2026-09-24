@@ -776,5 +776,8 @@
     <string name="TellomiRegistration__you_will_receive_a_verification_code">We\'ll text you a verification code to confirm this number is yours.</string>
     <string name="TellomiRegistration__a_verification_code_will_be_sent">We\'ll text a verification code to this number to confirm it\'s yours.</string>
     <string name="TellomiRegistration__captcha_retry">Retry</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：注册资料页只剩一个框、填全名。旧键 TellomiRegistration__first_name 暂留在下一行：
+         它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
+    <string name="TellomiRegistration__name">Name</string>
     <string name="TellomiRegistration__first_name">First name</string>
 </resources>
