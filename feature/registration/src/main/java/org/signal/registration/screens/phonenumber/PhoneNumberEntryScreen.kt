@@ -609,6 +609,26 @@ private fun PhoneNumberInputFields(
         }
       ),
       singleLine = true,
+      // Tellomi（tellomi/tellomi#1213，ADR-0051 §C）：非空时有清空 ×。
+      trailingIcon = if (phoneNumberTextFieldValue.text.isNotEmpty()) {
+        {
+          IconButton(
+            onClick = {
+              onEvent(PhoneNumberEntryScreenEvents.NationalNumberChanged(oldValue = phoneNumberTextFieldValue.text, newValue = ""))
+              phoneNumberTextFieldValue = TextFieldValue("")
+            },
+            modifier = Modifier.testTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON)
+          ) {
+            Icon(
+              imageVector = SignalIcons.X.imageVector,
+              contentDescription = stringResource(R.string.TellomiRegistration__clear_phone_number),
+              tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+          }
+        }
+      } else {
+        null
+      },
       visualTransformation = if (isAccountId) AccountIdVisualTransformation else VisualTransformation.None,
       textStyle = if (isAccountId) {
         accountIdTextStyle().copy(color = MaterialTheme.colorScheme.onSurface)

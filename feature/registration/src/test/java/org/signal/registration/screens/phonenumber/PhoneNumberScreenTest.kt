@@ -331,4 +331,41 @@ class PhoneNumberScreenTest {
     formattedNumber = accountId,
     isPhoneNumberlessRegistrationAvailable = true
   )
+
+  // ==================== Tellomi（tellomi/tellomi#1213）：清空 × ====================
+
+  @Test
+  fun `the clear button only shows once something is typed`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(state = PhoneNumberEntryState(), onEvent = {})
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).assertDoesNotExist()
+  }
+
+  @Test
+  fun `the clear button empties the number`() {
+    val events = mutableListOf<PhoneNumberEntryScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = PhoneNumberEntryState(
+            countryCode = "86",
+            nationalNumber = "13800138000",
+            formattedNumber = "138 0013 8000",
+            isNumberPossible = true
+          ),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).performClick()
+
+    val change = events.filterIsInstance<PhoneNumberEntryScreenEvents.NationalNumberChanged>().last()
+    assert(change.newValue.isEmpty()) { "Expected the number to be cleared but got ${change.newValue}" }
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).assertDoesNotExist()
+  }
 }
