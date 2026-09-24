@@ -1559,6 +1559,9 @@
     <string name="ManageProfileFragment__delete_username_dialog_title">係咪刪除用戶名稱呀？</string>
     <!-- The body of a pop-up dialog asking the user to confirm deleting their username -->
     <string name="ManageProfileFragment__delete_username_dialog_body">"咁做嘅話，系統會移除你嘅用戶名稱，同埋停用你嘅二維碼同連結。 其他用戶就可以攞「%1$s」呢個名嚟用㗎喇。 你係咪確定？"</string>
+    <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
+        <item quantity="other">咁做嘅話，系統就會移除你嘅用戶名稱同埋停用你嘅二維碼同連結。「%1$s」會幫你保留 %2$d 日；呢段時間再設定用戶名稱，之後 %3$d 日內唔可以再改。你係咪確定？</item>
+    </plurals>
 
     <!-- UsernameOutOfSyncReminder -->
     <!-- Displayed above the conversation list when a user needs to address an issue with their username -->
@@ -3112,6 +3115,12 @@
     <string name="UsernameEditFragment_change_confirmation_message">更改用戶名稱會將你宜家用緊嘅二維碼同連結重設。你係咪確定？</string>
     <!-- Text for a button in a dialog asking if the user would like to continue the operation of changing their username -->
     <string name="UsernameEditFragment_continue">繼續</string>
+    <plurals name="UsernameEditFragment__tellomi_change_confirmation">
+        <item quantity="other">更改用戶名稱會將你宜家用緊嘅二維碼同連結重設，之後 %d 日內唔可以再改。你係咪確定？</item>
+    </plurals>
+    <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
+        <item quantity="other">你喺 %1$d 日內刪除過用戶名稱，宜家設定都當係更改一次：之後 %2$d 日內唔可以再改。你係咪確定？</item>
+    </plurals>
 
     <plurals name="UserNotificationMigrationJob_d_contacts_are_on_signal">
         <item quantity="other">%1$d 位聯絡人開咗 Tellomi 喇！</item>

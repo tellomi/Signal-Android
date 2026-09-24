@@ -475,7 +475,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
      * Tellomi（ADR-0066 §6.2）：保存前弹哪种确认框。只改大小写 → 不弹；已有用户名 → 换名提醒（上游原有，文案带冷却天数）；
      * 没有用户名、但保留期内删过一个 → 「删了再设也算改名」；第一次设 → 不弹。与 Desktop `getUsernameSaveConfirmation` 同一判法。
      */
-    @androidx.annotation.VisibleForTesting
+    @VisibleForTesting
     @JvmStatic
     fun saveConfirmation(isCaseChange: Boolean, currentUsername: String?, deletedAtMillis: Long, nowMillis: Long): SaveConfirmation {
       return when {

@@ -81,4 +81,12 @@ object TellomiUsernames {
   fun isWithinUsernameHold(deletedAtMillis: Long, nowMillis: Long): Boolean {
     return deletedAtMillis > 0 && nowMillis - deletedAtMillis < USERNAME_HOLD_DAYS * 24L * 60 * 60 * 1000
   }
+
+  /**
+   * 合并 AccountRecord 时要不要记删除时间：本机原来有用户名、同步来的为空（别的设备删了）→ 记；
+   * 首次同步（原来没有）、改名、两边都空都不记。与 Desktop `shouldRecordUsernameDeletion` 同一判法。
+   */
+  fun isUsernameDeletion(previous: String?, synced: String?): Boolean {
+    return !previous.isNullOrEmpty() && synced.isNullOrEmpty()
+  }
 }

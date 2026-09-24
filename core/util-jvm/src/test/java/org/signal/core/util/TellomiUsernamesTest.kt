@@ -84,4 +84,16 @@ class TellomiUsernamesTest {
     assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt + 30 * day)).isFalse()
     assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt - day)).isTrue()
   }
+
+  /** 与 Desktop `Username_test.dom.ts` 里 shouldRecordUsernameDeletion 的 5 条断言一一对应。 */
+  @Test
+  fun usernameDeletionFromSync() {
+    // 别的设备删了：同步回来的 AccountRecord 没有用户名（proto 里是空串）
+    assertThat(TellomiUsernames.isUsernameDeletion("kaixin.01", null)).isTrue()
+    assertThat(TellomiUsernames.isUsernameDeletion("kaixin.01", "")).isTrue()
+    // 首次同步、改名、两边都空：都不算删
+    assertThat(TellomiUsernames.isUsernameDeletion("", "kaixin.01")).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion("kaixin.01", "bob.01")).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion("", "")).isFalse()
+  }
 }
