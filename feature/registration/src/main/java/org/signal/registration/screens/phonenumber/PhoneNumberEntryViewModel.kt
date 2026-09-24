@@ -929,7 +929,12 @@ class PhoneNumberEntryViewModel(
    * Tellomi（tellomi/tellomi#1213）：一次插进来的那一段本身就是完整号码时，整框换成它，不和框里已有的数字拼接；
    * 「0086…」按「+86…」处理。认三种写法：「+…」「00…」，以及框里已有数字时、以当前区号开头的一串（空框的这种上游已经会拆）。
    * 去掉前缀后还得是有效号码才算，免得把「0013 8000」这种本地号码片段读成 +1 38000。
-   * 不算就返回 null，交回上游的处理。iOS 的 RegistrationPhoneNumberInputView.tellomiFullPhoneNumber 是同一件事。
+   * 第三种写法另外要求去掉区号后的位数等于当前地区示例号码的有效位数：号码长度不固定的地区（DE、AT、FI 等），
+   * 以区号数字开头的本地号码去掉「区号」后常常也是有效号码，只看有效会把它静默改成另一个号码。
+   *
+   * 插入段是按新旧两串的公共前后缀推断的，全选再粘时可能被截短（新旧号码尾部都是「000」）；
+   * 所以插入段不算时再看整框：整框以 00 开头、去掉 00 是有效号码，也按「+」处理（上游对整框的「+」有同样的判断）。
+   * 都不算就返回 null，交回上游的处理。iOS 的 RegistrationPhoneNumberInputView.tellomiFullPhoneNumber 是同一套规则。
    */
   private fun tellomiFullNumberInserted(state: PhoneNumberEntryState, oldValue: String, newValue: String): PhoneNumberEntryState? {
     val inserted = insertedText(oldValue, newValue).filter { it.isDigit() || it == '+' }
@@ -937,10 +942,34 @@ class PhoneNumberEntryViewModel(
     val international = when {
       inserted.startsWith("+") -> digits
       inserted.startsWith("00") -> digits.drop(2)
-      oldValue.any { it.isDigit() } && inserted == digits && state.countryCode.isNotEmpty() && digits.startsWith(state.countryCode) -> digits
-      else -> return null
+      oldValue.any { it.isDigit() } && inserted == digits && isCallingCodeAndFullNationalNumber(state, digits) -> digits
+      else -> null
     }
-    return if (isValidFullNumber(international)) redistributeFullPhoneNumber(state, "+$international") else null
+    if (international != null && isValidFullNumber(international)) {
+      return redistributeFullPhoneNumber(state, "+$international")
+    }
+
+    val field = newValue.filter { it.isDigit() || it == '+' }
+    val fieldInternational = field.filter { it.isDigit() }.drop(2)
+    return if (field.startsWith("00") && isValidFullNumber(fieldInternational)) redistributeFullPhoneNumber(state, "+$fieldInternational") else null
+  }
+
+  /** [digits] 以当前区号开头，而且去掉区号后的位数等于当前地区示例号码的有效位数（见 [exampleNationalSignificantNumberLength]）。 */
+  private fun isCallingCodeAndFullNationalNumber(state: PhoneNumberEntryState, digits: String): Boolean {
+    val countryCode = state.countryCode
+    if (countryCode.isEmpty() || !digits.startsWith(countryCode)) return false
+    return digits.length - countryCode.length == exampleNationalSignificantNumberLength(state.regionCode)
+  }
+
+  /**
+   * 示例号码的有效位数（不含长途前缀）：先取手机号的示例，没有再取「固话或手机」，和 iOS 上游 exampleNationalNumber 的取法相同。
+   * 用有效位数而不是本国格式的位数：台湾本国格式带长途前缀 0（0912 345 678，10 位），有效位数是 9。
+   */
+  private fun exampleNationalSignificantNumberLength(regionCode: String): Int? {
+    val example = phoneNumberUtil.getExampleNumberForType(regionCode, PhoneNumberUtil.PhoneNumberType.MOBILE)
+      ?: phoneNumberUtil.getExampleNumberForType(regionCode, PhoneNumberUtil.PhoneNumberType.FIXED_LINE_OR_MOBILE)
+      ?: return null
+    return phoneNumberUtil.getNationalSignificantNumber(example).length
   }
 
   private fun isValidFullNumber(digits: String): Boolean {

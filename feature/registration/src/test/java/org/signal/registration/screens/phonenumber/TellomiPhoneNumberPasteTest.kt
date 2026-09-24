@@ -105,6 +105,60 @@ class TellomiPhoneNumberPasteTest {
     assertThat(result.nationalNumber).isEqualTo("13800138000")
   }
 
+  @Test
+  fun `selecting the whole number and pasting a 0086 number splits it even when both numbers end the same way`() = runTest {
+    // 插入段按公共前后缀推断：两个号码尾部都是「000」时，推出来的插入段是「0086 139 0013 9」，要靠整框的 00 判断（taishi 审查 b18 不阻塞 2）。
+    val filled = china.copy(nationalNumber = "13800138000", formattedNumber = "138 0013 8000")
+    val cases = listOf(
+      "0086 139 0013 9000" to "13900139000",
+      "0086 138 0013 8000" to "13800138000",
+      "0086138 0013 8000" to "13800138000"
+    )
+
+    for ((newValue, national) in cases) {
+      val result = change(filled, oldValue = "138 0013 8000", newValue = newValue)
+
+      assertThat(result.countryCode, newValue).isEqualTo("86")
+      assertThat(result.nationalNumber, newValue).isEqualTo(national)
+      assertThat(result.isNumberInvalid, newValue).isFalse()
+    }
+  }
+
+  @Test
+  fun `a number starting with the calling code splits when the rest is as long as the region's example number`() = runTest {
+    // 两端共用样例，iOS 的 TellomiPhoneNumberInputTest 是同一组：框里已有一位数字，再粘以区号开头的完整号码。
+    val cases = listOf(
+      Triple(PhoneNumberEntryState(regionCode = "CN", countryCode = "86"), "8613800138000", "13800138000"),
+      Triple(PhoneNumberEntryState(regionCode = "HK", countryCode = "852"), "85291234567", "91234567"),
+      Triple(PhoneNumberEntryState(regionCode = "US", countryCode = "1"), "14155550100", "4155550100"),
+      Triple(PhoneNumberEntryState(regionCode = "TW", countryCode = "886"), "886912345678", "912345678")
+    )
+
+    for ((region, pasted, national) in cases) {
+      val old = national.take(1)
+      val result = change(region.copy(nationalNumber = old, formattedNumber = old), oldValue = old, newValue = old + pasted)
+
+      assertThat(result.countryCode, pasted).isEqualTo(region.countryCode)
+      assertThat(result.nationalNumber, pasted).isEqualTo(national)
+    }
+  }
+
+  @Test
+  fun `a local number that happens to start with the calling code keeps the upstream result where number lengths vary`() = runTest {
+    // DE / AT：去掉「区号」后也是有效号码，但位数和示例号码不同，不当完整号码拆；结果和上游相同（taishi 审查 b18 不阻塞 3）。
+    val cases = listOf(
+      Triple(PhoneNumberEntryState(regionCode = "DE", countryCode = "49", nationalNumber = "0", formattedNumber = "0"), "04921123456", "4921123456"),
+      Triple(PhoneNumberEntryState(regionCode = "AT", countryCode = "43", nationalNumber = "6", formattedNumber = "6"), "64312345678", "64312345678")
+    )
+
+    for ((state, newValue, national) in cases) {
+      val result = change(state, oldValue = state.nationalNumber, newValue = newValue)
+
+      assertThat(result.countryCode, newValue).isEqualTo(state.countryCode)
+      assertThat(result.nationalNumber, newValue).isEqualTo(national)
+    }
+  }
+
   private suspend fun change(state: PhoneNumberEntryState, oldValue: String, newValue: String): PhoneNumberEntryState {
     emittedStates.clear()
     viewModel.applyEvent(
