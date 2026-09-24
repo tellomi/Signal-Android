@@ -320,6 +320,10 @@
     <string name="TellomiUpdateRequired__use_mobile_data">Download using mobile data</string>
     <string name="TellomiUpdateRequired__download_notification_title">Downloading the Tellomi update</string>
     <string name="TellomiUpdateRequired__view_chats_only">Not now, just view my chats</string>
+    <!-- Body of the banner above the chat list while this build can only show chats (the server requires an update, or the build has expired); tapping it opens the update screen -->
+    <string name="TellomiUpdateRequired__read_only_banner">Update Tellomi to keep sending and receiving messages.</string>
+    <!-- Message of the confirmation shown before switching to read-only from the update-required screen -->
+    <string name="TellomiUpdateRequired__view_chats_only_confirm_message">Until you update, you can view your chats but can\'t send or receive messages.</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->

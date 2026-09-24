@@ -99,11 +99,14 @@ class ClientDeprecatedActivity : BaseActivity() {
     viewModel.onEvent(UpdateRequiredScreenEvent.ScreenResumed)
   }
 
-  /** 上游「不要更新」的确认框，字句照旧：能看记录，更新之前不能收发。 */
+  /**
+   * 上游「不要更新」的确认框：能看记录，更新之前不能收发。正文换成 Tellomi 的句子，不说「已过期」——
+   * 服务端要求更新时版本并没有过期（taishi 审查包 8）；标题和按钮照旧用上游的。
+   */
   private fun confirmViewChatsOnly() {
     MaterialAlertDialogBuilder(this)
       .setTitle(R.string.ClientDeprecatedActivity_warning)
-      .setMessage(R.string.ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history)
+      .setMessage(R.string.TellomiUpdateRequired__view_chats_only_confirm_message)
       .setPositiveButton(R.string.ClientDeprecatedActivity_dont_update) { _, _ -> viewModel.onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyConfirmed) }
       .setNegativeButton(android.R.string.cancel, null)
       .show()

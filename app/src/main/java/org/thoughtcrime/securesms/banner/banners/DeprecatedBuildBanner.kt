@@ -57,7 +57,8 @@ class DeprecatedBuildBanner : Banner<Unit>() {
 private fun Banner(contentPadding: PaddingValues, onUpdateClicked: () -> Unit = {}) {
   DefaultBanner(
     title = null,
-    body = stringResource(id = R.string.ExpiredBuildReminder_this_version_of_signal_has_expired),
+    // Tellomi（tellomi/tellomi#1138，taishi 审查包 8）：服务端要求更新和构建到期都走这条横幅，只说「需要更新」，不说「已过期」。
+    body = stringResource(id = R.string.TellomiUpdateRequired__read_only_banner),
     importance = Importance.ERROR,
     actions = listOf(
       Action(R.string.ExpiredBuildReminder_update_now) {

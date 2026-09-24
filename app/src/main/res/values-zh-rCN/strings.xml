@@ -315,6 +315,8 @@
     <string name="TellomiUpdateRequired__use_mobile_data">用移动数据下载</string>
     <string name="TellomiUpdateRequired__download_notification_title">正在下载 Tellomi 更新</string>
     <string name="TellomiUpdateRequired__view_chats_only">暂不更新，只看聊天记录</string>
+    <string name="TellomiUpdateRequired__read_only_banner">需要更新才能继续收发消息。</string>
+    <string name="TellomiUpdateRequired__view_chats_only_confirm_message">更新之前可以看聊天记录，但不能收发消息。</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->
