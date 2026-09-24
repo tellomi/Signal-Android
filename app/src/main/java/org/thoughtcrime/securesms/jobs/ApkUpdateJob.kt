@@ -99,7 +99,11 @@ class ApkUpdateJob private constructor(
 
     val newerVersionAvailable = shouldUpdate(getCurrentAppVersionCode(), updateDescriptor, SignalStore.apkUpdate.lastApkUploadTime, Environment.IS_WEBSITE)
     // Tellomi（#1138）：「关于」页与阻断页据此显示新版本号。
-    SignalStore.apkUpdate.availableUpdateVersionName = if (newerVersionAvailable) updateDescriptor.versionName else null
+    if (newerVersionAvailable) {
+      SignalStore.apkUpdate.setAvailableUpdate(updateDescriptor.versionCode, updateDescriptor.versionName)
+    } else {
+      SignalStore.apkUpdate.clearAvailableUpdate()
+    }
 
     if (newerVersionAvailable) {
       Log.i(TAG, "Newer version code available. Current: (versionCode: ${getCurrentAppVersionCode()}, uploadTime: ${SignalStore.apkUpdate.lastApkUploadTime}), Update: (versionCode: ${updateDescriptor.versionCode}, uploadTime: ${updateDescriptor.uploadTimestamp})")
