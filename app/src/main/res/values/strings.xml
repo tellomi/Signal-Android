@@ -6047,6 +6047,28 @@
     <string name="HelpSettingsFragment__version">Version</string>
     <!-- Displayed when copying help screen text to the clipboard -->
     <string name="HelpSettingsFragment__copied_to_clipboard">Copied to clipboard</string>
+    <!-- Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」页（docs/product/specs/about-page.md 3.2）。法律文件名照需求 3.2，其中三份是官网 /legal/ 标题的简称（用户服务协议、隐私政策（个人信息处理规则）、投诉举报、侵权通知与申诉处理规则） -->
+    <string name="AboutSettings__tellomi_about_tellomi">About Tellomi</string>
+    <string name="AboutSettings__tellomi_version">Version %1$s (build %2$s)</string>
+    <string name="AboutSettings__tellomi_section_updates">Updates</string>
+    <string name="AboutSettings__tellomi_check_for_updates">Check for updates</string>
+    <string name="AboutSettings__tellomi_checking_for_updates">Checking for updates. You\'ll be notified if a new version is available.</string>
+    <string name="AboutSettings__tellomi_section_contact">Contact us</string>
+    <string name="AboutSettings__tellomi_official_website">Official website</string>
+    <string name="AboutSettings__tellomi_contact_support">Customer support</string>
+    <string name="AboutSettings__tellomi_privacy_and_personal_data">Privacy and personal data</string>
+    <string name="AboutSettings__tellomi_report_abuse">Report abuse</string>
+    <string name="AboutSettings__tellomi_tap_to_copy">Tap to copy</string>
+    <string name="AboutSettings__tellomi_section_legal">Legal and compliance</string>
+    <string name="AboutSettings__tellomi_terms_of_service">Terms of Service</string>
+    <string name="AboutSettings__tellomi_privacy_policy">Privacy Policy</string>
+    <string name="AboutSettings__tellomi_personal_information_collected">Personal information we collect</string>
+    <string name="AboutSettings__tellomi_third_party_sharing">Third-party sharing and SDKs</string>
+    <string name="AboutSettings__tellomi_system_permissions">System permissions we use</string>
+    <string name="AboutSettings__tellomi_complaints_and_reports">Complaints and reporting rules</string>
+    <string name="AboutSettings__tellomi_section_open_source">Open source</string>
+    <string name="AboutSettings__tellomi_open_source_licenses">Open source licenses</string>
+    <string name="AboutSettings__tellomi_source_code">Source code</string>
     <string name="HelpSettingsFragment__debug_log">Debug log</string>
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">Licenses</string>

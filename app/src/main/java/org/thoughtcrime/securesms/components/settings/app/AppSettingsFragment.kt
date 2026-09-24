@@ -115,6 +115,7 @@ class AppSettingsFragment : ComposeFragment(), Callbacks {
             is AppSettingsRoute.AppUpdates -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_appUpdatesSettingsFragment)
             is AppSettingsRoute.Payments -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_paymentsActivity)
             is AppSettingsRoute.HelpRoute.Settings -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_helpSettingsFragment)
+            is AppSettingsRoute.About -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_aboutSettingsFragment)
             is AppSettingsRoute.Invite -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_inviteFragment)
             is AppSettingsRoute.LabsRoute.Labs -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_labsSettingsFragment)
             is AppSettingsRoute.InternalRoute.Internal -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_internalSettingsFragment)
@@ -510,6 +511,17 @@ private fun AppSettingsContent(
             icon = painterResource(R.drawable.symbol_help_24),
             onClick = {
               callbacks.navigate(AppSettingsRoute.HelpRoute.Settings())
+            }
+          )
+        }
+
+        // Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」从「帮助」里拿出来，紧跟「帮助」
+        item {
+          Rows.TextRow(
+            text = stringResource(R.string.AboutSettings__tellomi_about_tellomi),
+            icon = SignalIcons.Info.painter,
+            onClick = {
+              callbacks.navigate(AppSettingsRoute.About)
             }
           )
         }
