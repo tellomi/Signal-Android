@@ -379,8 +379,9 @@ private fun PrimaryDeviceCallToActionButtons(
   if (showRestoreOrTransfer) {
     Spacer(modifier = Modifier.height(8.dp))
 
-    // Tellomi：上游「恢复或转移」和「继续」一样大，而大多数人是第一次注册。降成主按钮下面一行文字链，
-    // 和 Telegram 欢迎页（IntroActivity 的 switchLanguageTextView）把次要动作放在主按钮下方一样（tellomi/tellomi#1216）。
+    // Tellomi：上游「恢复或转移」和「继续」一样大，而大多数人是第一次注册。降成主按钮下面一行文字链（tellomi/tellomi#1216）。
+    // Telegram 两端都把次要动作做成主按钮旁边的一行文字：iOS（RMIntroViewController 的 _alternativeLanguageButton）在按钮下方，
+    // Android（IntroActivity 的 switchLanguageTextView，onLayout 里 y -= dp(30)）在按钮上方 30dp。Tellomi 取 iOS 的下方位置。
     TextButton(
       onClick = onRestoreOrTransferClick,
       modifier = Modifier

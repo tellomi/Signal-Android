@@ -163,6 +163,26 @@ class ArchiveRestoreSelectionScreenTest {
   }
 
   @Test
+  fun `before registering, the skip dialog also says the old phone will be logged out`() {
+    // taishi 审查 b7：没注册时跳过、接着注册，服务端会把旧手机登出（与 iOS 选择页的确认说法一致）。
+    TellomiRegistration.remoteBackupsAvailableForTesting = false
+    composeTestRule.setContent {
+      SignalTheme {
+        ArchiveRestoreSelectionScreen(
+          state = ArchiveRestoreSelectionState(
+            restoreOptions = listOf(ArchiveRestoreOption.LocalBackup, ArchiveRestoreOption.None),
+            showSkipWarningDialog = true,
+            skippingSignsOutOldPhone = true
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithText("Tellomi on your old phone will be logged out, and your earlier messages won't appear on this phone.").assertIsDisplayed()
+  }
+
+  @Test
   fun `with a backup service the skip dialog keeps the upstream warning`() {
     TellomiRegistration.remoteBackupsAvailableForTesting = true
     composeTestRule.setContent {

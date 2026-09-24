@@ -56,7 +56,13 @@ fun ArchiveRestoreSelectionScreen(
     val tellomiTexts = !TellomiRegistration.isRemoteBackupAvailable
     Dialogs.SimpleAlertDialog(
       title = stringResource(if (tellomiTexts) R.string.TellomiRegistration__skip_restore_dialog_title else R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_title),
-      body = stringResource(if (tellomiTexts) R.string.TellomiRegistration__skip_restore_dialog_body else R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_warning),
+      body = stringResource(
+        when {
+          !tellomiTexts -> R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_warning
+          state.skippingSignsOutOldPhone -> R.string.TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out
+          else -> R.string.TellomiRegistration__skip_restore_dialog_body
+        }
+      ),
       confirm = stringResource(if (tellomiTexts) R.string.TellomiRegistration__skip_restore_dialog_confirm else R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_confirm_button),
       dismiss = stringResource(android.R.string.cancel),
       onConfirm = { onEvent(ArchiveRestoreSelectionScreenEvents.ConfirmSkip) },

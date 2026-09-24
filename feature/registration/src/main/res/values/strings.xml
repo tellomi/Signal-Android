@@ -787,5 +787,6 @@
     <!-- Confirmation dialog before continuing registration without restoring messages (there is no backup service) -->
     <string name="TellomiRegistration__skip_restore_dialog_title">Continue without restoring?</string>
     <string name="TellomiRegistration__skip_restore_dialog_body">Your earlier messages won\'t appear on this phone.</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">Tellomi on your old phone will be logged out, and your earlier messages won\'t appear on this phone.</string>
     <string name="TellomiRegistration__skip_restore_dialog_confirm">Continue</string>
 </resources>

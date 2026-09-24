@@ -284,4 +284,20 @@ class ArchiveRestoreSelectionViewModelTest {
 
     assertThat(emittedStates.last().storageCapable).isTrue()
   }
+
+  // Tellomi（tellomi/tellomi#1216，taishi 审查 b7）：只有还没注册时，跳过恢复才会把旧手机登出。
+
+  @Test
+  fun `skipping before registering signs the old phone out`() {
+    val viewModel = createViewModel(registeredState = RegisteredState.NotRegistered)
+
+    assertThat(viewModel.state.value.skippingSignsOutOldPhone).isTrue()
+  }
+
+  @Test
+  fun `skipping after registering does not claim the old phone signs out`() {
+    val viewModel = createViewModel(registeredState = RegisteredState.RegisteredAndPinKnown)
+
+    assertThat(viewModel.state.value.skippingSignsOutOldPhone).isFalse()
+  }
 }

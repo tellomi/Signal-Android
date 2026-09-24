@@ -779,5 +779,6 @@
     <string name="TellomiRegistration__old_phone_not_here_description">在这台手机上重装的话，可以用本地备份恢复；否则直接注册，只是以前的聊天记录不会跟过来</string>
     <string name="TellomiRegistration__skip_restore_dialog_title">不恢复聊天记录？</string>
     <string name="TellomiRegistration__skip_restore_dialog_body">以前的聊天记录不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">旧手机上的 Tellomi 会退出登录，以前的聊天记录也不会出现在这台手机上。</string>
     <string name="TellomiRegistration__skip_restore_dialog_confirm">继续</string>
 </resources>
