@@ -35,6 +35,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
+import androidx.viewpager2.widget.ViewPager2
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -428,13 +429,14 @@ class AlbumCarouselScreenshots {
   /**
    * owner 2026-09-25「多个视频点开时完全参考 Telegram 的设计」：两个视频的相册点开后——打开时什么都不显示，轻点后中间播放 / 暂停、
    * 进度胶囊（已播 / 总时长）、本组缩略条一起出现；倍速 1.5x 生效、齿轮上有角标；拖进度条时拇指上方出现那个位置的一帧、松手消失；
-   * 转发 / 删除都问「这个视频 / 全部 2 个视频」；30 秒以内循环。
+   * 转发 / 删除都问「这个视频 / 全部 2 个视频」；30 秒以内循环。翻到第二个（32 秒）：沿用 1.5x、两侧有 ±15、不循环；
+   * 放完把控件叫出来、正中换成播放键（同 iOS 的 testVideoViewerTelegramControls）。
    */
   @Test
   fun videoViewerTelegramControls() {
     val other = harness.others[3]
     val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
-    insertIncomingVideoAlbum(other, threadId, listOf(makeVideo(seconds = 6, hue = 200f), makeVideo(seconds = 6, hue = 20f)))
+    insertIncomingVideoAlbum(other, threadId, listOf(makeVideo(seconds = 6, hue = 200f), makeVideo(seconds = 32, hue = 20f, fps = 2)))
 
     val conversation = openConversation(other, threadId)
     try {
@@ -535,6 +537,47 @@ class AlbumCarouselScreenshots {
       shot("video-6-delete-choice")
       instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
       settle(600)
+
+      // 翻到 32 秒的那个：沿用 1.5x、两侧有 ±15、不循环、右边是它的总时长
+      onMain { viewer.findViewById<ViewPager2>(R.id.media_pager).setCurrentItem(1, false) }
+      settle(2500)
+      onMain {
+        val player = controls.player!!
+        val (_, total) = controls.timeLabelsForTesting()
+        report.appendLine("video: long speed=${player.playbackParameters.speed} skip=${center.showsSkipButtonsForTesting()} total=$total duration=${player.duration} repeatMode=${player.repeatMode}")
+        assertEquals("翻到下一个视频沿用倍速", 1.5f, player.playbackParameters.speed, 0.001f)
+        assertTrue("30 秒以上两侧有 ±15", center.showsSkipButtonsForTesting())
+        assertEquals("进度胶囊右边是总时长", MediaPreviewPlayerControlView.formatPlaybackTime(player.duration), total.toString())
+        assertEquals("30 秒以上不循环", Player.REPEAT_MODE_OFF, player.repeatMode)
+      }
+
+      // 放完：把控件叫出来，正中是播放键
+      var toolbarShown = false
+      onMain { toolbarShown = chromeShown(viewer.findViewById(R.id.toolbar_layout)) }
+      if (toolbarShown) {
+        tap(width / 2f, height * 0.3f)
+        settle(1000)
+      }
+      onMain {
+        report.appendLine("video: beforeEnd toolbarShown=${chromeShown(viewer.findViewById(R.id.toolbar_layout))} centerShown=${chromeShown(center)}")
+        assertFalse("放完之前先收起控件", chromeShown(viewer.findViewById(R.id.toolbar_layout)))
+        val player = controls.player!!
+        player.seekTo(player.duration - 1200)
+        player.play()
+      }
+      var chromeBack = false
+      for (attempt in 0 until 50) {
+        settle(100)
+        onMain { chromeBack = chromeShown(center) && chromeShown(viewer.findViewById(R.id.toolbar_layout)) }
+        if (chromeBack) break
+      }
+      settle(500)
+      onMain {
+        report.appendLine("video: ended chromeBack=$chromeBack pause=${center.isShowingPauseForTesting()} state=${controls.player?.playbackState}")
+        assertTrue("放完把控件叫出来", chromeBack)
+        assertFalse("正中换成播放键", center.isShowingPauseForTesting())
+      }
+      shot("video-7-long-ended")
     } finally {
       File(outDir, "metrics-video.txt").writeText(report.toString())
       conversation.close()

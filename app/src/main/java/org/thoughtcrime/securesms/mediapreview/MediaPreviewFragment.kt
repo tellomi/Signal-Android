@@ -29,6 +29,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.Player
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -752,6 +753,11 @@ class MediaPreviewFragment :
 
     if (pagerAdapter.getFragmentTag(viewModel.currentPosition) == tag) {
       debouncer.clear()
+      // Tellomi（#1257，照 Telegram）：超过 30 秒、不循环的视频放完了，把控件叫出来（正中是播放键）。
+      if (binding.mediaPreviewPlaybackControls.player?.playbackState == Player.STATE_ENDED) {
+        chromeHiddenUntilTap = false
+        fullscreenHelper.showSystemUI()
+      }
     }
   }
 

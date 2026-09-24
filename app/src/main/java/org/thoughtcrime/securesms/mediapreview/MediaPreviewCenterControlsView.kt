@@ -135,4 +135,7 @@ class MediaPreviewCenterControlsView @JvmOverloads constructor(
 
   @VisibleForTesting
   fun playPauseButtonForTesting(): ImageButton = playPauseButton
+
+  @VisibleForTesting
+  fun showsSkipButtonsForTesting(): Boolean = rewindButton.visibility == VISIBLE && fastForwardButton.visibility == VISIBLE
 }
