@@ -5291,6 +5291,8 @@ class ConversationFragment :
           } else {
             // Tellomi（tellomi/tellomi#1235、#1124）：高德接上之前不提供发送位置，格子已置灰（AttachmentKeyboardButtonAdapter）
             toast(R.string.TellomiLocation__coming_soon, Toast.LENGTH_SHORT)
+            // 点一个用不了的格子不收起附件面板，下面的 container.hideInput() 不走（taishi 审查 b9 不阻塞 2）
+            return
           }
 
           AttachmentKeyboardButton.PAYMENT -> AttachmentManager.selectPayment(this@ConversationFragment, recipient)
