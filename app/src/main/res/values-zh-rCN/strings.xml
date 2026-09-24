@@ -3085,6 +3085,7 @@
     <string name="UsernameEditFragment_this_username_is_taken">该用户名已有人使用。</string>
     <string name="UsernameEditFragment_usernames_can_only_include">用户名仅能包含字母、数字和下划线。</string>
     <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">用户名不能以数字开头。</string>
+    <string name="UsernameEditFragment__tellomi_usernames_must_start_with_a_letter">用户名必须以字母开头。</string>
     <string name="UsernameEditFragment_username_is_invalid">用户名无效。</string>
     <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">用户名所含字符数量必须在 %1$d 与 %2$d 之间。</string>
     <!-- Explanation about what usernames provide -->

@@ -717,6 +717,8 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">Usernames can only contain letters, numbers, and underscores</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">Usernames cannot begin with a number</string>
+    <!-- Tellomi（ADR-0066 §六）：用户名必须字母开头。libsignal 放行 `_` 开头，客户端收紧 -->
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">Usernames must start with a letter</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">This username is not available. Please try another.</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->

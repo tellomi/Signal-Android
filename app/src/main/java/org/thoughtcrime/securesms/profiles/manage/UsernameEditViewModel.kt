@@ -389,6 +389,9 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     TOO_SHORT,
     TOO_LONG,
     CANNOT_START_WITH_NUMBER,
+
+    /** Tellomi（ADR-0066）：`_` 开头——Tellomi 的规则是字母开头。 */
+    CANNOT_START_WITH_UNDERSCORE,
     INVALID_CHARACTERS,
     INVALID_GENERIC,
     DISCRIMINATOR_NOT_AVAILABLE,
@@ -435,6 +438,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
         InvalidReason.TOO_SHORT -> UsernameStatus.TOO_SHORT
         InvalidReason.TOO_LONG -> UsernameStatus.TOO_LONG
         InvalidReason.STARTS_WITH_NUMBER -> UsernameStatus.CANNOT_START_WITH_NUMBER
+        InvalidReason.STARTS_WITH_UNDERSCORE -> UsernameStatus.CANNOT_START_WITH_UNDERSCORE
         InvalidReason.INVALID_CHARACTERS -> UsernameStatus.INVALID_CHARACTERS
         InvalidReason.INVALID_NUMBER,
         InvalidReason.INVALID_NUMBER_00,
