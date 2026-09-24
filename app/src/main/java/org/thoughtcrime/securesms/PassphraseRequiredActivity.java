@@ -293,6 +293,12 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   }
 
   private Intent getCreateProfileNameIntent() {
+    // Tellomi（tellomi/tellomi#1215，taishi 审查包 4）：新注册要进新注册模块的资料页（一个「名字」+ 选填用户名），
+    // 不是 app 模块老的两格 CreateProfileActivity。上游只写了 RegistrationRoute.Profile，没有任何代码导航过去；
+    // 新号注册完、资料名为空，走的就是这里（userMustSetProfileName）。填完再回到原本要去的页面（getIntent()）。
+    if (Environment.USE_NEW_REGISTRATION) {
+      return org.signal.registration.RegistrationActivity.createIntent(this, getIntent(), RegistrationRoute.Profile.INSTANCE);
+    }
     Intent intent = CreateProfileActivity.getIntentForUserProfile(this);
     return getRoutedIntent(intent, getIntent());
   }
