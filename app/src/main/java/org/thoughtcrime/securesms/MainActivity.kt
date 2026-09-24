@@ -138,6 +138,7 @@ import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceExitActivity
 import org.thoughtcrime.securesms.groups.ui.creategroup.CreateGroupActivity
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity
+import org.thoughtcrime.securesms.main.ConnectionTitle
 import org.thoughtcrime.securesms.main.EmptyDetailScreen
 import org.thoughtcrime.securesms.main.MainBottomChrome
 import org.thoughtcrime.securesms.main.MainBottomChromeCallback
@@ -307,6 +308,13 @@ class MainActivity :
               }
             }
           }
+        }
+      }
+
+      launch {
+        // Tellomi（tellomi/tellomi#1218 F-04）：标题显示连接状态
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+          ConnectionTitle.observe(this@MainActivity).collect { toolbarViewModel.setConnectionTitle(it) }
         }
       }
 
