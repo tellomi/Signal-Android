@@ -449,9 +449,10 @@ class VerificationCodeViewModel(
       is RequestResult.NonSuccess -> {
         when (val error = registerResult.error) {
           is RegisterAccountError.SessionNotFoundOrNotVerified -> {
-            Log.w(TAG, "[Register] Session not found or not verified: ${error.message}. Navigating back to phone number entry.")
-            parentEventEmitter.navigateBack()
-            state
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 1）：上游一声不响地退回，手机号页还会复用这个死会话、再被重置回欢迎页。
+            // 和提交验证码 / 重发时一样先弹框说清楚，关掉后走 SessionExpired（清会话、留号码）再退回。
+            Log.w(TAG, "[Register] Session not found or not verified: ${error.message}. Telling the user it expired before navigating back.")
+            state.copy(dialogs = state.dialogs.copy(sessionExpired = true))
           }
           is RegisterAccountError.DeviceTransferPossible -> {
             error("[Register] Got told a device transfer is possible. We should never get into this state. Resetting.")
@@ -548,18 +549,25 @@ class VerificationCodeViewModel(
             // 回到前台按它重算，倒计时就成了 0，按钮提前亮起，再点又是「请稍后再试」。
             val now = clock()
             val retryAt = now + error.retryAfter.inWholeMilliseconds
+            val nextSmsAllowedTimestamp = if (transport == VerificationCodeTransport.SMS) retryAt else error.session.nextSms?.let { now + it.seconds.inWholeMilliseconds }
+            val nextCallAllowedTimestamp = if (transport == VerificationCodeTransport.VOICE) retryAt else error.session.nextCall?.let { now + it.seconds.inWholeMilliseconds }
             parentEventEmitter(
               RegistrationFlowEvent.VerificationCodeRequested(
                 e164 = state.e164,
-                nextSmsAllowedTimestamp = if (transport == VerificationCodeTransport.SMS) retryAt else error.session.nextSms?.let { now + it.seconds.inWholeMilliseconds },
-                nextCallAllowedTimestamp = if (transport == VerificationCodeTransport.VOICE) retryAt else error.session.nextCall?.let { now + it.seconds.inWholeMilliseconds }
+                nextSmsAllowedTimestamp = nextSmsAllowedTimestamp,
+                nextCallAllowedTimestamp = nextCallAllowedTimestamp
               )
             )
             parentEventEmitter(RegistrationFlowEvent.SessionUpdated(error.session))
+            // 界面上的倒计时也从这一对截止时刻算（taishi 审查 b19 不阻塞 2）。原来用会话的 nextSms / nextCall，
+            // 和 retryAfter 不等时，回前台按截止时刻重算会跳一下。
             state.copy(
               dialogs = state.dialogs.copy(rateLimitedRetryAfter = error.retryAfter),
               sessionMetadata = error.session,
-              rateLimits = computeRateLimits(error.session)
+              rateLimits = SmsAndCallRateLimits(
+                smsResendTimeRemaining = nextSmsAllowedTimestamp?.let { (it - now).milliseconds.coerceAtLeast(0.seconds) },
+                callRequestTimeRemaining = nextCallAllowedTimestamp?.let { (it - now).milliseconds.coerceAtLeast(0.seconds) }
+              )
             )
           }
           is RequestVerificationCodeError.CouldNotFulfillWithRequestedTransport -> {
