@@ -11,6 +11,7 @@ import org.signal.spinner.PluginResult
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.region.TellomiRegionId
+import org.thoughtcrime.securesms.region.TellomiRegionSelector
 import org.thoughtcrime.securesms.region.TellomiRegionSwitcher
 import org.thoughtcrime.securesms.region.TellomiRegions
 
@@ -22,6 +23,7 @@ import org.thoughtcrime.securesms.region.TellomiRegions
  * - `?keepUnauth=true|false`：挂上 / 摘掉一个保活令牌，让未认证 websocket 一直连着，好在 `ss` / 抓包里看它连到哪。
  * - `?testDomain=tellomi.test`：设测试区域名（空 = 关），进程内直接生效，和 Internal 设置里那一项是同一个值。
  * - `?switchTo=global|cn`：切区（[TellomiRegionSwitcher]），再返回同样的状态。
+ * - `?probe=true`：跑一次选路器的探测（[TellomiRegionSelector]，第四刀），把决策和各区握手结果一起返回；不切区。
  */
 class TellomiRegionPlugin : Plugin {
   companion object {
@@ -62,6 +64,23 @@ class TellomiRegionPlugin : Plugin {
       }
     }
 
+    val probe = if (parameters["probe"]?.firstOrNull() == "true") {
+      val decision = TellomiRegionSelector.forCurrentProcess().probe()
+      linkedMapOf(
+        "reason" to decision.reason.id,
+        "current" to decision.current.id,
+        "recommended" to decision.recommended.id,
+        "results" to decision.results.entries.associate { (id, result) ->
+          id.id to when (result) {
+            is TellomiRegionSelector.ProbeResult.Ok -> "${result.rttMs} ms"
+            is TellomiRegionSelector.ProbeResult.Failed -> "failed: ${result.error}"
+          }
+        }
+      )
+    } else {
+      null
+    }
+
     val region = TellomiRegions.current()
     val configuration = AppDependencies.signalServiceNetworkAccess.getConfiguration()
     val state = linkedMapOf(
@@ -74,7 +93,8 @@ class TellomiRegionPlugin : Plugin {
       "configChat" to configuration.signalServiceUrls.map { it.url },
       "configCdn3" to configuration.signalCdnUrlMap[3]?.map { it.url },
       "libsignalNetwork" to System.identityHashCode(AppDependencies.libsignalNetwork),
-      "unauthWebSocket" to AppDependencies.unauthWebSocket.stateSnapshot.name
+      "unauthWebSocket" to AppDependencies.unauthWebSocket.stateSnapshot.name,
+      "probe" to probe
     )
     return PluginResult.JsonResult(JsonUtil.toJson(state))
   }
