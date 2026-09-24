@@ -7900,6 +7900,13 @@
     <string name="UsernameLinkSettings_qr_result_not_found_no_username">找不到此用户。</string>
     <!-- Body of a dialog that is displayed when we experienced a network error when looking up a username. -->
     <string name="UsernameLinkSettings_qr_result_network_error">网络连接出错，请重试。</string>
+    <!-- Tellomi（#947） -->
+    <string name="UsernameLinkSettings_qr_result_device_link_title">这是设备配对码</string>
+    <string name="UsernameLinkSettings_qr_result_device_link_body">要关联电脑或平板，请到「设置 → 已关联设备」里扫描。</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_content_title">扫描到的内容</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_open_link">打开链接</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copy">复制</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copied">已复制</string>
     <!-- Body of a dialog that is displayed when we failed to reset your username link because you had no internet. -->
     <string name="UsernameLinkSettings_reset_link_result_network_unavailable">您没有网络，链接未设置。请稍后再试。</string>
     <!-- Body of a dialog that is displayed when we failed to reset your username link because of a transient network issue. -->
