@@ -14,8 +14,10 @@ import com.google.zxing.ResultPoint
  * 扫到旁边别人屏幕上的关联码，就是把别人的电脑关联进自己的账号。
  *
  * 规则照 Telegram iOS 的扫码页：码的中心要落在画面中间 40%（横竖都在 0.3–0.7），同一个码连续对准 0.5 秒才放行；
- * 中途换成别的码，或者离开中心区超过 [maxGapMs]，都重新计时。
+ * 中途换成别的码，或者看到没对准的帧、并且离上次对准超过 [maxGapMs]，都重新计时。
  * 和 Telegram 不同的一点：ZXing 逐帧解码偶尔漏一两帧，所以不超过 [maxGapMs] 的空帧不算中断。
+ * 帧本身来得慢（每帧都对准、中间没有别的帧）也不算中断：只有真的看到没对准的帧，才按间隔判「丢失」。
+ * 不然机器一忙、两次分析隔了超过 [maxGapMs]，每一帧都会重新计时，永远不放行（taishi 中转包 8 审 a12 / a13 不阻塞 1）。
  *
  * 只在分析线程上用，不做同步。
  */
@@ -28,6 +30,9 @@ class TellomiQrFocus(
   private var firstSeenMs = 0L
   private var lastSeenMs = 0L
 
+  /** 上次对准之后，出现过没对准的帧（没解出、没有定位点、不在中心区）。 */
+  private var missedSinceLastSeen = false
+
   /**
    * 每分析一帧调一次。[text] 是这一帧解出的码（没解出传 null）；[center] 是码中心在画面里的相对位置（0–1），拿不到传 null。
    * 返回这一帧可以放行的码；还没稳定、或者不在中心区，返回 null。
@@ -35,17 +40,19 @@ class TellomiQrFocus(
   fun onFrame(text: String?, center: Pair<Float, Float>?): String? {
     val now = nowMs()
     if (text == null || center == null || !isInCenter(center.first, center.second)) {
+      missedSinceLastSeen = true
       if (candidate != null && now - lastSeenMs > maxGapMs) {
         candidate = null
       }
       return null
     }
 
-    if (text != candidate || now - lastSeenMs > maxGapMs) {
+    if (text != candidate || (missedSinceLastSeen && now - lastSeenMs > maxGapMs)) {
       candidate = text
       firstSeenMs = now
     }
     lastSeenMs = now
+    missedSinceLastSeen = false
 
     return if (now - firstSeenMs >= requiredStableMs) text else null
   }
