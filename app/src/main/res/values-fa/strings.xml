@@ -4099,7 +4099,7 @@
         <item>سایر</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">گزارش ارسالی رفع عیب سیگنال اندروید</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">گزارش ارسالی رفع عیب Tellomi اندروید</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">ارسال</string>
     <!-- Action to decline to submit logs -->

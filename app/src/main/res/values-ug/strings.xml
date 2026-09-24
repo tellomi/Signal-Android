@@ -3976,7 +3976,7 @@
         <item>باشقىلار</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">سىگنال ئاندىرويىد خاتالىق خاتىرىسىنى يوللاش</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Tellomi ئاندىرويىد خاتالىق خاتىرىسىنى يوللاش</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">تاپشۇر</string>
     <!-- Action to decline to submit logs -->
