@@ -65,6 +65,31 @@ class TellomiNamesTest {
     samples.forEach { (input, expected) -> assertEquals(input, expected, TellomiNames.abbreviation(input)) }
   }
 
+  /**
+   * 15 条以外、两端同一组的第二批（iOS `TellomiAvatarInitialsTest.testMoreSamplesSharedWithAndroid` 逐条相同，taishi 审查包 5）：
+   * 首字后面紧跟组合符、变体选择符、ZWJ 时，只去掉**开头**的非字母，首字素整个保留；一个字素超过 16 个码位（Zalgo）换成 U+FFFD。
+   * 印地文连写（प्रि）没放进来：它按不按一个字素断取决于 Unicode 版本（15.1 的 GB9c），Android 随系统的 ICU 走，两端逐字对不齐。
+   */
+  @Test
+  fun `more samples shared with ios`() {
+    val marks = (0x0300 until 0x0300 + 24).map { String(Character.toChars(it)) }
+    val zalgo = "Z" + marks.joinToString("")
+    val sixteenCodePoints = "Z" + marks.take(15).joinToString("")
+    val seventeenCodePoints = "Z" + marks.take(16).joinToString("")
+
+    val samples = listOf(
+      "นิดา ใจดี" to "นิใ",
+      "عَلي حسن" to "عَح",
+      "\u2764\uFE0F Love" to "\u2764\uFE0FL",
+      "\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67 Smith" to "\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67S",
+      "e\u0301mile Zola" to "e\u0301Z",
+      "${zalgo}algo Name" to "\uFFFDN",
+      "$sixteenCodePoints Smith" to "${sixteenCodePoints}S",
+      "$seventeenCodePoints Smith" to "\uFFFDS"
+    )
+    samples.forEach { (input, expected) -> assertEquals(input, expected, TellomiNames.abbreviation(input)) }
+  }
+
   @Test
   fun `blank names have no abbreviation`() {
     assertNull(TellomiNames.abbreviation(""))
