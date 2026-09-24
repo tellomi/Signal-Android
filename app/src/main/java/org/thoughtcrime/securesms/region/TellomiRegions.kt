@@ -24,10 +24,7 @@ enum class TellomiRegionId(val id: String) {
  *
  * 不进区域的：`svr2` / `cdsi`（没有自建，见 `ENCLAVES.md`）、zk 参数、UD 信任根、CA——两个区连的是同一套服务端。
  *
- * 契约第三节有、这里没有字段的两样：
- * - staticIps（Android 独有，只属于 global 档）：`StaticDns` 仍按 GLOBAL 的主机名建表，CN 的主机查不到就落到系统 DNS，
- *   和今天没有静态 IP 的主机一样；切区那一刀连 static-ips 一起收。
- * - grpcChat 的端口（`BuildConfig.LIBSIGNAL_CUSTOM_SERVER_PORT`）：两个区相同，暂不进表。
+ * 契约第三节有、这里没有字段的：grpcChat 的端口（`BuildConfig.LIBSIGNAL_CUSTOM_SERVER_PORT`），两个区相同，暂不进表。
  */
 data class TellomiRegionProfile(
   val id: TellomiRegionId,
@@ -58,7 +55,14 @@ data class TellomiRegionProfile(
   /** 只做 DNS 解析，不连接（#1101）。 */
   val uptimeHost: String,
   /** 调试日志上传（#931）。 */
-  val debugLog: String
+  val debugLog: String,
+  /**
+   * 静态 IP（契约第三节 staticIps，Android 独有）：主机名 → IP，系统 DNS 和 1.1.1.1 都失败时的最后一档
+   * （`SignalServiceNetworkAccess.DNS` 的 StaticDns，表由 [TellomiRegions.staticIpTable] 合成）。
+   * 只有 global 档有；CN 档暂无回落，CN 的主机查不到就是 UnknownHostException，落到系统 DNS 的结果。
+   * 每个主机都得是这个区自己的端点（[TellomiRegions.problems] 核）。
+   */
+  val staticIps: Map<String, Set<String>> = emptyMap()
 ) {
   /** 这个区所有的端点（URL 或主机名），校验和测试用。 */
   fun endpoints(): List<String> {
@@ -115,7 +119,22 @@ object TellomiRegions {
     captchaChallenge = BuildConfig.RECAPTCHA_PROOF_URL,
     sfu = BuildConfig.SIGNAL_SFU_URL,
     uptimeHost = BuildConfig.SIGNAL_SERVICE_STATUS_URL,
-    debugLog = DEBUG_LOG_URL
+    debugLog = DEBUG_LOG_URL,
+    staticIps = mapOf(
+      hostOf(BuildConfig.SIGNAL_URL) to BuildConfig.SIGNAL_SERVICE_IPS.toSet(),
+      hostOf(BuildConfig.STORAGE_URL) to BuildConfig.SIGNAL_STORAGE_IPS.toSet(),
+      hostOf(BuildConfig.SIGNAL_CDN_URL) to BuildConfig.SIGNAL_CDN_IPS.toSet(),
+      hostOf(BuildConfig.SIGNAL_CDN2_URL) to BuildConfig.SIGNAL_CDN2_IPS.toSet(),
+      // cdn3 的 IP 表**故意是空的**（#1077）：cdn3.tellomi.app 在 Cloudflare 后面，
+      // 边缘 IP 会变，写死等于给自己做一张会过期的劫持表——DNS 正常时根本用不到，
+      // DNS 失效时反而把流量送到一个可能早已不属于我们的地址。
+      // 空集在 StaticDns 里和"没有这个 key"是同一个结果（UnknownHostException），
+      // 留着这一行是为了让下一个人看见这是**决定**，不是漏填。
+      hostOf(BuildConfig.SIGNAL_CDN3_URL) to BuildConfig.SIGNAL_CDN3_IPS.toSet(),
+      // Tellomi（#1077）：上游这里还有 `sfu.voip.signal.org`。我们把 SFU 并进了 chat.tellomi.app，
+      // 它要解析的主机就是第一行已经覆盖的 chat.tellomi.app，所以没有单独一行。
+      BuildConfig.CONTENT_PROXY_HOST to BuildConfig.SIGNAL_CONTENT_PROXY_IPS.toSet()
+    )
   )
 
   /** CN 档：`enabled = false`，直到备案完成（契约第五节第 2 条）。 */
@@ -184,6 +203,15 @@ object TellomiRegions {
   }
 
   /**
+   * `SignalServiceNetworkAccess.DNS` 最后一档（StaticDns）的表：包里各区的 staticIps 合在一起，今天只有 global 档有。
+   * 切区不用重建它：CN 的主机在表里查不到，落到系统 DNS。
+   */
+  @JvmStatic
+  fun staticIpTable(): Map<String, Set<String>> {
+    return ALL.flatMap { it.staticIps.entries }.associate { it.key to it.value }
+  }
+
+  /**
    * 记住的区 id → 区。没有记录、不认识、或者那个区被关了，一律回落 global
    * （契约第五节第 8 条：运行时来源坏了只回落，绝不抛）。
    */
@@ -215,7 +243,9 @@ object TellomiRegions {
       captchaChallenge = rehost(global.captchaChallenge),
       sfu = rehost(global.sfu),
       uptimeHost = rehost(global.uptimeHost),
-      debugLog = rehost(global.debugLog)
+      debugLog = rehost(global.debugLog),
+      // 契约第三节：staticIps 只属于 global 档，CN 暂无回落
+      staticIps = emptyMap()
     )
   }
 
@@ -255,9 +285,19 @@ object TellomiRegions {
       problems += "the global region must be enabled"
     }
 
+    for (profile in profiles) {
+      val hosts = profile.endpoints().map { hostOf(it) }.toSet()
+      profile.staticIps.keys.filterNot { it in hosts }.forEach {
+        problems += "${profile.id.id} has static ips for a host that is not one of its endpoints: $it"
+      }
+    }
+
     profiles.firstOrNull { it.id == TellomiRegionId.CN }?.let { cn ->
       if (cn.enabled) {
         problems += "the cn region must stay disabled until the ICP filing is done"
+      }
+      if (cn.staticIps.isNotEmpty()) {
+        problems += "the cn region has no static ip fallback yet: ${cn.staticIps.keys}"
       }
       cn.endpoints().filterNot { hostOf(it).endsWith(CN_DOMAIN) }.forEach {
         problems += "cn endpoint outside tellomi.cn: $it"
