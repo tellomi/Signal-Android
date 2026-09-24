@@ -937,7 +937,7 @@ class PhoneNumberEntryViewModel(
    * 都不算就返回 null，交回上游的处理。iOS 的 RegistrationPhoneNumberInputView.tellomiFullPhoneNumber 是同一套规则。
    */
   private fun tellomiFullNumberInserted(state: PhoneNumberEntryState, oldValue: String, newValue: String): PhoneNumberEntryState? {
-    val inserted = insertedText(oldValue, newValue).filter { it.isDigit() || it == '+' }
+    val inserted = insertedText(oldValue, newValue).tellomiHalfWidth().filter { it.isDigit() || it == '+' }
     val digits = inserted.filter { it.isDigit() }
     val international = when {
       inserted.startsWith("+") -> digits
@@ -949,9 +949,24 @@ class PhoneNumberEntryViewModel(
       return redistributeFullPhoneNumber(state, "+$international")
     }
 
-    val field = newValue.filter { it.isDigit() || it == '+' }
+    val field = newValue.tellomiHalfWidth().filter { it.isDigit() || it == '+' }
     val fieldInternational = field.filter { it.isDigit() }.drop(2)
     return if (field.startsWith("00") && isValidFullNumber(fieldInternational)) redistributeFullPhoneNumber(state, "+$fieldInternational") else null
+  }
+
+  /**
+   * Tellomi（taishi 审查 b20 不阻塞 1，两端对齐）：全角「＋」换成「+」，全角数字换成 ASCII 数字，别的原样留着。
+   * isDigit() 虽然认全角数字，但「00」开头、以区号开头这两条是按 ASCII 比的，全角「＋」更是直接被丢掉。
+   * iOS 的 RegistrationPhoneNumberInputView.tellomiHalfWidth 是同一条。
+   */
+  private fun String.tellomiHalfWidth(): String {
+    return map { c ->
+      when (c) {
+        '\uFF0B' -> '+'
+        in '\uFF10'..'\uFF19' -> '0' + (c - '\uFF10')
+        else -> c
+      }
+    }.joinToString("")
   }
 
   /** [digits] 以当前区号开头，而且去掉区号后的位数等于当前地区示例号码的有效位数（见 [exampleNationalSignificantNumberLength]）。 */

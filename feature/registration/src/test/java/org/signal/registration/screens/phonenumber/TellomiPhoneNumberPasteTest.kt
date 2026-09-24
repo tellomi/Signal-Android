@@ -88,6 +88,18 @@ class TellomiPhoneNumberPasteTest {
   }
 
   @Test
+  fun `full width plus and digits are read as half width`() = runTest {
+    // taishi 审查 b20 不阻塞 1（两端对齐）：选的是美国，粘全角的「＋86…」「００８６…」也要拆出中国。
+    val usa = PhoneNumberEntryState(regionCode = "US", countryCode = "1")
+    for (pasted in listOf("\uFF0B86 138 0013 8000", "\uFF0B\uFF18\uFF16 \uFF11\uFF13\uFF18 \uFF10\uFF10\uFF11\uFF13 \uFF18\uFF10\uFF10\uFF10", "\uFF10\uFF10\uFF18\uFF16 138 0013 8000")) {
+      val result = change(usa, oldValue = "", newValue = pasted)
+
+      assertThat(result.regionCode, pasted).isEqualTo("CN")
+      assertThat(result.nationalNumber, pasted).isEqualTo("13800138000")
+    }
+  }
+
+  @Test
   fun `a number from another region written with 00 switches the region`() = runTest {
     val result = change(china, oldValue = "", newValue = "00852 9123 4567")
 
