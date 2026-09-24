@@ -14,12 +14,7 @@ import okhttp3.TlsVersion
 import org.signal.core.util.Base64
 import org.signal.core.util.logging.Log
 import org.signal.network.config.HttpProxy
-import org.signal.network.config.SignalCdnUrl
-import org.signal.network.config.SignalCdsiUrl
 import org.signal.network.config.SignalServiceConfiguration
-import org.signal.network.config.SignalServiceUrl
-import org.signal.network.config.SignalStorageUrl
-import org.signal.network.config.SignalSvr2Url
 import org.signal.network.config.TrustStore
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.keyvalue.SettingsValues
@@ -32,6 +27,8 @@ import org.thoughtcrime.securesms.net.SequentialDns
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor
 import org.thoughtcrime.securesms.net.StaticDns
 import org.thoughtcrime.securesms.net.StorageServiceSizeLoggingInterceptor
+import org.thoughtcrime.securesms.region.TellomiRegions
+import org.thoughtcrime.securesms.region.TellomiServiceConfigurations
 import java.io.IOException
 import java.util.Optional
 
@@ -235,16 +232,12 @@ class SignalServiceNetworkAccess(context: Context) {
     COUNTRY_CODE_PAKISTAN
   )
 
-  val uncensoredConfiguration: SignalServiceConfiguration = SignalServiceConfiguration(
-    signalServiceUrls = arrayOf(SignalServiceUrl(BuildConfig.SIGNAL_URL, serviceTrustStore)),
-    signalCdnUrlMap = mapOf(
-      0 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, serviceTrustStore)),
-      2 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN2_URL, serviceTrustStore)),
-      3 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN3_URL, serviceTrustStore))
-    ),
-    signalStorageUrls = arrayOf(SignalStorageUrl(BuildConfig.STORAGE_URL, serviceTrustStore)),
-    signalCdsiUrls = arrayOf(SignalCdsiUrl(BuildConfig.SIGNAL_CDSI_URL, serviceTrustStore)),
-    signalSvr2Urls = arrayOf(SignalSvr2Url(BuildConfig.SIGNAL_SVR2_URL, serviceTrustStore)),
+  // Tellomi（#1055）：按区域表组装（RegionProfile 契约），global 档 = 原来这里的常量，逐字节一致；组装时断言 cdn3 恰好一个
+  val uncensoredConfiguration: SignalServiceConfiguration = TellomiServiceConfigurations.build(
+    profile = TellomiRegions.GLOBAL,
+    trustStore = serviceTrustStore,
+    cdsiUrl = BuildConfig.SIGNAL_CDSI_URL,
+    svr2Url = BuildConfig.SIGNAL_SVR2_URL,
     networkInterceptors = interceptors,
     dns = Optional.of(DNS),
     signalProxy = if (SignalStore.proxy.isProxyEnabled) Optional.ofNullable(SignalStore.proxy.proxy) else Optional.empty(),
