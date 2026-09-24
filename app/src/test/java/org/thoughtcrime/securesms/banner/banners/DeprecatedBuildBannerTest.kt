@@ -1,0 +1,52 @@
+/*
+ * Copyright 2026 重庆半格智能科技有限公司
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+package org.thoughtcrime.securesms.banner.banners
+
+import android.app.Application
+import android.content.Context
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.unit.dp
+import androidx.test.core.app.ApplicationProvider
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.signal.core.ui.CoreUiDependenciesRule
+import org.signal.core.ui.compose.theme.SignalTheme
+import org.thoughtcrime.securesms.R
+
+/**
+ * Tellomi（tellomi/tellomi#1138，taishi 审查 b14 包 8 可选项）：服务端要求更新和构建到期都走这条只读横幅，
+ * 服务端要求更新时版本并没有过期，所以横幅说「需要更新才能继续收发消息」，不说上游的「已过期」。
+ */
+@RunWith(RobolectricTestRunner::class)
+@Config(application = Application::class)
+class DeprecatedBuildBannerTest {
+
+  @get:Rule
+  val composeTestRule = createComposeRule()
+
+  @get:Rule
+  val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
+
+  private val context: Context = ApplicationProvider.getApplicationContext()
+
+  @Test
+  fun `the read-only banner says an update is needed, not that the version expired`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        DeprecatedBuildBanner().DisplayBanner(Unit, PaddingValues(0.dp))
+      }
+    }
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiUpdateRequired__read_only_banner)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.ExpiredBuildReminder_this_version_of_signal_has_expired)).assertDoesNotExist()
+  }
+}
