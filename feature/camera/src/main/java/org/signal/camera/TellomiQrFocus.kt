@@ -58,15 +58,20 @@ class TellomiQrFocus(
       return x in REGION_START..REGION_END && y in REGION_START..REGION_END
     }
 
-    /** ZXing 给的定位点（QR 码的前三个是三个角上的定位图形）→ 码中心在画面里的相对位置。拿不到返回 null。 */
+    /**
+     * ZXing 给的定位点（QR 码的前三个是三个角上的定位图形）→ 码中心在画面里的相对位置。拿不到返回 null。
+     *
+     * 取对角的两个定位图形（三个点里相距最远的那一对）的中点：码怎么转、镜像都是码的中心，和点的顺序无关，
+     * 与 iOS 用 Vision 的 boundingBox 中点是同一个点。三个点的外接框中点在码倾斜时会偏（45° 时约 0.07）。
+     */
     fun centerOf(points: Array<ResultPoint?>?, width: Int, height: Int): Pair<Float, Float>? {
       val corners = points?.filterNotNull()?.take(3)
       if (corners == null || corners.size < 3 || width <= 0 || height <= 0) {
         return null
       }
-      val x = (corners.minOf { it.x } + corners.maxOf { it.x }) / 2f
-      val y = (corners.minOf { it.y } + corners.maxOf { it.y }) / 2f
-      return (x / width) to (y / height)
+      val (a, b) = listOf(corners[0] to corners[1], corners[0] to corners[2], corners[1] to corners[2])
+        .maxBy { (p, q) -> ResultPoint.distance(p, q) }
+      return ((a.x + b.x) / 2f / width) to ((a.y + b.y) / 2f / height)
     }
   }
 }

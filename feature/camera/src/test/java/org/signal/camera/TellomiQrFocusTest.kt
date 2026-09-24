@@ -92,4 +92,15 @@ class TellomiQrFocusTest {
     assertThat(TellomiQrFocus.centerOf(points, 0, 720)).isNull()
     assertThat(TellomiQrFocus.centerOf(points, 1280, 720)).isNotNull()
   }
+
+  @Test
+  fun `a tilted code is still centered`() {
+    // 码心在 (640, 360)、转 45°：三个定位图形在 (560, 360)、(640, 280)、(720, 360)。外接框的中点会算成 (0.5, 0.444)
+    val tilted = arrayOf<ResultPoint?>(ResultPoint(560f, 360f), ResultPoint(640f, 280f), ResultPoint(720f, 360f))
+    // 镜像（ZXing 交换第 0、2 个点）不影响
+    val mirrored = arrayOf<ResultPoint?>(ResultPoint(720f, 360f), ResultPoint(640f, 280f), ResultPoint(560f, 360f))
+
+    assertThat(TellomiQrFocus.centerOf(tilted, 1280, 720)).isEqualTo(0.5f to 0.5f)
+    assertThat(TellomiQrFocus.centerOf(mirrored, 1280, 720)).isEqualTo(0.5f to 0.5f)
+  }
 }
