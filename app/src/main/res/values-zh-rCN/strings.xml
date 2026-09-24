@@ -3099,6 +3099,9 @@
     <plurals name="UsernameEditFragment__tellomi_change_confirmation">
         <item quantity="other">更改用户名会重置你现有的二维码和链接，而且之后 %d 天内不能再改。确定要更改吗？</item>
     </plurals>
+    <plurals name="UsernameEditFragment__tellomi_recovery_confirmation">
+        <item quantity="other">恢复用户名会重置你现有的二维码和链接，而且之后 %d 天内不能再改。确定要恢复吗？</item>
+    </plurals>
     <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
         <item quantity="other">你在 %1$d 天内删除过用户名，现在设置也算一次更改：之后 %2$d 天内不能再改。确定要继续吗？</item>
     </plurals>

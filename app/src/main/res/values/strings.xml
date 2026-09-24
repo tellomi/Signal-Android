@@ -3210,6 +3210,11 @@
         <item quantity="one">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d day. Are you sure?</item>
         <item quantity="other">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d days. Are you sure?</item>
     </plurals>
+    <!-- Tellomi (ADR-0066 §6.2): confirmation before recovering a corrupted username. Recovering confirms a username, which the server counts as a change, so it starts (or restarts) the rename cooldown. %d is the cooldown length (30). Same sentence as Desktop#9 -->
+    <plurals name="UsernameEditFragment__tellomi_recovery_confirmation">
+        <item quantity="one">Recovering your username will reset your existing QR code and link, and you won’t be able to change it again for %d day. Are you sure?</item>
+        <item quantity="other">Recovering your username will reset your existing QR code and link, and you won’t be able to change it again for %d days. Are you sure?</item>
+    </plurals>
     <!-- Tellomi（ADR-0066 §6.2）：没有用户名、但保留期内删过一个时，再设前的确认框。%1$d 为保留天数，%2$d 为改名冷却天数（都是 30）。与 Desktop#4 同一句。 -->
     <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
         <item quantity="one">You deleted your username less than %1$d days ago, so setting one now counts as a change: you won’t be able to change it again for %2$d day. Are you sure?</item>

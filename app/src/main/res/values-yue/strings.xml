@@ -3121,6 +3121,9 @@
     <plurals name="UsernameEditFragment__tellomi_change_confirmation">
         <item quantity="other">更改用戶名稱會將你宜家用緊嘅二維碼同連結重設，之後 %d 日內唔可以再改。你係咪確定？</item>
     </plurals>
+    <plurals name="UsernameEditFragment__tellomi_recovery_confirmation">
+        <item quantity="other">恢復用戶名稱會將你宜家用緊嘅二維碼同連結重設，之後 %d 日內唔可以再改。你係咪確定？</item>
+    </plurals>
     <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
         <item quantity="other">你喺 %1$d 日內刪除過用戶名稱，宜家設定都當係更改一次：之後 %2$d 日內唔可以再改。你係咪確定？</item>
     </plurals>
