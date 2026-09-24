@@ -166,7 +166,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
       return
     }
 
-    val invalidReason: InvalidReason? = checkNickname(usernameState.getNickname())
+    val invalidReason: InvalidReason? = checkNicknameForEdit(usernameState.getNickname(), SignalStore.account.username)
     if (invalidReason != null) {
       Log.w(TAG, "Username was submitted, but did not pass validity checks. Reason: $invalidReason")
       uiState.update { it.copy(buttonState = ButtonState.SUBMIT_DISABLED, usernameStatus = mapNicknameError(invalidReason)) }
@@ -272,7 +272,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
       return
     }
 
-    val invalidReason: InvalidReason? = checkNickname(nickname)
+    val invalidReason: InvalidReason? = checkNicknameForEdit(nickname, SignalStore.account.username)
     if (invalidReason != null) {
       uiState.update { uiState ->
         uiState.copy(
@@ -455,6 +455,21 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
         InvalidReason.INVALID_NUMBER_PREFIX_0 -> UsernameStatus.DISCRIMINATOR_CANNOT_START_WITH_0
         else -> UsernameStatus.INVALID_GENERIC
       }
+    }
+
+    /**
+     * Tellomi（ADR-0066 §六；taishi 审 a3 的意见）：编辑页只对「新起的名字」收紧「字母开头」和「最长 20」（#1181）。
+     * 昵称与当前用户名的昵称忽略大小写相同——只改大小写、修复模式认领原名、旧后缀迁到 `.01`——那是用户已有的名字，
+     * 放过 [InvalidReason.STARTS_WITH_UNDERSCORE] 与 [InvalidReason.TOO_LONG]；其余原因照旧拦。
+     * Desktop 同样只拦新预留（大小写捷径在前，`planUsernameReservation`）。提交时（`onUsernameSubmitted`）与输入停顿时两处都用它。
+     */
+    @androidx.annotation.VisibleForTesting
+    @JvmStatic
+    fun checkNicknameForEdit(nickname: String?, currentUsername: String?): InvalidReason? {
+      val reason = checkNickname(nickname) ?: return null
+      val currentNickname = currentUsername?.split(Usernames.DELIMITER)?.firstOrNull()
+      val keepsCurrentNickname = nickname != null && currentNickname != null && nickname.equals(currentNickname, ignoreCase = true)
+      return if (keepsCurrentNickname && (reason == InvalidReason.STARTS_WITH_UNDERSCORE || reason == InvalidReason.TOO_LONG)) null else reason
     }
   }
 }
