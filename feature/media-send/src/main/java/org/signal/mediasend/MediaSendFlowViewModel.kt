@@ -7,6 +7,7 @@ package org.signal.mediasend
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -200,6 +201,9 @@ class MediaSendFlowViewModel(
         delay(5.seconds)
       }
     }
+
+    // Tellomi（#1261 D9）：画质跟着状态恢复（不再从设置里重读），挡位按恢复出来的画质重算。
+    updateState { copy(videoTranscodingTiers = repository.getVideoTranscodingTiers(sentMediaQuality)) }
 
     // Observe recipient validity for pre-upload eligibility
     args.recipientId?.let { recipientId ->
@@ -705,7 +709,7 @@ class MediaSendFlowViewModel(
         isPreUploadEnabled = false
       )
     }
-    repository.sentMediaQuality = sentMediaQuality
+    // Tellomi（tellomi/tellomi#1261，需求 D9）：画质只管这一次发送，不写回「设置 → 发送媒体质量」（上游这里会写全局；iOS 本来就不写）。
     preUploadController.cancelAllUploads()
 
     // Confirmed from here rather than from the picker so that the fallback in onVideoRecorded is reported too.
@@ -1217,8 +1221,11 @@ class MediaSendFlowViewModel(
   companion object {
     private val TAG = Log.tag(MediaSendFlowViewModel::class)
 
-    private const val KEY_ARGS = "media_send_vm_args"
-    private const val KEY_IDENTITY_CHANGES_SINCE = "media_send_vm_identity_changes_since"
+    @VisibleForTesting
+    internal const val KEY_ARGS = "media_send_vm_args"
+
+    @VisibleForTesting
+    internal const val KEY_IDENTITY_CHANGES_SINCE = "media_send_vm_identity_changes_since"
     private const val KEY_STATE = "media_send_vm_state"
     private const val KEY_EDITED_VIDEO_URIS = "media_send_vm_edited_video_uris"
     private const val KEY_BACK_STACK = "media_send_vm_back_stack"
