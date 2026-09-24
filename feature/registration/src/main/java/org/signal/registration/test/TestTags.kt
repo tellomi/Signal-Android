@@ -136,6 +136,9 @@ object TestTags {
   const val CREATE_PROFILE_NEXT_BUTTON = "create_profile_next_button"
   const val CREATE_PROFILE_PHONE_NUMBER_NOT_SHOWN = "create_profile_phone_number_not_shown"
   const val CREATE_PROFILE_AVATAR_INITIALS = "create_profile_avatar_initials"
+  const val CREATE_PROFILE_USERNAME_FIELD = "create_profile_username_field"
+  const val CREATE_PROFILE_USERNAME_SUPPORTING_TEXT = "create_profile_username_supporting_text"
+  const val CREATE_PROFILE_USERNAME_CANDIDATE = "create_profile_username_candidate"
 
   // Phone Number Discoverability Screen
   const val PHONE_NUMBER_DISCOVERABILITY_SCREEN = "phone_number_discoverability_screen"

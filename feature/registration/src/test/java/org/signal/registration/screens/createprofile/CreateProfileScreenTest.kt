@@ -6,6 +6,7 @@
 package org.signal.registration.screens.createprofile
 
 import android.app.Application
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -13,6 +14,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -24,6 +26,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.libsignal.usernames.Username
 import org.signal.registration.R
 import org.signal.registration.test.TestTags
 
@@ -41,7 +44,8 @@ class CreateProfileScreenTest {
   @get:Rule
   val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
 
-  /** Tellomi（tellomi/tellomi#1215）：只有一个「名字」框；号码可见性那一项换成一句说明。 */
+  /** Tellomi（tellomi/tellomi#1215）：只有一个「名字」框；号码可见性那一项换成一句说明（加了用户名框之后说明在默认屏高下要滚才看得到）。 */
+  @Config(qualifiers = "w360dp-h1200dp")
   @Test
   fun `screen displays a single name field and the phone number statement`() {
     // Given
@@ -107,6 +111,58 @@ class CreateProfileScreenTest {
     }
 
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_AVATAR_INITIALS, useUnmergedTree = true).assertDoesNotExist()
+  }
+
+  /** Tellomi（tellomi/tellomi#1215 第二刀）：保留成功后说明行给出链接。 */
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `a reserved username shows its tell cc link`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(
+            givenName = "Alice",
+            isLoading = false,
+            usernameEntry = TellomiUsernameEntry(text = "Kaixin", reservation = Username("Kaixin.01"))
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true).assertTextEquals("Your link: tell.cc/kaixin")
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsEnabled()
+  }
+
+  /** Tellomi（tellomi/tellomi#1215 第二刀）：不可用时给候选，点了发事件；没检查过的用户名不能进入。 */
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `an unavailable username offers candidates and tapping one emits UsernameCandidateClicked`() {
+    var emittedEvent: CreateProfileScreenEvents? = null
+
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(
+            givenName = "Alice",
+            isLoading = false,
+            usernameEntry = TellomiUsernameEntry(
+              text = "kaixin",
+              error = TellomiUsernameEntry.Error.NOT_AVAILABLE,
+              candidates = listOf("kaixin27", "kaixin_58", "kaixin726")
+            )
+          ),
+          onEvent = { emittedEvent = it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true).assertTextEquals("This username isn't available")
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsNotEnabled()
+    composeTestRule.onAllNodesWithTag(TestTags.CREATE_PROFILE_USERNAME_CANDIDATE).assertCountEquals(3)
+    composeTestRule.onAllNodesWithTag(TestTags.CREATE_PROFILE_USERNAME_CANDIDATE)[1].performClick()
+
+    assert(emittedEvent == CreateProfileScreenEvents.UsernameCandidateClicked("kaixin_58"))
   }
 
   @Test

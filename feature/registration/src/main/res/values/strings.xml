@@ -585,6 +585,17 @@
     <string name="CreateProfileScreen__set_avatar_description">Set avatar</string>
     <!-- Tellomi（tellomi/tellomi#1215）：替掉「谁可以通过手机号找到我」那一行。phone_number_sharing 默认就是不分享（PhoneNumberPrivacyValues: DEFAULT = 不显示） -->
     <string name="TellomiRegistration__phone_number_not_shown">Your phone number isn\'t shown to anyone by default.</string>
+    <!-- Tellomi（tellomi/tellomi#1215 第二刀）：注册资料页的选填用户名。规则 TR-ID-01：字母开头、3–20 位、a–z 0–9 _；不带「.数字」（ADR-0066 判别位固定 01） -->
+    <string name="TellomiRegistration__username_optional">Username (optional)</string>
+    <string name="TellomiRegistration__username_your_link">Your link: %1$s</string>
+    <string name="TellomiRegistration__username_checking">Checking…</string>
+    <string name="TellomiRegistration__username_not_available">This username isn\'t available</string>
+    <string name="TellomiRegistration__username_too_short">Use at least 3 characters</string>
+    <string name="TellomiRegistration__username_too_long">Use 20 characters or fewer</string>
+    <string name="TellomiRegistration__username_invalid_characters">Use only letters, numbers and underscores</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">Start with a letter</string>
+    <string name="TellomiRegistration__username_check_failed">Couldn\'t check this username. Try again in a moment.</string>
+    <string name="TellomiRegistration__username_try">Try:</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->

@@ -12,14 +12,16 @@ data class CreateProfileState(
   val discoverableByPhoneNumber: Boolean = true,
   val isLoading: Boolean = true,
   val isSubmitting: Boolean = false,
-  val showUploadFailedDialog: Boolean = false
+  val showUploadFailedDialog: Boolean = false,
+  /** Tellomi（tellomi/tellomi#1215 第二刀）：选填用户名。 */
+  val usernameEntry: TellomiUsernameEntry = TellomiUsernameEntry()
 ) {
 
   val isFormValid: Boolean
-    get() = givenName.trim().isNotEmpty()
+    get() = givenName.trim().isNotEmpty() && usernameEntry.isAcceptable
 
   override fun toString(): String {
-    return "CreateProfileState(givenName=${givenName.length} chars, familyName=${familyName.length} chars, avatar=${avatar?.size ?: 0} bytes, discoverableByPhoneNumber=$discoverableByPhoneNumber, isLoading=$isLoading, isSubmitting=$isSubmitting, showUploadFailedDialog=$showUploadFailedDialog)"
+    return "CreateProfileState(givenName=${givenName.length} chars, familyName=${familyName.length} chars, avatar=${avatar?.size ?: 0} bytes, discoverableByPhoneNumber=$discoverableByPhoneNumber, isLoading=$isLoading, isSubmitting=$isSubmitting, showUploadFailedDialog=$showUploadFailedDialog, usernameEntry=$usernameEntry)"
   }
 
   override fun equals(other: Any?): Boolean {
@@ -37,6 +39,7 @@ data class CreateProfileState(
     if (isLoading != other.isLoading) return false
     if (isSubmitting != other.isSubmitting) return false
     if (showUploadFailedDialog != other.showUploadFailedDialog) return false
+    if (usernameEntry != other.usernameEntry) return false
     return true
   }
 
@@ -48,6 +51,7 @@ data class CreateProfileState(
     result = 31 * result + isLoading.hashCode()
     result = 31 * result + isSubmitting.hashCode()
     result = 31 * result + showUploadFailedDialog.hashCode()
+    result = 31 * result + usernameEntry.hashCode()
     return result
   }
 }
