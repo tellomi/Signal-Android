@@ -8,6 +8,9 @@ package org.thoughtcrime.securesms.updaterequired
 import android.app.Application
 import android.content.Context
 import android.text.format.Formatter
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertCountEquals
@@ -47,16 +50,35 @@ class UpdateRequiredScreenTest {
   private val context: Context = ApplicationProvider.getApplicationContext()
 
   @Test
-  fun `there is exactly one thing to tap and it updates`() {
+  fun `there are exactly two things to tap - update, or only view the chats`() {
+    // owner 2026-09-24 规则 1：主按钮照旧是「立即更新」，另有「暂不更新，只看聊天记录」，不能把人锁在聊天记录外面。
     val events = mutableListOf<UpdateRequiredScreenEvent>()
     setContent(UpdateRequiredState(), events)
 
-    composeTestRule.onAllNodes(hasClickAction()).assertCountEquals(1)
+    composeTestRule.onAllNodes(hasClickAction()).assertCountEquals(2)
     composeTestRule.onNodeWithTag(UpdateRequiredTestTags.PRIMARY_BUTTON)
       .assertTextContains(context.getString(R.string.TellomiUpdateRequired__update_now))
       .performClick()
+    composeTestRule.onNodeWithTag(UpdateRequiredTestTags.VIEW_CHATS_ONLY)
+      .assertTextContains(context.getString(R.string.TellomiUpdateRequired__view_chats_only))
+      .performClick()
 
-    assert(events == listOf(UpdateRequiredScreenEvent.PrimaryClicked)) { "Expected one PrimaryClicked but got $events" }
+    assert(events == listOf(UpdateRequiredScreenEvent.PrimaryClicked, UpdateRequiredScreenEvent.ViewChatsOnlyClicked)) { "Expected update then view-chats-only but got $events" }
+  }
+
+  @Test
+  fun `the way to the chats stays in every download state`() {
+    var state by mutableStateOf(UpdateRequiredState())
+    composeTestRule.setContent {
+      SignalTheme {
+        UpdateRequiredScreen(state = state, onEvent = {})
+      }
+    }
+
+    for (download in listOf(Download.InProgress(percent = 42), Download.Failed, Download.WaitingForWifi, Download.NeedsInstallPermission, Download.ReadyToInstall, Download.NoNewerVersion)) {
+      state = UpdateRequiredState(download = download)
+      composeTestRule.onNodeWithTag(UpdateRequiredTestTags.VIEW_CHATS_ONLY).assertIsDisplayed()
+    }
   }
 
   @Test

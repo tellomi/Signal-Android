@@ -319,6 +319,7 @@
     <string name="TellomiUpdateRequired__waiting_for_wifi">The update was set to download only on Wi-Fi.</string>
     <string name="TellomiUpdateRequired__use_mobile_data">Download using mobile data</string>
     <string name="TellomiUpdateRequired__download_notification_title">Downloading the Tellomi update</string>
+    <string name="TellomiUpdateRequired__view_chats_only">Not now, just view my chats</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->

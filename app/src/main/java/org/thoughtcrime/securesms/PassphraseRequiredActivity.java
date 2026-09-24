@@ -99,8 +99,9 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
     super.onResume();
 
     // Tellomi（tellomi/tellomi#1138）：页面开着的时候服务端才回 499，路由（只在创建时跑）拦不到；
-    // 回到前台就盖上阻断页（需求 3.4「每次回到前台重新出现」）。阻断页是 singleTask，重复启动只会带到前台。
-    if (UpdateRequired.isRequired()) {
+    // 回到前台就盖上阻断页。阻断页是 singleTask，重复启动只会带到前台。
+    // 只在服务端判定、且用户没选「只看聊天记录」时盖（owner 2026-09-24 规则 1、2）。
+    if (UpdateRequired.shouldBlock()) {
       startActivity(ClientDeprecatedActivity.createIntent(this));
     }
   }
@@ -186,9 +187,9 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   private int getApplicationState(boolean locked) {
     if (!MasterSecretUtil.isPassphraseInitialized(this)) {
       return STATE_CREATE_PASSPHRASE;
-    } else if (UpdateRequired.isRequired()) {
+    } else if (UpdateRequired.shouldBlock()) {
       // Tellomi（tellomi/tellomi#1138）：必须更新盖在应用锁之上（需求 3.4），所以排在 locked 前面。
-      // 阻断页不继承本类，不会被自己路由回来。
+      // 阻断页不继承本类，不会被自己路由回来。从阻断页选只读之后 shouldBlock 为假，这里就照常走到 locked（先过锁）。
       return STATE_UPDATE_REQUIRED;
     } else if (locked) {
       return STATE_PROMPT_PASSPHRASE;

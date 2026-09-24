@@ -314,6 +314,7 @@
     <string name="TellomiUpdateRequired__waiting_for_wifi">這個安裝包原本只在連上 Wi-Fi 時下載。</string>
     <string name="TellomiUpdateRequired__use_mobile_data">用行動數據下載</string>
     <string name="TellomiUpdateRequired__download_notification_title">正在下載 Tellomi 更新</string>
+    <string name="TellomiUpdateRequired__view_chats_only">暫不更新，只看聊天記錄</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->

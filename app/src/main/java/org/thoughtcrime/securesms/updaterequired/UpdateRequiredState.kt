@@ -59,6 +59,12 @@ sealed interface UpdateRequiredScreenEvent {
   data object ScreenResumed : UpdateRequiredScreenEvent
   data object PrimaryClicked : UpdateRequiredScreenEvent
   data object DownloadFromWebsiteClicked : UpdateRequiredScreenEvent
+
+  /** 「暂不更新，只看聊天记录」（owner 2026-09-24 规则 1）。先确认。 */
+  data object ViewChatsOnlyClicked : UpdateRequiredScreenEvent
+
+  /** 确认框里点了「不要更新」。 */
+  data object ViewChatsOnlyConfirmed : UpdateRequiredScreenEvent
 }
 
 /** 需要 Activity 才能做的一次性动作。 */
@@ -67,4 +73,10 @@ sealed interface UpdateRequiredScreenAction {
 
   /** 官网下载页（官网版）或应用商店（其它渠道）。 */
   data object OpenDownloadPage : UpdateRequiredScreenAction
+
+  /** 说明只读的后果，让用户确认（上游「不要更新」的确认框）。 */
+  data object ConfirmViewChatsOnly : UpdateRequiredScreenAction
+
+  /** 离开阻断页、从路由重新进 App：应用锁上着就先过锁，然后是上游的只读模式。 */
+  data object EnterReadOnly : UpdateRequiredScreenAction
 }

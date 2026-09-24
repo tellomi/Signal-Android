@@ -14,12 +14,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Previews
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.banner.Banner
 import org.thoughtcrime.securesms.banner.ui.compose.Action
 import org.thoughtcrime.securesms.banner.ui.compose.DefaultBanner
 import org.thoughtcrime.securesms.banner.ui.compose.Importance
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity
 import org.thoughtcrime.securesms.util.PlayStoreUtil
 
 /**
@@ -39,7 +41,13 @@ class DeprecatedBuildBanner : Banner<Unit>() {
     Banner(
       contentPadding = contentPadding,
       onUpdateClicked = {
-        PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(context)
+        // Tellomi（tellomi/tellomi#1138）：只读模式的常驻横幅（owner 2026-09-24 规则 1、2）。官网版打开 App 内的更新页
+        // （检查 → 下载 → 安装），不再跳浏览器；其它渠道照上游去商店。
+        if (BuildConfig.MANAGES_APP_UPDATES) {
+          context.startActivity(ClientDeprecatedActivity.createIntent(context))
+        } else {
+          PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(context)
+        }
       }
     )
   }

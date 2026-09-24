@@ -81,7 +81,18 @@ class UpdateRequiredViewModel(
       UpdateRequiredScreenEvent.ScreenResumed -> onScreenResumed()
       UpdateRequiredScreenEvent.PrimaryClicked -> onPrimaryClicked()
       UpdateRequiredScreenEvent.DownloadFromWebsiteClicked -> _actions.trySend(UpdateRequiredScreenAction.OpenDownloadPage)
+      UpdateRequiredScreenEvent.ViewChatsOnlyClicked -> _actions.trySend(UpdateRequiredScreenAction.ConfirmViewChatsOnly)
+      UpdateRequiredScreenEvent.ViewChatsOnlyConfirmed -> onViewChatsOnlyConfirmed()
     }
+  }
+
+  /**
+   * owner 2026-09-24：任何情况下都不能把用户锁在自己的聊天记录外面（记录只在这台手机上）。
+   * 正在下的包不取消，下完照上游发「点此安装」通知。
+   */
+  private fun onViewChatsOnlyConfirmed() {
+    repository.chooseReadOnly()
+    _actions.trySend(UpdateRequiredScreenAction.EnterReadOnly)
   }
 
   private fun onScreenResumed() {

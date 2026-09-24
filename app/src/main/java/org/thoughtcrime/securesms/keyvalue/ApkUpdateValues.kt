@@ -21,6 +21,7 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
     private const val AVAILABLE_UPDATE_VERSION_NAME = "apk_update.available_update_version_name"
     private const val AVAILABLE_UPDATE_VERSION_CODE = "apk_update.available_update_version_code"
     private const val DOWNLOAD_ALLOWS_METERED = "apk_update.download_allows_metered"
+    private const val READ_ONLY_CHOSEN_VERSION_CODE = "apk_update.read_only_chosen_version_code"
   }
 
   public override fun onFirstEverAppLaunch() = Unit
@@ -47,6 +48,12 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
    * 阻断页发起的是 true；上游的后台检查只许 Wi-Fi，是 false（旧记录没有这个键，也按 false）。
    */
   val downloadAllowsMetered: Boolean by booleanValue(DOWNLOAD_ALLOWS_METERED, false)
+
+  /**
+   * Tellomi（tellomi/tellomi#1138，owner 2026-09-24 规则 1）：用户在「必须更新」阻断页选「暂不更新，只看聊天记录」时的 versionCode。
+   * 等于当前 versionCode 就不再自动盖阻断页；装上新版本后自然作废。0 = 没选过。
+   */
+  var readOnlyChosenVersionCode: Int by integerValue(READ_ONLY_CHOSEN_VERSION_CODE, 0)
 
   /**
    * Tellomi（tellomi/tellomi#1138）：最近一次清单检查看到的、比当前安装更新的版本号（清单的 versionName）；没有则为 null。

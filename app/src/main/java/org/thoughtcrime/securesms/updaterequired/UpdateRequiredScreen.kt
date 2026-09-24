@@ -51,11 +51,13 @@ import org.thoughtcrime.securesms.updaterequired.UpdateRequiredState.Download
 object UpdateRequiredTestTags {
   const val PRIMARY_BUTTON = "update_required_primary_button"
   const val DOWNLOAD_FROM_WEBSITE = "update_required_download_from_website"
+  const val VIEW_CHATS_ONLY = "update_required_view_chats_only"
 }
 
 /**
- * 「必须更新」阻断页（tellomi/tellomi#1138，需求 3.4）：Tellomi 标 → 标题 → 一句原因 → 版本与大小 → 唯一主按钮。
- * 没有关闭按钮；下载进度画在主按钮里；失败时按钮变「重试」，下方给「去官网下载」。
+ * 「必须更新」阻断页（tellomi/tellomi#1138，需求 3.4）：Tellomi 标 → 标题 → 一句原因 → 版本与大小 → 主按钮。
+ * 下载进度画在主按钮里；失败时按钮变「重试」，下方给「去官网下载」。
+ * 最下面始终有「暂不更新，只看聊天记录」（owner 2026-09-24 规则 1）：聊天记录只在这台手机上，不能拦死。
  */
 @Composable
 fun UpdateRequiredScreen(
@@ -156,6 +158,13 @@ fun UpdateRequiredScreen(
         ) {
           Text(text = stringResource(R.string.TellomiUpdateRequired__download_from_website))
         }
+      }
+
+      TextButton(
+        onClick = { onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyClicked) },
+        modifier = Modifier.testTag(UpdateRequiredTestTags.VIEW_CHATS_ONLY)
+      ) {
+        Text(text = stringResource(R.string.TellomiUpdateRequired__view_chats_only))
       }
     }
   }

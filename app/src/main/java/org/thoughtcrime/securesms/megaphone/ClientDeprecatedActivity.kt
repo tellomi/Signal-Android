@@ -14,10 +14,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.BaseActivity
+import org.thoughtcrime.securesms.MainActivity
+import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.updaterequired.DefaultUpdateRequiredRepository
 import org.thoughtcrime.securesms.updaterequired.UpdateRequired
 import org.thoughtcrime.securesms.updaterequired.UpdateRequiredScreen
@@ -32,9 +35,10 @@ import org.thoughtcrime.securesms.util.viewModel
  * Shown when a users build fully expires. Controlled by [Megaphones.Event.CLIENT_DEPRECATED].
  *
  * Tellomi（tellomi/tellomi#1138，需求 app-update-and-version-policy 第 3.4 节）：改成「必须更新」阻断页 [UpdateRequiredScreen]。
- * - 上游的「不要更新」去掉了：必须档不可关闭，返回键只把 App 退到后台。
+ * - 上游的「不要更新」保留成「暂不更新，只看聊天记录」（owner 2026-09-24 规则 1）：确认后从路由重新进 App，
+ *   应用锁上着就先过锁，然后是上游的只读模式。返回键只把 App 退到后台。
  * - 不继承 PassphraseRequiredActivity：页面上没有任何私人内容，应用锁没解开也能先更新。
- *   进入途径除了上游的全屏 megaphone，还有 PassphraseRequiredActivity 的路由（任何页面创建或回到前台时）。
+ * - 什么时候自动出现看 [UpdateRequired.shouldBlock]（只在服务端判定、且没选只读时）；只读横幅上的「立即更新」也会打开这里。
  */
 class ClientDeprecatedActivity : BaseActivity() {
 
@@ -70,6 +74,8 @@ class ClientDeprecatedActivity : BaseActivity() {
           when (action) {
             UpdateRequiredScreenAction.OpenInstallPermissionSettings -> openInstallPermissionSettings()
             UpdateRequiredScreenAction.OpenDownloadPage -> PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(this@ClientDeprecatedActivity)
+            UpdateRequiredScreenAction.ConfirmViewChatsOnly -> confirmViewChatsOnly()
+            UpdateRequiredScreenAction.EnterReadOnly -> enterReadOnly()
           }
         }
       }
@@ -91,6 +97,22 @@ class ClientDeprecatedActivity : BaseActivity() {
     super.onResume()
     theme.onResume(this)
     viewModel.onEvent(UpdateRequiredScreenEvent.ScreenResumed)
+  }
+
+  /** 上游「不要更新」的确认框，字句照旧：能看记录，更新之前不能收发。 */
+  private fun confirmViewChatsOnly() {
+    MaterialAlertDialogBuilder(this)
+      .setTitle(R.string.ClientDeprecatedActivity_warning)
+      .setMessage(R.string.ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history)
+      .setPositiveButton(R.string.ClientDeprecatedActivity_dont_update) { _, _ -> viewModel.onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyConfirmed) }
+      .setNegativeButton(android.R.string.cancel, null)
+      .show()
+  }
+
+  /** 从路由重新进：MainActivity 继承 PassphraseRequiredActivity，锁上着会先去解锁（owner 规则 1「进只读要先过应用锁」）。 */
+  private fun enterReadOnly() {
+    startActivity(MainActivity.clearTop(this))
+    finish()
   }
 
   private fun openInstallPermissionSettings() {

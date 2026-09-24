@@ -43,6 +43,7 @@ import org.thoughtcrime.securesms.profiles.username.NewWaysToConnectDialogFragme
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.storage.StorageSyncHelper;
 import org.signal.core.util.ByteUnit;
+import org.thoughtcrime.securesms.updaterequired.UpdateRequired;
 import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.DateUtils;
 import org.thoughtcrime.securesms.util.Environment;
@@ -118,7 +119,8 @@ public final class Megaphones {
   private static Map<Event, MegaphoneSchedule> buildDisplayOrder(@NonNull Context context, @NonNull Map<Event, MegaphoneRecord> records) {
     return new LinkedHashMap<>() {{
       put(Event.PINS_FOR_ALL, new PinsForAllSchedule());
-      put(Event.CLIENT_DEPRECATED, SignalStore.misc().isClientDeprecated() ? ALWAYS : NEVER);
+      // Tellomi（tellomi/tellomi#1138，owner 2026-09-24 规则 2）：本机构建到期只降成只读，不再拉起全屏页；选了只读也不再拉起。
+      put(Event.CLIENT_DEPRECATED, UpdateRequired.shouldBlock() ? ALWAYS : NEVER);
       put(Event.NEW_LINKED_DEVICE, shouldShowNewLinkedDeviceMegaphone() ? ALWAYS : NEVER);
       put(Event.NOTIFICATIONS, shouldShowNotificationsMegaphone(context) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(30)) : NEVER);
       put(Event.GRANT_FULL_SCREEN_INTENT, shouldShowGrantFullScreenIntentPermission(context) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(3)) : NEVER);

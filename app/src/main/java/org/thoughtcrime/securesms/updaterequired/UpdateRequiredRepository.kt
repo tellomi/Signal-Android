@@ -34,8 +34,31 @@ import kotlin.time.Duration.Companion.seconds
  */
 object UpdateRequired {
 
+  /** 这个版本已经不能收发（上游的「客户端已弃用」）：服务端判定，或本机构建到期。App 此时是只读的。 */
   @JvmStatic
   fun isRequired(): Boolean = SignalStore.misc.isClientDeprecated
+
+  /**
+   * 要不要自动盖上阻断页（路由、回到前台、全屏 megaphone 三处都看这里）。owner 2026-09-24 定的三条规则：
+   * - 只有服务端判定的（499 或远程配置宣布到期）才盖，服务端随时能撤；本机构建到期只降成只读 + 横幅，不盖。
+   * - 用户在阻断页选了「只看聊天记录」之后，这个版本就不再自动盖（上游「不要更新」之后全屏页也不再出现）；
+   *   只读横幅上的「立即更新」随时能回到更新页。换了版本（versionCode 变了）这个选择就作废。
+   */
+  @JvmStatic
+  @JvmOverloads
+  fun shouldBlock(
+    isRequired: Boolean = isRequired(),
+    reason: UpdateRequiredState.Reason = reason(),
+    readOnlyChosenVersionCode: Int = SignalStore.apkUpdate.readOnlyChosenVersionCode,
+    currentVersionCode: Int = BuildConfig.VERSION_CODE
+  ): Boolean {
+    return isRequired && reason == UpdateRequiredState.Reason.SERVER_REJECTED && readOnlyChosenVersionCode != currentVersionCode
+  }
+
+  /** 用户在阻断页选了「暂不更新，只看聊天记录」。 */
+  fun chooseReadOnly() {
+    SignalStore.apkUpdate.readOnlyChosenVersionCode = BuildConfig.VERSION_CODE
+  }
 
   /**
    * 置真之后 [Util.getTimeUntilBuildExpiry] 恒为 0，分不出原因，所以这里直接比构建时间：
@@ -89,6 +112,9 @@ interface UpdateRequiredRepository {
 
   @WorkerThread
   fun install(downloadId: Long)
+
+  /** 用户选了「暂不更新，只看聊天记录」：这个版本不再自动盖阻断页（[UpdateRequired.shouldBlock]）。 */
+  fun chooseReadOnly()
 }
 
 class DefaultUpdateRequiredRepository(private val context: Context) : UpdateRequiredRepository {
@@ -160,5 +186,9 @@ class DefaultUpdateRequiredRepository(private val context: Context) : UpdateRequ
     // 下载完成时后台已经发过一条「点此安装」通知；这里由用户在阻断页上直接装，不再需要它。
     ApkUpdateNotifications.dismissInstallPrompt(context)
     ApkUpdateInstaller.installOrPromptForInstall(context, downloadId, userInitiated = true)
+  }
+
+  override fun chooseReadOnly() {
+    UpdateRequired.chooseReadOnly()
   }
 }

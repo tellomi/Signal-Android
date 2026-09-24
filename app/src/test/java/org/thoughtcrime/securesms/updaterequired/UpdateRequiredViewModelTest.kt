@@ -319,6 +319,25 @@ class UpdateRequiredViewModelTest {
     assertThat(viewModel.state.value.download).isEqualTo(Download.Failed)
   }
 
+  // ==================== owner 2026-09-24 规则 1：只读出口 ====================
+
+  @Test
+  fun `only viewing the chats asks first, then remembers the choice and leaves for the chats`() = runViewModelTest {
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel)
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyClicked)
+    runCurrent()
+    assertThat(actions).containsExactly(UpdateRequiredScreenAction.ConfirmViewChatsOnly)
+    assertThat(repository.readOnlyChoices).isEqualTo(0)
+
+    viewModel.onEvent(UpdateRequiredScreenEvent.ViewChatsOnlyConfirmed)
+    runCurrent()
+    assertThat(actions).containsExactly(UpdateRequiredScreenAction.ConfirmViewChatsOnly, UpdateRequiredScreenAction.EnterReadOnly)
+    assertThat(repository.readOnlyChoices).isEqualTo(1)
+    assertThat(repository.checks).isEqualTo(0)
+  }
+
   private val viewModels = mutableListOf<UpdateRequiredViewModel>()
 
   /**
@@ -356,6 +375,7 @@ class UpdateRequiredViewModelTest {
     var checkResult = true
     var availableVersion: String? = "0.1.3"
     var checks = 0
+    var readOnlyChoices = 0
     val installs = mutableListOf<Long>()
 
     /** 每次 [currentDownload] 取下一个；取完之后一直返回最后一个。 */
@@ -386,6 +406,10 @@ class UpdateRequiredViewModelTest {
 
     override fun install(downloadId: Long) {
       installs += downloadId
+    }
+
+    override fun chooseReadOnly() {
+      readOnlyChoices++
     }
   }
 }

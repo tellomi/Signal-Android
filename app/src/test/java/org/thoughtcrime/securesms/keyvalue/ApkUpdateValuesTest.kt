@@ -18,6 +18,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.testutil.SignalStoreRule
+import org.thoughtcrime.securesms.updaterequired.UpdateRequired
+import org.thoughtcrime.securesms.updaterequired.UpdateRequiredState
 
 /**
  * Tellomi（tellomi/tellomi#1138）：「有新版本」给「关于」页读，装上那个版本之后不能还挂着。
@@ -64,5 +66,16 @@ class ApkUpdateValuesTest {
     // 上游后台检查排的：只许 Wi-Fi。
     SignalStore.apkUpdate.setDownloadAttributes(43, null, 0)
     assertThat(SignalStore.apkUpdate.downloadAllowsMetered).isFalse()
+  }
+
+  @Test
+  fun `choosing to only view the chats is remembered, so the blocking page stops coming back`() {
+    // owner 2026-09-24 规则 1。原因写死成服务端拒绝：默认值按构建时间算，老分支上会变成「版本过旧」。
+    assertThat(UpdateRequired.shouldBlock(isRequired = true, reason = UpdateRequiredState.Reason.SERVER_REJECTED)).isTrue()
+
+    UpdateRequired.chooseReadOnly()
+
+    assertThat(SignalStore.apkUpdate.readOnlyChosenVersionCode).isEqualTo(BuildConfig.VERSION_CODE)
+    assertThat(UpdateRequired.shouldBlock(isRequired = true, reason = UpdateRequiredState.Reason.SERVER_REJECTED)).isFalse()
   }
 }
