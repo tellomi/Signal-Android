@@ -76,7 +76,7 @@ class TellomiRegionSwitcher(
     @JvmStatic
     val instance: TellomiRegionSwitcher by lazy {
       TellomiRegionSwitcher(
-        profiles = { TellomiRegions.ALL },
+        profiles = { TellomiRegions.profiles() },
         storedId = { SignalStore.tellomiRegion.currentId },
         record = { id, at ->
           SignalStore.tellomiRegion.currentId = id.id

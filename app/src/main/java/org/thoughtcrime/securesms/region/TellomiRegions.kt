@@ -134,7 +134,7 @@ object TellomiRegions {
 
   /**
    * 当前区。各调用点在用的时候取，不在类加载时存下来，这样切区（`AppDependencies.resetNetwork()`）之后新建的连接就用新区。
-   * 现在 CN 关着，所以恒为 global。
+   * 现在 CN 关着，所以恒为 global（debug 包开了测试区时除外）。
    */
   @JvmStatic
   fun current(): TellomiRegionProfile {
@@ -144,7 +144,43 @@ object TellomiRegions {
       // SignalStore 还没初始化（进程刚起的早期路径、单测）或者读库失败：回落 global，绝不抛（契约第五节第 8 条）
       null
     }
-    return resolve(storedId)
+    return resolve(storedId, profiles())
+  }
+
+  /**
+   * 本进程用的区域表：一般就是 [ALL]。debug 包在 Internal 设置里填了测试区域名时，CN 档换成开着的测试区（[testRegionProfiles]）。
+   * release 包里 `BuildConfig.DEBUG` 是编译期常量 false，后面整段被 R8 删掉。
+   */
+  @JvmStatic
+  @JvmOverloads
+  fun profiles(isDebug: Boolean = BuildConfig.DEBUG, testRegionDomain: () -> String? = ::storedTestRegionDomain): List<TellomiRegionProfile> {
+    return if (isDebug) testRegionProfiles(testRegionDomain()) else ALL
+  }
+
+  private fun storedTestRegionDomain(): String? {
+    return try {
+      SignalStore.tellomiRegion.testRegionDomain
+    } catch (e: Exception) {
+      null
+    }
+  }
+
+  /**
+   * 测试区：CN 档的形状（同名标签），主机挂到 [domain] 下（`chat.<域>`、`grpc.chat.<域>`、`cdn3.<域>`…，路径和端口不变），
+   * `enabled = true`。用来在 CN 保持关闭、`tellomi.cn` 下没有任何 DNS 记录的前提下验切区（#1055 判据 2）。
+   * 只换这一份表，不改 [ALL]，所以 `problems(ALL)` 和第二刀的门禁照旧。[domain] 不像域名就当没设。
+   */
+  fun testRegionProfiles(domain: String?): List<TellomiRegionProfile> {
+    if (domain == null || !isPlausibleTestDomain(domain)) {
+      return ALL
+    }
+    val testRegion = cnOf(GLOBAL, domain = ".$domain", enabled = true)
+    return ALL.map { if (it.id == TellomiRegionId.CN) testRegion else it }
+  }
+
+  private fun isPlausibleTestDomain(domain: String): Boolean {
+    val labels = domain.split(".")
+    return labels.size >= 2 && labels.all { label -> label.isNotEmpty() && label.all { it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it == '-' } }
   }
 
   /**
@@ -159,25 +195,27 @@ object TellomiRegions {
    * 契约第四节：同名标签挂到 `tellomi.cn`。scheme、端口、路径都不变，只把主机名里的 `.tellomi.app` 换成 `.tellomi.cn`。
    * 这样 CN 档的每一个主机都在 `tellomi.cn` 下（App 备案要填运行时连接的全部域名，漏一条就是漏报）。
    */
-  fun cnOf(global: TellomiRegionProfile): TellomiRegionProfile {
+  fun cnOf(global: TellomiRegionProfile, domain: String = CN_DOMAIN, enabled: Boolean = false): TellomiRegionProfile {
+    // domain / enabled 只有测试区会改（testRegionProfiles）
+    val rehost = { urlOrHost: String -> toCnHost(urlOrHost, domain) }
     return global.copy(
       id = TellomiRegionId.CN,
-      enabled = false,
-      chat = toCnHost(global.chat),
-      grpcChatHost = toCnHost(global.grpcChatHost),
-      storage = toCnHost(global.storage),
-      cdn0 = toCnHost(global.cdn0),
-      cdn2 = toCnHost(global.cdn2),
-      cdn3 = toCnHost(global.cdn3),
-      updatesHost = toCnHost(global.updatesHost),
-      badgeStaticRoot = toCnHost(global.badgeStaticRoot),
-      apkUpdateManifestUrl = global.apkUpdateManifestUrl?.let { toCnHost(it) },
-      contentProxyHost = toCnHost(global.contentProxyHost),
-      captchaRegistration = toCnHost(global.captchaRegistration),
-      captchaChallenge = toCnHost(global.captchaChallenge),
-      sfu = toCnHost(global.sfu),
-      uptimeHost = toCnHost(global.uptimeHost),
-      debugLog = toCnHost(global.debugLog)
+      enabled = enabled,
+      chat = rehost(global.chat),
+      grpcChatHost = rehost(global.grpcChatHost),
+      storage = rehost(global.storage),
+      cdn0 = rehost(global.cdn0),
+      cdn2 = rehost(global.cdn2),
+      cdn3 = rehost(global.cdn3),
+      updatesHost = rehost(global.updatesHost),
+      badgeStaticRoot = rehost(global.badgeStaticRoot),
+      apkUpdateManifestUrl = global.apkUpdateManifestUrl?.let(rehost),
+      contentProxyHost = rehost(global.contentProxyHost),
+      captchaRegistration = rehost(global.captchaRegistration),
+      captchaChallenge = rehost(global.captchaChallenge),
+      sfu = rehost(global.sfu),
+      uptimeHost = rehost(global.uptimeHost),
+      debugLog = rehost(global.debugLog)
     )
   }
 
@@ -189,13 +227,13 @@ object TellomiRegions {
   }
 
   /** 只换主机部分；主机不在 `tellomi.app` 下的原样返回，由 [problems] 挑出来。 */
-  fun toCnHost(urlOrHost: String): String {
+  fun toCnHost(urlOrHost: String, domain: String = CN_DOMAIN): String {
     val host = hostOf(urlOrHost)
     if (!host.endsWith(GLOBAL_DOMAIN)) {
       return urlOrHost
     }
     val start = urlOrHost.indexOf(host)
-    return urlOrHost.substring(0, start) + host.removeSuffix(GLOBAL_DOMAIN) + CN_DOMAIN + urlOrHost.substring(start + host.length)
+    return urlOrHost.substring(0, start) + host.removeSuffix(GLOBAL_DOMAIN) + domain + urlOrHost.substring(start + host.length)
   }
 
   /**
