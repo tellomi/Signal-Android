@@ -776,7 +776,7 @@
     <string name="TellomiRegistration__old_phone_here">舊 Android 手機還在身邊</string>
     <string name="TellomiRegistration__old_phone_here_description">用舊 Android 手機上的 Tellomi 掃描一個二維碼，把帳戶和訊息直接傳過來</string>
     <string name="TellomiRegistration__old_phone_not_here">舊手機不在身邊，或者是 iPhone</string>
-    <string name="TellomiRegistration__old_phone_not_here_description">在這支手機上重新安裝的話，可以用裝置上的備份還原；否則直接註冊，只是以前的訊息不會跟過來</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在這支手機上重新安裝的話，可以用裝置上的備份還原；否則直接註冊，只是以前的訊息不會跟過來，舊手機上的 Tellomi 也會登出</string>
     <string name="TellomiRegistration__skip_restore_dialog_title">不還原訊息？</string>
     <string name="TellomiRegistration__skip_restore_dialog_body">以前的訊息不會出現在這支手機上。</string>
     <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">舊手機上的 Tellomi 會登出，以前的訊息也不會出現在這支手機上。</string>
