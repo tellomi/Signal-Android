@@ -62,7 +62,11 @@ data class VerificationCodeState(
     val unableToSendSms: Boolean = false,
     val couldNotRequestCodeWithSelectedTransport: Boolean = false,
     /** Nonnull when the delivery provider rejected the request. Carries the failed transport for accurate wording. */
-    val providerRejectedTransport: VerificationCodeTransport? = null
+    val providerRejectedTransport: VerificationCodeTransport? = null,
+    /** Tellomi（tellomi/tellomi#1214）：会话过期（404）。上游不声不响地退回手机号页；先说清楚，关掉再退回。 */
+    val sessionExpired: Boolean = false,
+    /** Tellomi（tellomi/tellomi#1214）：这个会话里已经不能再提交验证码（没发过码，或者已经失效）。同上。 */
+    val codeNoLongerValid: Boolean = false
   )
 
   /**

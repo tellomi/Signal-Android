@@ -775,4 +775,18 @@
     <string name="TellomiRegistration__a_verification_code_will_be_sent">We\'ll text a verification code to this number to confirm it\'s yours.</string>
     <string name="TellomiRegistration__captcha_retry">Retry</string>
     <string name="TellomiRegistration__first_name">First name</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">Incorrect code. Check the text message and try again.</string>
+    <string name="TellomiRegistration__didnt_get_code">Didn\'t get the code?</string>
+    <string name="TellomiRegistration__help_check_number">Check that the number is right: %1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">The text may have been filtered. Open your phone\'s built-in security or phone manager app and look in its blocked or spam messages.</string>
+    <string name="TellomiRegistration__help_wait_with_quota">Texts sometimes arrive a little late, so give it a moment. Each registration can send at most %1$d codes, so please don\'t resend too often.</string>
+    <string name="TellomiRegistration__help_voice">You can also get the code by phone call instead of a text.</string>
+    <string name="TellomiRegistration__help_support">Still nothing? Email support@tellomi.app and we\'ll take a look.</string>
+    <string name="TellomiRegistration__help_change_number">Change number</string>
+    <string name="TellomiRegistration__help_contact_support">Contact support</string>
+    <string name="TellomiRegistration__help_more">More help</string>
+    <string name="TellomiRegistration__session_expired">This verification has expired. Please check your number and get a new code.</string>
+    <string name="TellomiRegistration__code_no_longer_valid">This code can no longer be used. It may have expired, or been entered wrong too many times. Please get a new code.</string>
 </resources>

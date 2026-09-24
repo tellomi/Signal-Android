@@ -770,4 +770,18 @@
     <string name="TellomiRegistration__a_verification_code_will_be_sent">我们会向这个号码发一条短信验证码，确认它是你的。</string>
     <string name="TellomiRegistration__captcha_retry">重试</string>
     <string name="TellomiRegistration__first_name">名字</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">验证码不对，请核对短信后重新输入</string>
+    <string name="TellomiRegistration__didnt_get_code">收不到验证码？</string>
+    <string name="TellomiRegistration__help_check_number">确认号码没有填错：%1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">短信可能被拦截了：打开手机自带的「手机管家」或「安全中心」，看看「骚扰拦截」里有没有。</string>
+    <string name="TellomiRegistration__help_wait_with_quota">短信偶尔会晚到一会儿，请先等一等。每次注册最多只能发 %1$d 条验证码，请不要频繁重发。</string>
+    <string name="TellomiRegistration__help_voice">也可以改成打电话念验证码。</string>
+    <string name="TellomiRegistration__help_support">还是收不到？发邮件到 support@tellomi.app，我们帮你看看。</string>
+    <string name="TellomiRegistration__help_change_number">改号码</string>
+    <string name="TellomiRegistration__help_contact_support">联系客服</string>
+    <string name="TellomiRegistration__help_more">更多帮助</string>
+    <string name="TellomiRegistration__session_expired">这次验证已经过期，请确认号码后重新获取验证码。</string>
+    <string name="TellomiRegistration__code_no_longer_valid">这个验证码已经不能用了：可能已过期，或者输错的次数太多。请重新获取验证码。</string>
 </resources>

@@ -12,8 +12,11 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
+import assertk.assertThat
+import assertk.assertions.contains
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -254,5 +257,84 @@ class VerificationCodeScreenTest {
     composeTestRule.onNodeWithText("Resend Code").assertIsDisplayed()
     // Tellomi（tellomi/tellomi#1210）：没有语音通道，「给我打电话」不显示
     composeTestRule.onNodeWithText("Call me instead").assertDoesNotExist()
+  }
+
+  // ==================== Tellomi（tellomi/tellomi#1214） ====================
+
+  @Test
+  fun `an incorrect code is shown inline under the digits`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(
+            e164 = "+8613800138000",
+            incorrectCodeAttempts = 1,
+            snackbars = VerificationCodeState.Snackbars(incorrectVerificationCode = true)
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_ERROR).assertIsDisplayed()
+    composeTestRule.onNodeWithText("Incorrect code. Check the text message and try again.").assertIsDisplayed()
+    // 上游的 Snackbar 文案不再出现。
+    composeTestRule.onNodeWithText("Incorrect code").assertDoesNotExist()
+  }
+
+  @Test
+  fun `no inline error before a wrong code`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(state = VerificationCodeState(e164 = "+8613800138000"), onEvent = {})
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_ERROR).assertDoesNotExist()
+  }
+
+  @Config(qualifiers = "w411dp-h891dp")
+  @Test
+  fun `the didn't get the code sheet offers ways out`() {
+    val events = mutableListOf<VerificationCodeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(e164 = "+8613800138000", showContactSupportSheet = true),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithText("• Check that the number is right: +8613800138000").assertIsDisplayed()
+    composeTestRule.onNodeWithText("support@tellomi.app", substring = true).assertIsDisplayed()
+    composeTestRule.onNodeWithText("at most 3 codes", substring = true).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HELP_CONTACT_SUPPORT).performScrollTo().assertIsDisplayed()
+
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HELP_CHANGE_NUMBER).performScrollTo().performClick()
+    composeTestRule.waitForIdle()
+
+    assertThat(events).contains(VerificationCodeScreenEvents.WrongNumber)
+  }
+
+  @Test
+  fun `an expired session is explained before going back`() {
+    val events = mutableListOf<VerificationCodeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(
+            e164 = "+8613800138000",
+            dialogs = VerificationCodeState.Dialogs(sessionExpired = true)
+          ),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithText("This verification has expired. Please check your number and get a new code.").assertIsDisplayed()
+    composeTestRule.onNodeWithText("OK").performClick()
+
+    assertThat(events).contains(VerificationCodeScreenEvents.SessionExpiredDialogDismissed)
   }
 }

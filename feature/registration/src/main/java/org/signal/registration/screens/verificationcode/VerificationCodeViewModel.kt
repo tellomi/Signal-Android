@@ -40,6 +40,7 @@ import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.util.navigateBack
 import org.signal.registration.screens.util.navigateTo
 import kotlin.time.Duration
@@ -132,6 +133,7 @@ class VerificationCodeViewModel(
       is VerificationCodeScreenEvents.CodeAutoFilled -> state.copy(autoFillCode = event.code)
       is VerificationCodeScreenEvents.ConsumeAutoFillCode -> state.copy(autoFillCode = null)
       is VerificationCodeScreenEvents.WrongNumber -> state.also { parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry) }
+      is VerificationCodeScreenEvents.SessionExpiredDialogDismissed -> state.copy(dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false)).also { parentEventEmitter.navigateBack() }
       is VerificationCodeScreenEvents.ResendSms -> applyResendCode(state, VerificationCodeTransport.SMS)
       is VerificationCodeScreenEvents.CallMe -> applyResendCode(state, VerificationCodeTransport.VOICE)
       is VerificationCodeScreenEvents.HavingTrouble -> state.copy(showContactSupportSheet = true)
@@ -214,20 +216,27 @@ class VerificationCodeViewModel(
    *   submits, all in this single reducer pass
    */
   private suspend fun applyDigitChanged(
-    state: VerificationCodeState,
+    inputState: VerificationCodeState,
     index: Int,
     value: String,
     stateEmitter: (VerificationCodeState) -> Unit
   ): VerificationCodeState {
-    check(index in state.digits.indices) { "[DigitChanged] Out of bounds index $index." }
+    check(index in inputState.digits.indices) { "[DigitChanged] Out of bounds index $index." }
 
     if (value.isEmpty()) {
-      return deleteDigit(state, index)
+      return deleteDigit(inputState, index)
     }
 
-    val currentValue = state.digits[index]
+    val currentValue = inputState.digits[index]
     val remainder = if (currentValue.isNotEmpty()) value.replaceFirst(currentValue, "") else value
     val addedDigits = remainder.filter { it.isDigit() }
+
+    // Tellomi（tellomi/tellomi#1214）：错码提示是行内的，重新输入就收起。
+    val state = if (addedDigits.isNotEmpty() && inputState.snackbars.incorrectVerificationCode) {
+      inputState.copy(snackbars = inputState.snackbars.copy(incorrectVerificationCode = false))
+    } else {
+      inputState
+    }
 
     return when {
       addedDigits.isEmpty() -> state
@@ -245,7 +254,10 @@ class VerificationCodeViewModel(
         }
       }
 
-      else -> applyFullCode(state, addedDigits, stateEmitter)
+      addedDigits.length == CODE_LENGTH -> applyFullCode(state, addedDigits, stateEmitter)
+
+      // Tellomi（tellomi/tellomi#1214）：整条短信粘进来时里面还有别的数字（「5 分钟内有效」），先从原文里找完整的验证码。
+      else -> applyFullCode(state, TellomiRegistration.verificationCodeIn(remainder) ?: addedDigits, stateEmitter)
     }
   }
 
@@ -325,9 +337,9 @@ class VerificationCodeViewModel(
             return state.copy(snackbars = state.snackbars.copy(incorrectVerificationCode = true), incorrectCodeAttempts = newAttempts, digits = VerificationCodeState.emptyDigits(), focusedDigitIndex = 0)
           }
           is SubmitVerificationCodeError.SessionNotFound -> {
-            Log.w(TAG, "[SubmitCode] Session not found: ${error.message}. Navigating back to phone number entry.")
-            parentEventEmitter.navigateBack()
-            return state
+            // Tellomi（tellomi/tellomi#1214）：上游直接退回手机号页，用户不知道为什么；先弹框说「验证已过期」，关掉再退回。
+            Log.w(TAG, "[SubmitCode] Session not found: ${error.message}. Telling the user it expired before navigating back.")
+            return state.copy(dialogs = state.dialogs.copy(sessionExpired = true))
           }
           is SubmitVerificationCodeError.SessionAlreadyVerifiedOrNoCodeRequested -> {
             if (error.session.verified) {
@@ -335,8 +347,8 @@ class VerificationCodeViewModel(
               error.session
             } else {
               Log.w(TAG, "[SubmitCode] No code was requested for this session? Need to have user re-submit.")
-              parentEventEmitter.navigateBack()
-              return state
+              // Tellomi（tellomi/tellomi#1214）：同上，先说清楚再退回。
+              return state.copy(dialogs = state.dialogs.copy(codeNoLongerValid = true))
             }
           }
           is SubmitVerificationCodeError.RateLimited -> {

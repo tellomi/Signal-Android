@@ -90,6 +90,9 @@ object TestTags {
   const val VERIFICATION_CODE_RESEND_SMS_BUTTON = "verification_code_resend_sms_button"
   const val VERIFICATION_CODE_CALL_ME_BUTTON = "verification_code_call_me_button"
   const val VERIFICATION_CODE_HAVING_TROUBLE_BUTTON = "verification_code_having_trouble_button"
+  const val VERIFICATION_CODE_ERROR = "verification_code_error"
+  const val VERIFICATION_CODE_HELP_CHANGE_NUMBER = "verification_code_help_change_number"
+  const val VERIFICATION_CODE_HELP_CONTACT_SUPPORT = "verification_code_help_contact_support"
 
   // Archive Restore Selection Screen
   const val ARCHIVE_RESTORE_SELECTION_SCREEN = "archive_restore_selection_screen"
