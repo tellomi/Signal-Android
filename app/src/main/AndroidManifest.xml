@@ -53,15 +53,13 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
-    <uses-permission android:name="android.permission.READ_CALL_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- Tellomi（#1240）：去掉 READ_PHONE_STATE / READ_PHONE_NUMBERS（#19 之后不再申请，用到的地方都先判权限、没有就跳过；
+         feature/registration 里那两行随 Signal-Android#19 删），以及现行 Android 上不起作用的 READ_PROFILE、READ_CALL_STATE、
+         RAISED_THREAD_PRIORITY。应用市场和监管扫描看的是声明。 -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
