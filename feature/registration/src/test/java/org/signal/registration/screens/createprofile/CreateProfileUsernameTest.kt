@@ -70,6 +70,28 @@ class CreateProfileUsernameTest {
   private val entry: TellomiUsernameEntry
     get() = viewModel.state.value.usernameEntry
 
+  /** Tellomi（tellomi/tellomi#1266）：重新注册时不显示用户名框，只填名字就能进入。 */
+  @Test
+  fun `re-registration hides the username field and a name alone is enough`() = runTest(testDispatcher) {
+    coEvery { repository.getStoredProfileData() } returns StoredProfileData(isReRegistration = true)
+    val reRegistration = CreateProfileViewModel(repository, { parentEvents.add(it) }, Random(7))
+    advanceUntilIdle()
+
+    assertThat(reRegistration.state.value.showUsername).isFalse()
+
+    reRegistration.onEvent(CreateProfileScreenEvents.GivenNameChanged("开心"))
+    advanceUntilIdle()
+
+    assertThat(reRegistration.state.value.isFormValid).isTrue()
+  }
+
+  @Test
+  fun `a new account shows the username field`() = runTest(testDispatcher) {
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.showUsername).isTrue()
+  }
+
   @Test
   fun `a valid username is reserved as nickname dot 01 after the pause`() = runTest(testDispatcher) {
     coEvery { repository.reserveUsername("kaixin") } returns RequestResult.Success(Username("kaixin.01"))

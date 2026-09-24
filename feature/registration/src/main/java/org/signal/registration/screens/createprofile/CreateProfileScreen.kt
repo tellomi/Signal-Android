@@ -180,7 +180,7 @@ private fun CompactLayout(
           keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Words,
             // 下面还有用户名框：「下一项」跳过去（taishi 审查包 4）；用户名已确认、框锁住时没有下一项，仍是「完成」
-            imeAction = if (state.usernameEntry.confirmed == null) ImeAction.Next else ImeAction.Done
+            imeAction = if (state.showUsername && state.usernameEntry.confirmed == null) ImeAction.Next else ImeAction.Done
           ),
           modifier = Modifier
             .fillMaxWidth()
@@ -189,11 +189,14 @@ private fun CompactLayout(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TellomiUsernameField(
-          entry = state.usernameEntry,
-          enabled = !state.isSubmitting && state.usernameEntry.confirmed == null,
-          onEvent = onEvent
-        )
+        // Tellomi（tellomi/tellomi#1266）：重新注册时不显示，交给设置页
+        if (state.showUsername) {
+          TellomiUsernameField(
+            entry = state.usernameEntry,
+            enabled = !state.isSubmitting && state.usernameEntry.confirmed == null,
+            onEvent = onEvent
+          )
+        }
 
         // Tellomi（tellomi/tellomi#1215）：只留一个「名字」框（去掉「姓氏（可选）」，保存时全进 given name）；
         // 「谁可以通过手机号找到我」也去掉——没有 CDSI 时它不起作用，换成一句实话。

@@ -75,7 +75,9 @@ class CreateProfileViewModel(
         familyName = stored.familyName,
         avatar = stored.avatar,
         discoverableByPhoneNumber = stored.discoverableByPhoneNumber ?: true,
-        isLoading = false
+        isLoading = false,
+        // Tellomi（tellomi/tellomi#1266）：重新注册时不显示用户名框
+        showUsername = !stored.isReRegistration
       )
 
       if (stored.givenName.isNotEmpty() && stored.avatar != null) {

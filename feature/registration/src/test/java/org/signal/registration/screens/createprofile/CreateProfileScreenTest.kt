@@ -24,6 +24,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.text.input.ImeAction
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Rule
 import org.junit.Test
@@ -212,6 +213,28 @@ class CreateProfileScreenTest {
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsNotEnabled()
   }
 
+  /** Tellomi（tellomi/tellomi#1266）：重新注册时没有用户名框（查未合并的树：可点击的容器会把子节点合并掉，断言会假绿）。 */
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `re-registration shows no username field`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(givenName = "Alice", isLoading = false, showUsername = false),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD).assertExists()
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_FIELD, useUnmergedTree = true).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsEnabled()
+    // 下面没有用户名框了，名字框的键盘动作是「完成」
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD)
+      .assert(SemanticsMatcher.expectValue(SemanticsProperties.ImeAction, ImeAction.Done))
+  }
+
   /** Tellomi（taishi 审查包 4）：说明行变了读屏要念（liveRegion）；名字框按「下一项」跳到用户名框。 */
   @Config(qualifiers = "w360dp-h1200dp")
   @Test
@@ -228,6 +251,8 @@ class CreateProfileScreenTest {
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true)
       .assert(SemanticsMatcher.expectValue(SemanticsProperties.LiveRegion, LiveRegionMode.Polite))
 
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD)
+      .assert(SemanticsMatcher.expectValue(SemanticsProperties.ImeAction, ImeAction.Next))
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD).performClick()
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD).performImeAction()
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_FIELD).assertIsFocused()
