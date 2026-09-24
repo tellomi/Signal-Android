@@ -274,4 +274,26 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">%1$d of %2$d</string>
+  <!-- Tellomi（tellomi/tellomi#1261）选图网格 -->
+  <string name="MediaSelectScreen__recents">Recents</string>
+  <string name="MediaSelectScreen__close">Close</string>
+  <string name="MediaSelectScreen__more_options">More options</string>
+  <string name="MediaSelectScreen__send_in_high_quality">Send in High Quality</string>
+  <string name="MediaSelectScreen__send_in_standard_quality">Send in Standard Quality</string>
+  <string name="MediaSelectScreen__send_separately">Send Separately</string>
+  <string name="MediaSelectScreen__open_media">Open</string>
+  <string name="MediaSelectScreen__select">Select</string>
+  <string name="MediaSelectScreen__you_have_limited_access">You\'ve limited Tellomi\'s access to your photos.</string>
+  <plurals name="MediaSelectScreen__n_selected">
+    <item quantity="one">%d selected</item>
+    <item quantity="other">%d selected</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__selected_number_n">
+    <item quantity="one">Number %d</item>
+    <item quantity="other">Number %d</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__at_most_n_items">
+    <item quantity="one">You can select up to %d item at a time</item>
+    <item quantity="other">You can select up to %d items at a time</item>
+  </plurals>
 </resources>

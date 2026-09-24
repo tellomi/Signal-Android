@@ -41,6 +41,18 @@ object TestTags {
   /** Tag for the selected media rail's thumbnail of the media at [uri]. */
   fun selectedMediaThumbnail(uri: String): String = "selected_media_thumbnail_$uri"
 
+  // Tellomi（tellomi/tellomi#1261）选图网格
+  const val MEDIA_PICKER_COUNT_PILL = "media_picker_count_pill"
+  const val MEDIA_PICKER_FOLDER_TITLE = "media_picker_folder_title"
+  const val MEDIA_PICKER_LIMITED_ACCESS = "media_picker_limited_access"
+  const val MEDIA_PICKER_SEND_BAR = "media_picker_send_bar"
+
+  /** Tag for the grid tile of the media at [uri]. */
+  fun mediaPickerTile(uri: String): String = "media_picker_tile_$uri"
+
+  /** Tag for the numbered check on the grid tile of the media at [uri]. */
+  fun mediaPickerCheck(uri: String): String = "media_picker_check_$uri"
+
   // Schedule Send Menu
   const val SCHEDULE_SEND_PICK_TIME_OPTION = "schedule_send_pick_time_option"
 

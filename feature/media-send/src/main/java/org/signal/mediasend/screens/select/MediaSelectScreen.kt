@@ -114,7 +114,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import org.signal.core.ui.permissions.Permissions as PermissionsUtil
 
 /** How many empty tiles stand in for the gallery we are not allowed to show. Matches the v2 gallery. */
-private const val PLACEHOLDER_COUNT = 100
+internal const val PLACEHOLDER_COUNT = 100
 
 /**
  * Allows user to select one or more pieces of content to add to the
@@ -136,7 +136,9 @@ internal fun MediaSelectScreen(
   val recipientChatColor: Color? = chatColorFor(state.recipientId)
 
   val gridState = rememberLazyGridState()
-  val dragToSelectState = rememberDragToSelectMediaState(state, onEvent, gridState)
+  // Tellomi（#1261 P-7）：新的网格页里受限访问横幅占第一格（整行），拖动多选的下标要减掉它。
+  val showLimitedAccessBanner = state is MediaSelectState.Files && state.mediaPermissions == MediaPermissions.PARTIAL && state.hasContent
+  val dragToSelectState = rememberDragToSelectMediaState(state, onEvent, gridState, indexOffset = if (showLimitedAccessBanner) 1 else 0)
 
   // Only an empty selection can leave an editor with nothing to edit behind us. Every other back press is left to the
   // navigation default, which keeps its predictive-back gesture.
@@ -158,6 +160,21 @@ internal fun MediaSelectScreen(
   LifecycleResumeEffect(Unit) {
     currentOnEvent(MediaSelectScreenEvents.Refresh)
     onPauseOrDispose { }
+  }
+
+  // Tellomi（tellomi/tellomi#1261）：相册里的网格换成照 Telegram 的选图网格（顶栏 ✓N / 最近 ⌄ / ⋮、编号勾、底部说明 + 发送）；
+  // 相册列表页原样保留。
+  if (state is MediaSelectState.Files) {
+    MediaPickerFilesScreen(
+      state = state,
+      onEvent = onEvent,
+      gridState = gridState,
+      dragToSelectState = dragToSelectState,
+      showPlaceholders = showPlaceholders,
+      showLimitedAccessBanner = showLimitedAccessBanner,
+      recipientChatColor = recipientChatColor
+    )
+    return
   }
 
   Scaffolds.Settings(
@@ -287,10 +304,13 @@ internal fun MediaSelectScreen(
 private fun rememberDragToSelectMediaState(
   state: MediaSelectState,
   onEvent: (MediaSelectScreenEvents) -> Unit,
-  gridState: LazyGridState
+  gridState: LazyGridState,
+  indexOffset: Int = 0
 ): DragToSelectState {
   return rememberDragToSelectState(gridState) { event ->
-    val items = (state as? MediaSelectState.Files)?.selectedMediaFolderItems ?: return@rememberDragToSelectState
+    val files = (state as? MediaSelectState.Files)?.selectedMediaFolderItems ?: return@rememberDragToSelectState
+    // Tellomi（#1261 P-7）：网格前面有整行的横幅时，格子下标比媒体下标多出这几格。
+    val items = List(indexOffset) { null } + files
 
     when (event) {
       is DragSelectEvent.Started -> {
@@ -304,14 +324,14 @@ private fun rememberDragToSelectMediaState(
       }
 
       is DragSelectEvent.RangeSelected -> {
-        val media = event.indices.mapNotNullTo(mutableSetOf(), items::getOrNull)
+        val media = event.indices.mapNotNullTo(mutableSetOf()) { items.getOrNull(it) }
         if (media.isNotEmpty()) {
           onEvent(MediaSelectScreenEvents.MediaSelected(media))
         }
       }
 
       is DragSelectEvent.RangeUnselected -> {
-        val media = event.indices.mapNotNullTo(mutableSetOf(), items::getOrNull)
+        val media = event.indices.mapNotNullTo(mutableSetOf()) { items.getOrNull(it) }
         if (media.isNotEmpty()) {
           onEvent(MediaSelectScreenEvents.MediaUnselected(media))
         }
@@ -435,7 +455,7 @@ private fun LimitedAccessBar(onEvent: (MediaSelectScreenEvents) -> Unit) {
  * at all and have to ask, or they granted selected-photos access without sharing anything we can use.
  */
 @Composable
-private fun MediaAccessCallToAction(
+internal fun MediaAccessCallToAction(
   mediaPermissions: MediaPermissions,
   onEvent: (MediaSelectScreenEvents) -> Unit,
   modifier: Modifier = Modifier
@@ -486,7 +506,7 @@ private fun MediaAccessCallToAction(
  * permission up in app settings.
  */
 @Composable
-private fun ManageAccessMenu(
+internal fun ManageAccessMenu(
   menuController: DropdownMenus.MenuController,
   onEvent: (MediaSelectScreenEvents) -> Unit
 ) {
@@ -514,7 +534,7 @@ private fun ManageAccessMenu(
  * be looking at rather than a blank screen.
  */
 @Composable
-private fun MediaTilePlaceholder() {
+internal fun MediaTilePlaceholder() {
   Box(
     modifier = Modifier
       .fillMaxWidth()

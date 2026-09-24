@@ -267,4 +267,23 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">第 %1$d 個，共 %2$d 個</string>
+  <!-- Tellomi（tellomi/tellomi#1261）选图网格 -->
+  <string name="MediaSelectScreen__recents">最近</string>
+  <string name="MediaSelectScreen__close">關閉</string>
+  <string name="MediaSelectScreen__more_options">更多選項</string>
+  <string name="MediaSelectScreen__send_in_high_quality">以高清畫質傳送</string>
+  <string name="MediaSelectScreen__send_in_standard_quality">以標準畫質傳送</string>
+  <string name="MediaSelectScreen__send_separately">分開傳送</string>
+  <string name="MediaSelectScreen__open_media">打開</string>
+  <string name="MediaSelectScreen__select">選取</string>
+  <string name="MediaSelectScreen__you_have_limited_access">你已限制 Tellomi 存取相片。</string>
+  <plurals name="MediaSelectScreen__n_selected">
+    <item quantity="other">已選 %d 項</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__selected_number_n">
+    <item quantity="other">第 %d 張</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__at_most_n_items">
+    <item quantity="other">一次最多選 %d 張</item>
+  </plurals>
 </resources>

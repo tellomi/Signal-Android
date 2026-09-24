@@ -8,6 +8,7 @@ package org.signal.mediasend.screens.select
 import org.signal.core.models.media.Media
 import org.signal.core.models.media.MediaFolder
 import org.signal.mediasend.MediaSendFlowState
+import org.signal.mediasend.SentMediaQuality
 
 sealed interface MediaSelectScreenEvents {
 
@@ -44,4 +45,31 @@ sealed interface MediaSelectScreenEvents {
 
   /** Re-ask while holding selected-photos access, so the user can widen what we can see. */
   data object SelectMorePhotos : MediaSelectScreenEvents
+
+  //region Tellomi（tellomi/tellomi#1261 选图面板）
+
+  /** P-10：点照片本身（不是右上角的勾）：选上并进单张预览 / 编辑。点勾仍是 [MediaClick]（选上 / 取消）。 */
+  data class OpenMedia(val media: Media) : MediaSelectScreenEvents
+
+  /** P-1：顶栏「最近 ⌄」里换相册。 */
+  data class SwitchFolder(val mediaFolder: MediaFolder) : MediaSelectScreenEvents
+
+  /** P-9：底栏「添加说明…」与表情键。 */
+  data class AddMessage(val startWithEmojiKeyboard: Boolean) : MediaSelectScreenEvents
+
+  data object ToggleViewOnce : MediaSelectScreenEvents
+
+  /** P-9 / P-10：底栏的发送键——在网格里直接发，不经预览页。 */
+  data object Send : MediaSelectScreenEvents
+
+  /** P-5：「···」→ 以高清 / 标准质量发送（D9：只管这一次）。 */
+  data class SendWithQuality(val quality: SentMediaQuality) : MediaSelectScreenEvents
+
+  /** P-5：「···」→ 单独发送。 */
+  data object SendSeparately : MediaSelectScreenEvents
+
+  /** P-1：左上角 ✕。 */
+  data object Close : MediaSelectScreenEvents
+
+  //endregion
 }

@@ -4749,29 +4749,18 @@ class ConversationFragment :
         return
       }
 
+      // Tellomi（tellomi/tellomi#1261 P-5「单独发送」）：一张一条，说明挂最后一条。
+      if (result.sendSeparately) {
+        sendMediaSeparately(result)
+        return
+      }
+
       if (result.isPushPreUpload) {
         sendPreUploadMediaMessage(result)
         return
       }
 
-      val slides: List<Slide> = result.nonUploadedMedia.mapNotNull {
-        when {
-          MediaUtil.isVideoType(it.contentType) -> VideoSlide(requireContext(), it.uri, it.size, it.isVideoGif, it.width, it.height, it.caption, it.transformProperties)
-
-          MediaUtil.isGif(it.contentType) -> GifSlide(requireContext(), it.uri, it.size, it.width, it.height, it.isBorderless, it.caption)
-
-          MediaUtil.isImageType(it.contentType) -> ImageSlide(requireContext(), it.uri, it.contentType, it.size, it.width, it.height, it.isBorderless, it.caption, null, it.transformProperties)
-
-          MediaUtil.isDocumentType(it.contentType) -> {
-            DocumentSlide(requireContext(), it.uri, it.contentType!!, it.size, it.fileName)
-          }
-
-          else -> {
-            Log.w(TAG, "Asked to send an unexpected mimeType: '${it.contentType}'. Skipping.")
-            null
-          }
-        }
-      }
+      val slides: List<Slide> = mediaSlides(result.nonUploadedMedia)
 
       sendMessage(
         body = result.body,
@@ -4789,6 +4778,67 @@ class ConversationFragment :
       ) {
         viewModel.deleteSlideData(slides)
       }
+    }
+
+    private fun mediaSlides(media: List<Media>): List<Slide> {
+      return media.mapNotNull {
+        when {
+          MediaUtil.isVideoType(it.contentType) -> VideoSlide(requireContext(), it.uri, it.size, it.isVideoGif, it.width, it.height, it.caption, it.transformProperties)
+
+          MediaUtil.isGif(it.contentType) -> GifSlide(requireContext(), it.uri, it.size, it.width, it.height, it.isBorderless, it.caption)
+
+          MediaUtil.isImageType(it.contentType) -> ImageSlide(requireContext(), it.uri, it.contentType, it.size, it.width, it.height, it.isBorderless, it.caption, null, it.transformProperties)
+
+          MediaUtil.isDocumentType(it.contentType) -> {
+            DocumentSlide(requireContext(), it.uri, it.contentType!!, it.size, it.fileName)
+          }
+
+          else -> {
+            Log.w(TAG, "Asked to send an unexpected mimeType: '${it.contentType}'. Skipping.")
+            null
+          }
+        }
+      }
+    }
+
+    /**
+     * Tellomi（tellomi/tellomi#1261 P-5「单独发送」，照 Telegram 的 SendWithoutGrouping）：一张一条消息，说明（与 @、样式）挂在最后一条，
+     * 引用挂在第一条。一条发完（写进库）再发下一条，时间戳各不相同、顺序就是选的顺序。
+     */
+    private fun sendMediaSeparately(result: MediaSendActivityResult) {
+      val quote = if (result.isViewOnce) null else inputPanel.quote.orNull()
+      val preUploadParts: List<MessageSender.PreUploadResult> = result.preUploadResults
+      val slideParts: List<Slide> = if (result.isPushPreUpload) emptyList() else mediaSlides(result.nonUploadedMedia)
+      val count = if (result.isPushPreUpload) preUploadParts.size else slideParts.size
+
+      fun sendPart(index: Int) {
+        if (index >= count) {
+          return
+        }
+        val isFirst = index == 0
+        val isLast = index == count - 1
+        val slide = slideParts.getOrNull(index)
+        sendMessage(
+          body = if (isLast) result.body else "",
+          mentions = if (isLast) result.mentions else emptyList(),
+          bodyRanges = if (isLast) result.bodyRanges else null,
+          messageToEdit = null,
+          quote = if (isFirst) quote else null,
+          scheduledDate = result.scheduledTime,
+          slideDeck = slide?.let { SlideDeck().apply { addSlide(it) } },
+          contacts = emptyList(),
+          clearCompose = isFirst,
+          linkPreviews = emptyList(),
+          preUploadResults = if (result.isPushPreUpload) listOf(preUploadParts[index]) else emptyList(),
+          isViewOnce = false,
+          bypassPreSendSafetyNumberCheck = true
+        ) {
+          slide?.let { viewModel.deleteSlideData(listOf(it)) }
+          sendPart(index + 1)
+        }
+      }
+
+      sendPart(0)
     }
 
     private fun sendPreUploadMediaMessage(result: MediaSendActivityResult) {

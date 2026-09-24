@@ -62,6 +62,21 @@ internal sealed interface MediaSendFlowEvent {
   data object NextRequested : MediaSendFlowEvent
 
   data class NavigateToFiles(val mediaFolder: MediaFolder) : MediaSendFlowEvent
+
+  //region Tellomi（tellomi/tellomi#1261 选图面板）
+
+  /** P-10：点照片本身（不是勾）——还没选就先选上，然后在编辑器里打开这一张（裁剪、涂鸦、一次性查看等沿用上游）。 */
+  data class OpenInEditor(val media: Media) : MediaSendFlowEvent
+
+  /** P-1：顶栏「最近 ⌄」里换相册。 */
+  data class SwitchFolder(val mediaFolder: MediaFolder) : MediaSendFlowEvent
+
+  /**
+   * P-5：「···」里的立即发送。[quality] 非空时这一次用它发（D9：不写设置）；[separately] 时一张一条、说明挂最后一条。
+   */
+  data class SendNow(val quality: SentMediaQuality? = null, val separately: Boolean = false) : MediaSendFlowEvent
+
+  //endregion
   data object NavigateToFolders : MediaSendFlowEvent
   data object NavigateToEdit : MediaSendFlowEvent
   data object NavigateToCamera : MediaSendFlowEvent

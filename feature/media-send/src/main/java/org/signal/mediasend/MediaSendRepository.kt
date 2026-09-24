@@ -219,7 +219,11 @@ data class SendRequest(
   /**
    * Media already pre-uploaded by the flow, so the send does not have to upload it again.
    */
-  val preUploadResults: List<PreUploadResult> = emptyList()
+  val preUploadResults: List<PreUploadResult> = emptyList(),
+  /**
+   * Tellomi（tellomi/tellomi#1261 P-5「单独发送」）：一张一条消息、说明挂最后一条，而不是整组一条相册消息。
+   */
+  val sendSeparately: Boolean = false
 )
 
 /**
