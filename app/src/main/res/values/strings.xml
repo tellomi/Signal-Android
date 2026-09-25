@@ -6068,7 +6068,7 @@
     <string name="AboutSettings__tellomi_complaints_and_reports">Complaints and reporting rules</string>
     <string name="AboutSettings__tellomi_section_open_source">Open source</string>
     <string name="AboutSettings__tellomi_open_source_licenses">Open source licenses</string>
-    <string name="AboutSettings__tellomi_source_code">Source code</string>
+    <string name="AboutSettings__tellomi_source_code_notice">Tellomi is a modified version of Signal, released under the GNU AGPLv3. The source code is available at www.tellomi.app/source.</string>
     <string name="HelpSettingsFragment__debug_log">Debug log</string>
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">Licenses</string>

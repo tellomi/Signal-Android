@@ -20,6 +20,8 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.doesNotContain
+import assertk.assertions.isEqualTo
+import assertk.assertions.isTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,6 +30,8 @@ import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.thoughtcrime.securesms.R
+import org.thoughtcrime.securesms.components.settings.app.help.LicenseScreen
+import org.thoughtcrime.securesms.components.settings.app.help.tellomiSourceCodeNotice
 import java.util.Locale
 
 /**
@@ -115,20 +119,67 @@ class AboutSettingsScreenTest {
   }
 
   @Test
-  fun `website, updates, licenses and source code`() {
+  fun `website, updates and licenses`() {
     val callbacks = setContent()
 
     clickRow("Check for updates")
     clickRow("Official website")
     clickRow("Open source licenses")
-    clickRow("Source code")
 
     assertThat(callbacks.events).containsExactly(
       "update",
       "open:https://www.tellomi.app/",
-      "licenses",
-      "open:https://github.com/tellomi"
+      "licenses"
     )
+  }
+
+  /** owner 2026-09-25：「源代码 github.com/tellomi」那一行去掉了，源代码的说明挪到「许可证」页最上面（见下面两条）。 */
+  @Test
+  fun `the source code row is gone`() {
+    setContent()
+    val list = composeTestRule.onNodeWithTag(AboutSettingsTestTags.LIST)
+
+    val scrolledToSourceCode = runCatching { list.performScrollToNode(hasText("Source code")) }
+    val scrolledToGitHub = runCatching { list.performScrollToNode(hasText("github", substring = true, ignoreCase = true)) }
+    // 对照：同一个列表里真有的行滚得到（证明上面两次是「找不到」，不是「滚不动」）
+    list.performScrollToNode(hasText("Open source licenses"))
+
+    assertThat(scrolledToSourceCode.isFailure).isTrue()
+    assertThat(scrolledToGitHub.isFailure).isTrue()
+  }
+
+  /** 「许可证」页最上面那一句：四种语言都带官网地址和许可证名，都不出现 GitHub（后面空一行再接第三方许可）。 */
+  @Test
+  fun `the licenses page starts with where to get the source code in every language`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    assertThat(TellomiAboutLinks.SOURCE_CODE_PAGE).isEqualTo("https://www.tellomi.app/source/")
+    for (locale in listOf(Locale.ENGLISH, Locale.SIMPLIFIED_CHINESE, Locale("zh", "HK"), Locale.TRADITIONAL_CHINESE)) {
+      val localized = context.createConfigurationContext(Configuration(context.resources.configuration).apply { setLocale(locale) })
+      val lines = tellomiSourceCodeNotice(localized)
+
+      assertThat(lines, locale.toString()).containsExactly(localized.getString(R.string.AboutSettings__tellomi_source_code_notice), "")
+      assertThat(lines[0], locale.toString()).contains("www.tellomi.app/source")
+      assertThat(lines[0], locale.toString()).contains("GNU AGPLv3")
+      assertThat(lines[0].lowercase(), locale.toString()).doesNotContain("github")
+    }
+  }
+
+  /** 这一句在许可证页上是第一行（许可证页就是把这几行依次排下来） */
+  @Test
+  fun `the notice is the first line on the licenses page`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    val notice = context.getString(R.string.AboutSettings__tellomi_source_code_notice)
+    composeTestRule.setContent {
+      SignalTheme {
+        LicenseScreen(licenseTextLines = tellomiSourceCodeNotice(context) + listOf("Apache License 2.0"))
+      }
+    }
+
+    composeTestRule.onNodeWithText(notice).assertExists()
+    composeTestRule.onNodeWithText("Apache License 2.0").assertExists()
+    val noticeTop = composeTestRule.onNodeWithText(notice).fetchSemanticsNode().boundsInRoot.top
+    val licenseTop = composeTestRule.onNodeWithText("Apache License 2.0").fetchSemanticsNode().boundsInRoot.top
+    assertThat(noticeTop < licenseTop).isTrue()
   }
 
   @Test
