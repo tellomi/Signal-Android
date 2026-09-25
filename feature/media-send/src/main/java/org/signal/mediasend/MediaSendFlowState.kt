@@ -137,7 +137,10 @@ data class MediaSendFlowState(
   /**
    * Whether the control for stripping a video's audio track is available.
    */
-  val isMuteVideoAudioEnabled: Boolean = MediaConstraints.isMuteVideoAudioAvailable()
+  val isMuteVideoAudioEnabled: Boolean = MediaConstraints.isMuteVideoAudioAvailable(),
+
+  /** Tellomi（tellomi/tellomi#1115）：从「+」打开的附件 Sheet；null 是整屏的选图流程，同上游。 */
+  val attachmentSheet: MediaSendFlowActivityContract.AttachmentSheet? = null
 ) : Parcelable {
 
   /**

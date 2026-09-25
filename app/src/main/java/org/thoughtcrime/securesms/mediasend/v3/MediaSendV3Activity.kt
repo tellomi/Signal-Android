@@ -55,6 +55,7 @@ import org.thoughtcrime.securesms.keyboard.emoji.EmojiKeyboardEventViewModel
 import org.thoughtcrime.securesms.keyboard.emoji.EmojiKeyboardPageFragment
 import org.thoughtcrime.securesms.keyboard.emoji.search.EmojiSearchFragment
 import org.thoughtcrime.securesms.mediasend.MediaSendActivityResult
+import org.thoughtcrime.securesms.mediasend.MediaSendLauncher
 import org.thoughtcrime.securesms.mediasend.v2.QuickRestoreInfoDialog
 import org.thoughtcrime.securesms.mediasend.v2.review.AddMessageDialogFragment
 import org.thoughtcrime.securesms.mediasend.v2.text.TextStoryPostCreationFragment
@@ -67,13 +68,14 @@ import org.thoughtcrime.securesms.scribbles.StickerSelectActivityContract
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.DateUtils
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
+import org.thoughtcrime.securesms.util.DynamicTheme
 import org.thoughtcrime.securesms.util.WindowUtil
 import org.signal.core.ui.R as CoreUiR
 
 /**
  * Encapsulates the media send flow for v3.
  */
-class MediaSendV3Activity :
+open class MediaSendV3Activity :
   PassphraseRequiredActivity(),
   SafetyNumberBottomSheet.Callbacks,
   TextStoryPostCreationFragment.Callback,
@@ -83,7 +85,10 @@ class MediaSendV3Activity :
   ScheduleMessageTimePickerBottomSheet.ScheduleCallback,
   ScheduleMessageDialogCallback {
 
-  private val theme = DynamicNoActionBarTheme()
+  private val theme: DynamicTheme by lazy { createDynamicTheme() }
+
+  /** Tellomi（tellomi/tellomi#1115）：附件 Sheet（[MediaSendAttachmentSheetActivity]）换成窗口透明的主题。 */
+  protected open fun createDynamicTheme(): DynamicTheme = DynamicNoActionBarTheme()
 
   private val contractArgs: MediaSendFlowActivityContract.Args by lazy { MediaSendFlowActivityContract.Args.fromIntent(intent) }
 
@@ -241,6 +246,11 @@ class MediaSendV3Activity :
               }
 
               is MediaSendFlowHudCommand.CloseScreen -> finish()
+
+              is MediaSendFlowHudCommand.AttachmentDockEntrySelected -> {
+                setResult(RESULT_OK, Intent().putExtra(MediaSendLauncher.EXTRA_ATTACHMENT_DOCK_ENTRY, it.id))
+                finish()
+              }
             }
           }
         )

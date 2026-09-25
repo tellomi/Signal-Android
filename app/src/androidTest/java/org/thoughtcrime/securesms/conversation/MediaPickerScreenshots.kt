@@ -49,7 +49,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 
 /**
- * Tellomi（tellomi/tellomi#1261，需求第三节，判据「选图面板」1、3、4、5）：在真实会话页里从「+ → 相册」打开新的选图网格，
+ * Tellomi（tellomi/tellomi#1261，需求第三节，判据「选图面板」1、3、4、5）：在真实会话页里从「+」打开新的选图网格（#1115 起是附件 Sheet），
  * 端到端走一遍：
  *
  * - 往系统相册里插几张现画的图（尺寸各不相同，发出去以后按尺寸认是哪一张），授读图权限；
@@ -106,7 +106,7 @@ class MediaPickerScreenshots {
     try {
       settle(1500)
       conversation.onActivity { it.findViewById<EditText>(R.id.embedded_text_editor).setText(CAPTION) }
-      openGalleryFromAttachmentKeyboard(conversation)
+      openPickerFromPlus(conversation)
       waitFor("网格里的勾") { checks().size >= 3 }
 
       report.appendLine("grid: title=${nodes { it.text?.toString() == "Recents" }.size} pill=${nodes { it.contentDescription?.toString()?.endsWith("selected") == true }.size} more=${byDescription("More options").size}")
@@ -178,7 +178,7 @@ class MediaPickerScreenshots {
     val conversation = openConversation(other, threadId)
     try {
       settle(1500)
-      openGalleryFromAttachmentKeyboard(conversation)
+      openPickerFromPlus(conversation)
       waitFor("网格里的勾") { checks().isNotEmpty() }
       click(checks()[0])
       waitFor("「✓1」") { byDescription("1 selected").isNotEmpty() }
@@ -197,7 +197,7 @@ class MediaPickerScreenshots {
 
       // 再打开相册：默认仍是标准，所以「⋮」里还是「以高清质量发送」
       settle(1500)
-      openGalleryFromAttachmentKeyboard(conversation)
+      openPickerFromPlus(conversation)
       waitFor("网格里的勾") { checks().isNotEmpty() }
       click(checks()[0])
       waitFor("「✓1」") { byDescription("1 selected").isNotEmpty() }
@@ -235,7 +235,7 @@ class MediaPickerScreenshots {
     val conversation = openConversation(other, threadId)
     try {
       settle(1500)
-      openGalleryFromAttachmentKeyboard(conversation)
+      openPickerFromPlus(conversation)
       waitFor("网格里的勾") { checks().size >= 3 }
       for (cell in listOf(0, 1, 2)) {
         click(checks()[cell])
@@ -302,7 +302,7 @@ class MediaPickerScreenshots {
     val conversation = openConversation(other, threadId)
     try {
       settle(1500)
-      openGalleryFromAttachmentKeyboard(conversation)
+      openPickerFromPlus(conversation)
       waitFor("相机格") { byDescription("Go to camera").isNotEmpty() && gridTiles().size >= 4 }
       val camera = byDescription("Go to camera").first().boundsInScreen()
       val tiles = gridTiles().map { it.boundsInScreen() }
@@ -436,11 +436,12 @@ class MediaPickerScreenshots {
     return counts
   }
 
-  /** 「+」打开附件面板，再点「相册」，等选图页（MediaSendV3Activity）到前台。 */
-  private fun openGalleryFromAttachmentKeyboard(conversation: OpenedConversation) {
+  /**
+   * 「+」打开选图页，等它到前台。tellomi/tellomi#1115 起「+」直接是附件 Sheet（选图网格 + dock，MediaSendV3Activity 的子类），
+   * 不再先出附件面板、再点「相册」。
+   */
+  private fun openPickerFromPlus(conversation: OpenedConversation) {
     conversation.onActivity { it.findViewById<View>(R.id.attach_button).performClick() }
-    settle(1200)
-    clickText(harness.context.getString(R.string.AttachmentKeyboard_gallery))
     val deadline = SystemClock.uptimeMillis() + 10_000
     while (SystemClock.uptimeMillis() < deadline && resumedActivity() !is MediaSendV3Activity) {
       SystemClock.sleep(200)
@@ -520,17 +521,6 @@ class MediaPickerScreenshots {
       activity = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).firstOrNull()
     }
     return activity
-  }
-
-  /** 按文字点一下（附件面板里的按钮），走无障碍节点点它可点的那一层。 */
-  private fun clickText(text: String) {
-    val node = instrumentation.uiAutomation.rootInActiveWindow?.findAccessibilityNodeInfosByText(text)?.firstOrNull()
-    assertTrue("屏幕上找不到「$text」", node != null)
-    var target = node
-    while (target != null && !target.isClickable) {
-      target = target.parent
-    }
-    assertTrue("「$text」没有可点的一层", target?.performAction(AccessibilityNodeInfo.ACTION_CLICK) == true)
   }
 
   private fun shot(name: String) {

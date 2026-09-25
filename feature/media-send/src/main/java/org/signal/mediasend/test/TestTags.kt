@@ -68,6 +68,14 @@ object TestTags {
   /** Tag for the numbered check on the preview card of the media at [uri]. */
   fun mediaPickerPreviewCheck(uri: String): String = "media_picker_preview_check_$uri"
 
+  // Tellomi（tellomi/tellomi#1115）附件 Sheet
+  const val ATTACHMENT_SHEET = "attachment_sheet"
+  const val ATTACHMENT_SHEET_SCRIM = "attachment_sheet_scrim"
+  const val ATTACHMENT_DOCK = "attachment_dock"
+
+  /** Tag for the attachment sheet dock entry with [id]. */
+  fun attachmentDockEntry(id: String): String = "attachment_dock_entry_$id"
+
   // Schedule Send Menu
   const val SCHEDULE_SEND_PICK_TIME_OPTION = "schedule_send_pick_time_option"
 

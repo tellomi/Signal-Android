@@ -77,6 +77,15 @@ internal sealed interface MediaSendFlowEvent {
   data class SendNow(val quality: SentMediaQuality? = null, val separately: Boolean = false) : MediaSendFlowEvent
 
   //endregion
+
+  //region Tellomi（tellomi/tellomi#1115 附件 Sheet）
+  /** dock 里点了别的格子（文件、位置……）：离开流程，交给打开 Sheet 的会话页。 */
+  data class AttachmentDockEntrySelected(val id: String) : MediaSendFlowEvent
+
+  /** 置灰的 dock 格子只提示一句，Sheet 留着。 */
+  data class ShowToast(val toast: ToastEvent) : MediaSendFlowEvent
+
+  //endregion
   data object NavigateToFolders : MediaSendFlowEvent
   data object NavigateToEdit : MediaSendFlowEvent
   data object NavigateToCamera : MediaSendFlowEvent

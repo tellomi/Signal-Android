@@ -5,9 +5,11 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,6 +46,8 @@ import org.signal.mediasend.screens.capture.MediaCaptureViewModel
 import org.signal.mediasend.screens.edit.MediaEditScreen
 import org.signal.mediasend.screens.edit.MediaEditScreenDialogs
 import org.signal.mediasend.screens.edit.MediaEditViewModel
+import org.signal.mediasend.screens.select.AttachmentSheet
+import org.signal.mediasend.screens.select.LocalAttachmentSheetState
 import org.signal.mediasend.screens.select.MediaSelectScreen
 import org.signal.mediasend.screens.select.MediaSelectViewModel
 import kotlin.time.Duration.Companion.milliseconds
@@ -92,12 +97,14 @@ internal fun MediaSendNavigation(
           }
 
           // Capture sits on a viewfinder or a story gradient, so it keeps the dark palette even in a light theme.
-          SignalTheme(isDarkMode = true) {
-            MediaCaptureScreen(
-              state = state,
-              onEvent = captureViewModel::onEvent,
-              textStoryEditorSlot = textStoryEditorSlot
-            )
+          OpaqueInAttachmentSheet(Color.Black) {
+            SignalTheme(isDarkMode = true) {
+              MediaCaptureScreen(
+                state = state,
+                onEvent = captureViewModel::onEvent,
+                textStoryEditorSlot = textStoryEditorSlot
+              )
+            }
           }
         }
 
@@ -114,11 +121,13 @@ internal fun MediaSendNavigation(
 
           selectViewModel.readMediaPermission.Content()
 
-          MediaSelectScreen(
-            state = state,
-            onEvent = selectViewModel::onEvent,
-            selectionAdditions = selectViewModel.selectionAdditions
-          )
+          OpaqueInAttachmentSheet {
+            MediaSelectScreen(
+              state = state,
+              onEvent = selectViewModel::onEvent,
+              selectionAdditions = selectViewModel.selectionAdditions
+            )
+          }
         }
 
         is MediaSendRoute.Select.Files -> NavEntry(key) {
@@ -134,11 +143,27 @@ internal fun MediaSendNavigation(
 
           selectViewModel.readMediaPermission.Content()
 
-          MediaSelectScreen(
-            state = state,
-            onEvent = selectViewModel::onEvent,
-            selectionAdditions = selectViewModel.selectionAdditions
-          )
+          // Tellomi（tellomi/tellomi#1115）：从「+」打开时，选图网格是附件 Sheet（聊天露在上面）。
+          val attachmentSheet = LocalAttachmentSheetState.current
+          if (attachmentSheet != null) {
+            AttachmentSheet(
+              state = attachmentSheet,
+              canDismissDirectly = state.selectedMedia.isEmpty(),
+              onDismissRequest = viewModel::onCloseRequested
+            ) {
+              MediaSelectScreen(
+                state = state,
+                onEvent = selectViewModel::onEvent,
+                selectionAdditions = selectViewModel.selectionAdditions
+              )
+            }
+          } else {
+            MediaSelectScreen(
+              state = state,
+              onEvent = selectViewModel::onEvent,
+              selectionAdditions = selectViewModel.selectionAdditions
+            )
+          }
         }
 
         is MediaSendRoute.Edit -> NavEntry(MediaSendRoute.Edit) {
@@ -153,17 +178,21 @@ internal fun MediaSendNavigation(
           SaveToStorageDialog(editViewModel)
           editViewModel.writeStoragePermission.Content()
 
-          MediaEditScreen(
-            state = state,
-            onEvent = editViewModel::onEvent,
-            imageControllers = viewModel.imageControllers,
-            mediaInputFactory = MediaSendDependencies.mediaInputFactory
-          )
+          OpaqueInAttachmentSheet {
+            MediaEditScreen(
+              state = state,
+              onEvent = editViewModel::onEvent,
+              imageControllers = viewModel.imageControllers,
+              mediaInputFactory = MediaSendDependencies.mediaInputFactory
+            )
+          }
         }
 
         is MediaSendRoute.Send -> NavEntry(key) {
           val state by viewModel.state.collectAsStateWithLifecycle()
-          sendSlot(state)
+          OpaqueInAttachmentSheet {
+            sendSlot(state)
+          }
         }
 
         else -> error("Unknown key: $key")
@@ -180,6 +209,28 @@ internal fun MediaSendNavigation(
     Snackbar(viewModel.snackbarEvents)
     Toast(viewModel.toastEvents)
     SendProgress(viewModel.state)
+  }
+}
+
+/**
+ * Tellomi（tellomi/tellomi#1115）：附件 Sheet 的窗口是透明的（聊天露在 Sheet 上面），Sheet 以外的页面（相机、编辑、发送）
+ * 要自己铺底色；整屏的流程（上游原样）不用。
+ */
+@Composable
+private fun OpaqueInAttachmentSheet(
+  color: Color = MaterialTheme.colorScheme.surface,
+  content: @Composable () -> Unit
+) {
+  if (LocalAttachmentSheetState.current == null) {
+    content()
+  } else {
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .background(color)
+    ) {
+      content()
+    }
   }
 }
 

@@ -7,6 +7,7 @@ package org.signal.mediasend.screens.select
 
 import org.signal.core.models.media.Media
 import org.signal.core.models.media.MediaFolder
+import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.mediasend.MediaSendFlowState
 import org.signal.mediasend.SentMediaQuality
 
@@ -72,4 +73,7 @@ sealed interface MediaSelectScreenEvents {
   data object Close : MediaSelectScreenEvents
 
   //endregion
+
+  /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的 dock 里点了一格。 */
+  data class DockEntryClicked(val entry: MediaSendFlowActivityContract.DockEntry) : MediaSelectScreenEvents
 }

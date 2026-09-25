@@ -13,13 +13,17 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
@@ -52,6 +56,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -77,6 +82,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.signal.core.models.media.Media
 import org.signal.core.models.media.MediaFolder
 import org.signal.core.ui.compose.DropdownMenus
@@ -86,6 +92,7 @@ import org.signal.core.ui.compose.list.DragToSelectState
 import org.signal.core.ui.compose.list.dragToSelect
 import org.signal.core.util.ContentTypeUtil
 import org.signal.glide.compose.GlideImage
+import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.mediasend.R
 import org.signal.mediasend.SentMediaQuality
 import org.signal.mediasend.screens.edit.AddAMessageRow
@@ -160,6 +167,11 @@ internal fun MediaPickerFilesScreen(
   // 格子下标 → 媒体：横幅、相机格与它下面的占位是 null，不能选。
   val gridItems = gridEntries
 
+  // Tellomi（tellomi/tellomi#1115）：从「+」打开时这一页是附件 Sheet，底部浮着 dock；选了照片 dock 让位给「说明 + 发送」（同 Telegram）。
+  val attachmentSheet = LocalAttachmentSheetState.current
+  val showDock = state.attachmentDock.isNotEmpty() && state.selectedMedia.isEmpty() && !showSelectedOnly
+  val scope = rememberCoroutineScope()
+
   Scaffold(
     topBar = {
       PickerTopBar(
@@ -168,7 +180,8 @@ internal fun MediaPickerFilesScreen(
         recipientChatColor = recipientChatColor,
         showSelectedOnly = showSelectedOnly,
         onShowSelectedOnly = { showSelectedOnly = true },
-        onBack = { showSelectedOnly = false }
+        onBack = { showSelectedOnly = false },
+        withStatusBarInset = attachmentSheet == null
       )
     },
     containerColor = MaterialTheme.colorScheme.surface
@@ -194,6 +207,7 @@ internal fun MediaPickerFilesScreen(
           LazyVerticalGrid(
             state = gridState,
             columns = GridCells.Fixed(columns),
+            contentPadding = PaddingValues(bottom = if (showDock) DockMetrics.stripHeight else 0.dp),
             horizontalArrangement = spacedBy(PickerMetrics.gridSpacing),
             verticalArrangement = spacedBy(PickerMetrics.gridSpacing),
             userScrollEnabled = !showPlaceholders && !dragToSelectState.isActive,
@@ -272,10 +286,43 @@ internal fun MediaPickerFilesScreen(
               .padding(horizontal = 16.dp, vertical = 8.dp)
           )
         }
+
+        PickerAttachmentDock(
+          visible = showDock,
+          entries = state.attachmentDock,
+          onClick = { entry ->
+            if (entry.isCurrentPage) {
+              // 重复点「相册」：回到网格顶部并展开到全屏（同 Telegram 重复点当前格）
+              scope.launch {
+                gridState.animateScrollToItem(0)
+                attachmentSheet?.expand()
+              }
+            } else {
+              onEvent(MediaSelectScreenEvents.DockEntryClicked(entry))
+            }
+          }
+        )
       }
 
       PickerSendBar(state = state, onEvent = onEvent, recipientChatColor = recipientChatColor)
     }
+  }
+}
+
+/** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的 dock 浮在网格底部，出现 / 让位时从底下滑进滑出。 */
+@Composable
+private fun BoxScope.PickerAttachmentDock(
+  visible: Boolean,
+  entries: List<MediaSendFlowActivityContract.DockEntry>,
+  onClick: (MediaSendFlowActivityContract.DockEntry) -> Unit
+) {
+  AnimatedVisibility(
+    visible = visible,
+    enter = fadeIn() + slideInVertically { it },
+    exit = fadeOut() + slideOutVertically { it },
+    modifier = Modifier.align(Alignment.BottomCenter)
+  ) {
+    AttachmentDock(entries = entries, onClick = onClick)
   }
 }
 
@@ -364,7 +411,8 @@ private fun PickerTopBar(
   recipientChatColor: Color?,
   showSelectedOnly: Boolean,
   onShowSelectedOnly: () -> Unit,
-  onBack: () -> Unit
+  onBack: () -> Unit,
+  withStatusBarInset: Boolean = true
 ) {
   val count = state.selectedMedia.size
   val menuItems = rememberMoreMenuItems(state)
@@ -373,7 +421,8 @@ private fun PickerTopBar(
     modifier = Modifier
       .fillMaxWidth()
       .background(MaterialTheme.colorScheme.surface)
-      .windowInsetsPadding(WindowInsets.statusBars)
+      // 附件 Sheet 里顶栏不在屏幕最上面（全屏时 Sheet 的顶边就在状态栏下面），不用让状态栏
+      .then(if (withStatusBarInset) Modifier.windowInsetsPadding(WindowInsets.statusBars) else Modifier)
       .height(PickerMetrics.topBarHeight)
       .padding(horizontal = 8.dp)
   ) {

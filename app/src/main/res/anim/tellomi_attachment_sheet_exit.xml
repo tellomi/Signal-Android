@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tellomi（tellomi/tellomi#1115）：附件 Sheet 退场——整个窗口往下滑、同时淡出（压暗的那层一起淡掉）。 -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="220"
+    android:interpolator="@android:interpolator/accelerate_quad">
+    <translate
+        android:fromYDelta="0"
+        android:toYDelta="60%p" />
+    <alpha
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0" />
+</set>
