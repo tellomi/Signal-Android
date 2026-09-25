@@ -394,28 +394,30 @@ class AttachmentSheetScreenshots {
   }
 
   /**
-   * [fromY]…[toY] 之间，打开 Sheet 前后两张截图同一个点的颜色比（只看原来够亮的点，取中位数）：
-   * 聊天露着、压暗 20% 就是 0.8 左右；窗口不透明（黑 / 白底）就对不上。
+   * [fromY]…[toY] 之间，打开 Sheet 前后两张截图同一个点的颜色比，**只看原来是中间调的点**（头像、图标、字的边缘，60…220），取中位数：
+   * 聊天露着、压暗 20% 就是 0.8 左右；窗口不透明的话，这些点会变成压暗了的窗口底色（白底压暗后比原来亮，比值 > 1），对不上。
+   * 不看白的点：聊天底色本来就是白的，白底压暗和不透明的白窗口压暗是同一个颜色，分不出来（第一版这么量，窗口改成不透明照样 0.80）。
    */
   private fun dimRatioAbove(before: Bitmap?, after: Bitmap?, fromY: Float, toY: Float): Float {
     assertTrue("截图失败", before != null && after != null)
     val ratios = mutableListOf<Float>()
     val width = minOf(before!!.width, after!!.width)
-    for (row in 0 until 12) {
-      val y = (fromY + (toY - fromY) * (row + 0.5f) / 12).toInt()
-      for (col in 0 until 12) {
-        val x = (width * (col + 0.5f) / 12).toInt()
+    for (row in 0 until 40) {
+      val y = (fromY + (toY - fromY) * (row + 0.5f) / 40).toInt()
+      for (col in 0 until 40) {
+        val x = (width * (col + 0.5f) / 40).toInt()
         val a = before.getPixel(x, y)
         val b = after.getPixel(x, y)
         for (shift in listOf(16, 8, 0)) {
           val original = (a shr shift) and 0xFF
-          if (original >= 80) {
+          if (original in 60..220) {
             ratios += ((b shr shift) and 0xFF) / original.toFloat()
           }
         }
       }
     }
-    assertTrue("Sheet 上面没有够亮的点可比", ratios.size >= 20)
+    report.appendLine("mid-tone samples above the sheet: ${ratios.size}")
+    assertTrue("Sheet 上面没有中间调的点可比（只有 ${ratios.size} 个）", ratios.size >= 20)
     return ratios.sorted()[ratios.size / 2]
   }
 
