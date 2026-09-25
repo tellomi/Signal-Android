@@ -110,6 +110,21 @@
   <plurals name="MediaSelectScreen__n_deselected">
     <item quantity="other">已取消選取 %d 張</item>
   </plurals>
+  <!-- Tellomi（tellomi/tellomi#1121）附件 Sheet「文件」页 -->
+  <string name="AttachmentFilesScreen__files">檔案</string>
+  <string name="AttachmentFilesScreen__search">搜尋</string>
+  <string name="AttachmentFilesScreen__select_from_gallery">從相簿中選擇</string>
+  <string name="AttachmentFilesScreen__select_from_files">從檔案中選擇</string>
+  <string name="AttachmentFilesScreen__coming_soon">即將支援</string>
+  <string name="AttachmentFilesScreen__recently_sent_files">最近傳送的檔案</string>
+  <string name="AttachmentFilesScreen__empty">傳送和接收任何類型的檔案，每個最大 %1$s。</string>
+  <string name="AttachmentFilesScreen__not_on_device">已不在本機</string>
+  <string name="AttachmentFilesScreen__cant_send_not_on_device">這個檔案已不在本機，無法再次傳送。</string>
+  <string name="AttachmentFilesScreen__files_you_sent">我傳送的檔案</string>
+  <string name="AttachmentFilesScreen__show_more">顯示更多</string>
+  <string name="AttachmentFilesScreen__no_results">找不到「%1$s」的相關結果。</string>
+  <string name="AttachmentFilesScreen__add_a_caption">新增說明…</string>
+  <string name="AttachmentFilesScreen__send">傳送</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">照片</string>
@@ -293,19 +308,4 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">第 %1$d 個，共 %2$d 個</string>
-  <!-- Tellomi（tellomi/tellomi#1121）附件 Sheet「文件」页 -->
-  <string name="AttachmentFilesScreen__files">檔案</string>
-  <string name="AttachmentFilesScreen__search">搜尋</string>
-  <string name="AttachmentFilesScreen__select_from_gallery">從相簿中選擇</string>
-  <string name="AttachmentFilesScreen__select_from_files">從檔案中選擇</string>
-  <string name="AttachmentFilesScreen__coming_soon">即將支援</string>
-  <string name="AttachmentFilesScreen__recently_sent_files">最近傳送的檔案</string>
-  <string name="AttachmentFilesScreen__empty">傳送和接收任何類型的檔案，每個最大 %1$s。</string>
-  <string name="AttachmentFilesScreen__not_on_device">已不在本機</string>
-  <string name="AttachmentFilesScreen__cant_send_not_on_device">這個檔案已不在本機，無法再次傳送。</string>
-  <string name="AttachmentFilesScreen__files_you_sent">我傳送的檔案</string>
-  <string name="AttachmentFilesScreen__show_more">顯示更多</string>
-  <string name="AttachmentFilesScreen__no_results">找不到「%1$s」的相關結果。</string>
-  <string name="AttachmentFilesScreen__add_a_caption">新增說明…</string>
-  <string name="AttachmentFilesScreen__send">傳送</string>
 </resources>

@@ -8,11 +8,14 @@ package org.thoughtcrime.securesms.conversation
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.Activity
+import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.provider.MediaStore
 import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
@@ -54,7 +57,8 @@ import org.signal.mediasend.R as MediaSendR
  *   dock「相册」换回选图页，Sheet 一直没收；
  * - 最近发送的文件是所有会话里我发出的文件，新的在前，同一份文件发给两个人只列一次；点一行 = 立即发到当前会话、Sheet 收起；
  * - 长按进多选，按勾的顺序每个一条发出，说明挂在最后一条；
- * - 搜索：大小写不敏感，超过 4 条先 3 条 +「显示更多」，搜不到写「没有找到」。
+ * - 搜索：大小写不敏感，超过 4 条先 3 条 +「显示更多」，搜不到写「没有找到」；搜索框在键盘上方；
+ * - 系统选择器里挑一个文件：按文件发到当前会话；挑一个超过上限的：不发，提示「文件太大」并写明上限。
  *
  * 只在 instrumentation 参数 `tellomiShots=1` 时跑；截图写在 `<app 外部文件目录>/tellomi-shots/<屏宽>dp/files-*.png`。
  */
@@ -235,6 +239,54 @@ class AttachmentFilesScreenshots {
     }
   }
 
+  @Test
+  fun filesPickedInTheSystemPickerAreSentAndOneOverTheLimitIsRefusedWithTheLimit() {
+    val run = SystemClock.uptimeMillis() % 1_000_000
+    val smallName = "t1121-$run.txt"
+    val bigName = "t1121-big-$run.bin"
+    val maxFileSize = PushMediaConstraints(null).documentMaxSize
+    val small = insertDownload(smallName, "text/plain", "picked file $run".toByteArray())
+    val big = insertDownload(bigName, "application/octet-stream", size = maxFileSize + 1)
+    try {
+      val (conversation, threadId) = openFilesPage()
+      try {
+        // 挑一个小文件：Sheet 收起，会话里多一条按文件发的消息
+        val before = MessageTableTestUtils.getMessages(threadId).map { it.id }.toSet()
+        pickInSystemPicker(smallName)
+        val sent = waitForNewOutgoing(threadId, before, 1)
+        val attachments = waitForAttachments(sent[0])
+        report.appendLine("picked sent=${sent.map { it.id }} attachments=${attachments.map { it.fileName to it.size }}")
+        assertEquals("挑的那个文件发出去了", listOf(smallName), attachments.map { it.fileName })
+        assertEquals("大小不变", "picked file $run".toByteArray().size.toLong(), attachments[0].size)
+        waitFor("Sheet 收起") { resumedActivity() != null && resumedActivity() !is MediaSendAttachmentSheetActivity }
+        settle(800)
+
+        // 挑一个超过上限的：不发，提示「文件太大」并写明上限
+        conversation.onActivity { it.findViewById<View>(R.id.attach_button).performClick() }
+        waitFor("附件 Sheet") { resumedActivity() is MediaSendAttachmentSheetActivity }
+        settle(1200)
+        click(dockNode(string(R.string.AttachmentKeyboard_file)))
+        textNode(string(MediaSendR.string.AttachmentFilesScreen__select_from_files))
+        val beforeBig = MessageTableTestUtils.getMessages(threadId).map { it.id }.toSet()
+        pickInSystemPicker(bigName)
+        val tooLarge = string(R.string.TellomiAttachmentFiles__too_large, bigName, maxFileSize.bytes.toUnitString())
+        report.appendLine("too large text=$tooLarge")
+        textNode(tooLarge)
+        shot("files-9-too-large")
+        SystemClock.sleep(1500)
+        assertTrue("超过上限的没发", MessageTableTestUtils.getMessages(threadId).none { it.id !in beforeBig && it.isOutgoing })
+        click(textNode(string(android.R.string.ok)))
+      } finally {
+        File(outDir, "metrics-files-pick.txt").writeText(report.toString())
+        closeSheetIfOpen()
+        conversation.close()
+      }
+    } finally {
+      harness.context.contentResolver.delete(small, null, null)
+      harness.context.contentResolver.delete(big, null, null)
+    }
+  }
+
   // region helpers
 
   /** 打开和 others[0] 的会话 →「+」→ dock「文件」，停在「文件」页。 */
@@ -283,6 +335,41 @@ class AttachmentFilesScreenshots {
       activity.getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
     }
     settle(800)
+  }
+
+  /** 在「下载」里放一个文件（系统选择器打开在「最近」，它在第一行）。[data] 为空时写 [size] 个零字节。 */
+  private fun insertDownload(name: String, mimeType: String, data: ByteArray? = null, size: Long = 0): Uri {
+    val resolver = harness.context.contentResolver
+    val values = ContentValues().apply {
+      put(MediaStore.Downloads.DISPLAY_NAME, name)
+      put(MediaStore.Downloads.MIME_TYPE, mimeType)
+      put(MediaStore.Downloads.RELATIVE_PATH, "Download/TellomiFilesTest")
+      put(MediaStore.Downloads.IS_PENDING, 1)
+    }
+    val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)!!
+    resolver.openOutputStream(uri)!!.use { out ->
+      if (data != null) {
+        out.write(data)
+      } else {
+        val chunk = ByteArray(1 shl 20)
+        var left = size
+        while (left > 0) {
+          val count = minOf(left, chunk.size.toLong()).toInt()
+          out.write(chunk, 0, count)
+          left -= count
+        }
+      }
+    }
+    resolver.update(uri, ContentValues().apply { put(MediaStore.Downloads.IS_PENDING, 0) }, null, null)
+    return uri
+  }
+
+  /** 「从文件中选择」→ 系统选择器（打开在「最近」）里点 [fileName]：单点就是挑这一个，回到 App。 */
+  private fun pickInSystemPicker(fileName: String) {
+    click(textNode(string(MediaSendR.string.AttachmentFilesScreen__select_from_files)))
+    val inPicker: (AccessibilityNodeInfo) -> Boolean = { it.packageName?.toString()?.contains("documentsui") == true && it.text?.toString() == fileName }
+    waitFor("系统选择器里的「$fileName」") { nodes(inPicker).isNotEmpty() }
+    click(nodes(inPicker).first())
   }
 
   /** 在 [recipient] 的会话里放一条我已经发出的、带一个文件的消息。 */
