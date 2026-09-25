@@ -3615,7 +3615,7 @@
     </plurals>
     <!-- Update item button text to show how many disappearing message timer changes are. %2$s is what the timer was ultimately set to.-->
     <plurals name="CollapsedEvent__disappearing_timer">
-        <item quantity="other">%1$d 個自動銷毀訊息時限變更 · %2$s</item>
+        <item quantity="other">%1$d 個限時訊息時限變更 · %2$s</item>
     </plurals>
     <!-- Update item button text to show how many call events are. -->
     <plurals name="CollapsedEvent__call_event">
@@ -5635,7 +5635,7 @@
     <!-- Row title for the option to export chat history as a plaintext archive -->
     <string name="ChatsSettingsFragment__export_chat_history">匯出聊天紀錄</string>
     <!-- Row description for the plaintext chat export option -->
-    <string name="ChatsSettingsFragment__export_chat_history_label">匯出所有聊天內容的可機讀 JSON 副本。不會匯出自動銷毀訊息。</string>
+    <string name="ChatsSettingsFragment__export_chat_history_label">匯出所有聊天內容的可機讀 JSON 副本。不會匯出限時訊息。</string>
     <!-- Biometrics prompt title shown before allowing the user to export chat history -->
     <string name="ChatsSettingsFragment__unlock_to_export_chat_history">解鎖以匯出聊天紀錄</string>
     <!-- Snackbar shown when biometric authentication fails before a chat export -->
@@ -9599,13 +9599,13 @@
     <!-- Text to unpin all messages -->
     <string name="PinnedMessage__unpin_all_messages">取消釘選所有訊息</string>
     <!-- Title of bottom sheet when pinning a disappearing message -->
-    <string name="PinnedMessage__disappearing_message_title">釘選自動銷毀訊息</string>
+    <string name="PinnedMessage__disappearing_message_title">釘選限時訊息</string>
     <!-- Body of bottom sheet when pinning a disappearing message -->
-    <string name="PinnedMessage__disappearing_message_body">當自動銷毀訊息時限已到和從聊天中被移除時，系統會將其解除釘選。</string>
+    <string name="PinnedMessage__disappearing_message_body">當限時訊息時限已到和從聊天中被移除時，系統會將其解除釘選。</string>
     <!-- Confirmation button for bottom sheet -->
     <string name="PinnedMessage__got_it">我知道了</string>
     <!-- Content description of disappearing timer icon -->
-    <string name="PinnedMessage__disappearing_message_content_description">自動銷毀訊息</string>
+    <string name="PinnedMessage__disappearing_message_content_description">限時訊息</string>
     <!-- Title of bottom sheet -->
     <string name="PinnedMessage__pinned_messages">已釘選的訊息</string>
     <!-- Context menu option to unpin message -->

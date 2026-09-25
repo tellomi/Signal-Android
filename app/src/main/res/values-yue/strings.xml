@@ -1865,11 +1865,11 @@
     <string name="MessageRecord_call_message_with_date">%1$s · %2$s</string>
     <string name="MessageRecord_s_updated_group">%1$s 已更新呢個谷。</string>
     <string name="MessageRecord_s_joined_signal">%1$s 開咗 Tellomi 喇！</string>
-    <string name="MessageRecord_you_disabled_disappearing_messages">您已停用過眼雲煙訊息。</string>
-    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 已停用過眼雲煙訊息。</string>
-    <string name="MessageRecord_you_set_disappearing_message_time_to_s">您已將過眼雲煙訊息倒數限期設定為 %1$s。</string>
-    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 已將過眼雲煙訊息倒數限期設定為 %2$s。</string>
-    <string name="MessageRecord_disappearing_message_time_set_to_s">過眼雲煙訊息倒數限期已設定為 %1$s。</string>
+    <string name="MessageRecord_you_disabled_disappearing_messages">您已停用限時訊息。</string>
+    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 已停用限時訊息。</string>
+    <string name="MessageRecord_you_set_disappearing_message_time_to_s">您已將限時訊息倒數限期設定為 %1$s。</string>
+    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 已將限時訊息倒數限期設定為 %2$s。</string>
+    <string name="MessageRecord_disappearing_message_time_set_to_s">限時訊息倒數限期已設定為 %1$s。</string>
     <string name="MessageRecord_this_group_was_updated_to_a_new_group">呢個谷已更新做新版谷。</string>
     <string name="MessageRecord_you_couldnt_be_added_to_the_new_group_and_have_been_invited_to_join">加唔到您入新版谷度，已經邀請咗您加入。</string>
     <string name="MessageRecord_chat_session_refreshed">傾偈階段已經重新整理</string>
@@ -3012,8 +3012,8 @@
     <!-- Displayed in the notification when the recipient can accept payments -->
     <string name="ThreadRecord_can_accept_payments">%1$s 而家可以接受付款</string>
     <string name="ThreadRecord_s_is_on_signal">%1$s 開咗 Tellomi 喇！</string>
-    <string name="ThreadRecord_disappearing_messages_disabled">過眼雲煙訊息已停用</string>
-    <string name="ThreadRecord_disappearing_message_time_updated_to_s">過眼雲煙訊息倒數已設定為 %1$s</string>
+    <string name="ThreadRecord_disappearing_messages_disabled">限時訊息已停用</string>
+    <string name="ThreadRecord_disappearing_message_time_updated_to_s">限時訊息倒數已設定為 %1$s</string>
     <string name="ThreadRecord_safety_number_changed">安全碼已經郁動過</string>
     <string name="ThreadRecord_your_safety_number_with_s_has_changed">您同 %1$s 之間嘅安全碼已經郁動過。</string>
     <string name="ThreadRecord_you_marked_verified">您剔低話驗證咗</string>
@@ -3590,7 +3590,7 @@
     <string name="ConversationUpdateItem_no_groups_in_common_review_requests_carefully">冇共同群組</string>
     <string name="ConversationUpdateItem_no_contacts_in_this_group_review_requests_carefully">呢個谷入面無您識得嘅聯絡人。請您金睛火眼睇清楚啲請求。</string>
     <string name="ConversationUpdateItem_view">睇下</string>
-    <string name="ConversationUpdateItem_the_disappearing_message_time_will_be_set_to_s_when_you_message_them">當您發送訊息畀人嘅時候，過眼雲煙訊息倒數將會設定為 %1$s。</string>
+    <string name="ConversationUpdateItem_the_disappearing_message_time_will_be_set_to_s_when_you_message_them">當您發送訊息畀人嘅時候，限時訊息倒數將會設定為 %1$s。</string>
     <!-- Update item button text to show to boost a feature -->
     <string name="ConversationUpdateItem_donate">課金</string>
     <!-- Update item button text to send payment -->
@@ -3613,7 +3613,7 @@
     </plurals>
     <!-- Update item button text to show how many disappearing message timer changes are. %2$s is what the timer was ultimately set to.-->
     <plurals name="CollapsedEvent__disappearing_timer">
-        <item quantity="other">%1$d 個自動銷毀訊息時限更改 · %2$s</item>
+        <item quantity="other">%1$d 個限時訊息時限更改 · %2$s</item>
     </plurals>
     <!-- Update item button text to show how many call events are. -->
     <plurals name="CollapsedEvent__call_event">
@@ -4521,7 +4521,7 @@
     <!-- Button to save a message attachment (image, file etc.) -->
 
     <!-- conversation_expiring_off -->
-    <string name="conversation_expiring_off__disappearing_messages">過眼雲煙訊息</string>
+    <string name="conversation_expiring_off__disappearing_messages">限時訊息</string>
 
     <!-- conversation_selection -->
     <!-- Button to view detailed information for a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
@@ -5633,7 +5633,7 @@
     <!-- Row title for the option to export chat history as a plaintext archive -->
     <string name="ChatsSettingsFragment__export_chat_history">匯出聊天紀錄</string>
     <!-- Row description for the plaintext chat export option -->
-    <string name="ChatsSettingsFragment__export_chat_history_label">匯出全部聊天內容嘅可機讀 JSON 副本。自動銷毀訊息係唔會匯出嚟嘅。</string>
+    <string name="ChatsSettingsFragment__export_chat_history_label">匯出全部聊天內容嘅可機讀 JSON 副本。限時訊息係唔會匯出嚟嘅。</string>
     <!-- Biometrics prompt title shown before allowing the user to export chat history -->
     <string name="ChatsSettingsFragment__unlock_to_export_chat_history">先解鎖再匯出聊天紀錄</string>
     <!-- Snackbar shown when biometric authentication fails before a chat export -->
@@ -5834,13 +5834,13 @@
         <item quantity="other">%1$d 個聯絡人或者群組</item>
     </plurals>
     <string name="PrivacySettingsFragment__messaging">發訊息</string>
-    <string name="PrivacySettingsFragment__disappearing_messages">過眼雲煙訊息</string>
+    <string name="PrivacySettingsFragment__disappearing_messages">限時訊息</string>
     <string name="PrivacySettingsFragment__app_security">App 保安措施</string>
     <!-- This refers to the multi-tasking overview (recent apps) from the Android operating system.-->
     <string name="PrivacySettingsFragment__block_screenshots_in_the_recents_list_and_inside_the_app">封鎖最近清單同埋應用程式入面嘅螢幕截圖</string>
     <string name="PrivacySettingsFragment__signal_message_and_calls">Tellomi 訊息同通話、一律轉駁通話同封密發送人</string>
     <string name="PrivacySettingsFragment__default_timer_for_new_changes">為新嘅傾偈預設倒數限期</string>
-    <string name="PrivacySettingsFragment__set_a_default_disappearing_message_timer_for_all_new_chats_started_by_you">幫您發起嘅所有新對話，都預先設定一個過眼雲煙訊息倒數限期。</string>
+    <string name="PrivacySettingsFragment__set_a_default_disappearing_message_timer_for_all_new_chats_started_by_you">幫您發起嘅所有新對話，都預先設定一個限時訊息倒數限期。</string>
     <!-- Summary for stories preference to launch into story privacy settings -->
     <string name="PrivacySettingsFragment__payment_lock_require_lock">一定要用 Android 螢幕鎖定或者指紋辨識功能嚟進行滙款</string>
     <!-- Alert dialog title when payment lock cannot be enabled -->
@@ -6011,7 +6011,7 @@
     <string name="ConversationSettingsFragment__muted">靜咗音</string>
     <!-- Button label with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="ConversationSettingsFragment__search">搜尋</string>
-    <string name="ConversationSettingsFragment__disappearing_messages">過眼雲煙訊息</string>
+    <string name="ConversationSettingsFragment__disappearing_messages">限時訊息</string>
     <string name="ConversationSettingsFragment__sounds_and_notifications">響聲同通知</string>
     <!-- Label for the starred messages option in conversation settings -->
   <!-- Removed by excludeNonTranslatables <string name="ConversationSettingsFragment__starred_messages" translatable="false">Starred messages</string> -->
@@ -9596,13 +9596,13 @@
     <!-- Text to unpin all messages -->
     <string name="PinnedMessage__unpin_all_messages">取消全部訊息置頂</string>
     <!-- Title of bottom sheet when pinning a disappearing message -->
-    <string name="PinnedMessage__disappearing_message_title">將過眼雲煙訊息置頂</string>
+    <string name="PinnedMessage__disappearing_message_title">將限時訊息置頂</string>
     <!-- Body of bottom sheet when pinning a disappearing message -->
-    <string name="PinnedMessage__disappearing_message_body">當過眼雲煙訊息喺倒數完同埋喺聊天度剔走嗰陣，系統會將訊息取消置頂。</string>
+    <string name="PinnedMessage__disappearing_message_body">當限時訊息喺倒數完同埋喺聊天度剔走嗰陣，系統會將訊息取消置頂。</string>
     <!-- Confirmation button for bottom sheet -->
     <string name="PinnedMessage__got_it">明白</string>
     <!-- Content description of disappearing timer icon -->
-    <string name="PinnedMessage__disappearing_message_content_description">過眼雲煙訊息</string>
+    <string name="PinnedMessage__disappearing_message_content_description">限時訊息</string>
     <!-- Title of bottom sheet -->
     <string name="PinnedMessage__pinned_messages">置頂嘅訊息</string>
     <!-- Context menu option to unpin message -->
