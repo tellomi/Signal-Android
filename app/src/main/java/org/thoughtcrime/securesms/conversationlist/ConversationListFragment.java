@@ -556,6 +556,10 @@ public class ConversationListFragment extends MainFragment implements Conversati
 
     SignalProxyUtil.startListeningToWebsocket();
 
+    // Tellomi：「我的收藏」默认在聊天列表里（#1174），只做一次
+    Context applicationContext = requireContext().getApplicationContext();
+    SignalExecutors.BOUNDED.execute(() -> TellomiSavedMessages.ensureListedOnce(applicationContext));
+
     if (SignalStore.rateLimit().needsRecaptcha()) {
       Log.i(TAG, "Recaptcha required.");
       RecaptchaProofBottomSheetFragment.show(getChildFragmentManager());

@@ -33,7 +33,7 @@
     <string name="delete">删除</string>
     <string name="please_wait">请稍候…</string>
     <string name="save">保存</string>
-    <string name="note_to_self">备忘录</string>
+    <string name="note_to_self">我的收藏</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">天气</string>
@@ -588,7 +588,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">左滑任何消息可快速回复</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">阅后即焚媒体在发送后被删除</string>
     <string name="ConversationFragment_you_already_viewed_this_message">您已查看该消息</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">你可在此对话中给自己做笔记，如果您关联了其它设备，新笔记将同步到其它设备上。</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">把消息转发到这里，或直接发给自己，随时查看。如果你的账号有已关联的设备，这里的新消息会同步过去。</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="other">%1$d 个群组成员名称相同。</item>

@@ -36,7 +36,7 @@
     <string name="delete">Delete</string>
     <string name="please_wait">Please wait…</string>
     <string name="save">Save</string>
-    <string name="note_to_self">Note to Self</string>
+    <string name="note_to_self">Saved Messages</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">Weather</string>
@@ -603,7 +603,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">You can swipe to the left on any message to quickly reply</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">View-once media is deleted after sending</string>
     <string name="ConversationFragment_you_already_viewed_this_message">You already viewed this message</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">You can add notes for yourself in this chat. If your account has any linked devices, new notes will be synced.</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">Forward messages here or send them to yourself to keep them handy. If your account has linked devices, new messages here are synced to them.</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="one">%1$d group member have the same name.</item>
