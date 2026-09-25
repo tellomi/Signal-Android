@@ -24,6 +24,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import org.junit.After
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -34,6 +35,7 @@ import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.sharing.MultiShareArgs
 import org.thoughtcrime.securesms.sharing.MultiShareSender
+import org.thoughtcrime.securesms.testutil.MockAppDependenciesRule
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -45,6 +47,10 @@ import java.util.concurrent.TimeUnit
 class TellomiForwardResultsTest {
 
   private val context: Application get() = ApplicationProvider.getApplicationContext()
+
+  // PartAuthority 的静态初始化要 authority 和 AppDependencies.blobs；不设的话单独跑这个类时分享那条会 ExceptionInInitializerError
+  @get:Rule
+  val appDependencies = MockAppDependenciesRule()
 
   @After
   fun tearDown() {

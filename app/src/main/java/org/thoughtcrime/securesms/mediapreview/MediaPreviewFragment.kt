@@ -618,8 +618,8 @@ class MediaPreviewFragment :
       mediaUri = uri,
       contentType = contentType
     ) { args: MultiselectForwardFragmentArgs ->
-      // Tellomi（#1259 F-1 / F-2）：查看器的转发也打开头像网格，一律深色（「这张 / 全部 N 张」在 #1257 查看器里做）
-      TellomiForwardGridBottomSheet.show(childFragmentManager, args, forceDarkTheme = true)
+      // Tellomi（#1259 F-1 / F-2）：查看器的转发也打开头像网格；查看器固定夜间模式，网格跟着是深色（「这张 / 全部 N 张」在 #1257 查看器里做）
+      TellomiForwardGridBottomSheet.show(childFragmentManager, args)
     }
   }
 

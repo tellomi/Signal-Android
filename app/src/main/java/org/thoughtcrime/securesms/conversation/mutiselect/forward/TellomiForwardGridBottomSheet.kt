@@ -65,7 +65,7 @@ import org.thoughtcrime.securesms.util.views.SimpleProgressDialog
  * 转发面板：Telegram 式头像网格（tellomi/tellomi#1259，需求 `docs/product/specs/media-album-forward-picker.md` 第二节）。
  *
  * 长按「转发」、多选「转发」、查看器「转发」都打开它（F-1）。底部 sheet + 拖动条，一开始露出约 3/5 屏，上拉展开（F-2）；
- * 从查看器打开一律深色。选中后底部出现附言 + 带数量的「发送」（与上游一样挂在 sheet 外、屏幕底部，sheet 收着时也看得见）。
+ * 深浅色跟宿主：查看器 Activity 固定夜间模式（上游 MediaPreviewActivity），从查看器打开就是深色。选中后底部出现附言 + 带数量的「发送」（与上游一样挂在 sheet 外、屏幕底部，sheet 收着时也看得见）。
  * 发送与上游转发面板同一条路（安全码确认、[MultiselectForwardRepository.send]），宿主仍用 [MultiselectForwardBottomSheet.Callback]。
  */
 class TellomiForwardGridBottomSheet :
@@ -76,24 +76,16 @@ class TellomiForwardGridBottomSheet :
   companion object {
     private val TAG = Log.tag(TellomiForwardGridBottomSheet::class.java)
     private const val ARGS = "args"
-    private const val FORCE_DARK = "force_dark"
 
     @JvmStatic
-    @JvmOverloads
-    fun show(fragmentManager: FragmentManager, args: MultiselectForwardFragmentArgs, forceDarkTheme: Boolean = false) {
+    fun show(fragmentManager: FragmentManager, args: MultiselectForwardFragmentArgs) {
       TellomiForwardGridBottomSheet().apply {
-        arguments = bundleOf(
-          ARGS to args.copy(isWrappedInBottomSheet = true),
-          FORCE_DARK to forceDarkTheme
-        )
+        arguments = bundleOf(ARGS to args.copy(isWrappedInBottomSheet = true))
       }.show(fragmentManager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG)
     }
   }
 
   override val peekHeightPercentage: Float = TellomiForwardGridMetrics.PEEK_HEIGHT_FRACTION
-
-  override val forceDarkTheme: Boolean
-    get() = requireArguments().getBoolean(FORCE_DARK)
 
   private val args: MultiselectForwardFragmentArgs by lazy {
     requireArguments().getParcelableCompat(ARGS, MultiselectForwardFragmentArgs::class.java)!!
@@ -116,7 +108,7 @@ class TellomiForwardGridBottomSheet :
     return ComposeView(requireContext()).apply {
       setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
       setContent {
-        val isDark = forceDarkTheme || LocalConfiguration.current.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        val isDark = LocalConfiguration.current.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
         CompositionLocalProvider(LocalFragmentManager provides childFragmentManager) {
           SignalTheme(isDarkMode = isDark) {
             Surface(
@@ -173,14 +165,13 @@ class TellomiForwardGridBottomSheet :
       container = container.parent as? View
     }
     val coordinator = container as? CoordinatorLayout ?: return
-    val isDark = forceDarkTheme
     val bar = ComposeView(requireContext()).apply {
       setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
       layoutParams = CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { gravity = Gravity.BOTTOM }
       setContent {
         val state by viewModel.state.collectAsStateWithLifecycle()
         if (state.selected.isNotEmpty()) {
-          SignalTheme(isDarkMode = isDark || resources.configuration.isNightMode()) {
+          SignalTheme(isDarkMode = resources.configuration.isNightMode()) {
             Surface(color = SignalTheme.colors.colorSurface1) {
               TellomiForwardGridBottomBar(
                 message = state.message,
