@@ -39,7 +39,7 @@ import org.signal.core.ui.R as CoreUiR
  * Tellomi：联系人一级 Tab 的列表（tellomi/tellomi#1108）。
  *
  * 列表 = 已经建立联系的人（Signal connections：已注册，且是系统联系人或已互相共享资料），复用「新建聊天」的选人列表，只列个人、不列群；
- * 顶部三行：按用户名查找 · 扫描二维码 · 邀请好友；点一个人打开和他的会话。
+ * 顶部三行：按用户名查找 · 扫描二维码 · 邀请好友；点一个人打开和他的会话，会话压在联系人页上面，返回回到联系人。
  *
  * 不申请通讯录权限：选人列表只在给了「新建聊天」或「找人」回调时才出「查找联系人」横幅（点了才申请权限），这里一个都不传；
  * 通讯录匹配要 CDSI（#1111），不在这一刀。
@@ -134,7 +134,19 @@ object TellomiContactsTab {
   fun callbacks(listActions: RecipientPickerCallbacks.ListActions): RecipientPickerCallbacks = RecipientPickerCallbacks(listActions = listActions)
 
   suspend fun openConversation(context: Context, recipientId: RecipientId) {
-    val intent = ConversationIntents.createBuilder(context, recipientId, -1L).await().build()
-    context.startActivity(intent)
+    deliverConversation(context, ConversationIntents.createBuilder(context, recipientId, -1L).await())
+  }
+
+  /**
+   * 在主界面里直接发「打开会话」事件，不走 Intent：Intent 会让 MainActivity 先切到「聊天」再打开，返回就落在聊天列表。
+   * 事件在联系人 Tab 显示着时压进联系人自己的栈（[MainNavigationViewModel]），返回回到联系人。不在主界面时照旧起 Intent。
+   */
+  fun deliverConversation(context: Context, builder: ConversationIntents.Builder) {
+    val sink = context as? MainNavigationEventSink
+    if (sink != null) {
+      sink.onEvent(MainNavigationEvents.GoToDetail(MainDetailRoute.Conversation(builder.toConversationArgs())))
+    } else {
+      context.startActivity(builder.build())
+    }
   }
 }
