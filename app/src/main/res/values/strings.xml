@@ -797,6 +797,12 @@
         <item quantity="one">All messages in this chat will be deleted from all your devices. You will still be a member of this group.</item>
         <item quantity="other">All messages in these chats will be deleted from all your devices. You will still be a member of any groups you have not left yet.</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">Delete Saved Messages?</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">Everything in Saved Messages will be deleted from this device. This can\'t be undone.</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">Everything in Saved Messages will be deleted from this device and your linked devices. This can\'t be undone.</string>
     <string name="ConversationListFragment_deleting">Deleting</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="one">Deleting selected chat…</item>

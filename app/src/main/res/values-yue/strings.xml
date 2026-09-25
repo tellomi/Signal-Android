@@ -775,6 +775,12 @@
     <plurals name="ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations_linked_device_group">
         <item quantity="other">呢啲聊天入面嘅所有訊息會喺你所有裝置入面刪除。任何你未退出嘅谷，你都仲會係谷友。</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">刪除「我的收藏」？</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">「我的收藏」入面嘅嘢會喺呢部機度刪除，刪咗就搵唔返。</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">「我的收藏」入面嘅嘢會喺呢部機同連結咗嘅機度刪除，刪咗就搵唔返。</string>
     <string name="ConversationListFragment_deleting">刪除緊</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="other">刪除緊揀選咗嘅聊天…</item>

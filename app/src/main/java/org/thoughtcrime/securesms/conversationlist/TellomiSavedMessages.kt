@@ -6,7 +6,9 @@
 package org.thoughtcrime.securesms.conversationlist
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
+import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -42,5 +44,22 @@ object TellomiSavedMessages {
     SignalDatabase.threads.markAsActiveEarly(threadId)
     AppDependencies.databaseObserver.notifyConversationListListeners()
     return threadId
+  }
+
+  /** 聊天列表删除时只选了「我的收藏」这一个会话：确认框换成说清楚删的是什么的标题与说明（需求 §3.2「删除」）。 */
+  @JvmStatic
+  fun isOnlySavedMessages(recipients: Collection<Recipient>): Boolean {
+    return recipients.size == 1 && recipients.first().isSelf
+  }
+
+  /** 删除「我的收藏」确认框的说明：有已关联设备时说明那边也会删。 */
+  @JvmStatic
+  @StringRes
+  fun deleteMessage(isMultiDevice: Boolean): Int {
+    return if (isMultiDevice) {
+      R.string.ConversationListFragment__tellomi_delete_saved_messages_message_linked_device
+    } else {
+      R.string.ConversationListFragment__tellomi_delete_saved_messages_message
+    }
   }
 }
