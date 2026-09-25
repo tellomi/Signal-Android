@@ -52,6 +52,14 @@ class TellomiSavedMessagesAvatarTest {
   }
 
   @Test
+  @Config(qualifiers = "yue")
+  fun `it is called 我的收藏 in cantonese too, and the save action is translated`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    assertThat(context.getString(R.string.note_to_self)).isEqualTo("我的收藏")
+    assertThat(context.getString(R.string.conversation_selection__menu_tellomi_save)).isEqualTo("收藏")
+  }
+
+  @Test
   fun `it is called Saved Messages in english`() {
     assertThat(ApplicationProvider.getApplicationContext<Application>().getString(R.string.note_to_self)).isEqualTo("Saved Messages")
   }
