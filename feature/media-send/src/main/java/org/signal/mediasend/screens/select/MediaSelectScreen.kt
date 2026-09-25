@@ -5,6 +5,7 @@
 
 package org.signal.mediasend.screens.select
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
@@ -62,6 +63,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
@@ -136,9 +138,15 @@ internal fun MediaSelectScreen(
   val recipientChatColor: Color? = chatColorFor(state.recipientId)
 
   val gridState = rememberLazyGridState()
-  // Tellomi（#1261 P-7）：新的网格页里受限访问横幅占第一格（整行），拖动多选的下标要减掉它。
+  // Tellomi（#1261 P-7、P-8）：新的网格页里受限访问横幅占第一格（整行），「最近」里还有相机格和它下面的占位；
+  // 拖动多选按格子下标找媒体，这几格都不是媒体。
   val showLimitedAccessBanner = state is MediaSelectState.Files && state.mediaPermissions == MediaPermissions.PARTIAL && state.hasContent
-  val dragToSelectState = rememberDragToSelectMediaState(state, onEvent, gridState, indexOffset = if (showLimitedAccessBanner) 1 else 0)
+  val pickerColumns = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 3
+  val showPickerCamera = state is MediaSelectState.Files && !showPlaceholders && state.showsPickerCamera
+  val pickerGridEntries = (state as? MediaSelectState.Files)
+    ?.let { pickerGridEntries(it.selectedMediaFolderItems, showLimitedAccessBanner, showPickerCamera, pickerColumns) }
+    .orEmpty()
+  val dragToSelectState = rememberDragToSelectMediaState(state, onEvent, gridState, pickerGridEntries)
 
   // Only an empty selection can leave an editor with nothing to edit behind us. Every other back press is left to the
   // navigation default, which keeps its predictive-back gesture.
@@ -172,7 +180,10 @@ internal fun MediaSelectScreen(
       dragToSelectState = dragToSelectState,
       showPlaceholders = showPlaceholders,
       showLimitedAccessBanner = showLimitedAccessBanner,
-      recipientChatColor = recipientChatColor
+      recipientChatColor = recipientChatColor,
+      columns = pickerColumns,
+      showCamera = showPickerCamera,
+      gridEntries = pickerGridEntries
     )
     return
   }
@@ -305,12 +316,12 @@ private fun rememberDragToSelectMediaState(
   state: MediaSelectState,
   onEvent: (MediaSelectScreenEvents) -> Unit,
   gridState: LazyGridState,
-  indexOffset: Int = 0
+  gridEntries: List<Media?>
 ): DragToSelectState {
   return rememberDragToSelectState(gridState) { event ->
-    val files = (state as? MediaSelectState.Files)?.selectedMediaFolderItems ?: return@rememberDragToSelectState
-    // Tellomi（#1261 P-7）：网格前面有整行的横幅时，格子下标比媒体下标多出这几格。
-    val items = List(indexOffset) { null } + files
+    if (state !is MediaSelectState.Files) return@rememberDragToSelectState
+    // Tellomi（#1261 P-7、P-8）：格子下标 → 媒体；横幅、相机格与它下面的占位是 null。
+    val items = gridEntries
 
     when (event) {
       is DragSelectEvent.Started -> {

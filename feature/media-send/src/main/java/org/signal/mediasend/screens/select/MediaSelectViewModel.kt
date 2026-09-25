@@ -130,6 +130,7 @@ internal class MediaSelectViewModel(
   private fun refresh() {
     viewModelScope.launch {
       val mediaPermissions = MediaPermissions.current()
+      val cameraAccess = PickerCameraAccess.current()
 
       val reloaded: MediaSelectState = when (val snapshot = _state.value) {
         is MediaSelectState.Folders -> snapshot.copy(mediaFolders = repository.getFolders())
@@ -144,6 +145,7 @@ internal class MediaSelectViewModel(
       _state.update { current ->
         reloaded
           .withMediaPermissions(mediaPermissions)
+          .withCameraAccess(cameraAccess)
           .withParentState(current.selectedMedia, current.isSelectionRejected)
           .let { if (current is MediaSelectState.Files) it.withSendOptions(current.sendOptions) else it }
       }

@@ -279,7 +279,60 @@ class MediaPickerScreenshots {
     }
   }
 
+  /**
+   * P-8：给了相机权限，「最近」左上角是一格宽、两行高的实时取景（模拟器的虚拟相机），格子绕开它排；点它进拍照页。
+   * 状态里的相机权限是选图页刷新时读的——这条也验了那段接线。
+   */
+  @Test
+  fun pickerRecentsStartsWithTheLiveCamera() {
+    instrumentation.uiAutomation.grantRuntimePermission(harness.context.packageName, Manifest.permission.CAMERA)
+    val run = SystemClock.uptimeMillis()
+    repeat(4) { index ->
+      insertGalleryImage("camera-$run-$index", 400, 400, index + 7)
+      SystemClock.sleep(1_100)
+    }
+
+    val other = harness.others[0]
+    val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
+    val conversation = openConversation(other, threadId)
+    try {
+      settle(1500)
+      openGalleryFromAttachmentKeyboard(conversation)
+      waitFor("相机格") { byDescription("Go to camera").isNotEmpty() && gridTiles().size >= 4 }
+      val camera = byDescription("Go to camera").first().boundsInScreen()
+      val tiles = gridTiles().map { it.boundsInScreen() }
+      report.appendLine("camera=$camera tiles=${tiles.take(5)}")
+      val tile = tiles.first()
+      val gap = harness.context.resources.displayMetrics.density * 2
+      assertTrue("相机格在最左边", camera.left <= gap)
+      assertEquals("一格宽", tile.width().toFloat(), camera.width().toFloat(), 2f)
+      assertTrue("第一张在相机右边", tile.left >= camera.right)
+      // 读屏树里相机格被裁成一格高（节点范围裁到网格格子里），两行高要从格子的排法看：第二行的第一张也在相机右边。
+      val secondRowFirst = tiles[2]
+      assertEquals("第 3 张在第二行", (tile.bottom + gap), secondRowFirst.top.toFloat(), 3f)
+      assertTrue("第二行的第 0 列也让给了相机", secondRowFirst.left >= camera.right)
+      settle(2000)
+      shot("picker-8-camera-live")
+
+      click(byDescription("Go to camera").first())
+      waitFor("拍照页") { nodes { it.text?.toString() == "Photo" || it.text?.toString() == "Video" }.isNotEmpty() }
+      settle(800)
+      shot("picker-9-capture")
+    } finally {
+      File(outDir, "metrics-picker-camera.txt").writeText(report.toString())
+      closeMediaSendIfOpen()
+      conversation.close()
+    }
+  }
+
   // region helpers
+
+  /** 网格里的格子：可点、点了是「Open」的那一层，从上到下、从左到右。 */
+  private fun gridTiles(): List<AccessibilityNodeInfo> {
+    return nodes { node ->
+      node.isClickable && node.actionList.any { it.id == AccessibilityNodeInfo.ACTION_CLICK && it.label?.toString() == "Open" }
+    }
+  }
 
   /** 「只看已选」里的卡片：可点、点了是「Open」的那一层，从左到右。 */
   private fun previewCards(): List<AccessibilityNodeInfo> {

@@ -5,7 +5,6 @@
 
 package org.signal.mediasend.screens.select
 
-import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -61,7 +60,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
@@ -116,10 +115,11 @@ internal fun MediaPickerFilesScreen(
   dragToSelectState: DragToSelectState,
   showPlaceholders: Boolean,
   showLimitedAccessBanner: Boolean,
-  recipientChatColor: Color?
+  recipientChatColor: Color?,
+  columns: Int,
+  showCamera: Boolean,
+  gridEntries: List<Media?>
 ) {
-  val columns = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 3
-
   // P-3：点「✓N」切到「只看已选」；在那里取消的记下原来的位置，4 秒内可以撤销；全部取消 0.3 秒后自动回网格。
   var showSelectedOnly by rememberSaveable { mutableStateOf(false) }
   val deselections = remember { mutableStateListOf<Pair<Media, Int>>() }
@@ -157,8 +157,8 @@ internal fun MediaPickerFilesScreen(
     }
     deselections.clear()
   }
-  // 横幅占掉网格的第一格：格子下标 → 媒体（横幅那格是 null，不能选）。
-  val gridItems = List(if (showLimitedAccessBanner) 1 else 0) { null } + state.selectedMediaFolderItems
+  // 格子下标 → 媒体：横幅、相机格与它下面的占位是 null，不能选。
+  val gridItems = gridEntries
 
   Scaffold(
     topBar = {
@@ -229,13 +229,27 @@ internal fun MediaPickerFilesScreen(
                 MediaTilePlaceholder()
               }
             } else {
-              items(state.selectedMediaFolderItems, key = { it.uri }) { media ->
+              val tile: @Composable (Media) -> Unit = { media ->
                 PickerTile(
                   media = media,
                   selectionIndex = state.selectedMedia.indexOfFirst { it.uri == media.uri },
                   recipientChatColor = recipientChatColor,
                   onEvent = onEvent
                 )
+              }
+              if (showCamera) {
+                // P-8：第 0 格相机（画成两行高），第一行剩下的几张，第二行第 0 格是被相机盖住的占位，然后其余的。
+                val files = state.selectedMediaFolderItems
+                item(key = PICKER_CAMERA_KEY) {
+                  PickerCameraCell(access = state.cameraAccess, onClick = { onEvent(MediaSelectScreenEvents.NavigateToCamera) })
+                }
+                items(files.take(columns - 1), key = { it.uri }) { tile(it) }
+                item(key = PICKER_CAMERA_SPACER_KEY) {
+                  PickerCameraSpacer(onClick = { onEvent(MediaSelectScreenEvents.NavigateToCamera) })
+                }
+                items(files.drop(columns - 1), key = { it.uri }) { tile(it) }
+              } else {
+                items(state.selectedMediaFolderItems, key = { it.uri }) { tile(it) }
               }
             }
           }
@@ -266,6 +280,68 @@ internal fun MediaPickerFilesScreen(
 }
 
 private const val UNDO_DURATION_MS = 4_000L
+private const val PICKER_CAMERA_KEY = "tellomi-picker-camera"
+private const val PICKER_CAMERA_SPACER_KEY = "tellomi-picker-camera-spacer"
+
+/**
+ * P-8：相机格。在网格里只占一格，但画成两行高（含中间的间距），盖住第二行第 0 格的占位——照 Telegram Android
+ * （PhotoAttachCameraCell 占一格、取景画成 itemSize * 2 + GAP）。有权限是实时取景 + 右上角小相机图标，没权限是居中的相机图标。
+ */
+@Composable
+private fun PickerCameraCell(access: PickerCameraAccess, onClick: () -> Unit) {
+  val description = stringResource(R.string.MediaSelectScreen__go_to_camera)
+  val spacing = PickerMetrics.gridSpacing
+  Box(
+    modifier = Modifier
+      .fillMaxWidth()
+      .aspectRatio(1f)
+      .layout { measurable, constraints ->
+        val side = constraints.maxWidth
+        val tall = side * 2 + spacing.roundToPx()
+        val placeable = measurable.measure(constraints.copy(minHeight = tall, maxHeight = tall))
+        layout(side, side) { placeable.place(0, 0) }
+      }
+      .background(Color(0xFF1A1A1A))
+      .clickable(onClick = onClick, onClickLabel = description, role = Role.Button)
+      .semantics { contentDescription = description }
+      .testTag(TestTags.MEDIA_PICKER_CAMERA)
+  ) {
+    if (access == PickerCameraAccess.GRANTED) {
+      LocalPickerCameraViewfinder.current(Modifier.fillMaxSize())
+      // 取景可能很亮：小图标垫一个半透明深色圆底。
+      Icon(
+        imageVector = SignalIcons.Camera.imageVector,
+        contentDescription = null,
+        tint = Color.White,
+        modifier = Modifier
+          .align(Alignment.TopEnd)
+          .padding(top = 3.dp, end = 3.dp)
+          .size(26.dp)
+          .background(color = Color.Black.copy(alpha = 0.3f), shape = CircleShape)
+          .padding(4.dp)
+      )
+    } else {
+      Icon(
+        imageVector = SignalIcons.Camera.imageVector,
+        contentDescription = null,
+        tint = Color.White,
+        modifier = Modifier.align(Alignment.Center)
+      )
+    }
+  }
+}
+
+/** 相机格下面那一格：什么都不画（相机盖在上面），点了同样进拍照页。 */
+@Composable
+private fun PickerCameraSpacer(onClick: () -> Unit) {
+  Box(
+    modifier = Modifier
+      .fillMaxWidth()
+      .aspectRatio(1f)
+      .clickable(interactionSource = null, indication = null, onClick = onClick)
+      .testTag(TestTags.MEDIA_PICKER_CAMERA_SPACER)
+  )
+}
 private const val RETURN_TO_GRID_DELAY_MS = 300L
 
 /** 受限访问横幅占掉网格的第一格（整行），拖动多选时要把它算回去。 */

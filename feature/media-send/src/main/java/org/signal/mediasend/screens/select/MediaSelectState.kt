@@ -53,10 +53,16 @@ sealed interface MediaSelectState {
     /** Tellomi（tellomi/tellomi#1261 P-1）：顶栏「最近 ⌄」里能换的相册。 */
     val mediaFolders: List<MediaFolder> = emptyList(),
     /** Tellomi（#1261 P-5、P-9）：底栏（说明 + 发送）与「···」菜单读的父流程状态。 */
-    val sendOptions: SendOptions = SendOptions()
+    val sendOptions: SendOptions = SendOptions(),
+    /** Tellomi（#1261 P-8）：「最近」第一格的相机格。 */
+    val cameraAccess: PickerCameraAccess = PickerCameraAccess.NONE
   ) : MediaSelectState {
     override val hasContent: Boolean
       get() = selectedMediaFolderItems.isNotEmpty()
+
+    /** 相机格只在「最近」（全部媒体）里、而且有相机时才有。 */
+    val showsPickerCamera: Boolean
+      get() = cameraAccess != PickerCameraAccess.NONE && selectedMediaFolder.bucketId == Media.ALL_MEDIA_BUCKET_ID
   }
 
   fun withParentState(selectedMedia: List<Media>, isSelectionRejected: Boolean): MediaSelectState = when (this) {
@@ -67,6 +73,12 @@ sealed interface MediaSelectState {
   fun withMediaPermissions(mediaPermissions: MediaPermissions): MediaSelectState = when (this) {
     is Folders -> copy(mediaPermissions = mediaPermissions)
     is Files -> copy(mediaPermissions = mediaPermissions)
+  }
+
+  /** Tellomi（#1261 P-8）：只有网格页用得着；相册列表页原样。 */
+  fun withCameraAccess(cameraAccess: PickerCameraAccess): MediaSelectState = when (this) {
+    is Folders -> this
+    is Files -> copy(cameraAccess = cameraAccess)
   }
 
   /** Tellomi（#1261）：只有网格页用得着；相册列表页原样。 */

@@ -58,6 +58,8 @@ object TestTags {
   const val MEDIA_PICKER_PREVIEW_ROW = "media_picker_preview_row"
   const val MEDIA_PICKER_PREVIEW_CAPTION = "media_picker_preview_caption"
   const val MEDIA_PICKER_UNDO_BAR = "media_picker_undo_bar"
+  const val MEDIA_PICKER_CAMERA = "media_picker_camera"
+  const val MEDIA_PICKER_CAMERA_SPACER = "media_picker_camera_spacer"
 
   /** Tag for the card of the media at [uri] in the selected-only preview. */
   fun mediaPickerPreviewCard(uri: String): String = "media_picker_preview_card_$uri"
