@@ -2372,6 +2372,10 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     if (displayMode instanceof ConversationItemDisplayMode.Starred) {
       return true;
     }
+    // Tellomi（#1206）：上一条挂着表情回应时它是组尾（见 isEndOfMessageCluster），这一条就是组头，两边对称；上游只判了组尾
+    if (previous.isPresent() && !previous.get().getReactions().isEmpty()) {
+      return true;
+    }
     if (isGroupThread) {
       return !previous.isPresent() || previous.get().isUpdate() || !DateUtils.isSameDay(current.getTimestamp(), previous.get().getTimestamp()) ||
              !current.getFromRecipient().equals(previous.get().getFromRecipient()) || !isWithinClusteringTime(current, previous.get()) || MessageRecordUtil.isScheduled(current);

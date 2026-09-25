@@ -46,6 +46,13 @@ class ConversationItemDecorations(hasWallpaper: Boolean = false, private val sch
       unreadViewHolder?.bind()
     }
 
+  /**
+   * Tellomi（#1206，需求 bubbles-and-motion 3.1「未读线断组」）：未读线挂在哪条消息上方（它的 id），没有未读线是 -1。
+   * 读了交给 [ConversationAdapterV2.tellomiUnreadAnchorId]，让未读线上下两条不算同一组。
+   */
+  val tellomiUnreadAnchorId: Long
+    get() = (unreadState as? UnreadState.CompleteUnreadState)?.firstUnreadId ?: -1L
+
   /** The current unread-divider state. Exposed for instrumentation tests asserting end-to-end divider behavior. */
   @get:VisibleForTesting
   val unreadStateForTesting: UnreadState
