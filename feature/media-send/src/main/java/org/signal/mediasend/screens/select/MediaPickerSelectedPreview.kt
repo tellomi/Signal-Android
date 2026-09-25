@@ -91,8 +91,9 @@ import kotlin.time.Duration.Companion.milliseconds
  * Tellomi（tellomi/tellomi#1261 P-3）：点「✓N」之后，选图网格换成「只看已选」。
  *
  * 机制照 Telegram（Android `ChatAttachAlertPhotoLayoutPreview`、iOS `MediaPickerSelectedListNode`）：会话的聊天背景上，
- * 顶部小字「消息预览」，≥ 2 张再加「拖动可调整顺序」，下面按真实发出的样子排——Tellomi 的多图是一行横滑（#1257），
- * 所以就是那一行：[AlbumCarouselGeometry] 的行高、按原比例的宽、间距 8、圆角 18、放得下时靠右，松手吸附也照它；
+ * ≥ 2 张时顶部小字「拖动可调整顺序」，只有 1 张时顶部什么都不提示；下面一行卡片只当排序区（owner 2026-09-25 选 A：
+ * 聊天里的横滑已撤回、改回宫格，这一行不再是「发出去的样子」；它在选图面板里面，不挡返回手势）：
+ * [AlbumCarouselGeometry] 的行高、按原比例的宽、间距 8、圆角 18、放得下时靠右，松手吸附也照它；
  * 有说明时下面一个发出方向的气泡。
  * - 长按 0.3 秒（同 Telegram iOS）拖动排序，排序 = 发出去的顺序：拿起的那张跟着手指走，其它卡片实时让位，贴近两端时整行自动滚；
  *   松手时报一次 from → to。
@@ -121,9 +122,7 @@ internal fun MediaPickerSelectedPreview(
         .verticalScroll(rememberScrollState())
         .padding(vertical = 16.dp)
     ) {
-      PreviewChip(text = stringResource(R.string.MediaSelectScreen__message_preview))
       if (selectedMedia.size >= 2) {
-        Spacer(modifier = Modifier.height(8.dp))
         PreviewChip(text = stringResource(R.string.MediaSelectScreen__drag_to_reorder))
       }
       Spacer(modifier = Modifier.height(16.dp))
@@ -160,6 +159,7 @@ private fun PreviewChip(text: String) {
     style = MaterialTheme.typography.labelMedium,
     color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier = Modifier
+      .testTag(TestTags.MEDIA_PICKER_PREVIEW_CHIP)
       .clip(RoundedCornerShape(percent = 50))
       .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.85f))
       .padding(horizontal = 10.dp, vertical = 4.dp)
@@ -209,7 +209,7 @@ private fun PreviewRow(
     val haptics = LocalHapticFeedback.current
     val viewportWidth = constraints.maxWidth
 
-    // 行高同聊天里的相册（AlbumCarouselView.rowHeightFor）：按宽算，横屏与平板再按屏高封顶。
+    // 行高照 AlbumCarouselGeometry（聊天里撤回横滑之前用的同一套）：按宽算，横屏与平板再按屏高封顶。
     val capByScreenHeight = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || configuration.smallestScreenWidthDp >= 600
     val rowHeightDp = AlbumCarouselGeometry.rowHeightDp(maxWidth.value, configuration.screenHeightDp.toFloat(), capByScreenHeight)
     val rowHeight = with(density) { rowHeightDp.dp.roundToPx() }
@@ -460,7 +460,7 @@ internal fun DeselectionUndoBar(count: Int, onUndo: () -> Unit, modifier: Modifi
 }
 
 /**
- * 横滑那一行的松手吸附，同聊天里的相册（[AlbumCarouselGeometry.Layout.targetSnapOffset]）：
+ * 横滑那一行的松手吸附，照聊天里撤回横滑之前用的同一套（[AlbumCarouselGeometry.Layout.targetSnapOffset]）：
  * 慢慢松手停在最近的一张；甩的时候按甩出去的落点找，但至少朝甩的方向走一格。
  */
 private class CarouselSnapFlingBehavior(

@@ -239,8 +239,8 @@ class MediaPickerScreenshots {
       waitFor("「✓3」") { byDescription("3 selected").isNotEmpty() }
 
       click(byDescription("3 selected").first())
-      waitFor("只看已选") { nodes { it.text?.toString() == "Message preview" }.isNotEmpty() }
-      assertTrue("≥ 2 张有「拖动可调整顺序」", nodes { it.text?.toString() == "Drag to reorder" }.isNotEmpty())
+      waitFor("只看已选（≥ 2 张有「拖动可调整顺序」）") { nodes { it.text?.toString() == "Drag to reorder" }.isNotEmpty() }
+      assertTrue("顶部不再有「消息预览」（owner 2026-09-25 选 A）", nodes { it.text?.toString() == "Message preview" }.isEmpty())
       assertTrue("✕ 变返回", byDescription("Back").isNotEmpty())
       settle(800)
       shot("picker-5-selected-preview")

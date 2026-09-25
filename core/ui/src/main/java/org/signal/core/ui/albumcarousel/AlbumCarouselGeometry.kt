@@ -18,7 +18,8 @@ import kotlin.math.roundToInt
  *
  * 纯计算、没有 Android 依赖：坐标一律是 px，「内容坐标」的 0 是屏幕的起始边（LTR 为左边）。
  *
- * 放在 core/ui：聊天里的相册（app 的 AlbumCarouselView）和选图面板「只看已选」的预览（media-send，#1261 P-3）共用同一套几何。
+ * 放在 core/ui：选图面板「只看已选」的排序行（media-send，#1261 P-3）在用。聊天里的横滑已撤回、改回 Signal 原来的宫格
+ * （owner 2026-09-25，#1257）；以后做微博 / Threads / X 式的动态时再用这套。
  */
 object AlbumCarouselGeometry {
 

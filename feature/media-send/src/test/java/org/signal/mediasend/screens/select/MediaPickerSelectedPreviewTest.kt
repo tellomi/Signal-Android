@@ -23,6 +23,7 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -83,14 +84,13 @@ class MediaPickerSelectedPreviewTest {
     composeTestRule.onNodeWithTag(TestTags.MEDIA_PICKER_SELECTED_PREVIEW).assertIsDisplayed()
     composeTestRule.onNodeWithTag(TestTags.MEDIA_SELECT_GRID).assertDoesNotExist()
     composeTestRule.onNodeWithTag("wallpaper_42").assertExists()
-    composeTestRule.onNodeWithText("Message preview").assertIsDisplayed()
-    composeTestRule.onNodeWithText("Drag to reorder").assertIsDisplayed()
+    assertEquals("顶部只有「拖动可调整顺序」（owner 2026-09-25 选 A：不再有「消息预览」）", listOf("Drag to reorder"), previewChipTexts())
     composeTestRule.onNodeWithTag(TestTags.MEDIA_PICKER_COUNT_PILL).assertDoesNotExist()
     composeTestRule.onNodeWithTag(TestTags.MEDIA_PICKER_FOLDER_TITLE).assertDoesNotExist()
     composeTestRule.onNodeWithContentDescription("Back").assertIsDisplayed()
     composeTestRule.onNodeWithTag(TestTags.MEDIA_PICKER_PREVIEW_CAPTION).assertTextEquals("今天的照片")
 
-    // 卡片按选中的顺序、编号 1…N，位置与宽照聊天里的相册（起点 16、间距 8、按比例、最宽给下一张留 48）。
+    // 卡片按选中的顺序、编号 1…N，位置与宽照 AlbumCarouselGeometry（起点 16、间距 8、按比例、最宽给下一张留 48）。
     val expected = expectedLayout(listOf(MEDIA[3], MEDIA[0], MEDIA[5]))
     listOf(MEDIA[3], MEDIA[0], MEDIA[5]).forEachIndexed { index, media ->
       val bounds = cardBoundsInRow(media)
@@ -114,8 +114,7 @@ class MediaPickerSelectedPreviewTest {
     composeTestRule.onNodeWithTag(TestTags.MEDIA_PICKER_COUNT_PILL).performClick()
     composeTestRule.waitForIdle()
 
-    composeTestRule.onNodeWithText("Message preview").assertIsDisplayed()
-    composeTestRule.onNodeWithText("Drag to reorder").assertDoesNotExist()
+    assertEquals("只有 1 张时顶部什么都不提示", emptyList<String>(), previewChipTexts())
     composeTestRule.onNodeWithTag(TestTags.MEDIA_PICKER_PREVIEW_CAPTION).assertDoesNotExist()
     val (left, width) = cardBoundsInRow(MEDIA[2])
     assertEquals("放得下时靠右（同自己发的）", GRID_WIDTH - AlbumCarouselGeometry.END_MARGIN_DP, left + width, 1f)
@@ -270,7 +269,7 @@ class MediaPickerSelectedPreviewTest {
     composeTestRule.onNodeWithTag(TestTags.mediaPickerPreviewCheck(MEDIA[5].uri.toString())).performScrollTo().performClick()
     composeTestRule.waitForIdle()
     composeTestRule.onNodeWithText("2 deselected").assertIsDisplayed()
-    composeTestRule.onNodeWithText("Drag to reorder").assertDoesNotExist()
+    assertEquals("只剩一张时顶部什么都不提示", emptyList<String>(), previewChipTexts())
 
     composeTestRule.onNodeWithText("Undo").performClick()
     composeTestRule.waitForIdle()
@@ -316,6 +315,14 @@ class MediaPickerSelectedPreviewTest {
   }
 
   /** 卡片在这一行内容坐标里的（左边, 宽）：卡片在屏幕上的位置加上这一行已经滚过的距离。 */
+  /** 「只看已选」顶部的小字标签，按从上到下的顺序。 */
+  private fun previewChipTexts(): List<String> {
+    return composeTestRule.onAllNodesWithTag(TestTags.MEDIA_PICKER_PREVIEW_CHIP, useUnmergedTree = true)
+      .fetchSemanticsNodes()
+      .sortedBy { it.boundsInRoot.top }
+      .map { node -> node.config[SemanticsProperties.Text].joinToString("") { it.text } }
+  }
+
   private fun cardBoundsInRow(media: Media): Pair<Float, Float> {
     val row = composeTestRule.onNodeWithTag(TestTags.MEDIA_PICKER_PREVIEW_ROW).fetchSemanticsNode()
     val card = composeTestRule.onNodeWithTag(TestTags.mediaPickerPreviewCard(media.uri.toString())).fetchSemanticsNode()

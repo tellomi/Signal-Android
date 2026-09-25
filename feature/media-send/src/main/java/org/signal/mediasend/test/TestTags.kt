@@ -57,6 +57,7 @@ object TestTags {
   const val MEDIA_PICKER_SELECTED_PREVIEW = "media_picker_selected_preview"
   const val MEDIA_PICKER_PREVIEW_ROW = "media_picker_preview_row"
   const val MEDIA_PICKER_PREVIEW_CAPTION = "media_picker_preview_caption"
+  const val MEDIA_PICKER_PREVIEW_CHIP = "media_picker_preview_chip"
   const val MEDIA_PICKER_UNDO_BAR = "media_picker_undo_bar"
   const val MEDIA_PICKER_CAMERA = "media_picker_camera"
   const val MEDIA_PICKER_CAMERA_SPACER = "media_picker_camera_spacer"
