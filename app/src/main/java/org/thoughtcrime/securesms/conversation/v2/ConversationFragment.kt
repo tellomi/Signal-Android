@@ -4128,25 +4128,8 @@ class ConversationFragment :
       container.hideAll(composeText)
 
       sharedElement.transitionName = MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME
-      MediaPreviewCache.returnMediaUri = null
       MediaPreviewCache.replyTargetThreadId = args.threadId
-      val openedMessageId = parent.conversationMessage.messageRecord.id
-      requireActivity().setExitSharedElementCallback(object : MaterialContainerTransformSharedElementCallback() {
-        override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
-          // Tellomi（#1257 C-9）：查看器里换到了同一个横滑相册的另一张：先把相册滚到它、让它完整露出，缩回动画落在它上面。
-          val returnUri = MediaPreviewCache.returnMediaUri
-          if (returnUri != null) {
-            MediaPreviewCache.returnMediaUri = null
-            if (parent.conversationMessage.messageRecord.id == openedMessageId) {
-              parent.revealAlbumItemForMediaUri(returnUri)?.let { target ->
-                target.transitionName = MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME
-                sharedElements[MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME] = target
-              }
-            }
-          }
-          super.onMapSharedElements(names, sharedElements)
-        }
-      })
+      requireActivity().setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
       val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(), sharedElement, MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME)
       requireActivity().startActivity(MediaIntentFactory.create(requireActivity(), args), options.toBundle())
     }
@@ -4306,7 +4289,10 @@ class ConversationFragment :
         audioUri = audioUri,
         isOutgoing = messageRecord.isOutgoing,
         focusedView = focusedView,
-        snapshotMetrics = ConversationItemSelection.snapshotMetricsFor(target)
+        snapshotMetrics = target.getSnapshotStrategy()?.snapshotMetrics ?: InteractiveConversationElement.SnapshotMetrics(
+          snapshotOffset = bodyBubble.x,
+          contextMenuPadding = bodyBubble.x
+        )
       )
 
       bodyBubble.visibility = View.INVISIBLE

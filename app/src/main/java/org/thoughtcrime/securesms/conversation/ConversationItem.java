@@ -100,7 +100,6 @@ import org.thoughtcrime.securesms.components.PlaybackSpeedToggleTextView;
 import org.thoughtcrime.securesms.components.QuoteView;
 import org.thoughtcrime.securesms.components.SharedContactView;
 import org.thoughtcrime.securesms.components.ThumbnailView;
-import org.thoughtcrime.securesms.components.albumcarousel.AlbumCarouselView;
 import org.thoughtcrime.securesms.components.emoji.EmojiTextView;
 import org.thoughtcrime.securesms.components.mention.MentionAnnotation;
 import org.thoughtcrime.securesms.contactshare.Contact;
@@ -162,7 +161,6 @@ import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.NullableStub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -243,8 +241,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   private final @NonNull List<Outliner>                          outliners     = new ArrayList<>(2);
   private                LiveRecipient                           conversationRecipient;
   private                NullableStub<ConversationItemThumbnail> mediaThumbnailStub;
-  private                NullableStub<AlbumCarouselView>         albumCarouselStub;
-  private @Nullable      View                                    albumCarouselSpacer;
   private                Stub<AudioView>                         audioViewStub;
   private                Stub<DocumentView>                      documentViewStub;
   private                Stub<SharedContactView>                 sharedContactStub;
@@ -298,10 +294,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   private RelativeLayout.LayoutParams normalBubbleParams = null;
 
-  /** Tellomi（#1257）：横滑相册与上面（群昵称 / 引用）、下面（说明）两段气泡之间的缝，量布局时算好、画背景与聊天色时用。 */
-  private int albumCarouselGapAbove = 0;
-  private int albumCarouselGapBelow = 0;
-
   private final Runnable shrinkBubble = new Runnable() {
     @Override
     public void run() {
@@ -318,12 +310,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       reactionsView.animate()
                    .scaleX(LONG_PRESS_SCALE_FACTOR)
                    .scaleY(LONG_PRESS_SCALE_FACTOR);
-
-      if (isAlbumCarouselVisible()) {
-        albumCarouselStub.require().animate()
-                         .scaleX(LONG_PRESS_SCALE_FACTOR)
-                         .scaleY(LONG_PRESS_SCALE_FACTOR);
-      }
 
       if (quotedIndicator != null) {
         quotedIndicator.animate()
@@ -369,8 +355,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     this.contactPhotoHolder        = findViewById(R.id.contact_photo_container);
     this.bodyBubble                = findViewById(R.id.body_bubble);
     this.mediaThumbnailStub        = new NullableStub<>(findViewById(R.id.image_view_stub));
-    this.albumCarouselStub         = new NullableStub<>(findViewById(R.id.album_carousel_stub));
-    this.albumCarouselSpacer       = findViewById(R.id.album_carousel_spacer);
     this.audioViewStub             = new Stub<>(findViewById(R.id.audio_view_stub));
     this.documentViewStub          = new Stub<>(findViewById(R.id.document_view_stub));
     this.sharedContactStub         = new Stub<>(findViewById(R.id.shared_contact_view_stub));
@@ -399,7 +383,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     bodyText.setOnLongClickListener(passthroughClickListener);
     bodyText.setOnClickListener(passthroughClickListener);
     footer.setOnTouchDelegateChangedListener(touchDelegateChangedListener);
-    bodyBubble.setOnVisibilityChangedListener(this::onBodyBubbleVisibilityChanged);
   }
 
   @Override
@@ -514,7 +497,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         reactionsView.animate()
                      .scaleX(1.0f)
                      .scaleY(1.0f);
-        restoreAlbumCarouselScale();
 
         if (quotedIndicator != null) {
           quotedIndicator.animate()
@@ -557,25 +539,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     this.gestureDetector = gestureDetector;
   }
 
-  @Override
-  public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-    // Tellomi（#1257）：横滑相册开始横向拖动时会逐级申请「别拦截」；这时取消按下 100ms 后的气泡缩小（那是长按的反馈，不是拖动的）。
-    if (disallowIntercept && isAlbumCarouselVisible()) {
-      removeCallbacks(shrinkBubble);
-      bodyBubble.animate().scaleX(1.0f).scaleY(1.0f);
-      reactionsView.animate().scaleX(1.0f).scaleY(1.0f);
-      restoreAlbumCarouselScale();
-    }
-
-    super.requestDisallowInterceptTouchEvent(disallowIntercept);
-  }
-
   public boolean disallowSwipe(float downX, float downY) {
-    // Tellomi（#1257 C-11）：能滑的相册上横向拖动只翻图，不触发滑动回复；放得下的相册照常能滑动回复。
-    if (isAlbumCarouselVisible() && albumCarouselStub.require().claimsHorizontalDrag(downX, downY)) {
-      return true;
-    }
-
     if (!hasAudio(messageRecord)) return false;
 
     audioViewStub.get().getSeekBarGlobalVisibleRect(SWIPE_RECT);
@@ -596,7 +560,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    prepareAlbumCarouselSpace(widthMeasureSpec);
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
     if (isInEditMode()) {
@@ -640,9 +603,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       int  collapsedTopMargin = -1 * (dateView.getMeasuredHeight() + ViewUtil.dpToPx(4));
 
       if (bodyText.isSingleLine() && !messageRecord.isFailed()) {
-        boolean mediaBounded   = hasBigImageLinkPreview(messageRecord) || (hasThumbnail(messageRecord) && !isAlbumCarouselVisible());
-        int     maxBubbleWidth = mediaBounded ? readDimen(R.dimen.media_bubble_max_width) : getMaxBubbleWidth();
-        if (mediaBounded) {
+        int maxBubbleWidth = hasBigImageLinkPreview(messageRecord) || hasThumbnail(messageRecord) ? readDimen(R.dimen.media_bubble_max_width) : getMaxBubbleWidth();
+        if (hasThumbnail(messageRecord) || hasBigImageLinkPreview(messageRecord)) {
           int thumbnailWidth = mediaThumbnailStub.resolved() ? mediaThumbnailStub.require().getMeasuredWidth() : 0;
           if (thumbnailWidth > 0) {
             maxBubbleWidth = Math.min(maxBubbleWidth, thumbnailWidth);
@@ -757,7 +719,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       }
     }
 
-    if (!isViewOnceMessage(messageRecord) && !isAlbumCarouselVisible() && (hasThumbnail(messageRecord) || hasBigImageLinkPreview(messageRecord))) {
+    if (!isViewOnceMessage(messageRecord) && (hasThumbnail(messageRecord) || hasBigImageLinkPreview(messageRecord))) {
       int thumbnailWidth = mediaThumbnailStub.require().getMeasuredWidth();
       if (thumbnailWidth > 0 && bodyBubble.getMeasuredWidth() > thumbnailWidth) {
         bodyBubble.getLayoutParams().width = thumbnailWidth;
@@ -790,8 +752,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       measureCalls   = 0;
       updatingFooter = false;
     }
-
-    measureAlbumCarousel();
   }
 
   private int getDefaultTopMarginForRecord(@NonNull MessageRecord messageRecord, int defaultTopMargin, int defaultBottomMargin) {
@@ -831,7 +791,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     int availableWidth;
     if (hasAudio(messageRecord)) {
       availableWidth = audioViewStub.get().getMeasuredWidth() + ViewUtil.getLeftMargin(audioViewStub.get()) + ViewUtil.getRightMargin(audioViewStub.get());
-    } else if (!isViewOnceMessage(messageRecord) && !isAlbumCarouselVisible() && (hasThumbnail(messageRecord) || hasBigImageLinkPreview(messageRecord))) {
+    } else if (!isViewOnceMessage(messageRecord) && (hasThumbnail(messageRecord) || hasBigImageLinkPreview(messageRecord))) {
       availableWidth = mediaThumbnailStub.require().getMeasuredWidth();
     } else {
       availableWidth = bodyBubble.getMeasuredWidth() - bodyBubble.getPaddingLeft() - bodyBubble.getPaddingRight();
@@ -894,7 +854,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     MultiselectPart bottom = parts.asDouble().getBottomPart();
 
     if (hasThumbnail(messageRecord)) {
-      return isTouchBelowBoundary(getMediaBoundaryView()) ? bottom : top;
+      return isTouchBelowBoundary(mediaThumbnailStub.require()) ? bottom : top;
     } else if (hasDocument(messageRecord)) {
       return isTouchBelowBoundary(documentViewStub.get()) ? bottom : top;
     } else if (hasAudio(messageRecord)) {
@@ -918,9 +878,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     boolean isAttachmentPart = multiselectPart instanceof MultiselectPart.Attachments;
 
     if (hasThumbnail(messageRecord) && isAttachmentPart) {
-      return getProjectionTop(getMediaBoundaryView());
+      return getProjectionTop(mediaThumbnailStub.require());
     } else if (hasThumbnail(messageRecord) && isTextPart) {
-      return getProjectionBottom(getMediaBoundaryView());
+      return getProjectionBottom(mediaThumbnailStub.require());
     } else if (hasDocument(messageRecord) && isAttachmentPart) {
       return getProjectionTop(documentViewStub.get());
     } else if (hasDocument(messageRecord) && isTextPart) {
@@ -953,7 +913,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   @Override
   public int getBottomBoundaryOfMultiselectPart(@NonNull MultiselectPart multiselectPart) {
     if (multiselectPart instanceof MultiselectPart.Attachments && hasThumbnail(messageRecord)) {
-      return getProjectionBottom(getMediaBoundaryView());
+      return getProjectionBottom(mediaThumbnailStub.require());
     } else if (multiselectPart instanceof MultiselectPart.Attachments && hasDocument(messageRecord)) {
       return getProjectionBottom(documentViewStub.get());
     } else if (multiselectPart instanceof MultiselectPart.Attachments && hasAudio(messageRecord)) {
@@ -977,265 +937,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   public boolean isOutgoing() {
     return conversationMessage.getMessageRecord().isOutgoing();
-  }
-
-  @Override
-  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-    super.onLayout(changed, left, top, right, bottom);
-    layoutAlbumCarousel();
-  }
-
-  // Tellomi（#1257）：横滑相册 ------------------------------------------------------------------
-
-  private boolean isAlbumCarousel(@NonNull MessageRecord messageRecord) {
-    return albumCarouselStub.isResolvable() &&
-           albumCarouselSpacer != null &&
-           messageRecord instanceof MmsMessageRecord &&
-           !isReleaseNotes &&
-           !isCondensedMode() &&
-           !isViewOnceMessage(messageRecord) &&
-           AlbumCarouselView.isEligible(((MmsMessageRecord) messageRecord).getSlideDeck().getSlides());
-  }
-
-  private boolean isAlbumCarouselVisible() {
-    return albumCarouselStub != null && albumCarouselStub.resolved() && albumCarouselStub.require().getVisibility() != GONE;
-  }
-
-  private boolean isAlbumCarouselFooter(@NonNull ConversationItemFooter candidate) {
-    return albumCarouselStub.resolved() &&
-           albumCarouselStub.require().getFooter().resolved() &&
-           albumCarouselStub.require().getFooter().get() == candidate;
-  }
-
-  private void hideAlbumCarousel() {
-    if (albumCarouselStub.resolved()) {
-      albumCarouselStub.require().setVisibility(GONE);
-    }
-    if (albumCarouselSpacer != null) {
-      albumCarouselSpacer.setVisibility(GONE);
-    }
-    bodyBubble.setBackgroundGap(-1, -1);
-    placeIndicatorsForAlbumCarousel(false);
-  }
-
-  private void bindAlbumCarousel(@NonNull MmsMessageRecord messageRecord, boolean showControls) {
-    AlbumCarouselView carousel  = albumCarouselStub.require();
-    SlideDeck         slideDeck = messageRecord.getSlideDeck();
-
-    carousel.setVisibility(bodyBubble.getVisibility() == VISIBLE ? VISIBLE : INVISIBLE);
-    if (albumCarouselSpacer != null) {
-      albumCarouselSpacer.setVisibility(VISIBLE);
-    }
-
-    carousel.setAlignEndWhenFits(messageRecord.isOutgoing());
-    carousel.setThumbnailClickListener(new ThumbnailClickListener());
-    carousel.setCancelTransferClickListener(attachmentCancelClickListener);
-    carousel.setPlayVideoClickListener(playVideoClickListener);
-    carousel.setItemLongClickListener(passthroughClickListener);
-
-    if (!messageRecord.isOutgoing() || doAnySlidesLackData(slideDeck)) {
-      carousel.setStartTransferClickListener(downloadClickListener);
-    } else if (slideDeck.getSlides().stream().anyMatch(it -> it.getTransferState() == AttachmentTable.TRANSFER_PROGRESS_FAILED)) {
-      carousel.setStartTransferClickListener(new ResendClickListener(messageRecord));
-    } else {
-      carousel.setStartTransferClickListener(null);
-    }
-
-    carousel.setSlides(requestManager, messageRecord.getId(), slideDeck.getThumbnailSlides(), showControls);
-  }
-
-  /** C-5：静止时第一张的左边——对方的消息对齐对方气泡起点（群聊在头像后），自己的消息对齐自己气泡列起点。 */
-  private int getAlbumCarouselStartInset() {
-    MarginLayoutParams bubbleParams = (MarginLayoutParams) bodyBubble.getLayoutParams();
-    int                inset        = getPaddingStart() + bubbleParams.getMarginStart();
-
-    if (!messageRecord.isOutgoing() && contactPhotoHolder != null && contactPhotoHolder.getVisibility() != GONE) {
-      MarginLayoutParams photoParams = (MarginLayoutParams) contactPhotoHolder.getLayoutParams();
-      inset += photoParams.getMarginStart() + photoParams.width + photoParams.getMarginEnd();
-    }
-
-    return inset;
-  }
-
-  /** 量气泡之前先把占位的高度定成行高（C-2），气泡量出来就给相册留好了位置。 */
-  private void prepareAlbumCarouselSpace(int widthMeasureSpec) {
-    if (!isAlbumCarouselVisible() || albumCarouselSpacer == null) {
-      return;
-    }
-
-    int width     = MeasureSpec.getSize(widthMeasureSpec);
-    int rowHeight = AlbumCarouselView.rowHeightPx(getContext(), width);
-
-    ViewGroup.LayoutParams spacerParams = albumCarouselSpacer.getLayoutParams();
-    if (spacerParams.height != rowHeight) {
-      spacerParams.height = rowHeight;
-      albumCarouselSpacer.setLayoutParams(spacerParams);
-    }
-
-    AlbumCarouselView  carousel       = albumCarouselStub.require();
-    MarginLayoutParams carouselParams = (MarginLayoutParams) carousel.getLayoutParams();
-
-    // RelativeLayout 按「宽度 − 两侧留白」量 match_parent 的子视图；负外边距把留白抵掉，
-    // 它这一轮量出来就是整条消息的宽度，和下面 measureAlbumCarousel 一致（两次宽度不同会让几何来回变、滚动位置被重设）。
-    if (carouselParams.getMarginStart() != -getPaddingStart() || carouselParams.getMarginEnd() != -getPaddingEnd()) {
-      carouselParams.setMarginStart(-getPaddingStart());
-      carouselParams.setMarginEnd(-getPaddingEnd());
-      carousel.setLayoutParams(carouselParams);
-    }
-
-    carousel.setStartInset(getAlbumCarouselStartInset());
-  }
-
-  /** 相册铺满整条消息的宽度（含两侧留白），滑动区是整屏宽（C-5）。 */
-  private void measureAlbumCarousel() {
-    if (!isAlbumCarouselVisible() || albumCarouselSpacer == null) {
-      return;
-    }
-
-    albumCarouselStub.require().measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
-                                        MeasureSpec.makeMeasureSpec(albumCarouselSpacer.getLayoutParams().height, MeasureSpec.EXACTLY));
-  }
-
-  /** 相册摆到气泡里占位的那一条上；气泡背景在这一条（连同上下的缝）不画。 */
-  private void layoutAlbumCarousel() {
-    if (!isAlbumCarouselVisible() || albumCarouselSpacer == null) {
-      return;
-    }
-
-    AlbumCarouselView carousel = albumCarouselStub.require();
-    int               top      = bodyBubble.getTop() + albumCarouselSpacer.getTop();
-
-    carousel.layout(0, top, getWidth(), top + carousel.getMeasuredHeight());
-    bodyBubble.setBackgroundGap(albumCarouselSpacer.getTop() - albumCarouselGapAbove, albumCarouselSpacer.getBottom() + albumCarouselGapBelow);
-    placeIndicatorsForAlbumCarousel(true);
-  }
-
-  /**
-   * 气泡旁的小圆标（有人回复过 / 定时 / 跳到置顶）按整个气泡垂直居中，横滑相册在时它们会落在相册那一条上、被图片盖住。
-   * 有说明时挪到说明那一段的中间；没有说明时留在原处，但画在相册之上（能看见、能点）。
-   */
-  private void placeIndicatorsForAlbumCarousel(boolean carouselShown) {
-    View  wrapper      = quotedIndicator != null ? (View) quotedIndicator.getParent() : null;
-    float translationY = 0f;
-
-    if (carouselShown && albumCarouselSpacer != null) {
-      int bubbleHeight = bodyBubble.getHeight();
-      int bandBottom   = albumCarouselSpacer.getBottom() + albumCarouselGapBelow;
-      if (bandBottom < bubbleHeight) {
-        translationY = (bandBottom + bubbleHeight) / 2f - bubbleHeight / 2f;
-      }
-    }
-
-    for (View indicator : Arrays.asList(quotedIndicator, scheduledIndicator, goToPinnedIndicator)) {
-      if (indicator != null) {
-        indicator.setTranslationY(translationY);
-      }
-    }
-
-    if (wrapper != null) {
-      wrapper.setTranslationZ(carouselShown ? 1f : 0f);
-    }
-  }
-
-  /** C-8：群昵称 / 引用在相册上方成一段气泡，说明在相册下方成一段气泡，相册本身不在任何气泡里。 */
-  private void adjustMarginsForAlbumCarousel(boolean senderNameVisible) {
-    if (!isAlbumCarouselVisible() || albumCarouselSpacer == null) {
-      albumCarouselGapAbove = 0;
-      albumCarouselGapBelow = 0;
-      return;
-    }
-
-    boolean quoteVisible       = quoteView != null && quoteView.getVisibility() == VISIBLE;
-    boolean storyLabelVisible  = storyReactionLabelWrapper != null && storyReactionLabelWrapper.getVisibility() == VISIBLE;
-    boolean hasContentAbove    = senderNameVisible || quoteVisible || storyLabelVisible;
-    boolean hasContentBelow    = bodyText.getVisibility() == VISIBLE || footer.getVisibility() == VISIBLE;
-    int     gap                = readDimen(R.dimen.message_bubble_top_image_margin);
-    int     paddingBelowQuote  = quoteVisible ? readDimen(R.dimen.message_bubble_bottom_padding) : 0;
-
-    albumCarouselGapAbove = hasContentAbove ? gap : 0;
-    albumCarouselGapBelow = hasContentBelow ? gap : 0;
-
-    ViewUtil.setTopMargin(albumCarouselSpacer, hasContentAbove ? paddingBelowQuote + gap : 0);
-    ViewUtil.setBottomMargin(albumCarouselSpacer, albumCarouselGapBelow);
-
-    if (bodyText.getVisibility() == VISIBLE) {
-      ViewUtil.setTopMargin(bodyText, readDimen(R.dimen.message_bubble_top_padding));
-    }
-  }
-
-  private @NonNull View getMediaBoundaryView() {
-    if (isAlbumCarouselVisible() && albumCarouselSpacer != null) {
-      return albumCarouselSpacer;
-    }
-    return mediaThumbnailStub.require();
-  }
-
-  private void restoreAlbumCarouselScale() {
-    if (isAlbumCarouselVisible()) {
-      albumCarouselStub.require().animate().scaleX(1.0f).scaleY(1.0f);
-    }
-  }
-
-  /** 长按时 ConversationFragment 把气泡设成 INVISIBLE、用快照代替；相册跟着气泡走，免得和快照叠在一起。 */
-  private void onBodyBubbleVisibilityChanged(int visibility) {
-    if (isAlbumCarouselVisible()) {
-      albumCarouselStub.require().setVisibility(visibility == VISIBLE ? VISIBLE : INVISIBLE);
-    }
-  }
-
-  /** 聊天色（渐变 / 壁纸）只画在相册上方与下方两段，相册那一条（连同缝）留空。 */
-  private void addAlbumCarouselBubbleProjections(@NonNull ViewGroup coordinateRoot, float translationX, float translationY) {
-    if (albumCarouselSpacer == null || bodyBubbleCorners == null) {
-      return;
-    }
-
-    int height     = bodyBubble.getHeight();
-    int bandTop    = albumCarouselSpacer.getTop() - albumCarouselGapAbove;
-    int bandBottom = albumCarouselSpacer.getBottom() + albumCarouselGapBelow;
-
-    if (bandTop > 0) {
-      colorizerProjections.add(
-          Projection.relativeToParent(coordinateRoot, bodyBubble, bodyBubbleCorners)
-                    .translateX(bodyBubble.getTranslationX())
-                    .insetBottom(height - bandTop)
-                    .withCorners(bodyBubbleCorners)
-                    .scale(bodyBubble.getScaleX())
-                    .translateX(translationX)
-                    .translateY(translationY)
-      );
-    }
-
-    if (bandBottom < height) {
-      colorizerProjections.add(
-          Projection.relativeToParent(coordinateRoot, bodyBubble, bodyBubbleCorners)
-                    .translateX(bodyBubble.getTranslationX())
-                    .scale(bodyBubble.getScaleX())
-                    .insetTop((int) (bandBottom * bodyBubble.getScaleX()))
-                    .withCorners(bodyBubbleCorners)
-                    .translateX(translationX)
-                    .translateY(translationY)
-      );
-    }
-  }
-
-  /** 查看器关闭时回到的那一张：先把它滚到完整露出（C-9），再把它交给共享元素转场。 */
-  public @Nullable View revealAlbumItemForMediaUri(@Nullable Uri mediaUri) {
-    if (!isAlbumCarouselVisible()) {
-      return null;
-    }
-
-    AlbumCarouselView carousel = albumCarouselStub.require();
-    int               index    = carousel.indexOfSlideUri(mediaUri);
-    return index >= 0 ? carousel.revealItem(index) : null;
-  }
-
-  /** 长按快照（{@link ConversationItemSelection}）要把铺满整行的横滑相册一起画进去。 */
-  public boolean hasAlbumCarouselForSnapshot() {
-    return isAlbumCarouselVisible();
-  }
-
-  public @Nullable View albumCarouselForSnapshot() {
-    return isAlbumCarouselVisible() ? albumCarouselStub.require() : null;
   }
 
   /// MessageRecord Attribute Parsers
@@ -1633,7 +1334,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
     bodyBubble.setQuoteViewProjection(null);
     bodyBubble.setVideoPlayerProjection(null);
-    hideAlbumCarousel();
 
     if (eventListener != null && audioViewStub.resolved()) {
       Log.d(TAG, "setMediaAttributes: unregistering voice note callbacks for audio slide " + audioViewStub.get().getAudioSlideUri());
@@ -1840,25 +1540,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       footer.setVisibility(VISIBLE);
     } else if (hasNoBubble(messageRecord)) {
       bodyBubble.setBackgroundColor(Color.TRANSPARENT);
-    } else if (hasThumbnail(messageRecord) && isAlbumCarousel(messageRecord)) {
-      // Tellomi（#1257）：≥ 2 张图片 / 视频改成一行横滑。相册铺在整条消息的宽度上（不在气泡里），气泡里只留等高的占位。
-      if (mediaThumbnailStub.resolved()) mediaThumbnailStub.require().setVisibility(View.GONE);
-      if (audioViewStub.resolved()) audioViewStub.get().setVisibility(View.GONE);
-      if (documentViewStub.resolved()) documentViewStub.get().setVisibility(View.GONE);
-      if (sharedContactStub.resolved()) sharedContactStub.get().setVisibility(GONE);
-      if (linkPreviewStub.resolved()) linkPreviewStub.get().setVisibility(GONE);
-      if (stickerStub.resolved()) stickerStub.get().setVisibility(View.GONE);
-      if (revealableStub.resolved()) revealableStub.get().setVisibility(View.GONE);
-      if (giftViewStub.resolved()) giftViewStub.get().setVisibility(View.GONE);
-      if (joinCallLinkStub.resolved()) joinCallLinkStub.get().setVisibility(View.GONE);
-      paymentViewStub.setVisibility(View.GONE);
-
-      bindAlbumCarousel((MmsMessageRecord) messageRecord, showControls);
-
-      ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-      ViewUtil.updateLayoutParamsIfNonNull(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-      footer.setVisibility(VISIBLE);
     } else if (hasThumbnail(messageRecord)) {
       mediaThumbnailStub.require().setVisibility(View.VISIBLE);
       if (audioViewStub.resolved()) audioViewStub.get().setVisibility(View.GONE);
@@ -2334,9 +2015,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     if (mediaThumbnailStub.resolved() && mediaThumbnailStub.require().getFooter().resolved()) {
       mediaThumbnailStub.require().getFooter().setVisibility(GONE);
     }
-    if (albumCarouselStub.resolved() && albumCarouselStub.require().getFooter().resolved()) {
-      albumCarouselStub.require().getFooter().setVisibility(GONE);
-    }
 
     if (isFooterVisible(current, next, isGroupThread)) {
       ConversationItemFooter activeFooter = getActiveFooter(current);
@@ -2370,11 +2048,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         activeFooter.setRevealDotColor(ContextCompat.getColor(context, R.color.signal_icon_tint_secondary));
       } else {
         activeFooter.disableBubbleBackground();
-      }
-
-      if (isAlbumCarouselFooter(activeFooter)) {
-        // Tellomi（#1257 C-7）：无说明的横滑相册，时间与勾在相册可视区右下角的半透明深色胶囊里。
-        activeFooter.enableBubbleBackground(R.drawable.album_carousel_footer_background, null);
       }
     }
   }
@@ -2452,8 +2125,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       return stickerFooter;
     } else if (hasSharedContact(messageRecord) && messageRecord.isDisplayBodyEmpty(getContext())) {
       return sharedContactStub.get().getFooter();
-    } else if (isAlbumCarouselVisible() && messageRecord.isDisplayBodyEmpty(getContext())) {
-      return albumCarouselStub.require().getFooter().get();
     } else if (hasOnlyThumbnail(messageRecord) && messageRecord.isDisplayBodyEmpty(getContext())) {
       return mediaThumbnailStub.require().getFooter().get();
     } else {
@@ -2597,8 +2268,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       boolean hasQuoteAbove = quoteView != null && quoteView.getVisibility() == VISIBLE;
       ViewUtil.setTopMargin(mediaThumbnailStub.require(), hasQuoteAbove ? readDimen(R.dimen.message_bubble_top_image_margin) : 0);
     }
-
-    adjustMarginsForAlbumCarousel(senderNameVisible);
   }
 
   private void setOutlinerRadii(Outliner outliner, int topStart, int topEnd, int bottomEnd, int bottomStart) {
@@ -2894,10 +2563,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       float translationX = Util.halfOffsetFromScale(bodyBubble.getWidth(), bodyBubble.getScaleX());
       float translationY = Util.halfOffsetFromScale(bodyBubble.getHeight(), bodyBubble.getScaleY());
 
-      if (isAlbumCarouselVisible() && albumCarouselSpacer != null) {
-        addAlbumCarouselBubbleProjections(coordinateRoot, translationX, translationY);
-        bodyBubbleToRoot.release();
-      } else if (videoToBubble != null) {
+      if (videoToBubble != null) {
         Projection videoToRoot = Projection.translateFromDescendantToParentCoords(videoToBubble, bodyBubble, coordinateRoot);
 
         List<Projection> projections = Projection.getCapAndTail(bodyBubbleToRoot, videoToRoot);
@@ -3046,9 +2712,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   }
 
   @NonNull @Override public List<View> getBubbleViews() {
-    if (isAlbumCarouselVisible()) {
-      return Arrays.asList(bodyBubble, albumCarouselStub.require());
-    }
     return Collections.singletonList(bodyBubble);
   }
 
@@ -3353,9 +3016,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       return;
     }
 
-    Projection.Corners sharedElementCorners = isAlbumCarouselVisible() ? new Projection.Corners(readDimen(R.dimen.message_corner_radius))
-                                                                       : mediaThumbnailStub.require().getCorners();
-
     MediaIntentFactory.MediaPreviewArgs args = new MediaIntentFactory.MediaPreviewArgs(
         messageRecord.getThreadId(),
         messageRecord.getTimestamp(),
@@ -3378,10 +3038,10 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         new MediaIntentFactory.SharedElementArgs(
             slide.asAttachment().width,
             slide.asAttachment().height,
-            sharedElementCorners.getTopLeft(),
-            sharedElementCorners.getTopRight(),
-            sharedElementCorners.getBottomRight(),
-            sharedElementCorners.getBottomLeft()
+            mediaThumbnailStub.require().getCorners().getTopLeft(),
+            mediaThumbnailStub.require().getCorners().getTopRight(),
+            mediaThumbnailStub.require().getCorners().getBottomRight(),
+            mediaThumbnailStub.require().getCorners().getBottomLeft()
         ),
         false);
     if (v instanceof ThumbnailView) {

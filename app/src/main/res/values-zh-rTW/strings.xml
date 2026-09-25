@@ -47,13 +47,7 @@
     <!-- AlbumThumbnailView -->
   <!-- Removed by excludeNonTranslatables <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string> -->
     <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
-    <plurals name="AlbumCarouselView__album_with_d_items">
-        <item quantity="other">相簿，共 %d 項</item>
-    </plurals>
     <string name="AlbumCarouselView__item_d_of_d">第 %1$d 項，共 %2$d 項</string>
-    <string name="AlbumCarouselView__next_item">下一項</string>
-    <string name="AlbumCarouselView__previous_item">上一項</string>
-    <string name="AlbumCarouselView__s_s">%1$s，%2$s</string>
 
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi 正在更新中…</string>

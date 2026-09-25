@@ -68,21 +68,6 @@ class MediaPreviewViewModel : ViewModel() {
     return currentPosition in store.state.mediaRecords.indices && store.state.mediaRecords[currentPosition].toMedia()?.uri == initialMediaUri
   }
 
-  /**
-   * Tellomi（#1257 C-9）：当前页如果是「点开的那张所在消息」里的另一张，返回它的 uri；否则 null。
-   * 横滑相册靠它把关闭动画落到当前这一张上。
-   */
-  fun currentAlbumSiblingUri(initialMediaUri: Uri): Uri? {
-    val records = store.state.mediaRecords
-    val current = records.getOrNull(currentPosition) ?: return null
-    val currentUri = current.toMedia()?.uri ?: return null
-    if (currentUri == initialMediaUri) return null
-
-    val initial = records.firstOrNull { it.toMedia()?.uri == initialMediaUri } ?: return null
-    val currentMessageId = current.attachment?.mmsId ?: return null
-    return if (currentMessageId == initial.attachment?.mmsId) currentUri else null
-  }
-
   fun fetchAttachments(context: Context, startingAttachmentId: AttachmentId, threadId: Long, sorting: MediaTable.Sorting, forceRefresh: Boolean = false) {
     if (store.state.loadState == MediaPreviewState.LoadState.INIT || forceRefresh) {
       disposables += repository.getAttachments(context, startingAttachmentId, threadId, sorting).subscribe { result ->

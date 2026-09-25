@@ -11,12 +11,6 @@ import android.net.Uri
 object MediaPreviewCache {
   var drawable: Drawable? = null
 
-  /**
-   * Tellomi（#1257 C-9）：查看器关闭时停在同一个相册里的另一张（不是点开的那张）时，记下它的 uri；
-   * 会话页映射回程的共享元素时读它，先把横滑相册滚到这一张，缩回动画就落在它上面。读完即清。
-   */
-  var returnMediaUri: Uri? = null
-
   /** Tellomi（#1257）：从哪个会话打开的查看器（-1 = 不是从会话打开），查看器据此决定显不显示「回复」。 */
   var replyTargetThreadId: Long = -1
 

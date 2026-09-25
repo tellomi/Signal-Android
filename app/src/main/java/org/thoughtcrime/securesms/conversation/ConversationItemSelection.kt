@@ -45,10 +45,6 @@ object ConversationItemSelection {
     drawConversationItem: Boolean,
     hasReaction: Boolean
   ): Bitmap {
-    if (target is ConversationItem && target.hasAlbumCarouselForSnapshot()) {
-      return snapshotWithAlbumCarousel(target, list, drawConversationItem, hasReaction)
-    }
-
     val snapshotStrategy = target.getSnapshotStrategy()
     if (snapshotStrategy != null) {
       return createSafeBitmap(target.root.width, target.root.height).applyCanvas {
@@ -125,89 +121,6 @@ object ConversationItemSelection {
       mp4Projection?.release()
       bodyBubble.scaleX = originalScale
       bodyBubble.scaleY = originalScale
-    }
-  }
-
-  /**
-   * Tellomi（#1257）：横滑相册铺在整条消息的宽度上，不在气泡里。快照从整条消息的左边开始（宽度 = 整行），
-   * 气泡照原来的办法画（渐变 / 壁纸聊天色从列表按投影取），再把相册和表情回应画到各自的位置上。
-   * 对应的 SnapshotMetrics（左偏移 0）见 [snapshotMetricsFor]。
-   */
-  private fun snapshotWithAlbumCarousel(
-    target: ConversationItem,
-    list: RecyclerView,
-    drawConversationItem: Boolean,
-    hasReaction: Boolean
-  ): Bitmap {
-    val element: InteractiveConversationElement = target
-    val bodyBubble = element.bubbleView
-    val reactionsView = element.reactionsView
-    val carousel = target.albumCarouselForSnapshot()!!
-
-    val originalBubbleScale = bodyBubble.scaleX
-    val originalCarouselScale = carousel.scaleX
-    bodyBubble.scaleX = 1.0f
-    bodyBubble.scaleY = 1.0f
-    carousel.scaleX = 1.0f
-    carousel.scaleY = 1.0f
-
-    val path = Path()
-    val xTranslation = -target.root.x
-    val yTranslation = -target.root.y - bodyBubble.y
-
-    target.getSnapshotProjections(list, false).use {
-      it.forEach { p ->
-        p.translateX(xTranslation)
-        p.translateY(yTranslation)
-        p.applyToPath(path)
-      }
-    }
-
-    target.root.destroyAllDrawingCaches()
-
-    var bitmapHeight = bodyBubble.height
-    if (hasReaction) {
-      bitmapHeight += (reactionsView.height - DimensionUnit.DP.toPixels(4f)).toInt()
-    }
-
-    return createSafeBitmap(target.root.width, bitmapHeight).applyCanvas {
-      if (drawConversationItem) {
-        withTranslation(x = bodyBubble.x) {
-          bodyBubble.draw(this)
-        }
-      }
-
-      withClip(path) {
-        withTranslation(x = xTranslation, y = yTranslation) {
-          list.draw(this)
-        }
-      }
-
-      withTranslation(x = carousel.x, y = carousel.y - bodyBubble.y) {
-        carousel.draw(this)
-      }
-
-      withTranslation(x = reactionsView.x, y = reactionsView.y - bodyBubble.y) {
-        reactionsView.draw(this)
-      }
-    }.also {
-      bodyBubble.scaleX = originalBubbleScale
-      bodyBubble.scaleY = originalBubbleScale
-      carousel.scaleX = originalCarouselScale
-      carousel.scaleY = originalCarouselScale
-    }
-  }
-
-  /** 长按快照的横向位置：有横滑相册时快照从整条消息的左边开始。 */
-  @JvmStatic
-  fun snapshotMetricsFor(target: InteractiveConversationElement): InteractiveConversationElement.SnapshotMetrics {
-    target.getSnapshotStrategy()?.let { return it.snapshotMetrics }
-
-    val bodyBubble = target.bubbleView
-    return if (target is ConversationItem && target.hasAlbumCarouselForSnapshot()) {
-      InteractiveConversationElement.SnapshotMetrics(snapshotOffset = 0f, contextMenuPadding = bodyBubble.x)
-    } else {
-      InteractiveConversationElement.SnapshotMetrics(snapshotOffset = bodyBubble.x, contextMenuPadding = bodyBubble.x)
     }
   }
 
