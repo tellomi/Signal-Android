@@ -273,6 +273,8 @@ class MediaPickerScreenshots {
 
       click(byDescription("Send").first())
       val sent = waitForNewOutgoing(threadId, before, expected = 1)
+      // 上游先写消息、后挂附件（不在同一事务）：三张都挂上再读，不然会读早（同「单独发送」那条，8b56be54）
+      waitForAttachments(sent, expectedEach = 3)
       val attachments = SignalDatabase.attachments.getAttachmentsForMessage(sent.single().id).sortedBy { it.displayOrder }
       val sentSizes = attachments.map { it.width to it.height }
       report.appendLine("sent sizes: $sentSizes")
