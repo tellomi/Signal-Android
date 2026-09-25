@@ -18,7 +18,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
 import android.provider.MediaStore
+import android.view.InputDevice
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.EditText
@@ -206,7 +208,105 @@ class MediaPickerScreenshots {
     }
   }
 
+  /**
+   * P-3「只看已选」：勾 3 张竖图 → 点「✓3」→ 聊天背景上的一行预览；真实触摸长按 0.4 秒把第 1 张拖过第 2 张 →
+   * 取消一张再撤销 → 发送：这条消息的附件顺序就是拖过之后的顺序。
+   */
+  @Test
+  fun pickerSelectedPreviewReordersBeforeSending() {
+    val run = SystemClock.uptimeMillis()
+    // 竖图才能在一屏宽里放下两张多（9:16 与 3:4），拖动不碰两端的自动滚。最后插的在网格第一格。
+    val sizes = listOf(1200 to 1600, 1080 to 1920, 900 to 1600)
+    sizes.forEachIndexed { index, (width, height) ->
+      insertGalleryImage("preview-$run-$index", width, height, index + 3)
+      SystemClock.sleep(1_100)
+    }
+    val sizeInCell = sizes.reversed()
+
+    val other = harness.others[1]
+    val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
+    val before = MessageTableTestUtils.getMessages(threadId).map { it.id }.toSet()
+
+    val conversation = openConversation(other, threadId)
+    try {
+      settle(1500)
+      openGalleryFromAttachmentKeyboard(conversation)
+      waitFor("网格里的勾") { checks().size >= 3 }
+      for (cell in listOf(0, 1, 2)) {
+        click(checks()[cell])
+        settle(500)
+      }
+      waitFor("「✓3」") { byDescription("3 selected").isNotEmpty() }
+
+      click(byDescription("3 selected").first())
+      waitFor("只看已选") { nodes { it.text?.toString() == "Message preview" }.isNotEmpty() }
+      assertTrue("≥ 2 张有「拖动可调整顺序」", nodes { it.text?.toString() == "Drag to reorder" }.isNotEmpty())
+      assertTrue("✕ 变返回", byDescription("Back").isNotEmpty())
+      settle(800)
+      shot("picker-5-selected-preview")
+
+      val cards = previewCards()
+      report.appendLine("cards: ${cards.map { it.boundsInScreen() }}")
+      assertEquals("三张卡片", 3, cards.size)
+      val from = cards[0].boundsInScreen()
+      val over = cards[1].boundsInScreen()
+      longPressDrag(from.centerX().toFloat(), from.centerY().toFloat(), over.centerX() + over.width() / 3f)
+      settle(800)
+      shot("picker-6-reordered")
+
+      // 取消第 2 张再撤销：撤销条计数，撤销后回到原位（由最后发出去的顺序来判）。
+      // 第 3 张一半在屏幕外，它的勾整个在屏外、读屏树里没有，所以只数看得见的。
+      val previewChecks = checks()
+      assertTrue("看得见的勾至少两个", previewChecks.size >= 2)
+      click(previewChecks[1])
+      waitFor("撤销条") { nodes { it.text?.toString() == "1 deselected" }.isNotEmpty() }
+      settle(300)
+      shot("picker-7-undo")
+      click(nodes { it.text?.toString() == "Undo" }.first())
+      waitFor("撤销条收起") { nodes { it.text?.toString() == "1 deselected" }.isEmpty() && checks().size >= 2 }
+      settle(500)
+
+      click(byDescription("Send").first())
+      val sent = waitForNewOutgoing(threadId, before, expected = 1)
+      val attachments = SignalDatabase.attachments.getAttachmentsForMessage(sent.single().id).sortedBy { it.displayOrder }
+      val sentSizes = attachments.map { it.width to it.height }
+      report.appendLine("sent sizes: $sentSizes")
+      assertEquals("发出去的顺序就是拖过之后的顺序", listOf(sizeInCell[1], sizeInCell[0], sizeInCell[2]), sentSizes)
+    } finally {
+      File(outDir, "metrics-picker-preview.txt").writeText(report.toString())
+      closeMediaSendIfOpen()
+      conversation.close()
+    }
+  }
+
   // region helpers
+
+  /** 「只看已选」里的卡片：可点、点了是「Open」的那一层，从左到右。 */
+  private fun previewCards(): List<AccessibilityNodeInfo> {
+    return nodes { node ->
+      node.isClickable && node.actionList.any { it.id == AccessibilityNodeInfo.ACTION_CLICK && it.label?.toString() == "Open" }
+    }.sortedBy { it.boundsInScreen().left }
+  }
+
+  /** 真实触摸：按下、停 400 毫秒（过 0.3 秒的长按）、分几步横着挪到 [toX]、抬起。 */
+  private fun longPressDrag(x: Float, y: Float, toX: Float) {
+    val automation = instrumentation.uiAutomation
+    val downTime = SystemClock.uptimeMillis()
+    fun inject(action: Int, atX: Float, time: Long) {
+      val event = MotionEvent.obtain(downTime, time, action, atX, y, 0).apply { source = InputDevice.SOURCE_TOUCHSCREEN }
+      assertTrue("注入触摸失败", automation.injectInputEvent(event, true))
+      event.recycle()
+    }
+    inject(MotionEvent.ACTION_DOWN, x, downTime)
+    SystemClock.sleep(400)
+    val steps = 12
+    for (i in 1..steps) {
+      SystemClock.sleep(16)
+      inject(MotionEvent.ACTION_MOVE, x + (toX - x) * i / steps, SystemClock.uptimeMillis())
+    }
+    SystemClock.sleep(100)
+    inject(MotionEvent.ACTION_UP, toX, SystemClock.uptimeMillis())
+  }
 
   /** 所有窗口里的无障碍节点（下拉菜单是单独的弹出窗口），按屏幕位置从上到下、从左到右排好。 */
   private fun nodes(predicate: (AccessibilityNodeInfo) -> Boolean): List<AccessibilityNodeInfo> {

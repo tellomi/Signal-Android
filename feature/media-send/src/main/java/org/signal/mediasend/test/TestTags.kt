@@ -53,6 +53,18 @@ object TestTags {
   /** Tag for the numbered check on the grid tile of the media at [uri]. */
   fun mediaPickerCheck(uri: String): String = "media_picker_check_$uri"
 
+  // Tellomi（tellomi/tellomi#1261 P-3）只看已选
+  const val MEDIA_PICKER_SELECTED_PREVIEW = "media_picker_selected_preview"
+  const val MEDIA_PICKER_PREVIEW_ROW = "media_picker_preview_row"
+  const val MEDIA_PICKER_PREVIEW_CAPTION = "media_picker_preview_caption"
+  const val MEDIA_PICKER_UNDO_BAR = "media_picker_undo_bar"
+
+  /** Tag for the card of the media at [uri] in the selected-only preview. */
+  fun mediaPickerPreviewCard(uri: String): String = "media_picker_preview_card_$uri"
+
+  /** Tag for the numbered check on the preview card of the media at [uri]. */
+  fun mediaPickerPreviewCheck(uri: String): String = "media_picker_preview_check_$uri"
+
   // Schedule Send Menu
   const val SCHEDULE_SEND_PICK_TIME_OPTION = "schedule_send_pick_time_option"
 

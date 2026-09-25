@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.signal.core.ui.WindowBreakpoint
 import org.signal.core.ui.compose.LocalChatColorProvider
+import org.signal.core.ui.compose.LocalChatWallpaper
 import org.signal.core.ui.compose.LocalDisplayNameProvider
 import org.signal.core.ui.getWindowBreakpoint
 import org.signal.emoji.EmojiEventListener
@@ -164,7 +165,9 @@ class MediaSendV3Activity :
           rememberRecipientField(RecipientId.from(id)) {
             Color(chatColors.asSingleColor())
           }
-        }
+        },
+        // Tellomi（#1261 P-3）：选图面板「只看已选」铺会话的聊天背景。
+        LocalChatWallpaper provides { id, modifier -> ChatWallpaperBackground(id, modifier) }
       ) {
         MediaSendScreen(
           contractArgs = contractArgs,

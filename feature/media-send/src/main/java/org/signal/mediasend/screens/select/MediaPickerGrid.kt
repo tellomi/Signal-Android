@@ -6,6 +6,7 @@
 package org.signal.mediasend.screens.select
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -46,9 +47,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,6 +77,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import org.signal.core.models.media.Media
 import org.signal.core.models.media.MediaFolder
 import org.signal.core.ui.compose.DropdownMenus
@@ -113,11 +119,58 @@ internal fun MediaPickerFilesScreen(
   recipientChatColor: Color?
 ) {
   val columns = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 3
+
+  // P-3：点「✓N」切到「只看已选」；在那里取消的记下原来的位置，4 秒内可以撤销；全部取消 0.3 秒后自动回网格。
+  var showSelectedOnly by rememberSaveable { mutableStateOf(false) }
+  val deselections = remember { mutableStateListOf<Pair<Media, Int>>() }
+  var undoGeneration by remember { mutableIntStateOf(0) }
+  LaunchedEffect(undoGeneration) {
+    if (deselections.isNotEmpty()) {
+      delay(UNDO_DURATION_MS)
+      deselections.clear()
+    }
+  }
+  LaunchedEffect(showSelectedOnly, state.selectedMedia.isEmpty()) {
+    if (showSelectedOnly && state.selectedMedia.isEmpty()) {
+      delay(RETURN_TO_GRID_DELAY_MS)
+      showSelectedOnly = false
+    }
+  }
+  BackHandler(enabled = showSelectedOnly) {
+    showSelectedOnly = false
+  }
+  val deselectInPreview: (Media) -> Unit = { media ->
+    val index = state.selectedMedia.indexOfFirst { it.uri == media.uri }
+    if (index >= 0) {
+      deselections += media to index
+      undoGeneration++
+      onEvent(MediaSelectScreenEvents.MediaUnselected(setOf(media)))
+    }
+  }
+  // 撤销：倒着放回去——先加回末尾，再挪回原来的位置（两个事件在 ViewModel 里按顺序执行）。
+  val undoDeselections: () -> Unit = {
+    var size = state.selectedMedia.size
+    for ((media, index) in deselections.reversed()) {
+      onEvent(MediaSelectScreenEvents.MediaSelected(setOf(media)))
+      onEvent(MediaSelectScreenEvents.ReorderSelectedMedia(fromIndex = size, toIndex = index.coerceAtMost(size)))
+      size++
+    }
+    deselections.clear()
+  }
   // 横幅占掉网格的第一格：格子下标 → 媒体（横幅那格是 null，不能选）。
   val gridItems = List(if (showLimitedAccessBanner) 1 else 0) { null } + state.selectedMediaFolderItems
 
   Scaffold(
-    topBar = { PickerTopBar(state = state, onEvent = onEvent, recipientChatColor = recipientChatColor) },
+    topBar = {
+      PickerTopBar(
+        state = state,
+        onEvent = onEvent,
+        recipientChatColor = recipientChatColor,
+        showSelectedOnly = showSelectedOnly,
+        onShowSelectedOnly = { showSelectedOnly = true },
+        onBack = { showSelectedOnly = false }
+      )
+    },
     containerColor = MaterialTheme.colorScheme.surface
   ) { paddingValues ->
     Column(
@@ -126,60 +179,83 @@ internal fun MediaPickerFilesScreen(
         .fillMaxSize()
     ) {
       Box(modifier = Modifier.weight(1f)) {
-        LazyVerticalGrid(
-          state = gridState,
-          columns = GridCells.Fixed(columns),
-          horizontalArrangement = spacedBy(PickerMetrics.gridSpacing),
-          verticalArrangement = spacedBy(PickerMetrics.gridSpacing),
-          userScrollEnabled = !showPlaceholders && !dragToSelectState.isActive,
-          modifier = Modifier
-            .fillMaxSize()
-            .testTag(TestTags.MEDIA_SELECT_GRID)
-            .then(
-              if (showPlaceholders) {
-                Modifier
-              } else {
-                Modifier
-                  .swipeToSelect(
-                    gridState = gridState,
-                    isSelected = { index -> gridItems.getOrNull(index)?.let { media -> state.selectedMedia.any { it.uri == media.uri } } },
-                    setSelected = { index, selected ->
-                      gridItems.getOrNull(index)?.let { media ->
-                        onEvent(if (selected) MediaSelectScreenEvents.MediaSelected(setOf(media)) else MediaSelectScreenEvents.MediaUnselected(setOf(media)))
+        if (showSelectedOnly) {
+          MediaPickerSelectedPreview(
+            selectedMedia = state.selectedMedia,
+            caption = state.sendOptions.message,
+            recipientId = state.recipientId?.id,
+            recipientChatColor = recipientChatColor,
+            onOpen = { onEvent(MediaSelectScreenEvents.OpenMedia(it)) },
+            onDeselect = deselectInPreview,
+            onReorder = { from, to -> onEvent(MediaSelectScreenEvents.ReorderSelectedMedia(from, to)) },
+            modifier = Modifier.fillMaxSize()
+          )
+        } else {
+          LazyVerticalGrid(
+            state = gridState,
+            columns = GridCells.Fixed(columns),
+            horizontalArrangement = spacedBy(PickerMetrics.gridSpacing),
+            verticalArrangement = spacedBy(PickerMetrics.gridSpacing),
+            userScrollEnabled = !showPlaceholders && !dragToSelectState.isActive,
+            modifier = Modifier
+              .fillMaxSize()
+              .testTag(TestTags.MEDIA_SELECT_GRID)
+              .then(
+                if (showPlaceholders) {
+                  Modifier
+                } else {
+                  Modifier
+                    .swipeToSelect(
+                      gridState = gridState,
+                      isSelected = { index -> gridItems.getOrNull(index)?.let { media -> state.selectedMedia.any { it.uri == media.uri } } },
+                      setSelected = { index, selected ->
+                        gridItems.getOrNull(index)?.let { media ->
+                          onEvent(if (selected) MediaSelectScreenEvents.MediaSelected(setOf(media)) else MediaSelectScreenEvents.MediaUnselected(setOf(media)))
+                        }
                       }
-                    }
-                  )
-                  .dragToSelect(dragToSelectState)
+                    )
+                    .dragToSelect(dragToSelectState)
+                }
+              )
+          ) {
+            if (showLimitedAccessBanner) {
+              item(key = LIMITED_ACCESS_BANNER_KEY, span = { GridItemSpan(maxLineSpan) }) {
+                LimitedAccessBanner(onEvent)
               }
-            )
-        ) {
-          if (showLimitedAccessBanner) {
-            item(key = LIMITED_ACCESS_BANNER_KEY, span = { GridItemSpan(maxLineSpan) }) {
-              LimitedAccessBanner(onEvent)
+            }
+
+            if (showPlaceholders) {
+              items(PLACEHOLDER_COUNT) {
+                MediaTilePlaceholder()
+              }
+            } else {
+              items(state.selectedMediaFolderItems, key = { it.uri }) { media ->
+                PickerTile(
+                  media = media,
+                  selectionIndex = state.selectedMedia.indexOfFirst { it.uri == media.uri },
+                  recipientChatColor = recipientChatColor,
+                  onEvent = onEvent
+                )
+              }
             }
           }
 
           if (showPlaceholders) {
-            items(PLACEHOLDER_COUNT) {
-              MediaTilePlaceholder()
-            }
-          } else {
-            items(state.selectedMediaFolderItems, key = { it.uri }) { media ->
-              PickerTile(
-                media = media,
-                selectionIndex = state.selectedMedia.indexOfFirst { it.uri == media.uri },
-                recipientChatColor = recipientChatColor,
-                onEvent = onEvent
-              )
-            }
+            MediaAccessCallToAction(
+              mediaPermissions = state.mediaPermissions,
+              onEvent = onEvent,
+              modifier = Modifier.align(Alignment.Center)
+            )
           }
         }
 
-        if (showPlaceholders) {
-          MediaAccessCallToAction(
-            mediaPermissions = state.mediaPermissions,
-            onEvent = onEvent,
-            modifier = Modifier.align(Alignment.Center)
+        if (deselections.isNotEmpty()) {
+          DeselectionUndoBar(
+            count = deselections.size,
+            onUndo = undoDeselections,
+            modifier = Modifier
+              .align(Alignment.BottomCenter)
+              .padding(horizontal = 16.dp, vertical = 8.dp)
           )
         }
       }
@@ -188,6 +264,9 @@ internal fun MediaPickerFilesScreen(
     }
   }
 }
+
+private const val UNDO_DURATION_MS = 4_000L
+private const val RETURN_TO_GRID_DELAY_MS = 300L
 
 /** 受限访问横幅占掉网格的第一格（整行），拖动多选时要把它算回去。 */
 internal const val LIMITED_ACCESS_BANNER_KEY = "tellomi-limited-access-banner"
@@ -206,7 +285,10 @@ private object PickerMetrics {
 private fun PickerTopBar(
   state: MediaSelectState.Files,
   onEvent: (MediaSelectScreenEvents) -> Unit,
-  recipientChatColor: Color?
+  recipientChatColor: Color?,
+  showSelectedOnly: Boolean,
+  onShowSelectedOnly: () -> Unit,
+  onBack: () -> Unit
 ) {
   val count = state.selectedMedia.size
   val menuItems = rememberMoreMenuItems(state)
@@ -224,26 +306,29 @@ private fun PickerTopBar(
       horizontalArrangement = spacedBy(8.dp),
       modifier = Modifier.align(Alignment.CenterStart)
     ) {
+      // P-3：「只看已选」里 ✕ 变返回，「✓N」「最近 ⌄」隐藏。
       RoundIconButton(
-        icon = SignalIcons.X,
-        contentDescription = stringResource(R.string.MediaSelectScreen__close),
-        onClick = { onEvent(MediaSelectScreenEvents.Close) }
+        icon = if (showSelectedOnly) SignalIcons.ArrowStart else SignalIcons.X,
+        contentDescription = stringResource(if (showSelectedOnly) R.string.MediaSelectScreen__back else R.string.MediaSelectScreen__close),
+        onClick = { if (showSelectedOnly) onBack() else onEvent(MediaSelectScreenEvents.Close) }
       )
 
-      AnimatedVisibility(visible = count > 0, enter = scaleIn() + fadeIn(), exit = scaleOut() + fadeOut()) {
+      AnimatedVisibility(visible = count > 0 && !showSelectedOnly, enter = scaleIn() + fadeIn(), exit = scaleOut() + fadeOut()) {
         SelectedCountPill(
           count = count,
           color = recipientChatColor ?: MaterialTheme.colorScheme.primary,
-          onClick = { onEvent(MediaSelectScreenEvents.NavigateToEdit) }
+          onClick = onShowSelectedOnly
         )
       }
     }
 
-    FolderTitle(
-      state = state,
-      onEvent = onEvent,
-      modifier = Modifier.align(Alignment.Center)
-    )
+    if (!showSelectedOnly) {
+      FolderTitle(
+        state = state,
+        onEvent = onEvent,
+        modifier = Modifier.align(Alignment.Center)
+      )
+    }
 
     AnimatedVisibility(
       visible = count > 0 && menuItems.isNotEmpty(),
@@ -482,7 +567,7 @@ private fun PickerTile(
 
 /** 编号勾：白色 1.5dp 描边 + 阴影；没选是半透明的空圈，选中填强调色并显示第几张（照 Telegram 两端的编号勾，24dp 同 Telegram Android CheckBox2）。 */
 @Composable
-private fun SelectionCheck(
+internal fun SelectionCheck(
   selectionIndex: Int,
   color: Color,
   onClick: () -> Unit,
