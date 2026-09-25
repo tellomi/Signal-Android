@@ -251,6 +251,13 @@ open class MediaSendV3Activity :
                 setResult(RESULT_OK, Intent().putExtra(MediaSendLauncher.EXTRA_ATTACHMENT_DOCK_ENTRY, it.id))
                 finish()
               }
+
+              // Tellomi（tellomi/tellomi#1121）：「文件」页选好的文件带回会话页去发。系统选择器给的读权限属于整个 App
+              // （存储访问框架的授权到重启为止），会话页读得到，不用再转授。
+              is MediaSendFlowHudCommand.SendAttachmentFiles -> {
+                setResult(RESULT_OK, Intent().putExtra(MediaSendLauncher.EXTRA_ATTACHMENT_FILES, it.result))
+                finish()
+              }
             }
           }
         )

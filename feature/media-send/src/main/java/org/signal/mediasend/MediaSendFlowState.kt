@@ -140,7 +140,10 @@ data class MediaSendFlowState(
   val isMuteVideoAudioEnabled: Boolean = MediaConstraints.isMuteVideoAudioAvailable(),
 
   /** Tellomi（tellomi/tellomi#1115）：从「+」打开的附件 Sheet；null 是整屏的选图流程，同上游。 */
-  val attachmentSheet: MediaSendFlowActivityContract.AttachmentSheet? = null
+  val attachmentSheet: MediaSendFlowActivityContract.AttachmentSheet? = null,
+
+  /** Tellomi（tellomi/tellomi#1121 F-1）：附件 Sheet 现在显示哪一页（dock 的「相册」/「文件」）。 */
+  val attachmentPage: MediaSendFlowActivityContract.AttachmentPage = MediaSendFlowActivityContract.AttachmentPage.GALLERY
 ) : Parcelable {
 
   /**

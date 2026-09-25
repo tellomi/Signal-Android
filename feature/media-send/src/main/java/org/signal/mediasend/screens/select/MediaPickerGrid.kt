@@ -291,7 +291,7 @@ internal fun MediaPickerFilesScreen(
           visible = showDock,
           entries = state.attachmentDock,
           onClick = { entry ->
-            if (entry.isCurrentPage) {
+            if (entry.page == MediaSendFlowActivityContract.AttachmentPage.GALLERY) {
               // 重复点「相册」：回到网格顶部并展开到全屏（同 Telegram 重复点当前格）
               scope.launch {
                 gridState.animateScrollToItem(0)
@@ -322,7 +322,7 @@ private fun BoxScope.PickerAttachmentDock(
     exit = fadeOut() + slideOutVertically { it },
     modifier = Modifier.align(Alignment.BottomCenter)
   ) {
-    AttachmentDock(entries = entries, onClick = onClick)
+    AttachmentDock(entries = entries, currentPage = MediaSendFlowActivityContract.AttachmentPage.GALLERY, onClick = onClick)
   }
 }
 
@@ -394,7 +394,7 @@ private const val RETURN_TO_GRID_DELAY_MS = 300L
 /** 受限访问横幅占掉网格的第一格（整行），拖动多选时要把它算回去。 */
 internal const val LIMITED_ACCESS_BANNER_KEY = "tellomi-limited-access-banner"
 
-private object PickerMetrics {
+internal object PickerMetrics {
   val gridSpacing = 2.dp
   val topBarHeight = 56.dp
   val roundButtonSize = 44.dp
@@ -467,7 +467,7 @@ private fun PickerTopBar(
 }
 
 @Composable
-private fun RoundIconButton(
+internal fun RoundIconButton(
   icon: SignalIcons,
   contentDescription: String,
   onClick: () -> Unit

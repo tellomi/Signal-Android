@@ -9,6 +9,7 @@ import android.app.Application
 import androidx.media3.exoplayer.ExoPlayer
 import org.signal.core.util.contentproviders.BlobProvider
 import org.signal.mediasend.preupload.PreUploadRepository
+import org.signal.mediasend.screens.files.AttachmentFilesRepository
 import org.signal.video.exo.ExoPlayerPool
 import org.thoughtcrime.securesms.video.interfaces.MediaInputFactory
 
@@ -50,6 +51,10 @@ object MediaSendDependencies {
   val mediaInputFactory: MediaInputFactory
     get() = _provider.provideMediaInputFactory()
 
+  /** Tellomi（tellomi/tellomi#1121）：附件 Sheet「文件」页的数据。 */
+  val attachmentFilesRepository: AttachmentFilesRepository
+    get() = _provider.provideAttachmentFilesRepository()
+
   interface Provider {
     fun provideMediaSendRepository(): MediaSendRepository
     fun providePreUploadRepository(): PreUploadRepository
@@ -57,5 +62,6 @@ object MediaSendDependencies {
     fun provideExoPlayerPool(): ExoPlayerPool<ExoPlayer>
     fun provideBlobs(): BlobProvider
     fun provideMediaInputFactory(): MediaInputFactory
+    fun provideAttachmentFilesRepository(): AttachmentFilesRepository
   }
 }

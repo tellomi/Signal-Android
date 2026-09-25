@@ -10,21 +10,29 @@ import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import org.junit.Test
+import org.signal.mediasend.MediaSendFlowActivityContract
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.R
 
 /**
  * Tellomi（tellomi/tellomi#1115）：附件 Sheet 的 dock——owner 2026-09-23 定的五格与顺序，文字和图标沿用附件键盘，
- * 「位置」在没有地图的构建里置灰（tellomi/tellomi#1235），点回来的结果认得出是哪一格。
+ * 「相册」「文件」是 Sheet 里的两页（tellomi/tellomi#1121），「位置」在没有地图的构建里置灰（tellomi/tellomi#1235），
+ * 点回来的结果认得出是哪一格。
  */
 class TellomiAttachmentSheetDockTest {
 
   @Test
-  fun `the dock is gallery, file, location, poll and contact, with gallery as the grid itself`() {
+  fun `the dock is gallery, file, location, poll and contact, with gallery and file as pages of the sheet`() {
     val entries = TellomiAttachmentSheetDock.entries(isLocationAvailable = true)
 
     assertThat(entries.map { it.id }).containsExactly("GALLERY", "FILE", "LOCATION", "POLL", "CONTACT")
-    assertThat(entries.filter { it.isCurrentPage }.map { it.id }).containsExactly("GALLERY")
+    assertThat(entries.map { it.page }).containsExactly(
+      MediaSendFlowActivityContract.AttachmentPage.GALLERY,
+      MediaSendFlowActivityContract.AttachmentPage.FILES,
+      null,
+      null,
+      null
+    )
     assertThat(entries.map { it.title }).containsExactly(
       R.string.AttachmentKeyboard_gallery,
       R.string.AttachmentKeyboard_file,

@@ -130,6 +130,7 @@ import org.signal.core.util.DrawableUtil
 import org.signal.core.util.PendingIntentFlags
 import org.signal.core.util.Result
 import org.signal.core.util.ThreadUtil
+import org.signal.core.util.bytes
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.concurrent.ListenableFuture
 import org.signal.core.util.concurrent.addTo
@@ -142,6 +143,7 @@ import org.signal.core.util.requireParcelableCompat
 import org.signal.core.util.setActionItemTint
 import org.signal.donations.InAppPaymentType
 import org.signal.emoji.EmojiEventListener
+import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.ringrtc.CallLinkRootKey
 import org.thoughtcrime.securesms.BlockUnblockDialog
 import org.thoughtcrime.securesms.BuildConfig
@@ -4887,6 +4889,10 @@ class ConversationFragment :
       val recipient = viewModel.recipientSnapshot ?: return
       onAttachmentButton(button, recipient)
     }
+
+    override fun onAttachmentSheetFiles(result: MediaSendFlowActivityContract.AttachmentFilesResult) {
+      sendAttachmentSheetFiles(result)
+    }
   }
 
   //endregion
@@ -5379,6 +5385,49 @@ class ConversationFragment :
     override fun onLocationRemoved() {
       draftViewModel.clearLocationDraft()
     }
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1121 F-4、F-7、F-8）：附件 Sheet「文件」页选好的文件——每个一条、按顺序立即发送，说明挂在最后一个
+   * （同 Telegram）。超过上限的不发，发完剩下的再提示「文件太大」并写明上限；本机已经没有的也提示一句。
+   */
+  private fun sendAttachmentSheetFiles(result: MediaSendFlowActivityContract.AttachmentFilesResult) {
+    val context = requireContext().applicationContext
+    val maxFileSize = PushMediaConstraints(null).documentMaxSize
+    disposables += Single
+      .fromCallable { TellomiAttachmentFiles.prepare(context, result, maxFileSize) }
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribeBy { prepared ->
+        sendSlidesInOrder(prepared.slides, result.caption?.trim().orEmpty())
+        val tooLarge = prepared.tooLarge.firstOrNull()
+        when {
+          tooLarge != null -> MaterialAlertDialogBuilder(requireContext())
+            .setMessage(getString(R.string.TellomiAttachmentFiles__too_large, tooLarge, maxFileSize.bytes.toUnitString()))
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+
+          prepared.unavailable > 0 -> toast(R.string.TellomiAttachmentFiles__some_not_on_device, Toast.LENGTH_LONG)
+        }
+      }
+  }
+
+  /** 一个发完（进了本地库）再发下一个，保证对方看到的顺序就是选的顺序；[caption] 只挂在最后一个上。 */
+  private fun sendSlidesInOrder(slides: List<Slide>, caption: String) {
+    val slide = slides.firstOrNull() ?: return
+    val rest = slides.drop(1)
+    sendMessage(
+      body = if (rest.isEmpty()) caption else "",
+      mentions = emptyList(),
+      bodyRanges = null,
+      messageToEdit = null,
+      quote = null,
+      slideDeck = SlideDeck().apply { addSlide(slide) },
+      clearCompose = false,
+      linkPreviews = emptyList(),
+      bypassPreSendSafetyNumberCheck = true,
+      afterSendComplete = { sendSlidesInOrder(rest, caption) }
+    )
   }
 
   /** Tellomi（tellomi/tellomi#1115）：「+」→ 附件 Sheet。先收起键盘和表情面板，Sheet 从底部滑上来、聊天留在后面。 */

@@ -57,6 +57,9 @@ sealed interface MediaSendFlowHudCommand {
   /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的 dock 里点了 [id] 那一格，交给打开 Sheet 的会话页。 */
   data class AttachmentDockEntrySelected(val id: String) : MediaSendFlowHudCommand
 
+  /** Tellomi（tellomi/tellomi#1121）：附件 Sheet「文件」页要发的文件，交给打开 Sheet 的会话页去发。 */
+  data class SendAttachmentFiles(val result: MediaSendFlowActivityContract.AttachmentFilesResult) : MediaSendFlowHudCommand
+
   /** The send was blocked by safety number changes for [untrustedRecipientIds]. */
   data class ResolveUntrustedIdentities(val untrustedRecipientIds: List<Long>) : MediaSendFlowHudCommand
 }

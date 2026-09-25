@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import org.signal.core.models.media.Media
 import org.signal.core.ui.permissions.Permissions
 import org.signal.core.util.logging.Log
+import org.signal.mediasend.MediaSendFlowActivityContract
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.location.SignalPlace
 import org.thoughtcrime.securesms.contactshare.Contact
@@ -58,6 +59,7 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
   private val attachmentSheetLauncher = fragment.registerForActivityResult(AttachmentSheet) { result ->
     when (result) {
       is AttachmentSheetResult.Dock -> callbacks.onAttachmentSheetButton(result.button)
+      is AttachmentSheetResult.Files -> callbacks.onAttachmentSheetFiles(result.result)
       is AttachmentSheetResult.Media -> callbacks.onMediaSend(result.result)
       null -> callbacks.onMediaSend(null)
     }
@@ -167,9 +169,10 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
     }
   }
 
-  /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的结果——发了照片，或者点了 dock 的别的格子。 */
+  /** Tellomi（tellomi/tellomi#1115、#1121）：附件 Sheet 的结果——发了照片、「文件」页选好了要发的文件，或者点了 dock 的别的格子。 */
   private sealed interface AttachmentSheetResult {
     data class Media(val result: MediaSendActivityResult) : AttachmentSheetResult
+    data class Files(val result: MediaSendFlowActivityContract.AttachmentFilesResult) : AttachmentSheetResult
     data class Dock(val button: AttachmentKeyboardButton) : AttachmentSheetResult
   }
 
@@ -183,6 +186,11 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
       val dockEntry = MediaSendLauncher.parseAttachmentDockEntry(resultCode, intent)
       if (dockEntry != null) {
         return TellomiAttachmentSheetDock.buttonFor(dockEntry)?.let { AttachmentSheetResult.Dock(it) }
+      }
+
+      val files = MediaSendLauncher.parseAttachmentFiles(resultCode, intent)
+      if (files != null) {
+        return AttachmentSheetResult.Files(files)
       }
 
       return MediaSendLauncher.parseResult(resultCode, intent)?.let { AttachmentSheetResult.Media(it) }
@@ -291,7 +299,10 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
     fun onLocationSelected(place: SignalPlace?, uri: Uri?)
     fun onFileSelected(uri: Uri?)
 
-    /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的 dock 里点了文件 / 位置 / 投票 / 联系人。 */
+    /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的 dock 里点了位置 / 投票 / 联系人。 */
     fun onAttachmentSheetButton(button: AttachmentKeyboardButton)
+
+    /** Tellomi（tellomi/tellomi#1121）：附件 Sheet「文件」页选好了要发的文件。 */
+    fun onAttachmentSheetFiles(result: MediaSendFlowActivityContract.AttachmentFilesResult)
   }
 }

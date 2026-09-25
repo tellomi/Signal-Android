@@ -85,6 +85,12 @@ internal sealed interface MediaSendFlowEvent {
   /** 置灰的 dock 格子只提示一句，Sheet 留着。 */
   data class ShowToast(val toast: ToastEvent) : MediaSendFlowEvent
 
+  /** tellomi/tellomi#1121 F-1：dock 的「相册」「文件」在同一个 Sheet 里换页。 */
+  data class OpenAttachmentPage(val page: MediaSendFlowActivityContract.AttachmentPage) : MediaSendFlowEvent
+
+  /** tellomi/tellomi#1121：「文件」页选好了要发的文件：离开流程，交给会话页去发。 */
+  data class SendAttachmentFiles(val result: MediaSendFlowActivityContract.AttachmentFilesResult) : MediaSendFlowEvent
+
   //endregion
   data object NavigateToFolders : MediaSendFlowEvent
   data object NavigateToEdit : MediaSendFlowEvent

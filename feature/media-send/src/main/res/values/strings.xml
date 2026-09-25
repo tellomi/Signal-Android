@@ -304,4 +304,19 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">%1$d of %2$d</string>
+  <!-- Tellomi（tellomi/tellomi#1121）附件 Sheet「文件」页 -->
+  <string name="AttachmentFilesScreen__files">Files</string>
+  <string name="AttachmentFilesScreen__search">Search</string>
+  <string name="AttachmentFilesScreen__select_from_gallery">Select from Gallery</string>
+  <string name="AttachmentFilesScreen__select_from_files">Select from Files</string>
+  <string name="AttachmentFilesScreen__coming_soon">Coming soon</string>
+  <string name="AttachmentFilesScreen__recently_sent_files">Recently Sent Files</string>
+  <string name="AttachmentFilesScreen__empty">Send and receive files of any type, up to %1$s each.</string>
+  <string name="AttachmentFilesScreen__not_on_device">No longer on this device</string>
+  <string name="AttachmentFilesScreen__cant_send_not_on_device">This file is no longer on this device, so it can\'t be sent again.</string>
+  <string name="AttachmentFilesScreen__files_you_sent">Files You Sent</string>
+  <string name="AttachmentFilesScreen__show_more">Show More</string>
+  <string name="AttachmentFilesScreen__no_results">No results found for “%1$s”</string>
+  <string name="AttachmentFilesScreen__add_a_caption">Add a caption…</string>
+  <string name="AttachmentFilesScreen__send">Send</string>
 </resources>

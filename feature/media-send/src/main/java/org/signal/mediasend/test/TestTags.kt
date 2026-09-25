@@ -76,6 +76,29 @@ object TestTags {
   /** Tag for the attachment sheet dock entry with [id]. */
   fun attachmentDockEntry(id: String): String = "attachment_dock_entry_$id"
 
+  // Tellomi（tellomi/tellomi#1121）附件 Sheet「文件」页
+  const val ATTACHMENT_FILES = "attachment_files"
+  const val ATTACHMENT_FILES_LIST = "attachment_files_list"
+  const val ATTACHMENT_FILES_SEARCH_BUTTON = "attachment_files_search_button"
+  const val ATTACHMENT_FILES_SEARCH_FIELD = "attachment_files_search_field"
+  const val ATTACHMENT_FILES_SEARCH_CLOSE = "attachment_files_search_close"
+  const val ATTACHMENT_FILES_SEND_BAR = "attachment_files_send_bar"
+  const val ATTACHMENT_FILES_CAPTION = "attachment_files_caption"
+  const val ATTACHMENT_FILES_SEND = "attachment_files_send"
+  const val ATTACHMENT_FILES_SKELETON = "attachment_files_skeleton"
+  const val ATTACHMENT_FILES_EMPTY = "attachment_files_empty"
+  const val ATTACHMENT_FILES_SHOW_MORE = "attachment_files_show_more"
+  const val ATTACHMENT_FILES_NO_RESULTS = "attachment_files_no_results"
+
+  /** Tag for the entry row [name] (gallery / files) at the top of the files page. */
+  fun attachmentFilesEntry(name: String): String = "attachment_files_entry_$name"
+
+  /** Tag for the row of the recently sent file with [attachmentId]. */
+  fun attachmentFile(attachmentId: Long): String = "attachment_file_$attachmentId"
+
+  /** Tag for the numbered check on the row of the recently sent file with [attachmentId]. */
+  fun attachmentFileCheck(attachmentId: Long): String = "attachment_file_check_$attachmentId"
+
   // Schedule Send Menu
   const val SCHEDULE_SEND_PICK_TIME_OPTION = "schedule_send_pick_time_option"
 

@@ -3,6 +3,8 @@ package org.signal.mediasend
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -46,6 +48,8 @@ import org.signal.mediasend.screens.capture.MediaCaptureViewModel
 import org.signal.mediasend.screens.edit.MediaEditScreen
 import org.signal.mediasend.screens.edit.MediaEditScreenDialogs
 import org.signal.mediasend.screens.edit.MediaEditViewModel
+import org.signal.mediasend.screens.files.AttachmentFilesScreen
+import org.signal.mediasend.screens.files.AttachmentFilesViewModel
 import org.signal.mediasend.screens.select.AttachmentSheet
 import org.signal.mediasend.screens.select.LocalAttachmentSheetState
 import org.signal.mediasend.screens.select.MediaSelectScreen
@@ -144,18 +148,37 @@ internal fun MediaSendNavigation(
           selectViewModel.readMediaPermission.Content()
 
           // Tellomi（tellomi/tellomi#1115）：从「+」打开时，选图网格是附件 Sheet（聊天露在上面）。
+          // tellomi/tellomi#1121 F-1：dock 的「相册」「文件」在同一个 Sheet 里换页——Sheet 不动，只有内容交叉淡入淡出（同 iOS 端）。
           val attachmentSheet = LocalAttachmentSheetState.current
           if (attachmentSheet != null) {
+            val page by remember { viewModel.state.map { it.attachmentPage }.distinctUntilChanged() }
+              .collectAsStateWithLifecycle(initialValue = viewModel.state.value.attachmentPage)
             AttachmentSheet(
               state = attachmentSheet,
               canDismissDirectly = state.selectedMedia.isEmpty(),
               onDismissRequest = viewModel::onCloseRequested
             ) {
-              MediaSelectScreen(
-                state = state,
-                onEvent = selectViewModel::onEvent,
-                selectionAdditions = selectViewModel.selectionAdditions
-              )
+              Crossfade(targetState = page, animationSpec = tween(ATTACHMENT_PAGE_CROSSFADE_MS), label = "attachment-page") { current ->
+                when (current) {
+                  MediaSendFlowActivityContract.AttachmentPage.GALLERY -> MediaSelectScreen(
+                    state = state,
+                    onEvent = selectViewModel::onEvent,
+                    selectionAdditions = selectViewModel.selectionAdditions
+                  )
+
+                  MediaSendFlowActivityContract.AttachmentPage.FILES -> {
+                    val filesViewModel: AttachmentFilesViewModel = viewModel(
+                      key = ATTACHMENT_FILES_VIEW_MODEL_KEY,
+                      factory = AttachmentFilesViewModel.Factory(
+                        parentState = viewModel.state,
+                        parentEventEmitter = viewModel::onEvent
+                      )
+                    )
+                    val filesState by filesViewModel.state.collectAsStateWithLifecycle()
+                    AttachmentFilesScreen(state = filesState, onEvent = filesViewModel::onEvent)
+                  }
+                }
+              }
             }
           } else {
             MediaSelectScreen(
@@ -235,6 +258,8 @@ private fun OpaqueInAttachmentSheet(
 }
 
 private val TOAST_DURATION = 3.seconds
+private const val ATTACHMENT_PAGE_CROSSFADE_MS = 200
+private const val ATTACHMENT_FILES_VIEW_MODEL_KEY = "tellomi-attachment-files"
 private val SEND_PROGRESS_DELAY = 300.milliseconds
 
 /**
