@@ -142,6 +142,11 @@ class MediaPickerScreenshots {
       click(nodes { it.text?.toString() == "Send Separately" }.first())
 
       val sent = waitForNewOutgoing(threadId, before, expected = 3)
+      // 消息那一行先落库、附件随后才挂上：只等到「3 条」就读，偶尔会读到最后一条还没有附件（375 上见过 [1, 1, 0]）。
+      // 等附件都落库再判；20 秒还等不到就照样红（那就是真丢了）。
+      val attachmentWait = SystemClock.uptimeMillis()
+      val attachmentCounts = waitForAttachments(sent, expectedEach = 1)
+      report.appendLine("attachments settled after ${SystemClock.uptimeMillis() - attachmentWait} ms: $attachmentCounts")
       val summary = sent.map { record ->
         val attachments = SignalDatabase.attachments.getAttachmentsForMessage(record.id)
         Triple(record.body, attachments.size, attachments.firstOrNull()?.let { it.width to it.height })
@@ -418,6 +423,17 @@ class MediaPickerScreenshots {
     }
     assertEquals("新发出的消息条数", expected, found.size)
     return found
+  }
+
+  /** 等每条消息的附件都落库（最多 20 秒），返回最后读到的每条附件数。 */
+  private fun waitForAttachments(records: List<MessageRecord>, expectedEach: Int): List<Int> {
+    val deadline = SystemClock.uptimeMillis() + 20_000
+    var counts = records.map { SignalDatabase.attachments.getAttachmentsForMessage(it.id).size }
+    while (SystemClock.uptimeMillis() < deadline && counts.any { it < expectedEach }) {
+      SystemClock.sleep(200)
+      counts = records.map { SignalDatabase.attachments.getAttachmentsForMessage(it.id).size }
+    }
+    return counts
   }
 
   /** 「+」打开附件面板，再点「相册」，等选图页（MediaSendV3Activity）到前台。 */
