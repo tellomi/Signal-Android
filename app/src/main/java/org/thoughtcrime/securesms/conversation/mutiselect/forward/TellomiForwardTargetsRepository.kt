@@ -80,15 +80,17 @@ class TellomiForwardTargetsRepository(
         }
         return
       }
-      if (chatCount >= maxChats || !seen.add(recipient.id) || !canForwardTo(recipient)) {
+      if (!seen.add(recipient.id) || !canForwardTo(recipient)) {
         return
       }
       targets += TellomiForwardTarget(recipient, isSavedMessages = false)
       chatCount++
     }
 
+    // 上限只数能转的聊天，每条路径只在循环条件里查一次。查询不在 SQL 里限条数（0 = 不限）：前面的行可能被过滤掉
+    // （消息请求、只有管理员能发言的群），限了条数就会少收未归档的、提前拿归档的补
     val recents = ContactSearchConfiguration.Section.Recents(
-      limit = maxChats,
+      limit = 0,
       mode = ContactSearchConfiguration.Section.Recents.Mode.ALL,
       includeInactiveGroups = false,
       includeGroupsV1 = false,
@@ -97,17 +99,15 @@ class TellomiForwardTargetsRepository(
       includeHeader = false
     )
     contactSearchRepository.getRecents(recents)?.use { cursor ->
-      while (cursor.moveToNext()) {
+      while (chatCount < maxChats && cursor.moveToNext()) {
         consider(contactSearchRepository.getRecipientFromThreadCursor(cursor))
       }
     }
 
     // 归档的排最后
-    if (chatCount < maxChats) {
-      SignalDatabase.threads.getArchivedConversationList(ConversationFilter.OFF).use { cursor ->
-        while (chatCount < maxChats && cursor.moveToNext()) {
-          consider(Recipient.resolved(RecipientId.from(cursor.requireLong(ThreadTable.RECIPIENT_ID))))
-        }
+    SignalDatabase.threads.getArchivedConversationList(ConversationFilter.OFF).use { cursor ->
+      while (chatCount < maxChats && cursor.moveToNext()) {
+        consider(Recipient.resolved(RecipientId.from(cursor.requireLong(ThreadTable.RECIPIENT_ID))))
       }
     }
 

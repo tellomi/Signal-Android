@@ -95,6 +95,7 @@ class TellomiForwardTargetsRepositoryTest {
 
     assertThat(ids(repository.load())).containsExactly(recipients.self, pinned, newest, group, old, archived)
     assertThat(ids(repository.load(maxChats = 3))).containsExactly(recipients.self, pinned, newest, group)
+    assertThat(ids(repository.load(maxChats = 4))).containsExactly(recipients.self, pinned, newest, group, old)
     assertThat(TellomiForwardTargetsRepository.MAX_CHATS).isEqualTo(150)
   }
 
@@ -118,6 +119,21 @@ class TellomiForwardTargetsRepositoryTest {
     assertThat(repository.canForwardTo(Recipient.resolved(leftGroup))).isFalse()
     assertThat(repository.canForwardTo(Recipient.resolved(announcements))).isFalse()
     assertThat(repository.canForwardTo(Recipient.resolved(friend))).isTrue()
+  }
+
+  /** F-5：上限只数能转的聊天——排在前面、被过滤掉的（消息请求、只有管理员能发言的群）不占名额，未归档的收满了才轮到归档的。 */
+  @Test
+  fun `the cap counts only chats you can forward to`() {
+    val friend = chat("Friend", sentAt = 1_000)
+    val archivedFriend = chat("ArchivedFriend", sentAt = 500)
+    val announcements = createGroup(includeSelf = true, announcementOnly = true)
+    send(announcements, sentAt = 3_000)
+    val stranger = recipients.createRecipient("Stranger", profileSharing = false)
+    receive(stranger)
+    SignalDatabase.threads.setArchived(setOf(threadOf(archivedFriend)), true)
+
+    assertThat(ids(repository.load(maxChats = 1))).containsExactly(recipients.self, friend)
+    assertThat(ids(repository.load(maxChats = 2))).containsExactly(recipients.self, friend, archivedFriend)
   }
 
   /** F-9 空查询：最近联系人一排只有人（不含我的收藏和群），按网格顺序，最多 12 个。 */
