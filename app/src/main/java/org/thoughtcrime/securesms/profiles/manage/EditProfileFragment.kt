@@ -42,6 +42,7 @@ import org.thoughtcrime.securesms.profiles.manage.EditProfileViewModel.AvatarSta
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository.UsernameDeleteResult
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.registration.ui.RegistrationActivity
+import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.NameUtil.getAbbreviation
 import org.thoughtcrime.securesms.util.PlayStoreUtil
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter
@@ -149,6 +150,10 @@ class EditProfileFragment : LoggingFragment() {
         updateInitials(avatarInitials.text.toString())
       }
     }
+
+    // Tellomi：徽章是捐款得来的，阶段一不做捐赠（Environment.DONATIONS_ENABLED），整行不显示——
+    // 点进去是「成为定期捐款人」，还写着「Signal 是一个非营利机构」（两端差异清单 platform-parity-2026-09-26）。
+    binding.manageProfileBadgesContainer.isVisible = Environment.DONATIONS_ENABLED
 
     binding.manageProfileBadgesContainer.setOnClickListener { v: View ->
       if (!viewModel.isRegisteredAndUpToDate) {
