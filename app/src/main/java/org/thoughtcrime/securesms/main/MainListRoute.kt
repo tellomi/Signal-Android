@@ -36,6 +36,12 @@ enum class MainListRoute(
   Stories(
     label = R.string.ConversationListTabs__stories,
     icon = R.raw.stories_28
+  ),
+
+  // Tellomi：联系人一级 Tab（#1108）；名字用现成的「联系人」
+  Contacts(
+    label = R.string.ContactsCursorLoader_contacts,
+    icon = R.raw.tellomi_contacts_28
   );
 
   val isChatsTab: Boolean

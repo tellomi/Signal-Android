@@ -25,6 +25,6 @@ data class MainNavigationBarState(
      * Every tab there is, in display order. The archive is not among them: it is a list within chats
      * rather than a tab of its own.
      */
-    val ALL_DESTINATIONS = listOf(MainListRoute.Chats, MainListRoute.Calls, MainListRoute.Stories)
+    val ALL_DESTINATIONS = listOf(MainListRoute.Calls, MainListRoute.Chats, MainListRoute.Contacts, MainListRoute.Stories) // Tellomi：owner 2026-09-26 定 通话 · 聊天 · 联系人 · 动态（#1108）；打开 App 仍停在聊天（currentListLocation）
   }
 }

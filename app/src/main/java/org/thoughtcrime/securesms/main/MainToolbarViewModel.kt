@@ -98,6 +98,11 @@ class MainToolbarViewModel : ViewModel() {
     setToolbarMode(MainToolbarMode.FULL, destination = MainListRoute.Calls)
   }
 
+  /** Tellomi：联系人一级 Tab（#1108）。 */
+  fun presentToolbarForTellomiContacts() {
+    setToolbarMode(MainToolbarMode.FULL, destination = MainListRoute.Contacts)
+  }
+
   fun presentToolbarForMultiselect() {
     setToolbarMode(MainToolbarMode.ACTION_MODE)
   }

@@ -58,6 +58,7 @@ class MainNavigationViewModel(
     private const val CHATS_BACK_STACK_KEY = "chats_back_stack_v2"
     private const val CALLS_BACK_STACK_KEY = "calls_back_stack_v2"
     private const val STORIES_BACK_STACK_KEY = "stories_back_stack_v2"
+    private const val TELLOMI_CONTACTS_BACK_STACK_KEY = "tellomi_contacts_back_stack"
   }
 
   class Factory(
@@ -84,7 +85,8 @@ class MainNavigationViewModel(
     stackKeys = mapOf(
       MainListRoute.Chats to CHATS_BACK_STACK_KEY,
       MainListRoute.Calls to CALLS_BACK_STACK_KEY,
-      MainListRoute.Stories to STORIES_BACK_STACK_KEY
+      MainListRoute.Stories to STORIES_BACK_STACK_KEY,
+      MainListRoute.Contacts to TELLOMI_CONTACTS_BACK_STACK_KEY
     ),
     initialRoot = initialListLocation.tab
   )
