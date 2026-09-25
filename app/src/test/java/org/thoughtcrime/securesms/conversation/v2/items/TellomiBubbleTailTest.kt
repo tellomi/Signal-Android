@@ -96,9 +96,26 @@ class TellomiBubbleTailTest {
     assertThat(V2ConversationItemShape.MessageShape.SINGLE.topPadding + V2ConversationItemShape.MessageShape.SINGLE.bottomPadding).isCloseTo(12f.dp, 0.5f)
   }
 
-  private fun outlineBounds(towardsRight: Boolean): RectF {
+  /** 「正在输入」的卡片四角都是 18：尾巴轮廓往气泡里多盖一块 18 的方块，扣掉气泡后正好补满圆角的缺口。 */
+  @Test
+  fun `a tail on a card with big corners also covers that corner`() {
+    val bounds = outlineBounds(towardsRight = false, coverRadiusDp = 18f)
+
+    // 尾巴照旧伸出 6.3、只有 14 高的部分在气泡外；往气泡里盖到 18 × 18
+    assertThat(100f - bounds.left).isCloseTo(6.3f * DENSITY, 0.01f)
+    assertThat(bounds.right).isCloseTo(100f + 18f * DENSITY, 0.01f)
+    assertThat(bounds.top).isCloseTo(200f - 18f * DENSITY, 0.01f)
+    assertThat(bounds.bottom).isCloseTo(200f, 0.01f)
+  }
+
+  @Test
+  fun `the typing indicator reports its tail to the same decoration`() {
+    assertThat(TellomiBubbleTail.Provider::class.java.isAssignableFrom(org.thoughtcrime.securesms.conversation.v2.ConversationTypingIndicatorAdapter.ViewHolder::class.java)).isTrue()
+  }
+
+  private fun outlineBounds(towardsRight: Boolean, coverRadiusDp: Float = TellomiBubbleTail.DEFAULT_COVER_RADIUS_DP): RectF {
     val path = Path()
-    TellomiBubbleTail.addOutline(path, cornerX = 100f, bottomY = 200f, towardsRight = towardsRight, density = DENSITY)
+    TellomiBubbleTail.addOutline(path, cornerX = 100f, bottomY = 200f, towardsRight = towardsRight, density = DENSITY, coverRadiusDp = coverRadiusDp)
     val bounds = RectF()
     @Suppress("DEPRECATION")
     path.computeBounds(bounds, true)

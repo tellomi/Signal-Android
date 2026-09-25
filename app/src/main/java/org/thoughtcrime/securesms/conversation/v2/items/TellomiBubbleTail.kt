@@ -33,7 +33,7 @@ object TellomiBubbleTail {
   /**
    * 尾巴的轮廓：候选 A「圆润」，伸出 6.3、高 14。单位 dp；我发的朝右，原点是气泡右下角，y 向下为正。
    * 对方发的把 x 取反。最后一段回到气泡里面 4dp，补上那一角 4dp 圆角的缺口（画之前会扣掉气泡本身）。
-   * owner 在演示页选了 B「利落」，就换成 `M 0 -17 C 0 -7 3 -1.6 7.6 -0.5 C 8.1 -0.4 8.1 0 7.6 0 L -4 0 Z`。
+   * owner 2026-09-26 在 #1204 演示页选定 A（规范已定稿）。
    */
   private val OUTLINE: Array<FloatArray> = arrayOf(
     floatArrayOf(0f, -14f),
@@ -62,12 +62,19 @@ object TellomiBubbleTail {
     return isEndOfCluster && !hasReactions && hasBubble && displayMode is ConversationItemDisplayMode.Standard
   }
 
+  /** 尾巴默认盖住的那一角的圆角半径，dp：V2 和旧版气泡带尾巴的那一角都改成了 4。 */
+  const val DEFAULT_COVER_RADIUS_DP = 4f
+
   /**
    * 往 [path] 里加尾巴的轮廓。[cornerX] / [bottomY] 是气泡带尾巴那一角（下角）的坐标，
    * [towardsRight] 为 true 时尾巴伸向右边（LTR 下我发的），否则伸向左边。
+   *
+   * [coverRadiusDp]：那一角原来的圆角半径。轮廓往气泡里多盖一块同样大的方块，画之前扣掉气泡本身后，正好补满圆角的缺口，
+   * 那一角就接在尾巴上。默认 4（普通气泡）；「正在输入」的卡片四角都是 18，传 18。
    */
   @JvmStatic
-  fun addOutline(path: Path, cornerX: Float, bottomY: Float, towardsRight: Boolean, density: Float) {
+  @JvmOverloads
+  fun addOutline(path: Path, cornerX: Float, bottomY: Float, towardsRight: Boolean, density: Float, coverRadiusDp: Float = DEFAULT_COVER_RADIUS_DP) {
     val s = if (towardsRight) density else -density
     fun x(v: Float) = cornerX + v * s
     fun y(v: Float) = bottomY + v * density
@@ -77,7 +84,13 @@ object TellomiBubbleTail {
       val c = OUTLINE[i]
       path.cubicTo(x(c[0]), y(c[1]), x(c[2]), y(c[3]), x(c[4]), y(c[5]))
     }
-    path.lineTo(x(OUTLINE[3][0]), y(OUTLINE[3][1]))
+    if (coverRadiusDp > DEFAULT_COVER_RADIUS_DP) {
+      path.lineTo(x(-coverRadiusDp), y(0f))
+      path.lineTo(x(-coverRadiusDp), y(-coverRadiusDp))
+      path.lineTo(x(0f), y(-coverRadiusDp))
+    } else {
+      path.lineTo(x(OUTLINE[3][0]), y(OUTLINE[3][1]))
+    }
     path.close()
   }
 
@@ -89,11 +102,12 @@ object TellomiBubbleTail {
    * @param color 纯色气泡的颜色。
    * @param gradient 渐变的聊天颜色；不是渐变时为 null，用 [color]。
    */
-  class Spec(
+  class Spec @JvmOverloads constructor(
     val bubble: Projection,
     val towardsRight: Boolean,
     @ColorInt val color: Int,
-    val gradient: ChatColors?
+    val gradient: ChatColors?,
+    val coverRadiusDp: Float = DEFAULT_COVER_RADIUS_DP
   )
 
   /** 气泡的渲染方实现：这一条现在要不要画尾巴、画在哪里；不画返回 null。坐标相对于 [parent]。 */
@@ -124,7 +138,7 @@ object TellomiBubbleTail {
         tail.reset()
         bubble.reset()
         val cornerX = if (spec.towardsRight) projection.x + projection.width else projection.x
-        addOutline(tail, cornerX, projection.y + projection.height, spec.towardsRight, density)
+        addOutline(tail, cornerX, projection.y + projection.height, spec.towardsRight, density, spec.coverRadiusDp)
         projection.applyToPath(bubble)
         tail.op(bubble, Path.Op.DIFFERENCE)
         projection.release()
