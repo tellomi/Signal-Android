@@ -70,7 +70,8 @@
     <dimen name="conversation_individual_left_gutter">16dp</dimen>
     <dimen name="conversation_individual_received_left_gutter">8dp</dimen>
     <dimen name="conversation_group_left_gutter">52dp</dimen>
-    <dimen name="conversation_vertical_message_spacing_default">8dp</dimen>
+    <!-- Tellomi：组间距 12（上下各 6），和 V2 纯文字气泡一致；原来 8（组间 16）。#1206，规范 #1204 第 1 节 -->
+    <dimen name="conversation_vertical_message_spacing_default">6dp</dimen>
     <dimen name="conversation_vertical_message_spacing_collapse">1dp</dimen>
 
     <dimen name="reaction_scrubber_anim_start_translation_y">25dp</dimen>
