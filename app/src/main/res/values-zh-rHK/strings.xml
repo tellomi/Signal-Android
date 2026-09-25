@@ -6238,6 +6238,21 @@
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">只有管理員可以向此群組傳送訊息。</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">你不得選取超過 5 個聊天</string>
+    <string name="TellomiForwardGrid__choose_chats">選擇聊天</string>
+    <string name="TellomiForwardGrid__name_separator">、</string>
+    <string name="TellomiForwardGrid__search">搜尋</string>
+    <string name="TellomiForwardGrid__share_to_other_apps">分享到其他 App</string>
+    <string name="TellomiForwardGrid__select_up_to_d_chats">最多選 %1$d 個聊天</string>
+    <string name="TellomiForwardGrid__recent">最近聯絡人</string>
+    <string name="TellomiForwardGrid__chats">聊天</string>
+    <string name="TellomiForwardGrid__contacts">聯絡人</string>
+    <string name="TellomiForwardGrid__groups">群組</string>
+    <string name="TellomiForwardGrid__no_results">找不到「%1$s」</string>
+    <string name="TellomiForwardGrid__add_a_message">新增訊息…</string>
+    <string name="TellomiForwardGrid__forwarded_to_s">已轉寄給 %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_s">已轉寄給 %1$s 和 %2$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_d_chats">已轉寄給 %1$s 等 %2$d 個聊天</string>
+    <string name="TellomiForwardGrid__forwarded_to_saved_s">已轉寄到 %1$s</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->

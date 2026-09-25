@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey
-import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.mediasend.v2.UntrustedRecords
 import org.thoughtcrime.securesms.util.livedata.Store
 
@@ -66,23 +65,19 @@ class MultiselectForwardViewModel(
   }
 
   fun send(selectedContacts: Set<ContactSearchKey>) {
-    if (SignalStore.tooltips.showMultiForwardDialog()) {
-      SignalStore.tooltips.markMultiForwardDialogSeen()
-      store.update { it.copy(stage = MultiselectForwardState.Stage.FirstConfirmation) }
-    } else {
-      store.update { it.copy(stage = MultiselectForwardState.Stage.LoadingIdentities) }
-      UntrustedRecords.checkForBadIdentityRecords(selectedContacts.filterIsInstance(ContactSearchKey.RecipientSearchKey::class.java).toSet(), identityChangesSince) { identityRecords ->
-        if (identityRecords.isEmpty()) {
-          performSend(selectedContacts)
-        } else {
-          store.update { state ->
-            state.copy(
-              stage = MultiselectForwardState.Stage.SafetyConfirmation(
-                identityRecords,
-                selectedContacts.filterIsInstance<ContactSearchKey.RecipientSearchKey>()
-              )
+    // Tellomi（#1259 F-12）：不再弹首次转发的「快捷转发」说明框（Signal 老版本升级的提示，新装本来就不弹）
+    store.update { it.copy(stage = MultiselectForwardState.Stage.LoadingIdentities) }
+    UntrustedRecords.checkForBadIdentityRecords(selectedContacts.filterIsInstance(ContactSearchKey.RecipientSearchKey::class.java).toSet(), identityChangesSince) { identityRecords ->
+      if (identityRecords.isEmpty()) {
+        performSend(selectedContacts)
+      } else {
+        store.update { state ->
+          state.copy(
+            stage = MultiselectForwardState.Stage.SafetyConfirmation(
+              identityRecords,
+              selectedContacts.filterIsInstance<ContactSearchKey.RecipientSearchKey>()
             )
-          }
+          )
         }
       }
     }
