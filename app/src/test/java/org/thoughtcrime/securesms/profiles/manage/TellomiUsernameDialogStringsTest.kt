@@ -61,6 +61,29 @@ class TellomiUsernameDialogStringsTest {
     assertThat(render(Locale.forLanguageTag("yue"))).isEqualTo("恢復用戶名稱會將你宜家用緊嘅二維碼同連結重設，之後 30 日內唔可以再改。你係咪確定？")
   }
 
+  /** 参数与 UsernameEditFragment 冷却报错（CHANGE_COOLDOWN）相同：天数既选复数形式、也填进 %d。 */
+  private fun renderCooldown(locale: Locale, days: Int): String {
+    return resources(locale).getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_cooldown, days, days)
+  }
+
+  /**
+   * owner 2026-09-25 在 TestFlight 上撞到：冷却期里换名被拒时，只说「N 天后可以再改」不够，还要说清这段时间只能改回原来的名字
+   * （服务端 ADR-0066 §6.2 冷却期只放行本账号保留期内的旧名）。和删除框那句同一个说法，iOS a22 同句。
+   */
+  @Test
+  fun `cooldown error says only the original name can come back`() {
+    assertThat(renderCooldown(Locale.ENGLISH, 29)).isEqualTo(
+      "You changed your username recently. You can change it again in 29 days. Until then, you can only change back to your original username."
+    )
+    assertThat(renderCooldown(Locale.ENGLISH, 1)).isEqualTo(
+      "You changed your username recently. You can change it again in 1 day. Until then, you can only change back to your original username."
+    )
+    assertThat(renderCooldown(Locale.forLanguageTag("zh-CN"), 29)).isEqualTo("你最近改过用户名，29 天后可以再改。在那之前，只能改回原来的名字。")
+    assertThat(renderCooldown(Locale.forLanguageTag("zh-HK"), 29)).isEqualTo("你最近更改過用戶名稱，29 天後可以再更改。在那之前，只能改回原來的名稱。")
+    assertThat(renderCooldown(Locale.forLanguageTag("zh-TW"), 29)).isEqualTo("你最近更改過用戶名稱，29 天後可以再更改。在那之前，只能改回原來的名稱。")
+    assertThat(renderCooldown(Locale.forLanguageTag("yue"), 29)).isEqualTo("你啱啱先改過用戶名稱，29 日之後先可以再改。喺嗰之前，只可以改返原本個名。")
+  }
+
   /**
    * owner 2026-09-24 晚第 9 条：删除框加一句通用提示，不管在不在冷却期都显示——30 天内改过用户名的，删除后只能改回原来的名字。
    * 三端逐字一致（iOS a6 同句，Desktop 半边交 taishi）。

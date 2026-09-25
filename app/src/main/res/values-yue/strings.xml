@@ -3116,7 +3116,7 @@
     <!-- Text for a button in a dialog asking if the user would like to continue the operation of changing their username -->
     <string name="UsernameEditFragment_continue">繼續</string>
     <plurals name="UsernameEditFragment__tellomi_change_cooldown">
-        <item quantity="other">你啱啱先改過用戶名稱，%d 日之後先可以再改。</item>
+        <item quantity="other">你啱啱先改過用戶名稱，%d 日之後先可以再改。喺嗰之前，只可以改返原本個名。</item>
     </plurals>
     <plurals name="UsernameEditFragment__tellomi_change_confirmation">
         <item quantity="other">更改用戶名稱會將你宜家用緊嘅二維碼同連結重設，之後 %d 日內唔可以再改。你係咪確定？</item>

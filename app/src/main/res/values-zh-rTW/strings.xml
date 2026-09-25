@@ -3093,7 +3093,7 @@
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">別人可以透過用戶名稱找到你、傳訊息給你，不需要知道你的電話號碼。</string>
     <!-- Tellomi（#1106 第四刀） -->
     <plurals name="UsernameEditFragment__tellomi_change_cooldown">
-        <item quantity="other">你最近更改過用戶名稱，%d 天後可以再更改。</item>
+        <item quantity="other">你最近更改過用戶名稱，%d 天後可以再更改。在那之前，只能改回原來的名稱。</item>
     </plurals>
     <!-- Tellomi（#1106 第四刀） -->
     <plurals name="UsernameEditFragment__tellomi_change_confirmation">
