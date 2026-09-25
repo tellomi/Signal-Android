@@ -19,6 +19,7 @@ package org.thoughtcrime.securesms.mediaoverview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -79,6 +81,7 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
   private View                   viewGrid;
   private View                   viewDetail;
   private long                   threadId;
+  private boolean                tellomiSearchEnabled;
 
   public static Intent forThread(@NonNull Context context, long threadId) {
     Intent intent = new Intent(context, MediaOverviewActivity.class);
@@ -185,6 +188,46 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
     dynamicTheme.onResume(this);
   }
 
+  /** Tellomi：「我的收藏」的所有媒体顶栏有搜索，在当前这一页里按文字筛（#1174）。 */
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    if (tellomiSearchEnabled) {
+      MenuItem   searchItem = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.TellomiSavedCategories__search);
+      SearchView searchView = new SearchView(this);
+      searchView.setQueryHint(getString(R.string.TellomiSavedCategories__search_hint));
+      searchView.setMaxWidth(Integer.MAX_VALUE);
+      searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+          model.setTellomiQuery(query);
+          return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String query) {
+          model.setTellomiQuery(query);
+          return true;
+        }
+      });
+      searchItem.setIcon(org.signal.core.ui.R.drawable.symbol_search_24);
+      searchItem.setActionView(searchView);
+      searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+      searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+        @Override
+        public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
+          return true;
+        }
+
+        @Override
+        public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
+          model.setTellomiQuery(null);
+          return true;
+        }
+      });
+    }
+    return super.onCreateOptionsMenu(menu);
+  }
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     super.onOptionsItemSelected(item);
@@ -228,6 +271,8 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
         (recipient) -> {
           if (recipient != null) {
             getSupportActionBar().setTitle(tellomiTitle(recipient));
+            tellomiSearchEnabled = recipient.isSelf();
+            invalidateOptionsMenu();
             recipient.live().observe(this, r -> getSupportActionBar().setTitle(tellomiTitle(r)));
           }
         }

@@ -1727,6 +1727,9 @@
     <string name="TellomiSavedCategories__files">文件</string>
     <string name="TellomiSavedCategories__voice">语音</string>
     <string name="TellomiSavedCategories__links">链接</string>
+    <!-- Tellomi（#1174）：「我的收藏」的所有媒体顶栏的搜索，在当前这一页里按文字筛 -->
+    <string name="TellomiSavedCategories__search">搜索</string>
+    <string name="TellomiSavedCategories__search_hint">搜文件名、说明文字和链接</string>
     <string name="MediaOverviewActivity_Links">链接</string>
     <string name="MediaOverviewActivity_link">链接</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
