@@ -82,6 +82,7 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
   private View                   viewDetail;
   private long                   threadId;
   private boolean                tellomiSearchEnabled;
+  private MenuItem               tellomiSearchItem;
 
   public static Intent forThread(@NonNull Context context, long threadId) {
     Intent intent = new Intent(context, MediaOverviewActivity.class);
@@ -224,8 +225,24 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
           return true;
         }
       });
+      tellomiSearchItem = searchItem;
+      // 菜单重建时搜索框是收起的：查询也一起清掉，免得列表被一个看不见的查询筛着（例如转屏之后）
+      model.setTellomiQuery(null);
     }
     return super.onCreateOptionsMenu(menu);
+  }
+
+  /**
+   * Tellomi：搜索框展开时不重建菜单（#1174）。每一页装载完都会调这里（上游 {@link MediaOverviewPageFragment} 的 onLoadFinished），
+   * 重建会把展开的搜索框收起来：输入第一个字、页重新筛完，搜索框就没了（走查模拟器上实测）。
+   * 上游这个页面本来没有菜单，跳过重建没有别的影响。
+   */
+  @Override
+  public void invalidateOptionsMenu() {
+    if (tellomiSearchItem != null && tellomiSearchItem.isActionViewExpanded()) {
+      return;
+    }
+    super.invalidateOptionsMenu();
   }
 
   @Override
