@@ -840,7 +840,8 @@ class ConversationFragment :
       viewModel.onChatBoundsChanged(Rect(left, top, right, bottom))
     }
 
-    binding.toolbar.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+    // Tellomi：跟着顶栏背景走（它铺到「我的收藏」分类栏的底边，没有分类栏时就是顶栏底边，#1174）
+    binding.toolbarBackground.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
       // Bug: ConstraintLayout can provide a negative value for the toolbar causing RV layout problems
       if (bottom < 0) return@addOnLayoutChangeListener
 
@@ -1342,6 +1343,9 @@ class ConversationFragment :
       .observeOn(AndroidSchedulers.mainThread())
       .distinctUntilChanged { r1, r2 -> r1 === r2 || r1.hasSameContent(r2) }
       .subscribeBy(onNext = this::onRecipientChanged)
+
+    // Tellomi：「我的收藏」顶栏下方的分类（#1174）
+    disposables += binding.tellomiSavedCategoriesBar.bind(viewModel.recipient, args.threadId)
 
     disposables += viewModel.titleViewParticipants
       .map { createGroupSubtitleString(it) }

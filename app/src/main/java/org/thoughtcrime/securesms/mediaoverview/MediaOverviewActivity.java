@@ -46,6 +46,7 @@ import org.thoughtcrime.securesms.database.MediaTable;
 import org.thoughtcrime.securesms.database.MediaTable.Sorting;
 import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.loaders.MediaLoader;
+import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
@@ -62,6 +63,7 @@ import kotlin.Pair;
 public final class MediaOverviewActivity extends PassphraseRequiredActivity {
 
   private static final String THREAD_ID_EXTRA = "thread_id";
+  private static final String TELLOMI_INITIAL_MEDIA_TYPE_EXTRA = "tellomi_initial_media_type";
 
   private final DynamicTheme dynamicTheme = new DynamicNoActionBarTheme();
 
@@ -81,6 +83,13 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
   public static Intent forThread(@NonNull Context context, long threadId) {
     Intent intent = new Intent(context, MediaOverviewActivity.class);
     intent.putExtra(MediaOverviewActivity.THREAD_ID_EXTRA, threadId);
+    return intent;
+  }
+
+  /** Tellomi：「我的收藏」的分类点进来，停在对应的页（#1174）。 */
+  public static Intent forThread(@NonNull Context context, long threadId, @NonNull MediaLoader.MediaType initialMediaType) {
+    Intent intent = forThread(context, threadId);
+    intent.putExtra(TELLOMI_INITIAL_MEDIA_TYPE_EXTRA, initialMediaType.name());
     return intent;
   }
 
@@ -131,6 +140,14 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
     });
 
     viewPager.setCurrentItem(allThreads ? viewPager.getAdapter().getCount() - 1 : 0);
+
+    String initialMediaType = getIntent().getStringExtra(TELLOMI_INITIAL_MEDIA_TYPE_EXTRA);
+    if (initialMediaType != null) {
+      int page = ((MediaOverviewPagerAdapter) viewPager.getAdapter()).tellomiPageOf(MediaLoader.MediaType.valueOf(initialMediaType));
+      if (page >= 0) {
+        viewPager.setCurrentItem(page);
+      }
+    }
   }
 
   private static boolean allowGridSelectionOnPage(int page) {
@@ -210,12 +227,17 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
       SimpleTask.run(() -> SignalDatabase.threads().getRecipientForThreadId(threadId),
         (recipient) -> {
           if (recipient != null) {
-            getSupportActionBar().setTitle(recipient.getDisplayName(this));
-            recipient.live().observe(this, r -> getSupportActionBar().setTitle(r.getDisplayName(this)));
+            getSupportActionBar().setTitle(tellomiTitle(recipient));
+            recipient.live().observe(this, r -> getSupportActionBar().setTitle(tellomiTitle(r)));
           }
         }
       );
     }
+  }
+
+  /** Tellomi：自己的会话（「我的收藏」）的所有媒体叫「我的收藏」，和会话顶栏一致，不显示自己的资料名（#1174）。 */
+  private @NonNull String tellomiTitle(@NonNull Recipient recipient) {
+    return recipient.isSelf() ? getString(R.string.note_to_self) : recipient.getDisplayName(this);
   }
 
   public void onEnterMultiSelect() {
@@ -296,6 +318,16 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
     @Override
     public int getCount() {
       return pages.size();
+    }
+
+    /** Tellomi：这一类在第几页，没有这一页时是 -1（#1174）。 */
+    int tellomiPageOf(@NonNull MediaLoader.MediaType mediaType) {
+      for (int i = 0; i < pages.size(); i++) {
+        if (pages.get(i).getFirst() == mediaType) {
+          return i;
+        }
+      }
+      return -1;
     }
 
     @Override
