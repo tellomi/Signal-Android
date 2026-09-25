@@ -2,6 +2,7 @@ package org.thoughtcrime.securesms.conversation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Vibrator;
 import android.view.MotionEvent;
@@ -20,8 +21,7 @@ import java.util.Objects;
 
 public class ConversationItemSwipeCallback extends ItemTouchHelper.SimpleCallback {
 
-  private static float SWIPE_SUCCESS_DX           = ConversationSwipeAnimationHelper.TRIGGER_DX;
-  private static long  SWIPE_SUCCESS_VIBE_TIME_MS = 10;
+  private static long SWIPE_SUCCESS_VIBE_TIME_MS = 10;
 
   private boolean swipeBack;
   private boolean shouldTriggerSwipeFeedback;
@@ -36,7 +36,8 @@ public class ConversationItemSwipeCallback extends ItemTouchHelper.SimpleCallbac
   public ConversationItemSwipeCallback(@NonNull SwipeAvailabilityProvider swipeAvailabilityProvider,
                                        @NonNull OnSwipeListener onSwipeListener)
   {
-    super(0, ItemTouchHelper.END);
+    // Tellomi（tellomi/tellomi#1109）：回复改成手指从右往左滑（Telegram 基线；RTL 下 START 自动镜像成从左往右）。
+    super(0, ItemTouchHelper.START);
     this.itemTouchListener          = new ConversationItemTouchListener(this::updateLatestDownCoordinate);
     this.swipeAvailabilityProvider  = swipeAvailabilityProvider;
     this.onSwipeListener            = onSwipeListener;
@@ -109,7 +110,7 @@ public class ConversationItemSwipeCallback extends ItemTouchHelper.SimpleCallbac
   }
 
   private void handleSwipeFeedback(@NonNull Context context, @NonNull InteractiveConversationElement interactiveConversationElement, float dx) {
-    if (dx > SWIPE_SUCCESS_DX && shouldTriggerSwipeFeedback) {
+    if (dx > triggerDx(interactiveConversationElement) && shouldTriggerSwipeFeedback) {
       vibrate(context);
       ConversationSwipeAnimationHelper.trigger(interactiveConversationElement);
       shouldTriggerSwipeFeedback = false;
@@ -150,7 +151,7 @@ public class ConversationItemSwipeCallback extends ItemTouchHelper.SimpleCallbac
                                    @NonNull RecyclerView.ViewHolder viewHolder,
                                    float dx)
   {
-    if (dx > SWIPE_SUCCESS_DX) {
+    if (dx > triggerDx(requireInteractiveConversationElement(viewHolder))) {
       canTriggerSwipe = false;
       onSwiped(viewHolder);
       if (shouldTriggerSwipeFeedback) {
@@ -200,7 +201,13 @@ public class ConversationItemSwipeCallback extends ItemTouchHelper.SimpleCallbac
   }
 
   private static float getSignFromDirection(@NonNull View view) {
-    return view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL ? -1f : 1f;
+    return TellomiSwipeToReply.replySign(view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL);
+  }
+
+  /** Tellomi（tellomi/tellomi#1109）：过这个位移松手才算回复——对方的消息 45dp、自己的 60dp（Telegram 同值）。 */
+  static float triggerDx(@NonNull InteractiveConversationElement element) {
+    boolean isOutgoing = element.getConversationMessage().getMessageRecord().isOutgoing();
+    return TellomiSwipeToReply.triggerDp(isOutgoing) * Resources.getSystem().getDisplayMetrics().density;
   }
 
   private static boolean sameSign(float dX, float sign) {

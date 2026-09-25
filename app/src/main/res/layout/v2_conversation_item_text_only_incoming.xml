@@ -26,7 +26,7 @@
         android:tint="@color/signal_icon_tint_secondary"
         app:contentPadding="9dp"
         app:layout_constraintBottom_toBottomOf="@id/conversation_item_body_wrapper"
-        app:layout_constraintStart_toStartOf="@id/conversation_item_body_wrapper"
+        app:layout_constraintEnd_toEndOf="@id/conversation_item_body_wrapper"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
         app:srcCompat="@drawable/symbol_reply_24" />
 

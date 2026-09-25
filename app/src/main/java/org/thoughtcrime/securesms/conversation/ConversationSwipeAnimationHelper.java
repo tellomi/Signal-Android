@@ -15,15 +15,15 @@ import java.util.List;
 
 final class ConversationSwipeAnimationHelper {
 
-  static final float TRIGGER_DX = dpToPx(64);
-  static final float MAX_DX     = dpToPx(96);
+  /** Tellomi（tellomi/tellomi#1109，ADR-0058 §2）：过阈值后的橡皮筋范围与整体上限；阈值本身按消息方向取，见 {@link TellomiSwipeToReply}。 */
+  private static final float RUBBER_BAND_RANGE = dpToPx((int) TellomiSwipeToReply.RUBBER_BAND_RANGE_DP);
+  private static final float MAX_DX            = dpToPx((int) TellomiSwipeToReply.MAX_OFFSET_DP);
 
   private static final float REPLY_SCALE_OVERSHOOT          = 1.8f;
   private static final float REPLY_SCALE_MAX                = 1.2f;
   private static final float REPLY_SCALE_MIN                = 1f;
   private static final long  REPLY_SCALE_OVERSHOOT_DURATION = 200;
 
-  private static final Interpolator BUBBLE_INTERPOLATOR           = new BubblePositionInterpolator(0f, TRIGGER_DX, MAX_DX);
   private static final Interpolator REPLY_ALPHA_INTERPOLATOR      = new ClampingLinearInterpolator(0f, 1f, 1f);
   private static final Interpolator REPLY_TRANSITION_INTERPOLATOR = new ClampingLinearInterpolator(0f, dpToPx(10));
   private static final Interpolator AVATAR_INTERPOLATOR           = new ClampingLinearInterpolator(0f, dpToPx(8));
@@ -34,12 +34,14 @@ final class ConversationSwipeAnimationHelper {
   }
 
   public static void update(@NonNull InteractiveConversationElement interactiveConversationElement, float dx, float sign) {
-    float progress = dx / TRIGGER_DX;
+    float triggerDx    = ConversationItemSwipeCallback.triggerDx(interactiveConversationElement);
+    float progress     = dx / triggerDx;
+    float bubbleOffset = TellomiSwipeToReply.bubbleOffset(dx, triggerDx, RUBBER_BAND_RANGE, MAX_DX);
 
-    updateBodyBubbleTransition(interactiveConversationElement.getBubbleViews(), dx, sign);
-    updateReactionsTransition(interactiveConversationElement.getReactionsView(), dx, sign);
-    updateQuotedIndicatorTransition(interactiveConversationElement.getQuotedIndicatorView(), dx, progress, sign);
-    updateReplyIconTransition(interactiveConversationElement.getReplyView(), dx, progress, sign);
+    updateBodyBubbleTransition(interactiveConversationElement.getBubbleViews(), bubbleOffset, sign);
+    updateReactionsTransition(interactiveConversationElement.getReactionsView(), bubbleOffset, sign);
+    updateQuotedIndicatorTransition(interactiveConversationElement.getQuotedIndicatorView(), bubbleOffset, progress, sign);
+    updateReplyIconTransition(interactiveConversationElement.getReplyView(), dx < triggerDx, progress, sign);
     updateContactPhotoHolderTransition(interactiveConversationElement.getContactPhotoHolderView(), progress, sign);
     updateContactPhotoHolderTransition(interactiveConversationElement.getBadgeImageView(), progress, sign);
   }
@@ -48,31 +50,31 @@ final class ConversationSwipeAnimationHelper {
     triggerReplyIcon(interactiveConversationElement.getReplyView());
   }
 
-  private static void updateBodyBubbleTransition(@NonNull List<View> bubbleViews, float dx, float sign) {
+  private static void updateBodyBubbleTransition(@NonNull List<View> bubbleViews, float bubbleOffset, float sign) {
     for (View view : bubbleViews) {
-      view.setTranslationX(BUBBLE_INTERPOLATOR.getInterpolation(dx) * sign);
+      view.setTranslationX(bubbleOffset * sign);
     }
   }
 
-  private static void updateReactionsTransition(@NonNull View reactionsContainer, float dx, float sign) {
-    reactionsContainer.setTranslationX(BUBBLE_INTERPOLATOR.getInterpolation(dx) * sign);
+  private static void updateReactionsTransition(@NonNull View reactionsContainer, float bubbleOffset, float sign) {
+    reactionsContainer.setTranslationX(bubbleOffset * sign);
   }
 
-  private static void updateQuotedIndicatorTransition(@Nullable View quotedIndicator, float dx, float progress, float sign) {
+  private static void updateQuotedIndicatorTransition(@Nullable View quotedIndicator, float bubbleOffset, float progress, float sign) {
     if (quotedIndicator != null) {
-      quotedIndicator.setTranslationX(BUBBLE_INTERPOLATOR.getInterpolation(dx) * sign);
+      quotedIndicator.setTranslationX(bubbleOffset * sign);
       quotedIndicator.setAlpha(QUOTED_ALPHA_INTERPOLATOR.getInterpolation(progress));
     }
   }
 
-  private static void updateReplyIconTransition(@NonNull View replyIcon, float dx, float progress, float sign) {
+  private static void updateReplyIconTransition(@NonNull View replyIcon, boolean beforeTrigger, float progress, float sign) {
     if (progress > 0.05f) {
       replyIcon.setAlpha(REPLY_ALPHA_INTERPOLATOR.getInterpolation(progress));
     } else replyIcon.setAlpha(0f);
 
     replyIcon.setTranslationX(REPLY_TRANSITION_INTERPOLATOR.getInterpolation(progress) * sign);
 
-    if (dx < TRIGGER_DX) {
+    if (beforeTrigger) {
       float scale = REPLY_SCALE_INTERPOLATOR.getInterpolation(progress);
       replyIcon.setScaleX(scale);
       replyIcon.setScaleY(scale);
@@ -99,36 +101,6 @@ final class ConversationSwipeAnimationHelper {
 
   private static int dpToPx(int dp) {
     return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
-  }
-
-  private static final class BubblePositionInterpolator implements Interpolator {
-
-    private final float start;
-    private final float middle;
-    private final float end;
-
-    private BubblePositionInterpolator(float start, float middle, float end) {
-      this.start  = start;
-      this.middle = middle;
-      this.end    = end;
-    }
-
-    @Override
-    public float getInterpolation(float input) {
-      if (input < start) {
-        return start;
-      } else if (input < middle) {
-        return input;
-      } else {
-        float segmentLength     = end   - middle;
-        float segmentTraveled   = input - middle;
-        float segmentCompletion = segmentTraveled / segmentLength;
-        float scaleDownFactor   = middle / (input * 2);
-        float output            = middle + (segmentLength * segmentCompletion * scaleDownFactor);
-
-        return Math.min(output, end);
-      }
-    }
   }
 
   private static final class ClampingLinearInterpolator implements Interpolator {
