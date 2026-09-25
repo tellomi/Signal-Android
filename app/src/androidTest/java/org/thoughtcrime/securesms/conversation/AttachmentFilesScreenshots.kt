@@ -243,10 +243,11 @@ class AttachmentFilesScreenshots {
   fun filesPickedInTheSystemPickerAreSentAndOneOverTheLimitIsRefusedWithTheLimit() {
     val run = SystemClock.uptimeMillis() % 1_000_000
     val smallName = "t1121-$run.txt"
-    val bigName = "t1121-big-$run.bin"
+    // 「最近」只列文档类（text/plain 在，application/octet-stream 不在），大文件也用 .txt
+    val bigName = "t1121-big-$run.txt"
     val maxFileSize = PushMediaConstraints(null).documentMaxSize
     val small = insertDownload(smallName, "text/plain", "picked file $run".toByteArray())
-    val big = insertDownload(bigName, "application/octet-stream", size = maxFileSize + 1)
+    val big = insertDownload(bigName, "text/plain", size = maxFileSize + 1)
     try {
       val (conversation, threadId) = openFilesPage()
       try {
