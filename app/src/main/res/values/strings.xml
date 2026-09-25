@@ -540,6 +540,8 @@
         <item quantity="one">%d unread message</item>
         <item quantity="other">%d unread messages</item>
     </plurals>
+    <!-- Tellomi（两端差异清单第 11 项）：未读分隔线只写「新消息」，不带条数，和 iOS 的 MESSAGES_VIEW_UNREAD_INDICATOR 一致 -->
+    <string name="ConversationAdapter__tellomi_new_messages">New messages</string>
 
     <!-- ConversationFragment -->
     <!-- Toast text when contacts activity is not found -->
