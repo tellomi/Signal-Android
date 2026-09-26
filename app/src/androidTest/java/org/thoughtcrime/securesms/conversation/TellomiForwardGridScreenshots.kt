@@ -188,19 +188,26 @@ class TellomiForwardGridScreenshots {
     val viewer = instrumentation.startActivitySync(intent)
     try {
       settle(1500)
-      val forward = byResourceId("exo_forward")
-      click(forward)
-      textNode(string(R.string.MultiselectForwardFragment__forward_to))
-      settle(800)
-      shot("forward-7-viewer-dark-grid")
-      val title = textNode(string(R.string.MultiselectForwardFragment__forward_to)).boundsInScreen()
-      val background = sampleScreen(title.left - 24, title.centerY())
-      report.appendLine("sheet background near title=#${Integer.toHexString(background)}")
-      assertTrue("从查看器打开的网格是深色", luminance(background) < 0.25)
-      textNode(string(R.string.note_to_self))
+      // #1257 以后相册里的一张先问「这张 / 全部 N 张」：两条路打开的都是网格、都是深色
+      val choices = listOf(
+        "this" to string(R.string.MediaPreviewFragment__forward_this_photo),
+        "all" to harness.context.resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_photos, 3, 3)
+      )
+      for ((name, choice) in choices) {
+        click(byResourceId("exo_forward"))
+        click(textNode(choice))
+        textNode(string(R.string.MultiselectForwardFragment__forward_to))
+        settle(800)
+        shot(if (name == "this") "forward-7-viewer-dark-grid" else "forward-7b-viewer-dark-grid-all")
+        val title = textNode(string(R.string.MultiselectForwardFragment__forward_to)).boundsInScreen()
+        val background = sampleScreen(title.left - 24, title.centerY())
+        report.appendLine("$name: sheet background near title=#${Integer.toHexString(background)}")
+        assertTrue("从查看器打开的网格是深色（$name）", luminance(background) < 0.25)
+        textNode(string(R.string.note_to_self))
 
-      instrumentation.uiAutomation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
-      settle()
+        instrumentation.uiAutomation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
+        settle()
+      }
     } finally {
       File(outDir, "metrics-forward-viewer.txt").writeText(report.toString())
       instrumentation.runOnMainSync { viewer.finish() }

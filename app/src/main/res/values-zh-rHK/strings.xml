@@ -46,6 +46,8 @@
 
     <!-- AlbumThumbnailView -->
   <!-- Removed by excludeNonTranslatables <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string> -->
+    <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
+    <string name="AlbumCarouselView__item_d_of_d">第 %1$d 項，共 %2$d 項</string>
 
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi 正在更新…</string>
@@ -3215,6 +3217,23 @@
     <string name="MediaPreviewFragment_media_delete_error">刪除訊息時發生錯誤，訊息可能仍然存在</string>
     <!-- A suffix to be attached to truncated captions that the user may tap onto to view the entire text caption -->
     <string name="MediaPreviewFragment_read_more_overflow_text">了解更多</string>
+    <!-- Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：查看器里转发相册中的一张，先问「这张 / 全部 N 张」 -->
+    <string name="MediaPreviewFragment__forward_this_photo">這張圖片</string>
+    <string name="MediaPreviewFragment__forward_this_video">這段影片</string>
+    <plurals name="MediaPreviewFragment__forward_all_d_photos">
+        <item quantity="other">全部 %d 張圖片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_videos">
+        <item quantity="other">全部 %d 段影片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_items">
+        <item quantity="other">全部 %d 項</item>
+    </plurals>
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频查看器的倍速按钮与面板；分享挪进「···」 -->
+    <string name="MediaPreviewFragment__playback_speed">播放速度</string>
+    <string name="MediaPreviewFragment__speed">速度</string>
+    <string name="MediaPreviewFragment__speed_normal">正常</string>
+    <string name="MediaPreviewFragment__share">分享</string>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->
