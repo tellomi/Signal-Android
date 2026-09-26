@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.conversation
 
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -36,6 +37,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.viewpager2.widget.ViewPager2
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -60,6 +62,7 @@ import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.groups.GroupId
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewCenterControlsView
+import org.thoughtcrime.securesms.mediapreview.MediaPreviewFragment
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewPlayerControlView
 import org.thoughtcrime.securesms.mediapreview.VideoScrubPreviewView
 import org.thoughtcrime.securesms.mediapreview.mediarail.AlbumScrubberView
@@ -110,6 +113,15 @@ class AlbumViewerScreenshots {
     density = harness.context.resources.displayMetrics.density
     outDir = File(harness.context.getExternalFilesDir(null), "tellomi-shots/${widthDp}dp").apply { mkdirs() }
     report.appendLine("screenWidthDp=$widthDp screenHeightDp=${config.screenHeightDp} density=$density")
+    // 播放中自动收起只在 videoControlsAutoHideWhilePlaying 里测；别的用例中途要停好几秒，别让控件自己收起。
+    MediaPreviewFragment.autoHideDelayMs = 3_600_000L
+  }
+
+  @After
+  fun restoreAutoHide() {
+    MediaPreviewFragment.autoHideDelayMs = 3_000L
+    MediaPreviewFragment.autoHideTickMs = 250L
+    MediaPreviewFragment.touchExplorationOverrideForTesting = null
   }
 
   /**
@@ -333,6 +345,142 @@ class AlbumViewerScreenshots {
    * 转发 / 删除都问「这个视频 / 全部 2 个视频」；30 秒以内循环。翻到第二个（32 秒）：沿用 1.5x、两侧有 ±15、不循环；
    * 放完把控件叫出来、正中换成播放键（同 iOS 的 testVideoViewerTelegramControls）。
    */
+  /**
+   * #1257 欠账，照 Telegram Android（`PhotoViewer.scheduleActionBarHide` 3 秒）：正在播、没被打断，控件过一会儿自动收起
+   * （产品里 3 秒、每 250ms 看一次；这里 0.8 秒、每 0.1 秒）。暂停、倍速菜单 / 「⋮」菜单开着、拖着进度条、开着 TalkBack 时不收；
+   * 打断结束后再等满时间才收；碰一下屏幕（经 `MediaPreviewActivity.dispatchTouchEvent`）计时从头来。
+   */
+  @Test
+  fun videoControlsAutoHideWhilePlaying() {
+    MediaPreviewFragment.autoHideDelayMs = 800L
+    MediaPreviewFragment.autoHideTickMs = 100L
+    val other = harness.others[5]
+    val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
+    // 单个视频在聊天里是单张缩略图、不是相册宫格；放两个，从第一个（6 秒、循环播放）打开。
+    insertIncomingVideoAlbum(other, threadId, listOf(makeVideo(seconds = 6, hue = 120f), makeVideo(seconds = 6, hue = 300f)))
+
+    val conversation = openConversation(other, threadId)
+    try {
+      waitForAlbums(conversation, 1)
+      conversation.onActivity { activity -> gridCells(liveAlbums(activity)[0])[0].performClick() }
+      settle(3000)
+
+      val viewer = resumedActivity()
+      val controls = viewer.findViewById<MediaPreviewPlayerControlView>(R.id.media_preview_playback_controls)
+      val width = harness.context.resources.displayMetrics.widthPixels.toFloat()
+      val height = harness.context.resources.displayMetrics.heightPixels.toFloat()
+
+      fun shown(): Boolean {
+        var shown = false
+        onMain { shown = chromeShown(viewer.findViewById(R.id.toolbar_layout)) }
+        return shown
+      }
+      fun showControls() {
+        if (!shown()) {
+          tap(width / 2f, height * 0.3f)
+          // 控件跟着系统栏的 insets 回调才淡入（FullscreenHelper.showAndHideWithSystemUI），机器忙时 300ms 不够（375dp 红过一次），最多等 2 秒
+          val deadline = SystemClock.uptimeMillis() + 2_000
+          while (SystemClock.uptimeMillis() < deadline && !shown()) {
+            SystemClock.sleep(50)
+          }
+        }
+        assertTrue("控件叫出来了", shown())
+      }
+      fun staysShown(reason: String) {
+        settle(2000)
+        val stillShown = shown()
+        report.appendLine("autohide: $reason shown=$stillShown")
+        assertTrue(reason, stillShown)
+      }
+      fun hidesAfterDelay(reason: String, since: Long = SystemClock.uptimeMillis(), minElapsedMs: Long = 600L, timeoutMs: Long = 4_000L) {
+        val deadline = SystemClock.uptimeMillis() + timeoutMs
+        while (SystemClock.uptimeMillis() < deadline && shown()) {
+          SystemClock.sleep(50)
+        }
+        val elapsed = SystemClock.uptimeMillis() - since
+        val hidden = !shown()
+        report.appendLine("autohide: $reason hidden=$hidden after=${elapsed}ms")
+        assertTrue(reason, hidden)
+        assertTrue("$reason：等满时间才收，不是一放开就收（${elapsed}ms）", elapsed >= minElapsedMs)
+      }
+      fun isPlaying(): Boolean {
+        var playing = false
+        onMain { playing = controls.player?.isPlaying == true }
+        return playing
+      }
+
+      // 播放中：轻点叫出控件，没再碰就自动收起
+      assertTrue("照常自动播放", isPlaying())
+      val tappedAt = SystemClock.uptimeMillis()
+      showControls()
+      hidesAfterDelay("播放中没碰就自动收起", since = tappedAt)
+
+      // 暂停：不收；接着放，等满时间再收
+      showControls()
+      onMain { controls.player!!.pause() }
+      staysShown("暂停时不收")
+      onMain { controls.player!!.play() }
+      hidesAfterDelay("接着放，等满时间再收")
+
+      // 倍速菜单开着：不收；选了「正常」关掉后再等满时间
+      showControls()
+      onMain { viewer.findViewById<View>(R.id.media_preview_speed_button).performClick() }
+      staysShown("倍速菜单开着不收")
+      clickText(harness.context.getString(R.string.MediaPreviewFragment__speed_normal))
+      hidesAfterDelay("倍速菜单关掉后再等满时间收")
+
+      // 「⋮」菜单开着：不收
+      showControls()
+      onMain { viewer.findViewById<Toolbar>(R.id.toolbar).showOverflowMenu() }
+      staysShown("「⋮」菜单开着不收")
+      onMain { viewer.findViewById<Toolbar>(R.id.toolbar).hideOverflowMenu() }
+      hidesAfterDelay("「⋮」菜单关掉后再等满时间收")
+
+      // 按住进度条：不收；松手后再等满时间
+      showControls()
+      var barX = 0f
+      var barY = 0f
+      onMain {
+        val bar = controls.timeBarForTesting()
+        val location = IntArray(2).also { bar.getLocationOnScreen(it) }
+        barX = location[0] + bar.width * 0.3f
+        barY = location[1] + bar.height / 2f
+      }
+      val down = SystemClock.uptimeMillis()
+      instrumentation.sendPointerSync(MotionEvent.obtain(down, down, MotionEvent.ACTION_DOWN, barX, barY, 0))
+      instrumentation.sendPointerSync(MotionEvent.obtain(down, down + 30, MotionEvent.ACTION_MOVE, barX + 20f * density, barY, 0))
+      staysShown("拖着进度条不收")
+      instrumentation.sendPointerSync(MotionEvent.obtain(down, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, barX + 20f * density, barY, 0))
+      hidesAfterDelay("松手后再等满时间收")
+
+      // 开着 TalkBack：不收
+      showControls()
+      MediaPreviewFragment.touchExplorationOverrideForTesting = true
+      staysShown("开着 TalkBack 不收")
+      MediaPreviewFragment.touchExplorationOverrideForTesting = false
+      hidesAfterDelay("关掉 TalkBack 后再等满时间收")
+
+      // 碰一下屏幕：计时从头来。这一段时间放长到 3 秒，判据只用下限——收起离「碰」那一下至少满 3 秒；
+      // 机器忙只会让它更晚收、不会更早（原来「2.4 秒时还在」那种定点看，440dp 在机器忙时红过一次）。
+      // 没清零的话，从叫出控件（上一次清零）算满 3 秒就收，离「碰」只有约 2 秒，这条就红。
+      MediaPreviewFragment.autoHideDelayMs = 3_000L
+      showControls()
+      val shownAt = SystemClock.uptimeMillis()
+      SystemClock.sleep(1_000)
+      assertTrue("碰之前控件还在（离叫出 ${SystemClock.uptimeMillis() - shownAt}ms）", shown())
+      var touchedAt = 0L
+      onMain {
+        touchedAt = SystemClock.uptimeMillis()
+        viewer.dispatchTouchEvent(MotionEvent.obtain(touchedAt, touchedAt, MotionEvent.ACTION_CANCEL, 0f, 0f, 0))
+      }
+      report.appendLine("autohide: touched ${touchedAt - shownAt}ms after shown")
+      hidesAfterDelay("碰过屏幕，计时从头来", since = touchedAt, minElapsedMs = 3_000L, timeoutMs = 8_000L)
+    } finally {
+      File(outDir, "metrics-autohide.txt").writeText(report.toString())
+      conversation.close()
+    }
+  }
+
   @Test
   fun videoViewerTelegramControls() {
     val other = harness.others[3]
@@ -706,15 +854,34 @@ class AlbumViewerScreenshots {
     return manager.fragments.flatMap { listOf(it) + allFragments(it.childFragmentManager) }
   }
 
-  /** 按文字点一下（对话框的列表项在另一个窗口里，走无障碍节点点它可点的那一层）。 */
+  /** 按文字点一下（对话框、倍速面板的列表项在另一个窗口里，走无障碍节点点它可点的那一层）。 */
   private fun clickText(text: String) {
-    val node = instrumentation.uiAutomation.rootInActiveWindow?.findAccessibilityNodeInfosByText(text)?.firstOrNull()
+    val node = findTextNode(text)
     assertTrue("屏幕上找不到「$text」", node != null)
     var target = node
     while (target != null && !target.isClickable) {
       target = target.parent
     }
     assertTrue("「$text」没有可点的一层", target?.performAction(AccessibilityNodeInfo.ACTION_CLICK) == true)
+  }
+
+  /**
+   * 只看活动窗口（rootInActiveWindow）不够：单跑 videoControlsAutoHideWhilePlaying 时倍速面板已经画在屏幕上（截帧看得到「Normal」），
+   * 从活动窗口却找不到它。所以所有交互窗口都找一遍；无障碍的窗口列表是异步更新的，最多等 2 秒。
+   */
+  private fun findTextNode(text: String): AccessibilityNodeInfo? {
+    val automation = instrumentation.uiAutomation
+    automation.serviceInfo?.let { info ->
+      info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+      automation.serviceInfo = info
+    }
+    val deadline = SystemClock.uptimeMillis() + 2_000
+    while (true) {
+      val roots = listOfNotNull(automation.rootInActiveWindow) + automation.windows.mapNotNull { it.root }
+      roots.firstNotNullOfOrNull { it.findAccessibilityNodeInfosByText(text)?.firstOrNull() }?.let { return it }
+      if (SystemClock.uptimeMillis() >= deadline) return null
+      SystemClock.sleep(100)
+    }
   }
 
   private fun collectInputPanels(view: View): List<InputPanel> {

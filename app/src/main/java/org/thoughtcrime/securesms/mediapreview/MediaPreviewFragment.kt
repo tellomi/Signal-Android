@@ -10,6 +10,9 @@ import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.text.Annotation
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -47,7 +50,6 @@ import kotlinx.coroutines.withContext
 import org.signal.core.models.database.AttachmentId
 import org.signal.core.models.media.Media
 import org.signal.core.ui.logging.LoggingFragment
-import org.signal.core.util.Debouncer
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.logging.Log
 import org.signal.core.util.requireDrawable
@@ -85,7 +87,6 @@ import org.thoughtcrime.securesms.util.SpanUtil
 import org.thoughtcrime.securesms.util.ViewUtil
 import org.thoughtcrime.securesms.util.visible
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 import org.signal.core.ui.R as CoreUiR
 
@@ -98,7 +99,17 @@ class MediaPreviewFragment :
   private val viewModel: MediaPreviewViewModel by viewModels(ownerProducer = {
     requireActivity()
   })
-  private val debouncer = Debouncer(2, TimeUnit.SECONDS)
+
+  // Tellomi（#1257，照 Telegram Android）：播放中控件自动收起，见 autoHideControlsTick。
+  private val autoHideHandler = Handler(Looper.getMainLooper())
+  private var autoHideIdleSinceMs = 0L
+  private var isScrubbingVideo = false
+  private val autoHideTick = object : Runnable {
+    override fun run() {
+      autoHideControlsTick()
+      autoHideHandler.postDelayed(this, autoHideTickMs)
+    }
+  }
   private val args: MediaIntentFactory.MediaPreviewArgs by lazy { MediaIntentFactory.requireArguments(requireArguments()) }
 
   private lateinit var pagerAdapter: MediaPreviewAdapter
@@ -204,7 +215,7 @@ class MediaPreviewFragment :
       override fun onPageSelected(position: Int) {
         super.onPageSelected(position)
         if (position != viewModel.currentPosition) {
-          debouncer.clear()
+          noteAutoHideActivity()
         }
         viewModel.setCurrentPage(position)
       }
@@ -450,6 +461,7 @@ class MediaPreviewFragment :
   private fun scrubPreviewListener(attachmentId: AttachmentId): MediaPreviewPlayerControlView.ScrubListener {
     return object : MediaPreviewPlayerControlView.ScrubListener {
       override fun onScrubStart(positionMs: Long, thumbCenterXOnScreen: Float, pillTopOnScreen: Float) {
+        isScrubbingVideo = true
         frameExtractor?.release()
         frameExtractor = VideoFrameExtractor(attachmentId, ViewUtil.dpToPx(VideoScrubPreviewView.LONG_SIDE_DP))
         binding.mediaPreviewScrubPreview.showAt(thumbCenterXOnScreen, pillTopOnScreen)
@@ -462,6 +474,8 @@ class MediaPreviewFragment :
       }
 
       override fun onScrubStop(positionMs: Long) {
+        isScrubbingVideo = false
+        noteAutoHideActivity()
         binding.mediaPreviewScrubPreview.dismiss()
         frameExtractor?.release()
         frameExtractor = null
@@ -739,7 +753,8 @@ class MediaPreviewFragment :
   }
 
   override fun onPlaying() {
-    debouncer.publish { fullscreenHelper.hideSystemUI() }
+    // 上游是开始播放 2 秒后收起一次；改成 autoHideControlsTick 的空闲计时（照 Telegram：控件露着、正在播、连续 3 秒没被打断才收）。
+    noteAutoHideActivity()
   }
 
   override fun onStopped(tag: String?) {
@@ -748,7 +763,6 @@ class MediaPreviewFragment :
     }
 
     if (pagerAdapter.getFragmentTag(viewModel.currentPosition) == tag) {
-      debouncer.clear()
       // Tellomi（#1257，照 Telegram）：超过 30 秒、不循环的视频放完了，把控件叫出来（正中是播放键）。
       if (binding.mediaPreviewPlaybackControls.player?.playbackState == Player.STATE_ENDED) {
         chromeHiddenUntilTap = false
@@ -917,8 +931,18 @@ class MediaPreviewFragment :
     startActivity(MediaSendLauncher.editor(context = requireContext(), media = listOf(media)))
   }
 
+  override fun onResume() {
+    super.onResume()
+    noteAutoHideActivity()
+    autoHideHandler.removeCallbacks(autoHideTick)
+    autoHideHandler.postDelayed(autoHideTick, autoHideTickMs)
+    (activity as? MediaPreviewActivity)?.onUserTouch = { noteAutoHideActivity() }
+  }
+
   override fun onPause() {
     super.onPause()
+    autoHideHandler.removeCallbacks(autoHideTick)
+    (activity as? MediaPreviewActivity)?.onUserTouch = null
     getMediaPreviewFragmentFromChildFragmentManager(binding.mediaPager.currentItem)?.pause()
     speedPopup?.dismiss()
   }
@@ -932,7 +956,45 @@ class MediaPreviewFragment :
     viewModel.onDestroyView()
   }
 
+  private fun noteAutoHideActivity() {
+    autoHideIdleSinceMs = SystemClock.uptimeMillis()
+  }
+
+  /**
+   * Tellomi（#1257，照 Telegram Android `PhotoViewer`：`scheduleActionBarHide` 3 秒，按下取消、抬手重排，子菜单开着不收，开着无障碍不排）：
+   * 控件露着时每 250ms 看一次，连续 3 秒没被打断才收起。没在播、正在拖进度条、「⋮」或倍速菜单开着、窗口没焦点（对话框 / 弹出菜单）、
+   * 开着 TalkBack 都算打断，计时从头来；碰一下屏幕（`MediaPreviewActivity.dispatchTouchEvent`）也从头来。照片不收（只对正在播的视频）。
+   */
+  private fun autoHideControlsTick() {
+    if (view == null || chromeHiddenUntilTap || !fullscreenHelper.isSystemUiVisible || isAutoHideBlocked()) {
+      noteAutoHideActivity()
+      return
+    }
+    if (SystemClock.uptimeMillis() - autoHideIdleSinceMs >= autoHideDelayMs) {
+      fullscreenHelper.hideSystemUI()
+      noteAutoHideActivity()
+    }
+  }
+
+  private fun isAutoHideBlocked(): Boolean {
+    val player = binding.mediaPreviewPlaybackControls.player
+    if (player == null || !player.isPlaying) return true
+    if (isScrubbingVideo || speedPopup?.isShowing == true || binding.toolbar.isOverflowMenuShowing) return true
+    if (!requireActivity().hasWindowFocus()) return true
+    return isTouchExplorationEnabled()
+  }
+
+  private fun isTouchExplorationEnabled(): Boolean {
+    touchExplorationOverrideForTesting?.let { return it }
+    return requireContext().getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled == true
+  }
+
   companion object {
+    /** 播放中控件自动收起：产品里 3 秒、每 250ms 看一次；测试（AlbumViewerScreenshots）可以改。 */
+    var autoHideDelayMs = 3_000L
+    var autoHideTickMs = 250L
+    var touchExplorationOverrideForTesting: Boolean? = null
+
     private const val EXPANDED_CAPTION_HEIGHT_FALLBACK_DP = 400
     private const val EXPANDED_CAPTION_HEIGHT_PERCENT: Float = 0.7F
 
