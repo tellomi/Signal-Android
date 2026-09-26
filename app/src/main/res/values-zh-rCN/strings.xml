@@ -1883,11 +1883,11 @@
     <string name="MessageRecord_call_message_with_date">%1$s · %2$s</string>
     <string name="MessageRecord_s_updated_group">%1$s 已更新该群组。</string>
     <string name="MessageRecord_s_joined_signal">%1$s 加入 Tellomi！</string>
-    <string name="MessageRecord_you_disabled_disappearing_messages">您已禁用阅后即焚。</string>
-    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 已禁用阅后即焚。</string>
-    <string name="MessageRecord_you_set_disappearing_message_time_to_s">设置阅后即焚消失时间为 %1$s。</string>
-    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 设置阅后即焚消失时间为 %2$s。</string>
-    <string name="MessageRecord_disappearing_message_time_set_to_s">阅后即焚消息的销毁时间被设置为 %1$s。</string>
+    <string name="MessageRecord_you_disabled_disappearing_messages">您关闭了限时消息。</string>
+    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 关闭了限时消息。</string>
+    <string name="MessageRecord_you_set_disappearing_message_time_to_s">您设置了消息 %1$s 后消失。</string>
+    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 设置了消息 %2$s 后消失。</string>
+    <string name="MessageRecord_disappearing_message_time_set_to_s">限时消息时间已设为 %1$s。</string>
     <string name="MessageRecord_this_group_was_updated_to_a_new_group">此群已升级为新版群组。</string>
     <string name="MessageRecord_you_couldnt_be_added_to_the_new_group_and_have_been_invited_to_join">您被邀请重新加入之前无法加入的新版群组。</string>
     <string name="MessageRecord_chat_session_refreshed">聊天会话已刷新</string>
@@ -3030,8 +3030,8 @@
     <!-- Displayed in the notification when the recipient can accept payments -->
     <string name="ThreadRecord_can_accept_payments">%1$s现在可以接受付款啦</string>
     <string name="ThreadRecord_s_is_on_signal">%1$s 加入 Tellomi！</string>
-    <string name="ThreadRecord_disappearing_messages_disabled">已禁用阅后即焚</string>
-    <string name="ThreadRecord_disappearing_message_time_updated_to_s">设置阅后即焚消失时间为 %1$s</string>
+    <string name="ThreadRecord_disappearing_messages_disabled">限时消息已关闭</string>
+    <string name="ThreadRecord_disappearing_message_time_updated_to_s">限时消息时间已设为 %1$s</string>
     <string name="ThreadRecord_safety_number_changed">安全码已更改</string>
     <string name="ThreadRecord_your_safety_number_with_s_has_changed">您与 %1$s 的安全码已更改。</string>
     <string name="ThreadRecord_you_marked_verified">已将您标识为已验证</string>
@@ -4558,7 +4558,7 @@
     <!-- Button to save a message attachment (image, file etc.) -->
 
     <!-- conversation_expiring_off -->
-    <string name="conversation_expiring_off__disappearing_messages">阅后即焚</string>
+    <string name="conversation_expiring_off__disappearing_messages">限时消息</string>
 
     <!-- conversation_selection -->
     <!-- Button to view detailed information for a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
