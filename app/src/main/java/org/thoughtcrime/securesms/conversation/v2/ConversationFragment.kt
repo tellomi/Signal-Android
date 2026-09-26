@@ -4804,41 +4804,75 @@ class ConversationFragment :
     /**
      * Tellomi（tellomi/tellomi#1261 P-5「单独发送」，照 Telegram 的 SendWithoutGrouping）：一张一条消息，说明（与 @、样式）挂在最后一条，
      * 引用挂在第一条。一条发完（写进库）再发下一条，时间戳各不相同、顺序就是选的顺序。
+     *
+     * 整串一次建好交给 [TellomiSendInOrder]，订阅不进 [disposables]（那个绑在 view 上）：发到一半离开会话、弹窗会话发完第一条就
+     * finish，剩下的照样发完。所以前置检查（收件人、定时消息）只在这里做一次，输入框和引用在这里同步清掉（同 [sendMessage] 的
+     * clearCompose）；[onSendComplete] 只在第一条写进库、页面还在时调一次。
      */
+    @SuppressLint("CheckResult")
     private fun sendMediaSeparately(result: MediaSendActivityResult) {
+      val threadRecipient = viewModel.recipientSnapshot
+      if (threadRecipient == null) {
+        Log.w(TAG, "Unable to send due to invalid thread recipient")
+        toast(R.string.ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation, Toast.LENGTH_LONG)
+        return
+      }
+
+      if (result.scheduledTime != -1L && ReenableScheduledMessagesDialogFragment.showIfNeeded(requireContext(), childFragmentManager, null, result.scheduledTime)) {
+        return
+      }
+
       val quote = if (result.isViewOnce) null else inputPanel.quote.orNull()
       val preUploadParts: List<MessageSender.PreUploadResult> = result.preUploadResults
       val slideParts: List<Slide> = if (result.isPushPreUpload) emptyList() else mediaSlides(result.nonUploadedMedia)
       val count = if (result.isPushPreUpload) preUploadParts.size else slideParts.size
+      if (count == 0) {
+        Log.i(TAG, "Unable to send due to empty message")
+        toast(R.string.ConversationActivity_message_is_empty_exclamation)
+        return
+      }
 
-      fun sendPart(index: Int) {
-        if (index >= count) {
-          return
-        }
+      val parts: List<Completable> = (0 until count).map { index ->
         val isFirst = index == 0
         val isLast = index == count - 1
         val slide = slideParts.getOrNull(index)
-        sendMessage(
+        viewModel.sendMessage(
+          metricId = null,
+          threadRecipient = threadRecipient,
           body = if (isLast) result.body else "",
-          mentions = if (isLast) result.mentions else emptyList(),
-          bodyRanges = if (isLast) result.bodyRanges else null,
+          slideDeck = slide?.let { SlideDeck().apply { addSlide(it) } },
+          scheduledDate = result.scheduledTime,
           messageToEdit = null,
           quote = if (isFirst) quote else null,
-          scheduledDate = result.scheduledTime,
-          slideDeck = slide?.let { SlideDeck().apply { addSlide(it) } },
+          mentions = if (isLast) result.mentions else emptyList(),
+          bodyRanges = if (isLast) result.bodyRanges else null,
           contacts = emptyList(),
-          clearCompose = isFirst,
           linkPreviews = emptyList(),
           preUploadResults = if (result.isPushPreUpload) listOf(preUploadParts[index]) else emptyList(),
-          isViewOnce = false,
-          bypassPreSendSafetyNumberCheck = true
-        ) {
+          isViewOnce = false
+        ).doOnComplete {
+          // 离开会话后 view 已经没了，onSendComplete 里滚动、清草稿都不用做了。
+          if (isFirst && isAdded && view != null) {
+            onSendComplete()
+          }
           slide?.let { viewModel.deleteSlideData(listOf(it)) }
-          sendPart(index + 1)
         }
       }
 
-      sendPart(0)
+      AppDependencies.typingStatusSender.onTypingStopped(args.threadId)
+      composeTextEventsListener?.typingStatusEnabled = false
+      composeText.setText("")
+      composeTextEventsListener?.typingStatusEnabled = true
+      attachmentManager.clear(Glide.with(this@ConversationFragment), false)
+      inputPanel.clearQuote()
+      scrollToPositionDelegate.markListCommittedVersion()
+
+      TellomiSendInOrder.inOrder(parts).subscribeBy(
+        onError = {
+          Log.w(TAG, "Error received during send!", it)
+          toast(R.string.ConversationActivity_error_sending_media)
+        }
+      )
     }
 
     private fun sendPreUploadMediaMessage(result: MediaSendActivityResult) {
