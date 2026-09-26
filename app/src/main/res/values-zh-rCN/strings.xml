@@ -3118,17 +3118,20 @@
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">别人可以通过用户名找到你、给你发消息，不需要知道你的手机号。</string>
     <!-- Tellomi（#1106 第四刀） -->
     <plurals name="UsernameEditFragment__tellomi_change_cooldown">
-        <item quantity="other">你最近改过用户名，%d 天后可以再改。</item>
+        <item quantity="other">你最近改过用户名，%d 天后可以再改。在那之前，只能改回原来的名字。</item>
     </plurals>
     <!-- Tellomi（#1106 第四刀） -->
     <plurals name="UsernameEditFragment__tellomi_change_confirmation">
         <item quantity="other">更改用户名会重置你现有的二维码和链接，而且之后 %d 天内不能再改。确定要更改吗？</item>
     </plurals>
+    <plurals name="UsernameEditFragment__tellomi_recovery_confirmation">
+        <item quantity="other">恢复用户名会重置你现有的二维码和链接，而且之后 %d 天内不能再改。确定要恢复吗？</item>
+    </plurals>
     <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
         <item quantity="other">你在 %1$d 天内删除过用户名，现在设置也算一次更改：之后 %2$d 天内不能再改。确定要继续吗？</item>
     </plurals>
     <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
-        <item quantity="other">这样做将会删除你的用户名，并使你的二维码和链接失效。“%1$s”会为你保留 %2$d 天；这期间再设置用户名，之后 %3$d 天内不能再改。确定要删除吗？</item>
+        <item quantity="other">这样做将会删除你的用户名，并使你的二维码和链接失效。“%1$s”会为你保留 %2$d 天；这期间再设置用户名，之后 %3$d 天内不能再改。如果你 %3$d 天内改过用户名，删除后只能改回原来的名字。确定要删除吗？</item>
     </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">这个号码是什么？</string>

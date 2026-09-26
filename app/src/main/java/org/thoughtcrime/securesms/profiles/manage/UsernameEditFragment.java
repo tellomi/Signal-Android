@@ -160,7 +160,8 @@ public class UsernameEditFragment extends LoggingFragment {
   private void promptOrSubmitUsername() {
     if (viewModel.isSameUsernameRecovery()) {
       new MaterialAlertDialogBuilder(requireContext())
-          .setMessage(R.string.UsernameEditFragment_recovery_dialog_confirmation)
+          // Tellomi（ADR-0066 §6.2）：恢复要 confirm 一个用户名，服务端按换名算，会开始（或重新开始）30 天冷却，确认前就说清楚（与 Desktop#9 同一句）
+          .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_recovery_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
           .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
             viewModel.onUsernameSubmitted(true);
             dialog.dismiss();
