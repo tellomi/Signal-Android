@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Tellomi（#1257，owner 2026-09-25）：回复正在看的这一张（只在从会话里打开时出现） -->
+    <item android:id="@+id/reply"
+          android:title="@string/conversation_selection__menu_reply"
+          android:icon="@drawable/symbol_reply_24"
+          android:visible="false"
+          app:showAsAction="never"/>
     <item android:id="@+id/edit"
           android:title="@string/media_preview__edit_title"
           android:icon="@drawable/ic_editmedia_outline_24"
+          app:showAsAction="never"/>
+    <!-- Tellomi（#1257）：分享从底栏挪到这里（底栏照 Telegram 是 转发 · 倍速 · 删除） -->
+    <item android:id="@+id/share"
+          android:title="@string/MediaPreviewFragment__share"
+          android:icon="@drawable/symbol_share_android_24"
           app:showAsAction="never"/>
     <item android:id="@+id/save"
           android:title="@string/media_preview__save_title"

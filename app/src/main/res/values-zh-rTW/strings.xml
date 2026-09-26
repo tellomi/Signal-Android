@@ -33,7 +33,7 @@
     <string name="delete">刪除</string>
     <string name="please_wait">請稍候…</string>
     <string name="save">儲存</string>
-    <string name="note_to_self">給自己的筆記</string>
+    <string name="note_to_self">我的收藏</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">天氣</string>
@@ -46,6 +46,8 @@
 
     <!-- AlbumThumbnailView -->
   <!-- Removed by excludeNonTranslatables <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string> -->
+    <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
+    <string name="AlbumCarouselView__item_d_of_d">第 %1$d 項，共 %2$d 項</string>
 
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi 正在更新中…</string>
@@ -532,6 +534,7 @@
     <plurals name="ConversationAdapter_n_unread_messages">
         <item quantity="other">%1$d 則未讀訊息</item>
     </plurals>
+    <string name="ConversationAdapter__tellomi_new_messages">新訊息</string>
 
     <!-- ConversationFragment -->
     <!-- Toast text when contacts activity is not found -->
@@ -588,7 +591,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">你可以在任何訊息上向左滑動以快速回覆</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">閱後即焚媒體在發送後被刪除</string>
     <string name="ConversationFragment_you_already_viewed_this_message">你已經看過這個訊息</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">你可在此聊天中為自己新增筆記。若你的帳戶有任何已連結裝置，新的筆記將會進行同步處理。</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">把訊息轉寄到這裡，或直接傳給自己，隨時查看。若你的帳戶有已連結裝置，這裡的新訊息會同步過去。</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="other">%1$d 群組成員的名字相同。</item>
@@ -775,6 +778,12 @@
     <plurals name="ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations_linked_device_group">
         <item quantity="other">這些聊天內的全部訊息將自你所有裝置中刪除。你仍會是尚未退出的任何群組的成員。</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">刪除「我的收藏」？</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">「我的收藏」裡的內容會從這台裝置上刪除，無法復原。</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">「我的收藏」裡的內容會從這台裝置和已連結裝置上刪除，無法復原。</string>
     <string name="ConversationListFragment_deleting">正在刪除</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="other">刪除已選取的聊天…</item>
@@ -1721,6 +1730,15 @@
     <string name="MediaOverviewActivity_Files">檔案</string>
     <string name="MediaOverviewActivity_Audio">音訊</string>
     <string name="MediaOverviewActivity_All">全部</string>
+    <!-- Tellomi（#1174）：「我的收藏」顶栏下方的分类，「全部」是会话本身，其它几项打开「所有媒体」对应的页 -->
+    <string name="TellomiSavedCategories__all">全部</string>
+    <string name="TellomiSavedCategories__photos_and_videos">圖片與影片</string>
+    <string name="TellomiSavedCategories__files">檔案</string>
+    <string name="TellomiSavedCategories__voice">語音</string>
+    <string name="TellomiSavedCategories__links">連結</string>
+    <!-- Tellomi（#1174）：「我的收藏」的所有媒体顶栏的搜索，在当前这一页里按文字筛 -->
+    <string name="TellomiSavedCategories__search">搜尋</string>
+    <string name="TellomiSavedCategories__search_hint">搜尋檔案名稱、說明文字和連結</string>
     <string name="MediaOverviewActivity_Links">連結</string>
     <string name="MediaOverviewActivity_link">連結</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
@@ -3199,6 +3217,23 @@
     <string name="MediaPreviewFragment_media_delete_error">刪除訊息時發生錯誤，訊息可能仍然存在</string>
     <!-- A suffix to be attached to truncated captions that the user may tap onto to view the entire text caption -->
     <string name="MediaPreviewFragment_read_more_overflow_text">閱讀更多</string>
+    <!-- Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：查看器里转发相册中的一张，先问「这张 / 全部 N 张」 -->
+    <string name="MediaPreviewFragment__forward_this_photo">這張圖片</string>
+    <string name="MediaPreviewFragment__forward_this_video">這部影片</string>
+    <plurals name="MediaPreviewFragment__forward_all_d_photos">
+        <item quantity="other">全部 %d 張圖片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_videos">
+        <item quantity="other">全部 %d 部影片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_items">
+        <item quantity="other">全部 %d 項</item>
+    </plurals>
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频查看器的倍速按钮与面板；分享挪进「···」 -->
+    <string name="MediaPreviewFragment__playback_speed">播放速度</string>
+    <string name="MediaPreviewFragment__speed">速度</string>
+    <string name="MediaPreviewFragment__speed_normal">正常</string>
+    <string name="MediaPreviewFragment__share">分享</string>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->
@@ -4538,6 +4573,14 @@
   <!-- Removed by excludeNonTranslatables <string name="conversation_selection__menu_unstar" translatable="false">Unstar (Labs)</string> -->
     <!-- Button to forward a message to another person or group chat; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
     <string name="conversation_selection__menu_forward">轉寄</string>
+    <!-- Tellomi（#1174）：长按菜单「收藏」，直接存进「我的收藏」 -->
+    <string name="conversation_selection__menu_tellomi_save">收藏</string>
+    <!-- Tellomi（#1174）：收藏成功的提示，后面跟「查看」按钮 -->
+    <string name="ConversationFragment__tellomi_saved_to_saved_messages">已收藏</string>
+    <!-- Tellomi（#1174）：收藏成功提示上的按钮，打开「我的收藏」 -->
+    <string name="ConversationFragment__tellomi_view_saved_messages">查看</string>
+    <!-- Tellomi（#1174）：收藏没发出去 -->
+    <string name="ConversationFragment__tellomi_couldnt_save">收藏失敗，請重試</string>
     <!-- Button to reply to a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="conversation_selection__menu_reply">回覆</string>
     <!-- Button to edit a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6224,6 +6267,21 @@
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">只有管理員可以向此群組傳送訊息。</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">你不得選取超過 5 個聊天</string>
+    <string name="TellomiForwardGrid__choose_chats">選擇聊天</string>
+    <string name="TellomiForwardGrid__name_separator">、</string>
+    <string name="TellomiForwardGrid__search">搜尋</string>
+    <string name="TellomiForwardGrid__share_to_other_apps">分享到其他 App</string>
+    <string name="TellomiForwardGrid__select_up_to_d_chats">最多選 %1$d 個聊天</string>
+    <string name="TellomiForwardGrid__recent">最近聯絡人</string>
+    <string name="TellomiForwardGrid__chats">聊天</string>
+    <string name="TellomiForwardGrid__contacts">聯絡人</string>
+    <string name="TellomiForwardGrid__groups">群組</string>
+    <string name="TellomiForwardGrid__no_results">找不到「%1$s」</string>
+    <string name="TellomiForwardGrid__add_a_message">新增訊息…</string>
+    <string name="TellomiForwardGrid__forwarded_to_s">已轉寄給 %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_s">已轉寄給 %1$s 和 %2$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_d_chats">已轉寄給 %1$s 等 %2$d 個聊天</string>
+    <string name="TellomiForwardGrid__forwarded_to_saved_s">已轉寄到 %1$s</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->
