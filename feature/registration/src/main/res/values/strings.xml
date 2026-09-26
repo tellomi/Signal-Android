@@ -46,6 +46,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">Select a country</string>
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">Clear phone number</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">Account ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
