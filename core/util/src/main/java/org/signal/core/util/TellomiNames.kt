@@ -12,8 +12,15 @@ import java.util.regex.Pattern
  */
 object TellomiNames {
 
-  /** 与上游 NameUtil 相同：去掉每个词开头的非字母 / 数字 / 符号。 */
-  private val LEADING_NON_LETTERS = Pattern.compile("[^\\p{L}\\p{Nd}\\p{S}]+")
+  /**
+   * 去掉每个词**开头**的非字母 / 数字 / 符号，与 iOS `TellomiNames` 相同。
+   * 上游 NameUtil 的这条没锚定，`replaceFirst` 删的是词里第一段非字母，不一定在开头：❤️ 会丢掉 FE0F、泰文 / 阿拉伯文丢元音符号、
+   * ZWJ 表情被拆开、NFD 的 é 变成 e（taishi 审查包 5，两端对照表见 PR）。
+   */
+  private val LEADING_NON_LETTERS = Pattern.compile("^[^\\p{L}\\p{Nd}\\p{S}]+")
+
+  /** 与 iOS `StringSanitizer` 同一条线：一个字素超过 16 个码位（Zalgo）就换成 U+FFFD，免得组合符叠出头像的圆。 */
+  private const val MAX_CODE_POINTS_PER_GRAPHEME = 16
 
   private val CJKV_SCRIPTS = setOf(
     Character.UnicodeScript.HAN,
@@ -79,7 +86,10 @@ object TellomiNames {
       .allMatch { Character.UnicodeScript.of(it) in CJKV_SCRIPTS }
   }
 
-  /** `Character.isWhitespace` 不算不换行空格（U+00A0 / U+2007 / U+202F），`isSpaceChar` 算；两个都认，与 iOS 的 `\s` 一致。 */
+  /**
+   * `Character.isWhitespace` 不算不换行空格（U+00A0 / U+2007 / U+202F），`isSpaceChar` 算；两个都认，这样不换行空格和 iOS 的 `\s` 一致。
+   * 和 iOS 只差两处控制符（taishi 中转包 8 实测）：U+001C–U+001F 这边算空白、ICU 的 `\s` 不算；U+0085 正相反。名字里几乎不会出现。
+   */
   private fun isSpace(codePoint: Int): Boolean {
     return Character.isWhitespace(codePoint) || Character.isSpaceChar(codePoint)
   }
@@ -98,6 +108,7 @@ object TellomiNames {
   }
 
   private fun String.firstGrapheme(): String {
-    return CharacterIterable(this).first()
+    val grapheme = CharacterIterable(this).first()
+    return if (grapheme.codePointCount(0, grapheme.length) > MAX_CODE_POINTS_PER_GRAPHEME) "\uFFFD" else grapheme
   }
 }
