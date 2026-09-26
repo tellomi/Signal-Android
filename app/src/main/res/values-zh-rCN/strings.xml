@@ -853,7 +853,7 @@
     <!-- Title for a reminder bottom sheet to users who have re-registered that they need to go back to re-link their devices. -->
     <string name="RelinkDevicesReminderFragment__relink_your_devices">重新关联您的设备</string>
     <!-- Description for a reminder bottom sheet to users who have re-registered that they need to go back to re-link their devices. -->
-    <string name="RelinkDevicesReminderFragment__the_devices_you_added_were_unlinked">当您的设备注销时，您添加的设备会取消关联。请前往设置页面重新关联您的设备。</string>
+    <string name="RelinkDevicesReminderFragment__the_devices_you_added_were_unlinked">当您的设备退出登录时，您添加的设备会取消关联。请前往设置页面重新关联您的设备。</string>
     <!-- Button label for the re-link devices bottom sheet reminder to navigate to the Devices page in the settings. -->
     <string name="RelinkDevicesReminderFragment__open_settings">打开设置</string>
     <!-- Button label for the re-link devices bottom sheet reminder to dismiss the pop up. -->
@@ -1535,7 +1535,7 @@
     <!-- Text shown on restore screen as information on what will happen if you skip -->
     <string name="RemoteRestoreActivity__your_media_will_restore_in_the_background">您的媒体会在后台恢复。 如果现在不恢复，您以后将无法恢复。</string>
     <!-- Dialog title -->
-    <string name="RestoreActivity__no_longer_registered_title">此设备已注销</string>
+    <string name="RestoreActivity__no_longer_registered_title">此设备已退出登录</string>
     <!-- Dialog message -->
     <string name="RestoreActivity__no_longer_registered_message">这可能是因为您在另一台设备上注册了 Tellomi 账户。</string>
 
@@ -3434,7 +3434,7 @@
 
     <!-- UnauthorizedReminder -->
     <!-- Message shown in a reminder banner when the user\'s device is no longer registered -->
-    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">此设备已注销。这可能是因为您使用您的手机号码在其他设备上注册了 Tellomi。</string>
+    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">此设备已退出登录。这可能是因为您使用您的手机号码在其他设备上注册了 Tellomi。</string>
     <!-- Action in reminder banner that will take user to re-register -->
     <string name="UnauthorizedReminder_reregister_action">重新注册设备</string>
     <!-- Message shown in a reminder banner when this linked device is no longer linked to a primary device -->
@@ -3859,7 +3859,7 @@
     <!-- The title of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
     <string name="EditProfileFragment_unregistered_dialog_title">设备未注册</string>
     <!-- The body of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
-    <string name="EditProfileFragment_unregistered_dialog_body">此设备已注销。请重新注册以更改您的账户。</string>
+    <string name="EditProfileFragment_unregistered_dialog_body">此设备已退出登录。请重新注册以更改您的账户。</string>
     <!-- The button on a dialog informing the user that they cannot use this app feature when they are unregistered. When clicked, the user will be taken to a screen to help them re-register. -->
     <string name="EditProfileFragment_unregistered_dialog_reregister_button">重新注册</string>
 
@@ -6433,7 +6433,7 @@
     <!-- Title of dialog telling user they need to re-register signal -->
     <string name="ReregisterSignalDialog__title">设备未注册</string>
     <!-- Message of dialog telling user they need to re-register signal as it is no longer registered -->
-    <string name="ReregisterSignalDialog__message">此设备已注销。请重新注册以继续在此设备上使用 Tellomi。</string>
+    <string name="ReregisterSignalDialog__message">此设备已退出登录。请重新注册以继续在此设备上使用 Tellomi。</string>
     <!-- Button text of re-registration dialog to re-register the device.  -->
     <string name="ReregisterSignalDialog__reregister_action">重新注册</string>
     <!-- Button text of re-registration dialog to cancel the dialog.  -->
