@@ -82,6 +82,7 @@ import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.registration.ui.countrycode.Country
 import org.thoughtcrime.securesms.registration.ui.countrycode.CountryCodeSelectScreen
 import org.thoughtcrime.securesms.registration.ui.countrycode.CountryCodeState
+import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
 import org.thoughtcrime.securesms.util.viewModel
 import org.signal.core.ui.R as CoreUiR
@@ -106,7 +107,11 @@ class FindByActivity : PassphraseRequiredActivity() {
   override fun onCreate(savedInstanceState: Bundle?, ready: Boolean) {
     theme.onCreate(this)
 
-    val qrScanLauncher: ActivityResultLauncher<Unit> = registerForActivityResult(UsernameQrScannerActivity.Contract()) { recipientId ->
+    val qrScanLauncher: ActivityResultLauncher<Unit> = registerForActivityResult(UsernameQrScannerActivity.Contract()) { result ->
+      // Tellomi（tellomi/tellomi#947）：扫码页扫到的是群邀请码——扫码页已经关了，加群弹层开在找人页上
+      result?.groupInviteUrl?.let { CommunicationActions.handlePotentialGroupLinkUrl(this, it) }
+
+      val recipientId = result?.recipientId
       if (recipientId != null) {
         setResult(RESULT_OK, Intent().putExtra(RECIPIENT_ID, recipientId))
         finishAfterTransition()

@@ -33,7 +33,7 @@
     <string name="delete">刪除</string>
     <string name="please_wait">請等等…</string>
     <string name="save">儲存</string>
-    <string name="note_to_self">俾自己嘅筆記</string>
+    <string name="note_to_self">我的收藏</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">天氣</string>
@@ -46,6 +46,8 @@
 
     <!-- AlbumThumbnailView -->
   <!-- Removed by excludeNonTranslatables <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string> -->
+    <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
+    <string name="AlbumCarouselView__item_d_of_d">第 %1$d 項，共 %2$d 項</string>
 
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi 更新緊…</string>
@@ -532,6 +534,7 @@
     <plurals name="ConversationAdapter_n_unread_messages">
         <item quantity="other">%1$d 個未讀訊息</item>
     </plurals>
+    <string name="ConversationAdapter__tellomi_new_messages">新訊息</string>
 
     <!-- ConversationFragment -->
     <!-- Toast text when contacts activity is not found -->
@@ -588,7 +591,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">您可以將任何訊息滑向左去快速回覆</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">「自動銷毀媒體」會喺傳送後刪除</string>
     <string name="ConversationFragment_you_already_viewed_this_message">你已經睇咗呢個訊息</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">你可以喺聊天入面新增一啲俾自己嘅筆記。如果你嘅帳戶連結咗其他裝置，新嘅筆記會自動同步。</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">將訊息轉寄嚟呢度，或者直接傳俾自己，隨時睇返。如果你嘅帳戶連結咗其他裝置，呢度嘅新訊息會同步過去。</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="other">谷入面有 %1$d 個成員撞名。</item>
@@ -775,6 +778,12 @@
     <plurals name="ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations_linked_device_group">
         <item quantity="other">呢啲聊天入面嘅所有訊息會喺你所有裝置入面刪除。任何你未退出嘅谷，你都仲會係谷友。</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">刪除「我的收藏」？</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">「我的收藏」入面嘅嘢會喺呢部機度刪除，刪咗就搵唔返。</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">「我的收藏」入面嘅嘢會喺呢部機同連結咗嘅機度刪除，刪咗就搵唔返。</string>
     <string name="ConversationListFragment_deleting">刪除緊</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="other">刪除緊揀選咗嘅聊天…</item>
@@ -1724,6 +1733,15 @@
     <string name="MediaOverviewActivity_Files">檔案</string>
     <string name="MediaOverviewActivity_Audio">聲音</string>
     <string name="MediaOverviewActivity_All">全部</string>
+    <!-- Tellomi（#1174）：「我的收藏」顶栏下方的分类，「全部」是会话本身，其它几项打开「所有媒体」对应的页 -->
+    <string name="TellomiSavedCategories__all">全部</string>
+    <string name="TellomiSavedCategories__photos_and_videos">相片同影片</string>
+    <string name="TellomiSavedCategories__files">檔案</string>
+    <string name="TellomiSavedCategories__voice">語音</string>
+    <string name="TellomiSavedCategories__links">連結</string>
+    <!-- Tellomi（#1174）：「我的收藏」的所有媒体顶栏的搜索，在当前这一页里按文字筛 -->
+    <string name="TellomiSavedCategories__search">搵嘢</string>
+    <string name="TellomiSavedCategories__search_hint">搵檔案名、說明文字同連結</string>
     <string name="MediaOverviewActivity_Links">連結</string>
     <string name="MediaOverviewActivity_link">連結</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
@@ -1782,6 +1800,9 @@
     <string name="Megaphones_invite_friends">邀請好友</string>
     <string name="Megaphones_chat_colors">聊天顏色</string>
     <string name="Megaphones_add_a_profile_photo">加入個人檔案相片</string>
+    <!-- Tellomi（tellomi/tellomi#1218 F-02）：首屏「开始使用」里的找朋友三条路 -->
+    <string name="TellomiOnboarding__search_by_username">用用戶名稱嚟搵</string>
+    <string name="TellomiOnboarding__my_qr_code">我嘅二維碼</string>
 
     <!-- Message body of megaphone telling users that a device was linked to their account. %1$s is the time it was linked -->
     <string name="NewLinkedDeviceMegaphone__a_new_device_was_linked">新裝置已經%1$s 連結咗去你帳戶。</string>
@@ -1868,11 +1889,11 @@
     <string name="MessageRecord_call_message_with_date">%1$s · %2$s</string>
     <string name="MessageRecord_s_updated_group">%1$s 已更新呢個谷。</string>
     <string name="MessageRecord_s_joined_signal">%1$s 開咗 Tellomi 喇！</string>
-    <string name="MessageRecord_you_disabled_disappearing_messages">您已停用過眼雲煙訊息。</string>
-    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 已停用過眼雲煙訊息。</string>
-    <string name="MessageRecord_you_set_disappearing_message_time_to_s">您已將過眼雲煙訊息倒數限期設定為 %1$s。</string>
-    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 已將過眼雲煙訊息倒數限期設定為 %2$s。</string>
-    <string name="MessageRecord_disappearing_message_time_set_to_s">過眼雲煙訊息倒數限期已設定為 %1$s。</string>
+    <string name="MessageRecord_you_disabled_disappearing_messages">您已停用限時訊息。</string>
+    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 已停用限時訊息。</string>
+    <string name="MessageRecord_you_set_disappearing_message_time_to_s">您已將限時訊息倒數限期設定為 %1$s。</string>
+    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 已將限時訊息倒數限期設定為 %2$s。</string>
+    <string name="MessageRecord_disappearing_message_time_set_to_s">限時訊息倒數限期已設定為 %1$s。</string>
     <string name="MessageRecord_this_group_was_updated_to_a_new_group">呢個谷已更新做新版谷。</string>
     <string name="MessageRecord_you_couldnt_be_added_to_the_new_group_and_have_been_invited_to_join">加唔到您入新版谷度，已經邀請咗您加入。</string>
     <string name="MessageRecord_chat_session_refreshed">傾偈階段已經重新整理</string>
@@ -3015,8 +3036,8 @@
     <!-- Displayed in the notification when the recipient can accept payments -->
     <string name="ThreadRecord_can_accept_payments">%1$s 而家可以接受付款</string>
     <string name="ThreadRecord_s_is_on_signal">%1$s 開咗 Tellomi 喇！</string>
-    <string name="ThreadRecord_disappearing_messages_disabled">過眼雲煙訊息已停用</string>
-    <string name="ThreadRecord_disappearing_message_time_updated_to_s">過眼雲煙訊息倒數已設定為 %1$s</string>
+    <string name="ThreadRecord_disappearing_messages_disabled">限時訊息已停用</string>
+    <string name="ThreadRecord_disappearing_message_time_updated_to_s">限時訊息倒數已設定為 %1$s</string>
     <string name="ThreadRecord_safety_number_changed">安全碼已經郁動過</string>
     <string name="ThreadRecord_your_safety_number_with_s_has_changed">您同 %1$s 之間嘅安全碼已經郁動過。</string>
     <string name="ThreadRecord_you_marked_verified">您剔低話驗證咗</string>
@@ -3088,6 +3109,7 @@
     <string name="UsernameEditFragment_this_username_is_taken">呢個用戶名稱已經畀人用咗喇。</string>
     <string name="UsernameEditFragment_usernames_can_only_include">用戶名稱只可以用 a–Z、0–9 同底線符號。</string>
     <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">用戶名稱冇得用數目字開頭。</string>
+    <string name="UsernameEditFragment__tellomi_usernames_must_start_with_a_letter">用戶名稱一定要用字母開頭。</string>
     <string name="UsernameEditFragment_username_is_invalid">用戶名稱無效。</string>
     <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">用戶名稱一定要係 %1$d 至 %2$d 個字元之間。</string>
     <!-- Explanation about what usernames provide -->
@@ -3212,6 +3234,23 @@
     <string name="MediaPreviewFragment_media_delete_error">刪除訊息嗰陣發生錯誤，訊息可能仍然存在</string>
     <!-- A suffix to be attached to truncated captions that the user may tap onto to view the entire text caption -->
     <string name="MediaPreviewFragment_read_more_overflow_text">睇埋佢</string>
+    <!-- Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：查看器里转发相册中的一张，先问「这张 / 全部 N 张」 -->
+    <string name="MediaPreviewFragment__forward_this_photo">呢張相片</string>
+    <string name="MediaPreviewFragment__forward_this_video">呢段影片</string>
+    <plurals name="MediaPreviewFragment__forward_all_d_photos">
+        <item quantity="other">全部 %d 張相片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_videos">
+        <item quantity="other">全部 %d 段影片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_items">
+        <item quantity="other">全部 %d 項</item>
+    </plurals>
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频查看器的倍速按钮与面板；分享挪进「···」 -->
+    <string name="MediaPreviewFragment__playback_speed">播放速度</string>
+    <string name="MediaPreviewFragment__speed">速度</string>
+    <string name="MediaPreviewFragment__speed_normal">正常</string>
+    <string name="MediaPreviewFragment__share">分享</string>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->
@@ -3605,7 +3644,7 @@
     <string name="ConversationUpdateItem_no_groups_in_common_review_requests_carefully">冇共同群組</string>
     <string name="ConversationUpdateItem_no_contacts_in_this_group_review_requests_carefully">呢個谷入面無您識得嘅聯絡人。請您金睛火眼睇清楚啲請求。</string>
     <string name="ConversationUpdateItem_view">睇下</string>
-    <string name="ConversationUpdateItem_the_disappearing_message_time_will_be_set_to_s_when_you_message_them">當您發送訊息畀人嘅時候，過眼雲煙訊息倒數將會設定為 %1$s。</string>
+    <string name="ConversationUpdateItem_the_disappearing_message_time_will_be_set_to_s_when_you_message_them">當您發送訊息畀人嘅時候，限時訊息倒數將會設定為 %1$s。</string>
     <!-- Update item button text to show to boost a feature -->
     <string name="ConversationUpdateItem_donate">課金</string>
     <!-- Update item button text to send payment -->
@@ -3628,7 +3667,7 @@
     </plurals>
     <!-- Update item button text to show how many disappearing message timer changes are. %2$s is what the timer was ultimately set to.-->
     <plurals name="CollapsedEvent__disappearing_timer">
-        <item quantity="other">%1$d 個自動銷毀訊息時限更改 · %2$s</item>
+        <item quantity="other">%1$d 個限時訊息時限更改 · %2$s</item>
     </plurals>
     <!-- Update item button text to show how many call events are. -->
     <plurals name="CollapsedEvent__call_event">
@@ -4536,7 +4575,7 @@
     <!-- Button to save a message attachment (image, file etc.) -->
 
     <!-- conversation_expiring_off -->
-    <string name="conversation_expiring_off__disappearing_messages">過眼雲煙訊息</string>
+    <string name="conversation_expiring_off__disappearing_messages">限時訊息</string>
 
     <!-- conversation_selection -->
     <!-- Button to view detailed information for a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
@@ -4551,6 +4590,14 @@
   <!-- Removed by excludeNonTranslatables <string name="conversation_selection__menu_unstar" translatable="false">Unstar (Labs)</string> -->
     <!-- Button to forward a message to another person or group chat; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
     <string name="conversation_selection__menu_forward">轉寄</string>
+    <!-- Tellomi（#1174）：长按菜单「收藏」，直接存进「我的收藏」 -->
+    <string name="conversation_selection__menu_tellomi_save">收藏</string>
+    <!-- Tellomi（#1174）：收藏成功的提示，后面跟「查看」按钮 -->
+    <string name="ConversationFragment__tellomi_saved_to_saved_messages">收藏咗</string>
+    <!-- Tellomi（#1174）：收藏成功提示上的按钮，打开「我的收藏」 -->
+    <string name="ConversationFragment__tellomi_view_saved_messages">睇吓</string>
+    <!-- Tellomi（#1174）：收藏没发出去 -->
+    <string name="ConversationFragment__tellomi_couldnt_save">收藏唔到，請再試一次</string>
     <!-- Button to reply to a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="conversation_selection__menu_reply">回覆</string>
     <!-- Button to edit a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -5648,7 +5695,7 @@
     <!-- Row title for the option to export chat history as a plaintext archive -->
     <string name="ChatsSettingsFragment__export_chat_history">匯出聊天紀錄</string>
     <!-- Row description for the plaintext chat export option -->
-    <string name="ChatsSettingsFragment__export_chat_history_label">匯出全部聊天內容嘅可機讀 JSON 副本。自動銷毀訊息係唔會匯出嚟嘅。</string>
+    <string name="ChatsSettingsFragment__export_chat_history_label">匯出全部聊天內容嘅可機讀 JSON 副本。限時訊息係唔會匯出嚟嘅。</string>
     <!-- Biometrics prompt title shown before allowing the user to export chat history -->
     <string name="ChatsSettingsFragment__unlock_to_export_chat_history">先解鎖再匯出聊天紀錄</string>
     <!-- Snackbar shown when biometric authentication fails before a chat export -->
@@ -5849,13 +5896,13 @@
         <item quantity="other">%1$d 個聯絡人或者群組</item>
     </plurals>
     <string name="PrivacySettingsFragment__messaging">發訊息</string>
-    <string name="PrivacySettingsFragment__disappearing_messages">過眼雲煙訊息</string>
+    <string name="PrivacySettingsFragment__disappearing_messages">限時訊息</string>
     <string name="PrivacySettingsFragment__app_security">App 保安措施</string>
     <!-- This refers to the multi-tasking overview (recent apps) from the Android operating system.-->
     <string name="PrivacySettingsFragment__block_screenshots_in_the_recents_list_and_inside_the_app">封鎖最近清單同埋應用程式入面嘅螢幕截圖</string>
     <string name="PrivacySettingsFragment__signal_message_and_calls">Tellomi 訊息同通話、一律轉駁通話同封密發送人</string>
     <string name="PrivacySettingsFragment__default_timer_for_new_changes">為新嘅傾偈預設倒數限期</string>
-    <string name="PrivacySettingsFragment__set_a_default_disappearing_message_timer_for_all_new_chats_started_by_you">幫您發起嘅所有新對話，都預先設定一個過眼雲煙訊息倒數限期。</string>
+    <string name="PrivacySettingsFragment__set_a_default_disappearing_message_timer_for_all_new_chats_started_by_you">幫您發起嘅所有新對話，都預先設定一個限時訊息倒數限期。</string>
     <!-- Summary for stories preference to launch into story privacy settings -->
     <string name="PrivacySettingsFragment__payment_lock_require_lock">一定要用 Android 螢幕鎖定或者指紋辨識功能嚟進行滙款</string>
     <!-- Alert dialog title when payment lock cannot be enabled -->
@@ -6026,7 +6073,7 @@
     <string name="ConversationSettingsFragment__muted">靜咗音</string>
     <!-- Button label with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="ConversationSettingsFragment__search">搜尋</string>
-    <string name="ConversationSettingsFragment__disappearing_messages">過眼雲煙訊息</string>
+    <string name="ConversationSettingsFragment__disappearing_messages">限時訊息</string>
     <string name="ConversationSettingsFragment__sounds_and_notifications">響聲同通知</string>
     <!-- Label for the starred messages option in conversation settings -->
   <!-- Removed by excludeNonTranslatables <string name="ConversationSettingsFragment__starred_messages" translatable="false">Starred messages</string> -->
@@ -6236,6 +6283,21 @@
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">只有管理員可以向呢個群組傳送訊息。</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">你唔可以揀多過 5 個聊天</string>
+    <string name="TellomiForwardGrid__choose_chats">揀聊天</string>
+    <string name="TellomiForwardGrid__name_separator">、</string>
+    <string name="TellomiForwardGrid__search">搜尋</string>
+    <string name="TellomiForwardGrid__share_to_other_apps">分享去其他 App</string>
+    <string name="TellomiForwardGrid__select_up_to_d_chats">最多揀 %1$d 個聊天</string>
+    <string name="TellomiForwardGrid__recent">最近聯絡人</string>
+    <string name="TellomiForwardGrid__chats">聊天</string>
+    <string name="TellomiForwardGrid__contacts">聯絡人</string>
+    <string name="TellomiForwardGrid__groups">群組</string>
+    <string name="TellomiForwardGrid__no_results">搵唔到「%1$s」</string>
+    <string name="TellomiForwardGrid__add_a_message">寫返句訊息…</string>
+    <string name="TellomiForwardGrid__forwarded_to_s">已經轉寄畀 %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_s">已經轉寄畀 %1$s 同 %2$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_d_chats">已經轉寄畀 %1$s 等 %2$d 個聊天</string>
+    <string name="TellomiForwardGrid__forwarded_to_saved_s">已經轉寄去 %1$s</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->
@@ -9611,13 +9673,13 @@
     <!-- Text to unpin all messages -->
     <string name="PinnedMessage__unpin_all_messages">取消全部訊息置頂</string>
     <!-- Title of bottom sheet when pinning a disappearing message -->
-    <string name="PinnedMessage__disappearing_message_title">將過眼雲煙訊息置頂</string>
+    <string name="PinnedMessage__disappearing_message_title">將限時訊息置頂</string>
     <!-- Body of bottom sheet when pinning a disappearing message -->
-    <string name="PinnedMessage__disappearing_message_body">當過眼雲煙訊息喺倒數完同埋喺聊天度剔走嗰陣，系統會將訊息取消置頂。</string>
+    <string name="PinnedMessage__disappearing_message_body">當限時訊息喺倒數完同埋喺聊天度剔走嗰陣，系統會將訊息取消置頂。</string>
     <!-- Confirmation button for bottom sheet -->
     <string name="PinnedMessage__got_it">明白</string>
     <!-- Content description of disappearing timer icon -->
-    <string name="PinnedMessage__disappearing_message_content_description">過眼雲煙訊息</string>
+    <string name="PinnedMessage__disappearing_message_content_description">限時訊息</string>
     <!-- Title of bottom sheet -->
     <string name="PinnedMessage__pinned_messages">置頂嘅訊息</string>
     <!-- Context menu option to unpin message -->

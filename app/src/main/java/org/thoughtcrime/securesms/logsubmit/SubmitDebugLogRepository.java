@@ -23,6 +23,7 @@ import org.thoughtcrime.securesms.database.LogDatabase;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
+import org.thoughtcrime.securesms.region.TellomiRegions;
 import org.thoughtcrime.securesms.util.RemoteConfig;
 
 import java.io.IOException;
@@ -75,8 +76,10 @@ public class SubmitDebugLogRepository {
    * 取表单时要带尾斜杠（{@link #API_FORM_ENDPOINT}），nginx 的 location /debuglogs/ 才匹配；
    * 结果 URL = API_ENDPOINT + "/" + key。
    */
-  private static final String API_ENDPOINT      = "https://chat.tellomi.app/debuglogs";
-  private static final String API_FORM_ENDPOINT = API_ENDPOINT + "/";
+  // #1055：地址收进区域表，用的时候按当前区取
+  private static String apiEndpoint() {
+    return TellomiRegions.current().getDebugLog();
+  }
 
   /** Ordered list of log sections. */
   private static final List<LogSection> SECTIONS = new ArrayList<LogSection>() {{
@@ -334,7 +337,7 @@ public class SubmitDebugLogRepository {
         .writeTimeout(30, TimeUnit.SECONDS)
         .build();
 
-    try (Response response = client.newCall(new Request.Builder().url(API_FORM_ENDPOINT).get().build()).execute()) {
+    try (Response response = client.newCall(new Request.Builder().url(apiEndpoint() + "/").get().build()).execute()) {
       ResponseBody body = response.body();
 
       if (!response.isSuccessful()) {
@@ -374,7 +377,7 @@ public class SubmitDebugLogRepository {
         }
       }
 
-      return API_ENDPOINT + "/" + item;
+      return apiEndpoint() + "/" + item;
     } catch (JSONException e) {
       Log.w(TAG, "Error during upload.", e);
       throw new IOException(e);

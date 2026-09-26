@@ -194,6 +194,8 @@ public class UsernameEditFragment extends LoggingFragment {
       case TOO_SHORT, TOO_LONG -> getString(R.string.UsernameEditFragment_usernames_must_be_between_a_and_b_characters, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH);
       case INVALID_CHARACTERS -> getString(R.string.UsernameEditFragment_usernames_can_only_include);
       case CANNOT_START_WITH_NUMBER -> getString(R.string.UsernameEditFragment_usernames_cannot_begin_with_a_number);
+      // Tellomi（ADR-0066）：字母开头
+      case CANNOT_START_WITH_UNDERSCORE -> getString(R.string.UsernameEditFragment__tellomi_usernames_must_start_with_a_letter);
       case INVALID_GENERIC -> getString(R.string.UsernameEditFragment_username_is_invalid);
       case TAKEN -> getString(R.string.UsernameEditFragment_this_username_is_taken);
       case DISCRIMINATOR_HAS_INVALID_CHARACTERS, DISCRIMINATOR_NOT_AVAILABLE -> getString(R.string.UsernameEditFragment__this_username_is_not_available_try_another_number);
