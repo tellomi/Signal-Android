@@ -600,6 +600,17 @@
             android:theme="@style/Theme.Signal.DayNight.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
 
+        <!-- Tellomi（tellomi/tellomi#1115）：会话页「+」打开的附件 Sheet（窗口透明，聊天露在上面）。
+             不在清单里锁竖屏：Android 8.0 不许透明窗口固定方向。 -->
+        <activity
+            android:name=".mediasend.v3.MediaSendAttachmentSheetActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:enableOnBackInvokedCallback="true"
+            android:theme="@style/Theme.Signal.DayNight.NoActionBar.AttachmentSheet"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
+
         <activity
             android:name=".conversation.mutiselect.forward.MultiselectForwardActivity"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"

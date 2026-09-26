@@ -94,7 +94,8 @@ class MediaSendFlowViewModel(
     maxSelection = args.maxSelection,
     message = if (args.asTextStory) null else normalizeMessageBody(args.initialMessage),
     isContactSelectionRequired = args.mode == MediaSendFlowActivityContract.Mode.ChooseAfterMediaSelection,
-    sendType = args.sendType
+    sendType = args.sendType,
+    attachmentSheet = args.attachmentSheet
   )
 
   val backStack: NavBackStack<NavKey> by savedStateHandle.saved(
@@ -286,6 +287,8 @@ class MediaSendFlowViewModel(
       is MediaSendFlowEvent.OpenInEditor -> openInEditor(event.media)
       is MediaSendFlowEvent.SwitchFolder -> backStack.switchFolder(event.mediaFolder)
       is MediaSendFlowEvent.SendNow -> sendNow(event.quality, event.separately)
+      is MediaSendFlowEvent.AttachmentDockEntrySelected -> sendHudCommand(MediaSendFlowHudCommand.AttachmentDockEntrySelected(event.id))
+      is MediaSendFlowEvent.ShowToast -> internalToastEvents.trySend(event.toast)
       MediaSendFlowEvent.NavigateToEdit -> backStack.goToEdit()
       MediaSendFlowEvent.NavigateToCamera -> backStack.goToCamera()
       MediaSendFlowEvent.NavigateToTextStory -> backStack.goToTextStory()

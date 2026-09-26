@@ -55,7 +55,9 @@ sealed interface MediaSelectState {
     /** Tellomi（#1261 P-5、P-9）：底栏（说明 + 发送）与「···」菜单读的父流程状态。 */
     val sendOptions: SendOptions = SendOptions(),
     /** Tellomi（#1261 P-8）：「最近」第一格的相机格。 */
-    val cameraAccess: PickerCameraAccess = PickerCameraAccess.NONE
+    val cameraAccess: PickerCameraAccess = PickerCameraAccess.NONE,
+    /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 底部 dock 的格子；空 = 不是从「+」打开的，没有 dock。 */
+    val attachmentDock: List<MediaSendFlowActivityContract.DockEntry> = emptyList()
   ) : MediaSelectState {
     override val hasContent: Boolean
       get() = selectedMediaFolderItems.isNotEmpty()

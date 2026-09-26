@@ -6,12 +6,15 @@
 package org.signal.mediasend
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigationevent.NavigationEventDispatcherOwner
@@ -20,6 +23,8 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.LocalDisplayNameProvider
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.mediasend.screens.edit.MediaEditScreenDialogs
+import org.signal.mediasend.screens.select.AttachmentSheetState
+import org.signal.mediasend.screens.select.LocalAttachmentSheetState
 
 @Composable
 fun MediaSendScreen(
@@ -31,6 +36,9 @@ fun MediaSendScreen(
 ) {
   val viewModel = viewModel<MediaSendFlowViewModel>(factory = MediaSendFlowViewModel.Factory(args = contractArgs))
 
+  // Tellomi（tellomi/tellomi#1115）：从「+」打开的附件 Sheet——窗口透明、聊天露在上面，选图网格是 Sheet。
+  val attachmentSheetState = remember { if (contractArgs.attachmentSheet != null) AttachmentSheetState() else null }
+
   LaunchedEffect(viewModel) {
     viewModel.hudCommands.collect { command ->
       onExternalHudCommand(command)
@@ -38,8 +46,14 @@ fun MediaSendScreen(
   }
 
   SignalTheme {
-    CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides LocalActivity.current as NavigationEventDispatcherOwner) {
-      Surface {
+    CompositionLocalProvider(
+      LocalNavigationEventDispatcherOwner provides LocalActivity.current as NavigationEventDispatcherOwner,
+      LocalAttachmentSheetState provides attachmentSheetState
+    ) {
+      Surface(
+        color = if (attachmentSheetState != null) Color.Transparent else MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
+      ) {
         viewModel.usernameScannedDialog.Content { username, onDismissRequest, onConfirm, _, onDeny ->
           Dialogs.SimpleAlertDialog(
             title = stringResource(R.string.UsernameScannedDialog__username_dialog_title, username),

@@ -23,7 +23,9 @@ import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.location.SignalPlace
 import org.thoughtcrime.securesms.contactshare.Contact
 import org.thoughtcrime.securesms.contactshare.ContactShareEditActivityV2
+import org.thoughtcrime.securesms.conversation.AttachmentKeyboardButton
 import org.thoughtcrime.securesms.conversation.MessageSendType
+import org.thoughtcrime.securesms.conversation.TellomiAttachmentSheetDock
 import org.thoughtcrime.securesms.conversation.colors.ChatColors
 import org.thoughtcrime.securesms.giph.ui.GiphyActivity
 import org.thoughtcrime.securesms.maps.PlacePickerActivity
@@ -53,6 +55,13 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
   private val selectLocationLauncher = fragment.registerForActivityResult(SelectLocation) { result -> callbacks.onLocationSelected(result?.place, result?.uri) }
   private val selectFileLauncher = fragment.registerForActivityResult(SelectFile) { result -> callbacks.onFileSelected(result) }
   private val cameraLauncher = fragment.registerForActivityResult(MediaCapture) { result -> callbacks.onMediaSend(result) }
+  private val attachmentSheetLauncher = fragment.registerForActivityResult(AttachmentSheet) { result ->
+    when (result) {
+      is AttachmentSheetResult.Dock -> callbacks.onAttachmentSheetButton(result.button)
+      is AttachmentSheetResult.Media -> callbacks.onMediaSend(result.result)
+      null -> callbacks.onMediaSend(null)
+    }
+  }
 
   fun launchContactShareEditor(uri: Uri, recipientId: RecipientId) {
     contactShareLauncher.launch(uri to recipientId)
@@ -70,6 +79,13 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
 
   fun launchGallery(recipientId: RecipientId, text: CharSequence?, isReply: Boolean) {
     mediaGalleryLauncher.launch(MediaSelectionInput(emptyList(), recipientId, text, isReply))
+  }
+
+  /** Tellomi（tellomi/tellomi#1115）：「+」→ 附件 Sheet（相册网格 + 底部 dock）。进场由 Sheet 自己从底部滑上来，窗口不做动画。 */
+  fun launchAttachmentSheet(recipientId: RecipientId, text: CharSequence?, isReply: Boolean) {
+    attachmentSheetLauncher.launch(MediaSelectionInput(emptyList(), recipientId, text, isReply))
+    @Suppress("DEPRECATION")
+    fragment.requireActivity().overridePendingTransition(0, 0)
   }
 
   fun launchCamera(recipientId: RecipientId, isReply: Boolean) {
@@ -148,6 +164,28 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
 
     override fun parseResult(resultCode: Int, intent: Intent?): MediaSendActivityResult? {
       return MediaSendLauncher.parseResult(resultCode, intent)
+    }
+  }
+
+  /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的结果——发了照片，或者点了 dock 的别的格子。 */
+  private sealed interface AttachmentSheetResult {
+    data class Media(val result: MediaSendActivityResult) : AttachmentSheetResult
+    data class Dock(val button: AttachmentKeyboardButton) : AttachmentSheetResult
+  }
+
+  private object AttachmentSheet : ActivityResultContract<MediaSelectionInput, AttachmentSheetResult?>() {
+    override fun createIntent(context: Context, input: MediaSelectionInput): Intent {
+      val (_, recipientId, text, isReply) = input
+      return MediaSendLauncher.attachmentSheet(context, recipientId, text, isReply, TellomiAttachmentSheetDock.entries())
+    }
+
+    override fun parseResult(resultCode: Int, intent: Intent?): AttachmentSheetResult? {
+      val dockEntry = MediaSendLauncher.parseAttachmentDockEntry(resultCode, intent)
+      if (dockEntry != null) {
+        return TellomiAttachmentSheetDock.buttonFor(dockEntry)?.let { AttachmentSheetResult.Dock(it) }
+      }
+
+      return MediaSendLauncher.parseResult(resultCode, intent)?.let { AttachmentSheetResult.Media(it) }
     }
   }
 
@@ -252,5 +290,8 @@ class ConversationActivityResultContracts(private val fragment: Fragment, privat
     fun onContactSelect(uri: Uri?)
     fun onLocationSelected(place: SignalPlace?, uri: Uri?)
     fun onFileSelected(uri: Uri?)
+
+    /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 的 dock 里点了文件 / 位置 / 投票 / 联系人。 */
+    fun onAttachmentSheetButton(button: AttachmentKeyboardButton)
   }
 }

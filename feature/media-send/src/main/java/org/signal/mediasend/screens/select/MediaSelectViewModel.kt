@@ -20,14 +20,18 @@ import kotlinx.coroutines.launch
 import org.signal.core.models.media.Media
 import org.signal.core.models.media.MediaFolder
 import org.signal.core.ui.compose.EventDrivenViewModel
+import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.Snackbars
 import org.signal.core.util.logging.Log
 import org.signal.mediasend.MediaSendDependencies
+import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.mediasend.MediaSendFlowEvent
 import org.signal.mediasend.MediaSendFlowState
 import org.signal.mediasend.MediaSendRepository
 import org.signal.mediasend.R
 import org.signal.mediasend.SnackbarEvent
+import org.signal.mediasend.ToastEvent
+import org.signal.mediasend.ToastMessage
 
 /**
  * Drives the select screen, for one appearance of it: either the list of folders, or the contents of a single folder.
@@ -58,7 +62,8 @@ internal class MediaSelectViewModel(
         selectedMediaFolder = mediaFolder,
         selectedMediaFolderItems = emptyList(),
         selectedMedia = emptyList(),
-        recipientId = parentState.value.recipientId
+        recipientId = parentState.value.recipientId,
+        attachmentDock = parentState.value.attachmentSheet?.dock.orEmpty()
       )
     } else {
       MediaSelectState.Folders(
@@ -111,6 +116,18 @@ internal class MediaSelectViewModel(
       is MediaSelectScreenEvents.SendWithQuality -> parentEventEmitter(MediaSendFlowEvent.SendNow(quality = event.quality))
       MediaSelectScreenEvents.SendSeparately -> parentEventEmitter(MediaSendFlowEvent.SendNow(separately = true))
       MediaSelectScreenEvents.Close -> parentEventEmitter(MediaSendFlowEvent.CloseRequested)
+      is MediaSelectScreenEvents.DockEntryClicked -> onDockEntryClicked(event.entry)
+    }
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1115）：置灰的格子只提示一句；别的交给会话页。当前页（相册）那一格由网格自己处理（回到顶部、展开）。
+   */
+  private fun onDockEntryClicked(entry: MediaSendFlowActivityContract.DockEntry) {
+    val comingSoon = entry.comingSoonMessage
+    when {
+      comingSoon != null -> parentEventEmitter(MediaSendFlowEvent.ShowToast(ToastEvent(SignalIcons.Info, ToastMessage.Text(comingSoon))))
+      !entry.isCurrentPage -> parentEventEmitter(MediaSendFlowEvent.AttachmentDockEntrySelected(entry.id))
     }
   }
 

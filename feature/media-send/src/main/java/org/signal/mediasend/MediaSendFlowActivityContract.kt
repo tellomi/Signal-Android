@@ -11,6 +11,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
 import org.signal.core.models.media.Media
@@ -99,7 +101,12 @@ class MediaSendFlowActivityContract(private val clazz: Class<out Activity>) : Ac
     /**
      * Send type identifier (app-layer enum ordinal).
      */
-    val sendType: Int = 0
+    val sendType: Int = 0,
+    /**
+     * Tellomi（tellomi/tellomi#1115）：从会话页的「+」打开时非空——选图网格做成半屏 Sheet（聊天露在上面、压暗），
+     * 底部 dock 放这里的格子。null 是整屏的选图流程，同上游。
+     */
+    val attachmentSheet: AttachmentSheet? = null
   ) : Parcelable {
     companion object {
       fun fromIntent(intent: Intent): Args {
@@ -107,6 +114,26 @@ class MediaSendFlowActivityContract(private val clazz: Class<out Activity>) : Ac
       }
     }
   }
+
+  /**
+   * Tellomi（tellomi/tellomi#1115，照 Telegram 的附件菜单）：附件 Sheet 底部 dock 的格子。文字和图标由打开它的会话页给
+   * （app 的资源），点了把 [DockEntry.id] 带回会话页。
+   */
+  @Parcelize
+  data class AttachmentSheet(val dock: List<DockEntry>) : Parcelable
+
+  /**
+   * @param isCurrentPage 这一格就是网格本身（相册）：点它回到顶部、展开到全屏，不带回会话页。
+   * @param comingSoonMessage 非空就置灰：点了只提示这一句，Sheet 留着（Android「位置」等高德，tellomi/tellomi#1124）。
+   */
+  @Parcelize
+  data class DockEntry(
+    val id: String,
+    @get:StringRes val title: Int,
+    @get:DrawableRes val icon: Int,
+    val isCurrentPage: Boolean = false,
+    @get:StringRes val comingSoonMessage: Int? = null
+  ) : Parcelable
 
   /**
    * High-level mode of operation for the flow.

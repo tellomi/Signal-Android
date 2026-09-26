@@ -1444,7 +1444,8 @@ class ConversationFragment :
     sendEditButton.setOnClickListener { handleSendEditMessage() }
 
     val attachListener = { _: View ->
-      container.toggleInput(ChatKeyboards.Attachment, composeText)
+      // Tellomi（tellomi/tellomi#1115）：「+」不再弹键盘位的附件面板，改成照 Telegram 的附件 Sheet（相册网格 + 底部 dock）
+      openAttachmentSheet()
     }
     binding.conversationInputPanel.attachButton.setOnClickListener(attachListener)
     binding.conversationInputPanel.inlineAttachmentButton.setOnClickListener(attachListener)
@@ -4954,6 +4955,11 @@ class ConversationFragment :
         setMedia(uri, SlideFactory.MediaType.DOCUMENT)
       }
     }
+
+    override fun onAttachmentSheetButton(button: AttachmentKeyboardButton) {
+      val recipient = viewModel.recipientSnapshot ?: return
+      onAttachmentButton(button, recipient)
+    }
   }
 
   //endregion
@@ -5453,6 +5459,49 @@ class ConversationFragment :
     }
   }
 
+  /** Tellomi（tellomi/tellomi#1115）：「+」→ 附件 Sheet。先收起键盘和表情面板，Sheet 从底部滑上来、聊天留在后面。 */
+  private fun openAttachmentSheet() {
+    val recipient = viewModel.recipientSnapshot ?: return
+    container.hideAll(composeText)
+    conversationActivityResultContracts.launchAttachmentSheet(recipient.id, composeText.textTrimmed, inputPanel.quote.isPresent)
+  }
+
+  /**
+   * 附件键盘和附件 Sheet 的 dock（tellomi/tellomi#1115）里的格子走同一套处理。
+   * 返回 false：这一格现在用不了（只提示了一句），附件面板留着。
+   */
+  private fun onAttachmentButton(button: AttachmentKeyboardButton, recipient: Recipient): Boolean {
+    when (button) {
+      AttachmentKeyboardButton.GALLERY -> conversationActivityResultContracts.launchGallery(recipient.id, composeText.textTrimmed, inputPanel.quote.isPresent)
+
+      AttachmentKeyboardButton.CONTACT -> conversationActivityResultContracts.launchSelectContact()
+
+      AttachmentKeyboardButton.LOCATION -> if (BuildConfig.MAPS_AVAILABLE) {
+        conversationActivityResultContracts.launchSelectLocation(recipient.chatColors)
+      } else {
+        // Tellomi（tellomi/tellomi#1235、#1124）：高德接上之前不提供发送位置，格子已置灰（AttachmentKeyboardButtonAdapter）
+        toast(R.string.TellomiLocation__coming_soon, Toast.LENGTH_SHORT)
+        return false
+      }
+
+      AttachmentKeyboardButton.PAYMENT -> AttachmentManager.selectPayment(this@ConversationFragment, recipient)
+
+      AttachmentKeyboardButton.FILE -> {
+        if (!conversationActivityResultContracts.launchSelectFile()) {
+          toast(R.string.AttachmentManager_cant_open_media_selection, Toast.LENGTH_LONG)
+        }
+      }
+
+      AttachmentKeyboardButton.POLL -> {
+        CreatePollFragment.show(childFragmentManager)
+        childFragmentManager.setFragmentResultListener(CreatePollFragment.REQUEST_KEY, requireActivity()) { _, bundle ->
+          sendPoll(recipient, Poll.fromBundle(bundle))
+        }
+      }
+    }
+    return true
+  }
+
   private inner class AttachmentKeyboardFragmentListener : FragmentResultListener {
     @Suppress("DEPRECATION")
     override fun onFragmentResult(requestKey: String, result: Bundle) {
@@ -5461,34 +5510,9 @@ class ConversationFragment :
       val media: Media? = result.getParcelable(AttachmentKeyboardFragment.MEDIA_RESULT)
 
       if (button != null) {
-        when (button) {
-          AttachmentKeyboardButton.GALLERY -> conversationActivityResultContracts.launchGallery(recipient.id, composeText.textTrimmed, inputPanel.quote.isPresent)
-
-          AttachmentKeyboardButton.CONTACT -> conversationActivityResultContracts.launchSelectContact()
-
-          AttachmentKeyboardButton.LOCATION -> if (BuildConfig.MAPS_AVAILABLE) {
-            conversationActivityResultContracts.launchSelectLocation(recipient.chatColors)
-          } else {
-            // Tellomi（tellomi/tellomi#1235、#1124）：高德接上之前不提供发送位置，格子已置灰（AttachmentKeyboardButtonAdapter）
-            toast(R.string.TellomiLocation__coming_soon, Toast.LENGTH_SHORT)
-            // 点一个用不了的格子不收起附件面板，下面的 container.hideInput() 不走（taishi 审查 b9 不阻塞 2）
-            return
-          }
-
-          AttachmentKeyboardButton.PAYMENT -> AttachmentManager.selectPayment(this@ConversationFragment, recipient)
-
-          AttachmentKeyboardButton.FILE -> {
-            if (!conversationActivityResultContracts.launchSelectFile()) {
-              toast(R.string.AttachmentManager_cant_open_media_selection, Toast.LENGTH_LONG)
-            }
-          }
-
-          AttachmentKeyboardButton.POLL -> {
-            CreatePollFragment.show(childFragmentManager)
-            childFragmentManager.setFragmentResultListener(CreatePollFragment.REQUEST_KEY, requireActivity()) { _, bundle ->
-              sendPoll(recipient, Poll.fromBundle(bundle))
-            }
-          }
+        if (!onAttachmentButton(button, recipient)) {
+          // 点一个用不了的格子不收起附件面板，下面的 container.hideInput() 不走（taishi 审查 b9 不阻塞 2）
+          return
         }
       } else if (media != null) {
         conversationActivityResultContracts.launchMediaEditor(listOf(media), recipient.id, composeText.textTrimmed)
