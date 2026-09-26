@@ -148,7 +148,10 @@ class AboutSettingsScreenTest {
     assertThat(scrolledToGitHub.isFailure).isTrue()
   }
 
-  /** 「许可证」页最上面那一句：四种语言都带官网地址和许可证名，都不出现 GitHub（后面空一行再接第三方许可）。 */
+  /**
+   * 「许可证」页最上面那一句：四种语言都带官网地址和许可证名，都不出现 GitHub（后面空一行再接第三方许可）；
+   * 也不写「基于 Signal」（owner 2026-09-26，与官网 /source 同口径，超级仓库 docs/product/specs/about-page.md）。
+   */
   @Test
   fun `the licenses page starts with where to get the source code in every language`() {
     val context = ApplicationProvider.getApplicationContext<Application>()
@@ -161,6 +164,7 @@ class AboutSettingsScreenTest {
       assertThat(lines[0], locale.toString()).contains("www.tellomi.app/source")
       assertThat(lines[0], locale.toString()).contains("GNU AGPLv3")
       assertThat(lines[0].lowercase(), locale.toString()).doesNotContain("github")
+      assertThat(lines[0], locale.toString()).doesNotContain("Signal")
     }
   }
 
