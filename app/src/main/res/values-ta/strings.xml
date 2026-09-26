@@ -2470,7 +2470,7 @@
     <string name="WebRtcCallActivity__tap_here_to_turn_on_your_video">உங்கள் வீடியோவை இயக்க இங்கே தட்டவும்</string>
     <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">%1$s ஐ அழைக்க, Tellomiக்கு உங்கள் கேமரா அனுமதி தேவை Tellomi Camera permission</string>
     <!-- Subtitle shown at top of call where %s is the elapsed time of the call -->
-    <string name="WebRtcCallActivity__signal_s">Tellomi Tellomi %1$s</string>
+    <string name="WebRtcCallActivity__signal_s">Tellomi %1$s</string>
     <string name="WebRtcCallActivity__calling">அழைக்கிறது…</string>
     <!-- Call status shown when an active call was disconnected (e.g., network hiccup) and is trying to reconnect -->
     <string name="WebRtcCallActivity__reconnecting">மீண்டும் இணைக்கிறது …</string>
@@ -3347,7 +3347,7 @@
     <!-- Body of a notification when someone votes in a poll. First placeholder is the poll emoji, second placeholder is the name of the voter and third is the poll question -->
     <string name="MessageNotifier_s_voted_in_poll">\"%3$s\" வாக்கெடுப்பில் %1$s%2$s வாக்களித்துள்ளனர்</string>
 
-    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">இணைந்த Tellomi Tellomi அறிவிப்புகளை முடக்குவதா? அமைப்புகள் மற்றும் அறிவிப்புகளுக்குச் சென்று அவற்றை Tellomi settings Tellomi-இல் மீண்டும் இயக்கலாம்.</string>
+    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">இணைந்த Tellomi அறிவிப்புகளை முடக்குவதா? அமைப்புகள் மற்றும் அறிவிப்புகளுக்குச் சென்று அவற்றை Tellomi settings Tellomi-இல் மீண்டும் இயக்கலாம்.</string>
 
     <!-- TurnOnNotificationsBottomSheet -->
     <!-- Title for sheet explaining how to turn on app notifications -->
@@ -5311,7 +5311,7 @@
     <!-- GroupLinkBottomSheetDialogFragment -->
     <string name="GroupLinkBottomSheet_share_hint_requiring_approval">இதைக் கொண்ட எவரும் இணைப்பு பார்க்க முடியும் குழுபெயர் மற்றும் புகைப்படம் மற்றும் கோரிக்கை சேர. பகிர் அது மக்கள் நீங்கள் நம்புகிறீர்கள்.</string>
     <string name="GroupLinkBottomSheet_share_hint_not_requiring_approval">இதைக் கொண்ட எவரும் இணைப்பு பார்க்க முடியும் குழுபெயர் மற்றும் புகைப்படம் மற்றும் சேர தி குழு. பகிர் அது மக்கள் நீங்கள் நம்புகிறீர்கள்.</string>
-    <string name="GroupLinkBottomSheet_share_via_signal">Tellomi Tellomi வழியாக பகிரவும்</string>
+    <string name="GroupLinkBottomSheet_share_via_signal">Tellomi வழியாக பகிரவும்</string>
     <string name="GroupLinkBottomSheet_copy">நகல்</string>
     <string name="GroupLinkBottomSheet_qr_code">QR குறியீடு</string>
     <string name="GroupLinkBottomSheet_share">பகிர்</string>
