@@ -73,6 +73,7 @@ import org.signal.registration.R
 import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
+import org.signal.registration.screens.shared.TellomiFirstLaunchNotice
 import org.signal.registration.test.TestTags
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -131,6 +132,9 @@ fun WelcomeScreen(
       onDismiss = { showBottomSheet = false }
     )
   }
+
+  // Tellomi：第一次打开先弹一次隐私提示；同意之前，这一页的按钮都在提示后面（tellomi/tellomi#1211）。
+  TellomiFirstLaunchNotice()
 }
 
 @Composable

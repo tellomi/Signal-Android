@@ -74,6 +74,7 @@ import androidx.core.os.ConfigurationCompat
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import kotlinx.coroutines.delay
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
@@ -93,6 +94,9 @@ import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.screens.shared.AccountIdErrorText
 import org.signal.registration.screens.shared.AccountIdVisualTransformation
+import org.signal.registration.screens.shared.TellomiConsentRow
+import org.signal.registration.screens.shared.TellomiLegalConsent
+import org.signal.registration.screens.shared.TellomiTermsConsentDialog
 import org.signal.registration.screens.shared.accountIdTextStyle
 import org.signal.registration.test.TestTags
 import java.util.Locale
@@ -179,16 +183,41 @@ fun PhoneNumberScreen(
     }
   }
 
+  // Tellomi：先同意、再发号码（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。「下一步」和号码提示的自动确认
+  // 都要先走到下面这个确认号码的对话框，所以只在这里拦：没勾 → 先二次确认；同意 = 勾选框看得见地打勾，停一下再出确认框；
+  // 不同意 = 和点「修改号码」一样，什么都不发生。
+  var consentChecked by remember { mutableStateOf(TellomiLegalConsent.hasAgreedToTerms(context)) }
+  val onConsentCheckedChange: (Boolean) -> Unit = { checked ->
+    consentChecked = checked
+    TellomiLegalConsent.setAgreedToTerms(context, checked)
+  }
+  var holdConfirmForCheckmark by remember { mutableStateOf(false) }
+
   if (state.dialogs.confirmNumber) {
-    Dialogs.SimpleAlertDialog(
-      title = stringResource(R.string.RegistrationActivity_is_the_phone_number),
-      // Tellomi（#1210）：上游写「运营商可能收取短信费用」，大陆接收短信不收费；改成说明验证码的用途
-      body = "+${state.countryCode} ${state.formattedNumber}\n\n${stringResource(R.string.TellomiRegistration__a_verification_code_will_be_sent)}",
-      confirm = stringResource(id = android.R.string.ok),
-      dismiss = stringResource(R.string.RegistrationActivity_edit_number),
-      onConfirm = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberConfirmed) },
-      onDismiss = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberCancelled) }
-    )
+    when {
+      !consentChecked -> TellomiTermsConsentDialog(
+        onAgree = {
+          onConsentCheckedChange(true)
+          holdConfirmForCheckmark = true
+        },
+        onDisagree = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberCancelled) }
+      )
+
+      holdConfirmForCheckmark -> LaunchedEffect(Unit) {
+        delay(350)
+        holdConfirmForCheckmark = false
+      }
+
+      else -> Dialogs.SimpleAlertDialog(
+        title = stringResource(R.string.RegistrationActivity_is_the_phone_number),
+        // Tellomi（#1210）：上游写「运营商可能收取短信费用」，大陆接收短信不收费；改成说明验证码的用途
+        body = "+${state.countryCode} ${state.formattedNumber}\n\n${stringResource(R.string.TellomiRegistration__a_verification_code_will_be_sent)}",
+        confirm = stringResource(id = android.R.string.ok),
+        dismiss = stringResource(R.string.RegistrationActivity_edit_number),
+        onConfirm = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberConfirmed) },
+        onDismiss = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberCancelled) }
+      )
+    }
   }
 
   val simpleError: Pair<String, PhoneNumberEntryScreenEvents>? = when {
@@ -232,8 +261,8 @@ fun PhoneNumberScreen(
       .testTag(TestTags.PHONE_NUMBER_SCREEN)
   ) {
     when (val layoutParams = RegistrationScaffold.rememberLayoutParams()) {
-      is RegistrationScaffold.Params.OnePane -> OnePaneLayout(layoutParams, state, onEvent)
-      is RegistrationScaffold.Params.TwoPane -> TwoPaneLayout(layoutParams, state, onEvent)
+      is RegistrationScaffold.Params.OnePane -> OnePaneLayout(layoutParams, state, onEvent, consentChecked, onConsentCheckedChange)
+      is RegistrationScaffold.Params.TwoPane -> TwoPaneLayout(layoutParams, state, onEvent, consentChecked, onConsentCheckedChange)
     }
   }
 }
@@ -243,7 +272,9 @@ fun PhoneNumberScreen(
 private fun OnePaneLayout(
   params: RegistrationScaffold.Params.OnePane,
   state: PhoneNumberEntryState,
-  onEvent: (PhoneNumberEntryScreenEvents) -> Unit
+  onEvent: (PhoneNumberEntryScreenEvents) -> Unit,
+  consentChecked: Boolean,
+  onConsentCheckedChange: (Boolean) -> Unit
 ) {
   val scrollState = rememberScrollState()
   val topBarScrollBehavior = RegistrationScaffold.rememberTopBarScrollBehavior()
@@ -274,7 +305,7 @@ private fun OnePaneLayout(
       RegistrationScaffold.FooterSurface(
         isElevated = scrollState.canScrollForward
       ) {
-        NextButton(state, onEvent)
+        Footer(state, onEvent, consentChecked, onConsentCheckedChange)
       }
     }
   )
@@ -285,7 +316,9 @@ private fun OnePaneLayout(
 private fun TwoPaneLayout(
   params: RegistrationScaffold.Params.TwoPane,
   state: PhoneNumberEntryState,
-  onEvent: (PhoneNumberEntryScreenEvents) -> Unit
+  onEvent: (PhoneNumberEntryScreenEvents) -> Unit,
+  consentChecked: Boolean,
+  onConsentCheckedChange: (Boolean) -> Unit
 ) {
   val firstPaneScrollState = rememberScrollState()
   val secondPaneScrollState = rememberScrollState()
@@ -324,7 +357,7 @@ private fun TwoPaneLayout(
       RegistrationScaffold.FooterSurface(
         isElevated = firstPaneScrollState.canScrollForward || secondPaneScrollState.canScrollForward
       ) {
-        NextButton(state, onEvent)
+        Footer(state, onEvent, consentChecked, onConsentCheckedChange)
       }
     }
   )
@@ -400,6 +433,27 @@ private fun Description(twoPane: Boolean = false) {
     color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier = Modifier.padding(top = 16.dp)
   )
+}
+
+/**
+ * Tellomi：协议行贴在「下一步」上面（ADR-0051 §E：勾选行贴底），默认不勾（tellomi/tellomi#1211）。
+ */
+@Composable
+private fun Footer(
+  state: PhoneNumberEntryState,
+  onEvent: (PhoneNumberEntryScreenEvents) -> Unit,
+  consentChecked: Boolean,
+  onConsentCheckedChange: (Boolean) -> Unit
+) {
+  Column {
+    TellomiConsentRow(
+      checked = consentChecked,
+      onCheckedChange = onConsentCheckedChange,
+      modifier = Modifier.padding(start = 20.dp, end = 32.dp, top = 8.dp)
+    )
+
+    NextButton(state, onEvent)
+  }
 }
 
 @Composable

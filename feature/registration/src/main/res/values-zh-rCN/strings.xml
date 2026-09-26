@@ -821,4 +821,18 @@
     <string name="TellomiRegistration__skip_restore_dialog_body">以前的聊天记录不会出现在这台手机上。</string>
     <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">旧手机上的 Tellomi 会退出登录，以前的聊天记录也不会出现在这台手机上。</string>
     <string name="TellomiRegistration__skip_restore_dialog_confirm">继续</string>
+
+    <!-- Tellomi：注册同意（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E） -->
+    <string name="TellomiConsent__terms_link">《用户服务协议》</string>
+    <string name="TellomiConsent__privacy_link">《隐私政策》</string>
+    <string name="TellomiConsent__row">我已年满 18 周岁，已阅读并同意%1$s和%2$s</string>
+    <string name="TellomiConsent__checkbox_content_description">同意用户服务协议和隐私政策</string>
+    <string name="TellomiConsent__dialog_title">用户协议及隐私政策</string>
+    <string name="TellomiConsent__dialog_body">请阅读并同意%1$s和%2$s</string>
+    <string name="TellomiConsent__agree_and_continue">同意并继续</string>
+    <string name="TellomiConsent__disagree">不同意</string>
+    <string name="TellomiConsent__first_launch_title">欢迎使用 Tellomi</string>
+    <string name="TellomiConsent__first_launch_body">我们按%1$s处理您的个人信息：注册只需要手机号；消息、资料和附件都是端到端加密的，我们读不到。</string>
+    <string name="TellomiConsent__first_launch_agree">同意</string>
+    <string name="TellomiConsent__first_launch_disagree_hint">需要同意后才能使用 Tellomi；不同意的话，我们不会收集任何信息。</string>
 </resources>

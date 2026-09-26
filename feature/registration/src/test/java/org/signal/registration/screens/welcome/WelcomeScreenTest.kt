@@ -15,6 +15,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,6 +24,7 @@ import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.registration.TellomiRegistration
+import org.signal.registration.screens.shared.TellomiLegalConsent
 import org.signal.registration.test.TestTags
 
 /**
@@ -38,6 +40,12 @@ class WelcomeScreenTest {
 
   @get:Rule
   val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
+
+  @Before
+  fun setup() {
+    // Tellomi：首次启动的隐私提示另有用例（TellomiLegalConsentTest）；这里测欢迎页本身，先当作已经同意过（tellomi/tellomi#1211）。
+    TellomiLegalConsent.acceptFirstLaunchNotice(ApplicationProvider.getApplicationContext())
+  }
 
   @Test
   fun `when Get Started is clicked, Continue event is emitted`() {

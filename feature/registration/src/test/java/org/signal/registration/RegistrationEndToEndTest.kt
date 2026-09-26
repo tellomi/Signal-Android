@@ -70,6 +70,7 @@ import org.signal.registration.fakes.FakeStorageController
 import org.signal.registration.fakes.SystemOutLogger
 import org.signal.registration.proto.SvrCredential
 import org.signal.registration.screens.remotebackuprestore.RemoteBackupRestoreProgress
+import org.signal.registration.screens.shared.TellomiLegalConsent
 import org.signal.registration.screens.util.MockMultiplePermissionsState
 import org.signal.registration.screens.util.MockPermissionsState
 import org.signal.registration.test.TestTags
@@ -140,6 +141,10 @@ class RegistrationEndToEndTest {
 
     val context = ApplicationProvider.getApplicationContext<Application>()
     Shadows.shadowOf(context).grantPermissions(*RegistrationPermissions.getRequiredPermissions(context).toTypedArray())
+
+    // Tellomi：同意流程有专门的用例（TellomiLegalConsentTest）；这里测注册主流程，先当作已经同意过（tellomi/tellomi#1211）。
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    TellomiLegalConsent.setAgreedToTerms(context, true)
 
     networkController = FakeNetworkController()
     storageController = FakeStorageController()
