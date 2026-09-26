@@ -2,34 +2,37 @@ package org.thoughtcrime.securesms.mediapreview
 
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import android.view.animation.PathInterpolator
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.OptIn
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.ui.DefaultTimeBar
 import androidx.media3.ui.LegacyPlayerControlView
 import androidx.media3.ui.TimeBar
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.model.KeyPath
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.util.MediaUtil
 import org.thoughtcrime.securesms.util.visible
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 import org.signal.core.ui.R as CoreUiR
 
 /**
- * The bottom bar for the media preview. This includes the standard seek bar as well as playback controls,
- * but adds forward and share buttons as well as a recyclerview that can be populated with a rail of thumbnails.
+ * The bottom bar for the media preview.
+ *
+ * Tellomi（tellomi/tellomi#1257，owner 2026-09-25「多个视频点开时完全参考 Telegram 的设计」）：进度条放进深色胶囊（左已播、右总时长），
+ * 拖动时不暂停、松手才跳（照 Telegram），拖动过程报给查看器画该位置的预览帧；下面一行 转发 · 倍速（带角标）· 删除；
+ * 播放 / 暂停在屏幕中间（[MediaPreviewCenterControlsView]）。分享挪到了右上角「···」里。
  */
 @OptIn(UnstableApi::class)
 class MediaPreviewPlayerControlView @JvmOverloads constructor(
@@ -39,16 +42,37 @@ class MediaPreviewPlayerControlView @JvmOverloads constructor(
   playbackAttrs: AttributeSet? = null
 ) : LegacyPlayerControlView(context, attrs, defStyleAttr, playbackAttrs) {
 
-  val recyclerView: RecyclerView = findViewById(R.id.media_preview_album_rail)
   private val durationBar: LinearLayout = findViewById(R.id.exo_duration_viewgroup)
-  private val videoControls: LinearLayout = findViewById(R.id.exo_button_viewgroup)
-  private val exoProgress: TimeBar = findViewById(R.id.exo_progress)
+  private val exoProgress: DefaultTimeBar = findViewById(R.id.exo_progress)
   private val currentPositionLabel: TextView = findViewById(R.id.exo_position_label)
-  private val remainingDurationLabel: TextView = findViewById(R.id.exo_duration_label)
-  private val shareButton: ImageButton = findViewById(R.id.exo_share)
+  private val durationLabel: TextView = findViewById(R.id.exo_duration_label)
   private val forwardButton: ImageButton = findViewById(R.id.exo_forward)
+  private val deleteButton: ImageButton = findViewById(R.id.media_preview_delete_button)
+  private val speedGroup: View = findViewById(R.id.media_preview_speed_group)
+  private val speedButton: ImageButton = findViewById(R.id.media_preview_speed_button)
+  private val speedBadge: TextView = findViewById(R.id.media_preview_speed_badge)
 
-  private var wasPlaying: Boolean = false
+  private var mediaMode: MediaMode = MediaMode.IMAGE
+
+  /** 拖进度条：按住、移动、松手。坐标是屏幕坐标（拇指中心 x、胶囊顶边 y），给查看器摆预览帧。 */
+  interface ScrubListener {
+    fun onScrubStart(positionMs: Long, thumbCenterXOnScreen: Float, pillTopOnScreen: Float)
+    fun onScrubMove(positionMs: Long, thumbCenterXOnScreen: Float, pillTopOnScreen: Float)
+    fun onScrubStop(positionMs: Long)
+  }
+
+  var scrubListener: ScrubListener? = null
+
+  /** 播放器换了（翻到另一个视频）：查看器据此重新套中间的播放键、循环。 */
+  var onPlayerChanged: ((Player?) -> Unit)? = null
+
+  /** 本次查看器里的倍速：翻到下一个视频也沿用（照 Telegram，不写全局设置）。 */
+  var playbackSpeed: Float = 1f
+    set(value) {
+      field = value
+      player?.setPlaybackSpeed(value)
+      updateSpeedBadge()
+    }
 
   enum class MediaMode {
     IMAGE,
@@ -70,33 +94,41 @@ class MediaPreviewPlayerControlView @JvmOverloads constructor(
     showShuffleButton = false
     showVrButton = false
     showTimeoutMs = -1
+
+    exoProgress.addListener(
+      object : TimeBar.OnScrubListener {
+        override fun onScrubStart(timeBar: TimeBar, position: Long) {
+          updateTimeLabels(position)
+          val (x, y) = scrubAnchorOnScreen(position)
+          scrubListener?.onScrubStart(position, x, y)
+        }
+
+        override fun onScrubMove(timeBar: TimeBar, position: Long) {
+          updateTimeLabels(position)
+          val (x, y) = scrubAnchorOnScreen(position)
+          scrubListener?.onScrubMove(position, x, y)
+        }
+
+        override fun onScrubStop(timeBar: TimeBar, position: Long, canceled: Boolean) {
+          updateTimeLabels(position)
+          scrubListener?.onScrubStop(position)
+        }
+      }
+    )
+    updateSpeedBadge()
   }
 
-  @SuppressLint("SetTextI18n")
+  override fun setPlayer(player: Player?) {
+    super.setPlayer(player)
+    player?.setPlaybackSpeed(playbackSpeed)
+    onPlayerChanged?.invoke(player)
+  }
+
   fun setMediaMode(mediaMode: MediaMode) {
+    this.mediaMode = mediaMode
     durationBar.visible = mediaMode == MediaMode.VIDEO
-    videoControls.visibility = if (mediaMode == MediaMode.VIDEO) VISIBLE else INVISIBLE
+    speedGroup.visible = mediaMode == MediaMode.VIDEO
     if (mediaMode == MediaMode.VIDEO) {
-      exoProgress.addListener(
-        object : TimeBar.OnScrubListener {
-          override fun onScrubStart(p0: TimeBar, position: Long) {
-            wasPlaying = player?.isPlaying == true
-            player?.pause()
-            updateTimeLabels(position)
-          }
-
-          override fun onScrubMove(p0: TimeBar, position: Long) {
-            updateTimeLabels(position)
-          }
-
-          override fun onScrubStop(p0: TimeBar, position: Long, p2: Boolean) {
-            updateTimeLabels(position)
-            if (wasPlaying) {
-              player?.play()
-            }
-          }
-        }
-      )
       setProgressUpdateListener { position, _ ->
         updateTimeLabels(position)
       }
@@ -105,22 +137,72 @@ class MediaPreviewPlayerControlView @JvmOverloads constructor(
     }
   }
 
+  /** 左边已播、右边总时长（owner 2026-09-25 要的是「视频的整体时长」；Telegram 右边其实是剩余时间，见 #1257 报告）。 */
   private fun updateTimeLabels(position: Long) {
     val finalPlayer = player ?: return
-    val currentPosition: Duration = position.milliseconds
-    val currentMinutes: Long = currentPosition.inWholeMinutes
-    val currentSeconds: Long = currentPosition.inWholeSeconds % 60
-    val videoDuration: Duration = finalPlayer.duration.milliseconds
-    currentPositionLabel.text = "${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}"
-    val remainingDuration: Duration = videoDuration - currentPosition
-    val remainingMinutes: Long = remainingDuration.inWholeMinutes.coerceAtLeast(0L)
-    val remainingSeconds: Long = (remainingDuration.inWholeSeconds % 60).coerceAtLeast(0L)
-    remainingDurationLabel.text = "–${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}"
+    val duration = finalPlayer.duration
+    currentPositionLabel.text = formatPlaybackTime(position.coerceAtLeast(0L))
+    durationLabel.text = if (duration > 0) formatPlaybackTime(duration) else "-:--"
   }
 
-  fun setShareButtonListener(listener: OnClickListener?) = shareButton.setOnClickListener(listener)
+  /** 拇指中心（按 [positionMs] 在条上的比例）与胶囊顶边的屏幕坐标。 */
+  private fun scrubAnchorOnScreen(positionMs: Long): Pair<Float, Float> {
+    val duration = player?.duration?.takeIf { it > 0 } ?: 1L
+    val fraction = (positionMs.toFloat() / duration.toFloat()).coerceIn(0f, 1f)
+    val barLocation = IntArray(2).also { exoProgress.getLocationOnScreen(it) }
+    val pillLocation = IntArray(2).also { durationBar.getLocationOnScreen(it) }
+    return (barLocation[0] + fraction * exoProgress.width) to pillLocation[1].toFloat()
+  }
+
+  private fun updateSpeedBadge() {
+    val showBadge = kotlin.math.abs(playbackSpeed - 1f) > 0.05f
+    speedBadge.visible = showBadge
+    speedBadge.text = formatPlaybackSpeed(playbackSpeed)
+  }
 
   fun setForwardButtonListener(listener: OnClickListener?) = forwardButton.setOnClickListener(listener)
+
+  fun setDeleteButtonListener(listener: OnClickListener?) = deleteButton.setOnClickListener(listener)
+
+  fun setDeleteButtonVisible(visible: Boolean) {
+    deleteButton.visibility = if (visible) VISIBLE else INVISIBLE
+  }
+
+  fun setSpeedButtonListener(listener: OnClickListener?) = speedButton.setOnClickListener(listener)
+
+  val speedButtonView: View get() = speedButton
+
+  @VisibleForTesting
+  fun timeLabelsForTesting(): Pair<CharSequence, CharSequence> = currentPositionLabel.text to durationLabel.text
+
+  @VisibleForTesting
+  fun speedBadgeForTesting(): CharSequence? = if (speedBadge.visible) speedBadge.text else null
+
+  @VisibleForTesting
+  fun timeBarForTesting(): View = exoProgress
+
+  companion object {
+    /** m:ss；一小时以上 h:mm:ss。 */
+    @JvmStatic
+    fun formatPlaybackTime(positionMs: Long): String {
+      val totalSeconds = positionMs / 1000
+      val hours = totalSeconds / 3600
+      val minutes = (totalSeconds % 3600) / 60
+      val seconds = totalSeconds % 60
+      return if (hours > 0) {
+        "%d:%02d:%02d".format(java.util.Locale.US, hours, minutes, seconds)
+      } else {
+        "%d:%02d".format(java.util.Locale.US, minutes, seconds)
+      }
+    }
+
+    /** 1.5x、2x、0.7x。 */
+    @JvmStatic
+    fun formatPlaybackSpeed(speed: Float): String {
+      val rounded = kotlin.math.round(speed * 10f) / 10f
+      return if (rounded == rounded.toInt().toFloat()) "${rounded.toInt()}x" else "${rounded}x"
+    }
+  }
 }
 
 class LottieAnimatedButton @JvmOverloads constructor(

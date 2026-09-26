@@ -42,6 +42,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -49,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import kotlinx.coroutines.delay
@@ -57,12 +59,14 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.registration.R
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.screens.shared.ContactSupportDialog
 import org.signal.registration.test.TestTags
+import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -102,7 +106,8 @@ fun VerificationCodeScreen(
     val (message, dismissedEvent) = when {
       state.snackbars.incorrectVerificationCode -> resources.getString(R.string.VerificationCodeScreen__incorrect_code) to VerificationCodeScreenEvents.IncorrectVerificationCodeSnackbarDismissed
       state.snackbars.networkError -> resources.getString(R.string.VerificationCodeScreen__network_error) to VerificationCodeScreenEvents.NetworkErrorSnackbarDismissed
-      state.snackbars.rateLimitedRetryAfter != null -> resources.getString(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, state.snackbars.rateLimitedRetryAfter.toString()) to VerificationCodeScreenEvents.RateLimitedSnackbarDismissed
+      // Tellomi（#1210）：上游把 Duration.toString()（「1m 30s」）原样填进去
+      state.snackbars.rateLimitedRetryAfter != null -> resources.getString(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, TellomiRegistration.retryAfterText(state.snackbars.rateLimitedRetryAfter, ConfigurationCompat.getLocales(resources.configuration)[0] ?: Locale.getDefault())) to VerificationCodeScreenEvents.RateLimitedSnackbarDismissed
       state.snackbars.unknownError -> resources.getString(R.string.VerificationCodeScreen__an_unexpected_error_occurred) to VerificationCodeScreenEvents.UnknownErrorSnackbarDismissed
       state.snackbars.registrationError -> resources.getString(R.string.VerificationCodeScreen__registration_error) to VerificationCodeScreenEvents.RegistrationErrorSnackbarDismissed
       else -> return@LaunchedEffect
@@ -184,7 +189,9 @@ private fun RequestCodeErrorDialogs(dialogs: VerificationCodeState.Dialogs, onEv
     dialogs.networkError -> stringResource(R.string.VerificationCodeScreen__network_error) to VerificationCodeScreenEvents.NetworkErrorDialogDismissed
     dialogs.rateLimitedRetryAfter != null -> {
       val message = if (dialogs.rateLimitedRetryAfter.isPositive()) {
-        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, dialogs.rateLimitedRetryAfter.toString())
+        // Tellomi（#1210）：上游把 Duration.toString()（「1m 30s」）原样填进去
+        val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.getDefault()
+        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, TellomiRegistration.retryAfterText(dialogs.rateLimitedRetryAfter, locale))
       } else {
         stringResource(R.string.VerificationCodeScreen__too_many_attempts)
       }
@@ -443,6 +450,12 @@ private fun AlternateCodeOptions(state: VerificationCodeState, onEvent: (Verific
       textAlign = TextAlign.Center,
       style = MaterialTheme.typography.labelLarge
     )
+  }
+
+  // Tellomi（#1210）：没有语音通道时不显示「给我打电话」（上游一直显示，点了只会报「无法致电」）。
+  // 服务端对不可用的会话返回 nextCall = null 时同样不显示，而不是上游那样置灰留着。
+  if (!TellomiRegistration.VOICE_VERIFICATION_AVAILABLE || state.rateLimits.callRequestTimeRemaining == null) {
+    return
   }
 
   Spacer(modifier = Modifier.width(8.dp))
