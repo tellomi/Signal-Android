@@ -572,6 +572,8 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
   public @NonNull OkHttpClient provideOkHttpClient() {
     return new OkHttpClient.Builder()
         .addInterceptor(new StandardUserAgentInterceptor())
+        // Tellomi：updates.tellomi.app 等资源下载走这个客户端，跨境同意之前也要拦（tellomi/tellomi#1133）。
+        .addInterceptor(DeviceTransferBlockingInterceptor.getInstance())
         .dns(SignalServiceNetworkAccess.DNS)
         .build();
   }

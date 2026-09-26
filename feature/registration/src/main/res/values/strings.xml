@@ -860,4 +860,50 @@
     <string name="TellomiConsent__first_launch_agree">Agree</string>
     <!-- Shown in the first-launch privacy notice after the user taps Disagree -->
     <string name="TellomiConsent__first_launch_disagree_hint">You need to agree before using Tellomi. If you don\'t, we won\'t collect any information.</string>
+
+    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。文字是草稿，以 #1132 的法务定稿为准 -->
+    <!-- Title of the cross-border data transfer notice shown before the phone number is sent during registration -->
+    <string name="TellomiCrossBorder__title">Your information will be processed outside mainland China (Hong Kong)</string>
+    <!-- Introduction of the cross-border data transfer notice -->
+    <string name="TellomiCrossBorder__intro">When you sign up for and use Tellomi, some of your personal information is sent to servers located outside mainland China. Please read the points below before deciding whether to agree.</string>
+    <!-- Cross-border notice item 1 title: whether data leaves mainland China -->
+    <string name="TellomiCrossBorder__item_where_title">Does my information leave mainland China?</string>
+    <!-- Cross-border notice item 1 body: where servers and storage are located -->
+    <string name="TellomiCrossBorder__item_where_body">Yes. Tellomi’s servers are in Hong Kong, and attachments are stored in Cloudflare R2, whose storage locations may be outside mainland China.</string>
+    <!-- Cross-border notice item 2 title: overseas recipients -->
+    <string name="TellomiCrossBorder__item_recipients_title">Recipients outside mainland China</string>
+    <!-- Cross-border notice item 2 body: who receives the data outside mainland China -->
+    <string name="TellomiCrossBorder__item_recipients_body">Tellomi’s services deployed in Hong Kong, and our infrastructure providers Alibaba Cloud (Hong Kong), Cloudflare, Inc. (attachment storage, call relay) and Google (Android push via FCM, only on phones with Google services). When you use GIF search, your search terms are sent to GIPHY through our proxy.</string>
+    <!-- Cross-border notice item 3 title: contact -->
+    <string name="TellomiCrossBorder__item_contact_title">Contact</string>
+    <!-- Cross-border notice item 3 body: how to contact the personal information protection team -->
+    <string name="TellomiCrossBorder__item_contact_body">For questions about personal information protection, email privacy@tellomi.app.</string>
+    <!-- Cross-border notice item 4 title: purposes of processing -->
+    <string name="TellomiCrossBorder__item_purpose_title">Purposes</string>
+    <!-- Cross-border notice item 4 body: purposes of processing -->
+    <string name="TellomiCrossBorder__item_purpose_body">Signing up and signing in; delivering and temporarily storing messages and attachments; push notifications; connecting voice and video calls; GIF search.</string>
+    <!-- Cross-border notice item 5 title: how the data is processed -->
+    <string name="TellomiCrossBorder__item_method_title">How it’s processed</string>
+    <!-- Cross-border notice item 5 body: end-to-end encryption and what is processed in plaintext -->
+    <string name="TellomiCrossBorder__item_method_body">Message content, profiles, group information and attachments are end-to-end encrypted. Our servers and attachment storage only hold ciphertext we can’t read. Only a few items are processed in plaintext, such as the phone number you sign up with and the network information needed to connect.</string>
+    <!-- Cross-border notice item 6 title: kinds of personal information -->
+    <string name="TellomiCrossBorder__item_kinds_title">Personal information involved</string>
+    <!-- Cross-border notice item 6 body: kinds of personal information transferred -->
+    <string name="TellomiCrossBorder__item_kinds_body">Phone number; account and device identifiers; push tokens; network information such as your IP address when connecting; encrypted messages, attachments and profiles (ciphertext); search terms when you use GIF search.</string>
+    <!-- Cross-border notice item 7 title: your rights -->
+    <string name="TellomiCrossBorder__item_rights_title">Your rights</string>
+    <!-- Cross-border notice item 7 body: how to exercise personal information rights -->
+    <string name="TellomiCrossBorder__item_rights_body">You can access, correct or delete your personal information, delete your account, or withdraw this consent as described in sections 26 and 27 of the Privacy Policy, or by emailing privacy@tellomi.app.</string>
+    <!-- Cross-border notice item 8 title: legal procedure for the transfer -->
+    <string name="TellomiCrossBorder__item_procedure_title">Legal procedure for the transfer</string>
+    <!-- Cross-border notice item 8 body: legal procedure for the transfer (pending legal review) -->
+    <string name="TellomiCrossBorder__item_procedure_body">We’ll complete the procedures required by law for transferring personal information abroad. The specific procedure will be stated here once confirmed by our legal team.</string>
+    <!-- Cross-border notice item 9 title: separate consent -->
+    <string name="TellomiCrossBorder__item_consent_title">Separate consent</string>
+    <!-- Cross-border notice item 9 body: this page is the separate consent and can be withdrawn -->
+    <string name="TellomiCrossBorder__item_consent_body">Tapping “Agree and Continue” means you separately consent to the transfer described above. You can withdraw at any time; after withdrawing, you won’t be able to keep using Tellomi until our mainland China service launches.</string>
+    <!-- Link at the bottom of the cross-border notice that opens the Privacy Policy sections about storage location and cross-border transfer -->
+    <string name="TellomiCrossBorder__privacy_link">Read sections 20 and 21 of the Privacy Policy</string>
+    <!-- Shown on the cross-border notice after the user taps Disagree -->
+    <string name="TellomiCrossBorder__disagree_hint">If you don’t agree, you won’t be able to use Tellomi until our mainland China service launches, and we won’t send any of your information. You can close the app, or come back to this page and agree later.</string>
 </resources>
