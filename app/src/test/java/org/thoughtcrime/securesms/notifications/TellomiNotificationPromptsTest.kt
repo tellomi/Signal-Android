@@ -40,6 +40,13 @@ class TellomiNotificationPromptsTest {
   }
 
   @Test
+  fun primerWaitsUntilTheCrossBorderNoticeIsAgreed() {
+    // #110：已注册、还没同意跨境的升级用户，首屏先盖着跨境告知；说明页等同意以后、下次回到首屏再出，不抢在告知前面
+    assertThat(TellomiNotificationPrompts.shouldShowPrimer(sdkInt = 36, isPermissionGranted = false, hasSeenPrimer = false, crossBorderPending = true)).isFalse()
+    assertThat(TellomiNotificationPrompts.shouldShowPrimer(sdkInt = 36, isPermissionGranted = false, hasSeenPrimer = false, crossBorderPending = false)).isTrue()
+  }
+
+  @Test
   fun bannerWaitsForThePrimerOnAndroid13Plus() {
     // 新装还没进过首屏：通知关着是因为还没问，不能先挂「已关闭」
     assertThat(TellomiNotificationPrompts.shouldShowDisabledBanner(sdkInt = 33, areNotificationsEnabled = false, hasSeenPrimer = false)).isFalse()
