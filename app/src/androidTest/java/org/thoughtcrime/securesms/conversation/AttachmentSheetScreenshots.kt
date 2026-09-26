@@ -53,7 +53,8 @@ import kotlin.math.abs
  * - 收起时 Sheet 顶边在全屏高度的 27% 处（Sheet 占 73%），上面露出会话页；底部 dock 五格从左到右；测试构建没有地图，
  *   「位置」读屏报「即将支持」，点了只提示、Sheet 留着；
  * - 勾两张 → dock 让位给「说明 + 发送」；拖顶栏往上 → 全屏；发送 → Sheet 收起，会话里多一条带两张图的消息；
- * - dock 的「文件」「投票」：Sheet 收起，系统文件选择器 / 新建投票页出来；
+ * - dock 的「文件」在同一个 Sheet 里换到「文件」页（tellomi/tellomi#1121，那一页的端到端在 AttachmentFilesScreenshots）；
+ *   「投票」：Sheet 收起，新建投票页出来；
  * - 下拉关闭；选了东西下拉先问「放弃所选媒体？」，取消后 Sheet 还在；点压暗的聊天关闭；重复点「相册」展开；
  * - 网格往上滑时 Sheet 跟着手指走（量手指挪了多少、Sheet 挪了多少）。
  *
@@ -175,22 +176,21 @@ class AttachmentSheetScreenshots {
   }
 
   @Test
-  fun dockFileAndPollLeaveTheSheetForTheirOwnScreens() {
+  fun dockFileStaysInTheSheetAndPollLeavesItForItsOwnScreen() {
     val other = harness.others[0]
     val threadId = SignalDatabase.threads.getOrCreateThreadIdFor(Recipient.resolved(other))
     val conversation = openConversation(other, threadId)
     try {
       settle(1500)
 
+      // tellomi/tellomi#1121：「文件」在同一个 Sheet 里换页，不收起
       openSheet(conversation)
       click(dockNode(harness.context.getString(R.string.AttachmentKeyboard_file)))
-      waitFor("系统文件选择器") { activeWindowPackage()?.contains("documentsui") == true }
-      assertTrue("点「文件」Sheet 收起", resumedActivity() !is MediaSendAttachmentSheetActivity)
-      report.appendLine("file picker package=${activeWindowPackage()}")
+      textNode(harness.context.getString(org.signal.mediasend.R.string.AttachmentFilesScreen__select_from_files))
+      assertTrue("点「文件」Sheet 留着", resumedActivity() is MediaSendAttachmentSheetActivity)
       settle(800)
-      shot("sheet-6-file-picker")
-      instrumentation.uiAutomation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
-      waitFor("回到会话页") { resumedActivity() != null && resumedActivity() !is MediaSendAttachmentSheetActivity }
+      shot("sheet-6-files-page")
+      closeSheetIfOpen()
       settle(800)
 
       openSheet(conversation)
@@ -420,8 +420,6 @@ class AttachmentSheetScreenshots {
     assertTrue("Sheet 上面没有中间调的点可比（只有 ${ratios.size} 个）", ratios.size >= 20)
     return ratios.sorted()[ratios.size / 2]
   }
-
-  private fun activeWindowPackage(): String? = instrumentation.uiAutomation.rootInActiveWindow?.packageName?.toString()
 
   private fun AccessibilityNodeInfo.boundsInScreen(): Rect = Rect().also { getBoundsInScreen(it) }
 

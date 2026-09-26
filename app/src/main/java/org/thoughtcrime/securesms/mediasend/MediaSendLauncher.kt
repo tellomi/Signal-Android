@@ -156,6 +156,9 @@ object MediaSendLauncher {
   /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 里点了 dock 的哪一格（[MediaSendFlowActivityContract.DockEntry.id]）。 */
   const val EXTRA_ATTACHMENT_DOCK_ENTRY = "tellomi.attachment_dock_entry"
 
+  /** Tellomi（tellomi/tellomi#1121）：附件 Sheet「文件」页要发的文件（[MediaSendFlowActivityContract.AttachmentFilesResult]）。 */
+  const val EXTRA_ATTACHMENT_FILES = "tellomi.attachment_files"
+
   /**
    * Tellomi（tellomi/tellomi#1115）：会话页「+」打开的附件 Sheet——选图网格做成半屏 Sheet（聊天露在上面），底部 dock 是 [dock] 里的格子。
    * 发了照片的结果同 [gallery]；点了 dock 的别的格子，结果里带 [EXTRA_ATTACHMENT_DOCK_ENTRY]（[parseAttachmentDockEntry]）。
@@ -187,6 +190,15 @@ object MediaSendLauncher {
     }
 
     return data?.getStringExtra(EXTRA_ATTACHMENT_DOCK_ENTRY)
+  }
+
+  /** Tellomi（tellomi/tellomi#1121）：附件 Sheet「文件」页选好的文件，交给会话页去发；不是这种结果时是 null。 */
+  fun parseAttachmentFiles(resultCode: Int, data: Intent?): MediaSendFlowActivityContract.AttachmentFilesResult? {
+    if (resultCode != Activity.RESULT_OK || data == null) {
+      return null
+    }
+
+    return data.getParcelableExtraCompat(EXTRA_ATTACHMENT_FILES, MediaSendFlowActivityContract.AttachmentFilesResult::class.java)
   }
 
   /**

@@ -305,12 +305,13 @@ internal object DockMetrics {
 }
 
 /**
- * 底部 dock：一排格子，当前页（相册）那格选中。置灰的格子（[MediaSendFlowActivityContract.DockEntry.comingSoonMessage]）
- * 照样能点（点了只提示），读屏把提示语当状态念出来。
+ * 底部 dock：一排格子，[currentPage] 那格选中（相册页选「相册」，文件页选「文件」，tellomi/tellomi#1121）。
+ * 置灰的格子（[MediaSendFlowActivityContract.DockEntry.comingSoonMessage]）照样能点（点了只提示），读屏把提示语当状态念出来。
  */
 @Composable
 internal fun AttachmentDock(
   entries: List<MediaSendFlowActivityContract.DockEntry>,
+  currentPage: MediaSendFlowActivityContract.AttachmentPage,
   onClick: (MediaSendFlowActivityContract.DockEntry) -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -328,6 +329,7 @@ internal fun AttachmentDock(
     for (entry in entries) {
       AttachmentDockButton(
         entry = entry,
+        selected = entry.page == currentPage,
         onClick = { onClick(entry) },
         modifier = Modifier
           .weight(1f)
@@ -340,10 +342,10 @@ internal fun AttachmentDock(
 @Composable
 private fun AttachmentDockButton(
   entry: MediaSendFlowActivityContract.DockEntry,
+  selected: Boolean,
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val selected = entry.isCurrentPage
   val comingSoon = entry.comingSoonMessage?.let { stringResource(it) }
   val tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
 

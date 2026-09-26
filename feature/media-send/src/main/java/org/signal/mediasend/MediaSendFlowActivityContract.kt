@@ -123,7 +123,8 @@ class MediaSendFlowActivityContract(private val clazz: Class<out Activity>) : Ac
   data class AttachmentSheet(val dock: List<DockEntry>) : Parcelable
 
   /**
-   * @param isCurrentPage 这一格就是网格本身（相册）：点它回到顶部、展开到全屏，不带回会话页。
+   * @param page 这一格是 Sheet 里的哪一页（tellomi/tellomi#1121：相册、文件在同一个 Sheet 里换页）；点当前页那格回到顶部、展开到全屏。
+   *   null = 不是 Sheet 里的页，点了带回会话页（位置、投票、联系人）。
    * @param comingSoonMessage 非空就置灰：点了只提示这一句，Sheet 留着（Android「位置」等高德，tellomi/tellomi#1124）。
    */
   @Parcelize
@@ -131,8 +132,27 @@ class MediaSendFlowActivityContract(private val clazz: Class<out Activity>) : Ac
     val id: String,
     @get:StringRes val title: Int,
     @get:DrawableRes val icon: Int,
-    val isCurrentPage: Boolean = false,
+    val page: AttachmentPage? = null,
     @get:StringRes val comingSoonMessage: Int? = null
+  ) : Parcelable
+
+  /** Tellomi（tellomi/tellomi#1121 F-1）：附件 Sheet 里的页。dock 的「相册」「文件」在同一个 Sheet 里换页，不收起 Sheet。 */
+  enum class AttachmentPage {
+    GALLERY,
+    FILES
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1121）：「文件」页选好要发的文件，带回会话页去发——每个一条、说明挂在最后一个。
+   *
+   * @param recentAttachmentIds 「最近发送的文件」里点的 / 勾的（本机附件行号，按勾选的顺序），F-7、F-8。
+   * @param pickedUris 系统文件选择器挑的（可多选），F-4。
+   */
+  @Parcelize
+  data class AttachmentFilesResult(
+    val recentAttachmentIds: List<Long>,
+    val pickedUris: List<Uri>,
+    val caption: String?
   ) : Parcelable
 
   /**

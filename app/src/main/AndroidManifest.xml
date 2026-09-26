@@ -609,7 +609,7 @@
             android:launchMode="singleTop"
             android:enableOnBackInvokedCallback="true"
             android:theme="@style/Theme.Signal.DayNight.NoActionBar.AttachmentSheet"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
             android:name=".conversation.mutiselect.forward.MultiselectForwardActivity"

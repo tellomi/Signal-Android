@@ -247,7 +247,7 @@ class AttachmentSheetTest {
   // region view models
 
   @Test
-  fun `Given dock entries, when clicked in the select view model, then coming soon only toasts, gallery does nothing and the rest leave the flow`() {
+  fun `Given dock entries, when clicked in the select view model, then coming soon only toasts, gallery does nothing, files switches page and the rest leave the flow`() {
     val emitted = mutableListOf<MediaSendFlowEvent>()
     val viewModel = MediaSelectViewModel(
       parentState = MutableStateFlow(MediaSendFlowState(attachmentSheet = MediaSendFlowActivityContract.AttachmentSheet(DOCK))),
@@ -261,12 +261,42 @@ class AttachmentSheetTest {
     viewModel.onEvent(MediaSelectScreenEvents.DockEntryClicked(GALLERY))
     viewModel.onEvent(MediaSelectScreenEvents.DockEntryClicked(LOCATION_COMING_SOON))
     viewModel.onEvent(MediaSelectScreenEvents.DockEntryClicked(FILE))
+    viewModel.onEvent(MediaSelectScreenEvents.DockEntryClicked(CONTACT))
     shadowOf(Looper.getMainLooper()).idle()
 
-    val dockEvents = emitted.filter { it is MediaSendFlowEvent.ShowToast || it is MediaSendFlowEvent.AttachmentDockEntrySelected }
-    assertThat(dockEvents.size).isEqualTo(2)
+    val dockEvents = emitted.filter { it is MediaSendFlowEvent.ShowToast || it is MediaSendFlowEvent.AttachmentDockEntrySelected || it is MediaSendFlowEvent.OpenAttachmentPage }
+    assertThat(dockEvents.size).isEqualTo(3)
     assertThat(dockEvents[0]).isInstanceOf(MediaSendFlowEvent.ShowToast::class)
-    assertThat(dockEvents[1]).isEqualTo(MediaSendFlowEvent.AttachmentDockEntrySelected(FILE.id))
+    assertThat(dockEvents[1]).isEqualTo(MediaSendFlowEvent.OpenAttachmentPage(MediaSendFlowActivityContract.AttachmentPage.FILES))
+    assertThat(dockEvents[2]).isEqualTo(MediaSendFlowEvent.AttachmentDockEntrySelected(CONTACT.id))
+  }
+
+  /** tellomi/tellomi#1121 F-1：「相册」「文件」在同一个 Sheet 里换页（流程状态记着当前页）；「文件」页选好的文件交给会话页去发。 */
+  @Test
+  fun `Given the attachment sheet, when pages switch and files are chosen, then the flow keeps the page and hands the files on`() {
+    val viewModel = MediaSendFlowViewModel(
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          MediaSendFlowViewModel.KEY_ARGS to MediaSendFlowActivityContract.Args(attachmentSheet = MediaSendFlowActivityContract.AttachmentSheet(DOCK)),
+          MediaSendFlowViewModel.KEY_IDENTITY_CHANGES_SINCE to 0L
+        )
+      ),
+      repository = mediaSendDependenciesRule.mediaSendRepository,
+      preUploadController = mockk(relaxed = true),
+      isMeteredFlow = flowOf(false)
+    )
+    assertThat(viewModel.state.value.attachmentPage).isEqualTo(MediaSendFlowActivityContract.AttachmentPage.GALLERY)
+
+    viewModel.onEvent(MediaSendFlowEvent.OpenAttachmentPage(MediaSendFlowActivityContract.AttachmentPage.FILES))
+    assertThat(viewModel.state.value.attachmentPage).isEqualTo(MediaSendFlowActivityContract.AttachmentPage.FILES)
+    viewModel.onEvent(MediaSendFlowEvent.OpenAttachmentPage(MediaSendFlowActivityContract.AttachmentPage.GALLERY))
+    assertThat(viewModel.state.value.attachmentPage).isEqualTo(MediaSendFlowActivityContract.AttachmentPage.GALLERY)
+
+    val files = MediaSendFlowActivityContract.AttachmentFilesResult(recentAttachmentIds = listOf(3L, 1L), pickedUris = emptyList(), caption = "two files")
+    viewModel.onEvent(MediaSendFlowEvent.SendAttachmentFiles(files))
+
+    val command = runBlocking { withTimeout(5_000) { viewModel.hudCommands.first() } }
+    assertThat(command).isEqualTo(MediaSendFlowHudCommand.SendAttachmentFiles(files))
   }
 
   @Test
@@ -375,8 +405,13 @@ class AttachmentSheetTest {
 
     private val COMING_SOON_MESSAGE = R.string.MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos
 
-    private val GALLERY = MediaSendFlowActivityContract.DockEntry(id = "GALLERY", title = R.string.MediaSelectScreen__gallery, icon = R.drawable.symbol_album_tilt_24, isCurrentPage = true)
-    private val FILE = MediaSendFlowActivityContract.DockEntry(id = "FILE", title = R.string.MediaSelectScreen__gallery, icon = org.signal.core.ui.R.drawable.symbol_file_24)
+    private val GALLERY = MediaSendFlowActivityContract.DockEntry(id = "GALLERY", title = R.string.MediaSelectScreen__gallery, icon = R.drawable.symbol_album_tilt_24, page = MediaSendFlowActivityContract.AttachmentPage.GALLERY)
+    private val FILE = MediaSendFlowActivityContract.DockEntry(
+      id = "FILE",
+      title = R.string.MediaSelectScreen__gallery,
+      icon = org.signal.core.ui.R.drawable.symbol_file_24,
+      page = MediaSendFlowActivityContract.AttachmentPage.FILES
+    )
     private val LOCATION_COMING_SOON = MediaSendFlowActivityContract.DockEntry(
       id = "LOCATION",
       title = R.string.MediaSelectScreen__gallery,

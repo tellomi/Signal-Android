@@ -121,13 +121,17 @@ internal class MediaSelectViewModel(
   }
 
   /**
-   * Tellomi（tellomi/tellomi#1115）：置灰的格子只提示一句；别的交给会话页。当前页（相册）那一格由网格自己处理（回到顶部、展开）。
+   * Tellomi（tellomi/tellomi#1115、#1121）：置灰的格子只提示一句；Sheet 里的别的页（文件）在同一个 Sheet 里换过去；
+   * 别的交给会话页。当前页（相册）那一格由网格自己处理（回到顶部、展开）。
    */
   private fun onDockEntryClicked(entry: MediaSendFlowActivityContract.DockEntry) {
     val comingSoon = entry.comingSoonMessage
+    val page = entry.page
     when {
       comingSoon != null -> parentEventEmitter(MediaSendFlowEvent.ShowToast(ToastEvent(SignalIcons.Info, ToastMessage.Text(comingSoon))))
-      !entry.isCurrentPage -> parentEventEmitter(MediaSendFlowEvent.AttachmentDockEntrySelected(entry.id))
+      page == MediaSendFlowActivityContract.AttachmentPage.GALLERY -> Unit
+      page != null -> parentEventEmitter(MediaSendFlowEvent.OpenAttachmentPage(page))
+      else -> parentEventEmitter(MediaSendFlowEvent.AttachmentDockEntrySelected(entry.id))
     }
   }
 
