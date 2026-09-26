@@ -5446,21 +5446,61 @@ class ConversationFragment :
       }
   }
 
-  /** 一个发完（进了本地库）再发下一个，保证对方看到的顺序就是选的顺序；[caption] 只挂在最后一个上。 */
+  /**
+   * 一个发完（进了本地库）再发下一个，保证对方看到的顺序就是选的顺序；[caption] 只挂在最后一个上，输入框里的草稿不动。
+   *
+   * 整串一次建好交给 [TellomiSendInOrder]，订阅不进 [disposables]（那个绑在 view 上）：文件这条路不预上传，每个都要在插入时整份
+   * 拷进附件库，多选几个大文件就是好几秒，发到一半离开会话、弹窗会话发完第一个就 finish，剩下的也要发完。
+   * [onSendComplete] 只在第一个写进库、页面还在时调一次。
+   */
+  @SuppressLint("CheckResult")
   private fun sendSlidesInOrder(slides: List<Slide>, caption: String) {
-    val slide = slides.firstOrNull() ?: return
-    val rest = slides.drop(1)
-    sendMessage(
-      body = if (rest.isEmpty()) caption else "",
-      mentions = emptyList(),
-      bodyRanges = null,
-      messageToEdit = null,
-      quote = null,
-      slideDeck = SlideDeck().apply { addSlide(slide) },
-      clearCompose = false,
-      linkPreviews = emptyList(),
-      bypassPreSendSafetyNumberCheck = true,
-      afterSendComplete = { sendSlidesInOrder(rest, caption) }
+    val threadRecipient = viewModel.recipientSnapshot
+    if (threadRecipient == null) {
+      Log.w(TAG, "Unable to send due to invalid thread recipient")
+      toast(R.string.ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation, Toast.LENGTH_LONG)
+      return
+    }
+
+    if (slides.isEmpty()) {
+      return
+    }
+
+    val parts: List<Completable> = slides.mapIndexed { index, slide ->
+      val send = viewModel.sendMessage(
+        metricId = null,
+        threadRecipient = threadRecipient,
+        body = if (index == slides.lastIndex) caption else "",
+        slideDeck = SlideDeck().apply { addSlide(slide) },
+        scheduledDate = -1L,
+        messageToEdit = null,
+        quote = null,
+        mentions = emptyList(),
+        bodyRanges = null,
+        contacts = emptyList(),
+        linkPreviews = emptyList(),
+        preUploadResults = emptyList(),
+        isViewOnce = false
+      )
+      if (index == 0) {
+        // 离开会话后 view 已经没了，onSendComplete 里滚动、清草稿都不用做了。
+        send.doOnComplete {
+          if (isAdded && view != null) {
+            onSendComplete()
+          }
+        }
+      } else {
+        send
+      }
+    }
+
+    scrollToPositionDelegate.markListCommittedVersion()
+
+    TellomiSendInOrder.inOrder(parts).subscribeBy(
+      onError = {
+        Log.w(TAG, "Error received during send!", it)
+        toast(R.string.ConversationActivity_error_sending_media)
+      }
     )
   }
 
