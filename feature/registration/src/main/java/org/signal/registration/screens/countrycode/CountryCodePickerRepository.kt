@@ -21,10 +21,10 @@ class CountryCodePickerRepository {
     /**
      * A hardcoded list of countries to suggest during registration. Can change at any time.
      *
-     * Tellomi（tellomi/tellomi#1210）：上游是 US / DE / IN / NL / UA；Tellomi 的用户在中国大陆、香港、澳门、台湾。
-     * 显示名走系统语言的 CLDR 名称。
+     * Tellomi（tellomi/tellomi#1210）：上游是 US / DE / IN / NL / UA；#1210 曾改成中国大陆、香港、澳门、台湾。
+     * owner 2026-09-26（两端差异清单 N4）定：不显示「常用」，和 iOS 一样只留按字母排的完整列表，打开时滚到默认选中的国家。
      */
-    private val COMMON_COUNTRIES = listOf("CN", "HK", "MO", "TW")
+    private val COMMON_COUNTRIES = emptyList<String>()
   }
 
   suspend fun getCountries(): List<Country> = withContext(Dispatchers.IO) {

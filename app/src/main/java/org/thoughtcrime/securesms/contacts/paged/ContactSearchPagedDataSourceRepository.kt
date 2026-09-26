@@ -2,6 +2,8 @@ package org.thoughtcrime.securesms.contacts.paged
 
 import android.content.Context
 import android.database.Cursor
+import android.database.MatrixCursor
+import android.database.MergeCursor
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -73,15 +75,27 @@ open class ContactSearchPagedDataSourceRepository(
   }
 
   open fun getRecents(section: ContactSearchConfiguration.Section.Recents): Cursor? {
-    return SignalDatabase.threads.getRecentConversationList(
+    // Tellomi：要带上自己（转发 / 分享面板）时，「我的收藏」固定第一位，会话删了也照样给（#1174，Telegram 同）
+    val pinSavedMessages = section.includeSelf && section.mode != ContactSearchConfiguration.Section.Recents.Mode.GROUPS && Recipient.isSelfSet
+
+    val recents = SignalDatabase.threads.getRecentConversationList(
       section.limit,
       section.includeInactiveGroups,
       section.mode == ContactSearchConfiguration.Section.Recents.Mode.INDIVIDUALS,
       section.mode == ContactSearchConfiguration.Section.Recents.Mode.GROUPS,
       !section.includeGroupsV1,
       !section.includeSms,
-      !section.includeSelf
+      !section.includeSelf || pinSavedMessages
     )
+
+    if (!pinSavedMessages) {
+      return recents
+    }
+
+    val savedMessages = MatrixCursor(arrayOf(ThreadTable.RECIPIENT_ID)).apply {
+      addRow(arrayOf<Any>(Recipient.self().id.toLong()))
+    }
+    return MergeCursor(arrayOf(savedMessages, recents))
   }
 
   open fun getStories(query: String?): Cursor? {
