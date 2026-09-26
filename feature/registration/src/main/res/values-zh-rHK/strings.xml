@@ -581,6 +581,21 @@
     <string name="CreateProfileScreen__set_avatar_description">設定頭像</string>
     <!-- Tellomi（#1215） -->
     <string name="TellomiRegistration__phone_number_not_shown">你的電話號碼預設不會向任何人顯示。</string>
+    <!-- Tellomi（#1215 第二刀） -->
+    <string name="TellomiRegistration__username_optional">用戶名稱（選填）</string>
+    <string name="TellomiRegistration__username_your_link">你的連結：%1$s</string>
+    <string name="TellomiRegistration__username_checking">正在檢查…</string>
+    <string name="TellomiRegistration__username_not_available">這個用戶名稱無法使用</string>
+    <string name="TellomiRegistration__username_too_short">至少 3 個字元</string>
+    <string name="TellomiRegistration__username_too_long">最多 20 個字元</string>
+    <string name="TellomiRegistration__username_invalid_characters">只能使用字母、數字和底線</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">需要以字母開頭</string>
+    <string name="TellomiRegistration__username_check_failed">暫時無法檢查，請稍後再試</string>
+    <string name="TellomiRegistration__username_too_many_attempts">嘗試次數過多，請稍後再試</string>
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="other">%d 天後才能設定用戶名稱</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">可以試試：</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->

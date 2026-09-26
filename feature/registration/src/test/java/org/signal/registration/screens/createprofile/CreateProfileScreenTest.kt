@@ -6,15 +6,23 @@
 package org.signal.registration.screens.createprofile
 
 import android.app.Application
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Rule
@@ -24,6 +32,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.libsignal.usernames.Username
 import org.signal.registration.R
 import org.signal.registration.test.TestTags
 
@@ -41,7 +50,8 @@ class CreateProfileScreenTest {
   @get:Rule
   val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
 
-  /** Tellomi（tellomi/tellomi#1215）：只有一个「名字」框；号码可见性那一项换成一句说明。 */
+  /** Tellomi（tellomi/tellomi#1215）：只有一个「名字」框；号码可见性那一项换成一句说明（加了用户名框之后说明在默认屏高下要滚才看得到）。 */
+  @Config(qualifiers = "w360dp-h1200dp")
   @Test
   fun `screen displays a single name field and the phone number statement`() {
     // Given
@@ -107,6 +117,120 @@ class CreateProfileScreenTest {
     }
 
     composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_AVATAR_INITIALS, useUnmergedTree = true).assertDoesNotExist()
+  }
+
+  /** Tellomi（tellomi/tellomi#1215 第二刀）：保留成功后说明行给出链接。 */
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `a reserved username shows its tell cc link`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(
+            givenName = "Alice",
+            isLoading = false,
+            usernameEntry = TellomiUsernameEntry(text = "Kaixin", reservation = Username("Kaixin.01"))
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true).assertTextEquals("Your link: tell.cc/kaixin")
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsEnabled()
+  }
+
+  /** Tellomi（tellomi/tellomi#1215 第二刀）：不可用时给候选，点了发事件；没检查过的用户名不能进入。 */
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `an unavailable username offers candidates and tapping one emits UsernameCandidateClicked`() {
+    var emittedEvent: CreateProfileScreenEvents? = null
+
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(
+            givenName = "Alice",
+            isLoading = false,
+            usernameEntry = TellomiUsernameEntry(
+              text = "kaixin",
+              error = TellomiUsernameEntry.Error.NOT_AVAILABLE,
+              candidates = listOf("kaixin27", "kaixin726", "kaixin58")
+            )
+          ),
+          onEvent = { emittedEvent = it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true).assertTextEquals("This username isn't available")
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsNotEnabled()
+    composeTestRule.onAllNodesWithTag(TestTags.CREATE_PROFILE_USERNAME_CANDIDATE).assertCountEquals(3)
+    composeTestRule.onAllNodesWithTag(TestTags.CREATE_PROFILE_USERNAME_CANDIDATE)[1].performClick()
+
+    assert(emittedEvent == CreateProfileScreenEvents.UsernameCandidateClicked("kaixin726"))
+  }
+
+  /** Tellomi（taishi 审查包 4）：继承的改名冷却按天说；一小时以内的限流说「尝试次数过多」。两种都不能带着用户名进入。 */
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `a rename cooldown says how many days are left`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(
+            givenName = "Alice",
+            isLoading = false,
+            usernameEntry = TellomiUsernameEntry(text = "kaixin", error = TellomiUsernameEntry.Error.RENAME_COOLDOWN, cooldownDays = 30)
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true).assertTextEquals("You can set a username in 30 days")
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `a short rate limit says too many attempts`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(
+            givenName = "Alice",
+            isLoading = false,
+            usernameEntry = TellomiUsernameEntry(text = "kaixin", error = TellomiUsernameEntry.Error.TOO_MANY_ATTEMPTS)
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true).assertTextEquals("Too many attempts. Try again later.")
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_NEXT_BUTTON).assertIsNotEnabled()
+  }
+
+  /** Tellomi（taishi 审查包 4）：说明行变了读屏要念（liveRegion）；名字框按「下一项」跳到用户名框。 */
+  @Config(qualifiers = "w360dp-h1200dp")
+  @Test
+  fun `the username status line is a polite live region and next moves from name to username`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        CreateProfileScreen(
+          state = CreateProfileState(isLoading = false),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT, useUnmergedTree = true)
+      .assert(SemanticsMatcher.expectValue(SemanticsProperties.LiveRegion, LiveRegionMode.Polite))
+
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD).performClick()
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD).performImeAction()
+    composeTestRule.onNodeWithTag(TestTags.CREATE_PROFILE_USERNAME_FIELD).assertIsFocused()
   }
 
   @Test
