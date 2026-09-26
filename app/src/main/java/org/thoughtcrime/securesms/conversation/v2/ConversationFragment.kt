@@ -779,8 +779,8 @@ class ConversationFragment :
     )
     conversationToolbarOnScrollHelper.attach(binding.conversationItemRecycler)
     presentConversationTitle(viewModel.recipientSnapshot)
-    if (viewModel.recipientSnapshot?.isGroup == true) {
-      presentGroupConversationSubtitle(createGroupSubtitleString(viewModel.titleViewParticipantsSnapshot))
+    viewModel.recipientSnapshot?.takeIf { it.isGroup }?.let { group ->
+      presentGroupConversationSubtitle(tellomiGroupMemberSubtitle(resources, group))
     }
     presentActionBarMenu()
     presentStoryRing()
@@ -841,7 +841,8 @@ class ConversationFragment :
       viewModel.onChatBoundsChanged(Rect(left, top, right, bottom))
     }
 
-    binding.toolbar.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+    // Tellomi：跟着顶栏背景走（它铺到「我的收藏」分类栏的底边，没有分类栏时就是顶栏底边，#1174）
+    binding.toolbarBackground.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
       // Bug: ConstraintLayout can provide a negative value for the toolbar causing RV layout problems
       if (bottom < 0) return@addOnLayoutChangeListener
 
@@ -1233,10 +1234,6 @@ class ConversationFragment :
     binding.conversationItemRecycler.invalidateItemDecorations()
   }
 
-  private fun createGroupSubtitleString(members: List<Recipient>): String {
-    return members.joinToString(", ") { r -> if (r.isSelf) getString(R.string.ConversationTitleView_you) else r.getDisplayName(requireContext()) }
-  }
-
   private fun observeConversationThread() {
     var firstRender = true
     disposables += viewModel
@@ -1263,6 +1260,8 @@ class ConversationFragment :
         adapter.submitList(it) {
           scrollToPositionDelegate.notifyListCommitted()
           conversationItemDecorations.currentItems = it
+          // Tellomi（#1206）：未读线上下两条不算同一组（在主线程读：未读状态第一次是在后台线程设的）
+          adapter.tellomiUnreadAnchorId = conversationItemDecorations.tellomiUnreadAnchorId
 
           if (firstRender) {
             firstRender = false
@@ -1344,10 +1343,15 @@ class ConversationFragment :
       .distinctUntilChanged { r1, r2 -> r1 === r2 || r1.hasSameContent(r2) }
       .subscribeBy(onNext = this::onRecipientChanged)
 
-    disposables += viewModel.titleViewParticipants
-      .map { createGroupSubtitleString(it) }
-      .distinctUntilChanged()
+    // Tellomi：「我的收藏」顶栏下方的分类（#1174）
+    disposables += binding.tellomiSavedCategoriesBar.bind(viewModel.recipient, args.threadId)
+
+    // Tellomi（两端差异清单第 10 项）：人数按群的全部成员算；titleViewParticipants 只取了前 10 个，只够拼名字
+    disposables += viewModel.recipient
+      .filter { it.isGroup }
       .observeOn(AndroidSchedulers.mainThread())
+      .map { tellomiGroupMemberSubtitle(resources, it) }
+      .distinctUntilChanged()
       .subscribeBy(onNext = this::presentGroupConversationSubtitle)
 
     disposables += viewModel.scrollButtonState
@@ -3185,7 +3189,8 @@ class ConversationFragment :
   }
 
   private fun showSavedToSavedMessages() {
-    if (!isAdded) {
+    // 发送是异步的，回来时页面可能已经进了返回栈（fragment 还在、view 没了），这时取 binding 会抛
+    if (!isAdded || view == null) {
       return
     }
 
