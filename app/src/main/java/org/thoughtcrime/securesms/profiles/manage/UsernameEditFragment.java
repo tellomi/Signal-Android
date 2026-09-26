@@ -200,6 +200,8 @@ public class UsernameEditFragment extends LoggingFragment {
       case DISCRIMINATOR_TOO_SHORT -> getString(R.string.UsernameEditFragment__invalid_username_enter_a_minimum_of_d_digits, UsernameUtil.MIN_DISCRIMINATOR_LENGTH);
       case DISCRIMINATOR_CANNOT_BE_00 -> getString(R.string.UsernameEditFragment__this_number_cant_be_00);
       case DISCRIMINATOR_CANNOT_START_WITH_0 -> getString(R.string.UsernameEditFragment__this_number_cant_start_with_0);
+      // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）
+      case CHANGE_COOLDOWN -> getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_cooldown, state.renameCooldownDaysLeft, state.renameCooldownDaysLeft);
     };
 
     int colorRes = error != null ? org.signal.core.ui.R.color.signal_colorError : org.signal.core.ui.R.color.signal_colorPrimary;
@@ -340,7 +342,8 @@ public class UsernameEditFragment extends LoggingFragment {
         break;
       case NEEDS_CONFIRM_RESET:
         new MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.UsernameEditFragment_change_confirmation_message)
+            // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：每次换名都会开始 30 天冷却，确认前就说清楚（与 Desktop#2 同一句）
+            .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
             .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))
             .show();
