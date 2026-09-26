@@ -120,27 +120,23 @@ class VerificationCodeScreenTest {
     assert(emittedEvent == VerificationCodeScreenEvents.ResendSms)
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1210）：香港没有语音通道（TellomiRegistration.VOICE_VERIFICATION_AVAILABLE = false），
+   * 「给我打电话」不显示。上游这条用例是点它发 CallMe。
+   */
   @Test
-  fun `clicking call me emits CallMe event`() {
-    // Given
-    var emittedEvent: VerificationCodeScreenEvents? = null
-
+  fun `call me is not shown without a voice channel`() {
     composeTestRule.setContent {
       SignalTheme {
         VerificationCodeScreen(
           state = VerificationCodeState(),
-          onEvent = { event ->
-            emittedEvent = event
-          }
+          onEvent = {}
         )
       }
     }
 
-    // When
-    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_CALL_ME_BUTTON).performClick()
-
-    // Then
-    assert(emittedEvent == VerificationCodeScreenEvents.CallMe)
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_CALL_ME_BUTTON).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_RESEND_SMS_BUTTON).assertIsDisplayed()
   }
 
   @Test
@@ -256,6 +252,7 @@ class VerificationCodeScreenTest {
     // Then
     composeTestRule.onNodeWithText("Wrong number?").assertIsDisplayed()
     composeTestRule.onNodeWithText("Resend Code").assertIsDisplayed()
-    composeTestRule.onNodeWithText("Call me instead").assertIsDisplayed()
+    // Tellomi（tellomi/tellomi#1210）：没有语音通道，「给我打电话」不显示
+    composeTestRule.onNodeWithText("Call me instead").assertDoesNotExist()
   }
 }
