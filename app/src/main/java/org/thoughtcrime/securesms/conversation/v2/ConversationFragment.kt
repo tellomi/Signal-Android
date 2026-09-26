@@ -3184,7 +3184,8 @@ class ConversationFragment :
   }
 
   private fun showSavedToSavedMessages() {
-    if (!isAdded) {
+    // 发送是异步的，回来时页面可能已经进了返回栈（fragment 还在、view 没了），这时取 binding 会抛
+    if (!isAdded || view == null) {
       return
     }
 
