@@ -84,6 +84,36 @@
   <string name="MediaSelectScreen__to_show_photos_and_videos">To show photos and videos:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Tellomi needs access to show your photos and videos.</string>
+  <!-- Tellomi（tellomi/tellomi#1261）选图网格 -->
+  <string name="MediaSelectScreen__recents">Recents</string>
+  <string name="MediaSelectScreen__close">Close</string>
+  <string name="MediaSelectScreen__more_options">More options</string>
+  <string name="MediaSelectScreen__send_in_high_quality">Send in High Quality</string>
+  <string name="MediaSelectScreen__send_in_standard_quality">Send in Standard Quality</string>
+  <string name="MediaSelectScreen__send_separately">Send Separately</string>
+  <string name="MediaSelectScreen__open_media">Open</string>
+  <string name="MediaSelectScreen__select">Select</string>
+  <string name="MediaSelectScreen__you_have_limited_access">You\'ve limited Tellomi\'s access to your photos.</string>
+  <plurals name="MediaSelectScreen__n_selected">
+    <item quantity="one">%d selected</item>
+    <item quantity="other">%d selected</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__selected_number_n">
+    <item quantity="one">Number %d</item>
+    <item quantity="other">Number %d</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__at_most_n_items">
+    <item quantity="one">You can select up to %d item at a time</item>
+    <item quantity="other">You can select up to %d items at a time</item>
+  </plurals>
+  <!-- Tellomi（tellomi/tellomi#1261 P-3）只看已选 -->
+  <string name="MediaSelectScreen__back">Back</string>
+  <string name="MediaSelectScreen__drag_to_reorder">Drag to reorder</string>
+  <string name="MediaSelectScreen__undo">Undo</string>
+  <plurals name="MediaSelectScreen__n_deselected">
+    <item quantity="one">%d deselected</item>
+    <item quantity="other">%d deselected</item>
+  </plurals>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">Photo</string>

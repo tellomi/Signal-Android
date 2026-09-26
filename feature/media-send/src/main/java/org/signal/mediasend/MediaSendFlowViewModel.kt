@@ -7,6 +7,7 @@ package org.signal.mediasend
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -104,7 +105,8 @@ class MediaSendFlowViewModel(
       args.asTextStory -> MediaSendRoute.Capture.TextStory
       args.isCameraFirst -> MediaSendRoute.Capture.Camera
       args.initialMedia.isNotEmpty() -> MediaSendRoute.Edit
-      else -> MediaSendRoute.Select.Folders
+      // Tellomi（tellomi/tellomi#1261 P-1）：直接进「最近」网格，相册在顶栏下拉里换。
+      else -> MediaSendRoute.Select.Files(recentsFolder())
     }
 
     NavBackStack(startKey)
@@ -209,6 +211,9 @@ class MediaSendFlowViewModel(
       }
     }
 
+    // Tellomi（#1261 D9）：画质跟着状态恢复（不再从设置里重读），挡位按恢复出来的画质重算。
+    updateState { copy(videoTranscodingTiers = repository.getVideoTranscodingTiers(sentMediaQuality)) }
+
     // Observe recipient validity for pre-upload eligibility
     args.recipientId?.let { recipientId ->
       viewModelScope.launch {
@@ -276,7 +281,11 @@ class MediaSendFlowViewModel(
       MediaSendFlowEvent.NextRequested -> onNextClick()
 
       is MediaSendFlowEvent.NavigateToFiles -> backStack.goToFiles(event.mediaFolder)
-      MediaSendFlowEvent.NavigateToFolders -> backStack.goToFolders()
+      // Tellomi（#1261 P-1）：相机里的「相册」、编辑器里的「添加」都回到选图网格，不再先进相册列表。
+      MediaSendFlowEvent.NavigateToFolders -> backStack.goToRecents()
+      is MediaSendFlowEvent.OpenInEditor -> openInEditor(event.media)
+      is MediaSendFlowEvent.SwitchFolder -> backStack.switchFolder(event.mediaFolder)
+      is MediaSendFlowEvent.SendNow -> sendNow(event.quality, event.separately)
       MediaSendFlowEvent.NavigateToEdit -> backStack.goToEdit()
       MediaSendFlowEvent.NavigateToCamera -> backStack.goToCamera()
       MediaSendFlowEvent.NavigateToTextStory -> backStack.goToTextStory()
@@ -420,6 +429,43 @@ class MediaSendFlowViewModel(
    */
   private fun addMedia(media: Set<Media>, focusNewlyAdded: Boolean) {
     mutateSelection {
+      addMediaHoldingSelection(media, focusNewlyAdded)
+    }
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1261 P-10）：点照片本身——还没选就先选上（选不上就停在网格，提示照旧），然后在编辑器里打开这一张。
+   * 在同一次持有选择的过程中做完，焦点不会落在还没进选择的那一张上。
+   */
+  private fun openInEditor(media: Media) {
+    mutateSelection {
+      if (state.value.selectedMedia.none { it.uri == media.uri }) {
+        addMediaHoldingSelection(setOf(media), focusNewlyAdded = true)
+      }
+      val selected = state.value.selectedMedia.firstOrNull { it.uri == media.uri } ?: return@mutateSelection
+      updateState { copy(focusedMedia = selected) }
+      backStack.goToEdit()
+    }
+  }
+
+  /** Tellomi（#1261）：这次发送是否一张一条（「···」→「单独发送」），只管紧接着的这一次。 */
+  private var sendSeparatelyOnce = false
+
+  /**
+   * Tellomi（tellomi/tellomi#1261 P-5）：「···」里的立即发送。以高清 / 标准质量发送只改这一次的画质（D9：不写设置），
+   * 单独发送一张一条；之后和底栏的发送键走同一条路（要先选联系人的流程照旧先去选）。
+   */
+  private fun sendNow(quality: SentMediaQuality?, separately: Boolean) {
+    if (quality != null) {
+      setSentMediaQuality(quality)
+    }
+    sendSeparatelyOnce = separately
+    onNextClick()
+  }
+
+  /** The body of [addMedia], for callers that already hold the selection. */
+  private suspend fun addMediaHoldingSelection(media: Set<Media>, focusNewlyAdded: Boolean) {
+    run {
       val snapshot = state.value
       val selectedUris: Set<Uri> = snapshot.selectedMedia.mapTo(mutableSetOf()) { it.uri }
 
@@ -502,11 +548,16 @@ class MediaSendFlowViewModel(
       is MediaFilterError.TooManyItems -> R.string.MediaSendViewModel__too_many_items_selected
     }
 
-    internalSnackbarEvents.trySend(SnackbarEvent(message = message))
+    if (error is MediaFilterError.TooManyItems) {
+      // Tellomi（tellomi/tellomi#1261 P-11）：说清上限——「一次最多选 32 张」。
+      internalToastEvents.trySend(ToastEvent(SignalIcons.ErrorCircle, ToastMessage.Quantity(R.plurals.MediaSelectScreen__at_most_n_items, state.value.maxSelection)))
+    } else {
+      internalSnackbarEvents.trySend(SnackbarEvent(message = message))
+    }
     updateState { copy(isSelectionRejected = true) }
 
     if (isSelectionEmpty && backStack.lastOrNull() == MediaSendRoute.Edit) {
-      backStack.resetTo(if (state.value.isCameraFirst) MediaSendRoute.Capture.Camera else MediaSendRoute.Select.Folders)
+      backStack.resetTo(if (state.value.isCameraFirst) MediaSendRoute.Capture.Camera else MediaSendRoute.Select.Files(recentsFolder()))
     }
   }
 
@@ -713,7 +764,7 @@ class MediaSendFlowViewModel(
         isPreUploadEnabled = false
       )
     }
-    repository.sentMediaQuality = sentMediaQuality
+    // Tellomi（tellomi/tellomi#1261，需求 D9）：画质只管这一次发送，不写回「设置 → 发送媒体质量」（上游这里会写全局；iOS 本来就不写）。
     preUploadController.cancelAllUploads()
 
     // Confirmed from here rather than from the picker so that the fallback in onVideoRecorded is reported too.
@@ -1164,8 +1215,10 @@ class MediaSendFlowViewModel(
       scheduledTime = snapshot.scheduledTime,
       sendType = snapshot.sendType,
       isStory = snapshot.isStory,
-      preUploadResults = awaitPreUploadResults()
+      preUploadResults = awaitPreUploadResults(),
+      sendSeparately = sendSeparatelyOnce
     )
+    sendSeparatelyOnce = false
 
     val result = repository.send(request)
 
@@ -1225,8 +1278,11 @@ class MediaSendFlowViewModel(
   companion object {
     private val TAG = Log.tag(MediaSendFlowViewModel::class)
 
-    private const val KEY_ARGS = "media_send_vm_args"
-    private const val KEY_IDENTITY_CHANGES_SINCE = "media_send_vm_identity_changes_since"
+    @VisibleForTesting
+    internal const val KEY_ARGS = "media_send_vm_args"
+
+    @VisibleForTesting
+    internal const val KEY_IDENTITY_CHANGES_SINCE = "media_send_vm_identity_changes_since"
     private const val KEY_STATE = "media_send_vm_state"
     private const val KEY_EDITED_VIDEO_URIS = "media_send_vm_edited_video_uris"
     private const val KEY_BACK_STACK = "media_send_vm_back_stack"

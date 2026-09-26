@@ -76,7 +76,8 @@ internal class MediaSelectViewModel(
 
   init {
     parentState
-      .distinctUntilChangedBy { it.selectedMedia to it.isSelectionRejected }
+      // Tellomi（#1261）：网格底栏还要跟着说明、画质、一次性查看、是否在发送走。
+      .distinctUntilChangedBy { listOf(it.selectedMedia, it.isSelectionRejected, MediaSelectState.SendOptions.from(it).copy(message = it.message?.toString())) }
       .onEach { onEvent(MediaSelectScreenEvents.ParentStateChanged(it)) }
       .launchIn(viewModelScope)
 
@@ -85,7 +86,10 @@ internal class MediaSelectViewModel(
 
   override suspend fun processEvent(event: MediaSelectScreenEvents) {
     when (event) {
-      is MediaSelectScreenEvents.ParentStateChanged -> _state.update { it.withParentState(event.parentState.selectedMedia, event.parentState.isSelectionRejected) }
+      is MediaSelectScreenEvents.ParentStateChanged -> _state.update {
+        it.withParentState(event.parentState.selectedMedia, event.parentState.isSelectionRejected)
+          .withSendOptions(MediaSelectState.SendOptions.from(event.parentState))
+      }
       MediaSelectScreenEvents.SelectionRejectionShown -> parentEventEmitter(MediaSendFlowEvent.SelectionRejectionShown)
       is MediaSelectScreenEvents.FolderClick -> event.mediaFolder?.let { parentEventEmitter(MediaSendFlowEvent.NavigateToFiles(it)) }
       is MediaSelectScreenEvents.MediaClick -> applyMediaClickEvent(event.media)
@@ -99,6 +103,14 @@ internal class MediaSelectViewModel(
       MediaSelectScreenEvents.Refresh -> refresh()
       MediaSelectScreenEvents.RequestMediaPermissions -> requestReadMediaPermissions(reportDenial = true)
       MediaSelectScreenEvents.SelectMorePhotos -> requestReadMediaPermissions(reportDenial = false)
+      is MediaSelectScreenEvents.OpenMedia -> parentEventEmitter(MediaSendFlowEvent.OpenInEditor(event.media))
+      is MediaSelectScreenEvents.SwitchFolder -> parentEventEmitter(MediaSendFlowEvent.SwitchFolder(event.mediaFolder))
+      is MediaSelectScreenEvents.AddMessage -> parentEventEmitter(MediaSendFlowEvent.AddMessageRequested(event.startWithEmojiKeyboard))
+      MediaSelectScreenEvents.ToggleViewOnce -> parentEventEmitter(MediaSendFlowEvent.ToggleViewOnce)
+      MediaSelectScreenEvents.Send -> parentEventEmitter(MediaSendFlowEvent.NextRequested)
+      is MediaSelectScreenEvents.SendWithQuality -> parentEventEmitter(MediaSendFlowEvent.SendNow(quality = event.quality))
+      MediaSelectScreenEvents.SendSeparately -> parentEventEmitter(MediaSendFlowEvent.SendNow(separately = true))
+      MediaSelectScreenEvents.Close -> parentEventEmitter(MediaSendFlowEvent.CloseRequested)
     }
   }
 
@@ -118,17 +130,24 @@ internal class MediaSelectViewModel(
   private fun refresh() {
     viewModelScope.launch {
       val mediaPermissions = MediaPermissions.current()
+      val cameraAccess = PickerCameraAccess.current()
 
       val reloaded: MediaSelectState = when (val snapshot = _state.value) {
         is MediaSelectState.Folders -> snapshot.copy(mediaFolders = repository.getFolders())
-        is MediaSelectState.Files -> snapshot.copy(selectedMediaFolderItems = repository.getMedia(snapshot.selectedMediaFolder.bucketId))
+        is MediaSelectState.Files -> snapshot.copy(
+          selectedMediaFolderItems = repository.getMedia(snapshot.selectedMediaFolder.bucketId),
+          // Tellomi（#1261 P-1）：顶栏下拉里的相册。
+          mediaFolders = repository.getFolders()
+        )
       }
 
       // Only what the parent reports can have changed while we were reading, and that is not ours to overwrite.
       _state.update { current ->
         reloaded
           .withMediaPermissions(mediaPermissions)
+          .withCameraAccess(cameraAccess)
           .withParentState(current.selectedMedia, current.isSelectionRejected)
+          .let { if (current is MediaSelectState.Files) it.withSendOptions(current.sendOptions) else it }
       }
     }
   }

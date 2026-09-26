@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-package org.thoughtcrime.securesms.components.albumcarousel
+package org.signal.core.ui.albumcarousel
 
 import kotlin.math.abs
 import kotlin.math.max
@@ -17,6 +17,9 @@ import kotlin.math.roundToInt
  * 松手停在「某一张的左边对齐起点」，滑到底最后一张右边对齐右边距。
  *
  * 纯计算、没有 Android 依赖：坐标一律是 px，「内容坐标」的 0 是屏幕的起始边（LTR 为左边）。
+ *
+ * 放在 core/ui：选图面板「只看已选」的排序行（media-send，#1261 P-3）在用。聊天里的横滑已撤回、改回 Signal 原来的宫格
+ * （owner 2026-09-25，#1257）；以后做微博 / Threads / X 式的动态时再用这套。
  */
 object AlbumCarouselGeometry {
 
@@ -34,6 +37,9 @@ object AlbumCarouselGeometry {
 
   /** C-4：卡片间距。 */
   const val ITEM_SPACING_DP = 8f
+
+  /** C-4：卡片圆角（同 app 的 message_corner_radius；选图面板的预览在 media-send 里拿不到 app 的资源）。 */
+  const val ITEM_CORNER_RADIUS_DP = 18f
 
   /** C-3：最宽的一张也给下一张留出的宽度。 */
   const val NEXT_ITEM_MIN_PEEK_DP = 48f

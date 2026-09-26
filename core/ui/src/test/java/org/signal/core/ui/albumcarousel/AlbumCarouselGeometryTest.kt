@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-package org.thoughtcrime.securesms.components.albumcarousel
+package org.signal.core.ui.albumcarousel
 
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
