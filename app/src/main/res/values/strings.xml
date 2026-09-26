@@ -6418,6 +6418,22 @@
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">Only admins can send messages to this group.</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">You can\'t select more than 5 chats</string>
+    <!-- Tellomi (#1259): forward grid — subtitle, name separator, search, share, selection limit, search sections, message, toasts -->
+    <string name="TellomiForwardGrid__choose_chats">Select chats</string>
+    <string name="TellomiForwardGrid__name_separator">", "</string>
+    <string name="TellomiForwardGrid__search">Search</string>
+    <string name="TellomiForwardGrid__share_to_other_apps">Share to other apps</string>
+    <string name="TellomiForwardGrid__select_up_to_d_chats">You can select up to %1$d chats</string>
+    <string name="TellomiForwardGrid__recent">Recent</string>
+    <string name="TellomiForwardGrid__chats">Chats</string>
+    <string name="TellomiForwardGrid__contacts">Contacts</string>
+    <string name="TellomiForwardGrid__groups">Groups</string>
+    <string name="TellomiForwardGrid__no_results">No results for “%1$s”</string>
+    <string name="TellomiForwardGrid__add_a_message">Add a message…</string>
+    <string name="TellomiForwardGrid__forwarded_to_s">Forwarded to %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_s">Forwarded to %1$s and %2$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_d_chats">Forwarded to %2$d chats, including %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_saved_s">Forwarded to %1$s</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->

@@ -237,9 +237,9 @@ import org.thoughtcrime.securesms.conversation.mutiselect.ConversationItemAnimat
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectItemDecoration
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectPart
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardBottomSheet
-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardRepository
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.TellomiForwardGridBottomSheet
 import org.thoughtcrime.securesms.conversation.quotes.MessageQuotesBottomSheet
 import org.thoughtcrime.securesms.conversation.ui.edit.EditMessageHistoryDialog
 import org.thoughtcrime.securesms.conversation.ui.error.EnableCallNotificationSettingsDialog
@@ -3164,7 +3164,8 @@ class ConversationFragment :
     inputPanel.clearQuote()
 
     MultiselectForwardFragmentArgs.create(requireContext(), messageParts) { args ->
-      MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+      // Tellomi（#1259 F-1）：长按 / 多选的「转发」打开头像网格
+      TellomiForwardGridBottomSheet.show(childFragmentManager, args)
     }
   }
 

@@ -54,8 +54,8 @@ import org.thoughtcrime.securesms.attachments.AttachmentSaver
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.components.mention.MentionAnnotation
-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.TellomiForwardGridBottomSheet
 import org.thoughtcrime.securesms.database.DatabaseObserver
 import org.thoughtcrime.securesms.database.MediaTable
 import org.thoughtcrime.securesms.database.SignalDatabase
@@ -618,7 +618,8 @@ class MediaPreviewFragment :
       mediaUri = uri,
       contentType = contentType
     ) { args: MultiselectForwardFragmentArgs ->
-      MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+      // Tellomi（#1259 F-1 / F-2）：查看器的转发也打开头像网格；查看器固定夜间模式，网格跟着是深色（「这张 / 全部 N 张」在 #1257 查看器里做）
+      TellomiForwardGridBottomSheet.show(childFragmentManager, args)
     }
   }
 
