@@ -84,7 +84,8 @@ fun RecipientPicker(
   listBottomPadding: Dp? = null,
   clipListToPadding: Boolean = ContactSelectionArguments.Defaults.RECYCLER_CHILD_CLIPPING,
   callbacks: RecipientPickerCallbacks,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  tellomiHeader: (@Composable () -> Unit)? = null
 ) {
   Column(
     modifier = modifier
@@ -114,6 +115,9 @@ fun RecipientPicker(
         .fillMaxWidth()
         .padding(horizontal = 16.dp)
     )
+
+    // Tellomi：搜索栏和列表之间的几行（联系人 Tab 顶部的入口，#1108）
+    tellomiHeader?.invoke()
 
     RecipientSearchResultsList(
       displayModes = displayModes,

@@ -79,6 +79,7 @@ fun MainNavigationBar(
         MainListRoute.Chats -> state.chatsCount
         MainListRoute.Calls -> state.callsCount
         MainListRoute.Stories -> state.storiesCount
+        MainListRoute.Contacts -> 0
       }
 
       val selected = state.currentListLocation == destination
@@ -230,6 +231,7 @@ private fun BoxScope.NavigationRailCountIndicator(
       MainListRoute.Chats -> state.chatsCount
       MainListRoute.Calls -> state.callsCount
       MainListRoute.Stories -> state.storiesCount
+      MainListRoute.Contacts -> 0
     }
   }
 

@@ -391,6 +391,7 @@ class MainActivity :
           MainListRoute.Archive -> toolbarViewModel.presentToolbarForConversationListArchiveFragment()
           MainListRoute.Calls -> toolbarViewModel.presentToolbarForCallLogFragment()
           MainListRoute.Stories -> toolbarViewModel.presentToolbarForStoriesLandingFragment()
+          MainListRoute.Contacts -> toolbarViewModel.presentToolbarForTellomiContacts()
         }
       }
 

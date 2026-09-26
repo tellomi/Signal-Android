@@ -58,6 +58,7 @@ class MainNavigationViewModel(
     private const val CHATS_BACK_STACK_KEY = "chats_back_stack_v2"
     private const val CALLS_BACK_STACK_KEY = "calls_back_stack_v2"
     private const val STORIES_BACK_STACK_KEY = "stories_back_stack_v2"
+    private const val TELLOMI_CONTACTS_BACK_STACK_KEY = "tellomi_contacts_back_stack"
   }
 
   class Factory(
@@ -84,7 +85,8 @@ class MainNavigationViewModel(
     stackKeys = mapOf(
       MainListRoute.Chats to CHATS_BACK_STACK_KEY,
       MainListRoute.Calls to CALLS_BACK_STACK_KEY,
-      MainListRoute.Stories to STORIES_BACK_STACK_KEY
+      MainListRoute.Stories to STORIES_BACK_STACK_KEY,
+      MainListRoute.Contacts to TELLOMI_CONTACTS_BACK_STACK_KEY
     ),
     initialRoot = initialListLocation.tab
   )
@@ -250,12 +252,22 @@ class MainNavigationViewModel(
   }
 
   private fun pushChatsDetailLocation(location: MainDetailRoute) {
-    val chatsBackStack = navigator[MainListRoute.Chats]
+    val root = tellomiChatsDetailRoot()
+    val chatsBackStack = navigator[root]
     if (location is MainDetailRoute.Chats && chatsBackStack.activeRecipientId != location.controllerKey) {
       chatsBackStack.exitDetail()
     }
 
-    navigator.processEvent(ListDetailEvents.Push(location, MainListRoute.Chats))
+    navigator.processEvent(ListDetailEvents.Push(location, root))
+  }
+
+  /**
+   * Tellomi（#1108）：「联系人」Tab 正显示着时，会话和从它打开的会话设置、消息详情都压在联系人自己的栈上，返回回到联系人（同 Telegram）。
+   * 通知、分享、聊天列表等别的入口照旧进「聊天」的栈——走 Intent 的入口会先切到聊天（MainActivity.handleConversationIntent）。
+   * 读 [ListDetailNavigator.currentRoot] 而不是 displayedList：前者同步，后者要等收集，刚切完 Tab 时会晚一拍。
+   */
+  private fun tellomiChatsDetailRoot(): MainListRoute {
+    return if (navigator.currentRoot.value == MainListRoute.Contacts) MainListRoute.Contacts else MainListRoute.Chats
   }
 
   private fun pushCallsDetailLocation(location: MainDetailRoute) {

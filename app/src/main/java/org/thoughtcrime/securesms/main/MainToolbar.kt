@@ -453,16 +453,19 @@ private fun PrimaryToolbar(
         }
       }
 
-      IconButtons.IconButton(
-        onClick = callback::onSearchClick,
-        modifier = Modifier.onPlaced {
-          onSearchButtonPositioned(it.positionInWindow().x + (it.size.width / 2f))
+      // Tellomi：联系人页的列表自带搜索栏，顶栏不再放一个（#1108）
+      if (state.destination != MainListRoute.Contacts) {
+        IconButtons.IconButton(
+          onClick = callback::onSearchClick,
+          modifier = Modifier.onPlaced {
+            onSearchButtonPositioned(it.positionInWindow().x + (it.size.width / 2f))
+          }
+        ) {
+          Icon(
+            imageVector = SignalIcons.Search.imageVector,
+            contentDescription = stringResource(R.string.conversation_list_search_description)
+          )
         }
-      ) {
-        Icon(
-          imageVector = SignalIcons.Search.imageVector,
-          contentDescription = stringResource(R.string.conversation_list_search_description)
-        )
       }
 
       val controller = remember { DropdownMenus.MenuController() }
@@ -482,6 +485,7 @@ private fun PrimaryToolbar(
           MainListRoute.Chats -> ChatDropdownItems(state, callback, dismiss)
           MainListRoute.Calls -> CallDropdownItems(state.callFilter, callback, dismiss)
           MainListRoute.Stories -> StoryDropDownItems(callback, dismiss)
+          MainListRoute.Contacts -> TellomiContactsDropdownItems(callback, dismiss)
         }
       }
     }
@@ -643,6 +647,36 @@ private fun CallDropdownItems(callFilter: CallLogFilter, callback: MainToolbarCa
     },
     onClick = {
       callback.onNotificationProfileClick()
+      onOptionSelected()
+    }
+  )
+
+  DropdownMenus.Item(
+    leadingIconResId = CoreUiR.drawable.symbol_settings_android_24,
+    text = {
+      Text(
+        text = stringResource(R.string.text_secure_normal__menu_settings)
+      )
+    },
+    onClick = {
+      callback.onSettingsClick()
+      onOptionSelected()
+    }
+  )
+}
+
+/** Tellomi：联系人页的菜单只留「新建群组」和「设置」（#1108）。 */
+@Composable
+private fun TellomiContactsDropdownItems(callback: MainToolbarCallback, onOptionSelected: () -> Unit) {
+  DropdownMenus.Item(
+    leadingIconResId = R.drawable.symbol_group_24,
+    text = {
+      Text(
+        text = stringResource(R.string.text_secure_normal__menu_new_group)
+      )
+    },
+    onClick = {
+      callback.onNewGroupClick()
       onOptionSelected()
     }
   )
