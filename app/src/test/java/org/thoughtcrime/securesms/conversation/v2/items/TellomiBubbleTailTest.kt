@@ -23,6 +23,9 @@ import org.robolectric.annotation.GraphicsMode
 import org.signal.core.util.dp
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.conversation.ConversationItemDisplayMode
+import org.thoughtcrime.securesms.database.FakeMessageRecords
+import org.thoughtcrime.securesms.mms.SlideDeck
+import org.thoughtcrime.securesms.util.MediaUtil
 
 /**
  * Tellomi：气泡的小尾巴（tellomi/tellomi#1206；规范 #1204 第 1、2 节）。
@@ -111,6 +114,27 @@ class TellomiBubbleTailTest {
   @Test
   fun `the typing indicator reports its tail to the same decoration`() {
     assertThat(TellomiBubbleTail.Provider::class.java.isAssignableFrom(org.thoughtcrime.securesms.conversation.v2.ConversationTypingIndicatorAdapter.ViewHolder::class.java)).isTrue()
+  }
+
+  @Test
+  fun `voice notes, files and view-once messages without text still have a bubble, captionless photos do not`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    fun mms(contentType: String, body: String = "", hasThumbnail: Boolean = false, voiceNote: Boolean = false, viewOnce: Boolean = false) =
+      FakeMessageRecords.buildMediaMmsMessageRecord(
+        body = body,
+        viewOnce = viewOnce,
+        slideDeck = SlideDeck(FakeMessageRecords.buildDatabaseAttachment(contentType = contentType, hasThumbnail = hasThumbnail, voiceNote = voiceNote))
+      )
+
+    // 旧版渲染里这几种都有底色：组尾要带尾巴
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.AUDIO_AAC, voiceNote = true), context), "voice note").isTrue()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms("application/pdf"), context), "file").isTrue()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, hasThumbnail = true, viewOnce = true), context), "view-once photo").isTrue()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, body = "看这个", hasThumbnail = true), context), "photo with a caption").isTrue()
+
+    // 图铺满了气泡、没有露出来的底色：不画
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, hasThumbnail = true), context), "captionless photo").isFalse()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(remoteDelete = true), context), "deleted").isFalse()
   }
 
   private fun outlineBounds(towardsRight: Boolean, coverRadiusDp: Float = TellomiBubbleTail.DEFAULT_COVER_RADIUS_DP): RectF {

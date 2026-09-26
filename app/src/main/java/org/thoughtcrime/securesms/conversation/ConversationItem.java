@@ -2328,7 +2328,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     // 被尾巴盖住：单独一条换成「开头」的形状，组里最后一条换成「中间」的形状。
     tellomiHasTail = TellomiBubbleTail.shouldDraw(singular || end,
                                                   !current.getReactions().isEmpty(),
-                                                  !hasNoBubble(current) && !isCaptionlessMms(current) && !current.isRemoteDelete(),
+                                                  TellomiBubbleTail.hasVisibleBubble(current, context),
                                                   displayMode);
 
     if (singular && !tellomiHasTail) {
