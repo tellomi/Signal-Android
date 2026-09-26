@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.profiles.manage
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -297,7 +298,12 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
       return
     }
 
-    val isDiscriminatorSetByUser = state is UsernameEditStateMachine.UserEnteredDiscriminator || state is UsernameEditStateMachine.UserEnteredNicknameAndDiscriminator
+    val isDiscriminatorSetByUser = keepsEnteredDiscriminator(
+      discriminatorEnteredByUser = state is UsernameEditStateMachine.UserEnteredDiscriminator || state is UsernameEditStateMachine.UserEnteredNicknameAndDiscriminator,
+      mode = mode,
+      nickname = nickname,
+      currentUsername = SignalStore.account.username
+    )
     val discriminator = if (isDiscriminatorSetByUser) {
       state.discriminator
     } else {
@@ -432,6 +438,26 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     private val TAG = Log.tag(UsernameEditViewModel::class.java)
 
     private const val NICKNAME_PUBLISHER_DEBOUNCE_TIMEOUT_MILLIS: Long = 500
+
+    /**
+     * Tellomi（tellomi/tellomi#1106 第二刀 b，ADR-0066 §六「首次设置 / 修改 / 重新认领 / 修复都只产 `.01`」）：
+     * 编辑页没有数字栏（第二刀 a），「用户填的判别位」只可能来自修复模式 `init` 把旧用户名灌进状态机的那一次。
+     * - 原样重新认领旧名（昵称只差大小写，hash 相同）：照旧用旧判别位，不算造新候选；
+     * - 在修复页**改了昵称**：就是造新候选，不能沿用旧判别位（上游会去占 `新昵称.37`）——返回 false，
+     *   走 `reserveUsername(nickname, null)` 拿 `.01`。
+     */
+    @VisibleForTesting
+    @JvmStatic
+    fun keepsEnteredDiscriminator(discriminatorEnteredByUser: Boolean, mode: UsernameEditMode, nickname: String, currentUsername: String?): Boolean {
+      if (!discriminatorEnteredByUser) {
+        return false
+      }
+      if (mode != UsernameEditMode.RECOVERY) {
+        return true
+      }
+      val originalNickname = currentUsername?.split(Usernames.DELIMITER)?.firstOrNull() ?: return false
+      return nickname.lowercase() == originalNickname.lowercase()
+    }
 
     private fun mapNicknameError(invalidReason: InvalidReason): UsernameStatus {
       return when (invalidReason) {
