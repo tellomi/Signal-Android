@@ -77,11 +77,11 @@ class LinkAccountViewModel(
         state
       }
       LinkAccountScreenEvent.CreateAccountClick -> {
-        // Revisit permission screen if necessary
+        // Tellomi（#1112）：注册流程不要权限页，上游这里会先插一页 Permissions，改为直达输手机号
         if (parentState.value.backStack.any { it == RegistrationRoute.PhoneNumberEntry }) {
           parentEventEmitter(RegistrationFlowEvent.NavigateBackToScreen(RegistrationRoute.PhoneNumberEntry))
         } else {
-          parentEventEmitter.navigateTo(RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry), popCurrent = true)
+          parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry, popCurrent = true)
         }
         state
       }
