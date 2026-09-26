@@ -7,6 +7,7 @@ package org.thoughtcrime.securesms.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.EnterExitState
@@ -15,6 +16,11 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +29,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,12 +37,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -67,8 +79,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isSpecified
+import androidx.compose.ui.unit.sp
 import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.DropdownMenus
 import org.signal.core.ui.compose.IconButtons
@@ -175,6 +190,7 @@ data class MainToolbarState(
   val showNotificationProfilesTooltip: Boolean = false,
   val hasPassphrase: Boolean = false,
   val proxyState: ProxyState = ProxyState.NONE,
+  val connectionTitle: ConnectionTitle = ConnectionTitle.NONE,
   @StringRes val searchHint: Int = R.string.SearchToolbar_search,
   val searchQuery: String = "",
   val hasActiveSearchFilter: Boolean = false,
@@ -434,9 +450,7 @@ private fun PrimaryToolbar(
       }
     },
     title = {
-      Text(
-        text = stringResource(R.string.app_name)
-      )
+      ConnectionAwareTitle(state.connectionTitle, state.destination)
     },
     actions = {
       NotificationProfileAction(state, callback)
@@ -486,6 +500,48 @@ private fun PrimaryToolbar(
       }
     }
   )
+}
+
+/**
+ * Tellomi（tellomi/tellomi#1218 F-04）：没连上时标题换成连接状态 + 小转圈（跟标题同色，黑白两色），连上换回 App 名。
+ * 新标题从上方滑入、旧标题向下滑出；机制参照 Telegram Android `ActionBar.setTitleOverlayText`（只读，独立实现）。
+ */
+@Composable
+private fun ConnectionAwareTitle(connectionTitle: ConnectionTitle, destination: MainListRoute) {
+  AnimatedContent(
+    targetState = connectionTitle,
+    transitionSpec = {
+      (slideInVertically(tween(220)) { -it / 2 } + fadeIn(tween(220))) togetherWith
+        (slideOutVertically(tween(220)) { it / 2 } + fadeOut(tween(220)))
+    },
+    label = "ConnectionTitle"
+  ) { title ->
+    if (title == ConnectionTitle.NONE) {
+      // Tellomi：连上时标题等于当前 Tab 的名字（通话 / 聊天 / 联系人 / 动态），和 iOS 一致，不再显示 App 名（owner 2026-09-26，两端差异清单 N2）
+      Text(text = stringResource(destination.label))
+    } else {
+      Row(verticalAlignment = Alignment.CenterVertically) {
+        CircularProgressIndicator(
+          color = LocalContentColor.current,
+          strokeWidth = 2.dp,
+          modifier = Modifier.size(16.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+
+        val style = LocalTextStyle.current
+        val contentColor = LocalContentColor.current
+        BasicText(
+          text = stringResource(title.text),
+          style = style,
+          color = { contentColor },
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis,
+          // 英文「Waiting for network…」在窄屏上按标题字号放不下（实测 1080px 宽被截成「Waiting for netwo…」），放不下就缩；中文几个字不受影响
+          autoSize = TextAutoSize.StepBased(minFontSize = 14.sp, maxFontSize = if (style.fontSize.isSpecified) style.fontSize else 22.sp)
+        )
+      }
+    }
+  }
 }
 
 @Composable
@@ -812,6 +868,21 @@ private fun FullMainToolbarPreview() {
           mode = MainToolbarMode.FULL
         }
       }
+    )
+  }
+}
+
+@DayNightPreviews
+@Composable
+private fun ConnectingMainToolbarPreview() {
+  Previews.Preview {
+    MainToolbar(
+      state = MainToolbarState(
+        self = Recipient(isResolving = false),
+        destination = MainListRoute.Chats,
+        connectionTitle = ConnectionTitle.CONNECTING
+      ),
+      callback = MainToolbarCallback.Empty
     )
   }
 }

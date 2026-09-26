@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +42,7 @@ import org.thoughtcrime.securesms.profiles.username.NewWaysToConnectDialogFragme
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.storage.StorageSyncHelper;
 import org.signal.core.util.ByteUnit;
+import org.thoughtcrime.securesms.updaterequired.UpdateRequired;
 import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.DateUtils;
 import org.thoughtcrime.securesms.util.Environment;
@@ -118,7 +118,8 @@ public final class Megaphones {
   private static Map<Event, MegaphoneSchedule> buildDisplayOrder(@NonNull Context context, @NonNull Map<Event, MegaphoneRecord> records) {
     return new LinkedHashMap<>() {{
       put(Event.PINS_FOR_ALL, new PinsForAllSchedule());
-      put(Event.CLIENT_DEPRECATED, SignalStore.misc().isClientDeprecated() ? ALWAYS : NEVER);
+      // Tellomi（tellomi/tellomi#1138，owner 2026-09-24 规则 2）：本机构建到期只降成只读，不再拉起全屏页；选了只读也不再拉起。
+      put(Event.CLIENT_DEPRECATED, UpdateRequired.shouldBlock() ? ALWAYS : NEVER);
       put(Event.NEW_LINKED_DEVICE, shouldShowNewLinkedDeviceMegaphone() ? ALWAYS : NEVER);
       put(Event.NOTIFICATIONS, shouldShowNotificationsMegaphone(context) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(30)) : NEVER);
       put(Event.GRANT_FULL_SCREEN_INTENT, shouldShowGrantFullScreenIntentPermission(context) ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(3)) : NEVER);
@@ -620,7 +621,10 @@ public final class Megaphones {
   }
 
   private static boolean shouldShowPnpLaunchMegaphone() {
-    return SignalStore.account().isPrimaryDevice() && TextUtils.isEmpty(SignalStore.account().getUsername()) && !SignalStore.uiHints().hasCompletedUsernameOnboarding();
+    // Tellomi（tellomi/tellomi#1210）：这是 Signal 2024 年给老用户的功能公告（「联系有新招：我们推出了电话号码隐私、
+    // 可选用户名和链接功能」）。Tellomi 从第一天起就有这些；上游的条件（主设备、没设用户名、没走过用户名引导）
+    // 对每个刚注册的人都成立，于是新用户一进首屏就看到「我们推出了…」。不出。
+    return false;
   }
 
   private static boolean shouldShowInactivePrimaryMegaphone() {

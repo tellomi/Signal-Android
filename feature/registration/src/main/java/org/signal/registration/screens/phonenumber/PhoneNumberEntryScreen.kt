@@ -56,6 +56,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -69,6 +70,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.os.ConfigurationCompat
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.i18n.phonenumbers.PhoneNumberUtil
@@ -84,6 +86,7 @@ import org.signal.core.util.Util
 import org.signal.core.util.logging.Log
 import org.signal.registration.R
 import org.signal.registration.RegistrationDependencies
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
@@ -92,6 +95,7 @@ import org.signal.registration.screens.shared.AccountIdErrorText
 import org.signal.registration.screens.shared.AccountIdVisualTransformation
 import org.signal.registration.screens.shared.accountIdTextStyle
 import org.signal.registration.test.TestTags
+import java.util.Locale
 import org.signal.core.ui.R as CoreR
 
 private const val TAG = "PhoneNumberScreen"
@@ -178,7 +182,8 @@ fun PhoneNumberScreen(
   if (state.dialogs.confirmNumber) {
     Dialogs.SimpleAlertDialog(
       title = stringResource(R.string.RegistrationActivity_is_the_phone_number),
-      body = "+${state.countryCode} ${state.formattedNumber}\n\n${stringResource(R.string.RegistrationActivity_a_verification_code)}",
+      // Tellomi（#1210）：上游写「运营商可能收取短信费用」，大陆接收短信不收费；改成说明验证码的用途
+      body = "+${state.countryCode} ${state.formattedNumber}\n\n${stringResource(R.string.TellomiRegistration__a_verification_code_will_be_sent)}",
       confirm = stringResource(id = android.R.string.ok),
       dismiss = stringResource(R.string.RegistrationActivity_edit_number),
       onConfirm = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberConfirmed) },
@@ -190,7 +195,9 @@ fun PhoneNumberScreen(
     state.dialogs.networkError -> stringResource(R.string.VerificationCodeScreen__network_error) to PhoneNumberEntryScreenEvents.NetworkErrorDialogDismissed
     state.dialogs.rateLimitedRetryAfter != null -> {
       val message = if (state.dialogs.rateLimitedRetryAfter.isPositive()) {
-        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, state.dialogs.rateLimitedRetryAfter.toString())
+        // Tellomi（#1210）：上游把 Duration.toString()（「1m 30s」）原样填进去
+        val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.getDefault()
+        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, TellomiRegistration.retryAfterText(state.dialogs.rateLimitedRetryAfter, locale))
       } else {
         stringResource(R.string.VerificationCodeScreen__too_many_attempts)
       }
@@ -388,7 +395,7 @@ private fun Description(twoPane: Boolean = false) {
   )
 
   Text(
-    text = stringResource(R.string.RegistrationActivity_you_will_receive_a_verification_code),
+    text = stringResource(R.string.TellomiRegistration__you_will_receive_a_verification_code), // Tellomi（#1210）：同上
     style = if (twoPane) MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal) else MaterialTheme.typography.bodyLarge,
     color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier = Modifier.padding(top = 16.dp)
@@ -514,6 +521,9 @@ private fun PhoneNumberInputFields(
     accountIdError != null -> {
       { AccountIdErrorText(accountIdError) }
     }
+    state.isRegionUnavailable -> {
+      { Text(stringResource(R.string.TellomiRegistration__region_not_supported)) }
+    }
     state.isNumberInvalid -> {
       { Text(stringResource(R.string.RegistrationActivity_not_a_valid_phone_number)) }
     }
@@ -586,7 +596,7 @@ private fun PhoneNumberInputFields(
         .focusRequester(focusRequester)
         .testTag(TestTags.PHONE_NUMBER_PHONE_FIELD),
       label = { Text(stringResource(label)) },
-      isError = state.isNumberInvalid || state.accountIdError != null,
+      isError = state.isNumberInvalid || state.accountIdError != null || state.isRegionUnavailable,
       supportingText = supportingText,
       keyboardOptions = if (isAccountId) {
         KeyboardOptions(
@@ -609,6 +619,28 @@ private fun PhoneNumberInputFields(
         }
       ),
       singleLine = true,
+      // Tellomi（tellomi/tellomi#1213，ADR-0051 §C）：非空时有清空 ×。
+      trailingIcon = if (phoneNumberTextFieldValue.text.isNotEmpty()) {
+        {
+          IconButton(
+            onClick = {
+              onEvent(PhoneNumberEntryScreenEvents.NationalNumberChanged(oldValue = phoneNumberTextFieldValue.text, newValue = ""))
+              phoneNumberTextFieldValue = TextFieldValue("")
+              // 框没有焦点时 × 也显示；清完就能接着输，和 iOS 一致（taishi 审查 b13 不阻塞）。
+              focusRequester.requestFocus()
+            },
+            modifier = Modifier.testTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON)
+          ) {
+            Icon(
+              imageVector = SignalIcons.X.imageVector,
+              contentDescription = stringResource(R.string.TellomiRegistration__clear_phone_number),
+              tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+          }
+        }
+      } else {
+        null
+      },
       visualTransformation = if (isAccountId) AccountIdVisualTransformation else VisualTransformation.None,
       textStyle = if (isAccountId) {
         accountIdTextStyle().copy(color = MaterialTheme.colorScheme.onSurface)

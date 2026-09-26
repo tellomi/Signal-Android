@@ -19,7 +19,7 @@
     <string name="preferences_app_protection__turn_off">அணைக்க</string>
     <string name="preferences_app_protection__confirm_pin">பின்னை உறுதிப்படுத்தவும்</string>
     <string name="preferences_app_protection__confirm_your_signal_pin">உறுதிப்படுத்தவும் உங்கள் Tellomi பின்</string>
-    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">உங்கள் PIN ஐ மீட்டெடுக்க முடியாததால் அதை நினைவில் வைத்துக் கொள்ளுங்கள் அல்லது பாதுகாப்பாக சேமித்து வைக்கவும். உங்கள் பின்னை மறந்துவிட்டால், உங்கள் சிக்னல் கணக்கை மீண்டும் பதிவு செய்யும் போது தரவை இழக்க நேரிடும்.</string>
+    <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">உங்கள் PIN ஐ மீட்டெடுக்க முடியாததால் அதை நினைவில் வைத்துக் கொள்ளுங்கள் அல்லது பாதுகாப்பாக சேமித்து வைக்கவும். உங்கள் பின்னை மறந்துவிட்டால், உங்கள் Tellomi கணக்கை மீண்டும் பதிவு செய்யும் போது தரவை இழக்க நேரிடும்.</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">தவறான பின். மீண்டும் முயலவும்.</string>
     <string name="preferences_app_protection__registration_lock">பதிவு பூட்டு</string>
     <!-- Option in settings that will take use to re-register if they are no longer registered -->
@@ -89,7 +89,7 @@
     <!-- Header of the second step of authenticator app setup -->
     <string name="TotpSetupScreen__step_2">படி 2</string>
     <!-- Body of the second step of authenticator app setup -->
-    <string name="TotpSetupScreen__open_your_authenticator_app">உங்கள் சிக்னல் கணக்கைச் சேர்க்க, கீழுள்ள பட்டனைத் தட்டி உங்களது அங்கீகரிப்புச் செயலியைத் திறக்கவும்.</string>
+    <string name="TotpSetupScreen__open_your_authenticator_app">உங்கள் Tellomi கணக்கைச் சேர்க்க, கீழுள்ள பட்டனைத் தட்டி உங்களது அங்கீகரிப்புச் செயலியைத் திறக்கவும்.</string>
     <!-- Button that opens the user\'s authenticator app -->
     <string name="TotpSetupScreen__open">திற</string>
     <!-- Text above the setup key explaining that it can be entered by hand instead -->

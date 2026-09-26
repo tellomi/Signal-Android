@@ -106,7 +106,9 @@ class QuickRestoreQrViewModel(
 
     if (message.platform == NetworkController.ProvisioningMessage.Platform.IOS && message.tier == null) {
       // iOS without a backup tier cannot do a quick restore — navigate to the choose-restore screen
-      parentEventEmitter.navigateTo(RegistrationRoute.ArchiveRestoreSelection.forManualRestore())
+      // Tellomi（tellomi/tellomi#1216 跟进）：记下旧手机是 iPhone。没有备份服务时那一页改成说明「传不过来」，
+      // 不再列 iPhone 用不上的「恢复本地备份」。
+      parentEventEmitter.navigateTo(RegistrationRoute.ArchiveRestoreSelection.forOldIphoneWithoutBackup())
       return
     }
 
