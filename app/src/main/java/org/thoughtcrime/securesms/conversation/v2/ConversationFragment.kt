@@ -778,8 +778,8 @@ class ConversationFragment :
     )
     conversationToolbarOnScrollHelper.attach(binding.conversationItemRecycler)
     presentConversationTitle(viewModel.recipientSnapshot)
-    if (viewModel.recipientSnapshot?.isGroup == true) {
-      presentGroupConversationSubtitle(createGroupSubtitleString(viewModel.titleViewParticipantsSnapshot))
+    viewModel.recipientSnapshot?.takeIf { it.isGroup }?.let { group ->
+      presentGroupConversationSubtitle(tellomiGroupMemberSubtitle(resources, group))
     }
     presentActionBarMenu()
     presentStoryRing()
@@ -1232,10 +1232,6 @@ class ConversationFragment :
     binding.conversationItemRecycler.invalidateItemDecorations()
   }
 
-  private fun createGroupSubtitleString(members: List<Recipient>): String {
-    return members.joinToString(", ") { r -> if (r.isSelf) getString(R.string.ConversationTitleView_you) else r.getDisplayName(requireContext()) }
-  }
-
   private fun observeConversationThread() {
     var firstRender = true
     disposables += viewModel
@@ -1343,10 +1339,12 @@ class ConversationFragment :
       .distinctUntilChanged { r1, r2 -> r1 === r2 || r1.hasSameContent(r2) }
       .subscribeBy(onNext = this::onRecipientChanged)
 
-    disposables += viewModel.titleViewParticipants
-      .map { createGroupSubtitleString(it) }
-      .distinctUntilChanged()
+    // Tellomi（两端差异清单第 10 项）：人数按群的全部成员算；titleViewParticipants 只取了前 10 个，只够拼名字
+    disposables += viewModel.recipient
+      .filter { it.isGroup }
       .observeOn(AndroidSchedulers.mainThread())
+      .map { tellomiGroupMemberSubtitle(resources, it) }
+      .distinctUntilChanged()
       .subscribeBy(onNext = this::presentGroupConversationSubtitle)
 
     disposables += viewModel.scrollButtonState
