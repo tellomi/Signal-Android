@@ -11,8 +11,8 @@ import org.signal.core.util.Hex
 import org.signal.core.util.JsonUtils
 import org.signal.core.util.logging.Log
 import org.signal.network.exceptions.NonSuccessfulResponseCodeException
-import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.dependencies.AppDependencies
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.util.EncryptedStreamUtils
 import org.whispersystems.signalservice.internal.ServiceResponse
 import org.whispersystems.signalservice.internal.websocket.DefaultErrorMapper
@@ -242,7 +242,7 @@ object S3 {
   fun s3Url(path: String): URL {
     try {
       // Tellomi（#1017）：资源镜像在我们自己的更新源上，路径与上游一一对应
-      return URI("https", BuildConfig.UPDATES2_HOST, path, null).toURL()
+      return URI("https", TellomiRegions.current().updatesHost, path, null).toURL()
     } catch (e: URISyntaxException) {
       throw IOException(e)
     }

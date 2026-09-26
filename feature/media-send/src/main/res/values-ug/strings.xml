@@ -69,9 +69,9 @@
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">ئىشلىتىشكە رۇخسەت</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
-  <string name="MediaSelectScreen__no_photos_or_videos_found">ھېچقانداق رەسىم ۋە سىنلار تېپىلمىدى. سىگنال پەقەت سىز تاللىغان رەسىملەر ۋە سىنلارنىلا زىيارەت قىلالايدۇ.</string>
+  <string name="MediaSelectScreen__no_photos_or_videos_found">ھېچقانداق رەسىم ۋە سىنلار تېپىلمىدى. Tellomi پەقەت سىز تاللىغان رەسىملەر ۋە سىنلارنىلا زىيارەت قىلالايدۇ.</string>
   <!-- Reminder shown above the gallery when the user only shared selected photos with Signal. -->
-  <string name="MediaSelectScreen__signal_has_limited_access">سىگنال رەسىم ياكى سىنلارنى چەكلىك دائىرىدىلا زىيارەت قىلالايدۇ</string>
+  <string name="MediaSelectScreen__signal_has_limited_access">Tellomi رەسىم ياكى سىنلارنى چەكلىك دائىرىدىلا زىيارەت قىلالايدۇ</string>
   <!-- Label for the button that opens the menu for changing which photos and videos Signal can see. -->
   <string name="MediaSelectScreen__manage">باشقۇرۇش</string>
   <!-- Menu option that re-opens the system picker so the user can share more photos and videos with Signal. -->
@@ -83,7 +83,7 @@
   <!-- Subtitle of the sheet shown when the permission to read photos and videos has been permanently denied, introducing the steps that follow. -->
   <string name="MediaSelectScreen__to_show_photos_and_videos">رەسىم ۋە ۋىدېيولارنى كۆرسىتىش ئۈچۈن:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">رەسىم ۋە سىنلىرىڭىزنى كۆرسىتىش ئۈچۈن سىگنال زىيارەت قىلىش ئجازىتىڭىزگە موھتاج.</string>
+  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">رەسىم ۋە سىنلىرىڭىزنى كۆرسىتىش ئۈچۈن Tellomi زىيارەت قىلىش ئجازىتىڭىزگە موھتاج.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">سۈرەت</string>
