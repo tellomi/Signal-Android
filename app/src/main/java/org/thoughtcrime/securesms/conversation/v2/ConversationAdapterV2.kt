@@ -199,11 +199,33 @@ class ConversationAdapterV2(
     return chatColorsDataProvider()
   }
 
+  /**
+   * Tellomi（#1206，需求 bubbles-and-motion 3.1「未读线断组」）：未读线挂在哪条消息上方（它的 id），没有未读线是 -1。
+   * 未读线上下两条互不算邻居，所以分组（圆角、尾巴、群里的名字和头像、页脚）在这里断开；
+   * iOS 的未读线本来就是单独一条，天然断开。未读线由 [ConversationItemDecorations] 画，片段每次提交列表后把它的位置交过来。
+   */
+  var tellomiUnreadAnchorId: Long = -1L
+    set(value) {
+      if (field == value) {
+        return
+      }
+      field = value
+      // 找未读线那一条要逐个取，会触发分页加载；直接让看得见的几条重绑，只在未读线出现 / 消失时发生
+      if (itemCount > 0) {
+        notifyItemRangeChanged(0, itemCount)
+      }
+    }
+
   override fun getNextMessage(adapterPosition: Int): MessageRecord? {
-    return getConversationMessage(adapterPosition - 1)?.messageRecord
+    val next = getConversationMessage(adapterPosition - 1)?.messageRecord
+    return if (tellomiIsSplitByUnreadDivider(newer = next, anchorId = tellomiUnreadAnchorId)) null else next
   }
 
   override fun getPreviousMessage(adapterPosition: Int): MessageRecord? {
+    val current = getConversationMessage(adapterPosition)?.messageRecord
+    if (tellomiIsSplitByUnreadDivider(newer = current, anchorId = tellomiUnreadAnchorId)) {
+      return null
+    }
     return getConversationMessage(adapterPosition + 1)?.messageRecord
   }
 
@@ -466,11 +488,12 @@ class ConversationAdapterV2(
 
     override val root: ViewGroup = bindable.root
 
+    // Tellomi（#1206）：和 V2 一样经过 getPreviousMessage / getNextMessage，未读线两边互不算邻居
     protected val previousMessage: Optional<MessageRecord>
-      get() = getConversationMessage(bindingAdapterPosition + 1)?.messageRecord.toOptional()
+      get() = getPreviousMessage(bindingAdapterPosition).toOptional()
 
     protected val nextMessage: Optional<MessageRecord>
-      get() = getConversationMessage(bindingAdapterPosition - 1)?.messageRecord.toOptional()
+      get() = getNextMessage(bindingAdapterPosition).toOptional()
 
     protected val displayMode: ConversationItemDisplayMode
       get() = condensedMode ?: ConversationItemDisplayMode.Standard
@@ -616,4 +639,12 @@ class ConversationAdapterV2(
       }
     }
   }
+}
+
+/**
+ * Tellomi（#1206）：未读线挂在 [anchorId] 那条上方。[newer] 是相邻两条里较新的那条（显示在下面）；
+ * 它就是未读线挂着的那条时，两条之间隔着未读线，不算邻居。
+ */
+fun tellomiIsSplitByUnreadDivider(newer: MessageRecord?, anchorId: Long): Boolean {
+  return anchorId > 0 && newer != null && newer.id == anchorId
 }

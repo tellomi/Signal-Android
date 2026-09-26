@@ -125,6 +125,8 @@ class V2ConversationItemShape(
     }
 
     val sharedChecks = previousMessage.isUpdate ||
+      // Tellomi（#1206）：上一条挂着表情回应时它是组尾（见 isEndOfMessageCluster），这一条就是组头，两边对称；上游只判了组尾
+      previousMessage.reactions.isNotEmpty() ||
       !DateUtils.isSameDay(currentMessage.timestamp, previousMessage.timestamp) ||
       !isWithinClusteringTime(currentMessage, previousMessage) ||
       currentMessage.isScheduled() ||

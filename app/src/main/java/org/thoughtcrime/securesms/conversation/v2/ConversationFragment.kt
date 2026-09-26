@@ -1258,6 +1258,8 @@ class ConversationFragment :
         adapter.submitList(it) {
           scrollToPositionDelegate.notifyListCommitted()
           conversationItemDecorations.currentItems = it
+          // Tellomi（#1206）：未读线上下两条不算同一组（在主线程读：未读状态第一次是在后台线程设的）
+          adapter.tellomiUnreadAnchorId = conversationItemDecorations.tellomiUnreadAnchorId
 
           if (firstRender) {
             firstRender = false
