@@ -20,6 +20,7 @@ import org.signal.appsettings.account.AccountSettingsState
 import org.signal.appsettings.account.AccountSettingsState.Dialog
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.lock.v2.PinKeyboardType
 import org.thoughtcrime.securesms.lock.v2.SvrConstants
 
@@ -162,6 +163,7 @@ class AccountSettingsViewModel(
         userUnregistered = repository.isUserUnregistered(),
         clientDeprecated = repository.isClientDeprecated(),
         isPhoneNumberless = isPhoneNumberless,
+        isSvrAvailable = BuildConfig.SVR_ENCLAVE_AVAILABLE,
         signalLogin = if (isPhoneNumberless) {
           AccountSettingsState.SignalLogin(
             totpAppCount = totpAppCount,

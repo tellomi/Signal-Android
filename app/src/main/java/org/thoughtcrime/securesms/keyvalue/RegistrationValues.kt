@@ -24,6 +24,7 @@ class RegistrationValues internal constructor(store: KeyValueStore) : SignalStor
     private const val IS_OTHER_DEVICE_ANDROID = "registration.is_other_device_android"
     private const val RESTORING_ON_NEW_DEVICE = "registration.restoring_on_new_device"
     private const val IN_PROGRESS_DATA_BLOB_URI = "registration.in_progress_data_blob_uri"
+    private const val TELLOMI_IS_REREGISTRATION = "registration.tellomi.is_reregistration"
 
     @VisibleForTesting
     const val RESTORE_DECISION_STATE = "registration.restore_decision_state.2"
@@ -50,6 +51,7 @@ class RegistrationValues internal constructor(store: KeyValueStore) : SignalStor
       .putBoolean(HAS_UPLOADED_PROFILE, false)
       .putBoolean(REGISTRATION_COMPLETE, false)
       .putBoolean(PIN_REQUIRED, true)
+      .putBoolean(TELLOMI_IS_REREGISTRATION, false)
       .commit()
   }
 
@@ -58,8 +60,21 @@ class RegistrationValues internal constructor(store: KeyValueStore) : SignalStor
     store
       .beginWrite()
       .putBoolean(REGISTRATION_COMPLETE, true)
+      .putBoolean(TELLOMI_IS_REREGISTRATION, false)
       .commit()
   }
+
+  /**
+   * Tellomi（tellomi/tellomi#1266）：这次注册是不是**重新注册**（注册回包的 `reregistration`，服务端看的是这个号码之前有没有账号）。
+   * 为真时注册资料页不显示用户名框：旧用户名在服务端是本账号的待认领保留，本机又不知道它，在注册那一刻主动请用户填，
+   * 冷却外一填就等于换名、丢了原名，冷却内又会被 429 误导。交给设置页。
+   *
+   * 进行中的注册数据在注册完成时整个删掉，`needsUsernameRestore` 又会被第一次完成注册就排上的 `ReclaimUsernameAndLinkJob` 清掉，
+   * 都靠不住，所以另存一个：`applyAccountData` 写，标完成（或重新开始注册）时清掉。
+   */
+  @get:Synchronized
+  @set:Synchronized
+  var isTellomiReRegistration: Boolean by booleanValue(TELLOMI_IS_REREGISTRATION, false)
 
   @CheckResult
   @Synchronized

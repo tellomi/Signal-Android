@@ -289,7 +289,7 @@
     <string name="CensorshipCircumventionMegaphone_no_thanks">ના આભાર</string>
 
     <!-- ClientDeprecatedActivity -->
-    <string name="ClientDeprecatedActivity_update_signal">સિગ્નલ ને અપડેટ કરો</string>
+    <string name="ClientDeprecatedActivity_update_signal">Tellomi ને અપડેટ કરો</string>
     <string name="ClientDeprecatedActivity_this_version_of_the_app_is_no_longer_supported">એપ્લિકેશનનું આ વર્ઝન હવે સમર્થિત નથી. મેસેજ મોકલવા અને પ્રાપ્ત કરવાનું ચાલુ રાખવા માટે, નવીનતમ વર્ઝન પર અપડેટ કરો.</string>
     <string name="ClientDeprecatedActivity_update">અપડેટ</string>
     <string name="ClientDeprecatedActivity_dont_update">અપડેટ કરશો નહીં</string>
@@ -314,7 +314,7 @@
     <string name="CommunicationActions_cancel">રદ કરો</string>
     <string name="CommunicationActions_call">કૉલ</string>
     <string name="CommunicationActions_insecure_call">અસુરક્ષિત કૉલ</string>
-    <string name="CommunicationActions_carrier_charges_may_apply">કેરિયરનો શુલ્ક લાગુ થઈ શકે છે. તમે જે નંબર પર કોલ કરો છો તે સિગ્નલ સાથે નોંધાયેલ નથી. આ કોલ ઈન્ટરનેટથી નહીં, તમારા મોબાઇલ કેરિયર દ્વારા કરવામાં આવશે.</string>
+    <string name="CommunicationActions_carrier_charges_may_apply">કેરિયરનો શુલ્ક લાગુ થઈ શકે છે. તમે જે નંબર પર કોલ કરો છો તે Tellomi સાથે નોંધાયેલ નથી. આ કોલ ઈન્ટરનેટથી નહીં, તમારા મોબાઇલ કેરિયર દ્વારા કરવામાં આવશે.</string>
     <string name="CommunicationActions_cant_join_call">કૉલમાં જોડાઈ શકતાં નથી</string>
     <string name="CommunicationActions_this_call_link_is_no_longer_valid">આ કૉલ લિંક હવે માન્ય નથી.</string>
     <!-- Title on dialog when call link url cannot be parsed -->
@@ -456,7 +456,7 @@
     <string name="ConversationActivity_transport_signal">Tellomi મેસેજ</string>
     <!-- The content description for button to send a message in a conversation -->
     <string name="ConversationActivity_send_message_content_description">મેસેજ મોકલો</string>
-    <string name="ConversationActivity_lets_switch_to_signal">ચાલો સિગ્નલ પર સ્વિચ કરીએ %1$s</string>
+    <string name="ConversationActivity_lets_switch_to_signal">ચાલો Tellomi પર સ્વિચ કરીએ %1$s</string>
     <string name="ConversationActivity_specify_recipient">કૃપા કરીને સંપર્ક પસંદ કરો</string>
     <string name="ConversationActivity_attachment_exceeds_size_limits">તમે મોકલો છો તે મેસેજ ના પ્રકાર માટે જોડાણ કદની મર્યાદાથી વધુ છે.</string>
     <string name="ConversationActivity_unable_to_record_audio">ઓડિયો રેકોર્ડ કરવામાં અસમર્થ</string>
@@ -613,7 +613,7 @@
     <string name="ConversationFragment_verify">ચકાસો</string>
     <string name="ConversationFragment_not_now">અત્યારે નહીં</string>
     <string name="ConversationFragment_your_safety_number_with_s_changed">%1$s સાથેનો તમારો સલામતી નંબર બદલાયો છે</string>
-    <string name="ConversationFragment_your_safety_number_with_s_changed_likey_because_they_reinstalled_signal">%1$s સાથેનો તમારો સલામતી નંબર બદલાયો છે, સંભવિત કારણ કે તેઓએ સિગ્નલ ફરીથી ઇન્સ્ટોલ કર્યું અથવા ડિવાઇસ બદલ્યુ છે.</string>
+    <string name="ConversationFragment_your_safety_number_with_s_changed_likey_because_they_reinstalled_signal">%1$s સાથેનો તમારો સલામતી નંબર બદલાયો છે, સંભવિત કારણ કે તેઓએ Tellomi ફરીથી ઇન્સ્ટોલ કર્યું અથવા ડિવાઇસ બદલ્યુ છે.</string>
     <!-- Dialog title for block group link join requests -->
     <string name="ConversationFragment__block_request">વિનંતી બ્લૉક કરવી છે?</string>
     <!-- Dialog message for block group link join requests -->
@@ -625,7 +625,7 @@
     <!-- Message shown after successfully blocking join requests for a user -->
     <string name="ConversationFragment__blocked">બ્લૉક કર્યા</string>
     <!-- Action shown to allow a user to update their application because it has expired -->
-    <string name="ConversationFragment__update_build">સિગ્નલ ને અપડેટ કરો</string>
+    <string name="ConversationFragment__update_build">Tellomi ને અપડેટ કરો</string>
     <!-- Action shown to allow a user to re-register as they are no longer registered -->
     <string name="ConversationFragment__reregister_signal">Tellomi પર ફરીથી રજીસ્ટર કરો</string>
     <!-- Action shown in the conversation input area to allow a user to re-link this device as it is no longer linked -->
@@ -1696,7 +1696,7 @@
     <!-- GroupJoinUpdateRequiredBottomSheetDialogFragment -->
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal_to_use_group_links">ગ્રુપ લિંકનો ઉપયોગ કરવા માટે Tellomi અપડેટ કરો</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">તમે ઉપયોગ કરો છો તે Tellomi નું વર્ઝન આ ગ્રુપ લિંકને સપોર્ટ કરતું નથી. લિંક દ્વારા આ ગ્રુપ માં જોડાવા માટે નવીનતમ વર્ઝન પર અપડેટ કરો.</string>
-    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">સિગ્નલ ને અપડેટ કરો</string>
+    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Tellomi ને અપડેટ કરો</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_group_link_is_not_valid">ગ્રુપ લિંક માન્ય નથી</string>
 
     <!-- GroupInviteLinkEnableAndShareBottomSheetDialogFragment -->
@@ -3936,7 +3936,7 @@
     <string name="EditProfileFragment__group_description">ગ્રુપ ડિસ્ક્રિપ્શન</string>
   <!-- Removed by excludeNonTranslatables <string name="EditProfileFragment__support_link" translatable="false">https://tellomi.app/help/360007459591</string> -->
     <!-- The title of a dialog prompting user to update to the latest version of Signal. -->
-    <string name="EditProfileFragment_deprecated_dialog_title">સિગ્નલ ને અપડેટ કરો</string>
+    <string name="EditProfileFragment_deprecated_dialog_title">Tellomi ને અપડેટ કરો</string>
     <!-- The body of a dialog prompting user to update to the latest version of Signal. -->
     <string name="EditProfileFragment_deprecated_dialog_body">Tellomiનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. Tellomiનો ઉપયોગ ચાલુ રાખવા માટે હમણાં જ અપડેટ કરો.</string>
     <!-- The button on a dialog prompting user to update to the latest version of Signal. When clicked, the user will be taken to the store to update their app. -->
@@ -6521,7 +6521,7 @@
     <string name="MySupportPreference__checking_subscription">સબ્સ્ક્રિપ્શન તપાસી રહ્યા છીએ…</string>
 
     <!-- Title of dialog telling user they need to update signal as it expired -->
-    <string name="UpdateSignalExpiredDialog__title">સિગ્નલ ને અપડેટ કરો</string>
+    <string name="UpdateSignalExpiredDialog__title">Tellomi ને અપડેટ કરો</string>
     <!-- Message of dialog telling user they need to update signal as it expired -->
     <string name="UpdateSignalExpiredDialog__message">Tellomiનું આ વર્ઝન સમાપ્ત થઈ ગયું છે. Tellomiનો ઉપયોગ ચાલુ રાખવા માટે હમણાં જ અપડેટ કરો.</string>
     <!-- Button text of expiration dialog, will take user to update the app -->

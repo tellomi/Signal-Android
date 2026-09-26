@@ -116,9 +116,9 @@ public final class ProfileName implements Parcelable {
     if (givenName.isEmpty() && familyName.isEmpty()) return "";
     else if (givenName.isEmpty())                    return familyName;
     else if (familyName.isEmpty())                   return givenName;
-    else if (isCJKV(givenName, familyName))          return String.format("%s %s",
-                                                                          familyName,
-                                                                          givenName);
+    // Tellomi（tellomi/tellomi#1210）：姓名都是中日韩文字时姓在前、**中间不加空格**（「张三」，不是上游的「张 三」）。
+    // 混写（如 given「Ming」+ family「李」）仍照上游：名在前、空格分隔。
+    else if (isCJKV(givenName, familyName))          return familyName + givenName;
     else                                             return String.format("%s %s",
                                                                           givenName,
                                                                           familyName);

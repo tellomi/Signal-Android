@@ -165,7 +165,7 @@ fun AccountSettingsScreen(
         }
       }
 
-      if (!state.isPhoneNumberless) {
+      if (!state.isPhoneNumberless && state.isSvrAvailable) {
         item {
           Texts.SectionHeader(
             text = stringResource(R.string.preferences_app_protection__signal_pin)

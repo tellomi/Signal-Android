@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
@@ -28,6 +29,14 @@ import org.thoughtcrime.securesms.util.WindowUtil
 import java.util.concurrent.TimeUnit
 
 class MediaPreviewActivity : PassphraseRequiredActivity(), VoiceNoteMediaControllerOwner {
+
+  /** Tellomi（#1257）：查看器播放中自动收起控件——碰一下屏幕计时从头来（照 Telegram Android：按下取消、抬手重排）。 */
+  var onUserTouch: (() -> Unit)? = null
+
+  override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    onUserTouch?.invoke()
+    return super.dispatchTouchEvent(ev)
+  }
 
   override lateinit var voiceNoteMediaController: VoiceNoteMediaController
 
