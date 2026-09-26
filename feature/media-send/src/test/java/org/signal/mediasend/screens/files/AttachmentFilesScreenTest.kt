@@ -116,6 +116,24 @@ class AttachmentFilesScreenTest {
     assertThat(events).containsExactly(AttachmentFilesEvent.FilesPicked(picked))
   }
 
+  /**
+   * 选择器结果里的读授权挂在接收结果的 Activity（Sheet）上，Sheet 一关就收回；会话页要等 Sheet 关掉之后才一个个整份拷贝，
+   * 所以 Sheet 一收到就要转成持久授权（会话页发完再放，见 [PickedFileGrantsTest]）。
+   */
+  @Test
+  fun `Given the system picker returns files, then each keeps a persisted read grant so the chat can still read it after the Sheet closes`() {
+    setPage(AttachmentFilesState(files = emptyList(), dock = DOCK))
+
+    composeTestRule.onNodeWithTag(TestTags.attachmentFilesEntry("files")).performClick()
+    composeTestRule.waitForIdle()
+    val picked = listOf("content://docs/a.pdf".toUri(), "content://docs/b.zip".toUri())
+    composeTestRule.runOnUiThread { registry.dispatchResult(registry.lastRequestCode, picked) }
+    composeTestRule.waitForIdle()
+
+    val kept = context.contentResolver.persistedUriPermissions.filter { it.isReadPermission }.map { it.uri }
+    assertThat(kept.toSet()).isEqualTo(picked.toSet())
+  }
+
   @Test
   fun `Given no files were ever sent, when shown, then one line says what can be sent with the server limit and there is no search`() {
     setPage(AttachmentFilesState(files = emptyList(), maxFileSize = 104_857_600L, dock = DOCK))
