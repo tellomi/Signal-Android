@@ -88,6 +88,7 @@ public final class MediaOverviewPageFragment extends LoggingFragment
   private final ActionModeCallback            actionModeCallback = new ActionModeCallback();
   private       MediaTable.Sorting            sorting            = MediaTable.Sorting.Newest;
   private       MediaLoader.MediaType         mediaType          = MediaLoader.MediaType.GALLERY;
+  private       String                        tellomiQuery;
   private       long                          threadId;
   private       TextView                      noMedia;
   private       RecyclerView                  recyclerView;
@@ -201,6 +202,18 @@ public final class MediaOverviewPageFragment extends LoggingFragment
 
     MediaOverviewViewModel viewModel = MediaOverviewViewModel.getMediaOverviewViewModel(requireActivity());
 
+    // Tellomi：「我的收藏」按类型搜，查询变了就在这一页里重新筛（#1174）
+    viewModel.getTellomiQuery()
+      .observe(getViewLifecycleOwner(), query -> {
+        if (Objects.equals(query, tellomiQuery)) return;
+        tellomiQuery = query;
+        if (isResumed()) {
+          LoaderManager.getInstance(this).restartLoader(0, null, this);
+        } else {
+          pendingLoad = true;
+        }
+      });
+
     viewModel.getSortOrder()
       .observe(getViewLifecycleOwner(), sorting -> {
         if (sorting != null) {
@@ -249,7 +262,7 @@ public final class MediaOverviewPageFragment extends LoggingFragment
 
   @Override
   public @NonNull Loader<GroupedThreadMediaLoader.GroupedThreadMedia> onCreateLoader(int i, Bundle bundle) {
-    return new GroupedThreadMediaLoader(requireContext(), threadId, mediaType, sorting, loadLimit);
+    return new GroupedThreadMediaLoader(requireContext(), threadId, mediaType, sorting, loadLimit, tellomiQuery);
   }
 
   @Override

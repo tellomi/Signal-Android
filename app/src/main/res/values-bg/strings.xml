@@ -1696,7 +1696,7 @@
     <!-- GroupJoinUpdateRequiredBottomSheetDialogFragment -->
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal_to_use_group_links">Актуализирайте Tellomi, за да използвате групови връзки</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">Версията на Tellomi, която ползвате, не поддържа тази групова препратка. Обновете до последната версия, за да се присъедините към групата през тази препратка.</string>
-    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Обновяване на Сигнал</string>
+    <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Обновяване на Tellomi</string>
     <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_group_link_is_not_valid">Груповата връзка не е валидна</string>
 
     <!-- GroupInviteLinkEnableAndShareBottomSheetDialogFragment -->

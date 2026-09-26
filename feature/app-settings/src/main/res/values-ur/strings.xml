@@ -18,7 +18,7 @@
     <string name="preferences_app_protection__pin_reminders">PIN یاددہانی</string>
     <string name="preferences_app_protection__turn_off">بند کریں</string>
     <string name="preferences_app_protection__confirm_pin">پن کی تصدیق کریں</string>
-    <string name="preferences_app_protection__confirm_your_signal_pin">اپنے سگنل پن کی تصدیق کریں</string>
+    <string name="preferences_app_protection__confirm_your_signal_pin">اپنے Tellomi پن کی تصدیق کریں</string>
     <string name="preferences_app_protection__make_sure_you_memorize_or_securely_store_your_pin">اس بات کو یقینی بنائیں کہ آپ اپنے PIN کو حفظ یا محفوظ طریقے سے محفوظ کریں کیونکہ اسے بازیافت نہیں کیا جاسکتا ہے۔ اگر آپ اپنا پن بھول جاتے ہیں تو ، اپنے Tellomi اکاؤنٹ کی دوبارہ رجسٹریشن کرتے وقت آپ ڈیٹا کھو سکتے ہیں۔</string>
     <string name="preferences_app_protection__incorrect_pin_try_again">غلط پن۔ دوبارہ کوشش کریں۔</string>
     <string name="preferences_app_protection__registration_lock">رجسٹریشن لاک</string>

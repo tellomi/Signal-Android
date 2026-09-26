@@ -99,6 +99,7 @@ import org.thoughtcrime.securesms.banner.banners.CdsTemporaryErrorBanner;
 import org.thoughtcrime.securesms.banner.banners.DeprecatedBuildBanner;
 import org.thoughtcrime.securesms.banner.banners.DeprecatedSdkBanner;
 import org.thoughtcrime.securesms.banner.banners.DozeBanner;
+import org.thoughtcrime.securesms.banner.banners.NotificationsDisabledBanner;
 import org.thoughtcrime.securesms.banner.banners.OutdatedBuildBanner;
 import org.thoughtcrime.securesms.banner.banners.ServiceOutageBanner;
 import org.thoughtcrime.securesms.banner.banners.UnauthorizedBanner;
@@ -151,6 +152,7 @@ import org.thoughtcrime.securesms.main.MainToolbarMode;
 import org.thoughtcrime.securesms.main.MainToolbarViewModel;
 import org.thoughtcrime.securesms.main.Material3OnScrollHelperBinder;
 import org.thoughtcrime.securesms.megaphone.Megaphones;
+import org.thoughtcrime.securesms.megaphone.TellomiOnboarding;
 import org.thoughtcrime.securesms.notifications.MarkReadReceiver;
 import org.thoughtcrime.securesms.profiles.manage.UsernameEditFragment;
 import org.thoughtcrime.securesms.ratelimit.RecaptchaProofBottomSheetFragment;
@@ -556,6 +558,10 @@ public class ConversationListFragment extends MainFragment implements Conversati
 
     SignalProxyUtil.startListeningToWebsocket();
 
+    // Tellomi：「我的收藏」默认在聊天列表里（#1174），只做一次
+    Context applicationContext = requireContext().getApplicationContext();
+    SignalExecutors.BOUNDED.execute(() -> TellomiSavedMessages.ensureListedOnce(applicationContext));
+
     if (SignalStore.rateLimit().needsRecaptcha()) {
       Log.i(TAG, "Recaptcha required.");
       RecaptchaProofBottomSheetFragment.show(getChildFragmentManager());
@@ -836,6 +842,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
         new UnauthorizedBanner(requireContext()),
         new ServiceOutageBanner(requireContext()),
         new OutdatedBuildBanner(),
+        new NotificationsDisabledBanner(requireContext()), // Tellomi（#1218 F-01）
         new DozeBanner(requireContext()),
         new CdsTemporaryErrorBanner(getChildFragmentManager()),
         new CdsPermanentErrorBanner(getChildFragmentManager()),
@@ -1066,6 +1073,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
         list.scrollToPosition(0);
       }
       onPostSubmitList(conversations.size());
+      TellomiOnboarding.onConversationListChanged(conversations);
     });
   }
 
@@ -1190,7 +1198,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
   }
 
   @SuppressLint("StaticFieldLeak")
-  private void handleDelete(@NonNull Collection<Long> ids, boolean containsActiveGroup) {
+  private void handleDelete(@NonNull Collection<Long> ids, boolean containsActiveGroup, boolean onlySavedMessages) {
     int                        conversationsCount = ids.size();
     MaterialAlertDialogBuilder alert              = new MaterialAlertDialogBuilder(requireActivity());
     Context                    context            = requireContext();
@@ -1211,6 +1219,12 @@ public class ConversationListFragment extends MainFragment implements Conversati
     }
 
     alert.setMessage(context.getResources().getQuantityString(messageRes, conversationsCount, conversationsCount));
+
+    // Tellomi：只删「我的收藏」时换成说清楚的标题和说明（#1174，需求 §3.2「删除」）
+    if (onlySavedMessages) {
+      alert.setTitle(R.string.ConversationListFragment__tellomi_delete_saved_messages_title);
+      alert.setMessage(TellomiSavedMessages.deleteMessage(isMultiDevice));
+    }
 
     alert.setCancelable(true);
 
@@ -1352,6 +1366,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
 
       SignalStore.onboarding().setShowNewGroup(true);
       SignalStore.onboarding().setShowInviteFriends(true);
+      TellomiOnboarding.onConversationListEmpty();
     }
   }
 
@@ -1447,7 +1462,8 @@ public class ConversationListFragment extends MainFragment implements Conversati
       items.add(new ActionItem(R.drawable.symbol_archive_24, getResources().getString(R.string.ConversationListFragment_archive), () -> handleArchive(id)));
     }
 
-    items.add(new ActionItem(org.signal.core.ui.R.drawable.symbol_trash_24, getResources().getString(R.string.ConversationListFragment_delete), () -> handleDelete(id, conversation.getThreadRecord().getRecipient().resolve().isActiveGroup())));
+    boolean onlySavedMessages = TellomiSavedMessages.isOnlySavedMessages(Collections.singletonList(conversation.getThreadRecord().getRecipient().resolve()));
+    items.add(new ActionItem(org.signal.core.ui.R.drawable.symbol_trash_24, getResources().getString(R.string.ConversationListFragment_delete), () -> handleDelete(id, conversation.getThreadRecord().getRecipient().resolve().isActiveGroup(), onlySavedMessages)));
 
     activeContextMenu = new SignalContextMenu.Builder(view, list)
         .offsetX(ViewUtil.dpToPx(12))
@@ -1526,6 +1542,12 @@ public class ConversationListFragment extends MainFragment implements Conversati
     boolean containsGroup = viewModel.currentSelectedConversations().stream().anyMatch(conversation -> conversation.getThreadRecord().getRecipient().resolve().isActiveGroup());
     boolean canPin        = viewModel.getPinnedCount() < RemoteConfig.pinnedChatLimit();
 
+    // Tellomi：只选了「我的收藏」时，删除确认换成说清楚的文案（#1174）
+    boolean onlySavedMessages = TellomiSavedMessages.isOnlySavedMessages(viewModel.currentSelectedConversations()
+                                                                                   .stream()
+                                                                                   .map(conversation -> conversation.getThreadRecord().getRecipient().resolve())
+                                                                                   .collect(Collectors.toList()));
+
     if (mainToolbarViewModel.isInActionMode()) {
       mainToolbarViewModel.setActionModeCount(count);
     }
@@ -1555,7 +1577,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
       items.add(new ActionItem(R.drawable.symbol_archive_24, getResources().getString(R.string.ConversationListFragment_archive), () -> handleArchive(selectionIds)));
     }
 
-    items.add(new ActionItem(org.signal.core.ui.R.drawable.symbol_trash_24, getResources().getString(R.string.ConversationListFragment_delete), () -> handleDelete(selectionIds, containsGroup)));
+    items.add(new ActionItem(org.signal.core.ui.R.drawable.symbol_trash_24, getResources().getString(R.string.ConversationListFragment_delete), () -> handleDelete(selectionIds, containsGroup, onlySavedMessages)));
 
     if (hasUnmuted) {
       items.add(new ActionItem(R.drawable.symbol_bell_slash_24, getResources().getString(R.string.ConversationListFragment_mute), () -> handleMute(viewModel.currentSelectedConversations())));

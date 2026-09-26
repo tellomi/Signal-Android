@@ -4270,7 +4270,7 @@
     <string name="preferences__graphic_illustrating_where_the_replacement_app_icon_will_be_visible">రీప్లేస్‌మెంట్ యాప్ ఐకాన్ ఎక్కడ కనిపిస్తుందో వివరించే గ్రాఫిక్.</string>
     <string name="preferences__disable_pin">పిన్‌ను ఆపివేయి</string>
     <string name="preferences__enable_pin">పిన్ ప్రారంభించండి</string>
-    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">మీరు పిన్‌ను నిలిపివేస్తే, మీరు మాన్యువల్‌గా ప్రత్యామ్నాయం చేసి పునరుద్ధరించకపోతే సిగ్నల్‌ను తిరిగి నమోదు చేసినప్పుడు మీరు మొత్తం డేటాను కోల్పోతారు. పిన్ నిలిపివేయబడినప్పుడు మీరు రిజిస్ట్రేషన్ లాక్‌ని ఆన్ చేయలేరు.</string>
+    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">మీరు పిన్‌ను నిలిపివేస్తే, మీరు మాన్యువల్‌గా ప్రత్యామ్నాయం చేసి పునరుద్ధరించకపోతే Tellomi‌ను తిరిగి నమోదు చేసినప్పుడు మీరు మొత్తం డేటాను కోల్పోతారు. పిన్ నిలిపివేయబడినప్పుడు మీరు రిజిస్ట్రేషన్ లాక్‌ని ఆన్ చేయలేరు.</string>
     <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">పిన్‌లు Tellomi గుప్తీకరించిన సమాచారాన్ని నిల్వ చేస్తాయి కాబట్టి మీరు మాత్రమే దీన్ని యాక్సెస్ చేయవచ్చు. మీరు మళ్లీ ఇన్‌స్టాల్ చేసినప్పుడు మీ ప్రొఫైల్, సెట్టింగ్‌లు మరియు పరిచయాలు పునరుద్ధరించబడతాయి. అనువర్తనాన్ని తెరవడానికి మీకు మీ పిన్ అవసరం లేదు.</string>
     <string name="preferences__system_default">సిస్టమ్ అప్రమేయం</string>
     <string name="preferences__language">భాష</string>
@@ -8445,7 +8445,7 @@
     <!-- Backup redemption error sheet text line 1 -->
     <string name="BackupAlertBottomSheet__too_many_devices_have_tried">ఈ నెల మీ సబ్స్క్రిప్షన్‌ను రీడీమ్ చేయడానికి చాలా పరికరాలు ప్రయత్నించాయి. మీరు వీటిని చేసి ఉండవచ్చు:</string>
     <!-- Backup redemption error sheet bullet point 1 -->
-    <string name="BackupAlertBottomSheet__reregistered_your_signal_account">మీ సిగ్నల్ ఖాతాను చాలా సార్లు రీ-రిజిస్టర్ చేయబడడం.</string>
+    <string name="BackupAlertBottomSheet__reregistered_your_signal_account">మీ Tellomi ఖాతాను చాలా సార్లు రీ-రిజిస్టర్ చేయబడడం.</string>
     <!-- Backup redemption error sheet bullet point 2 -->
     <string name="BackupAlertBottomSheet__have_too_many_devices_using_the_same_subscription">ఒకే సబ్స్క్రిప్షన్‌ను ఉపయోగిస్తూ చాలా ఎక్కువ పరికరాలను కలిగి ఉండడం.</string>
 
@@ -8633,7 +8633,7 @@
     <!-- Subtitle of bottom sheet detailing that with their current plan, there is a limitation to how many days media is stored for. Placeholder is number of days. -->
     <plurals name="UpgradeToStartMediaBackupSheet__your_current_signal_backup_plan_includes">
         <item quantity="one">మీ ప్రస్తుత Tellomi బ్యాకప్ ప్లాన్ మీ ఇటీవలి %1$d రోజు మీడియా ను కలిగి ఉంది. మీ మొత్తం మీడియాను బ్యాకప్ చేయడం ప్రారంభించడానికి, ఇప్పుడే అప్‌గ్రేడ్ చేయండి.</item>
-        <item quantity="other">మీ ప్రస్తుత సిగ్నల్ బ్యాకప్ ప్లాన్ మీ ఇటీవలి %1$d రోజుల మీడియాను కలిగి ఉంది. మీ మొత్తం మీడియాను బ్యాకప్ చేయడం ప్రారంభించడానికి, ఇప్పుడే అప్‌గ్రేడ్ చేయండి.</item>
+        <item quantity="other">మీ ప్రస్తుత Tellomi బ్యాకప్ ప్లాన్ మీ ఇటీవలి %1$d రోజుల మీడియాను కలిగి ఉంది. మీ మొత్తం మీడియాను బ్యాకప్ చేయడం ప్రారంభించడానికి, ఇప్పుడే అప్‌గ్రేడ్ చేయండి.</item>
     </plurals>
     <!-- Primary action to launch upgrade flow. Placeholder is formatted price. -->
     <string name="UpgradeToStartMediaBackupSheet__subscribe_for_s_month">%1$s/నెలకు సబ్‌స్క్రైబ్ చేయండి</string>
