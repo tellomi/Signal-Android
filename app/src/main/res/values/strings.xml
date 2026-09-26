@@ -9736,6 +9736,10 @@
     <string name="MainToolbar__notification_profile_content_description">Notification Profile</string>
     <!-- Accessibility label for more options button in MainToolbar -->
     <string name="MainToolbar__proxy_content_description">Proxy</string>
+    <!-- Tellomi（#1218 F-04）：首屏标题在没连上服务器时换成连接状态：系统没有网络 / 正在连服务器 / 连上后正在收离线期间的消息 -->
+    <string name="MainToolbar__tellomi_waiting_for_network">Waiting for network…</string>
+    <string name="MainToolbar__tellomi_connecting">Connecting…</string>
+    <string name="MainToolbar__tellomi_updating">Updating…</string>
     <!-- Accessibility label for search filter button in MainToolbar -->
     <string name="MainToolbar__search_filter_content_description" translatable="false">Search filter</string>
 
