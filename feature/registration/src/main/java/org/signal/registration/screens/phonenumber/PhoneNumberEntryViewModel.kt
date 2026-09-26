@@ -572,6 +572,10 @@ class PhoneNumberEntryViewModel(
       return state
     }
 
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 4）：复用的是之前留下的会话（例如从验证码页返回、停了一阵再点「下一步」）时，
+    // 它在服务端可能已经过期。下面遇到「会话没了」不照上游 ResetState 把人打回欢迎页，而是换新会话重来一次（见 retryWithNewSession）。
+    val reusingSession = state.sessionMetadata != null
+
     var sessionMetadata: SessionMetadata = state.sessionMetadata ?: when (val response = this@PhoneNumberEntryViewModel.repository.createSession(e164)) {
       is RequestResult.Success<SessionMetadata> -> {
         response.result
@@ -616,6 +620,10 @@ class PhoneNumberEntryViewModel(
           }
           is RequestResult.NonSuccess -> {
             if (updateResult.error is UpdateSessionError.SessionNotFound) {
+              if (reusingSession) {
+                Log.w(TAG, "[SubmitPushChallengeToken] The session we reused is gone. Starting a new one.")
+                return retryWithNewSession(state, e164, parentEventEmitter)
+              }
               Log.w(TAG, "[SubmitPushChallengeToken] Session not found when submitting push challenge token.")
               parentEventEmitter(RegistrationFlowEvent.ResetState)
               return state
@@ -678,18 +686,28 @@ class PhoneNumberEntryViewModel(
             state.copy(dialogs = state.dialogs.copy(couldNotRequestCodeWithSelectedTransport = true))
           }
           is RequestVerificationCodeError.InvalidSessionId -> {
-            Log.w(TAG, "[RequestVerificationCode] Invalid session ID when requesting verification code.")
-            parentEventEmitter(RegistrationFlowEvent.ResetState)
-            state
+            if (reusingSession) {
+              Log.w(TAG, "[RequestVerificationCode] The session we reused is no longer valid. Starting a new one.")
+              retryWithNewSession(state, e164, parentEventEmitter)
+            } else {
+              Log.w(TAG, "[RequestVerificationCode] Invalid session ID when requesting verification code.")
+              parentEventEmitter(RegistrationFlowEvent.ResetState)
+              state
+            }
           }
           is RequestVerificationCodeError.MissingRequestInformationOrAlreadyVerified -> {
             Log.w(TAG, "[RequestVerificationCode] Missing request information or already verified.")
             state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
           }
           is RequestVerificationCodeError.SessionNotFound -> {
-            Log.w(TAG, "[RequestVerificationCode] Session not found when requesting verification code.")
-            parentEventEmitter(RegistrationFlowEvent.ResetState)
-            state
+            if (reusingSession) {
+              Log.w(TAG, "[RequestVerificationCode] The session we reused is gone. Starting a new one.")
+              retryWithNewSession(state, e164, parentEventEmitter)
+            } else {
+              Log.w(TAG, "[RequestVerificationCode] Session not found when requesting verification code.")
+              parentEventEmitter(RegistrationFlowEvent.ResetState)
+              state
+            }
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
             applyThirdPartyServiceError(state)
@@ -717,6 +735,15 @@ class PhoneNumberEntryViewModel(
     parentEventEmitter(RegistrationFlowEvent.E164Chosen(e164))
     parentEventEmitter.navigateTo(RegistrationRoute.VerificationCodeEntry)
     return state
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 4）：复用的旧会话在服务端已经没了。清掉它（父状态也清，号码保留，同验证码页的
+   * 「会话已过期」），不带会话把这一步重做一次，也就是开新会话再请求验证码。新会话不算「复用」，再遇到「会话没了」就照上游 ResetState，不会来回重试。
+   */
+  private suspend fun retryWithNewSession(state: PhoneNumberEntryState, e164: String, parentEventEmitter: (RegistrationFlowEvent) -> Unit): PhoneNumberEntryState {
+    parentEventEmitter(RegistrationFlowEvent.SessionExpired)
+    return applySessionBasedRegistration(state.copy(sessionMetadata = null), e164, parentEventEmitter)
   }
 
   private suspend fun applyCaptchaCompleted(inputState: PhoneNumberEntryState, token: String, parentEventEmitter: (RegistrationFlowEvent) -> Unit): PhoneNumberEntryState {

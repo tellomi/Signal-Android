@@ -134,7 +134,21 @@ class VerificationCodeViewModel(
       is VerificationCodeScreenEvents.CodeAutoFilled -> state.copy(autoFillCode = event.code)
       is VerificationCodeScreenEvents.ConsumeAutoFillCode -> state.copy(autoFillCode = null)
       is VerificationCodeScreenEvents.WrongNumber -> state.also { parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry) }
-      is VerificationCodeScreenEvents.SessionExpiredDialogDismissed -> state.copy(dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false)).also { parentEventEmitter.navigateBack() }
+      is VerificationCodeScreenEvents.SessionExpiredDialogDismissed -> {
+        // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 1）：会话已失效时先清掉父状态里的旧会话（号码保留），
+        // 手机号页再点「下一步」才会开新会话；不清的话会复用旧会话 → 404 → 整个流程被重置回欢迎页，没有任何提示。
+        // 「验证码已不能用」那种会话还在，照旧复用。
+        // 发 SessionExpired 的同时记下「正在因会话过期退回」：父状态马上会变成没有会话，本页 ViewModel 在出栈动画结束前还在收，
+        // 不能把它当成要重置整个流程（taishi 审查 b19 要改 1）。
+        val leavingForExpiredSession = state.dialogs.sessionExpired
+        if (leavingForExpiredSession) {
+          parentEventEmitter(RegistrationFlowEvent.SessionExpired)
+        }
+        state.copy(
+          dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false),
+          leavingForExpiredSession = state.leavingForExpiredSession || leavingForExpiredSession
+        ).also { parentEventEmitter.navigateBack() }
+      }
       is VerificationCodeScreenEvents.ResendSms -> applyResendCode(state, VerificationCodeTransport.SMS)
       is VerificationCodeScreenEvents.CallMe -> applyResendCode(state, VerificationCodeTransport.VOICE)
       is VerificationCodeScreenEvents.HavingTrouble -> state.copy(showContactSupportSheet = true)
@@ -201,6 +215,12 @@ class VerificationCodeViewModel(
   }
 
   private fun applyParentState(state: VerificationCodeState, parentState: RegistrationFlowState): VerificationCodeState {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 要改 1）：关掉「会话已过期」框以后，父状态先清了会话、号码还在，
+    // 本页正在退回手机号页；这时不重置，否则号码也跟着清掉、整个流程回到欢迎页。
+    if (parentState.sessionMetadata == null && parentState.sessionE164 != null && state.leavingForExpiredSession) {
+      return state
+    }
+
     if (parentState.sessionMetadata == null || parentState.sessionE164 == null) {
       Log.w(TAG, "Parent state is missing session metadata or e164! Resetting.")
       parentEventEmitter(RegistrationFlowEvent.ResetState)
@@ -218,7 +238,8 @@ class VerificationCodeViewModel(
     return state.copy(
       sessionMetadata = parentState.sessionMetadata,
       e164 = parentState.sessionE164,
-      rateLimits = rateLimits
+      rateLimits = rateLimits,
+      leavingForExpiredSession = false
     )
   }
 
@@ -428,9 +449,10 @@ class VerificationCodeViewModel(
       is RequestResult.NonSuccess -> {
         when (val error = registerResult.error) {
           is RegisterAccountError.SessionNotFoundOrNotVerified -> {
-            Log.w(TAG, "[Register] Session not found or not verified: ${error.message}. Navigating back to phone number entry.")
-            parentEventEmitter.navigateBack()
-            state
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 1）：上游一声不响地退回，手机号页还会复用这个死会话、再被重置回欢迎页。
+            // 和提交验证码 / 重发时一样先弹框说清楚，关掉后走 SessionExpired（清会话、留号码）再退回。
+            Log.w(TAG, "[Register] Session not found or not verified: ${error.message}. Telling the user it expired before navigating back.")
+            state.copy(dialogs = state.dialogs.copy(sessionExpired = true))
           }
           is RegisterAccountError.DeviceTransferPossible -> {
             error("[Register] Got told a device transfer is possible. We should never get into this state. Resetting.")
@@ -522,11 +544,30 @@ class VerificationCodeViewModel(
           }
           is RequestVerificationCodeError.RateLimited -> {
             Log.w(TAG, "[RequestCode][$transport] Rate limited (retryAfter: ${error.retryAfter}).")
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 2）：照手机号页 navigateToCodeEntryAfterRateLimit 记下截止时刻
+            // （ADR-0051 §二 F：被限流时采用 retry_after）。不记的话父状态里还是上一次的截止时刻，正是「重新发送」刚亮起那一刻，
+            // 回到前台按它重算，倒计时就成了 0，按钮提前亮起，再点又是「请稍后再试」。
+            val now = clock()
+            val retryAt = now + error.retryAfter.inWholeMilliseconds
+            val nextSmsAllowedTimestamp = if (transport == VerificationCodeTransport.SMS) retryAt else error.session.nextSms?.let { now + it.seconds.inWholeMilliseconds }
+            val nextCallAllowedTimestamp = if (transport == VerificationCodeTransport.VOICE) retryAt else error.session.nextCall?.let { now + it.seconds.inWholeMilliseconds }
+            parentEventEmitter(
+              RegistrationFlowEvent.VerificationCodeRequested(
+                e164 = state.e164,
+                nextSmsAllowedTimestamp = nextSmsAllowedTimestamp,
+                nextCallAllowedTimestamp = nextCallAllowedTimestamp
+              )
+            )
             parentEventEmitter(RegistrationFlowEvent.SessionUpdated(error.session))
+            // 界面上的倒计时也从这一对截止时刻算（taishi 审查 b19 不阻塞 2）。原来用会话的 nextSms / nextCall，
+            // 和 retryAfter 不等时，回前台按截止时刻重算会跳一下。
             state.copy(
               dialogs = state.dialogs.copy(rateLimitedRetryAfter = error.retryAfter),
               sessionMetadata = error.session,
-              rateLimits = computeRateLimits(error.session)
+              rateLimits = SmsAndCallRateLimits(
+                smsResendTimeRemaining = nextSmsAllowedTimestamp?.let { (it - now).milliseconds.coerceAtLeast(0.seconds) },
+                callRequestTimeRemaining = nextCallAllowedTimestamp?.let { (it - now).milliseconds.coerceAtLeast(0.seconds) }
+              )
             )
           }
           is RequestVerificationCodeError.CouldNotFulfillWithRequestedTransport -> {
