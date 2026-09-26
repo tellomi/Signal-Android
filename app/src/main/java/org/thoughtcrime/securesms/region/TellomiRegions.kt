@@ -187,7 +187,7 @@ object TellomiRegions {
   /**
    * 测试区：CN 档的形状（同名标签），主机挂到 [domain] 下（`chat.<域>`、`grpc.chat.<域>`、`cdn3.<域>`…，路径和端口不变），
    * `enabled = true`。用来在 CN 保持关闭、`tellomi.cn` 下没有任何 DNS 记录的前提下验切区（#1055 判据 2）。
-   * 只换这一份表，不改 [ALL]，所以 `problems(ALL)` 和第二刀的门禁照旧。[domain] 不像域名就当没设。
+   * 只换这一份表，不改 [ALL]，所以 `problems(ALL)` 和第二刀的门禁照旧。[domain] 不像域名、或者就是 `tellomi.cn`（及其子域）就当没设。
    */
   fun testRegionProfiles(domain: String?): List<TellomiRegionProfile> {
     if (domain == null || !isPlausibleTestDomain(domain)) {
@@ -198,6 +198,10 @@ object TellomiRegions {
   }
 
   private fun isPlausibleTestDomain(domain: String): Boolean {
+    // 测试区是「开着的假 CN」：填 tellomi.cn 本身或它的子域就等于把真 CN 打开，不算
+    if (".${domain.lowercase()}".endsWith(CN_DOMAIN)) {
+      return false
+    }
     val labels = domain.split(".")
     return labels.size >= 2 && labels.all { label -> label.isNotEmpty() && label.all { it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it == '-' } }
   }

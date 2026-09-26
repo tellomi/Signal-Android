@@ -29,6 +29,18 @@ class TellomiTestRegionTest {
   }
 
   @Test
+  fun `the real cn domain can not be the test region`() {
+    // 测试区是「开着的假 CN」：域名填成 tellomi.cn 本身（或它的子域）就等于在 debug 包里把真 CN 打开，
+    // 而 CN 关着的时候 tellomi.cn 下一个请求都不许发（契约第四节，App 备案）
+    for (cn in listOf("tellomi.cn", "TELLOMI.CN", "Tellomi.Cn", "chat.tellomi.cn", "a.b.tellomi.cn")) {
+      assertThat(TellomiRegions.testRegionProfiles(cn), name = cn).isEqualTo(TellomiRegions.ALL)
+    }
+    // 只是长得像的别的域不受影响
+    assertThat(TellomiRegions.testRegionProfiles("nottellomi.cn")[1].enabled).isTrue()
+    assertThat(TellomiRegions.testRegionProfiles("tellomi.cn.test")[1].enabled).isTrue()
+  }
+
+  @Test
   fun `the test region moves every cn host under the given domain and is enabled`() {
     val profiles = TellomiRegions.testRegionProfiles("tellomi.test")
     assertThat(profiles.map { it.id }).isEqualTo(listOf(TellomiRegionId.GLOBAL, TellomiRegionId.CN))
