@@ -450,7 +450,7 @@ private fun PrimaryToolbar(
       }
     },
     title = {
-      ConnectionAwareTitle(state.connectionTitle)
+      ConnectionAwareTitle(state.connectionTitle, state.destination)
     },
     actions = {
       NotificationProfileAction(state, callback)
@@ -507,7 +507,7 @@ private fun PrimaryToolbar(
  * 新标题从上方滑入、旧标题向下滑出；机制参照 Telegram Android `ActionBar.setTitleOverlayText`（只读，独立实现）。
  */
 @Composable
-private fun ConnectionAwareTitle(connectionTitle: ConnectionTitle) {
+private fun ConnectionAwareTitle(connectionTitle: ConnectionTitle, destination: MainListRoute) {
   AnimatedContent(
     targetState = connectionTitle,
     transitionSpec = {
@@ -517,7 +517,8 @@ private fun ConnectionAwareTitle(connectionTitle: ConnectionTitle) {
     label = "ConnectionTitle"
   ) { title ->
     if (title == ConnectionTitle.NONE) {
-      Text(text = stringResource(R.string.app_name))
+      // Tellomi：连上时标题等于当前 Tab 的名字（通话 / 聊天 / 联系人 / 动态），和 iOS 一致，不再显示 App 名（owner 2026-09-26，两端差异清单 N2）
+      Text(text = stringResource(destination.label))
     } else {
       Row(verticalAlignment = Alignment.CenterVertically) {
         CircularProgressIndicator(
