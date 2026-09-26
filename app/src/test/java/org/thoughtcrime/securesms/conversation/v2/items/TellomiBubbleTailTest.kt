@@ -22,11 +22,15 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import org.signal.core.util.dp
 import org.thoughtcrime.securesms.R
+import org.thoughtcrime.securesms.contactshare.Contact
 import org.thoughtcrime.securesms.conversation.ConversationItemDisplayMode
 import org.thoughtcrime.securesms.database.FakeMessageRecords
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord
+import org.thoughtcrime.securesms.database.model.Quote
+import org.thoughtcrime.securesms.mms.QuoteModel
 import org.thoughtcrime.securesms.mms.SlideDeck
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.stickers.StickerLocator
 import org.thoughtcrime.securesms.util.MediaUtil
 
 /**
@@ -142,6 +146,26 @@ class TellomiBubbleTailTest {
     // 图铺满了气泡、没有露出来的底色：不画
     assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, hasThumbnail = true), context), "captionless photo").isFalse()
     assertThat(TellomiBubbleTail.hasVisibleBubble(mms("application/pdf", deleted = true), context), "deleted").isFalse()
+  }
+
+  @Test
+  fun `a sticker has no bubble unless it quotes something`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    val stickerDeck = SlideDeck(FakeMessageRecords.buildDatabaseAttachment(contentType = MediaUtil.IMAGE_WEBP, stickerLocator = StickerLocator("pack", "key", 1, null)))
+    val quote = Quote(1L, RecipientId.from(2), "原消息", false, SlideDeck(), emptyList(), QuoteModel.Type.NORMAL)
+
+    // 单独的贴纸没有底色；带引用的贴纸，引用那块有底色
+    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(body = "", slideDeck = stickerDeck), context), "sticker").isFalse()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(body = "", slideDeck = stickerDeck, quote = quote), context), "sticker quoting a message").isTrue()
+  }
+
+  @Test
+  fun `a contact card without text keeps its bubble`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    val contact = Contact(Contact.Name("小", "林", null, null, null, null), null, emptyList(), emptyList(), emptyList(), null)
+
+    // 联系人名片（没有附件、没有文字）是一张有底色的卡片
+    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(body = "", contacts = listOf(contact)), context), "contact card").isTrue()
   }
 
   private fun outlineBounds(towardsRight: Boolean, coverRadiusDp: Float = TellomiBubbleTail.DEFAULT_COVER_RADIUS_DP): RectF {
