@@ -8,6 +8,7 @@ import android.os.ParcelFileDescriptor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 
 import org.json.JSONException;
@@ -328,14 +329,27 @@ public class SubmitDebugLogRepository {
     }
   }
 
+  /**
+   * 上传调试日志用的 client。自建的，不走 {@link AppDependencies#getOkHttpClient()}。
+   * 放在嵌套类里：用例只碰它，不会触发外层 {@link #SECTIONS} 的静态初始化（那里要读 RemoteConfig）。
+   */
+  @VisibleForTesting
+  static final class UploadClient {
+    private UploadClient() {}
+
+    static @NonNull OkHttpClient build() {
+      return new OkHttpClient.Builder()
+          .addInterceptor(new StandardUserAgentInterceptor())
+          .dns(SignalServiceNetworkAccess.DNS)
+          .readTimeout(30, TimeUnit.SECONDS)
+          .writeTimeout(30, TimeUnit.SECONDS)
+          .build();
+    }
+  }
+
   @WorkerThread
   private @NonNull String uploadContent(@NonNull String contentType, @NonNull RequestBody requestBody) throws IOException {
-    OkHttpClient client = new OkHttpClient.Builder()
-        .addInterceptor(new StandardUserAgentInterceptor())
-        .dns(SignalServiceNetworkAccess.DNS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
-        .build();
+    OkHttpClient client = UploadClient.build();
 
     try (Response response = client.newCall(new Request.Builder().url(apiEndpoint() + "/").get().build()).execute()) {
       ResponseBody body = response.body();

@@ -39,7 +39,7 @@ object TellomiNotificationPrompts {
    * 更早的系统通知默认开着，没有可问的。
    */
   @JvmStatic
-  fun shouldShowPrimer(sdkInt: Int, isPermissionGranted: Boolean, hasSeenPrimer: Boolean): Boolean {
+  fun shouldShowPrimer(sdkInt: Int, isPermissionGranted: Boolean, hasSeenPrimer: Boolean, crossBorderPending: Boolean = false): Boolean {
     return sdkInt >= RUNTIME_PERMISSION_SDK && !isPermissionGranted && !hasSeenPrimer
   }
 
