@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.profiles.manage
 
+import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -39,6 +40,7 @@ import org.whispersystems.signalservice.api.SignalServiceAccountManager
 import org.whispersystems.signalservice.api.getCause
 import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import java.util.UUID
+import kotlin.time.Duration
 
 /**
  * Performs various actions around usernames and username links.
@@ -98,7 +100,9 @@ object UsernameRepository {
   private val URL_REGEX = """(https://)?signal.me/?#eu/([a-zA-Z0-9+\-_/]+)""".toRegex()
   private val URL_REGEX_TELLOMI = """(https://|tellomi://)?tell\.cc/u/?#eu/([a-zA-Z0-9+\-_/]+)""".toRegex()
 
-  private const val BASE_URL = "https://signal.me/#eu/"
+  // Tellomi（tellomi/tellomi#1113）：发出 https://tell.cc/u#eu/…（与 Desktop / iOS 相同）——用微信扫码会落到我们的落地页，
+  // 不是 Signal 的网页；解析新旧两种都认（URL_REGEX / URL_REGEX_TELLOMI）
+  private const val BASE_URL = "https://tell.cc/u#eu/"
   private const val USERNAME_SYNC_ERROR_THRESHOLD = 3
 
   private val accountManager: SignalServiceAccountManager get() = AppDependencies.signalServiceAccountManager
@@ -106,7 +110,7 @@ object UsernameRepository {
   /**
    * Given a nickname, this will temporarily reserve a matching discriminator that can later be confirmed via [confirmUsernameAndCreateNewLink].
    */
-  fun reserveUsername(nickname: String, discriminator: String?): Single<Result<UsernameState.Reserved, UsernameSetResult>> {
+  fun reserveUsername(nickname: String, discriminator: String?): Single<Result<UsernameState.Reserved, ReserveFailure>> {
     return rxSingle(Dispatchers.IO) { reserveUsernameInternal(nickname, discriminator) }
   }
 
@@ -406,17 +410,17 @@ object UsernameRepository {
     StorageSyncHelper.scheduleSyncForDataChange()
   }
 
-  private suspend fun reserveUsernameInternal(nickname: String, discriminator: String?): Result<UsernameState.Reserved, UsernameSetResult> {
+  private suspend fun reserveUsernameInternal(nickname: String, discriminator: String?): Result<UsernameState.Reserved, ReserveFailure> {
     return when (val result = AppDependencies.usernameService.reserveUsername(nickname, discriminator)) {
       is RequestResult.Success -> success(UsernameState.Reserved(result.result))
-      is RequestResult.NonSuccess -> when (result.error) {
-        is ReserveUsernameError.NicknameInvalid -> failure(UsernameSetResult.CANDIDATE_GENERATION_ERROR)
-        is ReserveUsernameError.NotAvailable -> failure(UsernameSetResult.USERNAME_UNAVAILABLE)
-        is ReserveUsernameError.RateLimited -> failure(UsernameSetResult.RATE_LIMIT_ERROR)
+      is RequestResult.NonSuccess -> when (val error = result.error) {
+        is ReserveUsernameError.NicknameInvalid -> failure(ReserveFailure(UsernameSetResult.CANDIDATE_GENERATION_ERROR))
+        is ReserveUsernameError.NotAvailable -> failure(ReserveFailure(UsernameSetResult.USERNAME_UNAVAILABLE))
+        is ReserveUsernameError.RateLimited -> failure(rateLimitedReserveFailure(error.retryAfter))
       }
       is RequestResult.RetryableNetworkError -> {
         Log.w(TAG, "[reserveUsername] Generic network exception.", result.networkError)
-        failure(UsernameSetResult.NETWORK_ERROR)
+        failure(ReserveFailure(UsernameSetResult.NETWORK_ERROR))
       }
       is RequestResult.ApplicationError -> throw result.cause
     }
@@ -496,6 +500,8 @@ object UsernameRepository {
         SignalStore.account.usernameSyncState = AccountValues.UsernameSyncState.IN_SYNC
         SignalStore.account.usernameSyncErrorCount = 0
         SignalStore.misc.needsUsernameRestore = false
+        // Tellomi（ADR-0066 §6.2）：记下删除时间，保留期内再设用户名前要提醒「这也算改名」
+        SignalStore.account.tellomiUsernameDeletedAt = System.currentTimeMillis()
 
         if (Recipient.self().usernameSyncMessagesCapability.isSupported) {
           MultiDeviceUsernameChangeSyncJob.enqueueUsernameChangeSync()
@@ -570,7 +576,26 @@ object UsernameRepository {
     USERNAME_INVALID,
     NETWORK_ERROR,
     CANDIDATE_GENERATION_ERROR,
-    RATE_LIMIT_ERROR
+    RATE_LIMIT_ERROR,
+
+    /** Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：30 天改名冷却期内要换别的名字，服务端回 429 + 天级 `Retry-After`。只会出现在 reserve。 */
+    CHANGE_COOLDOWN
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1106 第四刀）：reserve 的失败。改名冷却要带上还剩几天给界面说「N 天后可以再改」，
+   * [UsernameSetResult] 是 enum 带不了，所以 reserve 这一条路包一层；confirm 那条仍是 [UsernameSetResult]。
+   */
+  data class ReserveFailure(val result: UsernameSetResult, val renameCooldownDaysLeft: Int = 0)
+
+  /** Tellomi（tellomi/tellomi#1106 第四刀）：reserve 的 429 分成改名冷却和普通限流（判据与 Desktop 相同，见 [TellomiUsernames.isRenameCooldown]）。 */
+  @VisibleForTesting
+  fun rateLimitedReserveFailure(retryAfter: Duration?): ReserveFailure {
+    return if (retryAfter != null && TellomiUsernames.isRenameCooldown(retryAfter)) {
+      ReserveFailure(UsernameSetResult.CHANGE_COOLDOWN, TellomiUsernames.renameCooldownDaysLeft(retryAfter))
+    } else {
+      ReserveFailure(UsernameSetResult.RATE_LIMIT_ERROR)
+    }
   }
 
   enum class UsernameReclaimResult {

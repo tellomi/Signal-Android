@@ -2385,7 +2385,7 @@
 
     <!-- PinRestoreLockedFragment -->
     <string name="PinRestoreLockedFragment_create_your_pin">നിങ്ങളുടെ PIN സൃഷ്ടിക്കുക</string>
-    <string name="PinRestoreLockedFragment_youve_run_out_of_pin_guesses">നിങ്ങളുടെ നിഗമനങ്ങൾ തീർന്നു, പക്ഷേ ഒരു പുതിയ പിന് സൃഷ്ടിച്ചുകൊണ്ട് നിങ്ങൾക്ക് ഇപ്പോഴും സിഗ്നൽ അക്കൗണ്ടില്ലെക് പ്രവേശിക്കാൻ കഴിയും. നിങ്ങളുടെ സ്വകാര്യതയ്ക്കും സുരക്ഷയ്ക്കുമായി സംരക്ഷിച്ച പ്രൊഫൈൽ വിവരങ്ങളോ ക്രമീകരണങ്ങളോ ഇല്ലാതെ നിങ്ങളുടെ അക്കൗണ്ട് പുന:സ്ഥാപിക്കപ്പെടും.</string>
+    <string name="PinRestoreLockedFragment_youve_run_out_of_pin_guesses">നിങ്ങളുടെ നിഗമനങ്ങൾ തീർന്നു, പക്ഷേ ഒരു പുതിയ പിന് സൃഷ്ടിച്ചുകൊണ്ട് നിങ്ങൾക്ക് ഇപ്പോഴും Tellomi അക്കൗണ്ടില്ലെക് പ്രവേശിക്കാൻ കഴിയും. നിങ്ങളുടെ സ്വകാര്യതയ്ക്കും സുരക്ഷയ്ക്കുമായി സംരക്ഷിച്ച പ്രൊഫൈൽ വിവരങ്ങളോ ക്രമീകരണങ്ങളോ ഇല്ലാതെ നിങ്ങളുടെ അക്കൗണ്ട് പുന:സ്ഥാപിക്കപ്പെടും.</string>
     <string name="PinRestoreLockedFragment_create_new_pin">പുതിയ PIN സൃഷ്ടിക്കുക</string>
   <!-- Removed by excludeNonTranslatables <string name="PinRestoreLockedFragment_learn_more_url" translatable="false">https://tellomi.app/help/360007059792</string> -->
 
@@ -3347,7 +3347,7 @@
     <!-- Body of a notification when someone votes in a poll. First placeholder is the poll emoji, second placeholder is the name of the voter and third is the poll question -->
     <string name="MessageNotifier_s_voted_in_poll">%1$s \"%3$s\" എന്ന പോളില്‍ %2$s വോട്ട് ചെയ്തു</string>
 
-    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">\"കോൺ‌ടാക്റ്റ് Tellomi-ഇൽ (സിഗ്‌നലിൽ)‌ ചേർ‌ന്നു\" എന്ന അറിയിപ്പുകൾ ഓഫാക്കണോ? നിങ്ങൾക്ക് അവ വീണ്ടും പ്രവർത്തനക്ഷമമാക്കാം: Tellomi-ഇൽ (സിഗ്നലിൽ) &gt; ക്രമീകരണങ്ങൾ &gt; അറിയിപ്പുകൾ.</string>
+    <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">\"കോൺ‌ടാക്റ്റ് Tellomi-ഇൽ (സിഗ്‌നലിൽ)‌ ചേർ‌ന്നു\" എന്ന അറിയിപ്പുകൾ ഓഫാക്കണോ? നിങ്ങൾക്ക് അവ വീണ്ടും പ്രവർത്തനക്ഷമമാക്കാം: Tellomi-ഇൽ (Tellomi-ൽ) &gt; ക്രമീകരണങ്ങൾ &gt; അറിയിപ്പുകൾ.</string>
 
     <!-- TurnOnNotificationsBottomSheet -->
     <!-- Title for sheet explaining how to turn on app notifications -->
@@ -3767,7 +3767,7 @@
 
     <!-- BubbleOptOutTooltip -->
     <!-- Message to inform the user of what Android chat bubbles are -->
-    <string name="BubbleOptOutTooltip__description">സിഗ്നൽ ചാറ്റുകളിൽ നിങ്ങൾക്ക് ഓഫുചെയ്യാൻ കഴിയുന്ന ഒരു ആൻഡ്രോയിഡ് സവിശേഷതയാണ് ബബിൾസ്.</string>
+    <string name="BubbleOptOutTooltip__description">Tellomi ചാറ്റുകളിൽ നിങ്ങൾക്ക് ഓഫുചെയ്യാൻ കഴിയുന്ന ഒരു ആൻഡ്രോയിഡ് സവിശേഷതയാണ് ബബിൾസ്.</string>
     <!-- Button to dismiss the tooltip for opting out of using Android bubbles -->
     <string name="BubbleOptOutTooltip__not_now">ഇപ്പോൾ വേണ്ട</string>
     <!-- Button to move to the system settings to control the use of Android bubbles -->
@@ -4270,14 +4270,14 @@
     <string name="preferences__graphic_illustrating_where_the_replacement_app_icon_will_be_visible">പുതിയ ആപ്പ് ഐക്കൺ എവിടെ കാണാനാകും എന്നതിന്റെ ഗ്രാഫിക് പ്രതിനിധീകരണം.</string>
     <string name="preferences__disable_pin">PIN അപ്രാപ്‌തമാക്കുക</string>
     <string name="preferences__enable_pin">PIN പ്രവർത്തനക്ഷമമാക്കുക</string>
-    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">നിങ്ങൾ‌ PIN (പിൻ) അപ്രാപ്‌തമാക്കുകയാണെങ്കിൽ‌, നിങ്ങൾ‌ സ്വമേധയാ ബാക്കപ്പുചെയ്‌ത് പുന.സ്ഥാപിച്ചില്ലെങ്കിൽ,‌ നിങ്ങൾ‌ സിഗ്നൽ‌ വീണ്ടും രജിസ്റ്റർ‌ ചെയ്യുമ്പോൾ‌ എല്ലാ ഡാറ്റയും നഷ്‌ടപ്പെടും. PIN (പിൻ) പ്രവർത്തനരഹിതമാക്കിയിരിക്കുമ്പോൾ നിങ്ങൾക്ക് രജിസ്ട്രേഷൻ ലോക്ക് ഓണാക്കാൻ കഴിയില്ല.</string>
-    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">PIN-ഉകൾ / പിന്നുകൾ (സിഗ്നൽ ഉപയോഗിച്ച് സംഭരിച്ചിരിക്കുന്ന) വിവരങ്ങൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നതിനാൽ നിങ്ങൾക്ക് മാത്രമേ ഇത് ആക്സസ് ചെയ്യാൻ കഴിയൂ. നിങ്ങൾ വീണ്ടും ഇൻസ്റ്റാൾ ചെയ്യുമ്പോൾ നിങ്ങളുടെ പ്രൊഫൈൽ, ക്രമീകരണങ്ങൾ, കോൺടാക്റ്റുകൾ എന്നിവ പുന.സ്ഥാപിക്കും. അപ്ലിക്കേഷൻ തുറക്കാൻ നിങ്ങളുടെ PIN (പിൻ) ആവശ്യം വരില്ല.</string>
+    <string name="preferences__if_you_disable_the_pin_you_will_lose_all_data">നിങ്ങൾ‌ PIN (പിൻ) അപ്രാപ്‌തമാക്കുകയാണെങ്കിൽ‌, നിങ്ങൾ‌ സ്വമേധയാ ബാക്കപ്പുചെയ്‌ത് പുന.സ്ഥാപിച്ചില്ലെങ്കിൽ,‌ നിങ്ങൾ‌ Tellomi‌ വീണ്ടും രജിസ്റ്റർ‌ ചെയ്യുമ്പോൾ‌ എല്ലാ ഡാറ്റയും നഷ്‌ടപ്പെടും. PIN (പിൻ) പ്രവർത്തനരഹിതമാക്കിയിരിക്കുമ്പോൾ നിങ്ങൾക്ക് രജിസ്ട്രേഷൻ ലോക്ക് ഓണാക്കാൻ കഴിയില്ല.</string>
+    <string name="preferences__pins_keep_information_stored_with_signal_encrypted_so_only_you_can_access_it">PIN-ഉകൾ / പിന്നുകൾ (Tellomi ഉപയോഗിച്ച് സംഭരിച്ചിരിക്കുന്ന) വിവരങ്ങൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നതിനാൽ നിങ്ങൾക്ക് മാത്രമേ ഇത് ആക്സസ് ചെയ്യാൻ കഴിയൂ. നിങ്ങൾ വീണ്ടും ഇൻസ്റ്റാൾ ചെയ്യുമ്പോൾ നിങ്ങളുടെ പ്രൊഫൈൽ, ക്രമീകരണങ്ങൾ, കോൺടാക്റ്റുകൾ എന്നിവ പുന.സ്ഥാപിക്കും. അപ്ലിക്കേഷൻ തുറക്കാൻ നിങ്ങളുടെ PIN (പിൻ) ആവശ്യം വരില്ല.</string>
     <string name="preferences__system_default">സിസ്റ്റം സ്ഥിരസ്ഥിതി</string>
     <string name="preferences__language">ഭാഷ</string>
     <string name="preferences__signal_messages_and_calls">Tellomi സന്ദേശങ്ങളും കോളുകളും</string>
     <!-- Title of toolbar for the advanced pin settings screen -->
     <string name="preferences__advanced_pin_settings_title">വിപുലമായ PIN ക്രമീകരണങ്ങൾ</string>
-    <string name="preferences__free_private_messages_and_calls">സിഗ്നൽ ഉപയോക്താക്കൾക്ക് സൗജന്യ സ്വകാര്യ സന്ദേശങ്ങളും കോളുകളും</string>
+    <string name="preferences__free_private_messages_and_calls">Tellomi ഉപയോക്താക്കൾക്ക് സൗജന്യ സ്വകാര്യ സന്ദേശങ്ങളും കോളുകളും</string>
     <string name="preferences__submit_debug_log">ഡീബഗ് ലോഗ് സമർപ്പിക്കുക</string>
     <string name="preferences__support_wifi_calling">\'WiFi കോളിംഗ്\' അനുയോജ്യത മോഡ്</string>
     <string name="preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi">നിങ്ങളുടെ ഉപകരണം WiFi വഴി SMS/MMS ഡെലിവറി ഉപയോഗിക്കുന്നുവെങ്കിൽ പ്രവർത്തനക്ഷമമാക്കുക (ഉപകരണത്തിൽ \'WiFi കോളിംഗ്\' പ്രാപ്‌തമാക്കിയാൽ മാത്രം ഇത് പ്രവർത്തനക്ഷമമാക്കുക)</string>
@@ -4331,7 +4331,7 @@
 
     <string name="preferences_storage__custom">ഇഷ്‌ടാനുസൃതം</string>
     <string name="preferences_advanced__use_system_emoji">സിസ്റ്റം ഇമോജി ഉപയോഗിക്കുക</string>
-    <string name="preferences_advanced__relay_all_calls_through_the_signal_server_to_avoid_revealing_your_ip_address">നിങ്ങളുടെ കോൺ‌ടാക്റ്റിലേക്ക് നിങ്ങളുടെ ഐ‌പി വിലാസം വെളിപ്പെടുത്തുന്നത് ഒഴിവാക്കാൻ സിഗ്നൽ സെർവർ വഴി എല്ലാ കോളുകളും റിലേ ചെയ്യുക. പ്രവർത്തനക്ഷമമാക്കുന്നത് കോൾ നിലവാരം കുറയ്ക്കും.</string>
+    <string name="preferences_advanced__relay_all_calls_through_the_signal_server_to_avoid_revealing_your_ip_address">നിങ്ങളുടെ കോൺ‌ടാക്റ്റിലേക്ക് നിങ്ങളുടെ ഐ‌പി വിലാസം വെളിപ്പെടുത്തുന്നത് ഒഴിവാക്കാൻ Tellomi സെർവർ വഴി എല്ലാ കോളുകളും റിലേ ചെയ്യുക. പ്രവർത്തനക്ഷമമാക്കുന്നത് കോൾ നിലവാരം കുറയ്ക്കും.</string>
     <string name="preferences_advanced__always_relay_calls">എല്ലായ്പ്പോഴും കോളുകൾ റിലേ ചെയ്യുക</string>
     <!-- Privacy settings payments section title -->
     <string name="preferences_app_protection__payments">പേയ്മെന്റുകൾ</string>
@@ -4852,7 +4852,7 @@
 
     <!-- KbsSplashFragment -->
     <string name="KbsSplashFragment__introducing_pins">അവതരിപ്പിക്കുന്നു PIN-കൾ</string>
-    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">PIN-ഉകൾ / പിന്നുകൾ (സിഗ്നൽ ഉപയോഗിച്ച് സംഭരിച്ചിരിക്കുന്ന) വിവരങ്ങൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നതിനാൽ നിങ്ങൾക്ക് മാത്രമേ ഇത് ആക്സസ് ചെയ്യാൻ കഴിയൂ. നിങ്ങൾ വീണ്ടും ഇൻസ്റ്റാൾ ചെയ്യുമ്പോൾ നിങ്ങളുടെ പ്രൊഫൈൽ, ക്രമീകരണങ്ങൾ, കോൺടാക്റ്റുകൾ എന്നിവ പുന.സ്ഥാപിക്കും. അപ്ലിക്കേഷൻ തുറക്കാൻ നിങ്ങളുടെ PIN (പിൻ) ആവശ്യം വരില്ല.</string>
+    <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">PIN-ഉകൾ / പിന്നുകൾ (Tellomi ഉപയോഗിച്ച് സംഭരിച്ചിരിക്കുന്ന) വിവരങ്ങൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നതിനാൽ നിങ്ങൾക്ക് മാത്രമേ ഇത് ആക്സസ് ചെയ്യാൻ കഴിയൂ. നിങ്ങൾ വീണ്ടും ഇൻസ്റ്റാൾ ചെയ്യുമ്പോൾ നിങ്ങളുടെ പ്രൊഫൈൽ, ക്രമീകരണങ്ങൾ, കോൺടാക്റ്റുകൾ എന്നിവ പുന.സ്ഥാപിക്കും. അപ്ലിക്കേഷൻ തുറക്കാൻ നിങ്ങളുടെ PIN (പിൻ) ആവശ്യം വരില്ല.</string>
     <string name="KbsSplashFragment__learn_more">കൂടുതൽ അറിയുക</string>
   <!-- Removed by excludeNonTranslatables <string name="KbsSplashFragment__learn_more_link" translatable="false">https://tellomi.app/help/360007059792</string> -->
     <string name="KbsSplashFragment__registration_lock_equals_pin">രജിസ്ട്രേഷൻ ലോക്ക് = PIN</string>
@@ -5127,7 +5127,7 @@
 
     <!-- TransferOrRestoreFragment -->
     <string name="TransferOrRestoreFragment__transfer_or_restore_account">അക്കൗണ്ട് കൈമാറുകയോ പുനസ്ഥാപിക്കുകയോ ചെയ്യുക</string>
-    <string name="TransferOrRestoreFragment__if_you_have_previously_registered_a_signal_account">നിങ്ങൾ മുമ്പ് ഒരു സിഗ്നൽ അക്കൗണ്ട് രജിസ്റ്റർ ചെയ്തിട്ടുണ്ടെങ്കിൽ, നിങ്ങളുടെ അക്കൌണ്ടും സന്ദേശങ്ങളും മാറ്റിസ്ഥാപിക്കാനോ പുനസ്ഥാപിക്കാനോ കഴിയും</string>
+    <string name="TransferOrRestoreFragment__if_you_have_previously_registered_a_signal_account">നിങ്ങൾ മുമ്പ് ഒരു Tellomi അക്കൗണ്ട് രജിസ്റ്റർ ചെയ്തിട്ടുണ്ടെങ്കിൽ, നിങ്ങളുടെ അക്കൌണ്ടും സന്ദേശങ്ങളും മാറ്റിസ്ഥാപിക്കാനോ പുനസ്ഥാപിക്കാനോ കഴിയും</string>
     <string name="TransferOrRestoreFragment__transfer_from_android_device">ആൻഡ്രോയിഡ് ഉപകരണത്തിൽ നിന്ന് ട്രാൻസ്ഫർ</string>
     <string name="TransferOrRestoreFragment__transfer_your_account_and_messages_from_your_old_android_device">നിങ്ങളുടെ പഴയ ആൻഡ്രോയിഡ് ഉപകരണത്തിൽ നിന്ന് നിങ്ങളുടെ അക്കൗണ്ടും സന്ദേശങ്ങള്‍-ഉം ട്രാൻസ്ഫർ ചെയ്യുക. നിങ്ങളുടെ പഴയ ഉപകരണത്തിലേക്ക് നിങ്ങൾക്ക് ആക്സസ് ആവശ്യമാണ്.</string>
     <string name="TransferOrRestoreFragment__you_need_access_to_your_old_device">നിങ്ങളുടെ പഴയ ഉപകരണത്തിലേക്ക് നിങ്ങൾക്ക് ആക്സസ് ആവശ്യമാണ്.</string>
@@ -5305,8 +5305,8 @@
     <string name="GroupsLearnMore_what_are_legacy_groups">ലെഗസി ഗ്രൂപ്പുകൾ എന്താണ്?</string>
     <string name="GroupsLearnMore_paragraph_1">പുതിയ ഗ്രൂപ്പ് സവിശേഷതകളായ അഡ്‌മിനുകൾ, കൂടുതൽ വിവരണാത്മക ഗ്രൂപ്പ് അപ്‌ഡേറ്റുകൾ എന്നിവയുമായി പൊരുത്തപ്പെടാത്ത ഗ്രൂപ്പുകളാണ് ലെഗസി ഗ്രൂപ്പുകൾ.</string>
     <string name="GroupsLearnMore_can_i_upgrade_a_legacy_group">എനിക്ക് ഒരു ലെഗസി ഗ്രൂപ്പ് അപ്‌ഗ്രേഡുചെയ്യാനാകുമോ?</string>
-    <string name="GroupsLearnMore_paragraph_2">ലെഗസി (പഴയ) ഗ്രൂപ്പുകളെ ഇതുവരെ പുതിയ ഗ്രൂപ്പുകളിലേക്ക് അപ്ഗ്രേഡ് ചെയ്യാൻ കഴിയില്ല, എന്നാൽ അതേ അംഗങ്ങൾ Tellomi-ഇന്റെ (സിഗ്നലിന്റെ) ഏറ്റവും പുതിയ വേർഷനിലുണ്ടെങ്കിൽ (പതിപ്പിലാണെങ്കിൽ) നിങ്ങൾക്ക് അവരുമായി ഒരു പുതിയ ഗ്രൂപ്പ് സൃഷ്ടിക്കാൻ കഴിയും.</string>
-    <string name="GroupsLearnMore_paragraph_3">ഭാവിയിൽ ലെഗസി ഗ്രൂപ്പുകളെ നവീകരിക്കുന്നതിനുള്ള ഒരു വഴി സിഗ്നൽ വാഗ്ദാനം ചെയ്യും.</string>
+    <string name="GroupsLearnMore_paragraph_2">ലെഗസി (പഴയ) ഗ്രൂപ്പുകളെ ഇതുവരെ പുതിയ ഗ്രൂപ്പുകളിലേക്ക് അപ്ഗ്രേഡ് ചെയ്യാൻ കഴിയില്ല, എന്നാൽ അതേ അംഗങ്ങൾ Tellomi-ഇന്റെ (Tellomi-ന്റെ) ഏറ്റവും പുതിയ വേർഷനിലുണ്ടെങ്കിൽ (പതിപ്പിലാണെങ്കിൽ) നിങ്ങൾക്ക് അവരുമായി ഒരു പുതിയ ഗ്രൂപ്പ് സൃഷ്ടിക്കാൻ കഴിയും.</string>
+    <string name="GroupsLearnMore_paragraph_3">ഭാവിയിൽ ലെഗസി ഗ്രൂപ്പുകളെ നവീകരിക്കുന്നതിനുള്ള ഒരു വഴി Tellomi വാഗ്ദാനം ചെയ്യും.</string>
 
     <!-- GroupLinkBottomSheetDialogFragment -->
     <string name="GroupLinkBottomSheet_share_hint_requiring_approval">ഈ ലിങ്കുള്ള ആർക്കും ഗ്രൂപ്പിന്റെ പേരും ഫോട്ടോയും കാണാനും ഗ്രൂപ്പിൽ ചേരാനും കഴിയും. നിങ്ങൾ വിശ്വസിക്കുന്ന ആളുകളുമായി ഇത് പങ്കിടുക.</string>

@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">পরিচিতিসমূহ</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">আপনার পরিচিত ব্যক্তিদের খুঁজে বের করুন। আপনার কন্টাক্টগুলো এনক্রিপ্ট অবস্থায় আছে এবং সেগুলো সিগন্যাল সার্ভিসে দৃশ্যমান নয়।</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">আপনার পরিচিত ব্যক্তিদের খুঁজে বের করুন। আপনার কন্টাক্টগুলো এনক্রিপ্ট অবস্থায় আছে এবং সেগুলো Tellomi সার্ভিসে দৃশ্যমান নয়।</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">ফোন কল</string>
     <!-- Phone calls permission row description -->
@@ -487,7 +487,7 @@
     <!-- Title for the screen that shows a QR code the user scans with their existing primary device to link this device as a secondary -->
     <string name="LinkAccountScreen__scan_this_code_to_link_your_account">আপনার অ্যাকাউন্ট লিংক করতে এই কোডটি স্ক্যান করুন</string>
     <!-- Step in the link-account instructions: open Signal on the user\'s existing phone -->
-    <string name="LinkAccountScreen__open_signal_on_your_phone">আপনার ফোনে সিগন্যাল খুলুন</string>
+    <string name="LinkAccountScreen__open_signal_on_your_phone">আপনার ফোনে Tellomi খুলুন</string>
     <!-- Step in the link-account instructions: tap profile picture to open Signal Settings -->
     <string name="LinkAccountScreen__tap_your_profile_picture_to_open_signal_settings">Tellomi সেটিংস খুলতে আপনার প্রোফাইল ছবিতে ট্যাপ করুন</string>
     <!-- Step in the link-account instructions: navigate to the Linked devices section and tap Link new device. The quoted strings should match the button/menu labels in the primary device\'s settings. -->

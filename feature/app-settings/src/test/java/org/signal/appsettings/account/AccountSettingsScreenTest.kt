@@ -48,6 +48,24 @@ class AccountSettingsScreenTest {
     assertThat(events).contains(AccountSettingsEvent.ModifyPinClicked)
   }
 
+  /** Tellomi（tellomi/tellomi#1234）：没有 SVR 时创建 / 修改 PIN 会去连 SVR，整节不显示。 */
+  @Test
+  fun givenNoSvrInThisDeployment_whenScreenShown_thenPinSectionIsHidden() {
+    setContent(createState(hasPin = false, hasRestoredAep = false, isSvrAvailable = false))
+
+    composeTestRule.onNodeWithText(context.getString(R.string.preferences_app_protection__signal_pin)).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_MODIFY_PIN).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_PIN_REMINDER).assertDoesNotExist()
+  }
+
+  @Test
+  fun givenSvrAvailable_whenScreenShown_thenPinSectionIsShown() {
+    setContent(createState(hasPin = false, hasRestoredAep = false, isSvrAvailable = true))
+
+    composeTestRule.onNodeWithText(context.getString(R.string.preferences_app_protection__signal_pin)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_MODIFY_PIN).assertIsDisplayed()
+  }
+
   @Test
   fun givenUserWithPin_whenPinReminderToggleClicked_thenIExpectToggleEvent() {
     setContent(createState(hasPin = true, pinRemindersEnabled = true))
@@ -388,6 +406,7 @@ class AccountSettingsScreenTest {
     clientDeprecated: Boolean = false,
     canTransferWhileUnregistered: Boolean = true,
     isPhoneNumberless: Boolean = false,
+    isSvrAvailable: Boolean = true,
     signalLogin: AccountSettingsState.SignalLogin? = null,
     dialog: Dialog = Dialog.None
   ): AccountSettingsState {
@@ -400,6 +419,7 @@ class AccountSettingsScreenTest {
       clientDeprecated = clientDeprecated,
       canTransferWhileUnregistered = canTransferWhileUnregistered,
       isPhoneNumberless = isPhoneNumberless,
+      isSvrAvailable = isSvrAvailable,
       signalLogin = signalLogin,
       dialog = dialog
     )
