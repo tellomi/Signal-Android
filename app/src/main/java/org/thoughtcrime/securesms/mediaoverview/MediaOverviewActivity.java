@@ -18,6 +18,7 @@ package org.thoughtcrime.securesms.mediaoverview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -211,6 +214,8 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
         }
       });
       searchItem.setIcon(org.signal.core.ui.R.drawable.symbol_search_24);
+      // symbol_search_24 是黑色填充、菜单不会自动着色：暗色模式下几乎看不见，跟着顶栏文字的颜色走（上游用它时都配了 iconTint）
+      MenuItemCompat.setIconTintList(searchItem, ColorStateList.valueOf(ContextCompat.getColor(this, org.signal.core.ui.R.color.signal_colorOnSurface)));
       searchItem.setActionView(searchView);
       searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
       searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
