@@ -724,7 +724,7 @@ class Recipient(
 
   fun getFallbackAvatar(): FallbackAvatar {
     return if (isSelf) {
-      FallbackAvatar.Resource.NoteToSelf(avatarColor)
+      FallbackAvatar.Resource.NoteToSelf(FallbackAvatar.Resource.NoteToSelf.TELLOMI_SAVED_MESSAGES_COLOR)
     } else if (isResolving) {
       FallbackAvatar.Transparent
     } else if (isDistributionList) {

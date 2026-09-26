@@ -234,7 +234,7 @@ private fun ConversationHeaderContent(
       )
 
       if (isSelf) {
-        OfficialChatPill()
+        // Tellomi：「官方聊天号」是官方账号的说法，「我的收藏」不挂（#1174）；认证标照旧由名字后面的标给
         Text(
           text = stringResource(R.string.ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation),
           style = MaterialTheme.typography.bodyMedium,

@@ -691,15 +691,7 @@ class PhoneNumberEntryViewModel(
             state
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
-            if (state.countryCode !in TellomiRegistration.SMS_VERIFICATION_CALLING_CODES) {
-              // Tellomi（#1210）：这个地区没有短信通道（香港只开放中国大陆号码），等多久都不会好。
-              // 上游照样弹「请在几小时后重试」；改成号码框下的行内提示。+86 遇到 440 仍按临时故障处理。
-              Log.w(TAG, "[RequestVerificationCode] Third party service error for a region without SMS verification (+${state.countryCode}).")
-              state.copy(isRegionUnavailable = true)
-            } else {
-              Log.w(TAG, "[RequestVerificationCode] Third party service error.")
-              state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
-            }
+            applyThirdPartyServiceError(state)
           }
         }
       }
@@ -811,7 +803,7 @@ class PhoneNumberEntryViewModel(
             state
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
-            state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+            applyThirdPartyServiceError(state)
           }
         }
       }
@@ -850,6 +842,24 @@ class PhoneNumberEntryViewModel(
     parentEventEmitter(RegistrationFlowEvent.SessionUpdated(error.session))
     parentEventEmitter(RegistrationFlowEvent.E164Chosen(e164))
     parentEventEmitter.navigateTo(RegistrationRoute.VerificationCodeEntry)
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1210）：请求验证码回 440（[RequestVerificationCodeError.ThirdPartyServiceError]）之后给什么。
+   * 直接请求（[applySessionBasedRegistration]）和人机验证之后再请求（[applyCaptchaCompleted]）共用这一处——
+   * 香港服务端的新会话先要人机验证（没有 GMS 过不了推送挑战），后一条才是主路。
+   *
+   * 号码不是 +86：这个地区没有短信通道（香港只开放中国大陆号码），等多久都不会好。上游照样弹「请在几小时后重试」，
+   * 改成号码框下的行内提示。+86 遇到 440 仍按上游当临时故障处理。
+   */
+  private fun applyThirdPartyServiceError(state: PhoneNumberEntryState): PhoneNumberEntryState {
+    return if (state.countryCode !in TellomiRegistration.SMS_VERIFICATION_CALLING_CODES) {
+      Log.w(TAG, "[RequestVerificationCode] Third party service error for a region without SMS verification (+${state.countryCode}).")
+      state.copy(isRegionUnavailable = true)
+    } else {
+      Log.w(TAG, "[RequestVerificationCode] Third party service error.")
+      state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+    }
   }
 
   private fun formatNumber(nationalNumber: String): String {
