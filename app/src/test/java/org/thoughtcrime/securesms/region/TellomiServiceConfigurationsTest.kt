@@ -10,12 +10,18 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
+import okhttp3.Dns
+import okhttp3.Interceptor
 import org.junit.Test
+import org.signal.network.config.HttpProxy
 import org.signal.network.config.SignalCdnUrl
+import org.signal.network.config.SignalProxy
 import org.signal.network.config.SignalServiceConfiguration
 import org.signal.network.config.TrustStore
 import java.io.InputStream
+import java.net.InetAddress
 import java.util.Optional
 
 /**
@@ -71,6 +77,45 @@ class TellomiServiceConfigurationsTest {
         // 规避配置的保护不在这里（copy 共用同一个 map，在这里再断言一次是空转）：
         // 由 SignalServiceNetworkAccess 的 init 在构造时断言，用例见 SignalServiceNetworkAccessCdn3Test。
       }
+    }
+  }
+
+  @Test
+  fun `everything that is not an endpoint is passed through untouched`() {
+    val dns = object : Dns {
+      override fun lookup(hostname: String): List<InetAddress> = emptyList()
+    }
+    val interceptors = listOf(Interceptor { it.proceed(it.request()) })
+    val signalProxy = SignalProxy("proxy.example", 443)
+    val systemHttpProxy = HttpProxy("http-proxy.example", 8080)
+    val zk = ByteArray(3) { 1 }
+    val generic = ByteArray(3) { 2 }
+    val backup = ByteArray(3) { 3 }
+
+    val configuration = TellomiServiceConfigurations.build(
+      profile = TellomiRegions.GLOBAL,
+      trustStore = trustStore,
+      cdsiUrl = "https://cdsi.example",
+      svr2Url = "https://svr2.example",
+      networkInterceptors = interceptors,
+      dns = Optional.of(dns),
+      signalProxy = Optional.of(signalProxy),
+      systemHttpProxy = Optional.of(systemHttpProxy),
+      zkGroupServerPublicParams = zk,
+      genericServerPublicParams = generic,
+      backupServerPublicParams = backup,
+      censored = false
+    )
+
+    assertThat(configuration.networkInterceptors).isSameInstanceAs(interceptors)
+    assertThat(configuration.dns.get()).isSameInstanceAs(dns)
+    assertThat(configuration.signalProxy.get()).isSameInstanceAs(signalProxy)
+    assertThat(configuration.systemHttpProxy.get()).isSameInstanceAs(systemHttpProxy)
+    assertThat(configuration.zkGroupServerPublicParams).isSameInstanceAs(zk)
+    assertThat(configuration.genericServerPublicParams).isSameInstanceAs(generic)
+    assertThat(configuration.backupServerPublicParams).isSameInstanceAs(backup)
+    for (urls in listOf(configuration.signalServiceUrls, configuration.signalStorageUrls, configuration.signalCdsiUrls, configuration.signalSvr2Urls) + configuration.signalCdnUrlMap.values) {
+      assertThat(urls.all { it.trustStore === trustStore }).isTrue()
     }
   }
 

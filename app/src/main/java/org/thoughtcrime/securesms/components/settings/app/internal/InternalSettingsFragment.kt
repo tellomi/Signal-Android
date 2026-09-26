@@ -76,6 +76,7 @@ import org.thoughtcrime.securesms.megaphone.Megaphones
 import org.thoughtcrime.securesms.payments.DataExportUtil
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.registration.data.QuickstartCredentialExporter
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.util.ConversationUtil
@@ -670,10 +671,10 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
 
       radioPref(
         title = DSLSettingsText.from("Production server"),
-        summary = DSLSettingsText.from(BuildConfig.SIGNAL_SFU_URL),
-        isChecked = state.callingServer == BuildConfig.SIGNAL_SFU_URL,
+        summary = DSLSettingsText.from(TellomiRegions.current().sfu),
+        isChecked = state.callingServer == TellomiRegions.current().sfu,
         onClick = {
-          viewModel.setInternalGroupCallingServer(BuildConfig.SIGNAL_SFU_URL)
+          viewModel.setInternalGroupCallingServer(TellomiRegions.current().sfu)
         }
       )
 

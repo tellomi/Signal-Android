@@ -6,6 +6,7 @@
 package org.thoughtcrime.securesms.region
 
 import org.thoughtcrime.securesms.BuildConfig
+import org.thoughtcrime.securesms.keyvalue.SignalStore
 
 /**
  * Tellomi：区域 id（RegionProfile 契约 v2 第二节，超级仓库 `docs/signal/REGION_PROFILE.md`；tellomi/tellomi#1055）。
@@ -22,6 +23,11 @@ enum class TellomiRegionId(val id: String) {
  * URL 字段带 scheme；名字以 `Host` 结尾的只写主机名。
  *
  * 不进区域的：`svr2` / `cdsi`（没有自建，见 `ENCLAVES.md`）、zk 参数、UD 信任根、CA——两个区连的是同一套服务端。
+ *
+ * 契约第三节有、这里没有字段的两样：
+ * - staticIps（Android 独有，只属于 global 档）：`StaticDns` 仍按 GLOBAL 的主机名建表，CN 的主机查不到就落到系统 DNS，
+ *   和今天没有静态 IP 的主机一样；切区那一刀连 static-ips 一起收。
+ * - grpcChat 的端口（`BuildConfig.LIBSIGNAL_CUSTOM_SERVER_PORT`）：两个区相同，暂不进表。
  */
 data class TellomiRegionProfile(
   val id: TellomiRegionId,
@@ -119,6 +125,36 @@ object TellomiRegions {
   @JvmField
   val ALL: List<TellomiRegionProfile> = listOf(GLOBAL, CN)
 
+  init {
+    // 契约第五节第 8 条：包内配置坏了就拒绝启动（和 Desktop 启动时抛同一语义）。
+    // 单测只覆盖跑过的变体，而发版只打 website 档、不跑单测（它多一个 APK 清单端点），所以类加载时再核一次。
+    val broken = problems(ALL)
+    check(broken.isEmpty()) { "packaged region table is broken: $broken" }
+  }
+
+  /**
+   * 当前区。各调用点在用的时候取，不在类加载时存下来，这样切区（`AppDependencies.resetNetwork()`）之后新建的连接就用新区。
+   * 现在 CN 关着，所以恒为 global。
+   */
+  @JvmStatic
+  fun current(): TellomiRegionProfile {
+    val storedId: String? = try {
+      SignalStore.tellomiRegion.currentId
+    } catch (e: Exception) {
+      // SignalStore 还没初始化（进程刚起的早期路径、单测）或者读库失败：回落 global，绝不抛（契约第五节第 8 条）
+      null
+    }
+    return resolve(storedId)
+  }
+
+  /**
+   * 记住的区 id → 区。没有记录、不认识、或者那个区被关了，一律回落 global
+   * （契约第五节第 8 条：运行时来源坏了只回落，绝不抛）。
+   */
+  fun resolve(storedId: String?, profiles: List<TellomiRegionProfile> = ALL): TellomiRegionProfile {
+    return profiles.firstOrNull { it.id.id == storedId && it.enabled } ?: GLOBAL
+  }
+
   /**
    * 契约第四节：同名标签挂到 `tellomi.cn`。scheme、端口、路径都不变，只把主机名里的 `.tellomi.app` 换成 `.tellomi.cn`。
    * 这样 CN 档的每一个主机都在 `tellomi.cn` 下（App 备案要填运行时连接的全部域名，漏一条就是漏报）。
@@ -164,7 +200,7 @@ object TellomiRegions {
 
   /**
    * 包内区域表的不变量（契约第四节，第五节第 2、4 条）。空列表 = 合法。
-   * 表是编进包里的，不合法是构建缺陷，由单测把关（契约第五节第 8 条：包内配置坏了应该直接失败）。
+   * 表是编进包里的，不合法是构建缺陷：单测把关，[TellomiRegions] 类加载时再核一次（契约第五节第 8 条：包内配置坏了拒绝启动）。
    */
   fun problems(profiles: List<TellomiRegionProfile>): List<String> {
     val problems = mutableListOf<String>()
