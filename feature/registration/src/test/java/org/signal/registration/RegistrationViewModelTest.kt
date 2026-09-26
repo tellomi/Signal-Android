@@ -86,9 +86,44 @@ class RegistrationViewModelTest {
     advanceUntilIdle()
 
     val state = viewModel.state.value
-    assertThat(state.backStack).isEqualTo(savedState.backStack)
+    // Tellomi（tellomi/tellomi#1112）：旧版本存下的 Permissions 在恢复时被滤掉，其余原样
+    assertThat(state.backStack).isEqualTo(
+      listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.PhoneNumberEntry,
+        RegistrationRoute.VerificationCodeEntry
+      )
+    )
     assertThat(state.sessionMetadata).isEqualTo(freshSession)
     assertThat(state.sessionE164).isEqualTo("+15551234567")
+  }
+
+  @Test
+  fun `restore drops permission routes persisted by an older version`() = runTest(testDispatcher) {
+    val savedSession = createSessionMetadata("session-legacy")
+
+    val savedState = RegistrationFlowState(
+      backStack = listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.AllowNotifications(RegistrationRoute.LinkAccount()),
+        RegistrationRoute.LinkAccount(),
+        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry)
+      ),
+      sessionMetadata = savedSession
+    )
+
+    coEvery { mockRepository.restoreFlowState() } returns savedState
+    coEvery { mockRepository.validateSession("session-legacy") } returns savedSession
+
+    val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.backStack).isEqualTo(
+      listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.LinkAccount()
+      )
+    )
   }
 
   @Test
@@ -114,10 +149,10 @@ class RegistrationViewModelTest {
     advanceUntilIdle()
 
     val state = viewModel.state.value
+    // Tellomi（tellomi/tellomi#1112）：上游重置成 Welcome → Permissions → PhoneNumberEntry
     assertThat(state.backStack).isEqualTo(
       listOf(
         RegistrationRoute.Welcome,
-        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry),
         RegistrationRoute.PhoneNumberEntry
       )
     )

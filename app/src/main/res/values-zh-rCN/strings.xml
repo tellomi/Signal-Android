@@ -1863,6 +1863,14 @@
     <string name="NotificationsMegaphone_turn_on">开启</string>
     <string name="NotificationsMegaphone_not_now">稍后再说</string>
 
+    <!-- Tellomi（#1112 / #1218 F-01） -->
+    <string name="TellomiNotificationPrimer__title">及时收到新消息</string>
+    <string name="TellomiNotificationPrimer__body">Tellomi 不在前台时，用系统通知告诉你有新消息和来电。点「继续」后系统会询问一次，之后随时可以在系统设置里更改。</string>
+    <string name="TellomiNotificationPrimer__continue">继续</string>
+    <string name="NotificationsDisabledBanner__notifications_are_off">通知已关闭</string>
+    <string name="NotificationsDisabledBanner__you_wont_be_alerted">Tellomi 不在前台时，你不会收到新消息和来电的提醒。</string>
+    <string name="NotificationsDisabledBanner__go_to_settings">去设置</string>
+
     <!-- NotificationMmsMessageRecord -->
     <string name="NotificationMmsMessageRecord_multimedia_message">多媒体消息</string>
     <string name="NotificationMmsMessageRecord_downloading_mms_message">正在下载彩信</string>

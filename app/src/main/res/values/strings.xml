@@ -1940,6 +1940,14 @@
     <string name="NotificationsMegaphone_turn_on">Turn on</string>
     <string name="NotificationsMegaphone_not_now">Not now</string>
 
+    <!-- Tellomi（#1112 / #1218 F-01）：首屏通知说明页（只有一个「继续」，不能叫「允许」）与系统通知关着时的常驻横幅。 -->
+    <string name="TellomiNotificationPrimer__title">Know when messages arrive</string>
+    <string name="TellomiNotificationPrimer__body">When Tellomi isn\'t open, notifications tell you about new messages and calls. After you tap Continue, Android will ask once. You can change this anytime in system settings.</string>
+    <string name="TellomiNotificationPrimer__continue">Continue</string>
+    <string name="NotificationsDisabledBanner__notifications_are_off">Notifications are off</string>
+    <string name="NotificationsDisabledBanner__you_wont_be_alerted">You won\'t be alerted to new messages or calls while Tellomi isn\'t open.</string>
+    <string name="NotificationsDisabledBanner__go_to_settings">Go to settings</string>
+
     <!-- NotificationMmsMessageRecord -->
     <string name="NotificationMmsMessageRecord_multimedia_message">Multimedia message</string>
     <string name="NotificationMmsMessageRecord_downloading_mms_message">Downloading MMS message</string>
