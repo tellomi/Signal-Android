@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.calls.links
 
+import androidx.annotation.VisibleForTesting
 import io.reactivex.rxjava3.core.Observable
 import org.signal.core.util.logging.Log
 import org.signal.ringrtc.CallException
@@ -28,8 +29,8 @@ object CallLinks {
   private const val SNGL_LINK_PREFIX = "sgnl://signal.link/call/#key="
 
   // Tellomi：新形状 https|tellomi://tell.cc/call#key=…（见 docs/signal/LINKS_AND_SCHEMES.md）。
-  // 通话是阶段三才有，这里先让解析认得，`url()` 生成的仍是旧形状，等三端都接受后再翻。
-  // tellomi/tellomi#1113：另外认带斜杠的 `tell.cc/call/#key=…`——Desktop 发的是这个（`signalRoutes.std.ts`），原来 Android 在 App 内认不出。
+  // tellomi/tellomi#1113：`url()` 改发这个形状（不带结尾斜杠，与那张表一致）；解析另外认带斜杠的
+  // `tell.cc/call/#key=…`——Desktop 发的是这个（`signalRoutes.std.ts`），原来 Android 在 App 内认不出。
   private const val TELLOMI_HTTPS_LINK_PREFIX = "https://tell.cc/call#key="
   private const val TELLOMI_SCHEME_LINK_PREFIX = "tellomi://tell.cc/call#key="
   private const val TELLOMI_HTTPS_SLASH_LINK_PREFIX = "https://tell.cc/call/#key="
@@ -37,7 +38,11 @@ object CallLinks {
 
   private val TAG = Log.tag(CallLinks::class.java)
 
-  fun url(rootKeyBytes: ByteArray): String = "$HTTPS_LINK_PREFIX${CallLinkRootKey(rootKeyBytes)}"
+  fun url(rootKeyBytes: ByteArray): String = urlForFormattedKey(CallLinkRootKey(rootKeyBytes).toString())
+
+  /** 单拆出来只为能单测：CallLinkRootKey 的格式化走 RingRTC 原生库，JVM 单测里加载不了。 */
+  @VisibleForTesting
+  fun urlForFormattedKey(formattedKey: String): String = "$TELLOMI_HTTPS_LINK_PREFIX$formattedKey"
 
   fun watchCallLink(roomId: CallLinkRoomId): Observable<CallLinkTable.CallLink> {
     return Observable.create { emitter ->
