@@ -50,6 +50,14 @@
     <!-- AlbumThumbnailView -->
     <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string>
 
+    <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
+    <!-- Accessibility label for a horizontally scrolling album in a message -->
+    <!-- Accessibility: which item of the album is current -->
+    <string name="AlbumCarouselView__item_d_of_d">Item %1$d of %2$d</string>
+    <!-- Accessibility action: move to the next item of the album -->
+    <!-- Accessibility action: move to the previous item of the album -->
+    <!-- Accessibility: album label followed by the current item, e.g. "Album, 5 items, Item 1 of 5" -->
+
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi is updating…</string>
 
@@ -3326,6 +3334,26 @@
     <string name="MediaPreviewFragment_media_delete_error">Error Deleting Message, Message May Still Exist</string>
     <!-- A suffix to be attached to truncated captions that the user may tap onto to view the entire text caption -->
     <string name="MediaPreviewFragment_read_more_overflow_text">Read More</string>
+    <!-- Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：查看器里转发相册中的一张，先问「这张 / 全部 N 张」 -->
+    <string name="MediaPreviewFragment__forward_this_photo">This photo</string>
+    <string name="MediaPreviewFragment__forward_this_video">This video</string>
+    <plurals name="MediaPreviewFragment__forward_all_d_photos">
+        <item quantity="one">All %d photo</item>
+        <item quantity="other">All %d photos</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_videos">
+        <item quantity="one">All %d video</item>
+        <item quantity="other">All %d videos</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_items">
+        <item quantity="one">All %d item</item>
+        <item quantity="other">All %d items</item>
+    </plurals>
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频查看器的倍速按钮与面板；分享挪进「···」 -->
+    <string name="MediaPreviewFragment__playback_speed">Playback speed</string>
+    <string name="MediaPreviewFragment__speed">Speed</string>
+    <string name="MediaPreviewFragment__speed_normal">Normal</string>
+    <string name="MediaPreviewFragment__share">Share</string>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->

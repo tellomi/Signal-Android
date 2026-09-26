@@ -258,6 +258,7 @@ import org.thoughtcrime.securesms.conversation.v2.items.ChatColorsDrawable
 import org.thoughtcrime.securesms.conversation.v2.items.InteractiveConversationElement
 import org.thoughtcrime.securesms.conversation.v2.keyboard.AttachmentKeyboardFragment
 import org.thoughtcrime.securesms.database.DraftTable
+import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.database.model.IdentityRecord
 import org.thoughtcrime.securesms.database.model.InMemoryMessageRecord
 import org.thoughtcrime.securesms.database.model.Mention
@@ -266,6 +267,7 @@ import org.thoughtcrime.securesms.database.model.MessageRecord
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord
 import org.thoughtcrime.securesms.database.model.Quote
 import org.thoughtcrime.securesms.database.model.databaseprotos.BodyRangeList
+import org.thoughtcrime.securesms.database.withAttachments
 import org.thoughtcrime.securesms.databinding.V2ConversationBackgroundBinding
 import org.thoughtcrime.securesms.databinding.V2ConversationFragmentBinding
 import org.thoughtcrime.securesms.dependencies.AppDependencies
@@ -312,6 +314,7 @@ import org.thoughtcrime.securesms.main.MainSnackbarHostKey
 import org.thoughtcrime.securesms.mediaoverview.MediaOverviewActivity
 import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewActivity
+import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache
 import org.thoughtcrime.securesms.mediasend.MediaSendActivityResult
 import org.thoughtcrime.securesms.messagerequests.MessageRequestRepository
 import org.thoughtcrime.securesms.mms.AttachmentManager
@@ -915,6 +918,52 @@ class ConversationFragment :
 
     if (SignalStore.rateLimit.needsRecaptcha()) {
       RecaptchaProofBottomSheetFragment.show(childFragmentManager)
+    }
+
+    MediaPreviewCache.consumePendingReply(args.threadId)?.let { replyToMessageFromViewer(it) }
+  }
+
+  /**
+   * Tellomi（#1257）：在查看器里点了「回复」——和长按回复一样引用整条消息，缩略图照上游取第一项
+   * （owner 2026-09-26：不做「回复这一张」，协议只能引用整条消息，要让对方看到那一张就得放宽收件方的防伪）。
+   */
+  private fun replyToMessageFromViewer(reply: MediaPreviewCache.PendingReply) {
+    val recipient = viewModel.recipientSnapshot ?: return
+    val appContext = requireContext().applicationContext
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      val message = withContext(Dispatchers.IO) {
+        val record = SignalDatabase.messages.getMessageRecordOrNull(reply.messageId)?.withAttachments() ?: return@withContext null
+        ConversationMessage.ConversationMessageFactory.createWithUnresolvedData(appContext, record, recipient)
+      } ?: return@launch
+
+      val canReply = !isActionModeStarted() &&
+        MenuState.canReplyToMessage(
+          recipient,
+          MenuState.isActionMessage(message.messageRecord),
+          message.messageRecord,
+          viewModel.hasMessageRequestState,
+          conversationGroupViewModel.isNonAdminInAnnouncementGroup()
+        )
+      if (!canReply) {
+        return@launch
+      }
+
+      val (slideDeck, body) = viewModel.getSlideDeckAndBodyForReply(requireContext(), message)
+
+      if (inputPanel.inEditMessageMode()) {
+        inputPanel.exitEditMessageMode()
+      }
+
+      inputPanel.setQuote(
+        Glide.with(this@ConversationFragment),
+        message.messageRecord.dateSent,
+        message.messageRecord.fromRecipient,
+        body,
+        slideDeck,
+        message.messageRecord.getRecordQuoteType()
+      )
+      inputPanel.clickOnComposeInput()
     }
   }
 
@@ -4115,6 +4164,7 @@ class ConversationFragment :
       container.hideAll(composeText)
 
       sharedElement.transitionName = MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME
+      MediaPreviewCache.replyTargetThreadId = args.threadId
       requireActivity().setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
       val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(), sharedElement, MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME)
       requireActivity().startActivity(MediaIntentFactory.create(requireActivity(), args), options.toBundle())
