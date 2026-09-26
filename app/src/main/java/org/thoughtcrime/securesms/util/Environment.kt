@@ -4,6 +4,7 @@ import com.google.android.gms.wallet.WalletConstants
 import org.signal.donations.GooglePayApi
 import org.signal.donations.StripeApi
 import org.thoughtcrime.securesms.BuildConfig
+import org.thoughtcrime.securesms.region.TellomiRegions
 
 object Environment {
   /**
@@ -84,7 +85,8 @@ object Environment {
   object Calling {
     @JvmStatic
     fun defaultSfuUrl(): String {
-      return if (IS_STAGING) BuildConfig.SIGNAL_STAGING_SFU_URL else BuildConfig.SIGNAL_SFU_URL
+      // Tellomi（#1055）：从当前区取。我们的 staging 与 prod 用同一个会合点（SIGNAL_STAGING_SFU_URL 与 SIGNAL_SFU_URL 同值）
+      return TellomiRegions.current().sfu
     }
   }
 }
