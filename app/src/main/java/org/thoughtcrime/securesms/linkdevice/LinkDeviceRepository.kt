@@ -261,16 +261,8 @@ object LinkDeviceRepository {
       }
       is NetworkResult.ApplicationError -> throw deviceLinkResult.throwable
       is NetworkResult.NetworkError -> LinkDeviceResult.NetworkError(deviceLinkResult.exception)
-      is NetworkResult.StatusCodeError -> {
-        when (deviceLinkResult.code) {
-          403 -> LinkDeviceResult.NoDevice
-          409 -> LinkDeviceResult.NoDevice
-          411 -> LinkDeviceResult.LimitExceeded
-          422 -> LinkDeviceResult.NetworkError(deviceLinkResult.exception)
-          429 -> LinkDeviceResult.NetworkError(deviceLinkResult.exception)
-          else -> LinkDeviceResult.NetworkError(deviceLinkResult.exception)
-        }
-      }
+      // Tellomi（#1219）：状态码映射抽出去单测，404 单独成一型
+      is NetworkResult.StatusCodeError -> TellomiLinkDeviceErrors.resultForProvisioningStatus(deviceLinkResult.code, deviceLinkResult.exception)
     }
   }
 
@@ -521,6 +513,9 @@ object LinkDeviceRepository {
     data object KeyError : LinkDeviceResult
     data object LimitExceeded : LinkDeviceResult
     data object BadCode : LinkDeviceResult
+
+    /** Tellomi（#1219）：服务端上这个关联地址当时没有设备在等（404）——码过期了，或者是别的服务器（Signal）的码。 */
+    data object ExpiredOrForeignCode : LinkDeviceResult
   }
 
   sealed interface LinkUploadArchiveResult {

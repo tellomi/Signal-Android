@@ -1692,6 +1692,61 @@ class PhoneNumberEntryViewModelTest {
     assertThat(emittedStates.last().dialogs.networkError).isTrue()
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1210）：香港服务端的新会话先要人机验证（`requestedInformation: ["captcha"]`，没有 GMS 过不了推送挑战），
+   * 人机验证之后再请求验证码才是主路。440 要和直接请求那条一样：非 +86 给行内提示，不弹「几小时后重试」。
+   */
+  @Test
+  fun `CaptchaCompleted with a non +86 number and a third party service error shows the region inline error`() = runTest {
+    val sessionMetadata = createSessionMetadata()
+    val initialState = PhoneNumberEntryState(
+      countryCode = "1",
+      nationalNumber = "5551234567",
+      sessionMetadata = sessionMetadata
+    )
+
+    coEvery { mockRepository.submitCaptchaToken(any(), any()) } returns
+      RequestResult.Success(sessionMetadata)
+    coEvery { mockRepository.requestVerificationCode(any(), any(), any()) } returns
+      RequestResult.NonSuccess(
+        RequestVerificationCodeError.ThirdPartyServiceError(
+          ThirdPartyServiceErrorResponse("providerUnavailable", false)
+        )
+      )
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.CaptchaCompleted("captcha-token"), parentEventEmitter, stateEmitter)
+
+    assertThat(emittedStates.last().isRegionUnavailable).isTrue()
+    assertThat(emittedStates.last().dialogs.unableToSendSms).isFalse()
+    // 人机验证页已经退回号码页；不再往别处跳，行内提示才看得见
+    assertThat(emittedEvents).isEmpty()
+  }
+
+  /** Tellomi（#1210）：+86 人机验证之后遇到 440 仍按上游弹框，与直接请求那条（`PhoneNumberSubmitted handles third party service error`）同一口径。 */
+  @Test
+  fun `CaptchaCompleted with a +86 number and a third party service error still shows the unable to send sms dialog`() = runTest {
+    val sessionMetadata = createSessionMetadata()
+    val initialState = PhoneNumberEntryState(
+      countryCode = "86",
+      nationalNumber = "13800000061",
+      sessionMetadata = sessionMetadata
+    )
+
+    coEvery { mockRepository.submitCaptchaToken(any(), any()) } returns
+      RequestResult.Success(sessionMetadata)
+    coEvery { mockRepository.requestVerificationCode(any(), any(), any()) } returns
+      RequestResult.NonSuccess(
+        RequestVerificationCodeError.ThirdPartyServiceError(
+          ThirdPartyServiceErrorResponse("Provider error", false)
+        )
+      )
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.CaptchaCompleted("captcha-token"), parentEventEmitter, stateEmitter)
+
+    assertThat(emittedStates.last().dialogs.unableToSendSms).isTrue()
+    assertThat(emittedStates.last().isRegionUnavailable).isFalse()
+  }
+
   // ==================== ParentStateChanged Tests ====================
 
   @Test

@@ -443,6 +443,7 @@ private fun AddUsernameState.ValidationError.message(): String = when (this) {
   AddUsernameState.ValidationError.TOO_LONG -> stringResource(R.string.AddUsernameScreen__usernames_must_be_at_most_32_characters)
   AddUsernameState.ValidationError.INVALID_CHARACTERS -> stringResource(R.string.AddUsernameScreen__usernames_can_only_contain)
   AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT -> stringResource(R.string.AddUsernameScreen__usernames_cannot_begin_with_a_number)
+  AddUsernameState.ValidationError.CANNOT_START_WITH_UNDERSCORE -> stringResource(R.string.AddUsernameScreen__tellomi_usernames_must_start_with_a_letter)
   AddUsernameState.ValidationError.NOT_AVAILABLE -> stringResource(R.string.AddUsernameScreen__this_username_is_not_available)
   AddUsernameState.ValidationError.DISCRIMINATOR_TOO_SHORT -> stringResource(R.string.AddUsernameScreen__enter_a_minimum_of_d_digits, UsernameUtil.MIN_DISCRIMINATOR_LENGTH)
   AddUsernameState.ValidationError.DISCRIMINATOR_TOO_LONG -> stringResource(R.string.AddUsernameScreen__enter_a_maximum_of_d_digits, UsernameUtil.MAX_DISCRIMINATOR_LENGTH)

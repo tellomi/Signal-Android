@@ -94,6 +94,7 @@ import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.ui.permissions.Permissions
 import org.signal.core.ui.rememberIsSplitPane
 import org.signal.core.util.AppForegroundObserver
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.Util
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.getParcelableCompat
@@ -772,7 +773,8 @@ class MainActivity :
     }
 
     if (resultCode == RESULT_OK && requestCode == UsernameEditFragment.REQUEST_CODE) {
-      val snackbarString = getString(R.string.ConversationListFragment_username_recovered_toast, SignalStore.account.username)
+      // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+      val snackbarString = getString(R.string.ConversationListFragment_username_recovered_toast, SignalStore.account.username?.let { TellomiUsernames.toDisplayUsername(it) })
       mainNavigationViewModel.snackbarRegistry.emit(
         SnackbarState(
           message = snackbarString,

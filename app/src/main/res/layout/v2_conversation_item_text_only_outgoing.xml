@@ -36,13 +36,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
+        android:layout_marginEnd="@dimen/tellomi_bubble_tail_margin"
         app:cardElevation="0dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@id/conversation_item_alert"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginEnd="16dp"
+        app:layout_goneMarginEnd="@dimen/tellomi_bubble_tail_side_edge"
         tools:background="@color/black">
 
         <org.thoughtcrime.securesms.components.emoji.EmojiTextView

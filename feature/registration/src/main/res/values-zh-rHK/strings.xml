@@ -44,6 +44,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">選取國家或地區</string>
     <string name="RegistrationActivity_phone_number_description">電話號碼</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">清除號碼</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">帳戶 ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -579,6 +581,23 @@
     <string name="CreateProfileScreen__next">下一步</string>
     <!-- Content description for the avatar selection control. -->
     <string name="CreateProfileScreen__set_avatar_description">設定頭像</string>
+    <!-- Tellomi（#1215） -->
+    <string name="TellomiRegistration__phone_number_not_shown">你的電話號碼預設不會向任何人顯示。</string>
+    <!-- Tellomi（#1215 第二刀） -->
+    <string name="TellomiRegistration__username_optional">用戶名稱（選填）</string>
+    <string name="TellomiRegistration__username_your_link">你的連結：%1$s</string>
+    <string name="TellomiRegistration__username_checking">正在檢查…</string>
+    <string name="TellomiRegistration__username_not_available">這個用戶名稱無法使用</string>
+    <string name="TellomiRegistration__username_too_short">至少 3 個字元</string>
+    <string name="TellomiRegistration__username_too_long">最多 20 個字元</string>
+    <string name="TellomiRegistration__username_invalid_characters">只能使用字母、數字和底線</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">需要以字母開頭</string>
+    <string name="TellomiRegistration__username_check_failed">暫時無法檢查，請稍後再試</string>
+    <string name="TellomiRegistration__username_too_many_attempts">嘗試次數過多，請稍後再試</string>
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="other">%d 天後才能設定用戶名稱</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">可以試試：</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -713,6 +732,7 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">用戶名稱僅可包含英文字母、數字以及底線</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">用戶名稱不得以數字開頭</string>
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">用戶名稱必須以字母開頭</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">此用戶名稱無法使用。請嘗試其他名稱。</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
@@ -769,6 +789,9 @@
     <string name="TellomiRegistration__you_will_receive_a_verification_code">我們會傳送一則簡訊驗證碼，確認這個號碼是你的。</string>
     <string name="TellomiRegistration__a_verification_code_will_be_sent">我們會傳送一則簡訊驗證碼到這個號碼，確認它是你的。</string>
     <string name="TellomiRegistration__captcha_retry">重試</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：注册资料页只剩一个框、填全名。旧键 TellomiRegistration__first_name 暂留在下一行：
+         它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
+    <string name="TellomiRegistration__name">名字</string>
     <string name="TellomiRegistration__first_name">名字</string>
 
     <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->

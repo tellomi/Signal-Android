@@ -5,6 +5,7 @@ import org.signal.ringrtc.CallManager.DataMode
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.database.model.IssuePriority
 import org.thoughtcrime.securesms.keyvalue.protos.IssueNotifyTimes
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.util.Environment.Calling.defaultSfuUrl
 import org.thoughtcrime.securesms.util.RemoteConfig
 
@@ -110,7 +111,7 @@ class InternalValues internal constructor(store: KeyValueStore) : SignalStoreVal
       if (internalServer != null && !listOf(*BuildConfig.SIGNAL_SFU_INTERNAL_URLS).contains(internalServer)) {
         internalServer = null
       }
-      return internalServer ?: BuildConfig.SIGNAL_SFU_URL
+      return internalServer ?: TellomiRegions.current().sfu
     }
     set(value) = putString(CALLING_SERVER, value)
 
