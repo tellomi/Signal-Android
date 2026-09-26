@@ -36,6 +36,11 @@ class OutdatedBuildBanner : Banner<Int>() {
 
   override val enabled: Boolean
     get() {
+      // Tellomi（taishi 审查 b14 包 8 不阻塞 2）：「客户端已弃用」置上之后 getTimeUntilBuildExpiry 恒为 0，
+      // 这个横幅会说「此版本将在今天过期」、按钮去浏览器；这时由只读横幅（DeprecatedBuildBanner）说话。
+      if (SignalStore.misc.isClientDeprecated) {
+        return false
+      }
       val daysUntilExpiry = Util.getTimeUntilBuildExpiry(SignalStore.misc.estimatedServerTime).milliseconds.inWholeDays.toInt()
       return daysUntilExpiry <= MAX_DAYS_UNTIL_EXPIRE
     }

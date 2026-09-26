@@ -295,6 +295,32 @@
     <string name="ClientDeprecatedActivity_dont_update">不要更新</string>
     <string name="ClientDeprecatedActivity_warning">警告</string>
     <string name="ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history">你的 Tellomi 版本已過期。你可以瀏覽訊息紀錄，但無法傳送或接收訊息，直到你更新版本為止。</string>
+    <!-- Tellomi（tellomi/tellomi#1138）：「必须更新」阻断页 -->
+    <string name="TellomiUpdateRequired__title">需要更新 Tellomi</string>
+    <string name="TellomiUpdateRequired__reason_server_rejected">此版本已無法與伺服器正常通訊，更新後才能繼續收發訊息。</string>
+    <string name="TellomiUpdateRequired__reason_build_expired">此版本已過舊，更新後才能繼續收發訊息。</string>
+    <string name="TellomiUpdateRequired__chats_kept">更新不會影響手機上的聊天紀錄。</string>
+    <string name="TellomiUpdateRequired__new_version">新版本 %1$s</string>
+    <string name="TellomiUpdateRequired__new_version_and_size">新版本 %1$s · %2$s</string>
+    <string name="TellomiUpdateRequired__update_now">立即更新</string>
+    <string name="TellomiUpdateRequired__preparing">正在準備下載…</string>
+    <string name="TellomiUpdateRequired__downloading">下載中 %1$d%%</string>
+    <string name="TellomiUpdateRequired__install">安裝更新</string>
+    <string name="TellomiUpdateRequired__retry">重試</string>
+    <string name="TellomiUpdateRequired__open_settings">前往設定</string>
+    <string name="TellomiUpdateRequired__install_permission">安裝更新需要允許 Tellomi 安裝應用程式。請在接下來的系統設定中允許，返回後會繼續更新。</string>
+    <string name="TellomiUpdateRequired__download_failed">下載未能完成，請檢查網絡後重試。</string>
+    <string name="TellomiUpdateRequired__no_newer_version">暫時還沒有可用的新版本，請過幾分鐘再試，或前往官網下載。</string>
+    <string name="TellomiUpdateRequired__offline">連接網絡後即可更新。</string>
+    <string name="TellomiUpdateRequired__download_from_website">前往官網下載</string>
+    <string name="TellomiUpdateRequired__waiting_for_wifi">這個安裝包原本只在連上 Wi-Fi 時下載。</string>
+    <string name="TellomiUpdateRequired__use_mobile_data">用流動數據下載</string>
+    <string name="TellomiUpdateRequired__download_notification_title">正在下載 Tellomi 更新</string>
+    <string name="TellomiUpdateRequired__view_chats_only">暫不更新，只看聊天紀錄</string>
+    <string name="TellomiUpdateRequired__read_only_banner">需要更新才能繼續收發訊息。</string>
+    <string name="TellomiUpdateRequired__input_needs_update">此版本需要更新才能收發訊息。</string>
+    <string name="TellomiUpdateRequired__notification_text">此版本需要更新才能收發訊息，輕按即可更新。</string>
+    <string name="TellomiUpdateRequired__view_chats_only_confirm_message">更新之前可以看聊天紀錄，但不能收發訊息。</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->

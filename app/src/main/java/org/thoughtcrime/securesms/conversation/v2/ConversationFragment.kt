@@ -317,6 +317,7 @@ import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewActivity
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache
 import org.thoughtcrime.securesms.mediasend.MediaSendActivityResult
+import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity
 import org.thoughtcrime.securesms.messagerequests.MessageRequestRepository
 import org.thoughtcrime.securesms.mms.AttachmentManager
 import org.thoughtcrime.securesms.mms.AudioSlide
@@ -361,6 +362,7 @@ import org.thoughtcrime.securesms.stickers.manage.StickerManagementScreen
 import org.thoughtcrime.securesms.stickers.preview.StickerPackPreviewActivity
 import org.thoughtcrime.securesms.stories.StoryViewerArgs
 import org.thoughtcrime.securesms.stories.viewer.StoryViewerActivity
+import org.thoughtcrime.securesms.updaterequired.UpdateRequired
 import org.thoughtcrime.securesms.util.BubbleUtil
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.ConversationUtil
@@ -4988,7 +4990,12 @@ class ConversationFragment :
 
   private inner class DisabledInputListener : DisabledInputView.Listener {
     override fun onUpdateAppClicked() {
-      PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(requireContext())
+      // Tellomi（taishi 审查 b14 包 8 不阻塞 2）：官网版和只读横幅一样打开 App 内的更新页，不去浏览器
+      if (BuildConfig.MANAGES_APP_UPDATES && UpdateRequired.isRequired()) {
+        startActivity(Intent(requireContext(), ClientDeprecatedActivity::class.java))
+      } else {
+        PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(requireContext())
+      }
     }
 
     override fun onReRegisterClicked() {
