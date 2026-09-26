@@ -59,8 +59,8 @@ import org.thoughtcrime.securesms.attachments.DatabaseAttachment
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.components.mention.MentionAnnotation
 import org.thoughtcrime.securesms.conversation.ConversationMessage
-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.TellomiForwardGridBottomSheet
 import org.thoughtcrime.securesms.database.DatabaseObserver
 import org.thoughtcrime.securesms.database.MediaTable
 import org.thoughtcrime.securesms.database.SignalDatabase
@@ -308,12 +308,7 @@ class MediaPreviewFragment :
     bindMenuItems(currentItem)
     tryBindMediaPreviewPlaybackControls(currentItem, currentPosition)
 
-    val albumThumbnailMedia: List<Media> = if (currentState.allMediaInAlbumRail) {
-      currentState.mediaRecords.mapNotNull { it.toMedia() }
-    } else {
-      currentState.albums[currentItem.attachment?.mmsId] ?: emptyList()
-    }
-    bindAlbumRail(albumThumbnailMedia, currentItem)
+    bindAlbumRail(currentState.currentAlbum, currentItem)
 
     crossfadeViewIn(binding.mediaPreviewDetailsContainer)
   }
@@ -396,7 +391,7 @@ class MediaPreviewFragment :
       menu.findItem(R.id.delete).isVisible = false
     }
 
-    // Tellomi（#1257）：从会话里打开时可以「回复」正在看的这一张
+    // Tellomi（#1257）：从会话里打开时可以「回复」（引用整条消息）
     val replyAttachment = currentItem.attachment
     menu.findItem(R.id.reply)?.isVisible = replyAttachment != null &&
       replyAttachment.mmsId > 0 &&
@@ -609,7 +604,8 @@ class MediaPreviewFragment :
       }
 
       MultiselectForwardFragmentArgs.create(requireContext(), conversationMessage.multiselectCollection.toSet()) { args ->
-        MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+        // Tellomi（#1259）：「全部」也打开头像网格，和「这一张」同一个面板
+        TellomiForwardGridBottomSheet.show(childFragmentManager, args)
       }
     }
   }
@@ -776,6 +772,11 @@ class MediaPreviewFragment :
   }
 
   override fun onDestroy() {
+    // Tellomi（#1257）：查看器真的关了（不是转屏重建）就复位「从哪个会话打开」，
+    // 免得之后从会话设置的媒体条等别处打开同一个会话的查看器也显示「回复」。
+    if (activity?.isFinishing == true) {
+      MediaPreviewCache.replyTargetThreadId = -1
+    }
     super.onDestroy()
     val observer = dbChangeObserver
     if (observer != null) {
@@ -797,7 +798,8 @@ class MediaPreviewFragment :
       mediaUri = uri,
       contentType = contentType
     ) { args: MultiselectForwardFragmentArgs ->
-      MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+      // Tellomi（#1259 F-1 / F-2）：查看器的转发也打开头像网格；查看器固定夜间模式，网格跟着是深色（「这张 / 全部 N 张」在 #1257 查看器里做）
+      TellomiForwardGridBottomSheet.show(childFragmentManager, args)
     }
   }
 
@@ -907,12 +909,11 @@ class MediaPreviewFragment :
     return attachmentCount <= 1 && MessageConstraintsUtil.isValidRemoteDeleteSend(listOf(messageRecord), System.currentTimeMillis())
   }
 
-  /** Tellomi（#1257）：记下「回复哪条消息的哪一张」，关掉查看器；会话页回到前台时接手（ConversationFragment.onResume）。 */
+  /** Tellomi（#1257）：记下「回复哪条消息」，关掉查看器；会话页回到前台时接手（ConversationFragment.onResume）。 */
   private fun replyToCurrentItem(currentItem: MediaTable.MediaRecord) {
     val attachment = currentItem.attachment ?: return
-    val uri = attachment.displayUri ?: attachment.uri ?: return
     pauseCurrentMediaIfVideo()
-    MediaPreviewCache.pendingReply = MediaPreviewCache.PendingReply(currentItem.threadId, attachment.mmsId, uri)
+    MediaPreviewCache.pendingReply = MediaPreviewCache.PendingReply(currentItem.threadId, attachment.mmsId)
     requireActivity().finish()
   }
 

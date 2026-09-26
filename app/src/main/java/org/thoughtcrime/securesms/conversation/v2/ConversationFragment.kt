@@ -237,8 +237,9 @@ import org.thoughtcrime.securesms.conversation.mutiselect.ConversationItemAnimat
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectItemDecoration
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectPart
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardBottomSheet
-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardRepository
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.TellomiForwardGridBottomSheet
 import org.thoughtcrime.securesms.conversation.quotes.MessageQuotesBottomSheet
 import org.thoughtcrime.securesms.conversation.ui.edit.EditMessageHistoryDialog
 import org.thoughtcrime.securesms.conversation.ui.error.EnableCallNotificationSettingsDialog
@@ -781,8 +782,8 @@ class ConversationFragment :
     )
     conversationToolbarOnScrollHelper.attach(binding.conversationItemRecycler)
     presentConversationTitle(viewModel.recipientSnapshot)
-    if (viewModel.recipientSnapshot?.isGroup == true) {
-      presentGroupConversationSubtitle(createGroupSubtitleString(viewModel.titleViewParticipantsSnapshot))
+    viewModel.recipientSnapshot?.takeIf { it.isGroup }?.let { group ->
+      presentGroupConversationSubtitle(tellomiGroupMemberSubtitle(resources, group))
     }
     presentActionBarMenu()
     presentStoryRing()
@@ -843,7 +844,8 @@ class ConversationFragment :
       viewModel.onChatBoundsChanged(Rect(left, top, right, bottom))
     }
 
-    binding.toolbar.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+    // Tellomi：跟着顶栏背景走（它铺到「我的收藏」分类栏的底边，没有分类栏时就是顶栏底边，#1174）
+    binding.toolbarBackground.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
       // Bug: ConstraintLayout can provide a negative value for the toolbar causing RV layout problems
       if (bottom < 0) return@addOnLayoutChangeListener
 
@@ -918,14 +920,14 @@ class ConversationFragment :
       RecaptchaProofBottomSheetFragment.show(childFragmentManager)
     }
 
-    MediaPreviewCache.consumePendingReply(args.threadId)?.let { replyToAlbumItem(it) }
+    MediaPreviewCache.consumePendingReply(args.threadId)?.let { replyToMessageFromViewer(it) }
   }
 
   /**
-   * Tellomi（#1257，owner 2026-09-25）：在查看器里点了「回复」——引用的是整条相册消息（协议里引用只认消息），
-   * 但引用框里、发出去的引用缩略图都是正在看的那一张。
+   * Tellomi（#1257）：在查看器里点了「回复」——和长按回复一样引用整条消息，缩略图照上游取第一项
+   * （owner 2026-09-26：不做「回复这一张」，协议只能引用整条消息，要让对方看到那一张就得放宽收件方的防伪）。
    */
-  private fun replyToAlbumItem(reply: MediaPreviewCache.PendingReply) {
+  private fun replyToMessageFromViewer(reply: MediaPreviewCache.PendingReply) {
     val recipient = viewModel.recipientSnapshot ?: return
     val appContext = requireContext().applicationContext
 
@@ -948,8 +950,6 @@ class ConversationFragment :
       }
 
       val (slideDeck, body) = viewModel.getSlideDeckAndBodyForReply(requireContext(), message)
-      val slide = slideDeck.slides.firstOrNull { it.displayUri == reply.attachmentUri || it.uri == reply.attachmentUri }
-      val quoteDeck = slide?.let { SlideDeck(it.asAttachment()) } ?: slideDeck
 
       if (inputPanel.inEditMessageMode()) {
         inputPanel.exitEditMessageMode()
@@ -960,7 +960,7 @@ class ConversationFragment :
         message.messageRecord.dateSent,
         message.messageRecord.fromRecipient,
         body,
-        quoteDeck,
+        slideDeck,
         message.messageRecord.getRecordQuoteType()
       )
       inputPanel.clickOnComposeInput()
@@ -1283,10 +1283,6 @@ class ConversationFragment :
     binding.conversationItemRecycler.invalidateItemDecorations()
   }
 
-  private fun createGroupSubtitleString(members: List<Recipient>): String {
-    return members.joinToString(", ") { r -> if (r.isSelf) getString(R.string.ConversationTitleView_you) else r.getDisplayName(requireContext()) }
-  }
-
   private fun observeConversationThread() {
     var firstRender = true
     disposables += viewModel
@@ -1313,6 +1309,8 @@ class ConversationFragment :
         adapter.submitList(it) {
           scrollToPositionDelegate.notifyListCommitted()
           conversationItemDecorations.currentItems = it
+          // Tellomi（#1206）：未读线上下两条不算同一组（在主线程读：未读状态第一次是在后台线程设的）
+          adapter.tellomiUnreadAnchorId = conversationItemDecorations.tellomiUnreadAnchorId
 
           if (firstRender) {
             firstRender = false
@@ -1394,10 +1392,15 @@ class ConversationFragment :
       .distinctUntilChanged { r1, r2 -> r1 === r2 || r1.hasSameContent(r2) }
       .subscribeBy(onNext = this::onRecipientChanged)
 
-    disposables += viewModel.titleViewParticipants
-      .map { createGroupSubtitleString(it) }
-      .distinctUntilChanged()
+    // Tellomi：「我的收藏」顶栏下方的分类（#1174）
+    disposables += binding.tellomiSavedCategoriesBar.bind(viewModel.recipient, args.threadId)
+
+    // Tellomi（两端差异清单第 10 项）：人数按群的全部成员算；titleViewParticipants 只取了前 10 个，只够拼名字
+    disposables += viewModel.recipient
+      .filter { it.isGroup }
       .observeOn(AndroidSchedulers.mainThread())
+      .map { tellomiGroupMemberSubtitle(resources, it) }
+      .distinctUntilChanged()
       .subscribeBy(onNext = this::presentGroupConversationSubtitle)
 
     disposables += viewModel.scrollButtonState
@@ -3210,8 +3213,41 @@ class ConversationFragment :
     inputPanel.clearQuote()
 
     MultiselectForwardFragmentArgs.create(requireContext(), messageParts) { args ->
-      MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+      // Tellomi（#1259 F-1）：长按 / 多选的「转发」打开头像网格
+      TellomiForwardGridBottomSheet.show(childFragmentManager, args)
     }
+  }
+
+  /**
+   * Tellomi：长按「收藏」——不开转发面板，直接发到「我的收藏」，提示「已收藏」可点「查看」（#1174）。
+   * 内容和转发一样（MultiselectForwardFragmentArgs），只是收件人固定是自己。
+   */
+  private fun handleSaveToSavedMessages(messageParts: Set<MultiselectPart>) {
+    MultiselectForwardFragmentArgs.create(requireContext(), messageParts) { args ->
+      MultiselectForwardRepository.send(
+        additionalMessage = "",
+        multiShareArgs = args.multiShareArgs,
+        shareContacts = setOf(RecipientSearchKey(Recipient.self().id, false)),
+        resultHandlers = MultiselectForwardRepository.MultiselectForwardResultHandlers(
+          onAllMessageSentSuccessfully = { ThreadUtil.runOnMain { showSavedToSavedMessages() } },
+          onSomeMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) },
+          onAllMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) }
+        )
+      )
+    }
+  }
+
+  private fun showSavedToSavedMessages() {
+    // 发送是异步的，回来时页面可能已经进了返回栈（fragment 还在、view 没了），这时取 binding 会抛
+    if (!isAdded || view == null) {
+      return
+    }
+
+    Snackbar.make(binding.conversationItemRecycler, R.string.ConversationFragment__tellomi_saved_to_saved_messages, Snackbar.LENGTH_LONG)
+      .setAction(R.string.ConversationFragment__tellomi_view_saved_messages) {
+        CommunicationActions.startConversation(requireContext(), Recipient.self(), null)
+      }
+      .show()
   }
 
   private fun handleSaveAttachment(record: MmsMessageRecord) {
@@ -4706,6 +4742,7 @@ class ConversationFragment :
         ConversationReactionOverlay.Action.REPLY -> handleReplyToMessage(conversationMessage)
         ConversationReactionOverlay.Action.EDIT -> handleEditMessage(conversationMessage)
         ConversationReactionOverlay.Action.FORWARD -> handleForwardMessageParts(conversationMessage.multiselectCollection.toSet())
+        ConversationReactionOverlay.Action.TELLOMI_SAVE_TO_SAVED_MESSAGES -> handleSaveToSavedMessages(conversationMessage.multiselectCollection.toSet())
         ConversationReactionOverlay.Action.RESEND -> handleResend(conversationMessage)
         ConversationReactionOverlay.Action.DOWNLOAD -> handleSaveAttachment(conversationMessage.messageRecord as MmsMessageRecord)
         ConversationReactionOverlay.Action.COPY -> handleCopyMessage(conversationMessage.multiselectCollection.toSet())

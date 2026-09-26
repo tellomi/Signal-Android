@@ -53,9 +53,9 @@ import org.thoughtcrime.securesms.attachments.UriAttachment
 import org.thoughtcrime.securesms.components.AlbumThumbnailView
 import org.thoughtcrime.securesms.components.InputPanel
 import org.thoughtcrime.securesms.components.ThumbnailView
-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardBottomSheet
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.TellomiForwardGridBottomSheet
 import org.thoughtcrime.securesms.database.AttachmentTable
 import org.thoughtcrime.securesms.database.MessageType
 import org.thoughtcrime.securesms.database.SignalDatabase
@@ -231,7 +231,8 @@ class AlbumViewerScreenshots {
       clickText(harness.context.resources.getQuantityString(R.plurals.MediaPreviewFragment__forward_all_d_photos, 12, 12))
       settle(1500)
       onMain {
-        val sheet = allFragments((viewer as FragmentActivity).supportFragmentManager).filterIsInstance<MultiselectForwardBottomSheet>().firstOrNull()
+        // #1259 以后「全部」也打开头像网格（参数同样放在 MultiselectForwardFragment.ARGS 下）
+        val sheet = allFragments((viewer as FragmentActivity).supportFragmentManager).filterIsInstance<TellomiForwardGridBottomSheet>().firstOrNull()
         val args = sheet?.arguments?.let { BundleCompat.getParcelable(it, MultiselectForwardFragment.ARGS, MultiselectForwardFragmentArgs::class.java) }
         val mediaCount = args?.multiShareArgs?.sumOf { it.media.size } ?: -1
         report.appendLine("viewer: forwardAll sheetShown=${sheet != null} mediaCount=$mediaCount")
