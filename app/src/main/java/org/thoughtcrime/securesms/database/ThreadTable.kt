@@ -1099,7 +1099,7 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
     val where = if (pinned) {
       "$ARCHIVED = 0 AND $PINNED_ORDER NOT NULL $filterQuery $folderQuery"
     } else {
-      "$ARCHIVED = 0 AND $PINNED_ORDER IS NULL AND $MEANINGFUL_MESSAGES != 0 $filterQuery $folderQuery"
+      "$ARCHIVED = 0 AND $PINNED_ORDER IS NULL AND ${meaningfulOrSavedMessages()} $filterQuery $folderQuery"
     }
 
     val query = if (pinned) {
@@ -1155,6 +1155,19 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
     }
   }
 
+  /** Tellomi（#1174）：这个会话是不是「我的收藏」（自己的会话）。 */
+  private fun isTellomiSavedMessages(threadId: Long): Boolean {
+    return Recipient.isSelfSet && getRecipientIdForThreadId(threadId) == Recipient.self().id
+  }
+
+  /**
+   * Tellomi：「我的收藏」（自己的会话）没有消息也留在聊天列表里（tellomi/tellomi#1174）；删除后 ACTIVE = 0，照旧不显示。
+   */
+  private fun meaningfulOrSavedMessages(): String {
+    val selfId = if (Recipient.isSelfSet) Recipient.self().id.toLong() else -1L
+    return "($MEANINGFUL_MESSAGES != 0 OR $TABLE_NAME.$RECIPIENT_ID = $selfId)"
+  }
+
   fun getUnarchivedConversationListCount(conversationFilter: ConversationFilter, chatFolder: ChatFolderRecord? = null): Int {
     val filterQuery = conversationFilter.toQuery()
 
@@ -1162,7 +1175,7 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
       readableDatabase
         .select("COUNT(*)")
         .from(TABLE_NAME)
-        .where("$ACTIVE = 1 AND $ARCHIVED = 0 AND ($MEANINGFUL_MESSAGES != 0 OR $PINNED_ORDER NOT NULL) $filterQuery")
+        .where("$ACTIVE = 1 AND $ARCHIVED = 0 AND (${meaningfulOrSavedMessages()} OR $PINNED_ORDER NOT NULL) $filterQuery")
         .run()
         .readToSingleInt(0)
     } else {
@@ -1176,7 +1189,7 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
         WHERE 
           $ACTIVE = 1 AND 
           $ARCHIVED = 0 AND 
-          ($MEANINGFUL_MESSAGES != 0 OR $PINNED_ORDER NOT NULL)
+          (${meaningfulOrSavedMessages()} OR $PINNED_ORDER NOT NULL)
           $filterQuery
           $folderQuery
         """
@@ -1832,14 +1845,16 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
       val meaningfulMessages = messages.hasMeaningfulMessage(threadId)
 
       val isPinned by lazy { getPinnedThreadIds().contains(threadId) }
-      val shouldDelete by lazy { allowDeletion && !isPinned && !messages.containsStories(threadId) }
+      // Tellomi（#1174）：「我的收藏」删空了也留在聊天列表里——和置顶的会话一样只清掉摘要，不整条删、也不同步删除
+      val keepWhenEmpty by lazy { isPinned || isTellomiSavedMessages(threadId) }
+      val shouldDelete by lazy { allowDeletion && !keepWhenEmpty && !messages.containsStories(threadId) }
 
       if (!meaningfulMessages) {
         if (shouldDelete) {
           Log.d(TAG, "Deleting thread $threadId because it has no meaningful messages.")
           deleteConversation(threadId, syncThreadDelete = syncThreadDelete)
           return@withinTransaction true
-        } else if (!isPinned) {
+        } else if (!keepWhenEmpty) {
           return@withinTransaction false
         }
       }
@@ -1859,7 +1874,7 @@ class ThreadTable(context: Context, databaseHelper: SignalDatabase) : DatabaseTa
         Log.w(TAG, "Failed to get a conversation snippet for thread $threadId")
         if (shouldDelete) {
           deleteConversation(threadId)
-        } else if (isPinned) {
+        } else if (keepWhenEmpty) {
           updateThread(
             threadId = threadId,
             messageId = 0,

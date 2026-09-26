@@ -36,6 +36,7 @@ import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.countrycode.Country
 import org.signal.registration.screens.countrycode.CountryUtils
 import org.signal.registration.screens.localbackuprestore.LocalBackupRestoreResult
@@ -109,18 +110,19 @@ class PhoneNumberEntryViewModel(
       is PhoneNumberEntryScreenEvents.ParentStateChanged -> {
         stateEmitter(applyParentState(state, event.parentState))
       }
+      // Tellomi（#1210）：改号码或区号就清掉「暂未开放该地区」的行内提示
       is PhoneNumberEntryScreenEvents.CountryCodeChanged -> {
-        stateEmitter(applyCountryCodeChanged(state, event.value))
+        stateEmitter(applyCountryCodeChanged(state, event.value).copy(isRegionUnavailable = false))
       }
       is PhoneNumberEntryScreenEvents.CountrySelected -> {
-        stateEmitter(applyCountrySelected(state, event.countryCode, event.regionCode, event.countryName, event.countryEmoji))
+        stateEmitter(applyCountrySelected(state, event.countryCode, event.regionCode, event.countryName, event.countryEmoji).copy(isRegionUnavailable = false))
       }
       is PhoneNumberEntryScreenEvents.FullPhoneNumberEntered -> {
-        val populatedState = applyFullPhoneNumberEntered(state, event.e164)
+        val populatedState = applyFullPhoneNumberEntered(state, event.e164).copy(isRegionUnavailable = false)
         stateEmitter(populatedState.copy(dialogs = populatedState.dialogs.copy(confirmNumber = event.autoConfirm && populatedState.isNumberPossible)))
       }
       is PhoneNumberEntryScreenEvents.NationalNumberChanged -> {
-        stateEmitter(applyPhoneNumberChanged(state, event.oldValue, event.newValue))
+        stateEmitter(applyPhoneNumberChanged(state, event.oldValue, event.newValue).copy(isRegionUnavailable = false))
       }
       is PhoneNumberEntryScreenEvents.NextClicked -> {
         val accountId = state.enteredAccountId
@@ -689,8 +691,7 @@ class PhoneNumberEntryViewModel(
             state
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
-            Log.w(TAG, "[RequestVerificationCode] Third party service error.")
-            state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+            applyThirdPartyServiceError(state)
           }
         }
       }
@@ -802,7 +803,7 @@ class PhoneNumberEntryViewModel(
             state
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
-            state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+            applyThirdPartyServiceError(state)
           }
         }
       }
@@ -841,6 +842,24 @@ class PhoneNumberEntryViewModel(
     parentEventEmitter(RegistrationFlowEvent.SessionUpdated(error.session))
     parentEventEmitter(RegistrationFlowEvent.E164Chosen(e164))
     parentEventEmitter.navigateTo(RegistrationRoute.VerificationCodeEntry)
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1210）：请求验证码回 440（[RequestVerificationCodeError.ThirdPartyServiceError]）之后给什么。
+   * 直接请求（[applySessionBasedRegistration]）和人机验证之后再请求（[applyCaptchaCompleted]）共用这一处——
+   * 香港服务端的新会话先要人机验证（没有 GMS 过不了推送挑战），后一条才是主路。
+   *
+   * 号码不是 +86：这个地区没有短信通道（香港只开放中国大陆号码），等多久都不会好。上游照样弹「请在几小时后重试」，
+   * 改成号码框下的行内提示。+86 遇到 440 仍按上游当临时故障处理。
+   */
+  private fun applyThirdPartyServiceError(state: PhoneNumberEntryState): PhoneNumberEntryState {
+    return if (state.countryCode !in TellomiRegistration.SMS_VERIFICATION_CALLING_CODES) {
+      Log.w(TAG, "[RequestVerificationCode] Third party service error for a region without SMS verification (+${state.countryCode}).")
+      state.copy(isRegionUnavailable = true)
+    } else {
+      Log.w(TAG, "[RequestVerificationCode] Third party service error.")
+      state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+    }
   }
 
   private fun formatNumber(nationalNumber: String): String {
