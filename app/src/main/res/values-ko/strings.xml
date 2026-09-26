@@ -1213,7 +1213,7 @@
     <string name="DeprecatedSdkBanner_body">Tellomi이 이 기기에서는 더 이상 작동하지 않습니다. Tellomi을 다시 사용하려면 기기를 최신 Android 버전으로 업데이트하거나 최신 기기로 업데이트하세요.</string>
 
     <!-- Title of notification telling users to update Signal -->
-    <string name="DeprecatedNotificationJob_update_signal">시그널 최신 버전으로 업데이트</string>
+    <string name="DeprecatedNotificationJob_update_signal">Tellomi 최신 버전으로 업데이트</string>
     <!-- Message body of notification telling users that this current version of Signal has expired. If pressed, we will direct them to the website APK or PlayStore page -->
     <string name="DeprecatedNotificationJob_this_version_of_signal_has_expired">이 Tellomi 버전은 만료되었습니다. 메시지를 주고받으려면 탭하여 업데이트하세요.</string>
 
@@ -1520,7 +1520,7 @@
     <!-- Dialog message explaining that an update to Signal is required to restore the backup. -->
     <string name="RemoteRestoreActivity__update_latest">이 Tellomi 버전은 백업을 복원할 수 없습니다. 최신 버전으로 업데이트하고 다시 시도해 주세요.</string>
     <!-- Text on button that when pressed will redirect them to update Signal -->
-    <string name="RemoteRestoreActivity__update_signal">시그널 최신 버전으로 업데이트</string>
+    <string name="RemoteRestoreActivity__update_signal">Tellomi 최신 버전으로 업데이트</string>
     <!-- Text label button to dismiss the dialog -->
     <string name="RemoteRestoreActivity__not_now">나중에</string>
     <!-- Text shown on restore screen as information on what will happen if you skip -->
@@ -6361,7 +6361,7 @@
     <string name="MySupportPreference__checking_subscription">구독을 확인하는 중…</string>
 
     <!-- Title of dialog telling user they need to update signal as it expired -->
-    <string name="UpdateSignalExpiredDialog__title">시그널 최신 버전으로 업데이트</string>
+    <string name="UpdateSignalExpiredDialog__title">Tellomi 최신 버전으로 업데이트</string>
     <!-- Message of dialog telling user they need to update signal as it expired -->
     <string name="UpdateSignalExpiredDialog__message">이 Tellomi 버전은 만료되었습니다. Tellomi을 계속 사용하려면 지금 업데이트하세요.</string>
     <!-- Button text of expiration dialog, will take user to update the app -->
