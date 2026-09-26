@@ -71,6 +71,29 @@ class TellomiQrFocusTest {
   }
 
   @Test
+  fun `slow frames that all see the centered code still release it`() {
+    // 机器忙、两次分析隔 400 毫秒：每帧都对准，中间没有别的帧，不算丢失
+    assertThat(feed("A", center, 0, 400)).isEqualTo(listOf<String?>(null, null))
+    assertThat(feed("A", center, 800)).isEqualTo(listOf<String?>("A"))
+  }
+
+  @Test
+  fun `frames just over the gap still release`() {
+    assertThat(feed("A", center, 0, 351)).isEqualTo(listOf<String?>(null, null))
+    assertThat(feed("A", center, 702)).isEqualTo(listOf<String?>("A"))
+  }
+
+  @Test
+  fun `a slow frame after a miss still restarts the timer`() {
+    // 中间真的看到过没对准的帧，再按间隔判丢失
+    feed("A", center, 0)
+    feed("A", 0.1f to 0.5f, 100)
+
+    assertThat(feed("A", center, 500, 900)).isEqualTo(listOf<String?>(null, null))
+    assertThat(feed("A", center, 1000)).isEqualTo(listOf<String?>("A"))
+  }
+
+  @Test
   fun `the center region is the middle forty percent on both axes`() {
     assertThat(TellomiQrFocus.isInCenter(0.3f, 0.3f)).isTrue()
     assertThat(TellomiQrFocus.isInCenter(0.7f, 0.7f)).isTrue()
