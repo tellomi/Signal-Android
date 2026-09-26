@@ -5,13 +5,18 @@
 
 package org.thoughtcrime.securesms.main
 
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertSame
 import org.junit.Test
 import org.thoughtcrime.securesms.main.ConnectionTitle.Companion.delayLeavingConnected
+import org.thoughtcrime.securesms.messages.IncomingMessageObserver
 import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState
 
 /**
@@ -19,6 +24,40 @@ import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class ConnectionTitleTest {
+
+  /**
+   * 构建到期或服务端回 499 时 isClientDeprecated = true，websocket 自己的 canConnect 为 false，状态停在 DISCONNECTED；
+   * 首屏上已经有上游的「此版本已过期」横幅，标题不能再一直「连接中…」转圈（A3b 审查）。
+   */
+  @Test
+  fun `a deprecated build does not count as connecting`() {
+    assertFalse(ConnectionTitle.canConnect(isRegistered = true, isUnauthorized = false, isClientDeprecated = true))
+    val canConnect = ConnectionTitle.canConnect(isRegistered = true, isUnauthorized = false, isClientDeprecated = true)
+    assertEquals(ConnectionTitle.NONE, ConnectionTitle.from(canConnect = canConnect, networkAvailable = true, webSocketState = WebSocketConnectionState.DISCONNECTED, decryptionDrained = false))
+  }
+
+  /**
+   * AppDependencies.resetNetwork()（跨境同意、FCM 恢复、系统代理变化、PNI 变更……）会换一个新的 IncomingMessageObserver，
+   * 新连接由新实例接收；「收完了」要挂到新实例上，否则标题一直停在「收取中…」（A3b 审查）。
+   */
+  @Test
+  fun `the drained listener moves to the observer that resetNetwork puts in place`() {
+    val first = mockk<IncomingMessageObserver>(relaxed = true)
+    val second = mockk<IncomingMessageObserver>(relaxed = true)
+    var current = first
+    val listener = Runnable { }
+    val tracker = DrainedListenerTracker({ current }, listener)
+
+    assertSame(first, tracker.currentObserver())
+    current = second
+    assertSame(second, tracker.currentObserver())
+    tracker.release()
+
+    verify(exactly = 1) { first.addDecryptionDrainedListener(listener) }
+    verify(exactly = 1) { first.removeDecryptionDrainedListener(listener) }
+    verify(exactly = 1) { second.addDecryptionDrainedListener(listener) }
+    verify(exactly = 1) { second.removeDecryptionDrainedListener(listener) }
+  }
 
   @Test
   fun `no network wins over a stale websocket state`() {

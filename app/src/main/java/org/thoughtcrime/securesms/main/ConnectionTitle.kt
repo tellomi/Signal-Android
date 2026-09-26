@@ -31,6 +31,7 @@ import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.messages.IncomingMessageObserver
 import org.thoughtcrime.securesms.util.NetworkUtil
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState
@@ -57,6 +58,13 @@ enum class ConnectionTitle(@StringRes val text: Int) {
 
     /** 与 Telegram iOS 同一取舍：一闪而过的断线不值得让标题晃一下。 */
     const val LEAVE_CONNECTED_DELAY_MS = 300L
+
+    /** 会不会去连：没注册、被服务器判为未授权（设备被解绑等）时根本不会去连，上游有自己的提示。 */
+    @JvmStatic
+    @VisibleForTesting
+    fun canConnect(isRegistered: Boolean, isUnauthorized: Boolean, isClientDeprecated: Boolean): Boolean {
+      return isRegistered && !isUnauthorized
+    }
 
     @JvmStatic
     fun from(canConnect: Boolean, networkAvailable: Boolean, webSocketState: WebSocketConnectionState?, decryptionDrained: Boolean): ConnectionTitle {
@@ -86,13 +94,18 @@ enum class ConnectionTitle(@StringRes val text: Int) {
      */
     private fun snapshots(context: Context): Flow<ConnectionTitle> = callbackFlow {
       val lock = Any()
-      val incomingMessageObserver = AppDependencies.incomingMessageObserver
+      lateinit var drained: DrainedListenerTracker
 
       val publish = {
         synchronized(lock) {
+          val incomingMessageObserver = drained.currentObserver()
           trySend(
             from(
-              canConnect = SignalStore.account.isRegistered && !TextSecurePreferences.isUnauthorizedReceived(context),
+              canConnect = canConnect(
+                isRegistered = SignalStore.account.isRegistered,
+                isUnauthorized = TextSecurePreferences.isUnauthorizedReceived(context),
+                isClientDeprecated = SignalStore.misc.isClientDeprecated
+              ),
               networkAvailable = NetworkUtil.isConnected(context),
               webSocketState = AppDependencies.webSocketObserver.value,
               decryptionDrained = incomingMessageObserver.decryptionDrained
@@ -100,17 +113,16 @@ enum class ConnectionTitle(@StringRes val text: Int) {
           )
         }
       }
+      drained = DrainedListenerTracker({ AppDependencies.incomingMessageObserver }, Runnable { publish() })
 
       val webSocketDisposable = AppDependencies.webSocketObserver.subscribe { publish() }
-      val drainedListener = Runnable { publish() }
-      incomingMessageObserver.addDecryptionDrainedListener(drainedListener)
       val networkWatcher = DefaultNetworkWatcher(context) { publish() }
       networkWatcher.register()
       publish()
 
       awaitClose {
         webSocketDisposable.dispose()
-        incomingMessageObserver.removeDecryptionDrainedListener(drainedListener)
+        synchronized(lock) { drained.release() }
         networkWatcher.unregister()
       }
     }.conflate()
@@ -173,5 +185,26 @@ private class DefaultNetworkWatcher(private val context: Context, private val on
     } else {
       context.unregisterReceiver(receiver)
     }
+  }
+}
+
+/**
+ * 「收完了」的监听挂在哪个 [IncomingMessageObserver] 上：在 [ConnectionTitle] 的锁里调用 [currentObserver]，拿到的就是这次取值用的实例。
+ */
+@VisibleForTesting
+internal class DrainedListenerTracker(private val current: () -> IncomingMessageObserver, private val listener: Runnable) {
+  private var observer: IncomingMessageObserver? = null
+
+  fun currentObserver(): IncomingMessageObserver {
+    observer?.let { return it }
+    val now = current()
+    observer = now
+    now.addDecryptionDrainedListener(listener)
+    return now
+  }
+
+  fun release() {
+    observer?.removeDecryptionDrainedListener(listener)
+    observer = null
   }
 }
