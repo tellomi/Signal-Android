@@ -81,4 +81,17 @@ class TellomiSavedMessagesTest {
     TellomiSavedMessages.list()
     assertThat(listedThreadIds()).containsExactly(threadId)
   }
+
+  @Test
+  fun `deleting the last message inside keeps it in the list with an empty preview, like a pinned chat`() {
+    val threadId = TellomiSavedMessages.list()
+    val messageId = recipients.insertOutgoingMessage(recipients.self)
+    assertThat(listedThreadIds()).containsExactly(threadId)
+
+    // 上游在会话删空时整条删掉（ACTIVE = 0，还会同步到已关联设备）；「我的收藏」只是清空，还在列表里
+    SignalDatabase.messages.deleteMessage(messageId)
+
+    assertThat(listedThreadIds()).containsExactly(threadId)
+    assertThat(SignalDatabase.threads.getThreadRecord(threadId)!!.snippet.orEmpty()).isEmpty()
+  }
 }
