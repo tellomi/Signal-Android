@@ -2069,7 +2069,9 @@ object BackupRepository {
 
 data class ResumableMessagesBackupUploadSpec(
   val attachmentUploadForm: AttachmentUploadForm,
-  val resumableUri: String
+  val resumableUri: String,
+  /** Tellomi（#1055 第三刀）：拿到续传地址时的区，见 `TellomiUploadPin`。 */
+  val tellomiRegionId: String
 )
 
 data class ArchivedMediaObject(val mediaId: String, val cdn: Int) {

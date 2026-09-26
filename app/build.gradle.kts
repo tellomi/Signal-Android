@@ -331,7 +331,13 @@ android {
     // 所以包一直叫 Signal-Android-play-staging-….apk（owner 2026-09-22 指出）。
     // 模块名有 build.gradle.kts / CI 多处引用，不动；改现行的 base.archivesName。
 
-    manifestPlaceholders["mapsKey"] = "AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"
+    // Tellomi（#1235）：上游这里写死的是 **Signal 自己的** Google Maps key——用它等于让用户选点、查地址的请求
+    // 走 Signal 的 Google 账号和配额，法律文件里也没有这个接收方。现在只认 getMapsKey()（gradle 属性 mapsKey /
+    // 环境变量 MAPS_KEY），没有就为空：MAPS_AVAILABLE = false，附件面板的「位置」置灰、点了提示即将支持。
+    // owner 2026-09-24：等高德（#1124），暂时不开谷歌账单。
+    val tellomiMapsKey = getMapsKey()
+    manifestPlaceholders["mapsKey"] = tellomiMapsKey
+    buildConfigField("boolean", "MAPS_AVAILABLE", "${tellomiMapsKey.isNotEmpty()}")
 
     buildConfigField("long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L")
     buildConfigField("String", "GIT_HASH", "\"${getGitHash()}\"")
@@ -354,7 +360,7 @@ android {
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.tellomi.app\"")
     buildConfigField("String", "SIGNAL_CDN2_URL", "\"https://cdn2.tellomi.app\"")
     buildConfigField("String", "SIGNAL_CDN3_URL", "\"https://cdn3.tellomi.app\"")
-    buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\"")
+    buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.tellomi.invalid\"")
     // 服务故障探测（ServiceOutageDetectionJob）：对这个名字做 DNS 解析，127.0.0.1 = 正常、
     // 127.0.0.2 = 挂「服务故障」横幅。上游值是 Signal 自己的 uptime 主机，那是 **Signal 的**运维信号——
     // 境外会跟着 Signal 的故障挂横幅；大陆那个名字被 DNS 污染（随机公网 IP），探测永远判不出结果，
@@ -362,7 +368,7 @@ android {
     // 和今天大陆的实际行为一样，只是不再去问 Signal。
     // （故意不写上游的字面主机名：#1101 的判据之一是源码 grep 它 = 0。）
     buildConfigField("String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.tellomi.app\"")
-    buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\"")
+    buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.tellomi.invalid\"")
     // 群通话的 SFU 走我们自己的（docs/signal/BUILD_CALLING.md）：香港那台上 calling_frontend
     // 听 127.0.0.1:9010，nginx 以 /callingService/ 暴露；Desktop 的 config/production.json
     // 早就写的是这个地址，Android 这边一直还是上游的 —— 而 InternalValues.groupCallingServer
@@ -408,7 +414,6 @@ android {
     buildConfigField("String[]", "LANGUAGES", "new String[]{ ${languagesForBuildConfigProvider.get()} }")
     buildConfigField("int", "CANONICAL_VERSION_CODE", "$canonicalVersionCode")
     buildConfigField("String", "DEFAULT_CURRENCIES", "\"EUR,AUD,GBP,CAD,CNY\"")
-    buildConfigField("String", "GIPHY_API_KEY", "\"3o6ZsYH6U6Eri53TXy\"")
     buildConfigField("String", "SIGNAL_CAPTCHA_URL", "\"https://chat.tellomi.app/captcha-tellomi/registration/generate.html\"")
     buildConfigField("String", "RECAPTCHA_PROOF_URL", "\"https://chat.tellomi.app/captcha-tellomi/challenge/generate.html\"")
     buildConfigField("org.signal.libsignal.net.Network.Environment", "LIBSIGNAL_NET_ENV", "org.signal.libsignal.net.Network.Environment.STAGING")
@@ -625,8 +630,8 @@ android {
       buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.tellomi.app\"")
       buildConfigField("String", "SIGNAL_CDN2_URL", "\"https://cdn2.tellomi.app\"")
       buildConfigField("String", "SIGNAL_CDN3_URL", "\"https://cdn3.tellomi.app\"")
-      buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\"")
-      buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.staging.signal.org\"")
+      buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.tellomi.invalid\"")
+      buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.tellomi.invalid\"")
       buildConfigField("String", "SVR2_MRENCLAVE_LEGACY", "\"97f151f6ed078edbbfd72fa9cae694dcc08353f1f5e8d9ccd79a971b10ffc535\"")
       buildConfigField("String", "SVR2_MRENCLAVE", "\"3c699f4975aaa3d172c0aad042f94f031b2b03e10b9c19a45116a01693d83302\"")
       buildConfigField("String[]", "UNIDENTIFIED_SENDER_TRUST_ROOTS", "new String[]{\"BcLYlMOrgCUTLuLXSvW5I1FiBAub5uoawfHDNzrzyNg3\"}")
@@ -1080,7 +1085,7 @@ fun getMapsKey(): String {
   return providers
     .gradleProperty("mapsKey")
     .orElse(providers.environmentVariable("MAPS_KEY"))
-    .orElse("AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U")
+    .orElse("") // Tellomi（#1235）：不再回落到 Signal 的 key
     .get()
 }
 

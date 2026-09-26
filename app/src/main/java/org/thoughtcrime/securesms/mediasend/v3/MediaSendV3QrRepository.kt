@@ -6,6 +6,7 @@
 package org.thoughtcrime.securesms.mediasend.v3
 
 import kotlinx.coroutines.rx3.await
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.logging.Log
 import org.signal.mediasend.MediaRecipientId
 import org.signal.mediasend.MediaSendQrRepository
@@ -35,7 +36,8 @@ object MediaSendV3QrRepository : MediaSendQrRepository {
   private suspend fun handleUsernameLink(qrData: String): MediaSendQrRepository.QrCheckResult {
     return when (val result = UsernameRepository.fetchUsernameAndAciFromLink(qrData).await()) {
       is UsernameRepository.UsernameLinkConversionResult.Success -> {
-        val username = result.username.toString()
+        // Tellomi（#1106，ADR-0066 §六）：弹框里给人看的去掉 .01；建联系人仍用完整用户名
+        val username = TellomiUsernames.toDisplayUsername(result.username.toString())
         val recipient = Recipient.externalUsername(result.aci, result.username.toString())
 
         MediaSendQrRepository.QrCheckResult.Username(

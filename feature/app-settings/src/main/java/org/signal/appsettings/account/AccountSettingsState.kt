@@ -14,6 +14,8 @@ data class AccountSettingsState(
   val clientDeprecated: Boolean = false,
   val canTransferWhileUnregistered: Boolean = true,
   val isPhoneNumberless: Boolean = false,
+  /** Tellomi：这套部署有没有 SVR。没有时不显示 PIN 码一节——创建 PIN 会去连 SVR（tellomi/tellomi#1234）。 */
+  val isSvrAvailable: Boolean = true,
   val signalLogin: SignalLogin? = null,
   val dialog: Dialog = Dialog.None
 ) {

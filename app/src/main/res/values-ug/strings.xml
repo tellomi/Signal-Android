@@ -109,13 +109,13 @@
     <!-- Option in menu to go to settings -->
     <string name="AttachmentKeyboard_go_to_settings">تەڭشەكلەرگە يۆتكەل</string>
     <!-- Text explaining that Signal has limited access to photos -->
-    <string name="AttachmentKeyboard_signal_has_limited_access">سىگنال رەسىم ياكى سىنلارنى چەكلىك دائىرىدىلا زىيارەت قىلالايدۇ</string>
+    <string name="AttachmentKeyboard_signal_has_limited_access">Tellomi رەسىم ياكى سىنلارنى چەكلىك دائىرىدىلا زىيارەت قىلالايدۇ</string>
     <!-- Text shown when user has given no photos for Signal to access and an explanation on how to change those permissions -->
     <string name="AttachmentKeyboard_no_photos_found">ھېچقانداق رەسىم تېپىلمىدى ، رەسىم ۋە سىنلارنىڭ بۇ يەردە كۆرۈنۈشىنى تاللاڭ ياكى ئىجازەتلەرنى ئۆزگەرتىڭ</string>
 
     <!-- MediaGalleryFragment -->
     <!-- Text describing that no photos or videos are currently found in the gallery and that Signal can only access media that the user allows -->
-    <string name="MediaGalleryFragment__no_photos_found">ھېچقانداق رەسىم ۋە سىنلار تېپىلمىدى. سىگنال پەقەت سىز تاللىغان رەسىملەر ۋە سىنلارنىلا زىيارەت قىلالايدۇ.</string>
+    <string name="MediaGalleryFragment__no_photos_found">ھېچقانداق رەسىم ۋە سىنلار تېپىلمىدى. Tellomi پەقەت سىز تاللىغان رەسىملەر ۋە سىنلارنىلا زىيارەت قىلالايدۇ.</string>
 
     <!-- AttachmentManager -->
     <string name="AttachmentManager_cant_open_media_selection">ۋاسىتە تاللىغۇدەك بىر ئەپ تاپالمىدى.</string>
@@ -136,7 +136,7 @@
     <!-- Dialog description that will explain the steps needed to give gallery storage permission -->
     <string name="AttachmentManager_signal_to_show_photos">رەسىم ۋە ۋىدېيولارنى كۆرسىتىش ئۈچۈن:</string>
     <!-- Toast text explaining Signal\'s need for storage access -->
-    <string name="AttachmentManager_signal_needs_storage_access">رەسىم ۋە سىنلىرىڭىزنى كۆرسىتىش ئۈچۈن سىگنال زىيارەت قىلىش ئجازىتىڭىزگە موھتاج.</string>
+    <string name="AttachmentManager_signal_needs_storage_access">رەسىم ۋە سىنلىرىڭىزنى كۆرسىتىش ئۈچۈن Tellomi زىيارەت قىلىش ئجازىتىڭىزگە موھتاج.</string>
 
     <!-- Alert dialog title to show the recipient has not activated payments -->
     <string name="AttachmentManager__not_activated_payments">%1$s پۇل تۆلەش ئىقتىدارىنى تېخى ئاكتىپلىمىغان </string>
@@ -1053,7 +1053,7 @@
     <!-- Bottom sheet description explaining that future messages on linked devices will be in sync with your phone but previous messages will not appear -->
     <string name="LinkDeviceFragment__signal_messages_are_synchronized">Tellomi ئۇچۇرلىرى تېلېفونىڭىز باغلانغاندىن كېيىن تېلېفونىڭىزدىكى Tellomi بىلەن ماسقەدەملىنىدۇ. بۇرۇنقى ئۇچۇر تارىخىڭىز كۆرۈنمەيدۇ.</string>
     <!-- Bottom sheet description explaining that for non-desktop/iPad devices, they should go to %s to download Signal where %s is Signal\'s website -->
-    <string name="LinkDeviceFragment__on_other_device_visit_signal">باشقا ئۈسكۈنىنى سىگنالغا ئۇلاش ئۈچۈن ، %1$s نى زىيارەت قىلىپ سىگنالنى چۈشۈرۈڭ</string>
+    <string name="LinkDeviceFragment__on_other_device_visit_signal">باشقا ئۈسكۈنىنى Tellomiغا ئۇلاش ئۈچۈن ، %1$s نى زىيارەت قىلىپ Tellomiنى چۈشۈرۈڭ</string>
   <!-- Removed by excludeNonTranslatables <string name="LinkDeviceFragment__signal_download_url" translatable="false">signal.org/download</string> -->
     <!-- Header title listing out current linked devices -->
     <string name="LinkDeviceFragment__my_linked_devices">باغلانغان ئۈسكۈنىلىرىم</string>
@@ -1347,7 +1347,7 @@
     <!-- Message for dialog asking user to submit logs for debugging a crash -->
     <string name="PromptLogsSlowNotificationsDialog__message">خاتالىق خاتىرىلىرى بىزنىڭ مەسىلىگە دىئاگنوز قويۇشىمىز ۋە ھەل قىلىشىمىزغا ياردەم بېرىدۇ ، ۋە تونىتىش ئۇچۇرلىرىنى ئۆز ئىچىگە ئالمايدۇ.</string>
     <!-- Title for dialog asking user to submit logs for debugging slow notification issues -->
-    <string name="PromptLogsSlowNotificationsDialog__title_crash">سىگنال بىر مەسىلە تېپىپ چىقتى. خاتالىق خاتىرىسىنى يوللامسىز؟</string>
+    <string name="PromptLogsSlowNotificationsDialog__title_crash">Tellomi بىر مەسىلە تېپىپ چىقتى. خاتالىق خاتىرىسىنى يوللامسىز؟</string>
     <!-- Title for dialog asking user to submit logs for a situation where they\'re not able to connect to the signal service -->
     <string name="PromptLogsSlowNotificationsDialog__title_connectivity_warning">ئۇچۇر تاپشۇرۇۋالالمايۋاتقان بولۇشىڭىز مۇمكىن. كاشىلا ھەل قىلىش خاتىرىسىنى يوللامسىز؟</string>
 
@@ -1355,12 +1355,12 @@
     <!-- Title for dialog asking user to submit logs for debugging slow notification issues -->
     <string name="PromptBatterySaverBottomSheet__title">باتارىيە ئەلالاشتۇرۇلۇش تۈپەيلىدىن، ئۇقتۇرۇشلا كېچىكتۈرۈلىشى مۇمكىن</string>
     <!-- Message explaining that battery saver may delay notifications -->
-    <string name="PromptBatterySaverBottomSheet__message">سىگنالنىڭ باتارىيە ئەلالاشتۇرۇشىنى چەكلەپ، ئۇچۇر ئۇقتۇرۇشىنىڭ كېچىكتۈرۈلمەسلىكىگە كاپالەتلىك قىلالايسىز.</string>
+    <string name="PromptBatterySaverBottomSheet__message">Tellomiنىڭ باتارىيە ئەلالاشتۇرۇشىنى چەكلەپ، ئۇچۇر ئۇقتۇرۇشىنىڭ كېچىكتۈرۈلمەسلىكىگە كاپالەتلىك قىلالايسىز.</string>
 
     <!-- Title in bottom sheet that states that notifications for this device could be delayed -->
     <string name="DeviceSpecificNotificationBottomSheet__notifications_may_be_delayed">باتارىيە ئەلالاشتۇرۇلۇش تۈپەيلىدىن، ئۇقتۇرۇشلا كېچىكتۈرۈلىشى مۇمكىن</string>
     <!-- Message in bottom sheet prompting users to fix potential issues by disabling battery optimizations -->
-    <string name="DeviceSpecificNotificationBottomSheet__disable_battery_optimizations">سىگنال ئۈچۈن باتارىيە ئەلالاشتۇرۇشنى چەكلەپ، ئۇچۇر ئۇقتۇرۇشىنىڭ كېچىكتۈرۈلمەسلىكىگە كاپالەتلىك قىلىڭ. ئۈسكۈنىگە مۇناسىۋەتلىك كۆرسەتمىلەرنى كۆرۈش ئۈچۈن «داۋاملاشتۇرۇش» نى چېكىڭ.</string>
+    <string name="DeviceSpecificNotificationBottomSheet__disable_battery_optimizations">Tellomi ئۈچۈن باتارىيە ئەلالاشتۇرۇشنى چەكلەپ، ئۇچۇر ئۇقتۇرۇشىنىڭ كېچىكتۈرۈلمەسلىكىگە كاپالەتلىك قىلىڭ. ئۈسكۈنىگە مۇناسىۋەتلىك كۆرسەتمىلەرنى كۆرۈش ئۈچۈن «داۋاملاشتۇرۇش» نى چېكىڭ.</string>
     <!-- Button to dismiss notification help prompt -->
     <string name="DeviceSpecificNotificationBottomSheet__no_thanks">ياق، رەھمەت</string>
     <!-- Button to continue and go to Signal support website -->
@@ -1369,7 +1369,7 @@
     <!-- Title of a bottom sheet that is shown when the user is having connectivity issues -->
     <string name="ConnectivityWarningBottomSheet_title">ئۇچۇر تاپشۇرۇۋالالمايۋاتقان بولۇشىڭىز مۇمكىن</string>
     <!-- Body of a bottom sheet that is shown when the user is having connectivity issues -->
-    <string name="ConnectivityWarningBottomSheet_body">ئۈسكۈنىڭىزنى قايتا قوزغىتىش ئۇچۇر يەتكۈزۈش مەسىلىسىنى ھەل قىلالىشى مۇمكىن. ئەگەر بۇ مەسىلە داۋاملاشسا ، سىگنال ياردەم مەركىزى بىلەن ئالاقىلىشىڭ.</string>
+    <string name="ConnectivityWarningBottomSheet_body">ئۈسكۈنىڭىزنى قايتا قوزغىتىش ئۇچۇر يەتكۈزۈش مەسىلىسىنى ھەل قىلالىشى مۇمكىن. ئەگەر بۇ مەسىلە داۋاملاشسا ، Tellomi ياردەم مەركىزى بىلەن ئالاقىلىشىڭ.</string>
     <!-- Text for a button in a bottom sheet that is shown when the user is having connectivity issues. Clicking it will dismiss the bottom sheet. -->
     <string name="ConnectivityWarningBottomSheet_dismiss_button">بىلدىم</string>
 
@@ -1518,7 +1518,7 @@
     <!-- Dialog title displayed when remote restore failed because of an outdated backup version. -->
     <string name="RemoteRestoreActivity__couldnt_restore">بۇ زاپاسلاشنى ئەسلىگە كەلتۈرەلمىدى</string>
     <!-- Dialog message explaining that an update to Signal is required to restore the backup. -->
-    <string name="RemoteRestoreActivity__update_latest">سىگنالنىڭ بۇ نەشرى زاپاسلاشنى ئەسلىگە كەلتۈرەلمىدى. ئەڭ يېڭى نەشرىگە يېڭىلاپ قايتا سىناڭ.</string>
+    <string name="RemoteRestoreActivity__update_latest">Tellomiنىڭ بۇ نەشرى زاپاسلاشنى ئەسلىگە كەلتۈرەلمىدى. ئەڭ يېڭى نەشرىگە يېڭىلاپ قايتا سىناڭ.</string>
     <!-- Text on button that when pressed will redirect them to update Signal -->
     <string name="RemoteRestoreActivity__update_signal">Tellomi نى يېڭىلا</string>
     <!-- Text label button to dismiss the dialog -->
@@ -2263,7 +2263,7 @@
     <string name="DeviceProvisioningActivity_sorry_you_have_too_many_devices_linked_already">كەچۈرۈڭ، ئۇلانغان ئۈسكۈنىلىرىڭىز بەك كۆپ بولۇپ كەتتى، بەزىلىرىنى چىقىرىۋېتىڭ</string>
     <string name="DeviceActivity_sorry_this_is_not_a_valid_device_link_qr_code">كەچۈرۈڭ، بۇ ئىناۋەتلىك بولغان ئۈسكۈنە ئۇلانمىسى QR كودى ئەمەس.</string>
     <string name="DeviceProvisioningActivity_link_a_signal_device">بىر Tellomi ئۈسكۈنىسى ئۇلامسىز؟</string>
-    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">ئۈستەل يۈزى ياكى iPad نى بۇ سىگنال ھېساباتىغا ئۇلاش ئۈچۈن ، «ئۇلانغان ئۈسكۈنىلەر»گە كىرىپ «بىر يېڭى ئۈسكۈنىنى ئۇلاش» نى چېكىپ ، QR كودىنى قايتا سكاننېرلاڭ. پەقەت Tellomi دىنلا كەلگەن QR كودىنى سكاننېرلاڭ.</string>
+    <string name="DeviceProvisioningActivity_to_link_a_desktop_or_ipad_to_this_signal_account">ئۈستەل يۈزى ياكى iPad نى بۇ Tellomi ھېساباتىغا ئۇلاش ئۈچۈن ، «ئۇلانغان ئۈسكۈنىلەر»گە كىرىپ «بىر يېڭى ئۈسكۈنىنى ئۇلاش» نى چېكىپ ، QR كودىنى قايتا سكاننېرلاڭ. پەقەت Tellomi دىنلا كەلگەن QR كودىنى سكاننېرلاڭ.</string>
 
     <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">QR كودىنى سايىلەش ئۈچۈن Tellomi كامېرا ھوقۇقىغا موھتاج ، ئەمما ئۇ مەڭگۈلۈك رەت قىلىندى. ئەپ تەڭشەكلىرىدىن، «ھوقۇقلار» نى تاللاپ ۋە «كامېرا» نى قوزغىتىڭ. </string>
     <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">كامېرا ھوقۇقى بولمىغاچقا QR كودىنى سايىلىغىلى بولمىدى</string>
@@ -2483,7 +2483,7 @@
     <string name="WebRtcCallView__joining">قېتىلىۋتىدۇ…</string>
     <string name="WebRtcCallView__disconnected">ئۈزۈلدى</string>
     <!-- Utilized in the lobby before joining a call link -->
-    <string name="WebRtcCallView__signal_call_link">سىگنال چاقىرىق ئۇلىنىشى</string>
+    <string name="WebRtcCallView__signal_call_link">Tellomi چاقىرىق ئۇلىنىشى</string>
     <!-- Warning displayed when entering a call via a link and you have Phone Number Privacy disabled-->
     <string name="WebRtcCallView__anyone_who_joins_pnp_disabled">بۇ ئۇلىنىش ئارقىلىق توپقا قېتىلغانلار سىزنىڭ ئىسمىڭىز، رەسىمىڭىز ۋە تېلېفون نومۇرىڭىزنى كۆرەلەيدۇ.</string>
     <!-- Warning displayed when entering a call via a link and you have Phone Number Privacy enabled-->
@@ -3976,7 +3976,7 @@
         <item>باشقىلار</item>
     </string-array>
     <!-- Subject of email when submitting debug logs to help debug slow notifications -->
-    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">سىگنال ئاندىرويىد خاتالىق خاتىرىسىنى يوللاش</string>
+    <string name="DebugLogsPromptDialogFragment__signal_android_support_request">Tellomi ئاندىرويىد خاتالىق خاتىرىسىنى يوللاش</string>
     <!-- Action to submit logs and take user to send an e-mail -->
     <string name="DebugLogsPromptDialogFragment__submit">تاپشۇر</string>
     <!-- Action to decline to submit logs -->
@@ -4923,11 +4923,11 @@
     <string name="preferences_chats__backups">زاپاسلار</string>
 
     <!-- Title text shown when Signal is locked and needs to be unlocked -->
-    <string name="prompt_passphrase_activity__unlock_signal">سىگنال قۇلۇپىنى ئېچىڭ</string>
+    <string name="prompt_passphrase_activity__unlock_signal">Tellomi قۇلۇپىنى ئېچىڭ</string>
     <!-- Description text explaining how to unlock Signal -->
-    <string name="prompt_passphrase_activity__use_your_android_device">سىگنالنىڭ قۇلۇپىنى ئېچىش ئۈچۈن ئاندىرويىد ئۈسكۈنىسىنىڭ قۇلۇپ تەڭشىكىنى ئىشلىتىڭ.</string>
+    <string name="prompt_passphrase_activity__use_your_android_device">Tellomiنىڭ قۇلۇپىنى ئېچىش ئۈچۈن ئاندىرويىد ئۈسكۈنىسىنىڭ قۇلۇپ تەڭشىكىنى ئىشلىتىڭ.</string>
     <!-- Text shown in a dialog that further explains how to unlock Signal by using the same unlocking methods that are used to unlock their own device -->
-    <string name="prompt_passphrase_activity__screen_lock_is_on">ئېكران قۇلۇپى ئېچىلدى ، سىگنال ئپى ئۈسكۈنىڭىزنىڭ قۇلۇپ تەڭشىكى بىلەن بىخەتەرلەشتۈرۈلدى. سىگنال قۇلۇپىنى ئېچىش ئادەتتە تېلېفونىڭىزنىڭ قۇلۇپلىنى ئاچقانغا ئوخشاش ، بۇ چىراي تونۇتۇش، بارماق ئىزى ، PIN نومۇرى ، پارول ياكى ئەندىزە بىلەن قۇلۇپنى ئاچقانغا ئوخشاش.</string>
+    <string name="prompt_passphrase_activity__screen_lock_is_on">ئېكران قۇلۇپى ئېچىلدى ، Tellomi ئپى ئۈسكۈنىڭىزنىڭ قۇلۇپ تەڭشىكى بىلەن بىخەتەرلەشتۈرۈلدى. Tellomi قۇلۇپىنى ئېچىش ئادەتتە تېلېفونىڭىزنىڭ قۇلۇپلىنى ئاچقانغا ئوخشاش ، بۇ چىراي تونۇتۇش، بارماق ئىزى ، PIN نومۇرى ، پارول ياكى ئەندىزە بىلەن قۇلۇپنى ئاچقانغا ئوخشاش.</string>
     <!-- Button in a dialog that will contact Signal support if pressed -->
     <string name="prompt_passphrase_activity__contact_support">ياردەم خادىمى بىلەن ئالاقىلىشىش</string>
     <!-- Button text to try again after unlocking has previously failed -->
@@ -4939,7 +4939,7 @@
     <!-- Text shown with toggle that when switched on will enable screen lock -->
     <string name="ScreenLockSettingsFragment__use_screen_lock">ئېكران قۇلۇپىنى ئىشلىتىڭ</string>
     <!-- Description of what screen locking will do and how notification content will not be shown when screen is locked -->
-    <string name="ScreenLockSettingsFragment__your_android_device">ئەپلەردىن ئايرىلغاندا ياكى ئالماشتۇرغاندا سىگنال قۇلۇپىنى ئېچىشى ئۈچۈن ئاندىرويىد ئۈسكۈنىڭىزنىڭ قۇلۇپ تەڭشەك سېستمىسى تەلەپ قىلىنىدۇ. قۇلۇپلانغاندا ، ئۇقتۇرۇشنى ئالدىن كۆرۈشى كۆزنىكى ئۇچۇرنىڭ مەزمۇنىنى كۆرسەتمەيدۇ.</string>
+    <string name="ScreenLockSettingsFragment__your_android_device">ئەپلەردىن ئايرىلغاندا ياكى ئالماشتۇرغاندا Tellomi قۇلۇپىنى ئېچىشى ئۈچۈن ئاندىرويىد ئۈسكۈنىڭىزنىڭ قۇلۇپ تەڭشەك سېستمىسى تەلەپ قىلىنىدۇ. قۇلۇپلانغاندا ، ئۇقتۇرۇشنى ئالدىن كۆرۈشى كۆزنىكى ئۇچۇرنىڭ مەزمۇنىنى كۆرسەتمەيدۇ.</string>
     <!-- Title text explaining when users should start the screen lock -->
     <string name="ScreenLockSettingsFragment__start_screen_lock">ئېكران قۇلۇپىنى قوزغىتىڭ</string>
     <!-- Option text explaining that screen lock should start immediately -->
@@ -4953,9 +4953,9 @@
     <!-- Option text explaining that screen lock should start at a custom time set by the user -->
     <string name="ScreenLockSettingsFragment__custom_time">ئىختىيارى ۋاقىت</string>
     <!-- Title on biometrics prompt explaining that biometrics are needed to turn on screen lock -->
-    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">سىگنال ئېكرانى قۇلۇپىنى ئىشلىتىڭ</string>
+    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Tellomi ئېكرانى قۇلۇپىنى ئىشلىتىڭ</string>
     <!-- Title on biometrics prompt explaining that biometrics are needed to turn off screen lock -->
-    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">سىگنال ئېكرانىنىڭ قۇلۇپىنى ئېتىڭ</string>
+    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Tellomi ئېكرانىنىڭ قۇلۇپىنى ئېتىڭ</string>
 
     <string name="Recipient_unknown">نامەلۇم</string>
     <!-- Name to use for a user across the UI when they are unregistered and have no other name available -->
@@ -6144,7 +6144,7 @@
     <string name="NewConversationActivity__accessibility_open_top_bar_menu">تىزىملىكنى ئېچىش</string>
     <!-- Error message shown in a dialog when trying to create a new group with non-signal users (e.g., unregistered or phone number only contacts) -->
     <plurals name="RecipientLookup_error__not_signal_users">
-        <item quantity="other">%1$s سىگنال ئىشلەتكۈچىسى ئەمەس</item>
+        <item quantity="other">%1$s Tellomi ئىشلەتكۈچىسى ئەمەس</item>
     </plurals>
 
     <!-- Hint text that shows in the recipient search bar when no text is entered yet. -->
@@ -6691,7 +6691,7 @@
     <!-- Displayed in a toast when we fail to open the ringtone picker -->
     <string name="NotificationSettingsFragment__failed_to_open_picker">تاللىغۇچنى ئاچالمىدى.</string>
     <!-- Banner title when notification permission is disabled -->
-    <string name="NotificationSettingsFragment__to_enable_notifications">ئۇقتۇرۇشللارنى قوزغىتىش ئۈچۈن، سىگنال ئۇلارنى كۆرسىتىش رۇخسىتىگە ئېرىشىشى كېرەك.</string>
+    <string name="NotificationSettingsFragment__to_enable_notifications">ئۇقتۇرۇشللارنى قوزغىتىش ئۈچۈن، Tellomi ئۇلارنى كۆرسىتىش رۇخسىتىگە ئېرىشىشى كېرەك.</string>
     <!-- Banner action when notification permission is disabled -->
     <string name="NotificationSettingsFragment__turn_on">ئېچىش</string>
 
@@ -7760,7 +7760,7 @@
     <!-- Call link creation item description on calls tab -->
     <string name="CreateCallLink__share_a_link_for">Tellomi چاقىرىقى ئۈچۈن ئۇلانما ئورتاقلىشىش</string>
     <!-- Text inserted when sharing a call link within Signal. Placeholder is a call link url. -->
-    <string name="CreateCallLink__use_this_link_to_join_a_signal_call">بۇ ئۇلانما بىلەن بىر سىگنال چاقىرىقىغا قېتىلىڭ: %1$s</string>
+    <string name="CreateCallLink__use_this_link_to_join_a_signal_call">بۇ ئۇلانما بىلەن بىر Tellomi چاقىرىقىغا قېتىلىڭ: %1$s</string>
 
     <!-- CallLinkInfoSheet -->
     <!-- Sheet title -->
@@ -7946,7 +7946,7 @@
     <!-- Title of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups -->
     <string name="TurnOnSignalBackups__title">Tellomi بىخەتەر زاپاسلانمىللىرىنى قوزغىتىڭ</string>
     <!-- Body of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups -->
-    <string name="TurnOnSignalBackups__body">يېڭى تېلېفون ئالغاندا ياكى سىگنالنى قايتا قاچىلىغاندا ھەرقانداق ئۇچۇرنى يۈتتۈرۈپ قويمايسىز.</string>
+    <string name="TurnOnSignalBackups__body">يېڭى تېلېفون ئالغاندا ياكى Tellomiنى قايتا قاچىلىغاندا ھەرقانداق ئۇچۇرنى يۈتتۈرۈپ قويمايسىز.</string>
     <!-- Button of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups that will take the user to the flow to enable backups -->
     <string name="TurnOnSignalBackups__turn_on">ئېچىش</string>
     <!-- Button of a megaphone shown at the bottom of the chat list to prompt the user to enable message backups that will simply dismiss the megaphone -->
@@ -8184,7 +8184,7 @@
     <!-- Sheet title when user does not have enough space to download their backup. Placeholder is formatted byte size, for example 12GB. -->
     <string name="BackupAlertBottomSheet__free_up_s_on_this_device">بۇ ئۈسكۈنىدىكى %1$s بوشلۇقنى بېكارلاڭ</string>
     <!-- Sheet body part 1 when user does not have enough space to download their backup. Placeholder is the amount of space needed. -->
-    <string name="BackupAlertBottomSheet__to_finish_downloading_your_signal_backup">سىگنال زاپاسلاشنى چۈشۈرۈشنى تاماملاش ئۈچۈن ئۈسكۈنىڭىز %1$s ساقلاش بوشلۇقىغا ئېھتىياجلىق.</string>
+    <string name="BackupAlertBottomSheet__to_finish_downloading_your_signal_backup">Tellomi زاپاسلاشنى چۈشۈرۈشنى تاماملاش ئۈچۈن ئۈسكۈنىڭىز %1$s ساقلاش بوشلۇقىغا ئېھتىياجلىق.</string>
     <!-- Sheet body part 2 when user does not have enough space to download their backup. -->
     <string name="BackupAlertBottomSheet__to_free_up_space_offload">بوشلۇق ھازىرلاش ئۈچۈن ئشلىتىلمىگەن ئەپلەرنى ياكى چوڭ ھەجىملىك مەزمۇنلارنى چۈشۈرۈۋېتىڭ ياكى ئۆچۈرۈڭ.</string>
     <!-- Sheet title when user payment failed to process -->
@@ -8246,7 +8246,7 @@
     <!-- Dialog title when a backup redemption fails -->
     <string name="BackupAlertBottomSheet__couldnt_redeem_your_backups_subscription">زاپاسلاش مۇشتەرىلىكىڭىزنى ئەسلىگە كەلتۈرەلمىدى</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it -->
-    <string name="BackupAlertBottomSheet__an_error_occurred">بىر خاتالىق كۆرۈلدى ، زاپاسلىشىڭىزنى تاماملىيالمىدى. سىگنالنىڭ ئەڭ يېڭى نەشرىنى ئشلەتكەنلىكىڭىزنى جەزملەشتۈرۈڭ ۋە قايتا سىناڭ. ئەگەر بۇ مەسىلە داۋاملاشسا ، سىگنال ياردەم مەركىزى بىلەن ئالاقىلىشىڭ.</string>
+    <string name="BackupAlertBottomSheet__an_error_occurred">بىر خاتالىق كۆرۈلدى ، زاپاسلىشىڭىزنى تاماملىيالمىدى. Tellomiنىڭ ئەڭ يېڭى نەشرىنى ئشلەتكەنلىكىڭىزنى جەزملەشتۈرۈڭ ۋە قايتا سىناڭ. ئەگەر بۇ مەسىلە داۋاملاشسا ، Tellomi ياردەم مەركىزى بىلەن ئالاقىلىشىڭ.</string>
     <!-- Dialog text for when a backup fails to be created and ways to fix it. Used for out of remote storage space error. -->
     <string name="BackupAlertBottomSheet__an_error_occurred_and">بىر خاتالىق كۆرۈلدى ، زاپاسلىشىڭىزنى تاماملىيالمىدى. ئەگەر بۇ مەسىلە داۋاملاشسا ، سىگنال ياردەم مەركىزى بىلەن ئالاقىلىشىڭ.</string>
     <!-- Dialog action button that will allow you to check for any Signal version updates -->
@@ -8254,7 +8254,7 @@
     <!-- Backup redemption error sheet text line 1 -->
     <string name="BackupAlertBottomSheet__too_many_devices_have_tried">بەك كۆپ ئۈسكۈنىلەر بۇ ئايدا مۇشتەرىلىكىڭىزنى ئەسلىگە كەلتۈرۈشكە ئۇرۇندى. بۇلار سادىر بولغان بولۇشى مۇمكىن:</string>
     <!-- Backup redemption error sheet bullet point 1 -->
-    <string name="BackupAlertBottomSheet__reregistered_your_signal_account">سىگنال ھېساباتىڭىزنى قايتا-قايتا تىزىملاتتىڭىز.</string>
+    <string name="BackupAlertBottomSheet__reregistered_your_signal_account">Tellomi ھېساباتىڭىزنى قايتا-قايتا تىزىملاتتىڭىز.</string>
     <!-- Backup redemption error sheet bullet point 2 -->
     <string name="BackupAlertBottomSheet__have_too_many_devices_using_the_same_subscription">بەك كۆپ ئۈسكۈنىلەر بىلەن ئوخشاش مۇشتەرىلىكنى ئشلەتتىڭىز.</string>
 
@@ -8328,7 +8328,7 @@
     <!-- Text displayed when a backup could not be completed -->
     <string name="BackupStatusRow__your_last_backup">ئاخىرقى زاپاسلىشىڭىزنى تاماملىيالمىدى. تېلېفونىڭىزنىڭ Wi-Fi غا ئۇلانغانلىقىنى جەزملەشتۈرۈڭ ۋە «ھازىر زاپاسلاش» نى چېكىپ قايتا سىناڭ.</string>
     <!-- Text displayed when a backup could not be completed and to check that they are on the latest version of Signal -->
-    <string name="BackupStatusRow__your_last_backup_latest_version">ئاخىرقى زاپاسلىشىڭىزنى تاماملىيالمىدى. سىگنالنىڭ ئەڭ يېڭى نەشرىنى ئشلەتكەنلىكىڭىزنى جەزملەشتۈرۈڭ ۋە قايتا سىناڭ.</string>
+    <string name="BackupStatusRow__your_last_backup_latest_version">ئاخىرقى زاپاسلىشىڭىزنى تاماملىيالمىدى. Tellomiنىڭ ئەڭ يېڭى نەشرىنى ئشلەتكەنلىكىڭىزنى جەزملەشتۈرۈڭ ۋە قايتا سىناڭ.</string>
     <!-- Text displayed when a backup file exceeds the storage limit during upload. -->
     <string name="BackupStatusRow__backup_file_too_large">سىزدە بار ئۇچۇرلارنىڭ سانى ساقلاش چېكىدىن ئېشىپ كەتكەن. بەزى ئۇچۇرلارنى ئۆچۈرۈپ قايتا سىناڭ.</string>
     <!-- Text displayed when we\'re not backing up all messages. The placeholder represents the cutoff date for the messages we\'re backing up. -->
@@ -8441,7 +8441,7 @@
     <string name="UpgradeToStartMediaBackupSheet__this_media_is_no_longer_available">بۇ مېدىيا ئەمدى مەۋجۇت ئەمەس</string>
     <!-- Subtitle of bottom sheet detailing that with their current plan, there is a limitation to how many days media is stored for. Placeholder is number of days. -->
     <plurals name="UpgradeToStartMediaBackupSheet__your_current_signal_backup_plan_includes">
-        <item quantity="other">نۆۋەتتىكى سىگنال زاپاسلاش پىلانىڭىز ئەڭ يېقىنقى %1$d كۈنلۈك مېدىيانى ئۆز ئىچىگە ئالىدۇ. بارلىق مېدىيالىرىڭىزنى زاپاسلاشنى باشلاش ئۈچۈن ، ھازىر يېڭىلاڭ.</item>
+        <item quantity="other">نۆۋەتتىكى Tellomi زاپاسلاش پىلانىڭىز ئەڭ يېقىنقى %1$d كۈنلۈك مېدىيانى ئۆز ئىچىگە ئالىدۇ. بارلىق مېدىيالىرىڭىزنى زاپاسلاشنى باشلاش ئۈچۈن ، ھازىر يېڭىلاڭ.</item>
     </plurals>
     <!-- Primary action to launch upgrade flow. Placeholder is formatted price. -->
     <string name="UpgradeToStartMediaBackupSheet__subscribe_for_s_month">%1$s/ ئايلىقى مۇشتەرى بولۇڭ</string>
@@ -8498,9 +8498,9 @@
     <!-- Subtitle for row for canceled backup -->
     <string name="BackupsSettingsFragment__subscription_canceled">مۇشتەرىلىك بىكار قىلىندى</string>
     <!-- Subtitle for row for no backup ever created -->
-    <string name="BackupsSettingsFragment_automatic_backups_with_signals">سىگنالنىڭ بىخەتەر ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتى بىلەن ئاپتوماتىك زاپاسلاش.</string>
+    <string name="BackupsSettingsFragment_automatic_backups_with_signals">Tellomiنىڭ بىخەتەر ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتى بىلەن ئاپتوماتىك زاپاسلاش.</string>
     <!-- Subtitle shown on a linked device when backups are off, directing the user to set them up on their phone -->
-    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">سىگنالنىڭ بىخەتەر ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتى بىلەن ئاپتوماتىك زاپاسلاش. تېلېفونىڭىزدىن باشلاڭ.</string>
+    <string name="BackupsSettingsFragment__automatic_backups_get_started_on_your_phone">Tellomiنىڭ بىخەتەر ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتى بىلەن ئاپتوماتىك زاپاسلاش. تېلېفونىڭىزدىن باشلاڭ.</string>
     <!-- Subtitle for row for backups that are active but subscription not found -->
     <string name="BackupsSettingsFragment_subscription_not_found_on_this_device">"بۇ ئۈسكۈنىدە مۇشتەرىلىكىڭىز تېپىلمىدى."</string>
     <!-- Action button label to set up backups -->
@@ -8584,7 +8584,7 @@
     <!-- Displays the date the subscription expired. Placeholder is the date. -->
     <string name="RemoteBackupsSettingsFragment__expired_on_s">%1$s ۋاقتى ئۆتكەن</string>
     <!-- Displayed at the top of the screen when no backup is currently enabled -->
-    <string name="RemoteBackupsSettingsFragment__back_up_your_message_history">ئۇچۇرلىشىش تارىخىڭىزنى زاپاسلاڭ ، يېڭى تېلېفون ئالغاندا ياكى سىگنالنى قايتا قاچىلىغاندا سانلىق مەلۇماتنى ھەرگىز يوقىتىپ قويمايسىز.</string>
+    <string name="RemoteBackupsSettingsFragment__back_up_your_message_history">ئۇچۇرلىشىش تارىخىڭىزنى زاپاسلاڭ ، يېڭى تېلېفون ئالغاندا ياكى Tellomiنى قايتا قاچىلىغاندا سانلىق مەلۇماتنى ھەرگىز يوقىتىپ قويمايسىز.</string>
     <!-- Section header for other ways to back up -->
     <string name="RemoteBackupsSettingsFragment__other_ways_to_backup">باشقا زاپاسلاش ئۇسۇللىرى</string>
     <!-- Row title for performing on-device backup -->
@@ -8642,7 +8642,7 @@
     <!-- Button label to re-enable backups (launches into checkout flow) -->
     <string name="RemoteBackupsSettingsFragment__reenable_backups">زاپاسلاشنى قايتا قوزغىتىش</string>
     <!-- Notice displayed when backups have been disabled and deleted -->
-    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">زاپاسلاش ئېتىلدى ۋە سىگنالنىڭ بىخەتەر ساقلاش مۇلازىمىتىدىن سانلىق مەلۇماتلىرىڭىز ئۆچۈرۈلدى.</string>
+    <string name="RemoteBackupsSettingsFragment__backups_have_been_turned_off">زاپاسلاش ئېتىلدى ۋە Tellomiنىڭ بىخەتەر ساقلاش مۇلازىمىتىدىن سانلىق مەلۇماتلىرىڭىز ئۆچۈرۈلدى.</string>
     <!-- Dialog title for dialog which alerts user their optimized media will be downloaded -->
     <string name="RemoteBackupsSettingsFragment__downloading_your_backup">زاپاس مەلۇماتنى چۈشۈرۈۋاتىدۇ</string>
     <!-- Dialog message for dialog which alerts user their optimized media will be downloaded -->
@@ -8811,7 +8811,7 @@
 
     <!-- MessageBackupsEducationScreen -->
     <!-- Screen subtitle underneath large headline title -->
-    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">ئۇچۇرلىرىڭىزنى ۋە مېدىيانى Tellomiنىڭ بىخەتەر ، ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتىنى ئىشلىتىپ زاپاسلاڭ. يېڭى تېلېفون ئالغاندا ياكى سىگنالنى قايتا قاچىلىغاندا ھەرقانداق ئۇچۇرنى يۈتتۈرۈپ قويمايسىز.</string>
+    <string name="MessageBackupsEducationScreen__backup_your_messages_and_media">ئۇچۇرلىرىڭىزنى ۋە مېدىيانى Tellomiنىڭ بىخەتەر ، ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن ساقلاش مۇلازىمىتىنى ئىشلىتىپ زاپاسلاڭ. يېڭى تېلېفون ئالغاندا ياكى Tellomiنى قايتا قاچىلىغاندا ھەرقانداق ئۇچۇرنى يۈتتۈرۈپ قويمايسىز.</string>
     <!-- Backups feature label for e2e encryption -->
     <string name="MessageBackupsEducationScreen__end_to_end_encrypted">ئاخىرىغىچە مەخپىيلەشتۈرۈلگەن</string>
     <!-- Backups feature label for informing the user that this feature is completely optional -->
@@ -8889,7 +8889,7 @@
     <!-- Bottom sheet title -->
     <string name="MessageBackupsKeyRecordScreen__keep_your_key_safe">ئاچقۇچىڭىزنى بىخەتەر ساقلاڭ</string>
     <!-- Bottom sheet subtitle -->
-    <string name="MessageBackupsKeyRecordScreen__signal_will_not">ئەگەر ئاچقۇچڭىزنى يوقىتىپ قويسىڭىز ، سىگنال ياردەملىشىپ زاپاسلاشنى ئەسلىگە كەلتۈرەلمەيدۇ. ئۇنى بىخەتەر جايدا ساقلاڭ ، ھەمدە باشقىلار بىلەن ئورتاقلاشماڭ.</string>
+    <string name="MessageBackupsKeyRecordScreen__signal_will_not">ئەگەر ئاچقۇچڭىزنى يوقىتىپ قويسىڭىز ، Tellomi ياردەملىشىپ زاپاسلاشنى ئەسلىگە كەلتۈرەلمەيدۇ. ئۇنى بىخەتەر جايدا ساقلاڭ ، ھەمدە باشقىلار بىلەن ئورتاقلاشماڭ.</string>
     <!-- Checkbox label -->
     <string name="MessageBackupsKeyRecordScreen__ive_recorded_my_key">ئاچقۇچنى خاتىرىلىدىم</string>
     <!-- Sheet action button label -->
@@ -9001,7 +9001,7 @@
     <!-- Description text for storage space for paid tier media. Placeholder 1 is for byte amount, placeholder 2 is for a photo count estimate -->
     <string name="MessageBackupsTypeSelectionScreen__s_of_storage_s_photos">%1$s ساقلاش بوشلۇقى (%2$s رەسىملەر )</string>
     <!-- Description text for thanks -->
-    <string name="MessageBackupsTypeSelectionScreen__thanks_for_supporting_signal">سىگنالنى قوللىغىنىڭىزغا رەھمەت!</string>
+    <string name="MessageBackupsTypeSelectionScreen__thanks_for_supporting_signal">Tellomiنى قوللىغىنىڭىزغا رەھمەت!</string>
     <!-- Description text for free tier media retention. Placeholder is retention day count. -->
     <plurals name="MessageBackupsTypeSelectionScreen__last_d_days_of_media">
         <item quantity="other">ئەڭ ئاخىرقى %1$d كۈنلۈك مېدىيا</item>
@@ -9031,17 +9031,17 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">مېنىڭ كونا تېلېفونىم بار</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">تېز باشلاش ئۈچۈن نۆۋەتتىكى سىگنال ھېساباتىڭىزدىن QR كودىنى سىكانىرلاڭ</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">تېز باشلاش ئۈچۈن نۆۋەتتىكى Tellomi ھېساباتىڭىزدىن QR كودىنى سىكانىرلاڭ</string>
 
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">كونا تېلېفونۇم يېنىمدا يوق</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">ياكى ئوخشاش ئۈسكۈنىدە سىگنالنى قايتا قاچىلاۋاتىسىز</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">ياكى ئوخشاش ئۈسكۈنىدە Tellomiنى قايتا قاچىلاۋاتىسىز</string>
 
     <!-- Screen title for selecting which restore method to use during registration -->
     <string name="SelectRestoreMethodFragment__restore_or_transfer_account">ھېساباتنى ئەسلىگە كەلتۈرۈش ياكى يۆتكەش</string>
     <!-- Screen subtitle for selecting which restore method to use during registration -->
-    <string name="SelectRestoreMethodFragment__get_your_signal_account">سىگنال ھېساباتىڭىز ۋە ئۇچۇر تارىخىڭىزنى بۇ ئۈسكۈنىگە قاچىلاڭ.</string>
+    <string name="SelectRestoreMethodFragment__get_your_signal_account">Tellomi ھېساباتىڭىز ۋە ئۇچۇر تارىخىڭىزنى بۇ ئۈسكۈنىگە قاچىلاڭ.</string>
     <!-- Option title for restoring via signal secure backups -->
     <string name="SelectRestoreMethodFragment__restore_signal_backup">Tellomi نى زاپاستىن ئەسلىگە كەلتۈرۈش</string>
     <!-- Option subtitle for restoring via signal secure backups -->
@@ -9267,7 +9267,7 @@
     <!-- Title for restore via qr screen -->
     <string name="RestoreViaQr_title">كونا تېلېفونىڭىز بىلەن بۇ كودنى سىكانىرلاڭ</string>
     <!-- First instruction on what to do with restore via qr code -->
-    <string name="RestoreViaQr_instruction_1">كونا ئۈسكۈنىڭىزدە سىگنالنى ئېچىڭ</string>
+    <string name="RestoreViaQr_instruction_1">كونا ئۈسكۈنىڭىزدە Tellomiنى ئېچىڭ</string>
     <!-- Second instruction on what to do with restore via qr code -->
     <string name="RestoreViaQr_instruction_2">كامېرا سىنبەلگىسىنى چېكىڭ </string>
     <!-- Third instruction on what to do with restore via qr code -->
@@ -9318,7 +9318,7 @@
     <!-- Restore Complete bottom sheet dialog title after device transfer -->
     <string name="RestoreCompleteBottomSheet_transfer_complete">يۆتكەش تاماملاندى</string>
     <!-- Restore Complete bottom sheet dialog message after device transfer -->
-    <string name="RestoreCompleteBottomSheet_transfer_complete_message">سىگنال ھېساباتىڭىز ۋە ئۇچۇرلىرىڭىز باشقا ئۈسكۈنىڭىزگە يۆتكەلدى. سىگنال ئەمدى بۇ ئۈسكۈنىدە ئىشلىمەيدۇ.</string>
+    <string name="RestoreCompleteBottomSheet_transfer_complete_message">Tellomi ھېساباتىڭىز ۋە ئۇچۇرلىرىڭىز باشقا ئۈسكۈنىڭىزگە يۆتكەلدى. Tellomi ئەمدى بۇ ئۈسكۈنىدە ئىشلىمەيدۇ.</string>
     <!-- Restore Complete bottom sheet dialog button text to dismiss sheet -->
     <string name="RestoreCompleteBottomSheet_button">جەزملە</string>
 
@@ -9327,7 +9327,7 @@
     <!-- No Backup to Restore screen subtitle -->
     <string name="NoBackupToRestore_subtitle">سىز ئايفوندىن ئاندىرويىدقا يۆتكىلىۋاتقانلىقىڭىز ئۈچۈن، ئۇچۇرلار ۋە مېدىيانى يۆتكەشنىڭ بىردىنبىر ئۇسۇلى كونا ئۈسكۈنىڭىزدە Tellomi بىخەتەر زاپاسلانمىللىرىنى قوزغىتىش.</string>
     <!-- No Backup to Restore step 1 to enable backups on old device -->
-    <string name="NoBackupToRestore_step1">كونا ئۈسكۈنىڭىزدە سىگنالنى ئېچىڭ</string>
+    <string name="NoBackupToRestore_step1">كونا ئۈسكۈنىڭىزدە Tellomiنى ئېچىڭ</string>
     <!-- No Backup to Restore step 2 to enable backups on old device -->
     <string name="NoBackupToRestore_step2">تەڭشەك&gt; زاپاسلاش نى چېكىڭ</string>
     <!-- No Backup to Restore step 3 to enable backups on old device -->

@@ -1235,7 +1235,7 @@
     <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">हा डिव्हाईस प्ले सेवांचे समर्थन करत नाही. निष्क्रिय असल्यावर संदेश पुनर्प्राप्त करताना अवरोधित करणारे सिस्टिम बॅटरी ऑप्टीमाईझेशन अक्षम करण्यासाठी टॅप करा.</string>
 
     <!-- ExpiredBuildReminder -->
-    <string name="ExpiredBuildReminder_this_version_of_signal_has_expired">सिग्नलची ही आवृत्ती कालबाह्य झाली आहे. संदेश पाठविण्यासाठी आणि प्राप्त करण्यासाठी आता अद्यतनित करा.</string>
+    <string name="ExpiredBuildReminder_this_version_of_signal_has_expired">Tellomiची ही आवृत्ती कालबाह्य झाली आहे. संदेश पाठविण्यासाठी आणि प्राप्त करण्यासाठी आता अद्यतनित करा.</string>
     <string name="ExpiredBuildReminder_update_now">आता अद्यतनित करा</string>
 
     <!-- A message in a banner shown at the top of the screen indicating that the user must upgrade their device to use signal. -->

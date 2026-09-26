@@ -267,4 +267,8 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">%1$d / %2$d</string>
+  <!-- Tellomi：相机扫到新手机上的「转移帐户」码时，进转移页之前的防骗确认 -->
+  <string name="TellomiReRegistrationScannedDialog__title">这是转移帐户的二维码</string>
+  <string name="TellomiReRegistrationScannedDialog__body">新手机正在请求转走你的帐户。只有在你自己换手机、正在新手机上注册时才继续。如果是别人让你扫的，请取消——继续会把你的帐户转到对方手机上。</string>
+  <string name="TellomiReRegistrationScannedDialog__continue">继续</string>
 </resources>
