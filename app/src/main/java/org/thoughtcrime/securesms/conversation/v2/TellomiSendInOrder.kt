@@ -8,6 +8,7 @@ package org.thoughtcrime.securesms.conversation.v2
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 /**
  * Tellomi（tellomi/tellomi#1261 P-5「单独发送」、#1121「文件」页）：一次发好几条消息时排成一串——前一条完成（写进本地库）
@@ -23,9 +24,15 @@ object TellomiSendInOrder {
 
   const val GAP_MILLIS = 5L
 
-  // 先红：旧行为——前一条完成立刻订阅下一条，中间不隔。
-  @Suppress("UNUSED_PARAMETER")
   fun inOrder(parts: List<Completable>, scheduler: Scheduler = Schedulers.computation()): Completable {
-    return Completable.concat(parts)
+    return Completable.concat(
+      parts.mapIndexed { index, part ->
+        if (index < parts.lastIndex) {
+          part.andThen(Completable.timer(GAP_MILLIS, TimeUnit.MILLISECONDS, scheduler))
+        } else {
+          part
+        }
+      }
+    )
   }
 }
