@@ -80,7 +80,7 @@ class RegistrationViewModel(
         val restored = repository.restoreFlowState()
         if (restored != null) {
           Log.i(TAG, "[init] Restored flow state from disk. Backstack size: ${restored.backStack.size}, hasSession: ${restored.sessionMetadata != null}")
-          _state.value = validateRestoredState(restored).copy(isRestoringNavigationState = false)
+          _state.value = validateRestoredState(dropPermissionRoutes(restored)).copy(isRestoringNavigationState = false)
         } else {
           _state.value = _state.value.copy(
             preExistingRegistrationData = repository.getPreExistingRegistrationData(),
@@ -100,6 +100,7 @@ class RegistrationViewModel(
     return when (event) {
       is RegistrationFlowEvent.ResetState -> RegistrationFlowState(isRestoringNavigationState = false)
       is RegistrationFlowEvent.SessionUpdated -> state.copy(sessionMetadata = event.session)
+      is RegistrationFlowEvent.SessionExpired -> state.copy(sessionMetadata = null)
       is RegistrationFlowEvent.E164Chosen -> state.copy(sessionE164 = event.e164)
       is RegistrationFlowEvent.VerificationCodeAccepted -> state.copy(submittedVerificationCode = event.code)
       is RegistrationFlowEvent.VerificationCodeRequested -> state.copy(
@@ -217,13 +218,26 @@ class RegistrationViewModel(
 
     Log.i(TAG, "[validateRestoredState] User is NOT registered, resetting to PhoneNumberEntry.")
     return state.copy(
+      // Tellomi（#1112）：上游在 Welcome 与 PhoneNumberEntry 之间放一页 Permissions；Tellomi 注册流程不要权限页
       backStack = listOf(
         RegistrationRoute.Welcome,
-        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry),
         RegistrationRoute.PhoneNumberEntry
       ),
       sessionMetadata = null
     )
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1112）：注册流程不再有权限页，但 0.1.2 及更早的版本会把 [RegistrationRoute.Permissions] /
+   * [RegistrationRoute.AllowNotifications] 存进回退栈。升级后恢复进度时把它们滤掉，免得按返回键又回到权限页。
+   */
+  private fun dropPermissionRoutes(state: RegistrationFlowState): RegistrationFlowState {
+    val backStack = state.backStack.filterNot { it is RegistrationRoute.Permissions || it is RegistrationRoute.AllowNotifications }
+    if (backStack.size == state.backStack.size) {
+      return state
+    }
+    Log.i(TAG, "[dropPermissionRoutes] Dropped ${state.backStack.size - backStack.size} permission route(s) persisted by an older version.")
+    return state.copy(backStack = backStack.ifEmpty { listOf(RegistrationRoute.Welcome) })
   }
 
   fun getRequiredLinkedDevicePermission(): String? {
@@ -247,6 +261,7 @@ class RegistrationViewModel(
       is RegistrationFlowEvent.NavigateBack,
       is RegistrationFlowEvent.NavigateBackToScreen,
       is RegistrationFlowEvent.SessionUpdated,
+      is RegistrationFlowEvent.SessionExpired,
       is RegistrationFlowEvent.E164Chosen,
       is RegistrationFlowEvent.VerificationCodeAccepted,
       is RegistrationFlowEvent.VerificationCodeRequested,

@@ -65,13 +65,13 @@
   <!-- Accessibility description for the button that leaves media selection and opens the camera. -->
   <string name="MediaSelectScreen__go_to_camera">கேமராவிற்குச் செல்க</string>
   <!-- Message shown in place of the gallery when the user has not granted permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">புகைப்படங்கள் மற்றும் காணொளிகளை காட்ட சிக்னலுக்கு அனுமதி தேவை</string>
+  <string name="MediaSelectScreen__signal_needs_permission_to_show_your_photos_and_videos">புகைப்படங்கள் மற்றும் காணொளிகளை காட்ட Tellomiக்கு அனுமதி தேவை</string>
   <!-- Label for the button that asks the system for permission to read the user\'s photos and videos. -->
   <string name="MediaSelectScreen__allow_access">அணுகலை அனுமதிக்கவும்</string>
   <!-- Message shown in place of the gallery when the user only shared selected photos with Signal and none of them can be shown. -->
-  <string name="MediaSelectScreen__no_photos_or_videos_found">புகைப்படங்கள் அல்லது வீடியோக்கள் எதுவும் இல்லை. நீங்கள் தேர்ந்தெடுத்த புகைப்படங்கள் மற்றும் வீடியோக்களுக்கான அணுகலை மட்டும் சிக்னல் கொண்டுள்ளது.</string>
+  <string name="MediaSelectScreen__no_photos_or_videos_found">புகைப்படங்கள் அல்லது வீடியோக்கள் எதுவும் இல்லை. நீங்கள் தேர்ந்தெடுத்த புகைப்படங்கள் மற்றும் வீடியோக்களுக்கான அணுகலை மட்டும் Tellomi கொண்டுள்ளது.</string>
   <!-- Reminder shown above the gallery when the user only shared selected photos with Signal. -->
-  <string name="MediaSelectScreen__signal_has_limited_access">புகைப்படங்கள் அல்லது வீடியோக்களுக்கு வரையறுக்கப்பட்ட அணுகலை சிக்னல் கொண்டுள்ளது</string>
+  <string name="MediaSelectScreen__signal_has_limited_access">புகைப்படங்கள் அல்லது வீடியோக்களுக்கு வரையறுக்கப்பட்ட அணுகலை Tellomi கொண்டுள்ளது</string>
   <!-- Label for the button that opens the menu for changing which photos and videos Signal can see. -->
   <string name="MediaSelectScreen__manage">நிர்வகி</string>
   <!-- Menu option that re-opens the system picker so the user can share more photos and videos with Signal. -->
@@ -83,7 +83,7 @@
   <!-- Subtitle of the sheet shown when the permission to read photos and videos has been permanently denied, introducing the steps that follow. -->
   <string name="MediaSelectScreen__to_show_photos_and_videos">புகைப்படங்களையும் வீடியோக்களையும் காட்ட:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
-  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">உங்கள் புகைப்படங்கள் மற்றும் வீடியோக்களைக் காண்பிக்க சிக்னலுக்கு அணுகல் தேவை.</string>
+  <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">உங்கள் புகைப்படங்கள் மற்றும் வீடியோக்களைக் காண்பிக்க Tellomiக்கு அணுகல் தேவை.</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">புகைப்படம்</string>
@@ -150,21 +150,21 @@
   <!-- Text explaining why Signal needs camera access in order to take photos and videos -->
   <string name="CameraXFragment_to_capture_photos_and_video_allow_camera">புகைப்படங்கள் மற்றும் காணொளி பிடிக்க, Tellomi-ஐ கேமராவை அணுக அனுமதிக்கவும்.</string>
   <!-- Text explaining why Signal needs camera and microphone access in order to take photos and videos -->
-  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">புகைப்படங்கள் மற்றும் வீடியோ படமெடுக்க, கேமரா மற்றும் மைக்ரோஃபோனை அணுக சிக்னலை அனுமதிக்கவும்.</string>
+  <string name="CameraXFragment_to_capture_photos_and_video_allow_camera_microphone">புகைப்படங்கள் மற்றும் வீடியோ படமெடுக்க, கேமரா மற்றும் மைக்ரோஃபோனை அணுக Tellomiஐ அனுமதிக்கவும்.</string>
   <!-- Text explaining why Signal needs microphone access to take videos -->
-  <string name="CameraXFragment_to_capture_videos_with_sound">ஒலியுடன் வீடியோக்களை படமெடுக்க, மைக்ரோஃபோனை அணுக சிக்னலை அனுமதிக்கவும்.</string>
+  <string name="CameraXFragment_to_capture_videos_with_sound">ஒலியுடன் வீடியோக்களை படமெடுக்க, மைக்ரோஃபோனை அணுக Tellomiஐ அனுமதிக்கவும்.</string>
   <!-- Text explaining why Signal needs camera access to scan QR codes -->
-  <string name="CameraXFragment_to_scan_qr_code_allow_camera">QR குறியீட்டை ஸ்கேன் செய்ய, கேமராவை அணுக சிக்னலை அனுமதிக்கவும்.</string>
+  <string name="CameraXFragment_to_scan_qr_code_allow_camera">QR குறியீட்டை ஸ்கேன் செய்ய, கேமராவை அணுக Tellomiஐ அனுமதிக்கவும்.</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when capturing photos -->
-  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">படங்களை படமெடுக்க சிக்னலுக்கு கேமரா அணுகல் தேவை</string>
+  <string name="CameraXFragment_signal_needs_camera_access_capture_photos">படங்களை படமெடுக்க Tellomiக்கு கேமரா அணுகல் தேவை</string>
   <!-- Toast dialog explaining why Signal needs camera permissions when scanning QR codes -->
-  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">QR குறியீடுகளை ஸ்கேன் செய்ய சிக்னலுக்கு கேமரா அணுகல் தேவை</string>
+  <string name="CameraXFragment_signal_needs_camera_access_scan_qr_code">QR குறியீடுகளை ஸ்கேன் செய்ய Tellomiக்கு கேமரா அணுகல் தேவை</string>
   <!-- Toast dialog explaining why Signal needs microphone permissions -->
-  <string name="CameraXFragment_signal_needs_microphone_access_video">வீடியோவை படமெடுக்க, சிக்னலுக்கு மைக்ரோஃபோன் அணுகல் தேவை</string>
+  <string name="CameraXFragment_signal_needs_microphone_access_video">வீடியோவை படமெடுக்க, Tellomiக்கு மைக்ரோஃபோன் அணுகல் தேவை</string>
   <!-- Dialog description that explains the steps needed to give camera permission -->
-  <string name="CameraXFragment_to_capture_photos">சிக்னலில் புகைப்படங்களை படமெடுக்க:</string>
+  <string name="CameraXFragment_to_capture_photos">Tellomi-இல் புகைப்படங்களை படமெடுக்க:</string>
   <!-- Dialog description that explains the steps needed to give camera and microphone permission -->
-  <string name="CameraXFragment_to_capture_photos_videos">சிக்னலில் புகைப்படங்கள் மற்றும் வீடியோக்களை படமெடுக்க:</string>
+  <string name="CameraXFragment_to_capture_photos_videos">Tellomi-இல் புகைப்படங்கள் மற்றும் வீடியோக்களை படமெடுக்க:</string>
   <!-- Dialog description that explains the steps needed to give microphone permission -->
   <string name="CameraXFragment_to_capture_videos">ஒலியுடன் வீடியோக்களை எடுக்க:</string>
   <!-- Dialog description that explains the steps needed to give Signal camera permissions -->
@@ -243,7 +243,7 @@
   <!-- The title of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_title">சாதனத்தை இணைக்க வேண்டுமா?</string>
   <!-- The body of a dialog notifying that the user scanned a QR code that could be used to link a Signal device. -->
-  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">நீங்கள் சிக்னல் சாதனத்தை இணைக்க முயல்வது போல் தெரிகிறது. தொடர்க என்பதைத் தட்டி, பின்னர் \"புதிய சாதனத்தை இணை\" என்பதைத் தட்டி, QR குறியீட்டை மீண்டும் ஸ்கேன் செய்யுங்கள்.</string>
+  <string name="LinkedDeviceScannedDialog__it_looks_like_youre_trying">நீங்கள் Tellomi சாதனத்தை இணைக்க முயல்வது போல் தெரிகிறது. தொடர்க என்பதைத் தட்டி, பின்னர் \"புதிய சாதனத்தை இணை\" என்பதைத் தட்டி, QR குறியீட்டை மீண்டும் ஸ்கேன் செய்யுங்கள்.</string>
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">தொடர்</string>
 

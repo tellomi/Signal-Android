@@ -227,6 +227,18 @@ class LinkDeviceFragment : ComposeFragment() {
         onContactWithoutLogs = { viewModel.onContactSupport(includeLogs = false) }
       )
     }
+
+    // Tellomi（#1219）：扫码页在关联开始前就退出了，关联失败的结果在这一页弹出（见 TellomiLinkDeviceErrors）
+    if (state.dialogState == DialogState.None) {
+      TellomiLinkDeviceFailureDialog(
+        result = state.linkDeviceResult,
+        onScanAgain = {
+          viewModel.stopExistingPolling()
+          navController.navigateToQrScannerIfAuthed()
+        },
+        onDismiss = { viewModel.onLinkDeviceResult(showSheet = false) }
+      )
+    }
   }
 
   private fun getEmailBody(debugLog: String?): String {

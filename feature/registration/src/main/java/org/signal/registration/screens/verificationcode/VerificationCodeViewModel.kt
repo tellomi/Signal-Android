@@ -40,6 +40,8 @@ import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import org.signal.registration.TellomiRegistration
+import org.signal.registration.VerificationCodeRequest
 import org.signal.registration.screens.util.navigateBack
 import org.signal.registration.screens.util.navigateTo
 import kotlin.time.Duration
@@ -132,6 +134,21 @@ class VerificationCodeViewModel(
       is VerificationCodeScreenEvents.CodeAutoFilled -> state.copy(autoFillCode = event.code)
       is VerificationCodeScreenEvents.ConsumeAutoFillCode -> state.copy(autoFillCode = null)
       is VerificationCodeScreenEvents.WrongNumber -> state.also { parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry) }
+      is VerificationCodeScreenEvents.SessionExpiredDialogDismissed -> {
+        // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 1）：会话已失效时先清掉父状态里的旧会话（号码保留），
+        // 手机号页再点「下一步」才会开新会话；不清的话会复用旧会话 → 404 → 整个流程被重置回欢迎页，没有任何提示。
+        // 「验证码已不能用」那种会话还在，照旧复用。
+        // 发 SessionExpired 的同时记下「正在因会话过期退回」：父状态马上会变成没有会话，本页 ViewModel 在出栈动画结束前还在收，
+        // 不能把它当成要重置整个流程（taishi 审查 b19 要改 1）。
+        val leavingForExpiredSession = state.dialogs.sessionExpired
+        if (leavingForExpiredSession) {
+          parentEventEmitter(RegistrationFlowEvent.SessionExpired)
+        }
+        state.copy(
+          dialogs = state.dialogs.copy(sessionExpired = false, codeNoLongerValid = false),
+          leavingForExpiredSession = state.leavingForExpiredSession || leavingForExpiredSession
+        ).also { parentEventEmitter.navigateBack() }
+      }
       is VerificationCodeScreenEvents.ResendSms -> applyResendCode(state, VerificationCodeTransport.SMS)
       is VerificationCodeScreenEvents.CallMe -> applyResendCode(state, VerificationCodeTransport.VOICE)
       is VerificationCodeScreenEvents.HavingTrouble -> state.copy(showContactSupportSheet = true)
@@ -166,12 +183,44 @@ class VerificationCodeViewModel(
     if (age >= IN_PROGRESS_DATA_TIMEOUT) {
       Log.w(TAG, "[Foregrounded] In-progress registration data is stale (${age.inWholeMilliseconds}ms old). Restarting the flow.")
       parentEventEmitter(RegistrationFlowEvent.ResetState)
+      return state
     }
 
-    return state
+    return recomputeCountdowns(state)
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1214，ADR-0051 §二「App 回前台重算」，taishi 审查 b8）：倒计时靠界面每秒减一，App 在后台
+   * 被系统冻结时就停住，回来显示的剩余时间比实际长。回到前台时按请求验证码时记下的截止时刻重算。
+   * 只动本来就在倒计时的那一路；没有记下截止时刻（或不是这个号码的）就保持原样，免得把倒计时重置成整段。
+   */
+  private fun recomputeCountdowns(state: VerificationCodeState): VerificationCodeState {
+    val parent = parentState.value
+    val now = clock().milliseconds
+
+    fun remaining(request: VerificationCodeRequest?, current: Duration?): Duration? {
+      if (current == null) {
+        return null
+      }
+      val deadline = request?.takeIf { it.e164 == parent.sessionE164 }?.nextAllowedRequestTime?.milliseconds ?: return current
+      return (deadline - now).coerceAtLeast(0.seconds)
+    }
+
+    return state.copy(
+      rateLimits = state.rateLimits.copy(
+        smsResendTimeRemaining = remaining(parent.lastSmsVerificationCodeRequest, state.rateLimits.smsResendTimeRemaining),
+        callRequestTimeRemaining = remaining(parent.lastCallVerificationCodeRequest, state.rateLimits.callRequestTimeRemaining)
+      )
+    )
   }
 
   private fun applyParentState(state: VerificationCodeState, parentState: RegistrationFlowState): VerificationCodeState {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 要改 1）：关掉「会话已过期」框以后，父状态先清了会话、号码还在，
+    // 本页正在退回手机号页；这时不重置，否则号码也跟着清掉、整个流程回到欢迎页。
+    if (parentState.sessionMetadata == null && parentState.sessionE164 != null && state.leavingForExpiredSession) {
+      return state
+    }
+
     if (parentState.sessionMetadata == null || parentState.sessionE164 == null) {
       Log.w(TAG, "Parent state is missing session metadata or e164! Resetting.")
       parentEventEmitter(RegistrationFlowEvent.ResetState)
@@ -189,7 +238,8 @@ class VerificationCodeViewModel(
     return state.copy(
       sessionMetadata = parentState.sessionMetadata,
       e164 = parentState.sessionE164,
-      rateLimits = rateLimits
+      rateLimits = rateLimits,
+      leavingForExpiredSession = false
     )
   }
 
@@ -214,20 +264,27 @@ class VerificationCodeViewModel(
    *   submits, all in this single reducer pass
    */
   private suspend fun applyDigitChanged(
-    state: VerificationCodeState,
+    inputState: VerificationCodeState,
     index: Int,
     value: String,
     stateEmitter: (VerificationCodeState) -> Unit
   ): VerificationCodeState {
-    check(index in state.digits.indices) { "[DigitChanged] Out of bounds index $index." }
+    check(index in inputState.digits.indices) { "[DigitChanged] Out of bounds index $index." }
 
     if (value.isEmpty()) {
-      return deleteDigit(state, index)
+      return deleteDigit(inputState, index)
     }
 
-    val currentValue = state.digits[index]
+    val currentValue = inputState.digits[index]
     val remainder = if (currentValue.isNotEmpty()) value.replaceFirst(currentValue, "") else value
     val addedDigits = remainder.filter { it.isDigit() }
+
+    // Tellomi（tellomi/tellomi#1214）：错码提示是行内的，重新输入就收起。
+    val state = if (addedDigits.isNotEmpty() && inputState.snackbars.incorrectVerificationCode) {
+      inputState.copy(snackbars = inputState.snackbars.copy(incorrectVerificationCode = false))
+    } else {
+      inputState
+    }
 
     return when {
       addedDigits.isEmpty() -> state
@@ -245,7 +302,10 @@ class VerificationCodeViewModel(
         }
       }
 
-      else -> applyFullCode(state, addedDigits, stateEmitter)
+      addedDigits.length == CODE_LENGTH -> applyFullCode(state, addedDigits, stateEmitter)
+
+      // Tellomi（tellomi/tellomi#1214）：整条短信粘进来时里面还有别的数字（「5 分钟内有效」），先从原文里找完整的验证码。
+      else -> applyFullCode(state, TellomiRegistration.verificationCodeIn(remainder) ?: addedDigits, stateEmitter)
     }
   }
 
@@ -325,9 +385,9 @@ class VerificationCodeViewModel(
             return state.copy(snackbars = state.snackbars.copy(incorrectVerificationCode = true), incorrectCodeAttempts = newAttempts, digits = VerificationCodeState.emptyDigits(), focusedDigitIndex = 0)
           }
           is SubmitVerificationCodeError.SessionNotFound -> {
-            Log.w(TAG, "[SubmitCode] Session not found: ${error.message}. Navigating back to phone number entry.")
-            parentEventEmitter.navigateBack()
-            return state
+            // Tellomi（tellomi/tellomi#1214）：上游直接退回手机号页，用户不知道为什么；先弹框说「验证已过期」，关掉再退回。
+            Log.w(TAG, "[SubmitCode] Session not found: ${error.message}. Telling the user it expired before navigating back.")
+            return state.copy(dialogs = state.dialogs.copy(sessionExpired = true))
           }
           is SubmitVerificationCodeError.SessionAlreadyVerifiedOrNoCodeRequested -> {
             if (error.session.verified) {
@@ -335,8 +395,8 @@ class VerificationCodeViewModel(
               error.session
             } else {
               Log.w(TAG, "[SubmitCode] No code was requested for this session? Need to have user re-submit.")
-              parentEventEmitter.navigateBack()
-              return state
+              // Tellomi（tellomi/tellomi#1214）：同上，先说清楚再退回。
+              return state.copy(dialogs = state.dialogs.copy(codeNoLongerValid = true))
             }
           }
           is SubmitVerificationCodeError.RateLimited -> {
@@ -389,9 +449,10 @@ class VerificationCodeViewModel(
       is RequestResult.NonSuccess -> {
         when (val error = registerResult.error) {
           is RegisterAccountError.SessionNotFoundOrNotVerified -> {
-            Log.w(TAG, "[Register] Session not found or not verified: ${error.message}. Navigating back to phone number entry.")
-            parentEventEmitter.navigateBack()
-            state
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 1）：上游一声不响地退回，手机号页还会复用这个死会话、再被重置回欢迎页。
+            // 和提交验证码 / 重发时一样先弹框说清楚，关掉后走 SessionExpired（清会话、留号码）再退回。
+            Log.w(TAG, "[Register] Session not found or not verified: ${error.message}. Telling the user it expired before navigating back.")
+            state.copy(dialogs = state.dialogs.copy(sessionExpired = true))
           }
           is RegisterAccountError.DeviceTransferPossible -> {
             error("[Register] Got told a device transfer is possible. We should never get into this state. Resetting.")
@@ -483,11 +544,30 @@ class VerificationCodeViewModel(
           }
           is RequestVerificationCodeError.RateLimited -> {
             Log.w(TAG, "[RequestCode][$transport] Rate limited (retryAfter: ${error.retryAfter}).")
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 2）：照手机号页 navigateToCodeEntryAfterRateLimit 记下截止时刻
+            // （ADR-0051 §二 F：被限流时采用 retry_after）。不记的话父状态里还是上一次的截止时刻，正是「重新发送」刚亮起那一刻，
+            // 回到前台按它重算，倒计时就成了 0，按钮提前亮起，再点又是「请稍后再试」。
+            val now = clock()
+            val retryAt = now + error.retryAfter.inWholeMilliseconds
+            val nextSmsAllowedTimestamp = if (transport == VerificationCodeTransport.SMS) retryAt else error.session.nextSms?.let { now + it.seconds.inWholeMilliseconds }
+            val nextCallAllowedTimestamp = if (transport == VerificationCodeTransport.VOICE) retryAt else error.session.nextCall?.let { now + it.seconds.inWholeMilliseconds }
+            parentEventEmitter(
+              RegistrationFlowEvent.VerificationCodeRequested(
+                e164 = state.e164,
+                nextSmsAllowedTimestamp = nextSmsAllowedTimestamp,
+                nextCallAllowedTimestamp = nextCallAllowedTimestamp
+              )
+            )
             parentEventEmitter(RegistrationFlowEvent.SessionUpdated(error.session))
+            // 界面上的倒计时也从这一对截止时刻算（taishi 审查 b19 不阻塞 2）。原来用会话的 nextSms / nextCall，
+            // 和 retryAfter 不等时，回前台按截止时刻重算会跳一下。
             state.copy(
               dialogs = state.dialogs.copy(rateLimitedRetryAfter = error.retryAfter),
               sessionMetadata = error.session,
-              rateLimits = computeRateLimits(error.session)
+              rateLimits = SmsAndCallRateLimits(
+                smsResendTimeRemaining = nextSmsAllowedTimestamp?.let { (it - now).milliseconds.coerceAtLeast(0.seconds) },
+                callRequestTimeRemaining = nextCallAllowedTimestamp?.let { (it - now).milliseconds.coerceAtLeast(0.seconds) }
+              )
             )
           }
           is RequestVerificationCodeError.CouldNotFulfillWithRequestedTransport -> {
@@ -500,9 +580,10 @@ class VerificationCodeViewModel(
             )
           }
           is RequestVerificationCodeError.InvalidSessionId -> {
-            Log.w(TAG, "[RequestCode][$transport] Invalid session ID: ${error.message}. Navigating back to phone number entry.")
-            parentEventEmitter.navigateBack()
-            state
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b8）：等短信的人点「重新发送」正是最容易撞上过期的时候，
+            // 先说清楚再退回（关掉对话框走 SessionExpiredDialogDismissed → navigateBack），不再一声不响地跳走。
+            Log.w(TAG, "[RequestCode][$transport] Invalid session ID: ${error.message}. Explaining, then navigating back to phone number entry.")
+            state.copy(dialogs = state.dialogs.copy(sessionExpired = true))
           }
           is RequestVerificationCodeError.MissingRequestInformationOrAlreadyVerified -> {
             Log.w(TAG, "[RequestCode][$transport] Missing request information or already verified.")
@@ -514,9 +595,9 @@ class VerificationCodeViewModel(
             )
           }
           is RequestVerificationCodeError.SessionNotFound -> {
-            Log.w(TAG, "[RequestCode][$transport] Session not found: ${error.message}. Navigating back to phone number entry.")
-            parentEventEmitter.navigateBack()
-            state
+            // Tellomi（tellomi/tellomi#1214，taishi 审查 b8）：同上，先说清楚再退回。
+            Log.w(TAG, "[RequestCode][$transport] Session not found: ${error.message}. Explaining, then navigating back to phone number entry.")
+            state.copy(dialogs = state.dialogs.copy(sessionExpired = true))
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
             Log.w(TAG, "[RequestCode][$transport] Third party service error. ${error.data}")

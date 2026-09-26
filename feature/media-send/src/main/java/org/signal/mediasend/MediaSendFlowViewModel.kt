@@ -128,6 +128,9 @@ class MediaSendFlowViewModel(
 
   internal val usernameScannedDialog = DialogController<String>()
   internal val linkedDeviceScannedDialog = DialogController<Unit>()
+
+  /** Tellomi：扫到新手机上的「转移帐户」码，先确认才进转移页（防误扫 / 被骗扫码，见 [TellomiReRegistrationScannedDialog]）。 */
+  internal val reRegistrationScannedDialog = DialogController<Unit>()
   internal val discardMediaDialog = DialogController<Unit>()
   internal val addToGroupStoryDialog = DialogController<MediaRecipientId>()
 
@@ -191,7 +194,12 @@ class MediaSendFlowViewModel(
             }
           }
           MediaSendQrRepository.QrCheckResult.None -> Unit
-          is MediaSendQrRepository.QrCheckResult.ReRegistration -> sendHudCommand(MediaSendFlowHudCommand.GoToQuickTransfer(qrData))
+          is MediaSendQrRepository.QrCheckResult.ReRegistration -> {
+            when (reRegistrationScannedDialog.show(Unit)) {
+              DialogResult.POSITIVE -> sendHudCommand(MediaSendFlowHudCommand.GoToQuickTransfer(qrData))
+              else -> Unit
+            }
+          }
           is MediaSendQrRepository.QrCheckResult.Username -> {
             when (usernameScannedDialog.show(result.username)) {
               DialogResult.POSITIVE -> sendHudCommand(MediaSendFlowHudCommand.GoToConversation(result.recipientId))

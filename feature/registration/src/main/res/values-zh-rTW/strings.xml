@@ -44,6 +44,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">選取國家或地區</string>
     <string name="RegistrationActivity_phone_number_description">電話號碼</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">清除號碼</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">帳戶 ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -579,6 +581,23 @@
     <string name="CreateProfileScreen__next">下一步</string>
     <!-- Content description for the avatar selection control. -->
     <string name="CreateProfileScreen__set_avatar_description">設定頭像</string>
+    <!-- Tellomi（#1215） -->
+    <string name="TellomiRegistration__phone_number_not_shown">你的電話號碼預設不會向任何人顯示。</string>
+    <!-- Tellomi（#1215 第二刀） -->
+    <string name="TellomiRegistration__username_optional">用戶名稱（選填）</string>
+    <string name="TellomiRegistration__username_your_link">你的連結：%1$s</string>
+    <string name="TellomiRegistration__username_checking">正在檢查…</string>
+    <string name="TellomiRegistration__username_not_available">這個用戶名稱無法使用</string>
+    <string name="TellomiRegistration__username_too_short">至少 3 個字元</string>
+    <string name="TellomiRegistration__username_too_long">最多 20 個字元</string>
+    <string name="TellomiRegistration__username_invalid_characters">只能使用字母、數字和底線</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">需要以字母開頭</string>
+    <string name="TellomiRegistration__username_check_failed">暫時無法檢查，請稍後再試</string>
+    <string name="TellomiRegistration__username_too_many_attempts">嘗試次數過多，請稍後再試</string>
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="other">%d 天後才能設定用戶名稱</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">可以試試：</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -713,6 +732,7 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">用戶名稱僅可包含英文字母、數字以及底線</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">用戶名稱不得以數字開頭</string>
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">用戶名稱必須以字母開頭</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">此用戶名稱無法使用。請嘗試其他名稱。</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
@@ -763,4 +783,80 @@
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">輸入由驗證應用程式所產生的一次性驗證碼。</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">取消</string>
+
+    <!-- Tellomi（#1210） -->
+    <string name="TellomiRegistration__region_not_supported">暫未開放該地區的手機號碼註冊，目前只支援中國大陸（+86）手機號碼。</string>
+    <string name="TellomiRegistration__you_will_receive_a_verification_code">我們會傳送一則簡訊驗證碼，確認這個號碼是你的。</string>
+    <string name="TellomiRegistration__a_verification_code_will_be_sent">我們會傳送一則簡訊驗證碼到這個號碼，確認它是你的。</string>
+    <string name="TellomiRegistration__captcha_retry">重試</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：注册资料页只剩一个框、填全名。旧键 TellomiRegistration__first_name 暂留在下一行：
+         它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
+    <string name="TellomiRegistration__name">名字</string>
+    <string name="TellomiRegistration__first_name">名字</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">驗證碼不對，請核對簡訊後重新輸入</string>
+    <string name="TellomiRegistration__didnt_get_code">收不到驗證碼？</string>
+    <string name="TellomiRegistration__help_check_number">確認號碼沒有填錯：%1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">簡訊可能被攔截了：打開手機內建的安全中心或手機管家 App，看看「騷擾攔截」或垃圾訊息裡有沒有。</string>
+    <string name="TellomiRegistration__help_wait_with_quota">簡訊偶爾會晚一點才到，請先等一等。每次註冊最多只能傳送 %1$d 則驗證碼，請不要頻繁重新傳送。</string>
+    <string name="TellomiRegistration__help_voice">也可以改成打電話念出驗證碼。</string>
+    <string name="TellomiRegistration__help_support">還是收不到？寄電子郵件到 support@tellomi.app，我們幫你看看。</string>
+    <string name="TellomiRegistration__help_change_number">更改號碼</string>
+    <string name="TellomiRegistration__help_contact_support">聯絡客服</string>
+    <string name="TellomiRegistration__help_more">更多幫助</string>
+    <string name="TellomiRegistration__session_expired">這次驗證已經過期，請確認號碼後重新取得驗證碼。</string>
+    <string name="TellomiRegistration__code_no_longer_valid">這個驗證碼已經不能使用：可能已過期，或者輸錯太多次。請重新取得驗證碼。</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <string name="TellomiRegistration__new_phone">換了新手機？</string>
+    <string name="TellomiRegistration__old_phone_here">舊 Android 手機還在身邊</string>
+    <string name="TellomiRegistration__old_phone_here_description">用舊 Android 手機上的 Tellomi 掃描一個二維碼，把帳戶和訊息直接傳過來</string>
+    <string name="TellomiRegistration__old_phone_not_here">舊手機不在身邊，或者是 iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在這支手機上重新安裝的話，可以用裝置上的備份還原；否則直接註冊，只是以前的訊息不會跟過來，舊手機上的 Tellomi 也會登出</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">無法從 iPhone 傳過來</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">iPhone 上的訊息目前無法傳到 Android 手機。直接註冊就可以，只是以前的訊息不會跟過來，舊手機上的 Tellomi 也會登出。</string>
+    <string name="TellomiRegistration__register_directly">直接註冊</string>
+    <string name="TellomiRegistration__skip_restore_dialog_title">不還原訊息？</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">以前的訊息不會出現在這支手機上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">舊手機上的 Tellomi 會登出，以前的訊息也不會出現在這支手機上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">繼續</string>
+
+    <!-- Tellomi：注册同意（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。与 iOS zh_HK / zh_TW 同句 -->
+    <string name="TellomiConsent__terms_link">《用戶服務協議》</string>
+    <string name="TellomiConsent__privacy_link">《隱私政策》</string>
+    <string name="TellomiConsent__row">我已年滿 18 週歲，已閱讀並同意%1$s和%2$s</string>
+    <string name="TellomiConsent__checkbox_content_description">同意用戶服務協議和隱私政策</string>
+    <string name="TellomiConsent__dialog_title">用戶協議及隱私政策</string>
+    <string name="TellomiConsent__dialog_body">請閱讀並同意%1$s和%2$s</string>
+    <string name="TellomiConsent__agree_and_continue">同意並繼續</string>
+    <string name="TellomiConsent__disagree">不同意</string>
+    <string name="TellomiConsent__first_launch_title">歡迎使用 Tellomi</string>
+    <string name="TellomiConsent__first_launch_body">我們按%1$s處理您的個人信息：註冊只需要手機號碼；訊息、資料和附件都是端到端加密的，我們讀不到。</string>
+    <string name="TellomiConsent__first_launch_agree">同意</string>
+    <string name="TellomiConsent__first_launch_disagree_hint">需要同意後才能使用 Tellomi；不同意的話，我們不會收集任何資訊。</string>
+
+    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。文字是草稿，以 #1132 的法务定稿为准。与 iOS zh_HK 同句，推送一项换成 Android 的 Google / FCM -->
+    <string name="TellomiCrossBorder__title">您的資訊將傳輸到中國大陸境外（香港）處理</string>
+    <string name="TellomiCrossBorder__intro">註冊和使用 Tellomi 時，您的部分個人信息會發送到位於中國大陸境外的伺服器處理。請讀完下面幾項，再決定是否同意。</string>
+    <string name="TellomiCrossBorder__item_where_title">是否出境</string>
+    <string name="TellomiCrossBorder__item_where_body">是。Tellomi 的伺服器在香港；附件存放在 Cloudflare R2，儲存節點可能不在中國大陸。</string>
+    <string name="TellomiCrossBorder__item_recipients_title">境外接收方</string>
+    <string name="TellomiCrossBorder__item_recipients_body">Tellomi 在香港部署的服務，以及為我們提供基礎設施的阿里雲（香港）、Cloudflare, Inc.（附件儲存、通話中繼）、Google（Android 推送 FCM，僅限裝有 Google 服務的手機）；使用 GIF 搜尋時，搜尋詞經我們的代理發給 GIPHY。</string>
+    <string name="TellomiCrossBorder__item_contact_title">聯絡方式</string>
+    <string name="TellomiCrossBorder__item_contact_body">個人信息保護相關問題，請寄電子郵件至 privacy@tellomi.app。</string>
+    <string name="TellomiCrossBorder__item_purpose_title">處理目的</string>
+    <string name="TellomiCrossBorder__item_purpose_body">註冊和登入；投遞和暫存訊息與附件；推送通知；接通語音和視訊通話；GIF 搜尋。</string>
+    <string name="TellomiCrossBorder__item_method_title">處理方式</string>
+    <string name="TellomiCrossBorder__item_method_body">訊息正文、個人資料、群組資訊和附件內容都經過端到端加密，伺服器和附件儲存裡只有密文，我們無法讀取。以明文處理的只有註冊用的手機號碼、連線所需的網路資訊等少數幾項。</string>
+    <string name="TellomiCrossBorder__item_kinds_title">涉及的個人信息</string>
+    <string name="TellomiCrossBorder__item_kinds_body">手機號碼；帳號和裝置標識；推送令牌；連線時的 IP 地址等網路資訊；加密後的訊息、附件和資料（密文）；使用 GIF 搜尋時的搜尋詞。</string>
+    <string name="TellomiCrossBorder__item_rights_title">您的權利</string>
+    <string name="TellomiCrossBorder__item_rights_body">您可以按《隱私政策》第二十六、二十七節的方式查閱、更正、刪除個人信息，註銷帳號，或者撤回本同意；也可以寄電子郵件至 privacy@tellomi.app。</string>
+    <string name="TellomiCrossBorder__item_procedure_title">出境的法定程序</string>
+    <string name="TellomiCrossBorder__item_procedure_body">我們會依法完成個人信息出境所需的程序，具體方式待法務確認後在這裡寫明。</string>
+    <string name="TellomiCrossBorder__item_consent_title">單獨同意</string>
+    <string name="TellomiCrossBorder__item_consent_body">點「同意並繼續」即表示您單獨同意上述跨境傳輸。您可以隨時撤回；撤回後，在中國大陸服務上線之前將無法繼續使用 Tellomi。</string>
+    <string name="TellomiCrossBorder__privacy_link">檢視《隱私政策》第二十、二十一節</string>
+    <string name="TellomiCrossBorder__disagree_hint">不同意的話，在中國大陸服務上線之前您將無法使用 Tellomi，我們也不會發送您的任何資訊。您可以退出 App，或者之後回到這一頁再同意。</string>
 </resources>

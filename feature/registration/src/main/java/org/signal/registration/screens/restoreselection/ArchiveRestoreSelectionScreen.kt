@@ -37,6 +37,7 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
 import org.signal.registration.R
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
@@ -49,11 +50,25 @@ fun ArchiveRestoreSelectionScreen(
   onEvent: (ArchiveRestoreSelectionScreenEvents) -> Unit,
   modifier: Modifier = Modifier
 ) {
+  if (state.showsNoTransferFromIphone) {
+    TellomiNoTransferFromIphone(onEvent = onEvent, modifier = modifier)
+    return
+  }
+
   if (state.showSkipWarningDialog) {
+    // Tellomi（tellomi/tellomi#1216）：上游这句「如果您现在跳过恢复，您以后将无法进行恢复。如果您在跳过恢复后重启备份…」
+    // 讲的是备份服务，这套部署没有。换成说清真实的后果：以前的聊天记录不会出现在这台手机上。
+    val tellomiTexts = !TellomiRegistration.isRemoteBackupAvailable
     Dialogs.SimpleAlertDialog(
-      title = stringResource(R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_title),
-      body = stringResource(R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_warning),
-      confirm = stringResource(R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_confirm_button),
+      title = stringResource(if (tellomiTexts) R.string.TellomiRegistration__skip_restore_dialog_title else R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_title),
+      body = stringResource(
+        when {
+          !tellomiTexts -> R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_warning
+          state.skippingSignsOutOldPhone -> R.string.TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out
+          else -> R.string.TellomiRegistration__skip_restore_dialog_body
+        }
+      ),
+      confirm = stringResource(if (tellomiTexts) R.string.TellomiRegistration__skip_restore_dialog_confirm else R.string.ArchiveRestoreSelectionScreen__skip_restore_dialog_confirm_button),
       dismiss = stringResource(android.R.string.cancel),
       onConfirm = { onEvent(ArchiveRestoreSelectionScreenEvents.ConfirmSkip) },
       onDismiss = { onEvent(ArchiveRestoreSelectionScreenEvents.DismissSkipWarning) },
