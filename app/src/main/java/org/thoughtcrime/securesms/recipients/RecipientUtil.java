@@ -368,7 +368,9 @@ public class RecipientUtil {
   @WorkerThread
   public static @Nullable Integer setAndSendUniversalExpireTimerIfNecessary(@NonNull Context context, @NonNull Recipient recipient, long threadId) {
     int defaultTimer = SignalStore.settings().getUniversalExpireTimer();
-    if (defaultTimer == 0 || recipient.isGroup() || recipient.isDistributionList() || recipient.getExpiresInSeconds() != 0 || !recipient.isRegistered()) {
+    // Tellomi（owner 2026-09-26）：「我的收藏」（自己的会话）不套「新聊天默认限时」——收藏的东西不该到时自己消失。
+    // 用户在收藏里手动开限时照旧（那走会话自己的设置，不经过这里）。
+    if (defaultTimer == 0 || recipient.isSelf() || recipient.isGroup() || recipient.isDistributionList() || recipient.getExpiresInSeconds() != 0 || !recipient.isRegistered()) {
       return null;
     }
 

@@ -16,6 +16,11 @@ public final class VibrateUtil {
   private VibrateUtil() { }
 
   public static void vibrateTick(@NonNull Context context) {
+    // Tellomi: a UI tick must honor the system "touch feedback" switch; calling the Vibrator directly bypasses it
+    // (tellomi/tellomi interaction audit A-02). New code should use org.signal.core.ui.motion.TellomiHaptics instead.
+    if (!isHapticFeedbackEnabled(context)) {
+      return;
+    }
     vibrate(context, TICK_LENGTH);
   }
 

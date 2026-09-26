@@ -36,7 +36,7 @@
     <string name="delete">Delete</string>
     <string name="please_wait">Please wait…</string>
     <string name="save">Save</string>
-    <string name="note_to_self">Note to Self</string>
+    <string name="note_to_self">Saved Messages</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">Weather</string>
@@ -49,6 +49,14 @@
 
     <!-- AlbumThumbnailView -->
     <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string>
+
+    <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
+    <!-- Accessibility label for a horizontally scrolling album in a message -->
+    <!-- Accessibility: which item of the album is current -->
+    <string name="AlbumCarouselView__item_d_of_d">Item %1$d of %2$d</string>
+    <!-- Accessibility action: move to the next item of the album -->
+    <!-- Accessibility action: move to the previous item of the album -->
+    <!-- Accessibility: album label followed by the current item, e.g. "Album, 5 items, Item 1 of 5" -->
 
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi is updating…</string>
@@ -298,6 +306,36 @@
     <string name="ClientDeprecatedActivity_dont_update">Don\'t Update</string>
     <string name="ClientDeprecatedActivity_warning">Warning</string>
     <string name="ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history">Your version of Tellomi has expired. You can view your message history but you won\'t be able to send or receive messages until you update.</string>
+    <!-- Tellomi（tellomi/tellomi#1138）：「必须更新」阻断页 -->
+    <string name="TellomiUpdateRequired__title">Update Tellomi to continue</string>
+    <string name="TellomiUpdateRequired__reason_server_rejected">This version can no longer communicate with the server. Update to keep sending and receiving messages.</string>
+    <string name="TellomiUpdateRequired__reason_build_expired">This version is too old. Update to keep sending and receiving messages.</string>
+    <string name="TellomiUpdateRequired__chats_kept">Updating keeps all the chats on this phone.</string>
+    <string name="TellomiUpdateRequired__new_version">Version %1$s</string>
+    <string name="TellomiUpdateRequired__new_version_and_size">Version %1$s · %2$s</string>
+    <string name="TellomiUpdateRequired__update_now">Update now</string>
+    <string name="TellomiUpdateRequired__preparing">Preparing download…</string>
+    <string name="TellomiUpdateRequired__downloading">Downloading %1$d%%</string>
+    <string name="TellomiUpdateRequired__install">Install update</string>
+    <string name="TellomiUpdateRequired__retry">Try again</string>
+    <string name="TellomiUpdateRequired__open_settings">Open settings</string>
+    <string name="TellomiUpdateRequired__install_permission">To install the update, Tellomi needs permission to install apps. Allow it on the next screen, then come back to continue.</string>
+    <string name="TellomiUpdateRequired__download_failed">The download didn\'t finish. Check your connection and try again.</string>
+    <string name="TellomiUpdateRequired__no_newer_version">No update is available yet. Try again in a few minutes, or download it from our website.</string>
+    <string name="TellomiUpdateRequired__offline">Connect to the internet to update.</string>
+    <string name="TellomiUpdateRequired__download_from_website">Download from our website</string>
+    <string name="TellomiUpdateRequired__waiting_for_wifi">The update was set to download only on Wi-Fi.</string>
+    <string name="TellomiUpdateRequired__use_mobile_data">Download using mobile data</string>
+    <string name="TellomiUpdateRequired__download_notification_title">Downloading the Tellomi update</string>
+    <string name="TellomiUpdateRequired__view_chats_only">Not now, just view my chats</string>
+    <!-- Body of the banner above the chat list while this build can only show chats (the server requires an update, or the build has expired); tapping it opens the update screen -->
+    <string name="TellomiUpdateRequired__read_only_banner">Update Tellomi to keep sending and receiving messages.</string>
+    <!-- Tellomi: shown in place of the conversation input box while this version can no longer send or receive (the server rejects it, or the build expired); not "expired", since a server-side block is not an expiry -->
+    <string name="TellomiUpdateRequired__input_needs_update">This version needs an update to send and receive messages.</string>
+    <!-- Tellomi: body of the system notification posted when this version can no longer send or receive (the server rejects it, or the build expired); tapping it opens the update screen. Not "expired": a server-side block is not an expiry -->
+    <string name="TellomiUpdateRequired__notification_text">This version needs an update to send and receive messages. Tap to update.</string>
+    <!-- Message of the confirmation shown before switching to read-only from the update-required screen -->
+    <string name="TellomiUpdateRequired__view_chats_only_confirm_message">Until you update, you can view your chats but can\'t send or receive messages.</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->
@@ -540,6 +578,8 @@
         <item quantity="one">%d unread message</item>
         <item quantity="other">%d unread messages</item>
     </plurals>
+    <!-- Tellomi（两端差异清单第 11 项）：未读分隔线只写「新消息」，不带条数，和 iOS 的 MESSAGES_VIEW_UNREAD_INDICATOR 一致 -->
+    <string name="ConversationAdapter__tellomi_new_messages">New messages</string>
 
     <!-- ConversationFragment -->
     <!-- Toast text when contacts activity is not found -->
@@ -603,7 +643,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">You can swipe to the left on any message to quickly reply</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">View-once media is deleted after sending</string>
     <string name="ConversationFragment_you_already_viewed_this_message">You already viewed this message</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">You can add notes for yourself in this chat. If your account has any linked devices, new notes will be synced.</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">Forward messages here or send them to yourself to keep them handy. If your account has linked devices, new messages here are synced to them.</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="one">%1$d group member have the same name.</item>
@@ -797,6 +837,12 @@
         <item quantity="one">All messages in this chat will be deleted from all your devices. You will still be a member of this group.</item>
         <item quantity="other">All messages in these chats will be deleted from all your devices. You will still be a member of any groups you have not left yet.</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">Delete Saved Messages?</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">Everything in Saved Messages will be deleted from this device. This can\'t be undone.</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">Everything in Saved Messages will be deleted from this device and your linked devices. This can\'t be undone.</string>
     <string name="ConversationListFragment_deleting">Deleting</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="one">Deleting selected chat…</item>
@@ -1198,6 +1244,12 @@
     <string name="AddLinkDeviceFragment__retry">Retry</string>
     <!-- Text shown in a dialog when the device being linked is too out-of-date to be linked to this account -->
     <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">The device you\'re trying to link is out of date. Please upgrade and try again.</string>
+    <!-- Tellomi (#1219): the server has no device waiting at the scanned code (404): the code expired, or it isn't a Tellomi code. Doesn't name the other app -->
+    <string name="AddLinkDeviceFragment__tellomi_code_expired_or_foreign">This QR code has expired, or it isn\'t a Tellomi code. Scan the QR code shown right now in Tellomi on your computer.</string>
+    <!-- Tellomi (#1219): linking failed with a network error or a server error -->
+    <string name="AddLinkDeviceFragment__tellomi_network_error">Couldn\'t reach the server, or the server is busy. Check your internet connection and try again in a moment.</string>
+    <!-- Tellomi (#1219): button that reopens the QR scanner after linking failed -->
+    <string name="AddLinkDeviceFragment__tellomi_scan_again">Scan again</string>
 
     <!-- LinkDeviceSyncBottomSheet -->
     <!-- Option in bottom sheet to transfer message history -->
@@ -1779,6 +1831,15 @@
     <string name="MediaOverviewActivity_Files">Files</string>
     <string name="MediaOverviewActivity_Audio">Audio</string>
     <string name="MediaOverviewActivity_All">All</string>
+    <!-- Tellomi（#1174）：「我的收藏」顶栏下方的分类，「全部」是会话本身，其它几项打开「所有媒体」对应的页 -->
+    <string name="TellomiSavedCategories__all">All</string>
+    <string name="TellomiSavedCategories__photos_and_videos">Photos &amp; videos</string>
+    <string name="TellomiSavedCategories__files">Files</string>
+    <string name="TellomiSavedCategories__voice">Voice</string>
+    <string name="TellomiSavedCategories__links">Links</string>
+    <!-- Tellomi（#1174）：「我的收藏」的所有媒体顶栏的搜索，在当前这一页里按文字筛 -->
+    <string name="TellomiSavedCategories__search">Search</string>
+    <string name="TellomiSavedCategories__search_hint">Search file names, captions and links</string>
     <string name="MediaOverviewActivity_Links">Links</string>
     <string name="MediaOverviewActivity_link">Link</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
@@ -1841,6 +1902,9 @@
     <!-- Text in a card view to invite friends as part of the onboarding megaphone -->
     <string name="Megaphones_invite_friends">Invite friends</string>
     <string name="Megaphones_chat_colors">Chat colors</string>
+    <!-- Tellomi（tellomi/tellomi#1218 F-02）：首屏「开始使用」里的找朋友三条路 -->
+    <string name="TellomiOnboarding__search_by_username">Search by username</string>
+    <string name="TellomiOnboarding__my_qr_code">My QR code</string>
     <string name="Megaphones_add_a_profile_photo">Add a profile photo</string>
 
     <!-- Message body of megaphone telling users that a device was linked to their account. %1$s is the time it was linked -->
@@ -1875,6 +1939,14 @@
     <string name="NotificationsMegaphone_never_miss_a_message">Never miss a message from your contacts and groups.</string>
     <string name="NotificationsMegaphone_turn_on">Turn on</string>
     <string name="NotificationsMegaphone_not_now">Not now</string>
+
+    <!-- Tellomi（#1112 / #1218 F-01）：首屏通知说明页（只有一个「继续」，不能叫「允许」）与系统通知关着时的常驻横幅。 -->
+    <string name="TellomiNotificationPrimer__title">Know when messages arrive</string>
+    <string name="TellomiNotificationPrimer__body">When Tellomi isn\'t open, notifications tell you about new messages and calls. After you tap Continue, Android will ask once. You can change this anytime in system settings.</string>
+    <string name="TellomiNotificationPrimer__continue">Continue</string>
+    <string name="NotificationsDisabledBanner__notifications_are_off">Notifications are off</string>
+    <string name="NotificationsDisabledBanner__you_wont_be_alerted">You won\'t be alerted to new messages or calls while Tellomi isn\'t open.</string>
+    <string name="NotificationsDisabledBanner__go_to_settings">Go to settings</string>
 
     <!-- NotificationMmsMessageRecord -->
     <string name="NotificationMmsMessageRecord_multimedia_message">Multimedia message</string>
@@ -3194,12 +3266,39 @@
     <string name="UsernameEditFragment_this_username_is_taken">This username is taken.</string>
     <string name="UsernameEditFragment_usernames_can_only_include">Usernames can only include a–Z, 0–9, and underscores.</string>
     <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">Usernames cannot begin with a number.</string>
+    <!-- Tellomi（ADR-0066 §六）：用户名必须字母开头。libsignal 放行 `_` 开头，客户端收紧 -->
+    <string name="UsernameEditFragment__tellomi_usernames_must_start_with_a_letter">Usernames must begin with a letter.</string>
     <string name="UsernameEditFragment_username_is_invalid">Username is invalid.</string>
     <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">Usernames must be between %1$d and %2$d characters.</string>
     <!-- Explanation about what usernames provide -->
     <string name="UsernameEditFragment__usernames_let_others_message">Usernames are always paired with a set of numbers.</string>
     <!-- Tellomi（#1106，ADR-0066）：用户名不再带「.数字」，上面那句「用户名始终搭配一组数字」不成立，编辑页改用这句。 -->
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">People can find and message you by your username, without knowing your phone number.</string>
+    <!-- Tellomi（#1106 第四刀，ADR-0066 §6.2）：30 天改名冷却期内想换用户名时，输入框下的提示。%d 为还剩的天数（向上取整，至少 1）。第一句与 Desktop#2 相同；第二句「在那之前只能改回原来的名字」是 owner 2026-09-25 在 TestFlight 上撞到冷却后加的（冷却期服务端只放行本账号保留期内的旧名），iOS 同句，Desktop 半边交 taishi。 -->
+    <plurals name="UsernameEditFragment__tellomi_change_cooldown">
+        <item quantity="one">You changed your username recently. You can change it again in %d day. Until then, you can only change back to your original username.</item>
+        <item quantity="other">You changed your username recently. You can change it again in %d days. Until then, you can only change back to your original username.</item>
+    </plurals>
+    <!-- Tellomi（#1106 第四刀）：已有用户名、要换成别的时的确认框。每次换名都会开始改名冷却，%d 为冷却天数（30）。与 Desktop#2 同一句。 -->
+    <plurals name="UsernameEditFragment__tellomi_change_confirmation">
+        <item quantity="one">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d day. Are you sure?</item>
+        <item quantity="other">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d days. Are you sure?</item>
+    </plurals>
+    <!-- Tellomi (ADR-0066 §6.2): confirmation before recovering a corrupted username. Recovering confirms a username, which the server counts as a change, so it starts (or restarts) the rename cooldown. %d is the cooldown length (30). Same sentence as Desktop#9 -->
+    <plurals name="UsernameEditFragment__tellomi_recovery_confirmation">
+        <item quantity="one">Recovering your username will reset your existing QR code and link, and you won’t be able to change it again for %d day. Are you sure?</item>
+        <item quantity="other">Recovering your username will reset your existing QR code and link, and you won’t be able to change it again for %d days. Are you sure?</item>
+    </plurals>
+    <!-- Tellomi（ADR-0066 §6.2）：没有用户名、但保留期内删过一个时，再设前的确认框。%1$d 为保留天数，%2$d 为改名冷却天数（都是 30）。与 Desktop#4 同一句。 -->
+    <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
+        <item quantity="one">You deleted your username less than %1$d days ago, so setting one now counts as a change: you won’t be able to change it again for %2$d day. Are you sure?</item>
+        <item quantity="other">You deleted your username less than %1$d days ago, so setting one now counts as a change: you won’t be able to change it again for %2$d days. Are you sure?</item>
+    </plurals>
+    <!-- Tellomi（ADR-0066 §6.2）：删除用户名的确认框。删掉的名字服务端给原主人保留 %2$d 天，不是「可供其他人申请」；保留期内再设用户名也算改名。%1$s 为用户名，%3$d 为改名冷却天数。与 Desktop#4 同一句。 -->
+    <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
+        <item quantity="one">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d day. If you changed your username in the last %3$d day, you can only change back to your original username after deleting it. Are you sure?</item>
+        <item quantity="other">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d days. If you changed your username in the last %3$d days, you can only change back to your original username after deleting it. Are you sure?</item>
+    </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">What is this number?</string>
     <string name="UsernameEditFragment__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>
@@ -3309,6 +3408,26 @@
     <string name="MediaPreviewFragment_media_delete_error">Error Deleting Message, Message May Still Exist</string>
     <!-- A suffix to be attached to truncated captions that the user may tap onto to view the entire text caption -->
     <string name="MediaPreviewFragment_read_more_overflow_text">Read More</string>
+    <!-- Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：查看器里转发相册中的一张，先问「这张 / 全部 N 张」 -->
+    <string name="MediaPreviewFragment__forward_this_photo">This photo</string>
+    <string name="MediaPreviewFragment__forward_this_video">This video</string>
+    <plurals name="MediaPreviewFragment__forward_all_d_photos">
+        <item quantity="one">All %d photo</item>
+        <item quantity="other">All %d photos</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_videos">
+        <item quantity="one">All %d video</item>
+        <item quantity="other">All %d videos</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_items">
+        <item quantity="one">All %d item</item>
+        <item quantity="other">All %d items</item>
+    </plurals>
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频查看器的倍速按钮与面板；分享挪进「···」 -->
+    <string name="MediaPreviewFragment__playback_speed">Playback speed</string>
+    <string name="MediaPreviewFragment__speed">Speed</string>
+    <string name="MediaPreviewFragment__speed_normal">Normal</string>
+    <string name="MediaPreviewFragment__share">Share</string>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->
@@ -3630,13 +3749,13 @@
     <!-- Dialog title asking users for contact permission -->
     <string name="ContactSelectionListFragment_allow_access_contacts">Allow access to contacts</string>
     <!-- Dialog description that will explain the steps needed to give contact permissions -->
-    <string name="ContactSelectionListFragment_to_find_people">To find people you know on Tellomi:</string>
+    <string name="ContactSelectionListFragment_to_find_people">To show your contacts\' names in Tellomi:</string>
     <!-- Text on button prompting users to give Signal contact permissions -->
     <string name="ContactSelectionListFragment__allow_access">Allow access</string>
     <!-- Text on button to dismiss Signal\'s request for contact permissions -->
     <string name="ContactSelectionListFragment__no_thanks">No thanks</string>
     <!-- Text asking for user\'s contact permission -->
-    <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">Allow access to your contacts. Your contacts are encrypted and not visible to the Tellomi service.</string>
+    <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">Allow access to your contacts to show the names you saved for people. Your contacts stay on this phone and are not uploaded to Tellomi.</string>
 
     <!-- contact_selection_list_fragment -->
     <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">Tellomi needs access to your contacts in order to display them.</string>
@@ -4674,6 +4793,14 @@
     <string name="conversation_selection__menu_unstar" translatable="false">Unstar (Labs)</string>
     <!-- Button to forward a message to another person or group chat; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
     <string name="conversation_selection__menu_forward">Forward</string>
+    <!-- Tellomi（#1174）：长按菜单「收藏」，直接存进「我的收藏」 -->
+    <string name="conversation_selection__menu_tellomi_save">Save</string>
+    <!-- Tellomi（#1174）：收藏成功的提示，后面跟「查看」按钮 -->
+    <string name="ConversationFragment__tellomi_saved_to_saved_messages">Saved to Saved Messages</string>
+    <!-- Tellomi（#1174）：收藏成功提示上的按钮，打开「我的收藏」 -->
+    <string name="ConversationFragment__tellomi_view_saved_messages">View</string>
+    <!-- Tellomi（#1174）：收藏没发出去 -->
+    <string name="ConversationFragment__tellomi_couldnt_save">Couldn\'t save. Try again.</string>
     <!-- Button to reply to a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="conversation_selection__menu_reply">Reply</string>
     <!-- Button to edit a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6047,12 +6174,34 @@
     <string name="HelpSettingsFragment__version">Version</string>
     <!-- Displayed when copying help screen text to the clipboard -->
     <string name="HelpSettingsFragment__copied_to_clipboard">Copied to clipboard</string>
+    <!-- Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」页（docs/product/specs/about-page.md 3.2）。法律文件名照需求 3.2，其中三份是官网 /legal/ 标题的简称（用户服务协议、隐私政策（个人信息处理规则）、投诉举报、侵权通知与申诉处理规则） -->
+    <string name="AboutSettings__tellomi_about_tellomi">About Tellomi</string>
+    <string name="AboutSettings__tellomi_version">Version %1$s (build %2$s)</string>
+    <string name="AboutSettings__tellomi_section_updates">Updates</string>
+    <string name="AboutSettings__tellomi_check_for_updates">Check for updates</string>
+    <string name="AboutSettings__tellomi_checking_for_updates">Checking for updates. You\'ll be notified if a new version is available.</string>
+    <string name="AboutSettings__tellomi_section_contact">Contact us</string>
+    <string name="AboutSettings__tellomi_official_website">Official website</string>
+    <string name="AboutSettings__tellomi_contact_support">Customer support</string>
+    <string name="AboutSettings__tellomi_privacy_and_personal_data">Privacy and personal data</string>
+    <string name="AboutSettings__tellomi_report_abuse">Report abuse</string>
+    <string name="AboutSettings__tellomi_tap_to_copy">Tap to copy</string>
+    <string name="AboutSettings__tellomi_section_legal">Legal and compliance</string>
+    <string name="AboutSettings__tellomi_terms_of_service">Terms of Service</string>
+    <string name="AboutSettings__tellomi_privacy_policy">Privacy Policy</string>
+    <string name="AboutSettings__tellomi_personal_information_collected">Personal information we collect</string>
+    <string name="AboutSettings__tellomi_third_party_sharing">Third-party sharing and SDKs</string>
+    <string name="AboutSettings__tellomi_system_permissions">System permissions we use</string>
+    <string name="AboutSettings__tellomi_complaints_and_reports">Complaints and reporting rules</string>
+    <string name="AboutSettings__tellomi_section_open_source">Open source</string>
+    <string name="AboutSettings__tellomi_open_source_licenses">Open source licenses</string>
+    <string name="AboutSettings__tellomi_source_code_notice">Tellomi is released under the GNU AGPLv3. The source code is available at www.tellomi.app/source.</string>
     <string name="HelpSettingsFragment__debug_log">Debug log</string>
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">Licenses</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
     <string name="HelpFragment__copyright_signal_messenger">Copyright Signal Messenger</string>
-    <string name="HelpFragment__modifications_copyright_tellomi">Modifications Copyright Tellomi</string>
+    <string name="HelpFragment__modifications_copyright_tellomi">Modifications Copyright 重庆半格智能科技有限公司</string>
     <string name="HelpFragment__licenced_under_the_agplv3">Licensed under the GNU AGPLv3</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
@@ -6393,6 +6542,22 @@
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">Only admins can send messages to this group.</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">You can\'t select more than 5 chats</string>
+    <!-- Tellomi (#1259): forward grid — subtitle, name separator, search, share, selection limit, search sections, message, toasts -->
+    <string name="TellomiForwardGrid__choose_chats">Select chats</string>
+    <string name="TellomiForwardGrid__name_separator">", "</string>
+    <string name="TellomiForwardGrid__search">Search</string>
+    <string name="TellomiForwardGrid__share_to_other_apps">Share to other apps</string>
+    <string name="TellomiForwardGrid__select_up_to_d_chats">You can select up to %1$d chats</string>
+    <string name="TellomiForwardGrid__recent">Recent</string>
+    <string name="TellomiForwardGrid__chats">Chats</string>
+    <string name="TellomiForwardGrid__contacts">Contacts</string>
+    <string name="TellomiForwardGrid__groups">Groups</string>
+    <string name="TellomiForwardGrid__no_results">No results for “%1$s”</string>
+    <string name="TellomiForwardGrid__add_a_message">Add a message…</string>
+    <string name="TellomiForwardGrid__forwarded_to_s">Forwarded to %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_s">Forwarded to %1$s and %2$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_d_chats">Forwarded to %2$d chats, including %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_saved_s">Forwarded to %1$s</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->
@@ -8091,6 +8256,11 @@
     <!-- Tellomi（#947）：扫错入口时的指路。上游只有一句「二维码无效」，用户不知道该去哪。 -->
     <string name="UsernameLinkSettings_qr_result_device_link_title">This is a device pairing code</string>
     <string name="UsernameLinkSettings_qr_result_device_link_body">To link a computer or tablet, go to Settings → Linked devices and scan it there.</string>
+    <!-- Tellomi（#947，需求 share-qr-and-invite §3.2）：扫到的不是 Tellomi 的码时，弹框显示内容；网址可以打开，都可以复制 -->
+    <string name="UsernameLinkSettings__tellomi_qr_result_content_title">Scanned content</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_open_link">Open link</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copy">Copy</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copied">Copied</string>
     <string name="UsernameLinkSettings_qr_result_invalid">The QR code was invalid.</string>
     <!-- Body of a dialog that is displayed when the username we looked up could not be found. -->
     <string name="UsernameLinkSettings_qr_result_not_found">A user with username %1$s could not be found.</string>
@@ -8297,6 +8467,8 @@
     <string name="FindByActivity__phone_number">Phone number</string>
     <!-- Help text under user entry for find by username -->
     <string name="FindByActivity__enter_username_description">Enter a username followed by a dot and its set of numbers.</string>
+    <!-- Tellomi（#1106 第四刀）：找人页说明。用户名不再带「.数字」，输 kaixin 就能找到，不再要求「后跟一个点和一组数字」。与 Desktop#2 同一句。 -->
+    <string name="FindByActivity__tellomi_enter_username_description">Enter the person’s username.</string>
     <!-- Content description for next action button -->
     <string name="FindByActivity__next">Next</string>
     <!-- Placeholder text for search input for selecting country code -->
@@ -8311,6 +8483,8 @@
     <string name="FindByActivity__username_not_found">Username not found</string>
     <!-- Dialog body for invalid username. Placeholder is the entered username. -->
     <string name="FindByActivity__s_is_not_a_valid_username">%1$s is not a valid username. Make sure you\'ve entered the complete username followed by its set of digits.</string>
+    <!-- Tellomi（#1106 第四刀）：输入的不可能是用户名时的提示，不再要人补「一组数字」。%1$s 为输入内容。与 Desktop#2 同一句。 -->
+    <string name="FindByActivity__tellomi_s_is_not_a_valid_username">%1$s is not a valid username.</string>
     <!-- Dialog body for an invalid phone number. Placeholder is the entered phone number. -->
     <string name="FindByActivity__s_is_not_a_valid_phone_number">%1$s is not valid phone number. Try again with a valid phone number</string>
     <!-- Dialog body for not found username -->
@@ -9570,6 +9744,10 @@
     <string name="MainToolbar__notification_profile_content_description">Notification Profile</string>
     <!-- Accessibility label for more options button in MainToolbar -->
     <string name="MainToolbar__proxy_content_description">Proxy</string>
+    <!-- Tellomi（#1218 F-04）：首屏标题在没连上服务器时换成连接状态：系统没有网络 / 正在连服务器 / 连上后正在收离线期间的消息 -->
+    <string name="MainToolbar__tellomi_waiting_for_network">Waiting for network…</string>
+    <string name="MainToolbar__tellomi_connecting">Connecting…</string>
+    <string name="MainToolbar__tellomi_updating">Updating…</string>
     <!-- Accessibility label for search filter button in MainToolbar -->
     <string name="MainToolbar__search_filter_content_description" translatable="false">Search filter</string>
 
@@ -10061,6 +10239,9 @@
     <string name="SharedContactDetailsScreen__couldnt_open_maps">Couldn\'t open maps</string>
     <!-- Subject line of an email invitation to Signal -->
     <string name="SharedContactDetailsScreen__join_me_on_signal">Join me on Tellomi</string>
+
+    <!-- Tellomi (tellomi/tellomi#1124): shown when tapping the grayed-out Location button before the map service (Amap) is integrated -->
+    <string name="TellomiLocation__coming_soon">Location sharing is coming soon</string>
 
     <!-- EOF -->
 </resources>
