@@ -17,6 +17,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.viewModels
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -58,6 +59,14 @@ class UsernameQrScannerActivity : AppCompatActivity() {
 
   companion object {
     private const val KEY_RECIPIENT_ID = "recipient_id"
+    private const val KEY_GROUP_INVITE_URL = "group_invite_url"
+
+    @VisibleForTesting
+    internal fun recipientResultIntent(recipientId: RecipientId): Intent = Intent().putExtra(KEY_RECIPIENT_ID, recipientId)
+
+    /** Tellomi（tellomi/tellomi#947）：扫到群邀请码不在扫码页上开加群弹层（这一页马上 finish，弹层会跟着没了），带回给调用方开。 */
+    @VisibleForTesting
+    internal fun groupInviteResultIntent(url: String): Intent = Intent().putExtra(KEY_GROUP_INVITE_URL, url)
   }
 
   private val viewModel: UsernameQrScannerViewModel by viewModels()
@@ -117,10 +126,11 @@ class UsernameQrScannerActivity : AppCompatActivity() {
             }
           },
           onRecipientFound = { recipient ->
-            val intent = Intent().apply {
-              putExtra(KEY_RECIPIENT_ID, recipient.id)
-            }
-            setResult(RESULT_OK, intent)
+            setResult(RESULT_OK, recipientResultIntent(recipient.id))
+            finish()
+          },
+          onGroupInviteFound = { url ->
+            setResult(RESULT_OK, groupInviteResultIntent(url))
             finish()
           },
           onBackNavigationPressed = {
@@ -140,13 +150,16 @@ class UsernameQrScannerActivity : AppCompatActivity() {
       .execute()
   }
 
-  class Contract : ActivityResultContract<Unit, RecipientId?>() {
+  /** What the scanner found: a recipient, or (Tellomi, #947) a group invite link for the caller to open. */
+  data class Result(val recipientId: RecipientId?, val groupInviteUrl: String?)
+
+  class Contract : ActivityResultContract<Unit, Result?>() {
     override fun createIntent(context: Context, input: Unit): Intent {
       return Intent(context, UsernameQrScannerActivity::class.java)
     }
 
-    override fun parseResult(resultCode: Int, intent: Intent?): RecipientId? {
-      return intent?.getParcelableExtraCompat(KEY_RECIPIENT_ID, RecipientId::class.java)
+    override fun parseResult(resultCode: Int, intent: Intent?): Result? {
+      return intent?.let { Result(recipientId = it.getParcelableExtraCompat(KEY_RECIPIENT_ID, RecipientId::class.java), groupInviteUrl = it.getStringExtra(KEY_GROUP_INVITE_URL)) }
     }
   }
 }
@@ -163,6 +176,7 @@ fun Content(
   onOpenCameraClicked: () -> Unit,
   onOpenGalleryClicked: () -> Unit,
   onRecipientFound: (Recipient) -> Unit,
+  onGroupInviteFound: (String) -> Unit,
   onBackNavigationPressed: () -> Unit
 ) {
   Scaffold(
@@ -190,6 +204,7 @@ fun Content(
       onOpenCameraClicked = onOpenCameraClicked,
       onOpenGalleryClicked = onOpenGalleryClicked,
       onRecipientFound = onRecipientFound,
+      onGroupInviteFound = onGroupInviteFound,
       hasCameraPermission = cameraPermissionState.status.isGranted,
       modifier = Modifier.padding(contentPadding)
     )

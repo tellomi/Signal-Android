@@ -744,6 +744,33 @@ class VerificationCodeViewModelTest {
   }
 
   @Test
+  fun `CodeEntered where registration finds the session gone says it expired, then navigates back to phone number entry`() = runTest {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 1）：验证码对了、注册时会话却没了。上游一声不响地退回；
+    // 现在和提交验证码时一样先弹框，关掉后清会话（SessionExpired）再退回。
+    val sessionMetadata = createSessionMetadata(verified = true)
+    val initialState = VerificationCodeState(
+      sessionMetadata = sessionMetadata,
+      e164 = "+15551234567"
+    )
+
+    coEvery { mockRepository.submitVerificationCode(any(), any()) } returns
+      RequestResult.Success(sessionMetadata)
+    coEvery { mockRepository.registerAccountWithSession(any(), any(), any()) } returns
+      RequestResult.NonSuccess(RegisterAccountError.SessionNotFoundOrNotVerified("Session not found"))
+
+    viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
+
+    assertThat(emittedEvents).hasSize(1)
+    assertThat(emittedEvents[0]).isInstanceOf<RegistrationFlowEvent.VerificationCodeAccepted>()
+    assertThat(emittedStates.last().dialogs.sessionExpired).isTrue()
+
+    viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
+
+    assertThat(emittedEvents.drop(1)).containsExactly(RegistrationFlowEvent.SessionExpired, RegistrationFlowEvent.NavigateBack)
+    assertThat(emittedStates.last().dialogs.sessionExpired).isFalse()
+  }
+
+  @Test
   fun `CodeEntered with already verified session continues to register`() = runTest {
     val verifiedSession = createSessionMetadata(verified = true)
     val initialState = VerificationCodeState(
@@ -1477,6 +1504,9 @@ class VerificationCodeViewModelTest {
     assertThat(requested).isEqualTo(
       RegistrationFlowEvent.VerificationCodeRequested(e164 = e164, nextSmsAllowedTimestamp = now + 60_000, nextCallAllowedTimestamp = now + 30_000)
     )
+    // 界面上马上显示的倒计时和记下的截止时刻同源：短信 60 秒（不是会话里的 45 秒），电话 30 秒（taishi 审查 b19 不阻塞 2）。
+    assertThat(emittedStates.last().rateLimits.smsResendTimeRemaining).isEqualTo(60.seconds)
+    assertThat(emittedStates.last().rateLimits.callRequestTimeRemaining).isEqualTo(30.seconds)
 
     // 父状态照 RegistrationViewModel 那样记下截止时刻，然后 App 在后台待了 10 秒。
     parentState.value = parentState.value.copy(
@@ -1505,6 +1535,10 @@ class VerificationCodeViewModelTest {
     assertThat(emittedEvents.filterIsInstance<RegistrationFlowEvent.VerificationCodeRequested>().single()).isEqualTo(
       RegistrationFlowEvent.VerificationCodeRequested(e164 = e164, nextSmsAllowedTimestamp = now + 20_000, nextCallAllowedTimestamp = now + 90_000)
     )
+    // 会话里 nextCall 为空，但这一路是被限流、不是不给打：界面按 retryAfter 倒数 90 秒，和记下的截止时刻一致，
+    // 不再显示成「不可用」、离开再回来又变成 90 秒倒计时（taishi 审查 b19 不阻塞 2）。
+    assertThat(emittedStates.last().rateLimits.callRequestTimeRemaining).isEqualTo(90.seconds)
+    assertThat(emittedStates.last().rateLimits.smsResendTimeRemaining).isEqualTo(20.seconds)
   }
 
   @Test

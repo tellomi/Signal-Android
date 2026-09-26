@@ -66,23 +66,25 @@ object MultiselectForwardRepository {
         .toSet()
 
       val mappedArgs: List<MultiShareArgs> = multiShareArgs.map { it.buildUpon(filteredContacts).build() }
-      val results = mappedArgs.sortedBy { it.timestamp }.map { MultiShareSender.sendSync(it) }
 
-      if (additionalMessage.isNotEmpty()) {
+      // Tellomi（#1259 F-7）：附言作为单独一条文字先于转发内容发出（同 Telegram Android；上游放在最后）
+      val additionalResults: List<MultiShareSender.MultiShareSendResultCollection> = if (additionalMessage.isNotEmpty()) {
         val additional = MultiShareArgs.Builder(filteredContacts.filterNot { it is ContactSearchKey.RecipientSearchKey && it.isStory }.toSet())
           .withDraftText(additionalMessage)
           .build()
 
         if (additional.contactSearchKeys.isNotEmpty()) {
-          val additionalResult: MultiShareSender.MultiShareSendResultCollection = MultiShareSender.sendSync(additional)
-
-          handleResults(results + additionalResult, resultHandlers)
+          listOf(MultiShareSender.sendSync(additional))
         } else {
-          handleResults(results, resultHandlers)
+          emptyList()
         }
       } else {
-        handleResults(results, resultHandlers)
+        emptyList()
       }
+
+      val results = mappedArgs.sortedBy { it.timestamp }.map { MultiShareSender.sendSync(it) }
+
+      handleResults(additionalResults + results, resultHandlers)
     }
   }
 
