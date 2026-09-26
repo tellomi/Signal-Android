@@ -9090,14 +9090,14 @@
     <string name="ReminderView_icon_content_description">提醒图标</string>
 
     <!-- Row title for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我可以用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我有旧手机</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_scan_qr">从您当前的 Tellomi 账户扫描二维码以快速开始操作</string>
 
     <!-- Row title for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我无法用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我没有旧手机</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">您可以在同一个设备上重新安装 Tellomi</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">或者你是在同一台设备上重新安装 Tellomi</string>
 
     <!-- Screen title for selecting which restore method to use during registration -->
     <string name="SelectRestoreMethodFragment__restore_or_transfer_account">恢复或转移账户</string>

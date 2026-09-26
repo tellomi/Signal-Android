@@ -763,4 +763,11 @@
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">輸入由驗證應用程式所產生的一次性驗證碼。</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">取消</string>
+
+    <!-- Tellomi（#1210） -->
+    <string name="TellomiRegistration__region_not_supported">暫未開放該地區的手機號碼註冊，目前只支援中國大陸（+86）手機號碼。</string>
+    <string name="TellomiRegistration__you_will_receive_a_verification_code">我們會傳送一則簡訊驗證碼，確認這個號碼是你的。</string>
+    <string name="TellomiRegistration__a_verification_code_will_be_sent">我們會傳送一則簡訊驗證碼到這個號碼，確認它是你的。</string>
+    <string name="TellomiRegistration__captcha_retry">重試</string>
+    <string name="TellomiRegistration__first_name">名字</string>
 </resources>

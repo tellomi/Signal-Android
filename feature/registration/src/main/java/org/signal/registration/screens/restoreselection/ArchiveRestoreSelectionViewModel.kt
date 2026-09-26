@@ -26,6 +26,7 @@ import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
 import org.signal.registration.RestoreDecision
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.util.navigateTo
 
 /**
@@ -48,7 +49,9 @@ class ArchiveRestoreSelectionViewModel(
 
   private val _state = MutableStateFlow(
     ArchiveRestoreSelectionState(
-      restoreOptions = restoreOptions
+      // Tellomi（tellomi/tellomi#1210）：五个入口（RegistrationRoute.ArchiveRestoreSelection.for…）都会塞「从 Tellomi 备份」，
+      // 在这个唯一出口统一滤掉，不去改五处上游
+      restoreOptions = restoreOptions.filter { it != ArchiveRestoreOption.SignalSecureBackup || TellomiRegistration.isRemoteBackupAvailable }
     )
   )
   val state: StateFlow<ArchiveRestoreSelectionState> = _state.asStateFlow()

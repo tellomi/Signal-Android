@@ -39,6 +39,11 @@ data class PhoneNumberEntryState(
   val isNumberPossible: Boolean = false,
   /** Whether the entered number is definitively invalid. A still-too-short number is not considered invalid, since the user may simply be mid-entry. */
   val isNumberInvalid: Boolean = false,
+  /**
+   * Tellomi（tellomi/tellomi#1210）：请求验证码回 440、且号码不是 +86（香港只开放中国大陆号码）。
+   * 号码框下行内提示「暂未开放该地区的手机号注册…」，改号码或区号就清掉。
+   */
+  val isRegionUnavailable: Boolean = false,
   /** Gates whether the link device option is shown in the overflow menu. */
   val isLinkAndSyncAvailable: Boolean = false,
   val isPhoneNumberlessRegistrationAvailable: Boolean = false
@@ -64,7 +69,7 @@ data class PhoneNumberEntryState(
       }
     }
 
-  override fun toString(): String = "PhoneNumberEntryState(regionCode=$regionCode, countryCode=$countryCode, countryName=$countryName, countryEmoji=$countryEmoji, nationalNumber=${nationalNumber.censor()}, formattedNumber=${formattedNumber.censor()}, accountId=${accountId?.censor()}, accountIdError=$accountIdError, sessionE164=$sessionE164, sessionMetadata=$sessionMetadata, smsVerificationCodeRequest=$smsVerificationCodeRequest, showSpinner=$showSpinner, dialogs=$dialogs, preExistingRegistrationData=${preExistingRegistrationData?.let { "present" }}, restoredSvrCredentials=${restoredSvrCredentials.size} items, pendingRestoreOption=$pendingRestoreOption, initialized=$initialized, isNumberPossible=$isNumberPossible, isNumberInvalid=$isNumberInvalid,  isLinkAndSyncAvailable=$isLinkAndSyncAvailable, isPhoneNumberlessRegistrationAvailable=$isPhoneNumberlessRegistrationAvailable)"
+  override fun toString(): String = "PhoneNumberEntryState(regionCode=$regionCode, countryCode=$countryCode, countryName=$countryName, countryEmoji=$countryEmoji, nationalNumber=${nationalNumber.censor()}, formattedNumber=${formattedNumber.censor()}, accountId=${accountId?.censor()}, accountIdError=$accountIdError, sessionE164=$sessionE164, sessionMetadata=$sessionMetadata, smsVerificationCodeRequest=$smsVerificationCodeRequest, showSpinner=$showSpinner, dialogs=$dialogs, preExistingRegistrationData=${preExistingRegistrationData?.let { "present" }}, restoredSvrCredentials=${restoredSvrCredentials.size} items, pendingRestoreOption=$pendingRestoreOption, initialized=$initialized, isNumberPossible=$isNumberPossible, isNumberInvalid=$isNumberInvalid, isRegionUnavailable=$isRegionUnavailable,  isLinkAndSyncAvailable=$isLinkAndSyncAvailable, isPhoneNumberlessRegistrationAvailable=$isPhoneNumberlessRegistrationAvailable)"
 
   data class Dialogs(
     /** Asks the user to confirm the number they entered before submitting it. */
