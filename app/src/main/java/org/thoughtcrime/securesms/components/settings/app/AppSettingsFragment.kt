@@ -58,6 +58,7 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.horizontalGutters
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.util.Util
+import org.signal.core.util.concurrent.SignalExecutors
 import org.signal.emoji.Emojifier
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.avatar.AvatarImage
@@ -74,6 +75,7 @@ import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRout
 import org.thoughtcrime.securesms.components.settings.app.subscription.BadgeImageMedium
 import org.thoughtcrime.securesms.components.settings.app.subscription.InAppPaymentsRepository
 import org.thoughtcrime.securesms.components.settings.app.subscription.completed.InAppPaymentsBottomSheetDelegate
+import org.thoughtcrime.securesms.conversationlist.TellomiSavedMessages
 import org.thoughtcrime.securesms.database.model.InAppPaymentSubscriberRecord
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.profiles.ProfileName
@@ -294,6 +296,19 @@ private fun AppSettingsContent(
           }
 
           BackupFailureState.NONE -> Unit
+        }
+
+        // Tellomi：设置页的「我的收藏」入口，删掉之后从这里回来（#1174）
+        item {
+          val context = LocalContext.current
+          Rows.TextRow(
+            text = stringResource(R.string.note_to_self),
+            icon = painterResource(R.drawable.tellomi_symbol_bookmark_24),
+            onClick = {
+              SignalExecutors.BOUNDED.execute { TellomiSavedMessages.list() }
+              CommunicationActions.startConversation(context, Recipient.self(), null)
+            }
+          )
         }
 
         item {

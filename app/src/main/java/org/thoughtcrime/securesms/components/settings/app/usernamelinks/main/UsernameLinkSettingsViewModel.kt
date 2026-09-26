@@ -34,6 +34,7 @@ import io.reactivex.rxjava3.kotlin.plusAssign
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.settings.app.usernamelinks.QrCodeData
@@ -334,7 +335,8 @@ class UsernameLinkSettingsViewModel : ViewModel() {
     }
 
     val usernameMaxWidth = qrBorderWidth - borderSizeX * 2f
-    val usernameLayout = StaticLayout(state.username, usernamePaint, usernameMaxWidth.toInt(), Layout.Alignment.ALIGN_CENTER, 1f, 0f, true)
+    // Tellomi（#1106 第三刀，ADR-0066 §九）：保存 / 分享出去的二维码图上的用户名，`.01` 结尾的去掉后缀，别的后缀完整显示
+    val usernameLayout = StaticLayout(TellomiUsernames.toDisplayUsername(state.username), usernamePaint, usernameMaxWidth.toInt(), Layout.Alignment.ALIGN_CENTER, 1f, 0f, true)
     val usernameVerticalOffset = when (usernameLayout.lineCount) {
       1 -> 0f
       2 -> usernameTextSize / 2f

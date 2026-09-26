@@ -136,13 +136,13 @@
 
     <!-- RestoreWelcomeBottomSheet -->
     <!-- Row title for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我可以用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我有旧手机</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_scan_qr">从您当前的 Tellomi 账户扫描二维码以快速开始操作</string>
     <!-- Row title for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我无法用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我没有旧手机</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">您可以在同一个设备上重新安装 Tellomi</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">或者你是在同一台设备上重新安装 Tellomi</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -579,6 +579,23 @@
     <string name="CreateProfileScreen__next">下一步</string>
     <!-- Content description for the avatar selection control. -->
     <string name="CreateProfileScreen__set_avatar_description">设置头像</string>
+    <!-- Tellomi（#1215） -->
+    <string name="TellomiRegistration__phone_number_not_shown">你的手机号默认不对任何人显示。</string>
+    <!-- Tellomi（#1215 第二刀） -->
+    <string name="TellomiRegistration__username_optional">用户名（选填）</string>
+    <string name="TellomiRegistration__username_your_link">你的链接：%1$s</string>
+    <string name="TellomiRegistration__username_checking">正在检查…</string>
+    <string name="TellomiRegistration__username_not_available">这个用户名不可用</string>
+    <string name="TellomiRegistration__username_too_short">至少 3 个字符</string>
+    <string name="TellomiRegistration__username_too_long">最多 20 个字符</string>
+    <string name="TellomiRegistration__username_invalid_characters">只能用字母、数字和下划线</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">需要以字母开头</string>
+    <string name="TellomiRegistration__username_check_failed">暂时查不到，稍后再试</string>
+    <string name="TellomiRegistration__username_too_many_attempts">尝试次数过多，请稍后再试</string>
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="other">%d 天后才能设置用户名</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">可以试试：</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -763,4 +780,14 @@
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">输入您的身份验证器应用生成的一次性验证码。</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">取消</string>
+
+    <!-- Tellomi（#1210） -->
+    <string name="TellomiRegistration__region_not_supported">暂未开放该地区的手机号注册，目前只支持中国大陆（+86）手机号。</string>
+    <string name="TellomiRegistration__you_will_receive_a_verification_code">我们会发一条短信验证码，确认这个号码是你的。</string>
+    <string name="TellomiRegistration__a_verification_code_will_be_sent">我们会向这个号码发一条短信验证码，确认它是你的。</string>
+    <string name="TellomiRegistration__captcha_retry">重试</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：注册资料页只剩一个框、填全名。旧键 TellomiRegistration__first_name 暂留在下一行：
+         它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
+    <string name="TellomiRegistration__name">名字</string>
+    <string name="TellomiRegistration__first_name">名字</string>
 </resources>
