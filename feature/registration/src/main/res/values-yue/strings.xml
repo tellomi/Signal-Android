@@ -713,6 +713,7 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">用戶名稱只可以用英文字母、數字同底線符號</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">用戶名稱冇得用數目字開頭</string>
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">用戶名稱一定要用字母開頭</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">呢個用戶名稱唔用得。請你再揀過第二個名。</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->

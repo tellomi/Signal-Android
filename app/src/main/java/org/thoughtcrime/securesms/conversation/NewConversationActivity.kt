@@ -23,8 +23,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -73,6 +76,17 @@ class NewConversationActivity : PassphraseRequiredActivity() {
         putExtra(Intent.EXTRA_TEXT, draftMessage)
       }
     }
+
+    internal const val EXTRA_TELLOMI_FIND_BY_USERNAME = "tellomi.find_by_username"
+
+    /**
+     * Tellomi（tellomi/tellomi#1218 F-02）：首屏「搜索用户名」卡直接进按用户名找人；找到了照常打开会话，
+     * 没找到返回的是这一页（第一行就是「按用户名查找」）。
+     */
+    @JvmStatic
+    fun createFindByUsernameIntent(context: Context): Intent {
+      return createIntent(context).putExtra(EXTRA_TELLOMI_FIND_BY_USERNAME, true)
+    }
   }
 
   override fun onCreate(savedInstanceState: Bundle?, ready: Boolean) {
@@ -116,6 +130,15 @@ private fun NewConversationScreen(
       }
     }
   )
+
+  // Tellomi（tellomi/tellomi#1218 F-02）：从「搜索用户名」卡进来的，只自动弹一次（转屏重建不再弹）
+  var tellomiFindByUsernameLaunched by rememberSaveable { mutableStateOf(false) }
+  LaunchedEffect(Unit) {
+    if (!tellomiFindByUsernameLaunched && activityIntent.getBooleanExtra(NewConversationActivity.EXTRA_TELLOMI_FIND_BY_USERNAME, false)) {
+      tellomiFindByUsernameLaunched = true
+      findByLauncher.launch(FindByMode.USERNAME)
+    }
+  }
 
   val coroutineScope = rememberCoroutineScope()
   val callbacks = remember {
