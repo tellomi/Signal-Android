@@ -44,6 +44,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">選取國家或地區</string>
     <string name="RegistrationActivity_phone_number_description">電話號碼</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">清除號碼</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">帳戶 ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -581,6 +583,21 @@
     <string name="CreateProfileScreen__set_avatar_description">設定頭像</string>
     <!-- Tellomi（#1215） -->
     <string name="TellomiRegistration__phone_number_not_shown">你的電話號碼預設不會向任何人顯示。</string>
+    <!-- Tellomi（#1215 第二刀） -->
+    <string name="TellomiRegistration__username_optional">用戶名稱（選填）</string>
+    <string name="TellomiRegistration__username_your_link">你的連結：%1$s</string>
+    <string name="TellomiRegistration__username_checking">正在檢查…</string>
+    <string name="TellomiRegistration__username_not_available">這個用戶名稱無法使用</string>
+    <string name="TellomiRegistration__username_too_short">至少 3 個字元</string>
+    <string name="TellomiRegistration__username_too_long">最多 20 個字元</string>
+    <string name="TellomiRegistration__username_invalid_characters">只能使用字母、數字和底線</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">需要以字母開頭</string>
+    <string name="TellomiRegistration__username_check_failed">暫時無法檢查，請稍後再試</string>
+    <string name="TellomiRegistration__username_too_many_attempts">嘗試次數過多，請稍後再試</string>
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="other">%d 天後才能設定用戶名稱</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">可以試試：</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -715,6 +732,7 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">用戶名稱僅可包含英文字母、數字以及底線</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">用戶名稱不得以數字開頭</string>
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">用戶名稱必須以字母開頭</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">此用戶名稱無法使用。請嘗試其他名稱。</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
@@ -775,4 +793,32 @@
          它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
     <string name="TellomiRegistration__name">名字</string>
     <string name="TellomiRegistration__first_name">名字</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">驗證碼不對，請核對簡訊後重新輸入</string>
+    <string name="TellomiRegistration__didnt_get_code">收不到驗證碼？</string>
+    <string name="TellomiRegistration__help_check_number">確認號碼沒有填錯：%1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">簡訊可能被攔截了：打開手機內建的安全中心或手機管家 App，看看「騷擾攔截」或垃圾訊息裡有沒有。</string>
+    <string name="TellomiRegistration__help_wait_with_quota">簡訊偶爾會晚一點才到，請先等一等。每次註冊最多只能傳送 %1$d 則驗證碼，請不要頻繁重新傳送。</string>
+    <string name="TellomiRegistration__help_voice">也可以改成打電話念出驗證碼。</string>
+    <string name="TellomiRegistration__help_support">還是收不到？寄電子郵件到 support@tellomi.app，我們幫你看看。</string>
+    <string name="TellomiRegistration__help_change_number">更改號碼</string>
+    <string name="TellomiRegistration__help_contact_support">聯絡客服</string>
+    <string name="TellomiRegistration__help_more">更多幫助</string>
+    <string name="TellomiRegistration__session_expired">這次驗證已經過期，請確認號碼後重新取得驗證碼。</string>
+    <string name="TellomiRegistration__code_no_longer_valid">這個驗證碼已經不能使用：可能已過期，或者輸錯太多次。請重新取得驗證碼。</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <string name="TellomiRegistration__new_phone">換了新手機？</string>
+    <string name="TellomiRegistration__old_phone_here">舊 Android 手機還在身邊</string>
+    <string name="TellomiRegistration__old_phone_here_description">用舊 Android 手機上的 Tellomi 掃描一個二維碼，把帳戶和訊息直接傳過來</string>
+    <string name="TellomiRegistration__old_phone_not_here">舊手機不在身邊，或者是 iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在這支手機上重新安裝的話，可以用裝置上的備份還原；否則直接註冊，只是以前的訊息不會跟過來，舊手機上的 Tellomi 也會登出</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">無法從 iPhone 傳過來</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">iPhone 上的訊息目前無法傳到 Android 手機。直接註冊就可以，只是以前的訊息不會跟過來，舊手機上的 Tellomi 也會登出。</string>
+    <string name="TellomiRegistration__register_directly">直接註冊</string>
+    <string name="TellomiRegistration__skip_restore_dialog_title">不還原訊息？</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">以前的訊息不會出現在這支手機上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">舊手機上的 Tellomi 會登出，以前的訊息也不會出現在這支手機上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">繼續</string>
 </resources>

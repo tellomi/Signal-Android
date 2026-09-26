@@ -27,6 +27,7 @@ import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceTransferActi
 import org.thoughtcrime.securesms.keyvalue.RestoreDecisionStateUtil;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity;
+import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrationActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrations;
 import org.thoughtcrime.securesms.pin.PinRestoreActivity;
@@ -36,6 +37,7 @@ import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.registration.ui.RegistrationActivity;
 import org.thoughtcrime.securesms.restore.RestoreActivity;
 import org.thoughtcrime.securesms.service.KeyCachingService;
+import org.thoughtcrime.securesms.updaterequired.UpdateRequired;
 import org.thoughtcrime.securesms.util.AppStartup;
 import org.thoughtcrime.securesms.util.Environment;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
@@ -63,6 +65,7 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   private static final int STATE_RESUME_LINKING_REG  = 12;
   private static final int STATE_CLOCK_SKEW          = 13;
   private static final int STATE_RESUME_REGISTRATION = 14;
+  private static final int STATE_UPDATE_REQUIRED     = 15;
 
   private SignalServiceNetworkAccess networkAccess;
   private BroadcastReceiver          clearKeyReceiver;
@@ -90,6 +93,18 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
 
   protected void onPreCreate() {}
   protected void onCreate(Bundle savedInstanceState, boolean ready) {}
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    // Tellomi（tellomi/tellomi#1138）：页面开着的时候服务端才回 499，路由（只在创建时跑）拦不到；
+    // 回到前台就盖上阻断页。阻断页是 singleTask，重复启动只会带到前台。
+    // 只在服务端判定、且用户没选「只看聊天记录」时盖（owner 2026-09-24 规则 1、2）。
+    if (UpdateRequired.shouldBlock()) {
+      startActivity(ClientDeprecatedActivity.createIntent(this));
+    }
+  }
 
   @Override
   protected void onDestroy() {
@@ -164,6 +179,7 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
       case STATE_RESUME_LINKING_REG:  return getResumeLinkedRegistrationIntent();
       case STATE_CLOCK_SKEW:          return getClockSkewIntent();
       case STATE_RESUME_REGISTRATION: return getResumeRegistrationIntent();
+      case STATE_UPDATE_REQUIRED:     return ClientDeprecatedActivity.createIntent(this);
       default:                        return null;
     }
   }
@@ -171,6 +187,10 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   private int getApplicationState(boolean locked) {
     if (!MasterSecretUtil.isPassphraseInitialized(this)) {
       return STATE_CREATE_PASSPHRASE;
+    } else if (UpdateRequired.shouldBlock()) {
+      // Tellomi（tellomi/tellomi#1138）：必须更新盖在应用锁之上（需求 3.4），所以排在 locked 前面。
+      // 阻断页不继承本类，不会被自己路由回来。从阻断页选只读之后 shouldBlock 为假，这里就照常走到 locked（先过锁）。
+      return STATE_UPDATE_REQUIRED;
     } else if (locked) {
       return STATE_PROMPT_PASSPHRASE;
     } else if (ApplicationMigrations.isUpdate(this) && ApplicationMigrations.isUiBlockingMigrationRunning()) {
@@ -296,7 +316,9 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
     // Tellomi（tellomi/tellomi#1215，taishi 审查包 4）：新注册要进新注册模块的资料页（一个「名字」+ 选填用户名），
     // 不是 app 模块老的两格 CreateProfileActivity。上游只写了 RegistrationRoute.Profile，没有任何代码导航过去；
     // 新号注册完、资料名为空，走的就是这里（userMustSetProfileName）。填完再回到原本要去的页面（getIntent()）。
-    if (Environment.USE_NEW_REGISTRATION) {
+    // 未注册时退回老页（taishi 中转包 7）：资料名还空着时账号可能被一致性检查标成未注册（AccountConsistencyWorkerJob.markUnregistered），
+    // 新页的 setProfile 会先判注册状态、只回 NotRegistered，每次打开 App 都卡在这一页；老页不判，存完进主界面，主界面会提示重新注册。
+    if (Environment.USE_NEW_REGISTRATION && SignalStore.account().isRegistered()) {
       return org.signal.registration.RegistrationActivity.createIntent(this, getIntent(), RegistrationRoute.Profile.INSTANCE);
     }
     Intent intent = CreateProfileActivity.getIntentForUserProfile(this);

@@ -53,7 +53,7 @@ class CreateProfileViewModelTellomiTest {
       storageController = storage,
       isLinkAndSyncAvailable = false
     )
-    return CreateProfileViewModel(repository) { }
+    return CreateProfileViewModel(repository, parentEventEmitter = { })
   }
 
   @Test

@@ -46,6 +46,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">Select a country</string>
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">Clear phone number</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">Account ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -585,6 +587,24 @@
     <string name="CreateProfileScreen__set_avatar_description">Set avatar</string>
     <!-- Tellomi（tellomi/tellomi#1215）：替掉「谁可以通过手机号找到我」那一行。phone_number_sharing 默认就是不分享（PhoneNumberPrivacyValues: DEFAULT = 不显示） -->
     <string name="TellomiRegistration__phone_number_not_shown">Your phone number isn\'t shown to anyone by default.</string>
+    <!-- Tellomi（tellomi/tellomi#1215 第二刀）：注册资料页的选填用户名。规则 TR-ID-01：字母开头、3–20 位、a–z 0–9 _；不带「.数字」（ADR-0066 判别位固定 01） -->
+    <string name="TellomiRegistration__username_optional">Username (optional)</string>
+    <string name="TellomiRegistration__username_your_link">Your link: %1$s</string>
+    <string name="TellomiRegistration__username_checking">Checking…</string>
+    <string name="TellomiRegistration__username_not_available">This username isn\'t available</string>
+    <string name="TellomiRegistration__username_too_short">Use at least 3 characters</string>
+    <string name="TellomiRegistration__username_too_long">Use 20 characters or fewer</string>
+    <string name="TellomiRegistration__username_invalid_characters">Use only letters, numbers and underscores</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">Start with a letter</string>
+    <string name="TellomiRegistration__username_check_failed">Couldn\'t check this username. Try again in a moment.</string>
+    <!-- Tellomi（#1215 第二刀，taishi 审查包 4）：保留用户名被限流、Retry-After 在一小时以内时，用户名框下的说明（只有一行） -->
+    <string name="TellomiRegistration__username_too_many_attempts">Too many attempts. Try again later.</string>
+    <!-- Tellomi（#1215 第二刀，taishi 审查包 4）：回收号码的新主人会继承上一个人的 30 天改名冷却（ADR-0066 §6.2），这期间设不了用户名。%d 为还要等的天数（向上取整，至少 1）。说明行只有一行，要短 -->
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="one">You can set a username in %d day</item>
+        <item quantity="other">You can set a username in %d days</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">Try:</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -719,6 +739,8 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">Usernames can only contain letters, numbers, and underscores</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">Usernames cannot begin with a number</string>
+    <!-- Tellomi（ADR-0066 §六）：用户名必须字母开头。libsignal 放行 `_` 开头，客户端收紧 -->
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">Usernames must begin with a letter</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">This username is not available. Please try another.</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
@@ -780,4 +802,36 @@
          它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
     <string name="TellomiRegistration__name">Name</string>
     <string name="TellomiRegistration__first_name">First name</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">Incorrect code. Check the text message and try again.</string>
+    <string name="TellomiRegistration__didnt_get_code">Didn\'t get the code?</string>
+    <string name="TellomiRegistration__help_check_number">Check that the number is right: %1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">The text may have been filtered. Open your phone\'s built-in security or phone manager app and look in its blocked or spam messages.</string>
+    <string name="TellomiRegistration__help_wait_with_quota">Texts sometimes arrive a little late, so give it a moment. Each registration can send at most %1$d codes, so please don\'t resend too often.</string>
+    <string name="TellomiRegistration__help_voice">You can also get the code by phone call instead of a text.</string>
+    <string name="TellomiRegistration__help_support">Still nothing? Email support@tellomi.app and we\'ll take a look.</string>
+    <string name="TellomiRegistration__help_change_number">Change number</string>
+    <string name="TellomiRegistration__help_contact_support">Contact support</string>
+    <string name="TellomiRegistration__help_more">More help</string>
+    <string name="TellomiRegistration__session_expired">This verification has expired. Please check your number and get a new code.</string>
+    <string name="TellomiRegistration__code_no_longer_valid">This code can no longer be used. It may have expired, or been entered wrong too many times. Please get a new code.</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <!-- One-line text link under the Continue button on the welcome screen, for people moving to a new phone (replaces the large 'Restore or transfer' button) -->
+    <string name="TellomiRegistration__new_phone">New phone?</string>
+    <!-- Welcome screen bottom sheet: title of the choice for people whose old Android phone is at hand -->
+    <string name="TellomiRegistration__old_phone_here">My old Android phone is here</string>
+    <string name="TellomiRegistration__old_phone_here_description">Scan a QR code with Tellomi on your old Android phone to move your account and messages over directly</string>
+    <string name="TellomiRegistration__old_phone_not_here">My old phone isn\'t here, or it\'s an iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">Reinstalling on this phone? You can restore an on-device backup. Otherwise just register. Your earlier messages won\'t come with you, and Tellomi on your old phone will be logged out.</string>
+    <!-- Tellomi: shown after scanning the QR code with an iPhone when there is no backup service; messages can't be moved from an iPhone to an Android phone -->
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">Messages can\'t be moved from an iPhone</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">Messages on an iPhone can\'t be transferred to an Android phone yet. You can just register: your earlier messages won\'t come with you, and Tellomi on your old phone will be logged out.</string>
+    <string name="TellomiRegistration__register_directly">Register without transferring</string>
+    <!-- Confirmation dialog before continuing registration without restoring messages (there is no backup service) -->
+    <string name="TellomiRegistration__skip_restore_dialog_title">Continue without restoring?</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">Your earlier messages won\'t appear on this phone.</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">Tellomi on your old phone will be logged out, and your earlier messages won\'t appear on this phone.</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">Continue</string>
 </resources>
