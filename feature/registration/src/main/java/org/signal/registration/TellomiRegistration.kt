@@ -1,0 +1,84 @@
+/*
+ * Copyright 2026 重庆半格智能科技有限公司
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+package org.signal.registration
+
+import android.icu.text.MeasureFormat
+import android.icu.util.Measure
+import android.icu.util.MeasureUnit
+import android.icu.util.ULocale
+import android.os.Build
+import androidx.annotation.VisibleForTesting
+import java.util.Locale
+import kotlin.time.Duration
+
+/**
+ * Tellomi（tellomi/tellomi#1210）：注册流程里和香港服务端能力对齐的常量，以及给人看的限流时长。
+ */
+object TellomiRegistration {
+
+  /**
+   * 香港服务端没有语音验证码通道（`deploy/hk/enable-aliyun-sms.sh`：`voice: available-only-in-regions: [ZZ]`），
+   * 但会话里的 `nextCall` 照样给值，上游于是一直显示「给我打电话」，点了只会报「我们无法致电…」。
+   * 接上语音通道再改成 true；服务端哪天对不可用的会话返回 `nextCall = null`，界面也同样不显示。
+   */
+  const val VOICE_VERIFICATION_AVAILABLE = false
+
+  /**
+   * 能收短信验证码的国家码。香港的 registration-service 只给中国大陆配了短信发送器（`sms: [CN]`）。
+   *
+   * 别的地区请求验证码，服务端回 440 `providerUnavailable` 且 `permanentFailure = false`
+   * （registration-service 的 NO_SENDER_AVAILABLE / mayRetry=false 被 Signal-Server 原样当成 permanent 传），
+   * 光看响应分不出「地区没开放」和「短信通道临时故障」，所以要结合号码的国家码判断；与 iOS
+   * `TSConstants.smsVerificationCallingCodes`（tellomi/Signal-iOS#12）同一张表。服务端的根治见 tellomi/tellomi#1230。
+   */
+  @JvmField
+  val SMS_VERIFICATION_CALLING_CODES: Set<String> = setOf("86")
+
+  /**
+   * 没有备份服务（没有消息备份的服务端与 CDN），「从 Tellomi 备份 · 您的免费或付费备份套餐」点进去是死路，
+   * 恢复方式选择页不列这一项。与 App 侧 `Environment.Backups` 一致；接上备份服务再改成 true。
+   */
+  const val REMOTE_BACKUPS_AVAILABLE = false
+
+  /**
+   * 只给测试用：上游「远端备份恢复」的端到端用例要走「从 Tellomi 备份」这一项，打开它只为让那些用例照样能跑
+   * （那条流程的代码还在，只是界面上没有入口）。生产代码不许写它。
+   */
+  @VisibleForTesting
+  @Volatile
+  var remoteBackupsAvailableForTesting: Boolean? = null
+
+  /** 恢复方式选择页列不列「从 Tellomi 备份」。 */
+  val isRemoteBackupAvailable: Boolean
+    get() = remoteBackupsAvailableForTesting ?: REMOTE_BACKUPS_AVAILABLE
+
+  /**
+   * 限流等待时长给人看的样子，按界面语言用系统 ICU 排版：中文「1分钟30秒」、英文「1 minute, 30 seconds」。
+   * 上游把 Kotlin 的 `Duration.toString()`（「1m 30s」）原样填进文案。
+   *
+   * 有小时就不再报秒；不足 1 秒按 1 秒算。Android 6（API 23）没有 `android.icu`，退回「1:30」。
+   */
+  @JvmStatic
+  fun retryAfterText(duration: Duration, locale: Locale): String {
+    val totalSeconds = duration.inWholeSeconds.coerceAtLeast(1)
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
+
+    if (Build.VERSION.SDK_INT < 24) {
+      return if (hours > 0) String.format(locale, "%d:%02d:%02d", hours, minutes, seconds) else String.format(locale, "%d:%02d", minutes, seconds)
+    }
+
+    val measures = buildList {
+      if (hours > 0) add(Measure(hours, MeasureUnit.HOUR))
+      if (minutes > 0) add(Measure(minutes, MeasureUnit.MINUTE))
+      if (seconds > 0 && hours == 0L) add(Measure(seconds, MeasureUnit.SECOND))
+    }
+    // 中文用 SHORT：WIDE 的秒是「秒钟」，读出来是「1分钟30秒钟」；其余语言用 WIDE：英文 SHORT 是「1 min, 30 sec」
+    val width = if (locale.language == Locale.CHINESE.language) MeasureFormat.FormatWidth.SHORT else MeasureFormat.FormatWidth.WIDE
+    return MeasureFormat.getInstance(ULocale.forLocale(locale), width).formatMeasures(*measures.toTypedArray())
+  }
+}

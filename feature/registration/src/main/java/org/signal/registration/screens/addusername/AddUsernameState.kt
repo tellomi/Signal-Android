@@ -45,6 +45,9 @@ data class AddUsernameState(
     INVALID_CHARACTERS,
     CANNOT_START_WITH_DIGIT,
 
+    /** Tellomi（ADR-0066）：`_` 开头——Tellomi 的规则是字母开头。 */
+    CANNOT_START_WITH_UNDERSCORE,
+
     /** The nickname is valid, but no username could be reserved for it. */
     NOT_AVAILABLE,
 

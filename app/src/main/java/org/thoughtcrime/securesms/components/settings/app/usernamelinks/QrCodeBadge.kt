@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
+import org.signal.core.util.TellomiUsernames
 import org.thoughtcrime.securesms.R
 
 /**
@@ -57,6 +58,8 @@ fun QrCodeBadge(
   val foregroundColor by animateColorAsState(targetValue = colorScheme.foregroundColor, label = "foreground")
   val elevation by animateFloatAsState(targetValue = if (colorScheme == UsernameQrCodeColorScheme.White) 10f else 0f, label = "elevation")
   val textColor by animateColorAsState(targetValue = colorScheme.textColor, label = "textColor")
+  // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示；点一下复制的也是这个样子（tell.cc/kaixin、按 kaixin 搜都认）
+  val shownUsername = TellomiUsernames.toDisplayUsername(username)
 
   Surface(
     modifier = modifier,
@@ -132,7 +135,7 @@ fun QrCodeBadge(
           .clip(RoundedCornerShape(8.dp))
           .clickable(
             enabled = usernameCopyable,
-            onClick = { onClick(username) }
+            onClick = { onClick(shownUsername) }
           )
           .padding(8.dp)
       ) {
@@ -149,7 +152,7 @@ fun QrCodeBadge(
         }
 
         Text(
-          text = username,
+          text = shownUsername,
           color = textColor,
           fontSize = 20.sp,
           lineHeight = 26.sp,
