@@ -1172,6 +1172,9 @@
     <string name="AddLinkDeviceFragment__retry">重試</string>
     <!-- Text shown in a dialog when the device being linked is too out-of-date to be linked to this account -->
     <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">嘗試連結的裝置已過時。請升級並重試。</string>
+    <string name="AddLinkDeviceFragment__tellomi_code_expired_or_foreign">這個二維碼已過期，或者不是 Tellomi 的二維碼。請掃描電腦上 Tellomi 目前顯示的二維碼。</string>
+    <string name="AddLinkDeviceFragment__tellomi_network_error">無法連線到伺服器，或者伺服器正忙。請檢查網絡連線，稍後再試。</string>
+    <string name="AddLinkDeviceFragment__tellomi_scan_again">重新掃描</string>
 
     <!-- LinkDeviceSyncBottomSheet -->
     <!-- Option in bottom sheet to transfer message history -->
