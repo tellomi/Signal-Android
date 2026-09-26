@@ -40,6 +40,7 @@ import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.Util
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.qr.QrCrosshair
@@ -91,7 +92,7 @@ fun UsernameQrScanScreen(
 
     is QrScanResult.NotFound -> {
       if (qrScanResult.username != null) {
-        QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_not_found, qrScanResult.username), onDismiss = onQrResultHandled)
+        QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_not_found, TellomiUsernames.toDisplayUsername(qrScanResult.username)), onDismiss = onQrResultHandled) // Tellomi（#1106 第三刀）
       } else {
         QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_not_found_no_username), onDismiss = onQrResultHandled)
       }

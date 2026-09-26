@@ -221,7 +221,8 @@ class FindByViewModelTest {
   @Test
   fun `Given username not found, when I click next, then I expect NotFound`() = runTest {
     mockkStatic(UsernameRepository::class)
-    every { UsernameRepository.fetchAciForUsername("john") } returns UsernameRepository.UsernameAciFetchResult.NotFound
+    // Tellomi（tellomi/tellomi#1106）：不带「.数字」的输入按 `.01` 查
+    every { UsernameRepository.fetchAciForUsername("john.01") } returns UsernameRepository.UsernameAciFetchResult.NotFound
 
     viewModel = FindByViewModel(FindByMode.USERNAME)
     viewModel.onUserEntryChanged("@john")
@@ -236,7 +237,7 @@ class FindByViewModelTest {
   @Test
   fun `Given username fetch network error, when I click next, then I expect NetworkError`() = runTest {
     mockkStatic(UsernameRepository::class)
-    every { UsernameRepository.fetchAciForUsername("jane") } returns UsernameRepository.UsernameAciFetchResult.NetworkError
+    every { UsernameRepository.fetchAciForUsername("jane.01") } returns UsernameRepository.UsernameAciFetchResult.NetworkError // Tellomi（#1106）
 
     viewModel = FindByViewModel(FindByMode.USERNAME)
     viewModel.onUserEntryChanged("@jane")
@@ -256,17 +257,45 @@ class FindByViewModelTest {
 
     mockkStatic(UsernameRepository::class).apply {
       every {
-        UsernameRepository.fetchAciForUsername("doe") // stripped @
+        UsernameRepository.fetchAciForUsername("doe.01") // stripped @；Tellomi（#1106）补 `.01`
       } returns UsernameRepository.UsernameAciFetchResult.Success(aci)
     }
 
     mockkObject(Recipient)
     val mockRecipient = mockk<Recipient>()
     every { mockRecipient.id } returns recipientId
-    every { Recipient.externalUsername(aci, username) } returns mockRecipient
+    // Tellomi（#1106）：存进 Recipient 的是补全后的全名，显示时再去掉 `.01`
+    every { Recipient.externalUsername(aci, "doe.01") } returns mockRecipient
 
     viewModel = FindByViewModel(FindByMode.USERNAME)
     viewModel.onUserEntryChanged(username)
+
+    val result = viewModel.onNextClicked()
+
+    assertTrue(result is FindByResult.Success)
+    assertEquals(recipientId, (result as FindByResult.Success).recipientId)
+
+    unmockkStatic(UsernameRepository::class)
+    unmockkObject(Recipient)
+  }
+
+  /** Tellomi（tellomi/tellomi#1106，ADR-0066）：已经带「.数字」的旧形状原样查，`kaixin.57` 不能被补成 `kaixin.57.01` 或改成 `.01`。 */
+  @Test
+  fun `Given username with discriminator, when I click next, then I expect it looked up as entered`() = runTest {
+    val aci: ServiceId.ACI = mockk(relaxed = true)
+    val recipientId = RecipientId.from(789L)
+
+    mockkStatic(UsernameRepository::class).apply {
+      every { UsernameRepository.fetchAciForUsername("kaixin.57") } returns UsernameRepository.UsernameAciFetchResult.Success(aci)
+    }
+
+    mockkObject(Recipient)
+    val mockRecipient = mockk<Recipient>()
+    every { mockRecipient.id } returns recipientId
+    every { Recipient.externalUsername(aci, "kaixin.57") } returns mockRecipient
+
+    viewModel = FindByViewModel(FindByMode.USERNAME)
+    viewModel.onUserEntryChanged("@kaixin.57")
 
     val result = viewModel.onNextClicked()
 
