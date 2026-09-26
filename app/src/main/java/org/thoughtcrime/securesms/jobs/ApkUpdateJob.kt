@@ -139,7 +139,7 @@ class ApkUpdateJob private constructor(
     if (updateDescriptor.versionCode <= 0 || updateDescriptor.versionName == null || updateDescriptor.url == null || updateDescriptor.digest == null) {
       Log.w(TAG, "Invalid update descriptor! $updateDescriptor")
       return
-    } else if (!isTrustedDescriptor(updateDescriptor.versionName, updateDescriptor.url, BuildConfig.APK_UPDATE_MANIFEST_URL)) {
+    } else if (!isTrustedDescriptor(updateDescriptor.versionName, updateDescriptor.url, manifestUrl)) {
       Log.w(TAG, "Update descriptor has an unexpected version name or download URL! $updateDescriptor")
       return
     } else {
