@@ -50,6 +50,11 @@ fun ArchiveRestoreSelectionScreen(
   onEvent: (ArchiveRestoreSelectionScreenEvents) -> Unit,
   modifier: Modifier = Modifier
 ) {
+  if (state.showsNoTransferFromIphone) {
+    TellomiNoTransferFromIphone(onEvent = onEvent, modifier = modifier)
+    return
+  }
+
   if (state.showSkipWarningDialog) {
     // Tellomi（tellomi/tellomi#1216）：上游这句「如果您现在跳过恢复，您以后将无法进行恢复。如果您在跳过恢复后重启备份…」
     // 讲的是备份服务，这套部署没有。换成说清真实的后果：以前的聊天记录不会出现在这台手机上。

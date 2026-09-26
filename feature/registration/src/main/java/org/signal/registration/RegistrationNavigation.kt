@@ -239,7 +239,12 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   data class ArchiveRestoreSelection(
     val restoreOptions: List<ArchiveRestoreOption>,
     val registeredState: RegisteredState,
-    @Serializable(with = AccountEntropyPoolSerializer::class) val aep: AccountEntropyPool? = null
+    @Serializable(with = AccountEntropyPoolSerializer::class) val aep: AccountEntropyPool? = null,
+    /**
+     * Tellomi（tellomi/tellomi#1216 跟进）：扫码扫到的旧手机是 iPhone，而且没有备份档位。
+     * 没有备份服务时这一页不列恢复方式，只说明传不过来（[org.signal.registration.screens.restoreselection.TellomiNoTransferFromIphone]）。
+     */
+    val oldPhoneIsIphone: Boolean = false
   ) : RegistrationRoute {
     companion object {
 
@@ -267,6 +272,11 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
           },
           registeredState = RegisteredState.NotRegistered
         )
+      }
+
+      /** Tellomi：见 [oldPhoneIsIphone]。有备份服务时和 [forManualRestore] 一样列恢复方式。 */
+      fun forOldIphoneWithoutBackup(): ArchiveRestoreSelection {
+        return forManualRestore().copy(oldPhoneIsIphone = true)
       }
 
       fun forPostRegisterWithPinUnknown(): ArchiveRestoreSelection {
@@ -961,6 +971,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
         restoreOptions = key.restoreOptions,
         registeredState = key.registeredState,
         knownAep = key.aep,
+        oldPhoneIsIphone = key.oldPhoneIsIphone,
         repository = registrationRepository,
         parentState = registrationViewModel.state,
         parentEventEmitter = registrationViewModel::onEvent
