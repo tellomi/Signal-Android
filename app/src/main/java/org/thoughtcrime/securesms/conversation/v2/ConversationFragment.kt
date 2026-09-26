@@ -239,6 +239,7 @@ import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectPart
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardBottomSheet
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardRepository
 import org.thoughtcrime.securesms.conversation.quotes.MessageQuotesBottomSheet
 import org.thoughtcrime.securesms.conversation.ui.edit.EditMessageHistoryDialog
 import org.thoughtcrime.securesms.conversation.ui.error.EnableCallNotificationSettingsDialog
@@ -3163,6 +3164,38 @@ class ConversationFragment :
     }
   }
 
+  /**
+   * Tellomi：长按「收藏」——不开转发面板，直接发到「我的收藏」，提示「已收藏」可点「查看」（#1174）。
+   * 内容和转发一样（MultiselectForwardFragmentArgs），只是收件人固定是自己。
+   */
+  private fun handleSaveToSavedMessages(messageParts: Set<MultiselectPart>) {
+    MultiselectForwardFragmentArgs.create(requireContext(), messageParts) { args ->
+      MultiselectForwardRepository.send(
+        additionalMessage = "",
+        multiShareArgs = args.multiShareArgs,
+        shareContacts = setOf(RecipientSearchKey(Recipient.self().id, false)),
+        resultHandlers = MultiselectForwardRepository.MultiselectForwardResultHandlers(
+          onAllMessageSentSuccessfully = { ThreadUtil.runOnMain { showSavedToSavedMessages() } },
+          onSomeMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) },
+          onAllMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) }
+        )
+      )
+    }
+  }
+
+  private fun showSavedToSavedMessages() {
+    // 发送是异步的，回来时页面可能已经进了返回栈（fragment 还在、view 没了），这时取 binding 会抛
+    if (!isAdded || view == null) {
+      return
+    }
+
+    Snackbar.make(binding.conversationItemRecycler, R.string.ConversationFragment__tellomi_saved_to_saved_messages, Snackbar.LENGTH_LONG)
+      .setAction(R.string.ConversationFragment__tellomi_view_saved_messages) {
+        CommunicationActions.startConversation(requireContext(), Recipient.self(), null)
+      }
+      .show()
+  }
+
   private fun handleSaveAttachment(record: MmsMessageRecord) {
     if (record.isViewOnce) {
       error("Cannot save a view-once message")
@@ -4654,6 +4687,7 @@ class ConversationFragment :
         ConversationReactionOverlay.Action.REPLY -> handleReplyToMessage(conversationMessage)
         ConversationReactionOverlay.Action.EDIT -> handleEditMessage(conversationMessage)
         ConversationReactionOverlay.Action.FORWARD -> handleForwardMessageParts(conversationMessage.multiselectCollection.toSet())
+        ConversationReactionOverlay.Action.TELLOMI_SAVE_TO_SAVED_MESSAGES -> handleSaveToSavedMessages(conversationMessage.multiselectCollection.toSet())
         ConversationReactionOverlay.Action.RESEND -> handleResend(conversationMessage)
         ConversationReactionOverlay.Action.DOWNLOAD -> handleSaveAttachment(conversationMessage.messageRecord as MmsMessageRecord)
         ConversationReactionOverlay.Action.COPY -> handleCopyMessage(conversationMessage.multiselectCollection.toSet())

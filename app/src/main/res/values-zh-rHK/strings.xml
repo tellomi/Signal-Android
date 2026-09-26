@@ -33,7 +33,7 @@
     <string name="delete">刪除</string>
     <string name="please_wait">請稍候…</string>
     <string name="save">儲存</string>
-    <string name="note_to_self">給自己的筆記</string>
+    <string name="note_to_self">我的收藏</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">天氣</string>
@@ -589,7 +589,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">您可以向左滑動任何訊息以快速回覆</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">閱後即焚媒體在發送後被刪除</string>
     <string name="ConversationFragment_you_already_viewed_this_message">你已看過此訊息</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">你可在此聊天中為自己新增筆記。若你的帳戶有任何已連結裝置，新的筆記將會進行同步處理。</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">把訊息轉寄到這裡，或直接傳給自己，隨時查看。若你的帳戶有已連結裝置，這裡的新訊息會同步過去。</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="other">%1$d 群組成員的名字相同。</item>
@@ -776,6 +776,12 @@
     <plurals name="ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations_linked_device_group">
         <item quantity="other">這些聊天內的全部訊息將自你所有裝置中刪除。你仍會是尚未退出的任何群組的成員。</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">刪除「我的收藏」？</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">「我的收藏」裡的內容會從這部裝置上刪除，無法復原。</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">「我的收藏」裡的內容會從這部裝置和已連結的裝置上刪除，無法復原。</string>
     <string name="ConversationListFragment_deleting">正在刪除</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="other">刪除已選取的聊天…</item>
@@ -4539,6 +4545,14 @@
   <!-- Removed by excludeNonTranslatables <string name="conversation_selection__menu_unstar" translatable="false">Unstar (Labs)</string> -->
     <!-- Button to forward a message to another person or group chat; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
     <string name="conversation_selection__menu_forward">轉發</string>
+    <!-- Tellomi（#1174）：长按菜单「收藏」，直接存进「我的收藏」 -->
+    <string name="conversation_selection__menu_tellomi_save">收藏</string>
+    <!-- Tellomi（#1174）：收藏成功的提示，后面跟「查看」按钮 -->
+    <string name="ConversationFragment__tellomi_saved_to_saved_messages">已收藏</string>
+    <!-- Tellomi（#1174）：收藏成功提示上的按钮，打开「我的收藏」 -->
+    <string name="ConversationFragment__tellomi_view_saved_messages">查看</string>
+    <!-- Tellomi（#1174）：收藏没发出去 -->
+    <string name="ConversationFragment__tellomi_couldnt_save">收藏失敗，請重試</string>
     <!-- Button to reply to a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="conversation_selection__menu_reply">回覆</string>
     <!-- Button to edit a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->

@@ -36,7 +36,7 @@
     <string name="delete">Delete</string>
     <string name="please_wait">Please wait…</string>
     <string name="save">Save</string>
-    <string name="note_to_self">Note to Self</string>
+    <string name="note_to_self">Saved Messages</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">Weather</string>
@@ -605,7 +605,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">You can swipe to the left on any message to quickly reply</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">View-once media is deleted after sending</string>
     <string name="ConversationFragment_you_already_viewed_this_message">You already viewed this message</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">You can add notes for yourself in this chat. If your account has any linked devices, new notes will be synced.</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">Forward messages here or send them to yourself to keep them handy. If your account has linked devices, new messages here are synced to them.</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="one">%1$d group member have the same name.</item>
@@ -799,6 +799,12 @@
         <item quantity="one">All messages in this chat will be deleted from all your devices. You will still be a member of this group.</item>
         <item quantity="other">All messages in these chats will be deleted from all your devices. You will still be a member of any groups you have not left yet.</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">Delete Saved Messages?</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">Everything in Saved Messages will be deleted from this device. This can\'t be undone.</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">Everything in Saved Messages will be deleted from this device and your linked devices. This can\'t be undone.</string>
     <string name="ConversationListFragment_deleting">Deleting</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="one">Deleting selected chat…</item>
@@ -4676,6 +4682,14 @@
     <string name="conversation_selection__menu_unstar" translatable="false">Unstar (Labs)</string>
     <!-- Button to forward a message to another person or group chat; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
     <string name="conversation_selection__menu_forward">Forward</string>
+    <!-- Tellomi（#1174）：长按菜单「收藏」，直接存进「我的收藏」 -->
+    <string name="conversation_selection__menu_tellomi_save">Save</string>
+    <!-- Tellomi（#1174）：收藏成功的提示，后面跟「查看」按钮 -->
+    <string name="ConversationFragment__tellomi_saved_to_saved_messages">Saved to Saved Messages</string>
+    <!-- Tellomi（#1174）：收藏成功提示上的按钮，打开「我的收藏」 -->
+    <string name="ConversationFragment__tellomi_view_saved_messages">View</string>
+    <!-- Tellomi（#1174）：收藏没发出去 -->
+    <string name="ConversationFragment__tellomi_couldnt_save">Couldn\'t save. Try again.</string>
     <!-- Button to reply to a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="conversation_selection__menu_reply">Reply</string>
     <!-- Button to edit a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
