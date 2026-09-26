@@ -3,6 +3,7 @@ package org.thoughtcrime.securesms.megaphone;
 import androidx.annotation.VisibleForTesting;
 
 import org.signal.core.util.logging.Log;
+import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 
 import java.util.Locale;
@@ -41,6 +42,11 @@ class PinsForAllSchedule implements MegaphoneSchedule {
   }
 
   private static boolean isEnabled() {
+    // Tellomi：没有 SVR 时不提示创建 PIN——创建会去连 SVR（tellomi/tellomi#1234）。
+    if (!BuildConfig.SVR_ENCLAVE_AVAILABLE) {
+      return false;
+    }
+
     if (SignalStore.svr().hasOptedOut()) {
       return false;
     }
