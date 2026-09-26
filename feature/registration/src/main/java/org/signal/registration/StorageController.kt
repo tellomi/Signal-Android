@@ -193,12 +193,16 @@ interface StorageController {
  *
  * [discoverableByPhoneNumber] is null when the device has no opinion yet (UNDECIDED on Android), in
  * which case callers should default to discoverable.
+ *
+ * Tellomi（tellomi/tellomi#1266）：[isReRegistration] 为真时资料页不显示「用户名（选填）」——旧用户名在服务端是待认领保留，
+ * 本机不知道它，在注册那一刻请用户填会让人丢了原名；交给设置页。
  */
 data class StoredProfileData(
   val givenName: String = "",
   val familyName: String = "",
   val avatar: ByteArray? = null,
-  val discoverableByPhoneNumber: Boolean? = null
+  val discoverableByPhoneNumber: Boolean? = null,
+  val isReRegistration: Boolean = false
 ) {
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -212,6 +216,7 @@ data class StoredProfileData(
       return false
     }
     if (discoverableByPhoneNumber != other.discoverableByPhoneNumber) return false
+    if (isReRegistration != other.isReRegistration) return false
     return true
   }
 
@@ -220,6 +225,7 @@ data class StoredProfileData(
     result = 31 * result + familyName.hashCode()
     result = 31 * result + (avatar?.contentHashCode() ?: 0)
     result = 31 * result + (discoverableByPhoneNumber?.hashCode() ?: 0)
+    result = 31 * result + isReRegistration.hashCode()
     return result
   }
 }

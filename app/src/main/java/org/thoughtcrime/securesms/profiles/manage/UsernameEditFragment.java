@@ -30,6 +30,7 @@ import org.signal.core.ui.logging.LoggingFragment;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.contactshare.SimpleTextWatcher;
 import org.thoughtcrime.securesms.databinding.UsernameEditFragmentBinding;
+import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.util.FragmentResultContract;
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
 import org.thoughtcrime.securesms.util.ViewUtil;
@@ -100,7 +101,8 @@ public class UsernameEditFragment extends LoggingFragment {
     lifecycleDisposable.add(viewModel.getUsernameInputState().subscribe(this::presentUsernameInputState));
 
     binding.usernameSubmitButton.setOnClickListener(v -> promptOrSubmitUsername());
-    binding.usernameDeleteButton.setOnClickListener(v -> viewModel.onUsernameDeleted());
+    // Tellomi（ADR-0066 §6.2；taishi 审 a5）：上游清空昵称后点「删除」直接删；照个人资料页的删除框，先说清保留 30 天、期间再设也算改名
+    binding.usernameDeleteButton.setOnClickListener(v -> confirmUsernameDeletion());
     binding.usernameDoneButton.setOnClickListener(v -> viewModel.onUsernameSubmitted(false));
     binding.usernameSkipButton.setOnClickListener(v -> viewModel.onUsernameSkipped());
 
@@ -158,7 +160,8 @@ public class UsernameEditFragment extends LoggingFragment {
   private void promptOrSubmitUsername() {
     if (viewModel.isSameUsernameRecovery()) {
       new MaterialAlertDialogBuilder(requireContext())
-          .setMessage(R.string.UsernameEditFragment_recovery_dialog_confirmation)
+          // Tellomi（ADR-0066 §6.2）：恢复要 confirm 一个用户名，服务端按换名算，会开始（或重新开始）30 天冷却，确认前就说清楚（与 Desktop#9 同一句）
+          .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_recovery_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
           .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
             viewModel.onUsernameSubmitted(true);
             dialog.dismiss();
@@ -191,6 +194,8 @@ public class UsernameEditFragment extends LoggingFragment {
       case TOO_SHORT, TOO_LONG -> getString(R.string.UsernameEditFragment_usernames_must_be_between_a_and_b_characters, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH);
       case INVALID_CHARACTERS -> getString(R.string.UsernameEditFragment_usernames_can_only_include);
       case CANNOT_START_WITH_NUMBER -> getString(R.string.UsernameEditFragment_usernames_cannot_begin_with_a_number);
+      // Tellomi（ADR-0066）：字母开头
+      case CANNOT_START_WITH_UNDERSCORE -> getString(R.string.UsernameEditFragment__tellomi_usernames_must_start_with_a_letter);
       case INVALID_GENERIC -> getString(R.string.UsernameEditFragment_username_is_invalid);
       case TAKEN -> getString(R.string.UsernameEditFragment_this_username_is_taken);
       case DISCRIMINATOR_HAS_INVALID_CHARACTERS, DISCRIMINATOR_NOT_AVAILABLE -> getString(R.string.UsernameEditFragment__this_username_is_not_available_try_another_number);
@@ -198,6 +203,8 @@ public class UsernameEditFragment extends LoggingFragment {
       case DISCRIMINATOR_TOO_SHORT -> getString(R.string.UsernameEditFragment__invalid_username_enter_a_minimum_of_d_digits, UsernameUtil.MIN_DISCRIMINATOR_LENGTH);
       case DISCRIMINATOR_CANNOT_BE_00 -> getString(R.string.UsernameEditFragment__this_number_cant_be_00);
       case DISCRIMINATOR_CANNOT_START_WITH_0 -> getString(R.string.UsernameEditFragment__this_number_cant_start_with_0);
+      // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）
+      case CHANGE_COOLDOWN -> getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_cooldown, state.renameCooldownDaysLeft, state.renameCooldownDaysLeft);
     };
 
     int colorRes = error != null ? org.signal.core.ui.R.color.signal_colorError : org.signal.core.ui.R.color.signal_colorPrimary;
@@ -338,11 +345,37 @@ public class UsernameEditFragment extends LoggingFragment {
         break;
       case NEEDS_CONFIRM_RESET:
         new MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.UsernameEditFragment_change_confirmation_message)
+            // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：每次换名都会开始 30 天冷却，确认前就说清楚（与 Desktop#2 同一句）
+            .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
+            .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+            .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))
+            .show();
+        break;
+      case NEEDS_CONFIRM_SET_AFTER_DELETE:
+        // Tellomi（ADR-0066 §6.2）：保留期内删过用户名，现在再设也算改名（与 Desktop#4 同一句）
+        new MaterialAlertDialogBuilder(requireContext())
+            .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_set_after_delete_confirmation,
+                                                         TellomiUsernames.RENAME_COOLDOWN_DAYS,
+                                                         TellomiUsernames.USERNAME_HOLD_DAYS,
+                                                         TellomiUsernames.RENAME_COOLDOWN_DAYS))
             .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))
             .show();
     }
+  }
+
+  private void confirmUsernameDeletion() {
+    String username = SignalStore.account().getUsername();
+    new MaterialAlertDialogBuilder(requireContext())
+        .setTitle(R.string.ManageProfileFragment__delete_username_dialog_title)
+        .setMessage(getResources().getQuantityString(R.plurals.ManageProfileFragment__tellomi_delete_username_dialog_body,
+                                                     TellomiUsernames.RENAME_COOLDOWN_DAYS,
+                                                     username != null ? TellomiUsernames.toDisplayUsername(username) : "",
+                                                     TellomiUsernames.USERNAME_HOLD_DAYS,
+                                                     TellomiUsernames.RENAME_COOLDOWN_DAYS))
+        .setPositiveButton(R.string.delete, (dialog, which) -> viewModel.onUsernameDeleted())
+        .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+        .show();
   }
 
   private void closeScreen() {

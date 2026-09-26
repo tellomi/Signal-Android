@@ -79,6 +79,9 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
     private const val KEY_USERNAME_SYNC_STATE = "phoneNumberPrivacy.usernameSyncState"
     private const val KEY_USERNAME_SYNC_ERROR_COUNT = "phoneNumberPrivacy.usernameErrorCount"
 
+    /** Tellomi（ADR-0066 §6.2）：这个账号上一次删掉用户名的时间（本机删的，或从存储服务同步到被别的设备删的）。 */
+    private const val KEY_TELLOMI_USERNAME_DELETED_AT = "account.tellomi_username_deleted_at"
+
     private const val KEY_E164 = "account.e164"
     private const val KEY_ACI = "account.aci"
     private const val KEY_PNI = "account.pni"
@@ -519,6 +522,12 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
    */
   var registeredAtTimestamp: Long by longValue(KEY_ACCOUNT_REGISTERED_AT, -1)
     private set
+
+  /**
+   * Tellomi（ADR-0066 §6.2）：上一次删掉用户名的时间，0 = 没有记录。用来在保留期内再设用户名前提醒「这也算改名」。
+   * 只在本机，不进备份：换机后没有记录，最多少提示一次，服务端照样按保留期开始冷却。
+   */
+  var tellomiUsernameDeletedAt: Long by longValue(KEY_TELLOMI_USERNAME_DELETED_AT, 0)
 
   /**
    * Function for testing backup/restore
