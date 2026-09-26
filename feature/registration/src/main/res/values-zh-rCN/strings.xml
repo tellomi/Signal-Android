@@ -807,4 +807,15 @@
     <string name="TellomiRegistration__help_more">更多帮助</string>
     <string name="TellomiRegistration__session_expired">这次验证已经过期，请确认号码后重新获取验证码。</string>
     <string name="TellomiRegistration__code_no_longer_valid">这个验证码已经不能用了：可能已过期，或者输错的次数太多。请重新获取验证码。</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <string name="TellomiRegistration__new_phone">换了新手机？</string>
+    <string name="TellomiRegistration__old_phone_here">旧 Android 手机还在身边</string>
+    <string name="TellomiRegistration__old_phone_here_description">用旧 Android 手机上的 Tellomi 扫一个二维码，把账户和聊天记录直接传过来</string>
+    <string name="TellomiRegistration__old_phone_not_here">旧手机不在身边，或者是 iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在这台手机上重装的话，可以用本地备份恢复；否则直接注册，只是以前的聊天记录不会跟过来，旧手机上的 Tellomi 也会退出登录</string>
+    <string name="TellomiRegistration__skip_restore_dialog_title">不恢复聊天记录？</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">以前的聊天记录不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">旧手机上的 Tellomi 会退出登录，以前的聊天记录也不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">继续</string>
 </resources>

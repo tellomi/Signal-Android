@@ -816,4 +816,18 @@
     <string name="TellomiRegistration__help_more">More help</string>
     <string name="TellomiRegistration__session_expired">This verification has expired. Please check your number and get a new code.</string>
     <string name="TellomiRegistration__code_no_longer_valid">This code can no longer be used. It may have expired, or been entered wrong too many times. Please get a new code.</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <!-- One-line text link under the Continue button on the welcome screen, for people moving to a new phone (replaces the large 'Restore or transfer' button) -->
+    <string name="TellomiRegistration__new_phone">New phone?</string>
+    <!-- Welcome screen bottom sheet: title of the choice for people whose old Android phone is at hand -->
+    <string name="TellomiRegistration__old_phone_here">My old Android phone is here</string>
+    <string name="TellomiRegistration__old_phone_here_description">Scan a QR code with Tellomi on your old Android phone to move your account and messages over directly</string>
+    <string name="TellomiRegistration__old_phone_not_here">My old phone isn\'t here, or it\'s an iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">Reinstalling on this phone? You can restore an on-device backup. Otherwise just register. Your earlier messages won\'t come with you, and Tellomi on your old phone will be logged out.</string>
+    <!-- Confirmation dialog before continuing registration without restoring messages (there is no backup service) -->
+    <string name="TellomiRegistration__skip_restore_dialog_title">Continue without restoring?</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">Your earlier messages won\'t appear on this phone.</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">Tellomi on your old phone will be logged out, and your earlier messages won\'t appear on this phone.</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">Continue</string>
 </resources>

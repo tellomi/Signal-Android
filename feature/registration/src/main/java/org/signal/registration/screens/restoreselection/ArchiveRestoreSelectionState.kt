@@ -15,7 +15,12 @@ data class ArchiveRestoreSelectionState(
   /** Whether the account already has SVR/PIN data on the server. Determines whether skipping restore leads to PIN entry or PIN creation. */
   val storageCapable: Boolean = false,
   /** Whether the skip is underway. The last of the work it does is a network call, so the skip card shows a spinner until the flow moves on. */
-  val isSkipping: Boolean = false
+  val isSkipping: Boolean = false,
+  /**
+   * Tellomi（tellomi/tellomi#1216，taishi 审查 b7）：还没注册时跳过恢复、接着注册，服务端会把旧手机登出（AccountsManager.reclaimAccount），
+   * 跳过确认框要把这一句也说出来；注册之后才出现的这个框，旧手机其实已经登出了，不用再说。
+   */
+  val skippingSignsOutOldPhone: Boolean = false
 ) {
-  override fun toString(): String = "ArchiveRestoreSelectionState(restoreOptions=$restoreOptions, showSkipWarningDialog=$showSkipWarningDialog, restoreMethodToken=${restoreMethodToken?.censor()}, storageCapable=$storageCapable, isSkipping=$isSkipping)"
+  override fun toString(): String = "ArchiveRestoreSelectionState(restoreOptions=$restoreOptions, showSkipWarningDialog=$showSkipWarningDialog, restoreMethodToken=${restoreMethodToken?.censor()}, storageCapable=$storageCapable, isSkipping=$isSkipping, skippingSignsOutOldPhone=$skippingSignsOutOldPhone)"
 }

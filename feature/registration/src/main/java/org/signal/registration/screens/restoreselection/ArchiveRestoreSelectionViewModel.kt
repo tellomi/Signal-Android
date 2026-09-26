@@ -51,7 +51,8 @@ class ArchiveRestoreSelectionViewModel(
     ArchiveRestoreSelectionState(
       // Tellomi（tellomi/tellomi#1210）：五个入口（RegistrationRoute.ArchiveRestoreSelection.for…）都会塞「从 Tellomi 备份」，
       // 在这个唯一出口统一滤掉，不去改五处上游
-      restoreOptions = restoreOptions.filter { it != ArchiveRestoreOption.SignalSecureBackup || TellomiRegistration.isRemoteBackupAvailable }
+      restoreOptions = restoreOptions.filter { it != ArchiveRestoreOption.SignalSecureBackup || TellomiRegistration.isRemoteBackupAvailable },
+      skippingSignsOutOldPhone = registeredState == RegisteredState.NotRegistered
     )
   )
   val state: StateFlow<ArchiveRestoreSelectionState> = _state.asStateFlow()
