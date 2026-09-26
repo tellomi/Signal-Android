@@ -18,7 +18,9 @@ package org.thoughtcrime.securesms.mediaoverview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -46,6 +51,7 @@ import org.thoughtcrime.securesms.database.MediaTable;
 import org.thoughtcrime.securesms.database.MediaTable.Sorting;
 import org.thoughtcrime.securesms.database.SignalDatabase;
 import org.thoughtcrime.securesms.database.loaders.MediaLoader;
+import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
@@ -62,6 +68,7 @@ import kotlin.Pair;
 public final class MediaOverviewActivity extends PassphraseRequiredActivity {
 
   private static final String THREAD_ID_EXTRA = "thread_id";
+  private static final String TELLOMI_INITIAL_MEDIA_TYPE_EXTRA = "tellomi_initial_media_type";
 
   private final DynamicTheme dynamicTheme = new DynamicNoActionBarTheme();
 
@@ -77,10 +84,19 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
   private View                   viewGrid;
   private View                   viewDetail;
   private long                   threadId;
+  private boolean                tellomiSearchEnabled;
+  private MenuItem               tellomiSearchItem;
 
   public static Intent forThread(@NonNull Context context, long threadId) {
     Intent intent = new Intent(context, MediaOverviewActivity.class);
     intent.putExtra(MediaOverviewActivity.THREAD_ID_EXTRA, threadId);
+    return intent;
+  }
+
+  /** Tellomi：「我的收藏」的分类点进来，停在对应的页（#1174）。 */
+  public static Intent forThread(@NonNull Context context, long threadId, @NonNull MediaLoader.MediaType initialMediaType) {
+    Intent intent = forThread(context, threadId);
+    intent.putExtra(TELLOMI_INITIAL_MEDIA_TYPE_EXTRA, initialMediaType.name());
     return intent;
   }
 
@@ -131,6 +147,14 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
     });
 
     viewPager.setCurrentItem(allThreads ? viewPager.getAdapter().getCount() - 1 : 0);
+
+    String initialMediaType = getIntent().getStringExtra(TELLOMI_INITIAL_MEDIA_TYPE_EXTRA);
+    if (initialMediaType != null) {
+      int page = ((MediaOverviewPagerAdapter) viewPager.getAdapter()).tellomiPageOf(MediaLoader.MediaType.valueOf(initialMediaType));
+      if (page >= 0) {
+        viewPager.setCurrentItem(page);
+      }
+    }
   }
 
   private static boolean allowGridSelectionOnPage(int page) {
@@ -166,6 +190,64 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
   public void onResume() {
     super.onResume();
     dynamicTheme.onResume(this);
+  }
+
+  /** Tellomi：「我的收藏」的所有媒体顶栏有搜索，在当前这一页里按文字筛（#1174）。 */
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    if (tellomiSearchEnabled) {
+      MenuItem   searchItem = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.TellomiSavedCategories__search);
+      SearchView searchView = new SearchView(this);
+      searchView.setQueryHint(getString(R.string.TellomiSavedCategories__search_hint));
+      searchView.setMaxWidth(Integer.MAX_VALUE);
+      searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+          model.setTellomiQuery(query);
+          return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String query) {
+          model.setTellomiQuery(query);
+          return true;
+        }
+      });
+      searchItem.setIcon(org.signal.core.ui.R.drawable.symbol_search_24);
+      // symbol_search_24 是黑色填充、菜单不会自动着色：暗色模式下几乎看不见，跟着顶栏文字的颜色走（上游用它时都配了 iconTint）
+      MenuItemCompat.setIconTintList(searchItem, ColorStateList.valueOf(ContextCompat.getColor(this, org.signal.core.ui.R.color.signal_colorOnSurface)));
+      searchItem.setActionView(searchView);
+      searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+      searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+        @Override
+        public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
+          return true;
+        }
+
+        @Override
+        public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
+          model.setTellomiQuery(null);
+          return true;
+        }
+      });
+      tellomiSearchItem = searchItem;
+      // 菜单重建时搜索框是收起的：查询也一起清掉，免得列表被一个看不见的查询筛着（例如转屏之后）
+      model.setTellomiQuery(null);
+    }
+    return super.onCreateOptionsMenu(menu);
+  }
+
+  /**
+   * Tellomi：搜索框展开时不重建菜单（#1174）。每一页装载完都会调这里（上游 {@link MediaOverviewPageFragment} 的 onLoadFinished），
+   * 重建会把展开的搜索框收起来：输入第一个字、页重新筛完，搜索框就没了（走查模拟器上实测）。
+   * 上游这个页面本来没有菜单，跳过重建没有别的影响。
+   */
+  @Override
+  public void invalidateOptionsMenu() {
+    if (tellomiSearchItem != null && tellomiSearchItem.isActionViewExpanded()) {
+      return;
+    }
+    super.invalidateOptionsMenu();
   }
 
   @Override
@@ -210,12 +292,19 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
       SimpleTask.run(() -> SignalDatabase.threads().getRecipientForThreadId(threadId),
         (recipient) -> {
           if (recipient != null) {
-            getSupportActionBar().setTitle(recipient.getDisplayName(this));
-            recipient.live().observe(this, r -> getSupportActionBar().setTitle(r.getDisplayName(this)));
+            getSupportActionBar().setTitle(tellomiTitle(recipient));
+            tellomiSearchEnabled = recipient.isSelf();
+            invalidateOptionsMenu();
+            recipient.live().observe(this, r -> getSupportActionBar().setTitle(tellomiTitle(r)));
           }
         }
       );
     }
+  }
+
+  /** Tellomi：自己的会话（「我的收藏」）的所有媒体叫「我的收藏」，和会话顶栏一致，不显示自己的资料名（#1174）。 */
+  private @NonNull String tellomiTitle(@NonNull Recipient recipient) {
+    return recipient.isSelf() ? getString(R.string.note_to_self) : recipient.getDisplayName(this);
   }
 
   public void onEnterMultiSelect() {
@@ -296,6 +385,16 @@ public final class MediaOverviewActivity extends PassphraseRequiredActivity {
     @Override
     public int getCount() {
       return pages.size();
+    }
+
+    /** Tellomi：这一类在第几页，没有这一页时是 -1（#1174）。 */
+    int tellomiPageOf(@NonNull MediaLoader.MediaType mediaType) {
+      for (int i = 0; i < pages.size(); i++) {
+        if (pages.get(i).getFirst() == mediaType) {
+          return i;
+        }
+      }
+      return -1;
     }
 
     @Override
