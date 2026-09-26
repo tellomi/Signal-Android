@@ -3597,13 +3597,13 @@
     <!-- Dialog title asking users for contact permission -->
     <string name="ContactSelectionListFragment_allow_access_contacts">允許存取通訊錄</string>
     <!-- Dialog description that will explain the steps needed to give contact permissions -->
-    <string name="ContactSelectionListFragment_to_find_people">要在 Tellomi 上尋找你認識的人：</string>
+    <string name="ContactSelectionListFragment_to_find_people">要在 Tellomi 中顯示聯絡人的名稱：</string>
     <!-- Text on button prompting users to give Signal contact permissions -->
     <string name="ContactSelectionListFragment__allow_access">允許存取</string>
     <!-- Text on button to dismiss Signal\'s request for contact permissions -->
     <string name="ContactSelectionListFragment__no_thanks">不必了</string>
     <!-- Text asking for user\'s contact permission -->
-    <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">允許存取你的通訊錄。你的通訊錄已加密，Tellomi 服務無法看到。</string>
+    <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">允許存取通訊錄，以顯示你為聯絡人儲存的名稱。通訊錄只在這部手機上讀取，不會上傳到 Tellomi。</string>
 
     <!-- contact_selection_list_fragment -->
     <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">Tellomi 需要存取您的聯絡人以便為您顯示。</string>
