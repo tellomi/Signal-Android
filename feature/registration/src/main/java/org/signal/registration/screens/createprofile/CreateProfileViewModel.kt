@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.EventDrivenViewModel
+import org.signal.core.util.TellomiNames
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
 import org.signal.registration.RegistrationFlowEvent
@@ -54,7 +55,12 @@ class CreateProfileViewModel(
         _state.value = seeded.copy(isSubmitting = true)
         submitProfile(seeded)
       } else {
-        _state.value = seeded
+        // Tellomi（tellomi/tellomi#1215）：页面上只有一个「名字」框——已有的名 + 姓合成一个串放进去，保存时全进 given name。
+        // 上面自动提交那条不动：恢复出来的资料原样保存，不替用户改名字。
+        _state.value = seeded.copy(
+          givenName = TellomiNames.joinForSingleField(stored.givenName, stored.familyName),
+          familyName = ""
+        )
       }
     }
   }

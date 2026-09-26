@@ -13,7 +13,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,8 +37,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
@@ -54,6 +54,7 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.rememberWindowBreakpoint
+import org.signal.core.util.TellomiNames
 import org.signal.registration.R
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.test.TestTags
@@ -148,18 +149,19 @@ private fun CompactLayout(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Avatar(avatarBytes = state.avatar, onClick = onAvatarClick)
+        Avatar(avatarBytes = state.avatar, initials = TellomiNames.abbreviation(state.givenName), onClick = onAvatarClick)
 
         Spacer(modifier = Modifier.height(32.dp))
 
         OutlinedTextField(
           value = state.givenName,
           onValueChange = { onEvent(CreateProfileScreenEvents.GivenNameChanged(it)) },
-          // Tellomi（tellomi/tellomi#1210）：上游「名字（必需）」→「名字」+ 红色必填星号
+          // Tellomi（tellomi/tellomi#1210）：上游「名字（必需）」→「名字」+ 红色必填星号；
+          // #1215 之后这一个框填全名，英文也写「Name」而不是「First name」
           label = {
             Text(
               buildAnnotatedString {
-                append(stringResource(R.string.TellomiRegistration__first_name))
+                append(stringResource(R.string.TellomiRegistration__name))
                 withStyle(SpanStyle(color = MaterialTheme.colorScheme.error)) { append(" *") }
               }
             )
@@ -168,36 +170,24 @@ private fun CompactLayout(
           enabled = !state.isSubmitting,
           keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Words,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Done
           ),
           modifier = Modifier
             .fillMaxWidth()
             .testTag(TestTags.CREATE_PROFILE_GIVEN_NAME_FIELD)
         )
 
+        // Tellomi（tellomi/tellomi#1215）：只留一个「名字」框（去掉「姓氏（可选）」，保存时全进 given name）；
+        // 「谁可以通过手机号找到我」也去掉——没有 CDSI 时它不起作用，换成一句实话。
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-          value = state.familyName,
-          onValueChange = { onEvent(CreateProfileScreenEvents.FamilyNameChanged(it)) },
-          label = { Text(stringResource(R.string.CreateProfileScreen__last_name_optional)) },
-          singleLine = true,
-          enabled = !state.isSubmitting,
-          keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.Words,
-            imeAction = ImeAction.Done
-          ),
+        Text(
+          text = stringResource(R.string.TellomiRegistration__phone_number_not_shown),
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
           modifier = Modifier
             .fillMaxWidth()
-            .testTag(TestTags.CREATE_PROFILE_FAMILY_NAME_FIELD)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        WhoCanFindMeRow(
-          discoverable = state.discoverableByPhoneNumber,
-          enabled = !state.isSubmitting,
-          onClick = { onEvent(CreateProfileScreenEvents.WhoCanFindMeClicked) }
+            .testTag(TestTags.CREATE_PROFILE_PHONE_NUMBER_NOT_SHOWN)
         )
       }
     },
@@ -254,53 +244,13 @@ private fun LargeLayout(
 }
 
 @Composable
-private fun WhoCanFindMeRow(
-  discoverable: Boolean,
-  enabled: Boolean,
-  onClick: () -> Unit
-) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .clickable(enabled = enabled, onClick = onClick)
-      .padding(vertical = 12.dp)
-      .testTag(TestTags.CREATE_PROFILE_WHO_CAN_FIND_ME_ROW),
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    Icon(
-      painter = if (discoverable) painterResource(R.drawable.symbol_group_24) else SignalIcons.Lock.painter,
-      contentDescription = null,
-      tint = MaterialTheme.colorScheme.onSurfaceVariant,
-      modifier = Modifier.size(24.dp)
-    )
-    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-    Column(modifier = Modifier.weight(1f)) {
-      Text(
-        text = stringResource(R.string.WhoCanSeeMyPhoneNumberFragment__who_can_find_me_by_number),
-        style = MaterialTheme.typography.bodyLarge
-      )
-      Text(
-        text = stringResource(
-          if (discoverable) R.string.PhoneNumberPrivacy_everyone else R.string.PhoneNumberPrivacy_nobody
-        ),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-      )
-    }
-    Icon(
-      painter = SignalIcons.ChevronRight.painter,
-      contentDescription = null,
-      tint = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-  }
-}
-
-@Composable
 private fun Avatar(
   avatarBytes: ByteArray?,
+  initials: String?,
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
+  val setAvatarDescription = stringResource(R.string.CreateProfileScreen__set_avatar_description)
   val bitmap = remember(avatarBytes) {
     avatarBytes?.let {
       runCatching { BitmapFactory.decodeByteArray(it, 0, it.size) }.getOrNull()
@@ -322,6 +272,19 @@ private fun Avatar(
           contentDescription = stringResource(R.string.CreateProfileScreen__set_avatar_description),
           contentScale = ContentScale.Crop,
           modifier = Modifier.fillMaxSize()
+        )
+      } else if (initials != null) {
+        // Tellomi（tellomi/tellomi#1215）：没选照片时，默认头像随名字实时变（中文取最后两个字，其它取首字母），
+        // 与之后 App 里显示的默认头像同一个规则（TellomiNames.abbreviation）
+        Text(
+          text = initials,
+          style = MaterialTheme.typography.headlineLarge,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          maxLines = 1,
+          // 和照片、相机图标两支一样念「设置头像」，否则读屏只念出名字（taishi 审查 2026-09-24）
+          modifier = Modifier
+            .testTag(TestTags.CREATE_PROFILE_AVATAR_INITIALS)
+            .semantics { contentDescription = setAvatarDescription }
         )
       } else {
         Icon(
@@ -383,6 +346,20 @@ private fun CreateProfileScreenWithNamePreview() {
       state = CreateProfileState(
         givenName = "Alice",
         familyName = "Anderson",
+        isLoading = false
+      ),
+      onEvent = {}
+    )
+  }
+}
+
+@AllDevicePreviews
+@Composable
+private fun CreateProfileScreenChineseNamePreview() {
+  Previews.Preview {
+    CreateProfileScreen(
+      state = CreateProfileState(
+        givenName = "欧阳娜娜",
         isLoading = false
       ),
       onEvent = {}

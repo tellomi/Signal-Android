@@ -579,6 +579,8 @@
     <string name="CreateProfileScreen__next">下一步</string>
     <!-- Content description for the avatar selection control. -->
     <string name="CreateProfileScreen__set_avatar_description">设置头像</string>
+    <!-- Tellomi（#1215） -->
+    <string name="TellomiRegistration__phone_number_not_shown">你的手机号默认不对任何人显示。</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -769,5 +771,8 @@
     <string name="TellomiRegistration__you_will_receive_a_verification_code">我们会发一条短信验证码，确认这个号码是你的。</string>
     <string name="TellomiRegistration__a_verification_code_will_be_sent">我们会向这个号码发一条短信验证码，确认它是你的。</string>
     <string name="TellomiRegistration__captcha_retry">重试</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：注册资料页只剩一个框、填全名。旧键 TellomiRegistration__first_name 暂留在下一行：
+         它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
+    <string name="TellomiRegistration__name">名字</string>
     <string name="TellomiRegistration__first_name">名字</string>
 </resources>
