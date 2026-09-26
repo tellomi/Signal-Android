@@ -59,6 +59,14 @@ class ArchiveRestoreSelectionViewModelTest {
     )
   }
 
+  /** Tellomi（tellomi/tellomi#1210）：没有备份服务，「从 Tellomi 备份」不列；其余照旧、顺序不变。 */
+  @Test
+  fun `remote backup option is not offered without a backup service`() {
+    val viewModel = createViewModel()
+
+    assertThat(viewModel.state.value.restoreOptions).isEqualTo(listOf(ArchiveRestoreOption.LocalBackup, ArchiveRestoreOption.DeviceTransfer))
+  }
+
   // ==================== RestoreOptionSelected Tests ====================
 
   @Test
@@ -262,7 +270,8 @@ class ArchiveRestoreSelectionViewModelTest {
     val options = listOf(ArchiveRestoreOption.SignalSecureBackup, ArchiveRestoreOption.None)
     val viewModel = createViewModel(restoreOptions = options)
 
-    assertThat(viewModel.state.value.restoreOptions).isEqualTo(options)
+    // Tellomi（tellomi/tellomi#1210）：没有备份服务，「从 Tellomi 备份」被滤掉，其余照传入
+    assertThat(viewModel.state.value.restoreOptions).isEqualTo(listOf(ArchiveRestoreOption.None))
   }
 
   // ==================== ParentStateChanged Tests ====================

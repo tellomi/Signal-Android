@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -613,7 +612,10 @@ public final class Megaphones {
   }
 
   private static boolean shouldShowPnpLaunchMegaphone() {
-    return SignalStore.account().isPrimaryDevice() && TextUtils.isEmpty(SignalStore.account().getUsername()) && !SignalStore.uiHints().hasCompletedUsernameOnboarding();
+    // Tellomi（tellomi/tellomi#1210）：这是 Signal 2024 年给老用户的功能公告（「联系有新招：我们推出了电话号码隐私、
+    // 可选用户名和链接功能」）。Tellomi 从第一天起就有这些；上游的条件（主设备、没设用户名、没走过用户名引导）
+    // 对每个刚注册的人都成立，于是新用户一进首屏就看到「我们推出了…」。不出。
+    return false;
   }
 
   private static boolean shouldShowInactivePrimaryMegaphone() {

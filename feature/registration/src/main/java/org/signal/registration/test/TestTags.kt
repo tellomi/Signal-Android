@@ -121,6 +121,7 @@ object TestTags {
   // Captcha Screen
   const val CAPTCHA_SCREEN = "captcha_screen"
   const val CAPTCHA_CANCEL_BUTTON = "captcha_cancel_button"
+  const val CAPTCHA_RETRY_BUTTON = "captcha_retry_button" // Tellomi（#1210）
 
   // Country Code Picker Screen
   const val COUNTRY_CODE_PICKER_SCREEN = "country_code_picker_screen"
