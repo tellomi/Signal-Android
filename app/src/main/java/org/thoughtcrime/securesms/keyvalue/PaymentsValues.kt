@@ -32,6 +32,9 @@ class PaymentsValues internal constructor(store: KeyValueStore) : SignalStoreVal
   companion object {
     private val TAG = Log.tag(PaymentsValues::class.java)
 
+    /** Tellomi：付款永远关闭（tellomi/tellomi#1233）。 */
+    private const val TELLOMI_PAYMENTS_ENABLED = false
+
     private const val MOB_PAYMENTS_ENABLED = "mob_payments_enabled"
     private const val PAYMENTS_ENTROPY = "payments_entropy"
     private const val MOB_LEDGER = "mob_ledger"
@@ -112,6 +115,12 @@ class PaymentsValues internal constructor(store: KeyValueStore) : SignalStoreVal
    */
   val paymentsAvailability: PaymentsAvailability
     get() {
+      // Tellomi：付款（MobileCoin 加密货币钱包）在 Tellomi 构建里永远不可用（tellomi/tellomi#1233）。
+      // 上游只看远程开关 android.payments.kill 和地区黑名单；我们的服务端没下发这个开关，+86 也不在黑名单里，
+      // 于是设置里对大陆用户显示了加密货币钱包入口。大陆对加密货币交易有明确禁令，所以写死关闭，不依赖服务端。
+      if (!TELLOMI_PAYMENTS_ENABLED) {
+        return PaymentsAvailability.NOT_IN_REGION
+      }
       if (!SignalStore.account.isRegistered) {
         return PaymentsAvailability.NOT_IN_REGION
       }

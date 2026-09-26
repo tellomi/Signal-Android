@@ -92,6 +92,7 @@ import org.thoughtcrime.securesms.pin.SvrWrongPinException
 import org.thoughtcrime.securesms.profiles.AvatarHelper
 import org.thoughtcrime.securesms.profiles.ProfileName
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.registration.fcm.PushChallengeRequest
 import org.thoughtcrime.securesms.registration.ui.restore.StorageServiceRestore
 import org.thoughtcrime.securesms.registration.util.RegistrationUtil
@@ -258,7 +259,7 @@ class AppRegistrationNetworkController(
   }
 
   override fun getCaptchaUrl(): String {
-    return BuildConfig.SIGNAL_CAPTCHA_URL
+    return TellomiRegions.current().captchaRegistration
   }
 
   override suspend fun restoreMasterKeyFromSvr(
