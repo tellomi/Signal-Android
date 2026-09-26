@@ -329,8 +329,8 @@ class ConversationItemDecorations(hasWallpaper: Boolean = false, private val sch
     }
 
     fun bind() {
-      val unreadCount = (unreadState as? UnreadState.CompleteUnreadState)?.unreadCount ?: 0
-      unreadText.text = itemView.context.resources.getQuantityString(R.plurals.ConversationAdapter_n_unread_messages, unreadCount, unreadCount)
+      // Tellomi（两端差异清单第 11 项）：只写「新消息」，不带条数，和 iOS 一致（Telegram 两端也不带）
+      unreadText.text = itemView.context.getString(R.string.ConversationAdapter__tellomi_new_messages)
       updateForWallpaper()
     }
 
