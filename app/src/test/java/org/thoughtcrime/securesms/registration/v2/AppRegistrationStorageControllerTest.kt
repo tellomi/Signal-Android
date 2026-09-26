@@ -22,6 +22,7 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import okio.ByteString
@@ -39,6 +40,7 @@ import org.signal.core.models.ServiceId.ACI
 import org.signal.core.models.ServiceId.PNI
 import org.signal.core.util.contentproviders.BlobProvider
 import org.signal.libsignal.protocol.IdentityKeyPair
+import org.signal.registration.StoredProfileData
 import org.signal.registration.proto.AccountData
 import org.signal.registration.proto.LinkedDeviceData
 import org.signal.registration.proto.RegistrationData
@@ -53,6 +55,7 @@ import org.thoughtcrime.securesms.jobs.ReclaimUsernameAndLinkJob
 import org.thoughtcrime.securesms.jobs.RefreshOwnProfileJob
 import org.thoughtcrime.securesms.jobs.RotateCertificateJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.profiles.AvatarHelper
 import org.thoughtcrime.securesms.registration.util.RegistrationUtil
 import org.thoughtcrime.securesms.testutil.MockAppDependenciesRule
 import org.thoughtcrime.securesms.testutil.SignalDatabaseRule
@@ -311,6 +314,53 @@ class AppRegistrationStorageControllerTest {
     controller.commitRegistrationData()
 
     assertThat(SignalStore.misc.needsUsernameRestore).isTrue()
+  }
+
+  /** 读资料页要的存量数据；测试环境里读头像要走 KeyStore，桩成「没有头像」（这里只关心重新注册的标记）。 */
+  private suspend fun storedProfileDataWithoutAvatar(): StoredProfileData {
+    mockkStatic(AvatarHelper::class)
+    try {
+      every { AvatarHelper.hasAvatar(any(), any()) } returns false
+      return controller.getStoredProfileData()
+    } finally {
+      unmockkStatic(AvatarHelper::class)
+    }
+  }
+
+  /** Tellomi（tellomi/tellomi#1266）：重新注册时资料页不显示用户名框；标记要活到标完成为止，然后清掉。 */
+  @Test
+  fun `commit - re-registration - hides the username field until registration is complete`() = runBlocking<Unit> {
+    seedInProgressData(
+      RegistrationData(
+        accountData = accountData(reRegistration = true),
+        accountEntropyPool = aep.value
+      )
+    )
+
+    controller.commitRegistrationData()
+
+    assertThat(SignalStore.registration.isTellomiReRegistration).isTrue()
+    assertThat(storedProfileDataWithoutAvatar().isReRegistration).isTrue()
+
+    SignalStore.registration.markRegistrationComplete()
+
+    assertThat(SignalStore.registration.isTellomiReRegistration).isFalse()
+    assertThat(storedProfileDataWithoutAvatar().isReRegistration).isFalse()
+  }
+
+  @Test
+  fun `commit - new account - shows the username field`() = runBlocking<Unit> {
+    seedInProgressData(
+      RegistrationData(
+        accountData = accountData(reRegistration = false),
+        accountEntropyPool = aep.value
+      )
+    )
+
+    controller.commitRegistrationData()
+
+    assertThat(SignalStore.registration.isTellomiReRegistration).isFalse()
+    assertThat(storedProfileDataWithoutAvatar().isReRegistration).isFalse()
   }
 
   @Test

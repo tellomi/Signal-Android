@@ -100,7 +100,9 @@ object UsernameRepository {
   private val URL_REGEX = """(https://)?signal.me/?#eu/([a-zA-Z0-9+\-_/]+)""".toRegex()
   private val URL_REGEX_TELLOMI = """(https://|tellomi://)?tell\.cc/u/?#eu/([a-zA-Z0-9+\-_/]+)""".toRegex()
 
-  private const val BASE_URL = "https://signal.me/#eu/"
+  // Tellomi（tellomi/tellomi#1113）：发出 https://tell.cc/u#eu/…（与 Desktop / iOS 相同）——用微信扫码会落到我们的落地页，
+  // 不是 Signal 的网页；解析新旧两种都认（URL_REGEX / URL_REGEX_TELLOMI）
+  private const val BASE_URL = "https://tell.cc/u#eu/"
   private const val USERNAME_SYNC_ERROR_THRESHOLD = 3
 
   private val accountManager: SignalServiceAccountManager get() = AppDependencies.signalServiceAccountManager

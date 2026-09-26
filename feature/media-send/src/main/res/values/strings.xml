@@ -274,4 +274,8 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">%1$d of %2$d</string>
+  <!-- Tellomi：相机扫到新手机上的「转移帐户」码时，进转移页之前的防骗确认 -->
+  <string name="TellomiReRegistrationScannedDialog__title">This QR code transfers your account</string>
+  <string name="TellomiReRegistrationScannedDialog__body">A new phone is asking to take over your account. Continue only if you are switching to your own new phone and registering on it right now. If someone else asked you to scan this, cancel. Continuing moves your account to their phone.</string>
+  <string name="TellomiReRegistrationScannedDialog__continue">Continue</string>
 </resources>

@@ -34,6 +34,7 @@ import org.thoughtcrime.securesms.jobs.protos.UploadAttachmentToArchiveJobData
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.mms.PartAuthority
 import org.thoughtcrime.securesms.net.SignalNetwork
+import org.thoughtcrime.securesms.region.TellomiUploadPin
 import org.thoughtcrime.securesms.service.AttachmentProgressService
 import org.thoughtcrime.securesms.util.MediaUtil
 import org.thoughtcrime.securesms.util.RemoteConfig
@@ -226,6 +227,12 @@ class UploadAttachmentToArchiveJob private constructor(
       uploadSpec = null
     }
 
+    // Tellomi（#1055 第三刀）：切过区就当规格过期，从头传，落到现在的区（契约第六节：在途续传不许静默换区）
+    if (uploadSpec != null && !TellomiUploadPin.canResume(uploadSpec!!)) {
+      Log.w(TAG, "[$attachmentId]$mediaIdLog Upload spec was started in region ${TellomiUploadPin.startedIn(uploadSpec!!)}. Clearing.")
+      uploadSpec = null
+    }
+
     val existingSpec = uploadSpec?.let { ResumableUploadSpec.from(it) }
 
     val ciphertextLength = AttachmentCipherStreamUtil.getCiphertextLength(PaddingInputStream.getPaddedSize(attachment.size))
@@ -321,7 +328,7 @@ class UploadAttachmentToArchiveJob private constructor(
             checksumSha256 = checksumSha256,
             attachmentStream = stream,
             existingSpec = existingSpec,
-            onSpecCreated = { spec -> uploadSpec = spec.toProto() }
+            onSpecCreated = { spec -> uploadSpec = TellomiUploadPin.stamp(spec.toProto()) }
           )
         ) {
           is NetworkResult.Success -> result.result

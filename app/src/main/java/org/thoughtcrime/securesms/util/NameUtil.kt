@@ -1,35 +1,17 @@
 package org.thoughtcrime.securesms.util
 
-import org.signal.core.util.CharacterIterable
-import java.util.regex.Pattern
+import org.signal.core.util.TellomiNames
 
 object NameUtil {
 
   /**
-   * \p{L} is letter, \p{Nd} is digit, \p{S} is whitespace/separator
-   * https://www.regular-expressions.info/unicode.html#category
-   */
-  private val PATTERN = Pattern.compile("[^\\p{L}\\p{Nd}\\p{S}]+")
-
-  /**
    * Returns an abbreviation of the input, up to two characters long.
+   *
+   * Tellomi（tellomi/tellomi#1215）：规则挪到 [TellomiNames.abbreviation]，注册页的头像预览也用它——
+   * 中文名取最后两个字（「欧阳娜娜」→「娜娜」），其它名字照上游（「John Smith」→「JS」）。
    */
   @JvmStatic
   fun getAbbreviation(name: String): String? {
-    val parts = name
-      .split(" ")
-      .map { it.trim() }
-      .map { PATTERN.matcher(it).replaceFirst("") }
-      .filter { it.isNotEmpty() }
-
-    return when {
-      parts.isEmpty() -> null
-      parts.size == 1 -> parts[0].firstGrapheme()
-      else -> "${parts[0].firstGrapheme()}${parts[1].firstGrapheme()}"
-    }
-  }
-
-  private fun String.firstGrapheme(): String {
-    return CharacterIterable(this).first()
+    return TellomiNames.abbreviation(name)
   }
 }

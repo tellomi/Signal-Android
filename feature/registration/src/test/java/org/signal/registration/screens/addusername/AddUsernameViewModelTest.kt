@@ -225,6 +225,16 @@ class AddUsernameViewModelTest {
     assertThat(viewModel.state.value.validationError).isEqualTo(AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT)
   }
 
+  /** Tellomi（ADR-0066 §六）：`_` 开头要报「必须字母开头」，不能落进 else 被说成「只能包含 a–z…」，也不能提交。 */
+  @Test
+  fun `a nickname starting with an underscore produces a validation error`() = runTest(testDispatcher) {
+    viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("_maya"))
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.validationError).isEqualTo(AddUsernameState.ValidationError.CANNOT_START_WITH_UNDERSCORE)
+    assertThat(viewModel.state.value.isSubmittable).isFalse()
+  }
+
   @Test
   fun `a nickname with invalid characters produces a validation error`() = runTest(testDispatcher) {
     viewModel.onEvent(AddUsernameScreenEvents.UsernameChanged("ma!a"))
