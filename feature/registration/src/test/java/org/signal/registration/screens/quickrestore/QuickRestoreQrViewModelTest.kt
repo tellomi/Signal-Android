@@ -225,4 +225,23 @@ class QuickRestoreQrViewModelTest {
       svr2Credentials = SvrCredentials(username = "test-username", password = "test-password")
     )
   }
+
+  /** Tellomi（tellomi/tellomi#1216 跟进）：旧手机是 iPhone、又没有备份档位，记下这一点，恢复方式页据此换成说明页；这一步不注册。 */
+  @Test
+  fun `MessageReceived from an iPhone without a backup tier marks the restore selection as an old iPhone`() = runTest(testDispatcher) {
+    val message = FakeNetworkController()
+      .provisioningMessage(aep = AccountEntropyPool.generate(), e164 = "+8613800000001", tier = null)
+      .copy(platform = NetworkController.ProvisioningMessage.Platform.IOS)
+    val flow = MutableSharedFlow<NetworkController.ProvisioningEvent>(replay = 1)
+    every { mockRepository.startProvisioning() } returns flow
+
+    createViewModel()
+    flow.emit(NetworkController.ProvisioningEvent.MessageReceived(message))
+
+    assertThat(emittedParentEvents).hasSize(3)
+    assertThat(emittedParentEvents[0]).isInstanceOf<RegistrationFlowEvent.RestoreMethodTokenReceived>()
+    assertThat(emittedParentEvents[1]).isEqualTo(RegistrationFlowEvent.E164Chosen("+8613800000001"))
+    assertThat(emittedParentEvents[2]).isEqualTo(RegistrationFlowEvent.NavigateToScreen(RegistrationRoute.ArchiveRestoreSelection.forOldIphoneWithoutBackup()))
+    coVerify(exactly = 0) { mockRepository.registerAccountWithProvisioningData(any(), any()) }
+  }
 }

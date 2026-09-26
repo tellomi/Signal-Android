@@ -39,6 +39,7 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
   val backupValues = BackupValues(store)
   val callQualityValues = CallQualityValues(store)
   val labsValues = LabsValues(store)
+  val tellomiRegionValues = TellomiRegionValues(store)
 
   val plainTextValues = PlainTextSharedPrefsDataStore(context)
 
@@ -274,6 +275,12 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
 
     val apkUpdate: ApkUpdateValues
       get() = instance!!.apkUpdateValues
+
+    /** Tellomi（#1055）：当前区域。 */
+    @JvmStatic
+    @get:JvmName("tellomiRegion")
+    val tellomiRegion: TellomiRegionValues
+      get() = instance!!.tellomiRegionValues
 
     @JvmStatic
     @get:JvmName("backup")

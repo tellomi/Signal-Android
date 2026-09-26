@@ -212,7 +212,8 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       givenName = profileName.givenName,
       familyName = profileName.familyName,
       avatar = avatar,
-      discoverableByPhoneNumber = discoverable
+      discoverableByPhoneNumber = discoverable,
+      isReRegistration = SignalStore.registration.isTellomiReRegistration
     )
   }
 
@@ -809,6 +810,10 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       // Registering releases any username we previously held, so it has to be re-reserved once storage service tells us what it was.
       Log.i(TAG, "[applyAccountData] Re-registration. Marking that we need to reclaim our username and link.")
       SignalStore.misc.needsUsernameRestore = true
+
+      // Tellomi（tellomi/tellomi#1266）：注册资料页不显示用户名框，标完成时清掉（RegistrationValues.isTellomiReRegistration）
+      Log.i(TAG, "[applyAccountData] Re-registration. Hiding the username field on the profile screen.")
+      SignalStore.registration.isTellomiReRegistration = true
     }
 
     accountData.authCredentialSalt?.let {

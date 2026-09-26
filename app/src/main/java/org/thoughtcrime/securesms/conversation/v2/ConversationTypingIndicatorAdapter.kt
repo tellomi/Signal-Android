@@ -12,6 +12,7 @@ import com.bumptech.glide.RequestManager
 import org.signal.core.util.toInt
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.ConversationTypingView
+import org.thoughtcrime.securesms.conversation.v2.items.TellomiBubbleTail
 import org.thoughtcrime.securesms.recipients.Recipient
 
 class ConversationTypingIndicatorAdapter(
@@ -45,7 +46,10 @@ class ConversationTypingIndicatorAdapter(
     holder.bind(requestManager, state)
   }
 
-  class ViewHolder(private val conversationTypingView: ConversationTypingView) : RecyclerView.ViewHolder(conversationTypingView) {
+  /** Tellomi（#1206）：报告「正在输入」气泡的尾巴，由 [TellomiBubbleTail.Decoration] 画。 */
+  class ViewHolder(private val conversationTypingView: ConversationTypingView) : RecyclerView.ViewHolder(conversationTypingView), TellomiBubbleTail.Provider {
+    override fun getTellomiTail(parent: RecyclerView): TellomiBubbleTail.Spec? = conversationTypingView.tellomiGetTail(parent)
+
     fun bind(
       requestManager: RequestManager,
       state: State

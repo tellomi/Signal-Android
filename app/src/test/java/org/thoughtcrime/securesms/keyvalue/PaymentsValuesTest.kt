@@ -10,6 +10,10 @@ import org.junit.Before
 import org.junit.Test
 import org.thoughtcrime.securesms.util.RemoteConfig
 
+/**
+ * Tellomi（tellomi/tellomi#1233）：付款写死关闭，上游可用性矩阵里依赖远程开关的 5 条（DISABLED_REMOTELY、
+ * WITHDRAW_ONLY ×2、REGISTRATION_AVAILABLE、WITHDRAW_AND_SEND）不再成立，删掉；全组合一律 NOT_IN_REGION 见 [TellomiPaymentsDisabledTest]。
+ */
 class PaymentsValuesTest {
 
   private lateinit var paymentValues: PaymentsValues
@@ -40,46 +44,6 @@ class PaymentsValuesTest {
   }
 
   @Test
-  fun `when flag disabled and no account, expect DISABLED_REMOTELY`() {
-    every { SignalStore.account.e164 } returns "+15551234567"
-    every { paymentValues.mobileCoinPaymentsEnabled() } returns false
-    every { RemoteConfig.payments } returns false
-    every { RemoteConfig.paymentsCountryBlocklist } returns ""
-
-    assertEquals(PaymentsAvailability.DISABLED_REMOTELY, SignalStore.payments.paymentsAvailability)
-  }
-
-  @Test
-  fun `when flag disabled but has account, expect WITHDRAW_ONLY`() {
-    every { SignalStore.account.e164 } returns "+15551234567"
-    every { paymentValues.mobileCoinPaymentsEnabled() } returns true
-    every { RemoteConfig.payments } returns false
-    every { RemoteConfig.paymentsCountryBlocklist } returns ""
-
-    assertEquals(PaymentsAvailability.WITHDRAW_ONLY, SignalStore.payments.paymentsAvailability)
-  }
-
-  @Test
-  fun `when flag enabled and no account, expect REGISTRATION_AVAILABLE`() {
-    every { SignalStore.account.e164 } returns "+15551234567"
-    every { paymentValues.mobileCoinPaymentsEnabled() } returns false
-    every { RemoteConfig.payments } returns true
-    every { RemoteConfig.paymentsCountryBlocklist } returns ""
-
-    assertEquals(PaymentsAvailability.REGISTRATION_AVAILABLE, SignalStore.payments.paymentsAvailability)
-  }
-
-  @Test
-  fun `when flag enabled and has account, expect WITHDRAW_AND_SEND`() {
-    every { SignalStore.account.e164 } returns "+15551234567"
-    every { paymentValues.mobileCoinPaymentsEnabled() } returns true
-    every { RemoteConfig.payments } returns true
-    every { RemoteConfig.paymentsCountryBlocklist } returns ""
-
-    assertEquals(PaymentsAvailability.WITHDRAW_AND_SEND, SignalStore.payments.paymentsAvailability)
-  }
-
-  @Test
   fun `when flag enabled and no account and in the country blocklist, expect NOT_IN_REGION`() {
     every { SignalStore.account.e164 } returns "+15551234567"
     every { paymentValues.mobileCoinPaymentsEnabled() } returns false
@@ -87,15 +51,5 @@ class PaymentsValuesTest {
     every { RemoteConfig.paymentsCountryBlocklist } returns "1"
 
     assertEquals(PaymentsAvailability.NOT_IN_REGION, SignalStore.payments.paymentsAvailability)
-  }
-
-  @Test
-  fun `when flag enabled and has account and in the country blocklist, expect WITHDRAW_ONLY`() {
-    every { SignalStore.account.e164 } returns "+15551234567"
-    every { paymentValues.mobileCoinPaymentsEnabled() } returns true
-    every { RemoteConfig.payments } returns true
-    every { RemoteConfig.paymentsCountryBlocklist } returns "1"
-
-    assertEquals(PaymentsAvailability.WITHDRAW_ONLY, SignalStore.payments.paymentsAvailability)
   }
 }

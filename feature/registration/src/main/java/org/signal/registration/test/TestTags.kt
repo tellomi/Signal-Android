@@ -45,6 +45,7 @@ object TestTags {
   const val PHONE_NUMBER_SCREEN = "phone_number_screen"
   const val PHONE_NUMBER_COUNTRY_CODE_FIELD = "phone_number_country_code_field"
   const val PHONE_NUMBER_PHONE_FIELD = "phone_number_phone_field"
+  const val PHONE_NUMBER_CLEAR_BUTTON = "phone_number_clear_button"
   const val PHONE_NUMBER_NEXT_BUTTON = "phone_number_next_button"
   const val PHONE_NUMBER_REGISTER_WITHOUT_NUMBER_BUTTON = "phone_number_register_without_number_button"
 
@@ -90,6 +91,9 @@ object TestTags {
   const val VERIFICATION_CODE_RESEND_SMS_BUTTON = "verification_code_resend_sms_button"
   const val VERIFICATION_CODE_CALL_ME_BUTTON = "verification_code_call_me_button"
   const val VERIFICATION_CODE_HAVING_TROUBLE_BUTTON = "verification_code_having_trouble_button"
+  const val VERIFICATION_CODE_ERROR = "verification_code_error"
+  const val VERIFICATION_CODE_HELP_CHANGE_NUMBER = "verification_code_help_change_number"
+  const val VERIFICATION_CODE_HELP_CONTACT_SUPPORT = "verification_code_help_contact_support"
 
   // Archive Restore Selection Screen
   const val ARCHIVE_RESTORE_SELECTION_SCREEN = "archive_restore_selection_screen"
@@ -121,6 +125,7 @@ object TestTags {
   // Captcha Screen
   const val CAPTCHA_SCREEN = "captcha_screen"
   const val CAPTCHA_CANCEL_BUTTON = "captcha_cancel_button"
+  const val CAPTCHA_RETRY_BUTTON = "captcha_retry_button" // Tellomi（#1210）
 
   // Country Code Picker Screen
   const val COUNTRY_CODE_PICKER_SCREEN = "country_code_picker_screen"
@@ -133,6 +138,11 @@ object TestTags {
   const val CREATE_PROFILE_FAMILY_NAME_FIELD = "create_profile_family_name_field"
   const val CREATE_PROFILE_WHO_CAN_FIND_ME_ROW = "create_profile_who_can_find_me_row"
   const val CREATE_PROFILE_NEXT_BUTTON = "create_profile_next_button"
+  const val CREATE_PROFILE_PHONE_NUMBER_NOT_SHOWN = "create_profile_phone_number_not_shown"
+  const val CREATE_PROFILE_AVATAR_INITIALS = "create_profile_avatar_initials"
+  const val CREATE_PROFILE_USERNAME_FIELD = "create_profile_username_field"
+  const val CREATE_PROFILE_USERNAME_SUPPORTING_TEXT = "create_profile_username_supporting_text"
+  const val CREATE_PROFILE_USERNAME_CANDIDATE = "create_profile_username_candidate"
 
   // Phone Number Discoverability Screen
   const val PHONE_NUMBER_DISCOVERABILITY_SCREEN = "phone_number_discoverability_screen"
