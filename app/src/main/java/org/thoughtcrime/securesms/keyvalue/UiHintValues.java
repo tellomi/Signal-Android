@@ -33,6 +33,8 @@ public class UiHintValues extends SignalStoreValues {
   private static final String HAS_SEEN_VERIFY_AUTO_SHEET                        = "uihints.has_seen_verify_auto_sheet";
   private static final String HAS_DISMISSED_MEMBER_LABEL_ABOUT_OVERRIDE_WARNING = "uihints.has_dismissed_member_label_about_override_warning";
   private static final String HAS_SEEN_ADMIN_DELETE_EDUCATION_DIALOG            = "uihints.has_seen_admin_delete_education_dialog";
+  // Tellomi（tellomi/tellomi#1218 F-01）：首屏通知说明页只出一次
+  private static final String HAS_SEEN_TELLOMI_NOTIFICATION_PRIMER              = "uihints.tellomi.has_seen_notification_primer";
 
   UiHintValues(@NonNull KeyValueStore store) {
     super(store);
@@ -249,5 +251,13 @@ public class UiHintValues extends SignalStoreValues {
 
   public void setHasSeenAdminDeleteEducationDialog() {
     putBoolean(HAS_SEEN_ADMIN_DELETE_EDUCATION_DIALOG, true);
+  }
+
+  public boolean hasSeenTellomiNotificationPrimer() {
+    return getBoolean(HAS_SEEN_TELLOMI_NOTIFICATION_PRIMER, false);
+  }
+
+  public void markHasSeenTellomiNotificationPrimer() {
+    putBoolean(HAS_SEEN_TELLOMI_NOTIFICATION_PRIMER, true);
   }
 }

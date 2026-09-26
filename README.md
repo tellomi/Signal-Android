@@ -1,3 +1,7 @@
+> **这是修改版。** 本仓库是 [Signal-Android](https://github.com/signalapp/Signal-Android) 的修改版本，由重庆半格智能科技有限公司为 Tellomi 修改，修改始于 2026-09-21；修改部分的版权归重庆半格智能科技有限公司。改了什么，见本仓库以 `tellomi` 开头的分支相对上游 release tag 的提交记录。原作品和修改版都按 AGPL-3.0 授权。
+>
+> **This is a modified version** of [Signal-Android](https://github.com/signalapp/Signal-Android), modified by 重庆半格智能科技有限公司 for Tellomi starting 2026-09-21; copyright in the modifications belongs to 重庆半格智能科技有限公司. The changes are the commits on this repository's `tellomi*` branches on top of the upstream release tags. The original work and this modified version are both licensed under AGPL-3.0.
+
 # Signal Android
 
 Signal is a simple, powerful, and secure messenger that uses your phone's data connection (WiFi/4G/5G) to communicate securely.

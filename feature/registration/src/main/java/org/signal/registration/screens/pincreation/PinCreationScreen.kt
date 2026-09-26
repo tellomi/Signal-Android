@@ -51,6 +51,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -63,6 +64,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
@@ -73,10 +75,12 @@ import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
 import org.signal.registration.R
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.test.TestTags
+import java.util.Locale
 import org.signal.core.ui.R as CoreR
 
 private const val STEP_TRANSITION_DURATION = 250
@@ -103,7 +107,7 @@ fun PinCreationScreen(
     state.dialogs.networkError != null -> {
       val retryAfter = state.dialogs.networkError.retryAfter
       val message = if (retryAfter != null) {
-        stringResource(R.string.PinCreationScreen__network_error_try_again_in_s, retryAfter.toString())
+        stringResource(R.string.PinCreationScreen__network_error_try_again_in_s, TellomiRegistration.retryAfterText(retryAfter, ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.getDefault())) // Tellomi（#1210）：不用 Duration.toString()
       } else {
         stringResource(R.string.PinCreationScreen__network_error)
       }

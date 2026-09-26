@@ -1078,7 +1078,7 @@ object RemoteConfig {
   /**
    * Tellomi（#1078）：服务端下发的 GIPHY API key（Android 那一份）。
    *
-   * 无值回落到编译期常量 `BuildConfig.GIPHY_API_KEY`——上游那把 key 是 Signal 自己的，
+   * 无值时不请求 GIPHY（#1235：上游编译期常量那把 key 是 Signal 自己的，已删）。
    * 换 key 不该要发版。服务端下发见 `deploy/hk/gen-config.py` 的 `gif.apiKey.android`。
    */
   @JvmStatic

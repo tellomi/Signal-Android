@@ -48,7 +48,7 @@
   <!-- Removed by excludeNonTranslatables <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string> -->
 
     <!-- ApplicationMigrationActivity -->
-    <string name="ApplicationMigrationActivity__signal_is_updating">সিগন্যাল আপডেট হচ্ছে…</string>
+    <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi আপডেট হচ্ছে…</string>
 
     <!-- ApplicationPreferencesActivity -->
     <string name="ApplicationPreferenceActivity_you_havent_set_a_passphrase_yet">আপনি এখনও কোনো পাসফ্রেজ স্থাপন করেন নি!</string>
@@ -2553,7 +2553,7 @@
 
     <!-- WebRtcCallView -->
     <string name="WebRtcCallView__signal_call">Tellomi কল</string>
-    <string name="WebRtcCallView__signal_video_call">সিগন্যাল ভিডিও কল</string>
+    <string name="WebRtcCallView__signal_video_call">Tellomi ভিডিও কল</string>
     <string name="WebRtcCallView__start_call">কল শুরু করুন</string>
     <string name="WebRtcCallView__join_call">কলে যোগ দিন</string>
     <string name="WebRtcCallView__call_is_full">কলটিতে জায়গা নেই</string>
@@ -2571,11 +2571,11 @@
     <!-- Displayed on the call screen as the status when waiting to be let into a call link by an admin -->
     <string name="WebRtcCallView__waiting_to_be_let_in">প্রবেশ করার জন্য অপেক্ষা চলছে…</string>
 
-    <string name="WebRtcCallView__signal_will_ring_s">সিগন্যাল %1$s কে রিং করবে</string>
-    <string name="WebRtcCallView__signal_will_ring_s_and_s">সিগন্যাল %1$s এবং %2$s কল করবে৷</string>
+    <string name="WebRtcCallView__signal_will_ring_s">Tellomi %1$s কে রিং করবে</string>
+    <string name="WebRtcCallView__signal_will_ring_s_and_s">Tellomi %1$s এবং %2$s কল করবে৷</string>
     <plurals name="WebRtcCallView__signal_will_ring_s_s_and_d_others">
-        <item quantity="one">সিগন্যাল %1$s, %2$s এবং অন্যান্য %3$d বেজে উঠবে।</item>
-        <item quantity="other">সিগন্যাল %1$s, %2$s এবং অন্যান্যগুলি %3$d বেজে উঠবে৷</item>
+        <item quantity="one">Tellomi %1$s, %2$s এবং অন্যান্য %3$d বেজে উঠবে।</item>
+        <item quantity="other">Tellomi %1$s, %2$s এবং অন্যান্যগুলি %3$d বেজে উঠবে৷</item>
     </plurals>
 
     <string name="WebRtcCallView__s_will_be_notified">%1$s কে জানানো হবে</string>
@@ -2827,12 +2827,12 @@
     <string name="RegistrationActivity_you_will_receive_a_call_to_verify_this_number">এই নম্বরটি যাচাই করার জন্য আপনি একটি কল পাবেন।</string>
     <string name="RegistrationActivity_edit_number">নম্বর সম্পাদনা</string>
     <string name="RegistrationActivity_missing_google_play_services">গুগল প্লে সার্ভিস নিখোজ</string>
-    <string name="RegistrationActivity_this_device_is_missing_google_play_services">এই ডিভাইস টিতে গুগল প্লে পরিষেবাদি অনুপস্থিত। আপনি এখনও সিগন্যাল ব্যবহার করতে পারেন, তবে এই কনফিগারেশনের ফলে নির্ভরযোগ্যতা বা কার্যকারিতা হ্রাস পেতে পারে। \n\\ আপনি যদি এ্যাডভান্স ব্যবহারকারী না হন, তাছাড়া কোনও পরিবর্তিত অ্যানড্রয়েড রম চালিয়ে যাচ্ছেন না, বা মনে করছেন যে, আপনি এই ত্রুটি ভুল করে দেখছেন। দয়া করে সমস্যা সমাধানের জন্য support@tellomi.app ঠিকানায় পরিচিতি করুন।</string>
+    <string name="RegistrationActivity_this_device_is_missing_google_play_services">এই ডিভাইস টিতে গুগল প্লে পরিষেবাদি অনুপস্থিত। আপনি এখনও Tellomi ব্যবহার করতে পারেন, তবে এই কনফিগারেশনের ফলে নির্ভরযোগ্যতা বা কার্যকারিতা হ্রাস পেতে পারে। \n\\ আপনি যদি এ্যাডভান্স ব্যবহারকারী না হন, তাছাড়া কোনও পরিবর্তিত অ্যানড্রয়েড রম চালিয়ে যাচ্ছেন না, বা মনে করছেন যে, আপনি এই ত্রুটি ভুল করে দেখছেন। দয়া করে সমস্যা সমাধানের জন্য support@tellomi.app ঠিকানায় পরিচিতি করুন।</string>
     <string name="RegistrationActivity_i_understand">আমি বুঝতে পেরেছি</string>
     <string name="RegistrationActivity_play_services_error">প্লে সার্ভিস সমস্যা</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">গুগল প্লে পরিষেবাদি আপডেট করছে বা অস্থায়ীভাবে অনুপলব্ধ। অনুগ্রহপূর্বক আবার চেষ্টা করুন।</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">আপনাকে বন্ধুদের সাথে সংযোগ করতে এবং বার্তা পাঠাতে সাহায্য করার জন্য সিগন্যালের পরিচিতি এবং মিডিয়ার অনুমতির প্রয়োজন হয়। আপনার পরিচিতিগুলি সিগন্যালের ব্যক্তিগত পরিচিতি আবিষ্কার ব্যবহার করে আপলোড করা হয়, যার মানে সেগুলি এন্ড-টু-এন্ড এনক্রিপ্ট করা এবং সিগন্যাল পরিষেবাতে কখনই দৃশ্যমান নয়৷</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">আপনাকে বন্ধুদের সাথে সংযোগ করতে সাহায্য করার জন্য সিগন্যালের পরিচিতির অনুমতির প্রয়োজন হয়। আপনার পরিচিতিগুলি সিগন্যালের ব্যক্তিগত পরিচিতি আবিষ্কার ব্যবহার করে আপলোড করা হয়, যার মানে সেগুলি এন্ড-টু-এন্ড এনক্রিপ্ট করা এবং সিগন্যাল পরিষেবাতে কখনই দৃশ্যমান নয়।</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">আপনাকে বন্ধুদের সাথে সংযোগ করতে এবং বার্তা পাঠাতে সাহায্য করার জন্য Tellomi-এর পরিচিতি এবং মিডিয়ার অনুমতির প্রয়োজন হয়। আপনার পরিচিতিগুলি Tellomi-এর ব্যক্তিগত পরিচিতি আবিষ্কার ব্যবহার করে আপলোড করা হয়, যার মানে সেগুলি এন্ড-টু-এন্ড এনক্রিপ্ট করা এবং Tellomi পরিষেবাতে কখনই দৃশ্যমান নয়৷</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">আপনাকে বন্ধুদের সাথে সংযোগ করতে সাহায্য করার জন্য Tellomi-এর পরিচিতির অনুমতির প্রয়োজন হয়। আপনার পরিচিতিগুলি Tellomi-এর ব্যক্তিগত পরিচিতি আবিষ্কার ব্যবহার করে আপলোড করা হয়, যার মানে সেগুলি এন্ড-টু-এন্ড এনক্রিপ্ট করা এবং Tellomi পরিষেবাতে কখনই দৃশ্যমান নয়।</string>
     <string name="RegistrationActivity_rate_limited_to_service">আপনি এই নম্বরটি নিবন্ধন করার জন্য অনেকবার চেষ্টা করেছেন। দয়া করে পরে আবার চেষ্টা করুন।</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">আপনি এই নম্বরটি রেজিস্ট্রেশন করার জন্য ইতোমধ্যে অনেকবার চেষ্টা করে ফেলেছেন। অনুগ্রহ করে %1$s মিনিটের মধ্যে আবার চেষ্টা করুন।</string>
@@ -3223,7 +3223,7 @@
     <string name="UsernameShareBottomSheet__copy_or_share_a_username_link">ব্যবহারকারীর নামের একটি লিংক কপি করুন অথবা শেয়ার করুন</string>
 
     <!-- VerifyIdentityActivity -->
-    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">আপনার পরিচিতি একটি অসঙ্গত QR কোড ফর্ম্যাট সহ সিগন্যালের একটি নতুন সংস্করণ চলাচ্ছেন। তুলনা করার জন্য আপডেট করুন।</string>
+    <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">আপনার পরিচিতি একটি অসঙ্গত QR কোড ফর্ম্যাট সহ Tellomi-এর একটি নতুন সংস্করণ চলাচ্ছেন। তুলনা করার জন্য আপডেট করুন।</string>
     <string name="VerifyIdentityActivity_the_scanned_qr_code_is_not_a_correctly_formatted_safety_number">স্ক্যান করা কিউআর কোডটি সঠিকভাবে ফর্ম্যাট করা নিরাপত্তা নাম্বার যাচাইকরণ কোড নয়। আবার স্ক্যান করার চেষ্টা করুন।</string>
     <string name="VerifyIdentityActivity_share_safety_number_via">যার মাধ্যমে নিরাপত্তা নম্বর শেয়ার করতে চান…</string>
     <string name="VerifyIdentityActivity_our_signal_safety_number">আমাদের Tellomi নিরাপত্তা নাম্বার:</string>
@@ -3903,7 +3903,7 @@
     <string name="prompt_passphrase_activity__unlock">লক্ খুলুন</string>
 
     <!-- prompt_mms_activity -->
-    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">আপনার ওয়্যারলেস ক্যারিয়ারের মাধ্যমে মিডিয়া এবং গ্রুপ বার্তাগুলি সরবরাহ করার জন্য সিগন্যালের এমএমএস সেটিংস প্রয়োজন। আপনার ডিভাইসএ এই তথ্যটি পাওয়া যাচ্ছে না, যা লক্ করা ডিভাইস এবং অন্যান্য বিধিনিষেধযুক্ত কনফিগারেশনের জন্য প্রায়শ সত্য|</string>
+    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">আপনার ওয়্যারলেস ক্যারিয়ারের মাধ্যমে মিডিয়া এবং গ্রুপ বার্তাগুলি সরবরাহ করার জন্য Tellomi-এর এমএমএস সেটিংস প্রয়োজন। আপনার ডিভাইসএ এই তথ্যটি পাওয়া যাচ্ছে না, যা লক্ করা ডিভাইস এবং অন্যান্য বিধিনিষেধযুক্ত কনফিগারেশনের জন্য প্রায়শ সত্য|</string>
     <string name="prompt_mms_activity__to_send_media_and_group_messages_tap_ok">মিডিয়া এবং গ্রুপ বার্তা প্রেরণ করতে, \'ঠিক আছে\' আলতো চাপুন এবং অনুরোধ করা সেটিংসটি সম্পূর্ণ করুন। আপনার ক্যারিয়ারের এমএমএস সেটিংস সাধারণত \'আপনার ক্যারিয়ার এপিএন\' অনুসন্ধান করে সনাক্ত করা যায়। আপনার কেবল এটি একবার করা দরকার।</string>
 
     <!-- BadDecryptLearnMoreDialog -->
@@ -4935,7 +4935,7 @@
     <!-- Displayed in a notification when a Signal video call is ringing -->
     <string name="CallNotificationBuilder__incoming_signal_video_call">Tellomi ভিডিও কল আসছে</string>
     <!-- Displayed in a notification when a Signal group call is ringing -->
-    <string name="CallNotificationBuilder__incoming_signal_group_call">ইনকামিং সিগন্যাল গ্রুপ কল</string>
+    <string name="CallNotificationBuilder__incoming_signal_group_call">ইনকামিং Tellomi গ্রুপ কল</string>
     <!-- Displayed in a notification when a Signal voice call is in progress -->
     <string name="CallNotificationBuilder__ongoing_signal_voice_call">চলমান Tellomi ভয়েস কল</string>
     <!-- Displayed in a notification when a Signal video call is in progress -->
@@ -5042,7 +5042,7 @@
     <string name="PhoneNumberPrivacy_everyone">সকলে</string>
     <string name="PhoneNumberPrivacy_nobody">কেউ না</string>
     <string name="preferences_app_protection__screen_lock">স্ক্রীন এর লক্</string>
-    <string name="preferences_app_protection__lock_signal_access_with_android_screen_lock_or_fingerprint">অ্যানড্রয়েড স্ক্রীন এর লক্ বা ফিঙ্গারপ্রিন্ট লক দিয়ে সিগন্যাল লক্ করুন</string>
+    <string name="preferences_app_protection__lock_signal_access_with_android_screen_lock_or_fingerprint">অ্যানড্রয়েড স্ক্রীন এর লক্ বা ফিঙ্গারপ্রিন্ট লক দিয়ে Tellomi লক্ করুন</string>
     <string name="preferences_app_protection__screen_lock_inactivity_timeout">স্ক্রীন এর লক্ নিষ্ক্রিয়তার সময়সীমা</string>
     <!-- Snackbar text shown when trying to enable screen lock but the user does not have a password or biometrics enabled -->
     <string name="preferences_app_protection__to_use_screen_lock">স্ক্রিন লক ব্যবহার করতে এই ডিভাইসে একটি পিন, প্যাটার্ন বা পাসওয়ার্ড সেট করুন।</string>
@@ -5737,7 +5737,7 @@
     <string name="ChangeNumberConfirmFragment__edit_number">নম্বর সম্পাদনা</string>
 
     <!-- ChangeNumberRegistrationLockFragment -->
-    <string name="ChangeNumberRegistrationLockFragment__signal_change_number_need_help_with_pin_for_android_v2_pin">সিগন্যাল পরিবর্তন নম্বর - অ্যান্ড্রয়েডের জন্য পিনের সাহায্য প্রয়োজন (v2 পিন)</string>
+    <string name="ChangeNumberRegistrationLockFragment__signal_change_number_need_help_with_pin_for_android_v2_pin">Tellomi পরিবর্তন নম্বর - অ্যান্ড্রয়েডের জন্য পিনের সাহায্য প্রয়োজন (v2 পিন)</string>
 
     <!-- ChangeNumberPinDiffersFragment -->
     <string name="ChangeNumberPinDiffersFragment__pins_do_not_match">পিন মেলে না</string>
@@ -8213,7 +8213,7 @@
     <string name="UseNewOnDeviceBackups__not_now">এখন না</string>
 
     <!-- Title of a megaphone shown to prompt the user to open Signal on their primary device -->
-    <string name="InactivePrimary__title">আপনার ফোনে সিগন্যাল খুলুন</string>
+    <string name="InactivePrimary__title">আপনার ফোনে Tellomi খুলুন</string>
     <!-- Body of a megaphone shown to prompt the user to open Signal on their primary device -->
     <string name="InactivePrimary__body">আপনার অ্যাকাউন্ট সক্রিয় রাখতে, আপনার মূল ডিভাইসে Tellomi খুলুন।</string>
     <!-- Button of a megaphone shown to prompt the user to open Signal on their primary device that will navigate to a support page -->
@@ -8374,7 +8374,7 @@
     <!-- Sheet title when user does not have enough space to download their backup. Placeholder is formatted byte size, for example 12GB. -->
     <string name="BackupAlertBottomSheet__free_up_s_on_this_device">এই ডিভাইসে %1$s খালি করুন</string>
     <!-- Sheet body part 1 when user does not have enough space to download their backup. Placeholder is the amount of space needed. -->
-    <string name="BackupAlertBottomSheet__to_finish_downloading_your_signal_backup">আপনার সিগন্যাল ব্যাকআপ ডাউনলোড শেষ করতে আপনার ডিভাইসের %1$s স্টোরেজ স্পেস প্রয়োজন।</string>
+    <string name="BackupAlertBottomSheet__to_finish_downloading_your_signal_backup">আপনার Tellomi ব্যাকআপ ডাউনলোড শেষ করতে আপনার ডিভাইসের %1$s স্টোরেজ স্পেস প্রয়োজন।</string>
     <!-- Sheet body part 2 when user does not have enough space to download their backup. -->
     <string name="BackupAlertBottomSheet__to_free_up_space_offload">স্পেস খালি করতে, অব্যবহৃত অ্যাপ বা আকারে বড় এমন বড় আকারের ফাইল অফলোড করুন বা মুছে ফেলুন।</string>
     <!-- Sheet title when user payment failed to process -->

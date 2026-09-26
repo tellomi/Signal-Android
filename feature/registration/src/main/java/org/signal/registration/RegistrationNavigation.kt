@@ -239,7 +239,12 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
   data class ArchiveRestoreSelection(
     val restoreOptions: List<ArchiveRestoreOption>,
     val registeredState: RegisteredState,
-    @Serializable(with = AccountEntropyPoolSerializer::class) val aep: AccountEntropyPool? = null
+    @Serializable(with = AccountEntropyPoolSerializer::class) val aep: AccountEntropyPool? = null,
+    /**
+     * Tellomi（tellomi/tellomi#1216 跟进）：扫码扫到的旧手机是 iPhone，而且没有备份档位。
+     * 没有备份服务时这一页不列恢复方式，只说明传不过来（[org.signal.registration.screens.restoreselection.TellomiNoTransferFromIphone]）。
+     */
+    val oldPhoneIsIphone: Boolean = false
   ) : RegistrationRoute {
     companion object {
 
@@ -267,6 +272,11 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
           },
           registeredState = RegisteredState.NotRegistered
         )
+      }
+
+      /** Tellomi：见 [oldPhoneIsIphone]。有备份服务时和 [forManualRestore] 一样列恢复方式。 */
+      fun forOldIphoneWithoutBackup(): ArchiveRestoreSelection {
+        return forManualRestore().copy(oldPhoneIsIphone = true)
       }
 
       fun forPostRegisterWithPinUnknown(): ArchiveRestoreSelection {
@@ -503,9 +513,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
       factory = WelcomeScreenViewModel.Factory(
         repository = registrationRepository,
         parentState = registrationViewModel.state,
-        parentEventEmitter = registrationViewModel::onEvent,
-        hasPermissions = { RegistrationPermissions.hasAllRequiredPermissions(context) },
-        getRequiredLinkedDevicePermission = { registrationViewModel.getRequiredLinkedDevicePermission() }
+        parentEventEmitter = registrationViewModel::onEvent
       )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -522,6 +530,8 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
   }
 
   // --- Permissions Screen
+  // Tellomi（#1112）：没有人再导航到这一页（见 WelcomeScreenViewModel）。保留 entry 只为兜住旧版本存下来的回退栈——
+  // 恢复时 RegistrationViewModel 已把它滤掉，这里是第二道保险，免得反序列化出来却没有 entry 可渲染。
   entry<RegistrationRoute.Permissions> { key ->
     val context = LocalContext.current
     val onProceed = { parentEventEmitter.navigateTo(key.nextRoute) }
@@ -961,6 +971,7 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
         restoreOptions = key.restoreOptions,
         registeredState = key.registeredState,
         knownAep = key.aep,
+        oldPhoneIsIphone = key.oldPhoneIsIphone,
         repository = registrationRepository,
         parentState = registrationViewModel.state,
         parentEventEmitter = registrationViewModel::onEvent
