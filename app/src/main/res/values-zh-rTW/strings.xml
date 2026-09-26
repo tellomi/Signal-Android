@@ -5979,12 +5979,34 @@
     <string name="HelpSettingsFragment__version">版本</string>
     <!-- Displayed when copying help screen text to the clipboard -->
     <string name="HelpSettingsFragment__copied_to_clipboard">已複製到剪貼簿</string>
+    <!-- Tellomi（#1165） -->
+    <string name="AboutSettings__tellomi_about_tellomi">關於 Tellomi</string>
+    <string name="AboutSettings__tellomi_version">版本 %1$s（建置 %2$s）</string>
+    <string name="AboutSettings__tellomi_section_updates">更新</string>
+    <string name="AboutSettings__tellomi_check_for_updates">版本更新</string>
+    <string name="AboutSettings__tellomi_checking_for_updates">正在檢查更新，有新版本會通知你</string>
+    <string name="AboutSettings__tellomi_section_contact">聯絡我們</string>
+    <string name="AboutSettings__tellomi_official_website">官方網站</string>
+    <string name="AboutSettings__tellomi_contact_support">聯絡客服</string>
+    <string name="AboutSettings__tellomi_privacy_and_personal_data">隱私與個人資料</string>
+    <string name="AboutSettings__tellomi_report_abuse">違規舉報</string>
+    <string name="AboutSettings__tellomi_tap_to_copy">點擊複製</string>
+    <string name="AboutSettings__tellomi_section_legal">法律與合規</string>
+    <string name="AboutSettings__tellomi_terms_of_service">服務協議</string>
+    <string name="AboutSettings__tellomi_privacy_policy">隱私權政策</string>
+    <string name="AboutSettings__tellomi_personal_information_collected">個人資料收集清單</string>
+    <string name="AboutSettings__tellomi_third_party_sharing">第三方資料共享及 SDK 清單</string>
+    <string name="AboutSettings__tellomi_system_permissions">系統權限調用清單</string>
+    <string name="AboutSettings__tellomi_complaints_and_reports">投訴檢舉規則</string>
+    <string name="AboutSettings__tellomi_section_open_source">開源</string>
+    <string name="AboutSettings__tellomi_open_source_licenses">開源授權</string>
+    <string name="AboutSettings__tellomi_source_code">原始碼</string>
     <string name="HelpSettingsFragment__debug_log">除錯紀錄</string>
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">許可證</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">服務條款與隱私權政策</string>
     <string name="HelpFragment__copyright_signal_messenger">Signal Messenger 版權所有</string>
-    <string name="HelpFragment__modifications_copyright_tellomi">Tellomi 擁有修改部分版權</string>
+    <string name="HelpFragment__modifications_copyright_tellomi">重庆半格智能科技有限公司 擁有修改部分版權</string>
     <string name="HelpFragment__licenced_under_the_agplv3">依據 GNU AGPLv3 的條款授權</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
