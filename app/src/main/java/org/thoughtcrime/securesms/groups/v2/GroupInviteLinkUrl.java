@@ -49,7 +49,9 @@ public final class GroupInviteLinkUrl {
     }
 
     try {
-      if (!"/".equals(uri.getPath()) && uri.getPath().length() > 0) {
+      // Tellomi：tell.cc 形状本来就带 /g 路径（getGroupUrl 只放行 /g、/g/），不许带路径的只有旧的 signal.group。
+      // 原来这里两种一起判，tell.cc/g#… 走到这一步就抛 —— Desktop 发的群邀请在 Android 上显示「群链接无效」（tellomi/tellomi#1113）
+      if (!TellomiLinks.HOST.equalsIgnoreCase(uri.getHost()) && !"/".equals(uri.getPath()) && uri.getPath().length() > 0) {
         throw new InvalidGroupLinkException("No path was expected in uri");
       }
 

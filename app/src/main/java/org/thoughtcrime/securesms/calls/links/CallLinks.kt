@@ -29,8 +29,11 @@ object CallLinks {
 
   // Tellomi：新形状 https|tellomi://tell.cc/call#key=…（见 docs/signal/LINKS_AND_SCHEMES.md）。
   // 通话是阶段三才有，这里先让解析认得，`url()` 生成的仍是旧形状，等三端都接受后再翻。
+  // tellomi/tellomi#1113：另外认带斜杠的 `tell.cc/call/#key=…`——Desktop 发的是这个（`signalRoutes.std.ts`），原来 Android 在 App 内认不出。
   private const val TELLOMI_HTTPS_LINK_PREFIX = "https://tell.cc/call#key="
   private const val TELLOMI_SCHEME_LINK_PREFIX = "tellomi://tell.cc/call#key="
+  private const val TELLOMI_HTTPS_SLASH_LINK_PREFIX = "https://tell.cc/call/#key="
+  private const val TELLOMI_SCHEME_SLASH_LINK_PREFIX = "tellomi://tell.cc/call/#key="
 
   private val TAG = Log.tag(CallLinks::class.java)
 
@@ -65,7 +68,9 @@ object CallLinks {
       url.startsWith(LEGACY_HTTPS_LINK_PREFIX) ||
       url.startsWith(LEGACY_SGNL_LINK_PREFIX) ||
       url.startsWith(TELLOMI_HTTPS_LINK_PREFIX) ||
-      url.startsWith(TELLOMI_SCHEME_LINK_PREFIX)
+      url.startsWith(TELLOMI_SCHEME_LINK_PREFIX) ||
+      url.startsWith(TELLOMI_HTTPS_SLASH_LINK_PREFIX) ||
+      url.startsWith(TELLOMI_SCHEME_SLASH_LINK_PREFIX)
   }
 
   @JvmStatic

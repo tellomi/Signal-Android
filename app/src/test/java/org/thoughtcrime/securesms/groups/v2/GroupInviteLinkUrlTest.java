@@ -82,6 +82,23 @@ public final class GroupInviteLinkUrlTest {
     assertEquals(urlToCompare, GroupInviteLinkUrl.createUrl(groupMasterKey, password));
   }
 
+  @Test
+  public void can_parse_tell_urls() throws GroupInviteLinkUrl.InvalidGroupLinkException, GroupInviteLinkUrl.UnknownGroupLinkVersionException {
+    // Tellomi（tellomi/tellomi#1113）：Desktop 发的 tell.cc/g#…，以及带斜杠 / tellomi:// 两种写法，都要能解析回同一个群
+    // （原来 fromUri 的「不许带路径」把 /g 一起拒了，用户看到「群链接无效」）
+    String encoding = expectedUrl.substring(expectedUrl.indexOf('#') + 1);
+
+    for (String url : Arrays.asList("https://tell.cc/g#" + encoding,
+                                    "https://tell.cc/g/#" + encoding,
+                                    "tellomi://tell.cc/g#" + encoding))
+    {
+      GroupInviteLinkUrl parsed = GroupInviteLinkUrl.fromUri(url);
+
+      assertEquals(url, groupMasterKey, parsed.getGroupMasterKey());
+      assertEquals(url, password, parsed.getPassword());
+    }
+  }
+
   private static TestBuilder givenGroup() {
     return new TestBuilder();
   }
