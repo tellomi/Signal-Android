@@ -193,6 +193,15 @@ fun PhoneNumberScreen(
   // Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。手机号是第一条发往境外（香港）服务端的个人信息，
   // 所以这一页排在协议同意之后、确认号码之前；同意过同一版本就不再出现。
   var crossBorderAgreed by remember { mutableStateOf(TellomiCrossBorderConsent.hasAgreed(context)) }
+  // 右上角菜单的「关联设备」也要连服务端（二维码），同意之前网络是关着的：和欢迎页一样先问，同意了再往下走。
+  var pendingLinkDevice by remember { mutableStateOf(false) }
+  val gatedOnEvent: (PhoneNumberEntryScreenEvents) -> Unit = { event ->
+    if (event == PhoneNumberEntryScreenEvents.LinkDevice && !crossBorderAgreed) {
+      pendingLinkDevice = true
+    } else {
+      onEvent(event)
+    }
+  }
 
   if (state.dialogs.confirmNumber) {
     when {
@@ -267,9 +276,21 @@ fun PhoneNumberScreen(
       .testTag(TestTags.PHONE_NUMBER_SCREEN)
   ) {
     when (val layoutParams = RegistrationScaffold.rememberLayoutParams()) {
-      is RegistrationScaffold.Params.OnePane -> OnePaneLayout(layoutParams, state, onEvent, consentChecked, onConsentCheckedChange)
-      is RegistrationScaffold.Params.TwoPane -> TwoPaneLayout(layoutParams, state, onEvent, consentChecked, onConsentCheckedChange)
+      is RegistrationScaffold.Params.OnePane -> OnePaneLayout(layoutParams, state, gatedOnEvent, consentChecked, onConsentCheckedChange)
+      is RegistrationScaffold.Params.TwoPane -> TwoPaneLayout(layoutParams, state, gatedOnEvent, consentChecked, onConsentCheckedChange)
     }
+  }
+
+  if (pendingLinkDevice) {
+    TellomiCrossBorderNotice(
+      onAgree = {
+        TellomiCrossBorderConsent.recordAgreement(context)
+        crossBorderAgreed = true
+        pendingLinkDevice = false
+        onEvent(PhoneNumberEntryScreenEvents.LinkDevice)
+      },
+      onCancel = { pendingLinkDevice = false }
+    )
   }
 }
 
