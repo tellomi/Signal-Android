@@ -61,6 +61,10 @@ fun MediaSendScreen(
           )
         }
 
+        viewModel.reRegistrationScannedDialog.Content { _, onDismissRequest, onConfirm, _, onDeny ->
+          TellomiReRegistrationScannedDialog(onConfirm = onConfirm, onDeny = onDeny, onDismissRequest = onDismissRequest)
+        }
+
         viewModel.addToGroupStoryDialog.Content { recipientId, onDismissRequest, onConfirm, _, onDeny ->
           val groupName: String by LocalDisplayNameProvider.current(recipientId.id)
 
