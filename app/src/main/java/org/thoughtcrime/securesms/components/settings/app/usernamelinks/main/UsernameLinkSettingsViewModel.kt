@@ -367,10 +367,16 @@ class UsernameLinkSettingsViewModel : ViewModel() {
 /**
  * Draws the logo in the middle of the saved / shared QR badge.
  *
- * Tellomi（tellomi/tellomi#947）：从 [UsernameLinkSettingsViewModel.generateQrCodeImage] 里原样抽出来，好单测。
+ * Tellomi（tellomi/tellomi#947）：只在码本身留了中心标的位置时才画。用户名码现在都不留（[QrCodeData.forData] 恒给
+ * `canSupportIconOverlay = false`，不挖空），照上游无条件画会把同心标直接压在数据模块上——屏幕上的码去了标，
+ * 保存 / 分享出去的那张图却还带着，还更难扫。
  */
 @VisibleForTesting
 internal fun drawBadgeCenterLogo(canvas: android.graphics.Canvas, resources: Resources, qrCodeData: QrCodeData, tint: Int, width: Int, scaleFactor: Int) {
+  if (!qrCodeData.canSupportIconOverlay) {
+    return
+  }
+
   BitmapFactory.decodeResource(resources, R.drawable.qrcode_logo)?.let { logoBitmap ->
     val tintedPaint = Paint().apply {
       colorFilter = PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)

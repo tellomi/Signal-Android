@@ -1,7 +1,5 @@
 package org.thoughtcrime.securesms.components.settings.app.usernamelinks.main
 
-import android.content.Context
-import android.content.ContextWrapper
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
 import org.signal.camera.CameraCaptureMode
 import org.signal.camera.CameraScreen
 import org.signal.camera.CameraScreenEvents
@@ -60,11 +57,10 @@ fun UsernameQrScanScreen(
   onOpenCameraClicked: () -> Unit,
   onOpenGalleryClicked: () -> Unit,
   onRecipientFound: (Recipient) -> Unit,
+  onGroupInviteFound: (String) -> Unit,
   hasCameraPermission: Boolean,
   modifier: Modifier = Modifier
 ) {
-  val context = LocalContext.current
-
   when (qrScanResult) {
     QrScanResult.InvalidData -> {
       QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_invalid), onDismiss = onQrResultHandled)
@@ -102,11 +98,11 @@ fun UsernameQrScanScreen(
       onRecipientFound(qrScanResult.recipient)
     }
 
-    // Tellomi（tellomi/tellomi#947，需求 §3.2）：群邀请码直接进加群；不是 Tellomi 的码显示内容，不再一律「二维码无效」
+    // Tellomi（tellomi/tellomi#947，需求 §3.2）：群邀请码直接进加群；不是 Tellomi 的码显示内容，不再一律「二维码无效」。
+    // 加群弹层由宿主开：找人页的扫码页马上 finish，开在它上面的弹层会跟着没了；设置页的相机还开着，码留在取景框里每 2 秒会再弹一层。
     is QrScanResult.GroupInvite -> {
       LaunchedEffect(qrScanResult) {
-        context.findFragmentActivity()?.let { CommunicationActions.handlePotentialGroupLinkUrl(it, qrScanResult.url) }
-        onQrResultHandled()
+        onGroupInviteFound(qrScanResult.url)
       }
     }
 
@@ -195,13 +191,6 @@ fun UsernameQrScanScreen(
   }
 }
 
-/** Tellomi（tellomi/tellomi#947）：两个宿主（设置页的 Fragment、找人页的 Activity）里 Compose 的 context 都能解到 FragmentActivity。 */
-private tailrec fun Context.findFragmentActivity(): FragmentActivity? = when (this) {
-  is FragmentActivity -> this
-  is ContextWrapper -> baseContext.findFragmentActivity()
-  else -> null
-}
-
 /** Tellomi（tellomi/tellomi#947）：不是 Tellomi 的码——显示内容，网址可以「打开链接」，都可以「复制」。 */
 @Composable
 private fun ScannedContentDialog(text: String, onDismiss: () -> Unit) {
@@ -246,6 +235,7 @@ private fun UsernameQrScanScreenPreview() {
       onOpenCameraClicked = {},
       onOpenGalleryClicked = {},
       onRecipientFound = {},
+      onGroupInviteFound = {},
       hasCameraPermission = true
     )
   }
@@ -263,6 +253,7 @@ private fun UsernameQrScanScreenNoPermissionPreview() {
       onOpenCameraClicked = {},
       onOpenGalleryClicked = {},
       onRecipientFound = {},
+      onGroupInviteFound = {},
       hasCameraPermission = false
     )
   }

@@ -129,6 +129,10 @@ class UsernameQrScannerActivity : AppCompatActivity() {
             setResult(RESULT_OK, recipientResultIntent(recipient.id))
             finish()
           },
+          onGroupInviteFound = { url ->
+            setResult(RESULT_OK, groupInviteResultIntent(url))
+            finish()
+          },
           onBackNavigationPressed = {
             finish()
           }
@@ -155,7 +159,7 @@ class UsernameQrScannerActivity : AppCompatActivity() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Result? {
-      return intent?.let { Result(recipientId = it.getParcelableExtraCompat(KEY_RECIPIENT_ID, RecipientId::class.java), groupInviteUrl = null) }
+      return intent?.let { Result(recipientId = it.getParcelableExtraCompat(KEY_RECIPIENT_ID, RecipientId::class.java), groupInviteUrl = it.getStringExtra(KEY_GROUP_INVITE_URL)) }
     }
   }
 }
@@ -172,6 +176,7 @@ fun Content(
   onOpenCameraClicked: () -> Unit,
   onOpenGalleryClicked: () -> Unit,
   onRecipientFound: (Recipient) -> Unit,
+  onGroupInviteFound: (String) -> Unit,
   onBackNavigationPressed: () -> Unit
 ) {
   Scaffold(
@@ -199,6 +204,7 @@ fun Content(
       onOpenCameraClicked = onOpenCameraClicked,
       onOpenGalleryClicked = onOpenGalleryClicked,
       onRecipientFound = onRecipientFound,
+      onGroupInviteFound = onGroupInviteFound,
       hasCameraPermission = cameraPermissionState.status.isGranted,
       modifier = Modifier.padding(contentPadding)
     )
