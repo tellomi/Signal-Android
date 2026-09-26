@@ -434,7 +434,12 @@ class FakeNetworkController(
     return onRestoreAccountRecord()
   }
 
+  /** Tellomi（tellomi/tellomi#1215）：记下最后一次保存的名 / 姓，测「自动提交不替用户改名字」用。 */
+  @Volatile
+  var lastSetProfileNames: Pair<String, String>? = null
+
   override suspend fun setProfile(givenName: String, familyName: String, avatar: ByteArray?, discoverableByPhoneNumber: Boolean): RequestResult<Unit, SetProfileError> {
+    lastSetProfileNames = givenName to familyName
     return RequestResult.Success(Unit)
   }
 

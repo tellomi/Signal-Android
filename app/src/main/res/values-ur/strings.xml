@@ -1390,7 +1390,7 @@
     <!-- Message for dialog asking user to submit logs for debugging a crash -->
     <string name="PromptLogsSlowNotificationsDialog__message">ڈی بَگ لاگز مسئلے کی نشاندہی کرنے اور اسے حل کرنے میں ہماری مدد کرتے ہیں، اور اس میں شناخت کرنے والی معلومات شامل نہیں ہوتی ہیں۔</string>
     <!-- Title for dialog asking user to submit logs for debugging slow notification issues -->
-    <string name="PromptLogsSlowNotificationsDialog__title_crash">سگنل میں ایک مسئلہ پیش آیا۔ ڈی بَگ لاگ جمع کرائیں؟</string>
+    <string name="PromptLogsSlowNotificationsDialog__title_crash">Tellomi میں ایک مسئلہ پیش آیا۔ ڈی بَگ لاگ جمع کرائیں؟</string>
     <!-- Title for dialog asking user to submit logs for a situation where they\'re not able to connect to the signal service -->
     <string name="PromptLogsSlowNotificationsDialog__title_connectivity_warning">ہو سکتا ہے آپ کو میسجز موصول نہ ہوں۔ ڈی بگ لاگ جمع کروائیں؟</string>
 
@@ -2535,11 +2535,11 @@
     <!-- Dialog description explaining why microphone permissions are needed to start or join a call -->
     <string name="WebRtcCallActivity__to_start_call_microphone">کال شروع کرنے یا اس میں شامل ہونے کے لیے، Tellomi کو اپنے مائیکرو فون تک رسائی کی اجازت دیں۔</string>
     <!-- Dialog description explaining why camera permissions are needed to enable a user\'s video in a call -->
-    <string name="WebRtcCallActivity__to_enable_video_allow_camera">اپنی ویڈیو کواہل بنانے کے لیے، سگنل کو اپنے کیمرے تک رسائی کی اجازت دیں۔</string>
+    <string name="WebRtcCallActivity__to_enable_video_allow_camera">اپنی ویڈیو کواہل بنانے کے لیے، Tellomi کو اپنے کیمرے تک رسائی کی اجازت دیں۔</string>
     <!-- Toast describing why microphone permissions are needed to start or join a call -->
-    <string name="WebRtcCallActivity__signal_needs_microphone_start_call">سگنل کو کال شروع کرنے یا اس میں شامل ہونے کے لیے مائیکرو فون کی اجازت درکار ہے۔</string>
+    <string name="WebRtcCallActivity__signal_needs_microphone_start_call">Tellomi کو کال شروع کرنے یا اس میں شامل ہونے کے لیے مائیکرو فون کی اجازت درکار ہے۔</string>
     <!-- Toast describing why camera permissions are needed to enable a video in a call -->
-    <string name="WebRtcCallActivity__signal_needs_camera_access_enable_video">آپ کی ویڈیو اہل بنانے کے لیے سگنل کو کیمرے تک رسائی کی ضرورت ہے</string>
+    <string name="WebRtcCallActivity__signal_needs_camera_access_enable_video">آپ کی ویڈیو اہل بنانے کے لیے Tellomi کو کیمرے تک رسائی کی ضرورت ہے</string>
     <!-- Dialog description that will explain the steps needed to give microphone permissions -->
     <string name="WebRtcCallActivity__to_start_call">کال شروع کرنے یا اس میں شامل ہونے کے لیے:</string>
     <!-- Dialog description that will explain the steps needed to give camera permissions -->
@@ -2831,8 +2831,8 @@
     <string name="RegistrationActivity_i_understand">میں سمجھ گیا</string>
     <string name="RegistrationActivity_play_services_error">گوگل پلے سروسز خرابی</string>
     <string name="RegistrationActivity_google_play_services_is_updating_or_unavailable">گوگل پلے سروسز تجدید ہو رہی ہیں یا عارضی طور پر دستیاب نہیں۔ براہ کرم دوبارہ کوشش کریں۔</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">سگنل کو آپ کے دوستوں سے رابطہ قائم کرنے اور پیغامات بھیجنے کے لیے رابطوں اور میڈیا کی اجازت کی ضرورت ہوتی ہے۔ آپ کے رابطے سگنل کی نجی رابطہ دریافت کا استعمال کرتے ہوئے اپ لوڈ کیے جاتے ہیں، جس کا مطلب ہے کہ یہ شروع سے آخر تک خفیہ ہوتے ہیں اور سگنل سروس کو کبھی نظر نہیں آتے۔</string>
-    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">سگنل کو آپ کے دوستوں سے رابطہ قائم کرنے اور پیغامات بھیجنے کے لیے رابطوں کی اجازت کی ضرورت ہوتی ہے۔ آپ کے رابطے سگنل کی نجی رابطہ دریافت کا استعمال کرتے ہوئے اپ لوڈ کیے جاتے ہیں، جس کا مطلب ہے کہ یہ شروع سے آخر تک خفیہ ہوتے ہیں اور سگنل سروس کو کبھی نظر نہیں آتے۔</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Tellomi کو آپ کے دوستوں سے رابطہ قائم کرنے اور پیغامات بھیجنے کے لیے رابطوں اور میڈیا کی اجازت کی ضرورت ہوتی ہے۔ آپ کے رابطے Tellomi کی نجی رابطہ دریافت کا استعمال کرتے ہوئے اپ لوڈ کیے جاتے ہیں، جس کا مطلب ہے کہ یہ شروع سے آخر تک خفیہ ہوتے ہیں اور Tellomi سروس کو کبھی نظر نہیں آتے۔</string>
+    <string name="RegistrationActivity_signal_needs_access_to_your_contacts_in_order_to_connect_with_friends">Tellomi کو آپ کے دوستوں سے رابطہ قائم کرنے اور پیغامات بھیجنے کے لیے رابطوں کی اجازت کی ضرورت ہوتی ہے۔ آپ کے رابطے Tellomi کی نجی رابطہ دریافت کا استعمال کرتے ہوئے اپ لوڈ کیے جاتے ہیں، جس کا مطلب ہے کہ یہ شروع سے آخر تک خفیہ ہوتے ہیں اور Tellomi سروس کو کبھی نظر نہیں آتے۔</string>
     <string name="RegistrationActivity_rate_limited_to_service">آپ نے اس نمبر کو رجسٹر کرنے کے لئے بہت زیادہ کوششیں کی ہیں۔ براہ کرم کچھ دیر بعد کوشش کریں.</string>
     <!--    During registration, if the user attempts (and fails) to register, we display this error message with a number of minutes timer they are allowed to try again.-->
     <string name="RegistrationActivity_rate_limited_to_try_again">آپ اس نمبر کو رجسٹر کرنے کے لیے بہت مرتبہ کوششیں کر چکے ہیں۔ براہ کرم %1$s میں دوبارہ کوشش کریں۔</string>
@@ -6465,7 +6465,7 @@
 
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__thanks_for_your_support">آپ کی معاونت کے لیے آپ کا شکریہ!</string>
     <!-- Subtext underneath the dialog title on the thanks sheet -->
-    <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__youve_earned_a_donor_badge">آپ نے سگنل سے ڈونر بیج حاصل کیا ہے! اپنا تعاون ظاہر کرنے کے لیے اسے اپنے پروفائل پر دکھائیں۔</string>
+    <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__youve_earned_a_donor_badge">آپ نے Tellomi سے ڈونر بیج حاصل کیا ہے! اپنا تعاون ظاہر کرنے کے لیے اسے اپنے پروفائل پر دکھائیں۔</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__you_can_also">اس کے علاوہ آپ</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__become_a_montly_sustainer">ماہانہ عطیہ گزار بن سکتے ہیں۔</string>
     <string name="SubscribeThanksForYourSupportBottomSheetDialogFragment__display_on_profile">پروفائل پر ڈسپلے کریں</string>
@@ -7710,7 +7710,7 @@
     <!-- The title of a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_title">آپ کے رابطوں پر کارروائی نہیں کی جا سکتی ہے۔</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
-    <string name="CdsPermanentErrorBottomSheet_body">آپ کے فون پر رابطوں کی تعداد سگنل پر کارروائی کرنے کی حد سے زیادہ ہے۔ Tellomi پر روابط تلاش کرنے کے لیے، اپنے فون پر ان روابط یا اکاؤنٹس کو ہٹانے پر غور کریں جو بہت سارے روابط کے ساتھ ہم وقت ساز ہیں۔</string>
+    <string name="CdsPermanentErrorBottomSheet_body">آپ کے فون پر رابطوں کی تعداد Tellomi پر کارروائی کرنے کی حد سے زیادہ ہے۔ Tellomi پر روابط تلاش کرنے کے لیے، اپنے فون پر ان روابط یا اکاؤنٹس کو ہٹانے پر غور کریں جو بہت سارے روابط کے ساتھ ہم وقت ساز ہیں۔</string>
     <!-- The first part of the body text in a bottom sheet dialog that tells the user we can\'t process their contacts. -->
     <string name="CdsPermanentErrorBottomSheet_learn_more">مزید پڑھیں</string>
     <!-- A button label in a bottom sheet that will navigate the user to their contacts settings. -->

@@ -100,6 +100,7 @@ class RegistrationViewModel(
     return when (event) {
       is RegistrationFlowEvent.ResetState -> RegistrationFlowState(isRestoringNavigationState = false)
       is RegistrationFlowEvent.SessionUpdated -> state.copy(sessionMetadata = event.session)
+      is RegistrationFlowEvent.SessionExpired -> state.copy(sessionMetadata = null)
       is RegistrationFlowEvent.E164Chosen -> state.copy(sessionE164 = event.e164)
       is RegistrationFlowEvent.VerificationCodeAccepted -> state.copy(submittedVerificationCode = event.code)
       is RegistrationFlowEvent.VerificationCodeRequested -> state.copy(
@@ -247,6 +248,7 @@ class RegistrationViewModel(
       is RegistrationFlowEvent.NavigateBack,
       is RegistrationFlowEvent.NavigateBackToScreen,
       is RegistrationFlowEvent.SessionUpdated,
+      is RegistrationFlowEvent.SessionExpired,
       is RegistrationFlowEvent.E164Chosen,
       is RegistrationFlowEvent.VerificationCodeAccepted,
       is RegistrationFlowEvent.VerificationCodeRequested,
