@@ -920,14 +920,14 @@ class ConversationFragment :
       RecaptchaProofBottomSheetFragment.show(childFragmentManager)
     }
 
-    MediaPreviewCache.consumePendingReply(args.threadId)?.let { replyToAlbumItem(it) }
+    MediaPreviewCache.consumePendingReply(args.threadId)?.let { replyToMessageFromViewer(it) }
   }
 
   /**
-   * Tellomi（#1257，owner 2026-09-25）：在查看器里点了「回复」——引用的是整条相册消息（协议里引用只认消息），
-   * 但引用框里、发出去的引用缩略图都是正在看的那一张。
+   * Tellomi（#1257）：在查看器里点了「回复」——和长按回复一样引用整条消息，缩略图照上游取第一项
+   * （owner 2026-09-26：不做「回复这一张」，协议只能引用整条消息，要让对方看到那一张就得放宽收件方的防伪）。
    */
-  private fun replyToAlbumItem(reply: MediaPreviewCache.PendingReply) {
+  private fun replyToMessageFromViewer(reply: MediaPreviewCache.PendingReply) {
     val recipient = viewModel.recipientSnapshot ?: return
     val appContext = requireContext().applicationContext
 
@@ -950,8 +950,6 @@ class ConversationFragment :
       }
 
       val (slideDeck, body) = viewModel.getSlideDeckAndBodyForReply(requireContext(), message)
-      val slide = slideDeck.slides.firstOrNull { it.displayUri == reply.attachmentUri || it.uri == reply.attachmentUri }
-      val quoteDeck = slide?.let { SlideDeck(it.asAttachment()) } ?: slideDeck
 
       if (inputPanel.inEditMessageMode()) {
         inputPanel.exitEditMessageMode()
@@ -962,7 +960,7 @@ class ConversationFragment :
         message.messageRecord.dateSent,
         message.messageRecord.fromRecipient,
         body,
-        quoteDeck,
+        slideDeck,
         message.messageRecord.getRecordQuoteType()
       )
       inputPanel.clickOnComposeInput()
