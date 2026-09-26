@@ -77,6 +77,7 @@ import org.thoughtcrime.securesms.payments.DataExportUtil
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.region.TellomiRegionId
+import org.thoughtcrime.securesms.region.TellomiRegionSelector
 import org.thoughtcrime.securesms.region.TellomiRegionSwitcher
 import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.registration.data.QuickstartCredentialExporter
@@ -600,6 +601,13 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
           onClick = { switchTellomiRegion(profile.id) }
         )
       }
+
+      // #1055 第四刀：手动跑一次选路器的探测，看它会怎么建议（不切区）
+      clickPref(
+        title = DSLSettingsText.from("Probe regions"),
+        summary = DSLSettingsText.from("TLS handshake with each enabled region's chat host; shows the selector's decision without switching."),
+        onClick = { probeTellomiRegions() }
+      )
 
       if (BuildConfig.DEBUG) {
         clickPref(
@@ -1352,6 +1360,22 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
       }
       .setNegativeButton(android.R.string.cancel, null)
       .show()
+  }
+
+  private fun probeTellomiRegions() {
+    SimpleTask.run({ TellomiRegionSelector.forCurrentProcess().probe() }) { decision ->
+      val lines = decision.results.entries.sortedBy { it.key.id }.joinToString("\n") { (id, result) ->
+        when (result) {
+          is TellomiRegionSelector.ProbeResult.Ok -> "${id.id}: ${result.rttMs} ms"
+          is TellomiRegionSelector.ProbeResult.Failed -> "${id.id}: failed (${result.error})"
+        }
+      }
+      MaterialAlertDialogBuilder(requireContext())
+        .setTitle("${decision.reason.id}: ${decision.current.id} → ${decision.recommended.id}")
+        .setMessage(lines)
+        .setPositiveButton(android.R.string.ok, null)
+        .show()
+    }
   }
 
   private fun switchTellomiRegion(id: TellomiRegionId) {
