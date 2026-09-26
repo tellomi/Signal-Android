@@ -16,7 +16,7 @@ import java.io.File
 /**
  * tellomi/tellomi#1055：端点只从区域表取（RegionProfile 契约第五节第 5 条）。
  * 除了 `region/TellomiRegions.kt`，app 的源码里不许再直接读这些构建常量；新加的调用点要走 `TellomiRegions.current()`。
- * cdsi / svr2 与静态 IP 表不进区域，不在这张单子里。
+ * cdsi / svr2 不进区域，不在这张单子里。静态 IP 表第三刀进了区域（global 档的 staticIps），一起管。
  */
 class TellomiRegionEndpointUsageTest {
 
@@ -36,7 +36,13 @@ class TellomiRegionEndpointUsageTest {
     "RECAPTCHA_PROOF_URL",
     "SIGNAL_SFU_URL",
     "SIGNAL_STAGING_SFU_URL",
-    "SIGNAL_SERVICE_STATUS_URL"
+    "SIGNAL_SERVICE_STATUS_URL",
+    "SIGNAL_SERVICE_IPS",
+    "SIGNAL_STORAGE_IPS",
+    "SIGNAL_CDN_IPS",
+    "SIGNAL_CDN2_IPS",
+    "SIGNAL_CDN3_IPS",
+    "SIGNAL_CONTENT_PROXY_IPS"
   )
 
   private val directRead = Regex("""BuildConfig\.(${endpointKeys.joinToString("|")})\b""")

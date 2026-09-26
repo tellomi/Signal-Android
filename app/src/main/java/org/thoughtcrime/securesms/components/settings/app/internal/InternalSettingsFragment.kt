@@ -76,6 +76,8 @@ import org.thoughtcrime.securesms.megaphone.Megaphones
 import org.thoughtcrime.securesms.payments.DataExportUtil
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.region.TellomiRegionId
+import org.thoughtcrime.securesms.region.TellomiRegionSwitcher
 import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.registration.data.QuickstartCredentialExporter
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
@@ -579,6 +581,42 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
           viewModel.setAllowCensorshipSetting(!state.allowCensorshipSetting)
         }
       )
+
+      dividerPref()
+
+      // Tellomi（#1055 第三刀）：区域与切区，设备上验判据 2 用
+      sectionHeaderPref(DSLSettingsText.from("Tellomi region"))
+
+      val activeRegion = TellomiRegions.current()
+      textPref(
+        title = DSLSettingsText.from("Active: ${activeRegion.id.id} (${activeRegion.grpcChatHost})"),
+        summary = DSLSettingsText.from("Stored: ${SignalStore.tellomiRegion.currentId ?: "<none>"}, last switch: ${SignalStore.tellomiRegion.lastSwitchAt.takeIf { it > 0 }?.let { java.util.Date(it).toString() } ?: "<none>"}")
+      )
+
+      TellomiRegions.profiles().forEach { profile ->
+        clickPref(
+          title = DSLSettingsText.from("Switch to ${profile.id.id}${if (profile.enabled) "" else " (disabled)"}"),
+          summary = DSLSettingsText.from(profile.chat),
+          onClick = { switchTellomiRegion(profile.id) }
+        )
+      }
+
+      if (BuildConfig.DEBUG) {
+        clickPref(
+          title = DSLSettingsText.from("Test region domain"),
+          summary = DSLSettingsText.from(SignalStore.tellomiRegion.testRegionDomain ?: "Off. Set one (e.g. tellomi.test) to replace cn with an enabled region under it."),
+          onClick = {
+            promptUserForString(
+              title = "Test region domain",
+              message = "Empty turns it off. Debug builds only.",
+              initialValue = SignalStore.tellomiRegion.testRegionDomain ?: ""
+            ) { value ->
+              SignalStore.tellomiRegion.testRegionDomain = value.trim().ifEmpty { null }
+              viewModel.refresh()
+            }
+          }
+        )
+      }
 
       dividerPref()
 
@@ -1314,6 +1352,19 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
       }
       .setNegativeButton(android.R.string.cancel, null)
       .show()
+  }
+
+  private fun switchTellomiRegion(id: TellomiRegionId) {
+    SimpleTask.run({
+      try {
+        if (TellomiRegionSwitcher.instance.switchTo(id)) "Switched to ${id.id}" else "Already on ${id.id}"
+      } catch (e: TellomiRegionSwitcher.SwitchException) {
+        "Can't switch to ${id.id}: ${e.reason}"
+      }
+    }) { message ->
+      Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+      viewModel.refresh()
+    }
   }
 
   /**

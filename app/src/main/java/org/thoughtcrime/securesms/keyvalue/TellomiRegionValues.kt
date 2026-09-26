@@ -14,6 +14,7 @@ class TellomiRegionValues(store: KeyValueStore) : SignalStoreValues(store) {
   companion object {
     private const val CURRENT_ID = "tellomi_region.current_id"
     private const val LAST_SWITCH_AT = "tellomi_region.last_switch_at"
+    private const val TEST_REGION_DOMAIN = "tellomi_region.test_region_domain"
   }
 
   public override fun onFirstEverAppLaunch() = Unit
@@ -24,4 +25,10 @@ class TellomiRegionValues(store: KeyValueStore) : SignalStoreValues(store) {
 
   /** 上一次切区的时间（毫秒）。0 = 没有记录，最小驻留视为已满足（冷启动时 RTT 更低的区直接胜出）。 */
   var lastSwitchAt: Long by longValue(LAST_SWITCH_AT, 0)
+
+  /**
+   * 测试区的域名（例如 `tellomi.test`）；null = 不开。**只在 debug 包里生效**（`TellomiRegions.profiles()`），
+   * 在 Internal 设置里填。用来在 CN 保持关闭的前提下验切区（#1055 判据 2）。
+   */
+  var testRegionDomain: String? by stringValue(TEST_REGION_DOMAIN, null)
 }
