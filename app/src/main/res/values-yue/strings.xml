@@ -6237,7 +6237,7 @@
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">你唔可以揀多過 5 個聊天</string>
     <string name="TellomiForwardGrid__choose_chats">揀聊天</string>
     <string name="TellomiForwardGrid__name_separator">、</string>
-    <string name="TellomiForwardGrid__search">搵</string>
+    <string name="TellomiForwardGrid__search">搜尋</string>
     <string name="TellomiForwardGrid__share_to_other_apps">分享去其他 App</string>
     <string name="TellomiForwardGrid__select_up_to_d_chats">最多揀 %1$d 個聊天</string>
     <string name="TellomiForwardGrid__recent">最近聯絡人</string>

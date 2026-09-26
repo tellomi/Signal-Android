@@ -58,7 +58,7 @@ class TellomiForwardGridViewModel(
   sealed interface Stage {
     data object Selection : Stage
     data object LoadingIdentities : Stage
-    data class SafetyConfirmation(val identities: List<IdentityRecord>, val destinations: List<ContactSearchKey>) : Stage
+    data class SafetyConfirmation(val identities: List<IdentityRecord>, val destinations: List<ContactSearchKey.RecipientSearchKey>) : Stage
     data object SendPending : Stage
     data class Sent(val result: Result, val recipients: List<TellomiForwardTarget>) : Stage
   }
@@ -210,20 +210,26 @@ class TellomiForwardGridViewModel(
     if (current.selected.isEmpty() || current.stage != Stage.Selection) {
       return
     }
-    checkIdentitiesThenSend()
+    checkIdentitiesThenSend(current.selectedTargets.map { it.key }.toCollection(LinkedHashSet()))
   }
 
-  /** 安全码确认框里点了「仍然发送」：从头再查一遍（同上游） */
-  fun confirmSafetySend() {
-    checkIdentitiesThenSend()
+  /**
+   * 安全码确认框里点了「仍然发送」：按确认框交回来的收件人从头再查一遍（同上游）。
+   * 确认框里可以把人移出这次发送，所以不用网格里的选择；进程被回收重建后网格的选择是空的，也只能靠它。
+   */
+  fun confirmSafetySend(destinations: List<ContactSearchKey.RecipientSearchKey>) {
+    checkIdentitiesThenSend(destinations.toCollection(LinkedHashSet()))
   }
 
   fun cancelSend() {
     internalState.update { it.copy(stage = Stage.Selection) }
   }
 
-  private fun checkIdentitiesThenSend() {
-    val keys: Set<ContactSearchKey.RecipientSearchKey> = internalState.value.selectedTargets.map { it.key }.toCollection(LinkedHashSet())
+  private fun checkIdentitiesThenSend(keys: Set<ContactSearchKey.RecipientSearchKey>) {
+    if (keys.isEmpty()) {
+      internalState.update { it.copy(stage = Stage.Selection) }
+      return
+    }
     internalState.update { it.copy(stage = Stage.LoadingIdentities) }
     sender.checkIdentities(keys, identityChangesSince) { identities ->
       if (identities.isEmpty()) {
@@ -235,10 +241,16 @@ class TellomiForwardGridViewModel(
   }
 
   private fun performSend(keys: Set<ContactSearchKey.RecipientSearchKey>) {
-    val snapshot = internalState.value
+    // 收件人为空时上游会直接回「全部发出」：宁可回到选择，也不能假装发出去了
+    if (keys.isEmpty()) {
+      internalState.update { it.copy(stage = Stage.Selection) }
+      return
+    }
+    val message = internalState.value.message.trim()
+    val recipients = keys.mapNotNull { knownTargets[it.recipientId] }
     internalState.update { it.copy(stage = Stage.SendPending) }
-    sender.send(snapshot.message.trim(), multiShareArgs, keys) { result ->
-      internalState.update { it.copy(stage = Stage.Sent(result, snapshot.selectedTargets)) }
+    sender.send(message, multiShareArgs, keys) { result ->
+      internalState.update { it.copy(stage = Stage.Sent(result, recipients)) }
     }
   }
 

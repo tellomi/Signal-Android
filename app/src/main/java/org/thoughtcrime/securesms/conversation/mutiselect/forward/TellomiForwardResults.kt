@@ -11,9 +11,10 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
-import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import androidx.annotation.StringRes
 import androidx.core.app.ShareCompat
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.mms.PartAuthority
@@ -42,43 +43,53 @@ object TellomiForwardedToast {
 
   fun buildForRecipients(context: Context, recipients: List<Recipient>): Result? {
     val first = recipients.firstOrNull() ?: return null
-    val text: String
+    val text: CharSequence
     val bold: List<String>
     var opensSavedMessages = false
     when {
       recipients.size == 1 && first.isSavedMessages -> {
-        text = context.getString(R.string.TellomiForwardGrid__forwarded_to_saved_s, first.name)
         bold = listOf(first.name)
+        text = formatWithBoldNames(context, R.string.TellomiForwardGrid__forwarded_to_saved_s, bold)
         opensSavedMessages = true
       }
 
       recipients.size == 1 -> {
-        text = context.getString(R.string.TellomiForwardGrid__forwarded_to_s, first.name)
         bold = listOf(first.name)
+        text = formatWithBoldNames(context, R.string.TellomiForwardGrid__forwarded_to_s, bold)
       }
 
       recipients.size == 2 -> {
-        val second = recipients[1]
-        text = context.getString(R.string.TellomiForwardGrid__forwarded_to_s_and_s, first.name, second.name)
-        bold = listOf(first.name, second.name)
+        bold = listOf(first.name, recipients[1].name)
+        text = formatWithBoldNames(context, R.string.TellomiForwardGrid__forwarded_to_s_and_s, bold)
       }
 
       else -> {
-        text = context.getString(R.string.TellomiForwardGrid__forwarded_to_s_and_d_chats, first.name, recipients.size)
         bold = listOf(first.name)
+        text = formatWithBoldNames(context, R.string.TellomiForwardGrid__forwarded_to_s_and_d_chats, bold, recipients.size)
       }
     }
+    return Result(text, bold, opensSavedMessages)
+  }
 
-    val spannable = SpannableString(text)
-    var searchFrom = 0
-    for (name in bold) {
-      val start = text.indexOf(name, searchFrom)
-      if (start >= 0 && name.isNotEmpty()) {
-        spannable.setSpan(StyleSpan(Typeface.BOLD), start, start + name.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        searchFrom = start + name.length
+  /**
+   * 名字按模板里占位符的位置加粗：先用占位记号格式化，再从后往前把记号换成名字（译文里占位符可以换顺序）。
+   * 不在拼好的句子里找名字：名字和模板里的字撞上时会粗错地方，例如名字「a」会粗到「Forwarded」里的 a。
+   */
+  private fun formatWithBoldNames(context: Context, @StringRes resId: Int, names: List<String>, vararg otherArgs: Any): CharSequence {
+    val markers = names.indices.map { "\uE000$it\uE001" }
+    val template = context.getString(resId, *(markers + otherArgs).toTypedArray())
+    val builder = SpannableStringBuilder(template)
+    names.indices
+      .map { it to template.indexOf(markers[it]) }
+      .filter { (_, start) -> start >= 0 }
+      .sortedByDescending { (_, start) -> start }
+      .forEach { (i, start) ->
+        builder.replace(start, start + markers[i].length, names[i])
+        if (names[i].isNotEmpty()) {
+          builder.setSpan(StyleSpan(Typeface.BOLD), start, start + names[i].length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
       }
-    }
-    return Result(spannable, bold, opensSavedMessages)
+    return builder
   }
 }
 

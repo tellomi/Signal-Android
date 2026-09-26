@@ -6,6 +6,7 @@
 package org.thoughtcrime.securesms.conversation.mutiselect.forward
 
 import android.app.Application
+import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.test.SemanticsMatcher
@@ -13,7 +14,7 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -22,7 +23,9 @@ import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isGreaterThan
+import assertk.assertions.isTrue
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Rule
@@ -45,7 +48,7 @@ import org.thoughtcrime.securesms.recipients.RecipientId
 class TellomiForwardGridScreenTest {
 
   @get:Rule
-  val composeTestRule = createComposeRule()
+  val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
   @get:Rule
   val coreUiDependenciesRule = CoreUiDependenciesRule(ApplicationProvider.getApplicationContext())
@@ -57,6 +60,7 @@ class TellomiForwardGridScreenTest {
     val clicked = mutableListOf<Pair<RecipientId, Boolean>>()
     val queries = mutableListOf<String>()
     var shareClicks = 0
+    var searchCancels = 0
 
     override fun onTargetClicked(target: TellomiForwardTarget, fromSearch: Boolean) {
       clicked += target.id to fromSearch
@@ -67,6 +71,10 @@ class TellomiForwardGridScreenTest {
     }
 
     override fun onSearchFocusChanged(focused: Boolean) = Unit
+
+    override fun onSearchCancelled() {
+      searchCancels++
+    }
 
     override fun onShareClicked() {
       shareClicks++
@@ -149,19 +157,26 @@ class TellomiForwardGridScreenTest {
     assertThat(recorder.clicked).containsExactly(people[2].id to true)
   }
 
-  /** F-9：有查询按「我的收藏 · 聊天 · 联系人 · 群组」分组；搜不到写「没有找到」。 */
+  /** F-9：有查询按「我的收藏 · 聊天 · 联系人 · 群组」分组，自上而下就是这个顺序；搜不到的写法见下一条。 */
   @Test
-  fun `search results are grouped and nothing found says so`() {
+  fun `search results are grouped in order`() {
     show(
       gridState().copy(
         isSearchActive = true,
         query = "Fri",
-        searchResults = TellomiForwardSearchResults(chats = listOf(people[0]), contacts = listOf(people[5]))
+        searchResults = TellomiForwardSearchResults(savedMessages = saved, chats = listOf(people[0]), contacts = listOf(people[5]), groups = listOf(people[7]))
       )
     )
-    composeTestRule.onNodeWithText("Chats").assertIsDisplayed()
-    composeTestRule.onNodeWithText("Contacts").assertIsDisplayed()
-    composeTestRule.onNodeWithTag(TellomiForwardGridTags.cell(people[5])).assertIsDisplayed()
+    val tops = listOf(
+      composeTestRule.onNodeWithTag(TellomiForwardGridTags.cell(saved)),
+      composeTestRule.onNodeWithText("Chats"),
+      composeTestRule.onNodeWithTag(TellomiForwardGridTags.cell(people[0])),
+      composeTestRule.onNodeWithText("Contacts"),
+      composeTestRule.onNodeWithTag(TellomiForwardGridTags.cell(people[5])),
+      composeTestRule.onNodeWithText("Groups"),
+      composeTestRule.onNodeWithTag(TellomiForwardGridTags.cell(people[7]))
+    ).map { it.assertIsDisplayed().getUnclippedBoundsInRoot().top }
+    assertThat(tops.zipWithNext().all { (above, below) -> below > above }).isTrue()
   }
 
   @Test
@@ -169,6 +184,25 @@ class TellomiForwardGridScreenTest {
     show(gridState().copy(isSearchActive = true, query = "zzzz"))
 
     composeTestRule.onNodeWithTag(TellomiForwardGridTags.NO_RESULTS).assertTextEquals("No results for “zzzz”")
+  }
+
+  /** F-9：搜索态按返回是退出搜索（交给回调），不关面板；不在搜索态时网格不拦返回，返回照常关面板。 */
+  @Test
+  fun `back leaves search mode`() {
+    val recorder = show(gridState().copy(isSearchActive = true, recentContacts = people.take(3)))
+
+    composeTestRule.runOnUiThread { composeTestRule.activity.onBackPressedDispatcher.onBackPressed() }
+
+    assertThat(recorder.searchCancels).isEqualTo(1)
+  }
+
+  @Test
+  fun `back is left to the sheet outside search mode`() {
+    show(gridState())
+
+    composeTestRule.runOnIdle {
+      assertThat(composeTestRule.activity.onBackPressedDispatcher.hasEnabledCallbacks()).isFalse()
+    }
   }
 
   /** F-3 / F-10：搜索框右边的「分享到其他 App」只在能分享时出现。 */

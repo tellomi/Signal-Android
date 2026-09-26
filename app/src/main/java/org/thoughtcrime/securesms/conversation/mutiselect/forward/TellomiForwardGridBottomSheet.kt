@@ -75,12 +75,11 @@ class TellomiForwardGridBottomSheet :
 
   companion object {
     private val TAG = Log.tag(TellomiForwardGridBottomSheet::class.java)
-    private const val ARGS = "args"
 
     @JvmStatic
     fun show(fragmentManager: FragmentManager, args: MultiselectForwardFragmentArgs) {
       TellomiForwardGridBottomSheet().apply {
-        arguments = bundleOf(ARGS to args.copy(isWrappedInBottomSheet = true))
+        arguments = bundleOf(MultiselectForwardFragment.ARGS to args.copy(isWrappedInBottomSheet = true))
       }.show(fragmentManager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG)
     }
   }
@@ -88,7 +87,7 @@ class TellomiForwardGridBottomSheet :
   override val peekHeightPercentage: Float = TellomiForwardGridMetrics.PEEK_HEIGHT_FRACTION
 
   private val args: MultiselectForwardFragmentArgs by lazy {
-    requireArguments().getParcelableCompat(ARGS, MultiselectForwardFragmentArgs::class.java)!!
+    requireArguments().getParcelableCompat(MultiselectForwardFragment.ARGS, MultiselectForwardFragmentArgs::class.java)!!
   }
 
   private val viewModel: TellomiForwardGridViewModel by viewModel {
@@ -239,6 +238,13 @@ class TellomiForwardGridBottomSheet :
 
     setFragmentResult(MultiselectForwardFragment.RESULT_KEY, bundleOf(MultiselectForwardFragment.RESULT_SENT to true))
 
+    if (stage.result == TellomiForwardGridViewModel.Result.SOME_FAILED) {
+      // 有的聊天没发出去：不震、不点名（名单里有没发出去的），用上游分享用的「无法发送给某些用户」
+      Toast.makeText(context, R.string.MultiShareDialogs__failed_to_send_to_some_users, Toast.LENGTH_SHORT).show()
+      dismissAllowingStateLoss()
+      return
+    }
+
     // F-8：面板收起，成功轻震一下，提示约 3 秒写明转给了谁；只转到「我的收藏」时可以直接打开它
     val anchor: View? = activity?.findViewById(android.R.id.content)
     val toast = TellomiForwardedToast.build(context, stage.recipients)
@@ -246,7 +252,6 @@ class TellomiForwardGridBottomSheet :
       anchor.performHapticFeedback(if (Build.VERSION.SDK_INT >= 30) HapticFeedbackConstants.CONFIRM else HapticFeedbackConstants.VIRTUAL_KEY)
       val snackbar = Snackbar.make(anchor, toast.text, TellomiForwardedToast.DURATION_MS)
       if (toast.opensSavedMessages) {
-        val appContext = context.applicationContext
         snackbar.setAction(R.string.ConversationFragment__tellomi_view_saved_messages) {
           CommunicationActions.startConversation(anchor.context, Recipient.self(), null)
         }
@@ -254,7 +259,6 @@ class TellomiForwardGridBottomSheet :
           snackbar.dismiss()
           CommunicationActions.startConversation(anchor.context, Recipient.self(), null)
         }
-        Log.d(TAG, "Forwarded to Saved Messages (${appContext.packageName})")
       }
       snackbar.show()
     }
@@ -281,6 +285,10 @@ class TellomiForwardGridBottomSheet :
     viewModel.setQuery(query)
   }
 
+  override fun onSearchCancelled() {
+    viewModel.setSearchActive(false)
+  }
+
   override fun onSearchFocusChanged(focused: Boolean) {
     if (focused) {
       viewModel.setSearchActive(true)
@@ -305,7 +313,7 @@ class TellomiForwardGridBottomSheet :
   // region SafetyNumberBottomSheet.Callbacks
 
   override fun sendAnywayAfterSafetyNumberChangedInBottomSheet(destinations: List<ContactSearchKey.RecipientSearchKey>) {
-    viewModel.confirmSafetySend()
+    viewModel.confirmSafetySend(destinations)
   }
 
   override fun onMessageResentAfterSafetyNumberChangeInBottomSheet() {

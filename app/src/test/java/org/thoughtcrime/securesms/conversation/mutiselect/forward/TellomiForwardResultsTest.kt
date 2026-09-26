@@ -94,6 +94,29 @@ class TellomiForwardResultsTest {
     assertThat(TellomiForwardedToast.DURATION_MS).isEqualTo(3000)
   }
 
+  /** F-8：名字和句子里的字撞上（「a」在「Forwarded」里、「and」）时，粗的仍是名字所在的位置。 */
+  @Test
+  fun `bold follows the placeholders even when a name also appears in the sentence`() {
+    val a = TellomiForwardedToast.Recipient("a", isSavedMessages = false)
+    val and = TellomiForwardedToast.Recipient("and", isSavedMessages = false)
+
+    val two = TellomiForwardedToast.buildForRecipients(context, listOf(a, and))!!
+    assertThat(two.text.toString()).isEqualTo("Forwarded to a and and")
+    assertThat(boldPositions(two.text)).containsExactly(13 to 14, 19 to 22)
+
+    val many = TellomiForwardedToast.buildForRecipients(context, listOf(a, and, and))!!
+    assertThat(many.text.toString()).isEqualTo("Forwarded to 3 chats, including a")
+    assertThat(boldPositions(many.text)).containsExactly(32 to 33)
+  }
+
+  private fun boldPositions(text: CharSequence): List<Pair<Int, Int>> {
+    val spanned = text as Spanned
+    return spanned.getSpans(0, text.length, StyleSpan::class.java)
+      .filter { it.style == Typeface.BOLD }
+      .map { spanned.getSpanStart(it) to spanned.getSpanEnd(it) }
+      .sortedBy { it.first }
+  }
+
   @Test
   @Config(qualifiers = "zh-rCN")
   fun `the toast reads naturally in chinese`() {

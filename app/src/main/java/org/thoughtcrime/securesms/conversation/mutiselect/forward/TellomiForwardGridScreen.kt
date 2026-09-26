@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.conversation.mutiselect.forward
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -104,6 +105,9 @@ interface TellomiForwardGridCallbacks {
   fun onTargetClicked(target: TellomiForwardTarget, fromSearch: Boolean)
   fun onQueryChanged(query: String)
   fun onSearchFocusChanged(focused: Boolean)
+
+  /** 搜索态里按了返回：退出搜索、回到网格，面板不关 */
+  fun onSearchCancelled()
   fun onShareClicked()
 }
 
@@ -126,6 +130,10 @@ fun TellomiForwardGridContent(
     if (!state.isSearchActive) {
       focusManager.clearFocus()
     }
+  }
+  // 搜索态的返回先退出搜索（键盘开着时第一下是收键盘）；不在搜索态时不管，返回照常关面板
+  BackHandler(enabled = state.isSearchActive) {
+    callbacks.onSearchCancelled()
   }
   Column(modifier = modifier.fillMaxSize()) {
     BottomSheets.Handle(modifier = Modifier.align(Alignment.CenterHorizontally))

@@ -196,9 +196,72 @@ class TellomiForwardGridViewModelTest {
 
     sender.identities = mutableListOf(listOf(mockk(relaxed = true)))
     viewModel.send()
-    viewModel.confirmSafetySend()
+    val confirmation = viewModel.snapshot.stage as TellomiForwardGridViewModel.Stage.SafetyConfirmation
+    viewModel.confirmSafetySend(confirmation.destinations)
     assertThat(sender.checked.size).isEqualTo(3)
     assertThat(sender.sent.size).isEqualTo(1)
+  }
+
+  /** F-8：确认框里把人移出了这次发送——「仍然发送」只发给留下的人，提示里也只有留下的人。 */
+  @Test
+  fun `send anyway goes only to the chats left in the safety sheet`() {
+    val viewModel = viewModel()
+    sender.identities = mutableListOf(listOf(mockk(relaxed = true)))
+    viewModel.onTargetClicked(lin, fromSearch = false)
+    viewModel.onTargetClicked(wang, fromSearch = false)
+    viewModel.send()
+    val confirmation = viewModel.snapshot.stage as TellomiForwardGridViewModel.Stage.SafetyConfirmation
+    assertThat(confirmation.destinations).containsExactly(lin.key, wang.key)
+
+    viewModel.confirmSafetySend(listOf(wang.key))
+
+    assertThat(sender.checked.last()).containsExactly(wang.key)
+    assertThat(sender.sent.single().second).containsExactly(wang.key)
+    val stage = viewModel.snapshot.stage as TellomiForwardGridViewModel.Stage.Sent
+    assertThat(stage.recipients).containsExactly(wang)
+  }
+
+  /** 进程被回收后确认框自己恢复了，网格的选择却是空的：「仍然发送」照确认框里的人发（同上游）。 */
+  @Test
+  fun `send anyway after the process was recreated still sends to the chats in the sheet`() {
+    val viewModel = viewModel()
+
+    viewModel.confirmSafetySend(listOf(lin.key))
+
+    assertThat(sender.sent.single().second).containsExactly(lin.key)
+    val stage = viewModel.snapshot.stage as TellomiForwardGridViewModel.Stage.Sent
+    assertThat(stage.recipients).containsExactly(lin)
+  }
+
+  /** 收件人为空时不交给发送（上游对空收件人会回「全部发出」），回到选择。 */
+  @Test
+  fun `send anyway with nobody left sends nothing and goes back to selection`() {
+    val viewModel = viewModel()
+    sender.identities = mutableListOf(listOf(mockk(relaxed = true)))
+    viewModel.onTargetClicked(lin, fromSearch = false)
+    viewModel.send()
+
+    viewModel.confirmSafetySend(emptyList())
+
+    assertThat(sender.sent).isEmpty()
+    assertThat(viewModel.snapshot.stage).isEqualTo(TellomiForwardGridViewModel.Stage.Selection)
+  }
+
+  /** F-9：没选就退出搜索（返回键）：回到网格，搜索词清掉，网格顺序和已选的都不变。 */
+  @Test
+  fun `leaving search without picking returns to the grid`() {
+    val viewModel = viewModel(searchResults = TellomiForwardSearchResults(contacts = listOf(never)))
+    viewModel.onTargetClicked(wang, fromSearch = false)
+    viewModel.setSearchActive(true)
+    viewModel.setQuery("Nev")
+
+    viewModel.setSearchActive(false)
+
+    assertThat(viewModel.snapshot.isSearchActive).isFalse()
+    assertThat(viewModel.snapshot.query).isEqualTo("")
+    assertThat(viewModel.snapshot.searchResults.isEmpty).isTrue()
+    assertThat(viewModel.snapshot.targets).containsExactly(saved, lin, wang, group, far)
+    assertThat(viewModel.snapshot.selectedTargets).containsExactly(wang)
   }
 
   @Test
