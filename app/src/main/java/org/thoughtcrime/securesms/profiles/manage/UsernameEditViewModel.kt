@@ -168,7 +168,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
       return
     }
 
-    val invalidReason: InvalidReason? = checkNickname(usernameState.getNickname())
+    val invalidReason: InvalidReason? = checkNicknameForEdit(usernameState.getNickname(), SignalStore.account.username, mode == UsernameEditMode.RECOVERY)
     if (invalidReason != null) {
       Log.w(TAG, "Username was submitted, but did not pass validity checks. Reason: $invalidReason")
       uiState.update { it.copy(buttonState = ButtonState.SUBMIT_DISABLED, usernameStatus = mapNicknameError(invalidReason)) }
@@ -275,7 +275,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
       return
     }
 
-    val invalidReason: InvalidReason? = checkNickname(nickname)
+    val invalidReason: InvalidReason? = checkNicknameForEdit(nickname, SignalStore.account.username, mode == UsernameEditMode.RECOVERY)
     if (invalidReason != null) {
       uiState.update { uiState ->
         uiState.copy(
@@ -407,6 +407,9 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     TOO_SHORT,
     TOO_LONG,
     CANNOT_START_WITH_NUMBER,
+
+    /** Tellomi（ADR-0066）：`_` 开头——Tellomi 的规则是字母开头。 */
+    CANNOT_START_WITH_UNDERSCORE,
     INVALID_CHARACTERS,
     INVALID_GENERIC,
     DISCRIMINATOR_NOT_AVAILABLE,
@@ -476,6 +479,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
         InvalidReason.TOO_SHORT -> UsernameStatus.TOO_SHORT
         InvalidReason.TOO_LONG -> UsernameStatus.TOO_LONG
         InvalidReason.STARTS_WITH_NUMBER -> UsernameStatus.CANNOT_START_WITH_NUMBER
+        InvalidReason.STARTS_WITH_UNDERSCORE -> UsernameStatus.CANNOT_START_WITH_UNDERSCORE
         InvalidReason.INVALID_CHARACTERS -> UsernameStatus.INVALID_CHARACTERS
         InvalidReason.INVALID_NUMBER,
         InvalidReason.INVALID_NUMBER_00,
@@ -492,6 +496,27 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
         InvalidReason.INVALID_NUMBER_PREFIX_0 -> UsernameStatus.DISCRIMINATOR_CANNOT_START_WITH_0
         else -> UsernameStatus.INVALID_GENERIC
       }
+    }
+
+    /**
+     * Tellomi（ADR-0066 §六；taishi 审 a3 与 Signal-Desktop#4 第三版，2026-09-24）：编辑页只对「新起的名字」收紧
+     * 「字母开头」和「最长 20」（#1181）。只有与本机记录的原名 hash 相同、仍是用户已有的那个用户名时，才放过
+     * [InvalidReason.STARTS_WITH_UNDERSCORE] 与 [InvalidReason.TOO_LONG]：
+     * - 当前判别位是 `.01`、昵称只差大小写：走 [UsernameState.CaseChange]，不预约、不开始冷却；
+     * - 修复模式原样认领当前的名字：昵称只差大小写，沿用旧判别位（`_kaixin.57` 认领回 `_kaixin.57`）。
+     * 旧后缀迁到 `.01`（非修复模式下 `_kaixin.57` → `_kaixin.01`）换了 hash、服务端也按改名开始冷却，是一个新用户名，
+     * 照 ADR-0066 §六「老数据：设置页照普通改名流程」按新名字的规则拦（与 Desktop#4 第三版同一条）。其余原因照旧拦。
+     * 提交时（`onUsernameSubmitted`）与输入停顿时两处都用它。
+     */
+    @androidx.annotation.VisibleForTesting
+    @JvmStatic
+    fun checkNicknameForEdit(nickname: String?, currentUsername: String?, isRecovery: Boolean): InvalidReason? {
+      val reason = checkNickname(nickname) ?: return null
+      val currentParts = currentUsername?.split(Usernames.DELIMITER)
+      val currentNickname = currentParts?.firstOrNull()
+      val sameNickname = nickname != null && currentNickname != null && nickname.equals(currentNickname, ignoreCase = true)
+      val keepsCurrentUsername = sameNickname && (isRecovery || currentParts?.getOrNull(1) == TellomiUsernames.FIXED_DISCRIMINATOR)
+      return if (keepsCurrentUsername && (reason == InvalidReason.STARTS_WITH_UNDERSCORE || reason == InvalidReason.TOO_LONG)) null else reason
     }
   }
 }

@@ -690,6 +690,11 @@ public final class ConversationReactionOverlay extends FrameLayout {
       items.add(new ActionItem(org.signal.core.ui.R.drawable.symbol_forward_24, getResources().getString(R.string.conversation_selection__menu_forward), () -> handleActionItemClicked(Action.FORWARD)));
     }
 
+    // Tellomi：长按「收藏」，不开转发面板、直接存进「我的收藏」（#1174）；在「我的收藏」里不显示
+    if (menuState.shouldShowForwardAction() && !conversationRecipient.isSelf()) {
+      items.add(new ActionItem(R.drawable.tellomi_symbol_bookmark_24, getResources().getString(R.string.conversation_selection__menu_tellomi_save), () -> handleActionItemClicked(Action.TELLOMI_SAVE_TO_SAVED_MESSAGES)));
+    }
+
     if (menuState.shouldShowResendAction()) {
       items.add(new ActionItem(R.drawable.symbol_refresh_24, getResources().getString(R.string.conversation_selection__menu_resend_message), () -> handleActionItemClicked(Action.RESEND)));
     }
@@ -923,6 +928,7 @@ public final class ConversationReactionOverlay extends FrameLayout {
     PIN_MESSAGE,
     UNPIN_MESSAGE,
     STAR_MESSAGE,
-    UNSTAR_MESSAGE
+    UNSTAR_MESSAGE,
+    TELLOMI_SAVE_TO_SAVED_MESSAGES
   }
 }

@@ -20,5 +20,11 @@ sealed class QrScanResult {
 
   object NetworkError : QrScanResult()
 
+  /** Tellomi（tellomi/tellomi#947）：群邀请码（`tell.cc/g#…`、旧 `signal.group/#…`）——直接进加群。 */
+  class GroupInvite(val url: String) : QrScanResult()
+
+  /** Tellomi（tellomi/tellomi#947）：不是 Tellomi 的码——显示内容 +「打开」/「复制」，不再一律「二维码无效」。 */
+  class OtherContent(val text: String) : QrScanResult()
+
   object QrNotFound : QrScanResult()
 }

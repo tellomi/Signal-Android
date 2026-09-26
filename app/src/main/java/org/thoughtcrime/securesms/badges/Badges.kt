@@ -10,11 +10,11 @@ import com.google.android.flexbox.JustifyContent
 import org.signal.core.util.DimensionUnit
 import org.signal.core.util.ScreenDensity
 import org.signal.core.util.logging.Log
-import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.badges.models.Badge
 import org.thoughtcrime.securesms.badges.models.Badge.Category.Companion.fromCode
 import org.thoughtcrime.securesms.components.settings.DSLConfiguration
 import org.thoughtcrime.securesms.database.model.databaseprotos.BadgeList
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.whispersystems.signalservice.api.profiles.SignalServiceProfile
 import java.math.BigDecimal
 import java.sql.Timestamp
@@ -61,7 +61,7 @@ object Badges {
   }
 
   private fun getBadgeImageUri(densityPath: String): Uri {
-    return Uri.parse(BuildConfig.BADGE_STATIC_ROOT).buildUpon()
+    return Uri.parse(TellomiRegions.current().badgeStaticRoot).buildUpon()
       .appendPath(densityPath)
       .build()
   }

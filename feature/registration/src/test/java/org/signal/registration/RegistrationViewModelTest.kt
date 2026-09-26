@@ -692,6 +692,24 @@ class RegistrationViewModelTest {
   }
 
   @Test
+  fun `applyEvent SessionExpired clears the session but keeps the number`() = runTest(testDispatcher) {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 1）：手机号页下一次「下一步」要开新会话，号码不用重填。
+    coEvery { mockRepository.restoreFlowState() } returns null
+    coEvery { mockRepository.getPreExistingRegistrationData() } returns null
+
+    val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+
+    val result = viewModel.applyEvent(
+      RegistrationFlowState(sessionMetadata = createSessionMetadata("expired-session"), sessionE164 = "+15551234567"),
+      RegistrationFlowEvent.SessionExpired
+    )
+
+    assertThat(result.sessionMetadata).isNull()
+    assertThat(result.sessionE164).isEqualTo("+15551234567")
+  }
+
+  @Test
   fun `applyEvent VerificationCodeRequested updates both request windows`() = runTest(testDispatcher) {
     coEvery { mockRepository.restoreFlowState() } returns null
     coEvery { mockRepository.getPreExistingRegistrationData() } returns null

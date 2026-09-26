@@ -47,14 +47,22 @@ sealed interface FallbackAvatar {
 
     /**
      * Note to Self / local user
+     *
+     * Tellomi：「备忘录」改名「我的收藏」，头像换成书签、颜色固定（tellomi/tellomi#1174）。
      */
     data class NoteToSelf(override val color: AvatarColor) : Resource {
       override fun getIconBySize(size: Size): Int {
         return when (size) {
-          Size.SMALL -> R.drawable.symbol_note_compact_16
-          Size.MEDIUM -> R.drawable.symbol_note_24
-          Size.LARGE -> R.drawable.symbol_note_display_bold_40
+          Size.SMALL -> R.drawable.tellomi_symbol_bookmark_compact_16
+          Size.MEDIUM -> R.drawable.tellomi_symbol_bookmark_24
+          Size.LARGE -> R.drawable.tellomi_symbol_bookmark_display_bold_40
         }
+      }
+
+      companion object {
+        /** 不跟着自己的头像颜色走，「我的收藏」一眼能认出来。品牌色定稿前先用蓝色（#1186）。 */
+        @JvmField
+        val TELLOMI_SAVED_MESSAGES_COLOR = AvatarColor.A110
       }
     }
 

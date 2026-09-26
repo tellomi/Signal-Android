@@ -12,8 +12,11 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
+import assertk.assertThat
+import assertk.assertions.contains
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -120,27 +123,23 @@ class VerificationCodeScreenTest {
     assert(emittedEvent == VerificationCodeScreenEvents.ResendSms)
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1210）：香港没有语音通道（TellomiRegistration.VOICE_VERIFICATION_AVAILABLE = false），
+   * 「给我打电话」不显示。上游这条用例是点它发 CallMe。
+   */
   @Test
-  fun `clicking call me emits CallMe event`() {
-    // Given
-    var emittedEvent: VerificationCodeScreenEvents? = null
-
+  fun `call me is not shown without a voice channel`() {
     composeTestRule.setContent {
       SignalTheme {
         VerificationCodeScreen(
           state = VerificationCodeState(),
-          onEvent = { event ->
-            emittedEvent = event
-          }
+          onEvent = {}
         )
       }
     }
 
-    // When
-    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_CALL_ME_BUTTON).performClick()
-
-    // Then
-    assert(emittedEvent == VerificationCodeScreenEvents.CallMe)
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_CALL_ME_BUTTON).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_RESEND_SMS_BUTTON).assertIsDisplayed()
   }
 
   @Test
@@ -256,6 +255,131 @@ class VerificationCodeScreenTest {
     // Then
     composeTestRule.onNodeWithText("Wrong number?").assertIsDisplayed()
     composeTestRule.onNodeWithText("Resend Code").assertIsDisplayed()
-    composeTestRule.onNodeWithText("Call me instead").assertIsDisplayed()
+    // Tellomi（tellomi/tellomi#1210）：没有语音通道，「给我打电话」不显示
+    composeTestRule.onNodeWithText("Call me instead").assertDoesNotExist()
+  }
+
+  // ==================== Tellomi（tellomi/tellomi#1214） ====================
+
+  @Test
+  fun `an incorrect code is shown inline under the digits`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(
+            e164 = "+8613800138000",
+            incorrectCodeAttempts = 1,
+            snackbars = VerificationCodeState.Snackbars(incorrectVerificationCode = true)
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_ERROR).assertIsDisplayed()
+    composeTestRule.onNodeWithText("Incorrect code. Check the text message and try again.").assertIsDisplayed()
+    // 上游的 Snackbar 文案不再出现。
+    composeTestRule.onNodeWithText("Incorrect code").assertDoesNotExist()
+  }
+
+  @Config(qualifiers = "w411dp-h891dp")
+  @Test
+  fun `the didn't get the code entry is there before any wrong code`() {
+    // taishi 审查 b8：收不到短信的人没有码可交，入口不能等连错 3 次才出现（ADR-0051 §二）。
+    val events = mutableListOf<VerificationCodeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(e164 = "+8613800138000", incorrectCodeAttempts = 0),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    // 页脚不在滚动区域里（ADR-0051 §二 F 的左右排），不用先滚
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON).assertIsDisplayed().performClick()
+
+    assert(VerificationCodeScreenEvents.HavingTrouble in events) { "Expected HavingTrouble but got $events" }
+  }
+
+  @Test
+  fun `no inline error before a wrong code`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(state = VerificationCodeState(e164 = "+8613800138000"), onEvent = {})
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_ERROR).assertDoesNotExist()
+  }
+
+  @Config(qualifiers = "w411dp-h891dp")
+  @Test
+  fun `the didn't get the code sheet offers ways out`() {
+    val events = mutableListOf<VerificationCodeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(e164 = "+8613800138000", showContactSupportSheet = true),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithText("• Check that the number is right: +8613800138000").assertIsDisplayed()
+    composeTestRule.onNodeWithText("support@tellomi.app", substring = true).assertIsDisplayed()
+    composeTestRule.onNodeWithText("at most 3 codes", substring = true).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HELP_CONTACT_SUPPORT).performScrollTo().assertIsDisplayed()
+
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HELP_CHANGE_NUMBER).performScrollTo().performClick()
+    composeTestRule.waitForIdle()
+
+    assertThat(events).contains(VerificationCodeScreenEvents.WrongNumber)
+  }
+
+  @Test
+  fun `an expired session is explained before going back`() {
+    val events = mutableListOf<VerificationCodeScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(
+            e164 = "+8613800138000",
+            dialogs = VerificationCodeState.Dialogs(sessionExpired = true)
+          ),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithText("This verification has expired. Please check your number and get a new code.").assertIsDisplayed()
+    composeTestRule.onNodeWithText("OK").performClick()
+
+    assertThat(events).contains(VerificationCodeScreenEvents.SessionExpiredDialogDismissed)
+  }
+
+  /**
+   * Tellomi（taishi 审查 b8 不阻塞 4）：ADR-0051 §二 F（`docs/adr/0051-sign-in-ux-redesign.md:108`）——
+   * 「收不到验证码？」在左、倒计时 / 「重新发送」在右，同一行放在页脚，都在验证码格子下面。
+   */
+  @Config(qualifiers = "w411dp-h891dp")
+  @Test
+  fun `didn't get the code sits on the left of resend in one footer row`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(e164 = "+8613800138000", incorrectCodeAttempts = 0),
+          onEvent = {}
+        )
+      }
+    }
+
+    val trouble = composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON).fetchSemanticsNode().boundsInRoot
+    val resend = composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_RESEND_SMS_BUTTON).fetchSemanticsNode().boundsInRoot
+    val lastDigit = composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_DIGIT_5).fetchSemanticsNode().boundsInRoot
+
+    assert(trouble.right <= resend.left) { "Didn't get the code should be left of resend: $trouble vs $resend" }
+    assert(kotlin.math.abs(trouble.center.y - resend.center.y) < 1f) { "Both should be on one row: $trouble vs $resend" }
+    assert(trouble.top >= lastDigit.bottom) { "The row should be below the code: $trouble vs digit $lastDigit" }
   }
 }
