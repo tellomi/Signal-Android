@@ -44,6 +44,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">選取國家或地區</string>
     <string name="RegistrationActivity_phone_number_description">電話號碼</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">清除號碼</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">帳戶 ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -791,4 +793,32 @@
          它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
     <string name="TellomiRegistration__name">名字</string>
     <string name="TellomiRegistration__first_name">名字</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">驗證碼不對，請核對短訊後重新輸入</string>
+    <string name="TellomiRegistration__didnt_get_code">收不到驗證碼？</string>
+    <string name="TellomiRegistration__help_check_number">確認號碼沒有填錯：%1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">短訊可能被攔截了：打開手機內置的保安或手機管家 App，看看「騷擾攔截」或垃圾訊息裏有沒有。</string>
+    <string name="TellomiRegistration__help_wait_with_quota">短訊偶爾會遲一點才到，請先等一等。每次註冊最多只能發 %1$d 條驗證碼，請不要頻繁重發。</string>
+    <string name="TellomiRegistration__help_voice">也可以改為打電話讀出驗證碼。</string>
+    <string name="TellomiRegistration__help_support">仍然收不到？電郵至 support@tellomi.app，我們幫你看看。</string>
+    <string name="TellomiRegistration__help_change_number">更改號碼</string>
+    <string name="TellomiRegistration__help_contact_support">聯絡客服</string>
+    <string name="TellomiRegistration__help_more">更多幫助</string>
+    <string name="TellomiRegistration__session_expired">這次驗證已經過期，請確認號碼後重新取得驗證碼。</string>
+    <string name="TellomiRegistration__code_no_longer_valid">這個驗證碼已經不能使用：可能已過期，或者輸錯太多次。請重新取得驗證碼。</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <string name="TellomiRegistration__new_phone">換了新手機？</string>
+    <string name="TellomiRegistration__old_phone_here">舊 Android 手機還在身邊</string>
+    <string name="TellomiRegistration__old_phone_here_description">用舊 Android 手機上的 Tellomi 掃描一個二維碼，把帳戶和訊息直接傳過來</string>
+    <string name="TellomiRegistration__old_phone_not_here">舊手機不在身邊，或者是 iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在這部手機上重新安裝的話，可以用裝置上的備份還原；否則直接註冊，只是以前的訊息不會跟過來，舊手機上的 Tellomi 亦會登出</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">無法從 iPhone 傳過來</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">iPhone 上的訊息暫時無法傳到 Android 手機。直接註冊就可以，只是以前的訊息不會跟過來，舊手機上的 Tellomi 亦會登出。</string>
+    <string name="TellomiRegistration__register_directly">直接註冊</string>
+    <string name="TellomiRegistration__skip_restore_dialog_title">不還原訊息？</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">以前的訊息不會出現在這部手機上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">舊手機上的 Tellomi 會登出，以前的訊息亦不會出現在這部手機上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">繼續</string>
 </resources>

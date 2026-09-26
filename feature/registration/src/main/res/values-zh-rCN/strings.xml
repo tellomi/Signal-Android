@@ -44,6 +44,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">选择国家</string>
     <string name="RegistrationActivity_phone_number_description">手机号码</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">清空号码</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">账户 ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -791,4 +793,32 @@
          它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
     <string name="TellomiRegistration__name">名字</string>
     <string name="TellomiRegistration__first_name">名字</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">验证码不对，请核对短信后重新输入</string>
+    <string name="TellomiRegistration__didnt_get_code">收不到验证码？</string>
+    <string name="TellomiRegistration__help_check_number">确认号码没有填错：%1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">短信可能被拦截了：打开手机自带的「手机管家」或「安全中心」，看看「骚扰拦截」里有没有。</string>
+    <string name="TellomiRegistration__help_wait_with_quota">短信偶尔会晚到一会儿，请先等一等。每次注册最多只能发 %1$d 条验证码，请不要频繁重发。</string>
+    <string name="TellomiRegistration__help_voice">也可以改成打电话念验证码。</string>
+    <string name="TellomiRegistration__help_support">还是收不到？发邮件到 support@tellomi.app，我们帮你看看。</string>
+    <string name="TellomiRegistration__help_change_number">改号码</string>
+    <string name="TellomiRegistration__help_contact_support">联系客服</string>
+    <string name="TellomiRegistration__help_more">更多帮助</string>
+    <string name="TellomiRegistration__session_expired">这次验证已经过期，请确认号码后重新获取验证码。</string>
+    <string name="TellomiRegistration__code_no_longer_valid">这个验证码已经不能用了：可能已过期，或者输错的次数太多。请重新获取验证码。</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <string name="TellomiRegistration__new_phone">换了新手机？</string>
+    <string name="TellomiRegistration__old_phone_here">旧 Android 手机还在身边</string>
+    <string name="TellomiRegistration__old_phone_here_description">用旧 Android 手机上的 Tellomi 扫一个二维码，把账户和聊天记录直接传过来</string>
+    <string name="TellomiRegistration__old_phone_not_here">旧手机不在身边，或者是 iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在这台手机上重装的话，可以用本地备份恢复；否则直接注册，只是以前的聊天记录不会跟过来，旧手机上的 Tellomi 也会退出登录</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">没法从 iPhone 传过来</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">iPhone 上的聊天记录目前没法传到 Android 手机。直接注册就行，只是以前的聊天记录不会跟过来，旧手机上的 Tellomi 也会退出登录。</string>
+    <string name="TellomiRegistration__register_directly">直接注册</string>
+    <string name="TellomiRegistration__skip_restore_dialog_title">不恢复聊天记录？</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">以前的聊天记录不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">旧手机上的 Tellomi 会退出登录，以前的聊天记录也不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">继续</string>
 </resources>

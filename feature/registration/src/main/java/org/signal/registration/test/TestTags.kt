@@ -45,6 +45,7 @@ object TestTags {
   const val PHONE_NUMBER_SCREEN = "phone_number_screen"
   const val PHONE_NUMBER_COUNTRY_CODE_FIELD = "phone_number_country_code_field"
   const val PHONE_NUMBER_PHONE_FIELD = "phone_number_phone_field"
+  const val PHONE_NUMBER_CLEAR_BUTTON = "phone_number_clear_button"
   const val PHONE_NUMBER_NEXT_BUTTON = "phone_number_next_button"
   const val PHONE_NUMBER_REGISTER_WITHOUT_NUMBER_BUTTON = "phone_number_register_without_number_button"
 
@@ -90,6 +91,9 @@ object TestTags {
   const val VERIFICATION_CODE_RESEND_SMS_BUTTON = "verification_code_resend_sms_button"
   const val VERIFICATION_CODE_CALL_ME_BUTTON = "verification_code_call_me_button"
   const val VERIFICATION_CODE_HAVING_TROUBLE_BUTTON = "verification_code_having_trouble_button"
+  const val VERIFICATION_CODE_ERROR = "verification_code_error"
+  const val VERIFICATION_CODE_HELP_CHANGE_NUMBER = "verification_code_help_change_number"
+  const val VERIFICATION_CODE_HELP_CONTACT_SUPPORT = "verification_code_help_contact_support"
 
   // Archive Restore Selection Screen
   const val ARCHIVE_RESTORE_SELECTION_SCREEN = "archive_restore_selection_screen"

@@ -3142,6 +3142,23 @@
     <string name="UsernameEditFragment__usernames_let_others_message">用戶名稱都會與一組數字配對。</string>
     <!-- Tellomi（#1106） -->
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">別人可以透過用戶名稱找到你、傳訊息給你，不需要知道你的電話號碼。</string>
+    <!-- Tellomi（#1106 第四刀） -->
+    <plurals name="UsernameEditFragment__tellomi_change_cooldown">
+        <item quantity="other">你最近更改過用戶名稱，%d 天後可以再更改。在那之前，只能改回原來的名稱。</item>
+    </plurals>
+    <!-- Tellomi（#1106 第四刀） -->
+    <plurals name="UsernameEditFragment__tellomi_change_confirmation">
+        <item quantity="other">更改用戶名稱將重設你現有的二維碼和連結，之後 %d 天內不能再更改。你確定嗎？</item>
+    </plurals>
+    <plurals name="UsernameEditFragment__tellomi_recovery_confirmation">
+        <item quantity="other">恢復用戶名稱將重設你現有的二維碼和連結，之後 %d 天內不能再更改。你確定嗎？</item>
+    </plurals>
+    <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
+        <item quantity="other">你在 %1$d 天內刪除過用戶名稱，現在設定也算一次更改：之後 %2$d 天內不能再更改。你確定嗎？</item>
+    </plurals>
+    <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
+        <item quantity="other">這將刪除你的用戶名稱及停用你的二維碼和連結。「%1$s」會為你保留 %2$d 天；這期間再設定用戶名稱，之後 %3$d 天內不能再更改。如果你 %3$d 天內改過用戶名稱，刪除後只能改回原來的名稱。你確定嗎？</item>
+    </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">這個號碼是什麼？</string>
     <string name="UsernameEditFragment__these_digits_help_keep">這組數字有助將你的用戶名稱保密，以免你受到無謂的訊息滋擾。請僅向你願意與其通訊的聯絡人和群組分享你的用戶名稱。如要更改用戶名稱，你則會收到一組新的數字。</string>
@@ -8195,6 +8212,8 @@
     <string name="FindByActivity__phone_number">電話號碼</string>
     <!-- Help text under user entry for find by username -->
     <string name="FindByActivity__enter_username_description">輸入用戶名稱，後面跟著一個點及其配對數字。</string>
+    <!-- Tellomi（#1106 第四刀） -->
+    <string name="FindByActivity__tellomi_enter_username_description">輸入對方的用戶名稱。</string>
     <!-- Content description for next action button -->
     <string name="FindByActivity__next">下一步</string>
     <!-- Placeholder text for search input for selecting country code -->
@@ -8209,6 +8228,8 @@
     <string name="FindByActivity__username_not_found">找不到用戶名稱</string>
     <!-- Dialog body for invalid username. Placeholder is the entered username. -->
     <string name="FindByActivity__s_is_not_a_valid_username">%1$s 不是有效的用戶名稱。請確保你已輸入完整的用戶名稱，以及隨後的一組數字。</string>
+    <!-- Tellomi（#1106 第四刀） -->
+    <string name="FindByActivity__tellomi_s_is_not_a_valid_username">%1$s 不是有效的用戶名稱。</string>
     <!-- Dialog body for an invalid phone number. Placeholder is the entered phone number. -->
     <string name="FindByActivity__s_is_not_a_valid_phone_number">%1$s 不是有效的用戶名稱。請使用有效的電話號碼重試</string>
     <!-- Dialog body for not found username -->

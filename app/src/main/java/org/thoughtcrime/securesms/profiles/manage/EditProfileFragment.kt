@@ -372,7 +372,8 @@ class EditProfileFragment : LoggingFragment() {
   private fun displayConfirmUsernameDeletionDialog() {
     MaterialAlertDialogBuilder(requireContext())
       .setTitle(R.string.ManageProfileFragment__delete_username_dialog_title)
-      .setMessage(requireContext().getString(R.string.ManageProfileFragment__delete_username_dialog_body, SignalStore.account.username?.let { TellomiUsernames.toDisplayUsername(it) })) // Tellomi（#1106 第三刀）
+      // Tellomi（ADR-0066 §6.2）：删掉的用户名服务端给原主人保留 30 天，不是「可供其他人申请」；保留期内再设用户名也算改名（与 Desktop#4 同一句）
+      .setMessage(resources.getQuantityString(R.plurals.ManageProfileFragment__tellomi_delete_username_dialog_body, TellomiUsernames.RENAME_COOLDOWN_DAYS, SignalStore.account.username?.let { TellomiUsernames.toDisplayUsername(it) }, TellomiUsernames.USERNAME_HOLD_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS)) // Tellomi（#1106 第三刀）
       .setPositiveButton(R.string.delete) { _, _ -> onUserConfirmedUsernameDeletion() }
       .setNegativeButton(android.R.string.cancel) { d: DialogInterface?, w: Int -> }
       .show()
