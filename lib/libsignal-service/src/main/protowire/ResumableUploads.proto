@@ -20,4 +20,7 @@ message ResumableUpload {
            string location  = 5;
            uint64 timeout   = 6;
   repeated Header headers   = 7;
+  // Tellomi（tellomi/tellomi#1055 第三刀）：这次上传开始时的区（RegionProfile 契约第六节：在途的续传钉住开始时的区）。
+  // 空 = 这一刀之前存下的，按 global。号码取大，免得和上游以后加的字段撞。
+           string tellomiRegionId = 100;
 }

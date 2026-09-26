@@ -11,6 +11,7 @@ import android.widget.EdgeEffect
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.thoughtcrime.securesms.components.RotatableGradientDrawable
+import org.thoughtcrime.securesms.conversation.v2.items.TellomiBubbleTail
 
 /**
  * Draws the ChatColors color or gradient following this procedure:
@@ -159,6 +160,8 @@ class RecyclerViewColorizer(private val recyclerView: RecyclerView) {
     recyclerView.edgeEffectFactory = edgeEffectFactory
     recyclerView.addOnScrollListener(scrollListener)
     recyclerView.addItemDecoration(itemDecoration)
+    // Tellomi：气泡的小尾巴，排在打洞之后画（#1206）。凡是用到这个类的列表（会话页、置顶、定时、引用、编辑记录）都一起有。
+    recyclerView.addItemDecoration(TellomiBubbleTail.Decoration())
   }
 
   private fun isOverscrolled(): Boolean {

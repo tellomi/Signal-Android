@@ -245,19 +245,21 @@ class LinkAccountViewModelTest {
   }
 
   @Test
-  fun `applyEvent CreateAccountClick from link-device-first flow routes through Permissions`() = runTest(testDispatcher) {
+  fun `applyEvent CreateAccountClick from link-device-first flow goes straight to phone number entry`() = runTest(testDispatcher) {
     val viewModel = createViewModel(
       RegistrationFlowState(backStack = listOf(RegistrationRoute.Welcome, RegistrationRoute.LinkAccount()))
     )
 
     viewModel.applyEvent(LinkAccountScreenState(), LinkAccountScreenEvent.CreateAccountClick, stateEmitter)
 
+    // Tellomi（tellomi/tellomi#1112）：上游这里先到 Permissions；Tellomi 注册流程不要权限页
     assertThat(emittedParentEvents).contains(
       RegistrationFlowEvent.NavigateToScreen(
-        route = RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry),
+        route = RegistrationRoute.PhoneNumberEntry,
         popCurrent = true
       )
     )
+    assertThat(emittedParentEvents.filterIsInstance<RegistrationFlowEvent.NavigateToScreen>().none { it.route is RegistrationRoute.Permissions }).isTrue()
   }
 
   @Test

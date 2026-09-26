@@ -12,10 +12,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.findNavController
 import org.signal.core.ui.logging.LoggingFragment
-import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.databinding.FragmentRegistrationCaptchaBinding
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter
 import org.thoughtcrime.securesms.util.TellomiLinks
 
@@ -43,7 +43,7 @@ abstract class CaptchaFragment : LoggingFragment(R.layout.fragment_registration_
         return false
       }
     }
-    binding.registrationCaptchaWebView.loadUrl(BuildConfig.SIGNAL_CAPTCHA_URL)
+    binding.registrationCaptchaWebView.loadUrl(TellomiRegions.current().captchaRegistration)
   }
 
   abstract fun handleCaptchaToken(token: String)

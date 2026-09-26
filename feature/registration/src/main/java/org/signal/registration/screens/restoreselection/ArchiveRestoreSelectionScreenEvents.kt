@@ -16,4 +16,10 @@ sealed class ArchiveRestoreSelectionScreenEvents {
   data object ConfirmSkip : ArchiveRestoreSelectionScreenEvents()
 
   data object DismissSkipWarning : ArchiveRestoreSelectionScreenEvents()
+
+  /** Tellomi（tellomi/tellomi#1216 跟进）：「旧手机是 iPhone」说明页上的「直接注册」。 */
+  data object TellomiRegisterDirectly : ArchiveRestoreSelectionScreenEvents()
+
+  /** Tellomi：同一页上的「返回」和系统返回键。 */
+  data object TellomiBack : ArchiveRestoreSelectionScreenEvents()
 }

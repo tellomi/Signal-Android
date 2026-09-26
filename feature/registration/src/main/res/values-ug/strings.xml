@@ -14,7 +14,7 @@
     <!-- Displayed as a title at the top of the screen -->
     <string name="GrantPermissionsFragment__allow_permissions">ئىجازەت بېرىڭ</string>
     <!-- Displayed as a subtitle at the top of the screen -->
-    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">سىز تونۇيدىغان كىشىلەرگە ئۇچۇر يوللىشىڭىزغا ياردەم بېرىش ئۈچۈن، سىگنال بۇ ئىجازەتلەرنى تەلەپ قىلىدۇ. </string>
+    <string name="GrantPermissionsFragment__to_help_you_message_people_you_know">سىز تونۇيدىغان كىشىلەرگە ئۇچۇر يوللىشىڭىزغا ياردەم بېرىش ئۈچۈن، Tellomi بۇ ئىجازەتلەرنى تەلەپ قىلىدۇ. </string>
     <!-- Displayed as a text-only action button at the bottom start of the screen -->
     <string name="GrantPermissionsFragment__not_now">ھازىر ئەمەس</string>
     <!-- Displayed as an action button at the bottom end of the screen -->
@@ -26,7 +26,7 @@
     <!-- Contacts permission row title -->
     <string name="GrantPermissionsFragment__contacts">ئالاقەداشلار</string>
     <!-- Contacts permission row description -->
-    <string name="GrantPermissionsFragment__find_people_you_know">سىز تونۇيدىغان كىشىلەرنى تېپىڭ. ئالاقىداشلىرىڭىز مەخپىيلەشتۈرۈلگەن بولۇپ، سىگنال مۇلازىمىتىگە كۆرۈنمەيدۇ.</string>
+    <string name="GrantPermissionsFragment__find_people_you_know">سىز تونۇيدىغان كىشىلەرنى تېپىڭ. ئالاقىداشلىرىڭىز مەخپىيلەشتۈرۈلگەن بولۇپ، Tellomi مۇلازىمىتىگە كۆرۈنمەيدۇ.</string>
     <!-- Phone calls permission row title -->
     <string name="GrantPermissionsFragment__phone_calls">تېلېفون چاقىرىقلىرى</string>
     <!-- Phone calls permission row description -->
@@ -138,11 +138,11 @@
     <!-- Row title for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_i_have_my_old_phone">مېنىڭ كونا تېلېفونىم بار</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_scan_qr">تېز باشلاش ئۈچۈن نۆۋەتتىكى سىگنال ھېساباتىڭىزدىن QR كودىنى سىكانىرلاڭ</string>
+    <string name="WelcomeFragment_restore_action_scan_qr">تېز باشلاش ئۈچۈن نۆۋەتتىكى Tellomi ھېساباتىڭىزدىن QR كودىنى سىكانىرلاڭ</string>
     <!-- Row title for restore/transfer without using a previous device -->
     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">كونا تېلېفونۇم يېنىمدا يوق</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">ياكى ئوخشاش ئۈسكۈنىدە سىگنالنى قايتا قاچىلاۋاتىسىز</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">ياكى ئوخشاش ئۈسكۈنىدە Tellomiنى قايتا قاچىلاۋاتىسىز</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -150,9 +150,9 @@
     <!-- Subtitle text for the archive restore selection screen -->
     <string name="ArchiveRestoreSelectionScreen__subheading">ئۇچۇر تارىخىڭىز ۋە ھېسابات سانلىق-مەلۇماتلىرىڭىزنى قانداق ئەسلىگە كەلتۈرۈشنى خالايدىغانلىقىڭىزنى تاللاڭ.</string>
     <!-- Title for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">سىگنال زاپاسلانمىسىدىن</string>
+    <string name="ArchiveRestoreSelectionScreen__from_signal_backups">Tellomi زاپاسلانمىسىدىن</string>
     <!-- Subtitle for the Signal Backups option card -->
-    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">ھەقسىز ياكى ھەقلىق سىگنال زاپاسلاش پىلانىڭىز</string>
+    <string name="ArchiveRestoreSelectionScreen__your_free_or_paid_signal_backup_plan">ھەقسىز ياكى ھەقلىق Tellomi زاپاسلاش پىلانىڭىز</string>
     <!-- Title for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__local_backup_card_title">ئۈسكۈنىدىكى زاپاسلاشنى ئەسلىگە كەلتۈرۈش</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
@@ -307,7 +307,7 @@
     <!-- Title for the invalid backup version dialog -->
     <string name="RemoteRestoreScreen__couldnt_restore_this_backup">بۇ زاپاسلاشنى ئەسلىگە كەلتۈرەلمىدى</string>
     <!-- Body for the invalid backup version dialog -->
-    <string name="RemoteRestoreScreen__update_latest">سىگنالنىڭ بۇ نەشرى زاپاسلاشنى ئەسلىگە كەلتۈرەلمىدى. ئەڭ يېڭى نەشرىگە يېڭىلاپ قايتا سىناڭ.</string>
+    <string name="RemoteRestoreScreen__update_latest">Tellomiنىڭ بۇ نەشرى زاپاسلاشنى ئەسلىگە كەلتۈرەلمىدى. ئەڭ يېڭى نەشرىگە يېڭىلاپ قايتا سىناڭ.</string>
     <!-- Button to update Signal -->
     <string name="RemoteRestoreScreen__update_signal">Tellomi نى يېڭىلا</string>
     <!-- Button to dismiss update dialog -->
@@ -341,7 +341,7 @@
     <string name="AccountLockedScreen__your_account">ھېسابىڭىز شەخسىي مەخپىيەتلىكىڭىزنى قوغداش ۋە بىخەتەرلىك يۈزىسىدىن قۇلۇپلاندى. ھېسابىڭىز %1$d كۈنگىچە مەشغۇلاتسىزلىقتا تۇرغاندىن كېيىن بۇ تېلېفون نومۇرىڭىزنى ئىشلىتىپ، PIN ئىشلەتمەي قايتا تىزىملىتالايسىز. بارلىق مەزمۇنلار ئۆچۈرۈلگۈسى.  </string>
 
     <!-- Step 1 to quick restore -->
-    <string name="QuickRestoreQRScreen__step_1">كونا ئۈسكۈنىڭىزدە سىگنالنى ئېچىڭ</string>
+    <string name="QuickRestoreQRScreen__step_1">كونا ئۈسكۈنىڭىزدە Tellomiنى ئېچىڭ</string>
     <!-- Step 2 to quick restore -->
     <string name="QuickRestoreQRScreen__step_2">كامېرا سىنبەلگىسىنى چېكىڭ </string>
     <!-- Step 3 to quick restore -->

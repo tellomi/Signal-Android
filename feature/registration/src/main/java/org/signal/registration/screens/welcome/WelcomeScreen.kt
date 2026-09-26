@@ -67,10 +67,10 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.TabletPortraitDayPreview
 import org.signal.core.ui.compose.dismissWithAnimation
 import org.signal.core.ui.compose.horizontalGutters
-import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.ui.isWidthExpanded
 import org.signal.core.ui.rememberWindowBreakpoint
 import org.signal.registration.R
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.screens.shared.TellomiCrossBorderConsent
@@ -407,18 +407,18 @@ private fun PrimaryDeviceCallToActionButtons(
   }
 
   if (showRestoreOrTransfer) {
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(8.dp))
 
-    Buttons.LargeTonal(
+    // Tellomi：上游「恢复或转移」和「继续」一样大，而大多数人是第一次注册。降成主按钮下面一行文字链（tellomi/tellomi#1216）。
+    // Telegram 两端都把次要动作做成主按钮旁边的一行文字：iOS（RMIntroViewController 的 _alternativeLanguageButton）在按钮下方，
+    // Android（IntroActivity 的 switchLanguageTextView，onLayout 里 y -= dp(30)）在按钮上方 30dp。Tellomi 取 iOS 的下方位置。
+    TextButton(
       onClick = onRestoreOrTransferClick,
-      colors = ButtonDefaults.filledTonalButtonColors(
-        containerColor = SignalTheme.colors.colorSurface2
-      ),
       modifier = Modifier
         .fillMaxWidth()
         .testTag(TestTags.WELCOME_RESTORE_OR_TRANSFER_BUTTON)
     ) {
-      Text(stringResource(R.string.registration_activity__restore_or_transfer))
+      Text(stringResource(R.string.TellomiRegistration__new_phone))
     }
   }
 }
@@ -497,10 +497,14 @@ private fun RestoreOrTransferBottomSheetContent(
   ) {
     Spacer(modifier = Modifier.size(26.dp))
 
+    // Tellomi（tellomi/tellomi#1216）：没有备份服务时说清每条路能带过来什么——旧 Android 手机扫码能直连传输；
+    // 旧手机不在身边只剩这台手机上的本地备份，或者直接注册。
+    val tellomiTexts = !TellomiRegistration.isRemoteBackupAvailable
+
     RestoreActionRow(
       icon = SignalIcons.QrCode.painter,
-      title = stringResource(R.string.WelcomeFragment_restore_action_i_have_my_old_phone),
-      subtitle = stringResource(R.string.WelcomeFragment_restore_action_scan_qr),
+      title = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_here else R.string.WelcomeFragment_restore_action_i_have_my_old_phone),
+      subtitle = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_here_description else R.string.WelcomeFragment_restore_action_scan_qr),
       modifier = Modifier.testTag(TestTags.WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON),
       onRowClick = {
         sheetState.dismissWithAnimation(scope) {
@@ -511,8 +515,8 @@ private fun RestoreOrTransferBottomSheetContent(
 
     RestoreActionRow(
       icon = painterResource(R.drawable.symbol_no_phone_44),
-      title = stringResource(R.string.WelcomeFragment_restore_action_i_dont_have_my_old_phone),
-      subtitle = stringResource(R.string.WelcomeFragment_restore_action_reinstalling),
+      title = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_not_here else R.string.WelcomeFragment_restore_action_i_dont_have_my_old_phone),
+      subtitle = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_not_here_description else R.string.WelcomeFragment_restore_action_reinstalling),
       modifier = Modifier.testTag(TestTags.WELCOME_RESTORE_NO_OLD_PHONE_BUTTON),
       onRowClick = {
         sheetState.dismissWithAnimation(scope) {

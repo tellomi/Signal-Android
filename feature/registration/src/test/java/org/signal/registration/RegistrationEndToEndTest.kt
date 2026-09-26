@@ -37,6 +37,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -150,6 +151,16 @@ class RegistrationEndToEndTest {
     networkController = FakeNetworkController()
     storageController = FakeStorageController()
     repository = RegistrationRepository(context, networkController, storageController, isLinkAndSyncAvailable = false)
+
+    // Tellomi（tellomi/tellomi#1210）：Tellomi 没有备份服务，恢复方式选择页不列「从 Tellomi 备份」。这里的上游用例里有一批
+    // 走远端备份恢复，打开测试开关让它们照样跑（那条流程的代码还在，只是界面上没有入口）。默认关的样子由
+    // ArchiveRestoreSelectionViewModelTest 覆盖。
+    TellomiRegistration.remoteBackupsAvailableForTesting = true
+  }
+
+  @After
+  fun tearDownTellomiOverrides() {
+    TellomiRegistration.remoteBackupsAvailableForTesting = null
   }
 
   @Test
