@@ -78,7 +78,10 @@ import kotlin.time.Duration.Companion.seconds
 
 private const val TAG = "CameraScreenViewModel"
 
-class CameraScreenViewModel : ViewModel() {
+class CameraScreenViewModel(
+  /** Tellomi（#1219）：只放行对准中心、连续对准 0.5 秒的码（关联设备扫码页用）。null = 上游行为。 */
+  private val tellomiQrFocus: TellomiQrFocus? = null
+) : ViewModel() {
   companion object {
     private val imageAnalysisExecutor = Executors.newSingleThreadExecutor()
 
@@ -1092,14 +1095,21 @@ class CameraScreenViewModel : ViewModel() {
       try {
         val result = qrCodeReader.decode(binaryBitmap, qrCodeHint)
         if (result != null) {
-          _qrCodeDetected.tryEmit(result.text)
+          if (tellomiQrFocus == null) {
+            _qrCodeDetected.tryEmit(result.text)
+          } else {
+            tellomiQrFocus.onFrame(result.text, TellomiQrFocus.centerOf(result.resultPoints, width, height))?.let { _qrCodeDetected.tryEmit(it) }
+          }
         }
       } catch (_: NotFoundException) {
         // No QR code found in this frame, which is normal
+        tellomiQrFocus?.onFrame(null, null)
       } catch (_: ChecksumException) {
         // QR code detected but checksum failed
+        tellomiQrFocus?.onFrame(null, null)
       } catch (_: FormatException) {
         // QR code detected but format is invalid
+        tellomiQrFocus?.onFrame(null, null)
       }
     } catch (e: Exception) {
       Log.e(TAG, "Error processing image for QR code: ${e.message}", e)

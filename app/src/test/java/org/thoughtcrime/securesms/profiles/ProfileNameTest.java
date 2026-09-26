@@ -186,4 +186,17 @@ public final class ProfileNameTest {
     assertEquals(name.getGivenName(), "Given");
     assertEquals(name.getFamilyName(), "Family");
   }
+
+  /** Tellomi（tellomi/tellomi#1210）：中日韩姓名连写，不是上游的「张 三」；混写与纯拉丁字母照上游。 */
+  @Test
+  public void tellomi_cjkvNameIsJoinedWithoutSpace() {
+    assertEquals("张三", ProfileName.fromParts("三", "张").toString());
+    assertEquals("山田太郎", ProfileName.fromParts("太郎", "山田").toString());
+  }
+
+  @Test
+  public void tellomi_mixedAndLatinNamesKeepTheUpstreamSpace() {
+    assertEquals("Ming 李", ProfileName.fromParts("Ming", "李").toString());
+    assertEquals("Given Family", ProfileName.fromParts("Given", "Family").toString());
+  }
 }

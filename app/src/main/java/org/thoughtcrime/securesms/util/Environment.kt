@@ -4,6 +4,7 @@ import com.google.android.gms.wallet.WalletConstants
 import org.signal.donations.GooglePayApi
 import org.signal.donations.StripeApi
 import org.thoughtcrime.securesms.BuildConfig
+import org.thoughtcrime.securesms.region.TellomiRegions
 
 object Environment {
   /**
@@ -40,7 +41,11 @@ object Environment {
   @JvmField
   val IS_LINK_AND_SYNC_AVAILABLE: Boolean = true
 
-  const val PHONENUMBERLESS_REGISTRATION: Boolean = IS_STAGING
+  /**
+   * Tellomi（tellomi/tellomi#1210）：**写死关闭**。上游是 `IS_STAGING`——staging 包的手机号页因此出现「Register without number」，
+   * 与《网络安全法》即时通信实名要求冲突。上游 8.28.1 起对所有人开放了这个入口，升级到 8.28 时要再核一次别被合回去。
+   */
+  const val PHONENUMBERLESS_REGISTRATION: Boolean = false
 
   object Backups {
     /**
@@ -80,7 +85,8 @@ object Environment {
   object Calling {
     @JvmStatic
     fun defaultSfuUrl(): String {
-      return if (IS_STAGING) BuildConfig.SIGNAL_STAGING_SFU_URL else BuildConfig.SIGNAL_SFU_URL
+      // Tellomi（#1055）：从当前区取。我们的 staging 与 prod 用同一个会合点（SIGNAL_STAGING_SFU_URL 与 SIGNAL_SFU_URL 同值）
+      return TellomiRegions.current().sfu
     }
   }
 }
