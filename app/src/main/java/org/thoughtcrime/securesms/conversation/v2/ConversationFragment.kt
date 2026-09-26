@@ -239,6 +239,7 @@ import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectPart
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardBottomSheet
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardRepository
 import org.thoughtcrime.securesms.conversation.quotes.MessageQuotesBottomSheet
 import org.thoughtcrime.securesms.conversation.ui.edit.EditMessageHistoryDialog
 import org.thoughtcrime.securesms.conversation.ui.error.EnableCallNotificationSettingsDialog
@@ -778,8 +779,8 @@ class ConversationFragment :
     )
     conversationToolbarOnScrollHelper.attach(binding.conversationItemRecycler)
     presentConversationTitle(viewModel.recipientSnapshot)
-    if (viewModel.recipientSnapshot?.isGroup == true) {
-      presentGroupConversationSubtitle(createGroupSubtitleString(viewModel.titleViewParticipantsSnapshot))
+    viewModel.recipientSnapshot?.takeIf { it.isGroup }?.let { group ->
+      presentGroupConversationSubtitle(tellomiGroupMemberSubtitle(resources, group))
     }
     presentActionBarMenu()
     presentStoryRing()
@@ -1233,10 +1234,6 @@ class ConversationFragment :
     binding.conversationItemRecycler.invalidateItemDecorations()
   }
 
-  private fun createGroupSubtitleString(members: List<Recipient>): String {
-    return members.joinToString(", ") { r -> if (r.isSelf) getString(R.string.ConversationTitleView_you) else r.getDisplayName(requireContext()) }
-  }
-
   private fun observeConversationThread() {
     var firstRender = true
     disposables += viewModel
@@ -1263,6 +1260,8 @@ class ConversationFragment :
         adapter.submitList(it) {
           scrollToPositionDelegate.notifyListCommitted()
           conversationItemDecorations.currentItems = it
+          // Tellomi（#1206）：未读线上下两条不算同一组（在主线程读：未读状态第一次是在后台线程设的）
+          adapter.tellomiUnreadAnchorId = conversationItemDecorations.tellomiUnreadAnchorId
 
           if (firstRender) {
             firstRender = false
@@ -1347,10 +1346,12 @@ class ConversationFragment :
     // Tellomi：「我的收藏」顶栏下方的分类（#1174）
     disposables += binding.tellomiSavedCategoriesBar.bind(viewModel.recipient, args.threadId)
 
-    disposables += viewModel.titleViewParticipants
-      .map { createGroupSubtitleString(it) }
-      .distinctUntilChanged()
+    // Tellomi（两端差异清单第 10 项）：人数按群的全部成员算；titleViewParticipants 只取了前 10 个，只够拼名字
+    disposables += viewModel.recipient
+      .filter { it.isGroup }
       .observeOn(AndroidSchedulers.mainThread())
+      .map { tellomiGroupMemberSubtitle(resources, it) }
+      .distinctUntilChanged()
       .subscribeBy(onNext = this::presentGroupConversationSubtitle)
 
     disposables += viewModel.scrollButtonState
@@ -3167,6 +3168,38 @@ class ConversationFragment :
     }
   }
 
+  /**
+   * Tellomi：长按「收藏」——不开转发面板，直接发到「我的收藏」，提示「已收藏」可点「查看」（#1174）。
+   * 内容和转发一样（MultiselectForwardFragmentArgs），只是收件人固定是自己。
+   */
+  private fun handleSaveToSavedMessages(messageParts: Set<MultiselectPart>) {
+    MultiselectForwardFragmentArgs.create(requireContext(), messageParts) { args ->
+      MultiselectForwardRepository.send(
+        additionalMessage = "",
+        multiShareArgs = args.multiShareArgs,
+        shareContacts = setOf(RecipientSearchKey(Recipient.self().id, false)),
+        resultHandlers = MultiselectForwardRepository.MultiselectForwardResultHandlers(
+          onAllMessageSentSuccessfully = { ThreadUtil.runOnMain { showSavedToSavedMessages() } },
+          onSomeMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) },
+          onAllMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) }
+        )
+      )
+    }
+  }
+
+  private fun showSavedToSavedMessages() {
+    // 发送是异步的，回来时页面可能已经进了返回栈（fragment 还在、view 没了），这时取 binding 会抛
+    if (!isAdded || view == null) {
+      return
+    }
+
+    Snackbar.make(binding.conversationItemRecycler, R.string.ConversationFragment__tellomi_saved_to_saved_messages, Snackbar.LENGTH_LONG)
+      .setAction(R.string.ConversationFragment__tellomi_view_saved_messages) {
+        CommunicationActions.startConversation(requireContext(), Recipient.self(), null)
+      }
+      .show()
+  }
+
   private fun handleSaveAttachment(record: MmsMessageRecord) {
     if (record.isViewOnce) {
       error("Cannot save a view-once message")
@@ -4658,6 +4691,7 @@ class ConversationFragment :
         ConversationReactionOverlay.Action.REPLY -> handleReplyToMessage(conversationMessage)
         ConversationReactionOverlay.Action.EDIT -> handleEditMessage(conversationMessage)
         ConversationReactionOverlay.Action.FORWARD -> handleForwardMessageParts(conversationMessage.multiselectCollection.toSet())
+        ConversationReactionOverlay.Action.TELLOMI_SAVE_TO_SAVED_MESSAGES -> handleSaveToSavedMessages(conversationMessage.multiselectCollection.toSet())
         ConversationReactionOverlay.Action.RESEND -> handleResend(conversationMessage)
         ConversationReactionOverlay.Action.DOWNLOAD -> handleSaveAttachment(conversationMessage.messageRecord as MmsMessageRecord)
         ConversationReactionOverlay.Action.COPY -> handleCopyMessage(conversationMessage.multiselectCollection.toSet())
