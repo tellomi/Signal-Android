@@ -1,6 +1,7 @@
 package org.thoughtcrime.securesms.components.settings.app.usernamelinks.main
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -15,6 +16,7 @@ import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -307,18 +309,7 @@ class UsernameLinkSettingsViewModel : ViewModel() {
     }
 
     // Draw the signal logo -- unfortunately can't have the normal QR code drawing handle it because it requires a composable ImageBitmap
-    BitmapFactory.decodeResource(AppDependencies.application.resources, R.drawable.qrcode_logo).also { logoBitmap ->
-      val tintedPaint = Paint().apply {
-        colorFilter = PorterDuffColorFilter(state.qrCodeColorScheme.foregroundColor.toArgb(), PorterDuff.Mode.SRC_IN)
-      }
-      val sourceRect = Rect(0, 0, logoBitmap.width, logoBitmap.height)
-
-      val logoSize = 36f * scaleFactor
-      val destLeft = (width / 2f) - (logoSize / 2f)
-      val destTop = destLeft - (10f * scaleFactor) + (logoSize / 2f)
-      val destRect = RectF(destLeft, destTop, destLeft + logoSize, destTop + logoSize)
-      androidCanvas.drawBitmap(logoBitmap, sourceRect, destRect, tintedPaint)
-    }
+    drawBadgeCenterLogo(androidCanvas, AppDependencies.application.resources, qrCodeData, state.qrCodeColorScheme.foregroundColor.toArgb(), width, scaleFactor)
 
     // Draw the username
     val usernamePaint = TextPaint().apply {
@@ -370,5 +361,32 @@ class UsernameLinkSettingsViewModel : ViewModel() {
     }
 
     return bitmap
+  }
+}
+
+/**
+ * Draws the logo in the middle of the saved / shared QR badge.
+ *
+ * Tellomi（tellomi/tellomi#947）：只在码本身留了中心标的位置时才画。用户名码现在都不留（[QrCodeData.forData] 恒给
+ * `canSupportIconOverlay = false`，不挖空），照上游无条件画会把同心标直接压在数据模块上——屏幕上的码去了标，
+ * 保存 / 分享出去的那张图却还带着，还更难扫。
+ */
+@VisibleForTesting
+internal fun drawBadgeCenterLogo(canvas: android.graphics.Canvas, resources: Resources, qrCodeData: QrCodeData, tint: Int, width: Int, scaleFactor: Int) {
+  if (!qrCodeData.canSupportIconOverlay) {
+    return
+  }
+
+  BitmapFactory.decodeResource(resources, R.drawable.qrcode_logo)?.let { logoBitmap ->
+    val tintedPaint = Paint().apply {
+      colorFilter = PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)
+    }
+    val sourceRect = Rect(0, 0, logoBitmap.width, logoBitmap.height)
+
+    val logoSize = 36f * scaleFactor
+    val destLeft = (width / 2f) - (logoSize / 2f)
+    val destTop = destLeft - (10f * scaleFactor) + (logoSize / 2f)
+    val destRect = RectF(destLeft, destTop, destLeft + logoSize, destTop + logoSize)
+    canvas.drawBitmap(logoBitmap, sourceRect, destRect, tintedPaint)
   }
 }

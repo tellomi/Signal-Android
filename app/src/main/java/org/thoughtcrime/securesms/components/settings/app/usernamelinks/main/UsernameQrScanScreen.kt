@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.components.settings.app.usernamelinks.main
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,10 +17,13 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -34,9 +38,11 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.util.TellomiUsernames
+import org.signal.core.util.Util
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.qr.QrCrosshair
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.util.CommunicationActions
 import org.signal.mediasend.R as MediaSendR
 
 /**
@@ -51,6 +57,7 @@ fun UsernameQrScanScreen(
   onOpenCameraClicked: () -> Unit,
   onOpenGalleryClicked: () -> Unit,
   onRecipientFound: (Recipient) -> Unit,
+  onGroupInviteFound: (String) -> Unit,
   hasCameraPermission: Boolean,
   modifier: Modifier = Modifier
 ) {
@@ -89,6 +96,18 @@ fun UsernameQrScanScreen(
 
     is QrScanResult.Success -> {
       onRecipientFound(qrScanResult.recipient)
+    }
+
+    // Tellomi（tellomi/tellomi#947，需求 §3.2）：群邀请码直接进加群；不是 Tellomi 的码显示内容，不再一律「二维码无效」。
+    // 加群弹层由宿主开：找人页的扫码页马上 finish，开在它上面的弹层会跟着没了；设置页的相机还开着，码留在取景框里每 2 秒会再弹一层。
+    is QrScanResult.GroupInvite -> {
+      LaunchedEffect(qrScanResult) {
+        onGroupInviteFound(qrScanResult.url)
+      }
+    }
+
+    is QrScanResult.OtherContent -> {
+      ScannedContentDialog(text = qrScanResult.text, onDismiss = onQrResultHandled)
     }
 
     null -> {}
@@ -172,6 +191,28 @@ fun UsernameQrScanScreen(
   }
 }
 
+/** Tellomi（tellomi/tellomi#947）：不是 Tellomi 的码——显示内容，网址可以「打开链接」，都可以「复制」。 */
+@Composable
+private fun ScannedContentDialog(text: String, onDismiss: () -> Unit) {
+  val context = LocalContext.current
+  val isWebLink = remember(text) { text.startsWith("https://", ignoreCase = true) || text.startsWith("http://", ignoreCase = true) }
+  val copiedMessage = stringResource(R.string.UsernameLinkSettings__tellomi_qr_result_copied)
+  val copy = {
+    Util.copyToClipboard(context, text)
+    Toast.makeText(context, copiedMessage, Toast.LENGTH_SHORT).show()
+  }
+
+  Dialogs.SimpleAlertDialog(
+    title = stringResource(R.string.UsernameLinkSettings__tellomi_qr_result_content_title),
+    body = if (text.length > 500) text.take(500) + "…" else text,
+    confirm = stringResource(if (isWebLink) R.string.UsernameLinkSettings__tellomi_qr_result_open_link else R.string.UsernameLinkSettings__tellomi_qr_result_copy),
+    onConfirm = { if (isWebLink) CommunicationActions.openBrowserLink(context, text) else copy() },
+    dismiss = stringResource(if (isWebLink) R.string.UsernameLinkSettings__tellomi_qr_result_copy else android.R.string.cancel),
+    onDeny = { if (isWebLink) copy() },
+    onDismiss = onDismiss
+  )
+}
+
 @Composable
 private fun QrScanResultDialog(title: String? = null, message: String, onDismiss: () -> Unit) {
   Dialogs.SimpleMessageDialog(
@@ -194,6 +235,7 @@ private fun UsernameQrScanScreenPreview() {
       onOpenCameraClicked = {},
       onOpenGalleryClicked = {},
       onRecipientFound = {},
+      onGroupInviteFound = {},
       hasCameraPermission = true
     )
   }
@@ -211,6 +253,7 @@ private fun UsernameQrScanScreenNoPermissionPreview() {
       onOpenCameraClicked = {},
       onOpenGalleryClicked = {},
       onRecipientFound = {},
+      onGroupInviteFound = {},
       hasCameraPermission = false
     )
   }
