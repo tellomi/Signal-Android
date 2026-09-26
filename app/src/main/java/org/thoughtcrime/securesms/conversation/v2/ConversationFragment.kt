@@ -144,6 +144,7 @@ import org.signal.core.util.setActionItemTint
 import org.signal.donations.InAppPaymentType
 import org.signal.emoji.EmojiEventListener
 import org.signal.mediasend.MediaSendFlowActivityContract
+import org.signal.mediasend.screens.files.PickedFileGrants
 import org.signal.ringrtc.CallLinkRootKey
 import org.thoughtcrime.securesms.BlockUnblockDialog
 import org.thoughtcrime.securesms.BuildConfig
@@ -5424,26 +5425,38 @@ class ConversationFragment :
   /**
    * Tellomi（tellomi/tellomi#1121 F-4、F-7、F-8）：附件 Sheet「文件」页选好的文件——每个一条、按顺序立即发送，说明挂在最后一个
    * （同 Telegram）。超过上限的不发，发完剩下的再提示「文件太大」并写明上限；本机已经没有的也提示一句。
+   *
+   * 系统选择器挑的文件，Sheet 收到时转成了持久读授权（[PickedFileGrants.take]）：整串发完、出错或者一个都没发成都放掉。
+   * 取元数据那一步还挂在 [disposables] 上，离开会话时不放——那时查询可能还在 IO 线程上读，放了它就会抛，而订阅已经断了，
+   * 异常只能走 Rx 的全局处理器；留下的这几个持久授权由系统的名额上限兜底（超了按时间淘汰最旧的）。
    */
   private fun sendAttachmentSheetFiles(result: MediaSendFlowActivityContract.AttachmentFilesResult) {
     val context = requireContext().applicationContext
     val maxFileSize = PushMediaConstraints(null).documentMaxSize
+    val releasePickedGrants: () -> Unit = { PickedFileGrants.release(context.contentResolver, result.pickedUris) }
     disposables += Single
       .fromCallable { TellomiAttachmentFiles.prepare(context, result, maxFileSize) }
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
-      .subscribeBy { prepared ->
-        sendSlidesInOrder(prepared.slides, result.caption?.trim().orEmpty())
-        val tooLarge = prepared.tooLarge.firstOrNull()
-        when {
-          tooLarge != null -> MaterialAlertDialogBuilder(requireContext())
-            .setMessage(getString(R.string.TellomiAttachmentFiles__too_large, tooLarge, maxFileSize.bytes.toUnitString()))
-            .setPositiveButton(android.R.string.ok, null)
-            .show()
+      .subscribeBy(
+        onError = {
+          Log.w(TAG, "Couldn't prepare the attachment sheet files", it)
+          releasePickedGrants()
+          toast(R.string.ConversationActivity_error_sending_media)
+        },
+        onSuccess = { prepared ->
+          sendSlidesInOrder(prepared.slides, result.caption?.trim().orEmpty(), onTerminate = releasePickedGrants)
+          val tooLarge = prepared.tooLarge.firstOrNull()
+          when {
+            tooLarge != null -> MaterialAlertDialogBuilder(requireContext())
+              .setMessage(getString(R.string.TellomiAttachmentFiles__too_large, tooLarge, maxFileSize.bytes.toUnitString()))
+              .setPositiveButton(android.R.string.ok, null)
+              .show()
 
-          prepared.unavailable > 0 -> toast(R.string.TellomiAttachmentFiles__some_not_on_device, Toast.LENGTH_LONG)
+            prepared.unavailable > 0 -> toast(R.string.TellomiAttachmentFiles__some_not_on_device, Toast.LENGTH_LONG)
+          }
         }
-      }
+      )
   }
 
   /**
@@ -5451,18 +5464,20 @@ class ConversationFragment :
    *
    * 整串一次建好交给 [TellomiSendInOrder]，订阅不进 [disposables]（那个绑在 view 上）：文件这条路不预上传，每个都要在插入时整份
    * 拷进附件库，多选几个大文件就是好几秒，发到一半离开会话、弹窗会话发完第一个就 finish，剩下的也要发完。
-   * [onSendComplete] 只在第一个写进库、页面还在时调一次。
+   * [onSendComplete] 只在第一个写进库、页面还在时调一次；[onTerminate] 在整串发完、出错或者一个都没发时调（放掉读授权）。
    */
   @SuppressLint("CheckResult")
-  private fun sendSlidesInOrder(slides: List<Slide>, caption: String) {
+  private fun sendSlidesInOrder(slides: List<Slide>, caption: String, onTerminate: () -> Unit) {
     val threadRecipient = viewModel.recipientSnapshot
     if (threadRecipient == null) {
       Log.w(TAG, "Unable to send due to invalid thread recipient")
       toast(R.string.ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation, Toast.LENGTH_LONG)
+      onTerminate()
       return
     }
 
     if (slides.isEmpty()) {
+      onTerminate()
       return
     }
 
@@ -5497,9 +5512,11 @@ class ConversationFragment :
     scrollToPositionDelegate.markListCommittedVersion()
 
     TellomiSendInOrder.inOrder(parts).subscribeBy(
+      onComplete = onTerminate,
       onError = {
         Log.w(TAG, "Error received during send!", it)
         toast(R.string.ConversationActivity_error_sending_media)
+        onTerminate()
       }
     )
   }

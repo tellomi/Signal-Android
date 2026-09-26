@@ -55,6 +55,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
@@ -103,7 +104,10 @@ internal fun AttachmentFilesScreen(
   val scope = rememberCoroutineScope()
   val listState = rememberLazyListState()
   val keyboard = LocalSoftwareKeyboardController.current
+  val context = LocalContext.current
   val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
+    // 读授权挂在这个 Sheet 上，Sheet 一关就收回，会话页却要在之后才一个个整份拷贝：趁 Sheet 还在转成持久授权，会话页发完再放。
+    PickedFileGrants.take(context.contentResolver, uris)
     onEvent(AttachmentFilesEvent.FilesPicked(uris))
   }
 

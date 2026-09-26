@@ -6,7 +6,9 @@
 package org.signal.mediasend.screens.files
 
 import android.content.ContentResolver
+import android.content.Intent
 import android.net.Uri
+import org.signal.core.util.logging.Log
 
 /**
  * Tellomi（tellomi/tellomi#1121 F-4）：「文件」页系统选择器挑的文件的读授权。
@@ -20,11 +22,27 @@ import android.net.Uri
  */
 object PickedFileGrants {
 
-  // 先红：旧行为——不转持久授权，读权限跟着 Sheet 走。
-  @Suppress("UNUSED_PARAMETER")
-  fun take(contentResolver: ContentResolver, uris: List<Uri>) = Unit
+  private val TAG = Log.tag(PickedFileGrants::class)
 
-  // 先红：旧行为——没转过，也就没什么可放的。
-  @Suppress("UNUSED_PARAMETER")
-  fun release(contentResolver: ContentResolver, uris: List<Uri>) = Unit
+  /** Sheet 收到系统选择器结果时调。拿不到持久授权（提供方不给）就算了，照旧用临时授权。 */
+  fun take(contentResolver: ContentResolver, uris: List<Uri>) {
+    for (uri in uris) {
+      try {
+        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+      } catch (e: SecurityException) {
+        Log.w(TAG, "No persistable read grant for a picked file", e)
+      }
+    }
+  }
+
+  /** 会话页这一串发完、出错或者没发成时调。当初没拿到的，放的时候系统会抛 SecurityException，跳过。 */
+  fun release(contentResolver: ContentResolver, uris: List<Uri>) {
+    for (uri in uris) {
+      try {
+        contentResolver.releasePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+      } catch (e: SecurityException) {
+        Log.w(TAG, "No persisted read grant to release for a picked file", e)
+      }
+    }
+  }
 }
