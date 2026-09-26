@@ -3605,13 +3605,13 @@
     <!-- Dialog title asking users for contact permission -->
     <string name="ContactSelectionListFragment_allow_access_contacts">允许访问联系人</string>
     <!-- Dialog description that will explain the steps needed to give contact permissions -->
-    <string name="ContactSelectionListFragment_to_find_people">如要在 Tellomi 上查找认识的人：</string>
+    <string name="ContactSelectionListFragment_to_find_people">如要在 Tellomi 中显示联系人的名字：</string>
     <!-- Text on button prompting users to give Signal contact permissions -->
     <string name="ContactSelectionListFragment__allow_access">允许访问</string>
     <!-- Text on button to dismiss Signal\'s request for contact permissions -->
     <string name="ContactSelectionListFragment__no_thanks">不，谢谢。</string>
     <!-- Text asking for user\'s contact permission -->
-    <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">允许访问您的联系人。您的联系人将会被加密，Tellomi 服务将无法看到您的联系人。</string>
+    <string name="ContactSelectionListFragment__allow_access_to_your_contacts_encrypted">允许访问通讯录，以显示您为联系人保存的名字。通讯录只在这台手机上读取，不会上传到 Tellomi。</string>
 
     <!-- contact_selection_list_fragment -->
     <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">为了显示联系人，Tellomi 需要其访问权限。</string>

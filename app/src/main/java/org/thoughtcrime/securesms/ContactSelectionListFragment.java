@@ -438,7 +438,7 @@ public final class ContactSelectionListFragment extends LoggingFragment {
 
   private void requestContactPermissions() {
     Permissions.with(this)
-               .request(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
+               .request(Manifest.permission.READ_CONTACTS)
                .ifNecessary()
                .onAllGranted(() -> {
                  contactSearchView.setAlpha(0.5f);
@@ -929,8 +929,9 @@ public final class ContactSelectionListFragment extends LoggingFragment {
     });
   }
 
+  // Tellomi（#1240）：只读通讯录（本机显示联系人名字），不写，所以不再要求 WRITE_CONTACTS。
   private boolean hasContactsPermissions(@NonNull Context context) {
-    return Permissions.hasAll(context, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS);
+    return Permissions.hasAll(context, Manifest.permission.READ_CONTACTS);
   }
 
   private void addMoreSection(@NonNull ContactSearchConfiguration.Builder builder) {
