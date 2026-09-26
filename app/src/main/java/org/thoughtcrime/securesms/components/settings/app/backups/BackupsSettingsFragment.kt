@@ -181,15 +181,12 @@ private fun BackupsSettingsContent(
       }
 
       if (showRemoteBackups) item {
-        val displayActionButton = !backupsSettingsState.isLinkedDevice
-
         when (backupsSettingsState.backupState) {
           is BackupState.LocalStore -> {
             LocalStoreBackupRow(
               backupState = backupsSettingsState.backupState,
               lastBackupAt = backupsSettingsState.lastBackupAt,
-              onBackupsRowClick = onBackupsRowClick,
-              displayActionButton = displayActionButton
+              onBackupsRowClick = onBackupsRowClick
             )
 
             OtherWaysToBackUpHeading()
@@ -200,8 +197,7 @@ private fun BackupsSettingsContent(
               BackupsOffLinkedDeviceRow(onLearnMoreClick = onLearnMoreClick)
             } else {
               InactiveBackupsRow(
-                onBackupsRowClick = onBackupsRowClick,
-                displayActionButton = true
+                onBackupsRowClick = onBackupsRowClick
               )
             }
 
@@ -212,8 +208,7 @@ private fun BackupsSettingsContent(
             ActiveBackupsRow(
               backupState = backupsSettingsState.backupState,
               onBackupsRowClick = onBackupsRowClick,
-              lastBackupAt = backupsSettingsState.lastBackupAt,
-              displayActionButton = true
+              lastBackupAt = backupsSettingsState.lastBackupAt
             )
 
             OtherWaysToBackUpHeading()
@@ -224,8 +219,7 @@ private fun BackupsSettingsContent(
               BackupsOffLinkedDeviceRow(onLearnMoreClick = onLearnMoreClick)
             } else {
               NeverEnabledBackupsRow(
-                onBackupsRowClick = onBackupsRowClick,
-                displayActionButton = true
+                onBackupsRowClick = onBackupsRowClick
               )
             }
 
@@ -234,8 +228,7 @@ private fun BackupsSettingsContent(
 
           is BackupState.Error -> {
             WaitingForNetworkRow(
-              onBackupsRowClick = onBackupsRowClick,
-              displayActionButton = displayActionButton
+              onBackupsRowClick = onBackupsRowClick
             )
 
             OtherWaysToBackUpHeading()
@@ -243,8 +236,7 @@ private fun BackupsSettingsContent(
 
           BackupState.NotFound -> {
             NotFoundBackupRow(
-              onBackupsRowClick = onBackupsRowClick,
-              displayActionButton = displayActionButton
+              onBackupsRowClick = onBackupsRowClick
             )
 
             OtherWaysToBackUpHeading()
@@ -252,8 +244,7 @@ private fun BackupsSettingsContent(
 
           is BackupState.Pending -> {
             PendingBackupRow(
-              onBackupsRowClick = onBackupsRowClick,
-              displayActionButton = displayActionButton
+              onBackupsRowClick = onBackupsRowClick
             )
 
             OtherWaysToBackUpHeading()
@@ -263,8 +254,7 @@ private fun BackupsSettingsContent(
             ActiveBackupsRow(
               backupState = backupsSettingsState.backupState,
               lastBackupAt = backupsSettingsState.lastBackupAt,
-              onBackupsRowClick = onBackupsRowClick,
-              displayActionButton = displayActionButton
+              onBackupsRowClick = onBackupsRowClick
             )
 
             OtherWaysToBackUpHeading()
@@ -295,8 +285,7 @@ private fun OtherWaysToBackUpHeading() {
 
 @Composable
 private fun NeverEnabledBackupsRow(
-  onBackupsRowClick: () -> Unit = {},
-  displayActionButton: Boolean = true
+  onBackupsRowClick: () -> Unit = {}
 ) {
   Rows.TextRow(
     modifier = Modifier.wrapContentHeight(),
@@ -325,15 +314,13 @@ private fun NeverEnabledBackupsRow(
           style = MaterialTheme.typography.bodyMedium
         )
 
-        if (displayActionButton) {
-          Buttons.MediumTonal(
-            onClick = onBackupsRowClick,
-            modifier = Modifier.padding(top = 12.dp)
-          ) {
-            Text(
-              text = stringResource(R.string.BackupsSettingsFragment_set_up)
-            )
-          }
+        Buttons.MediumTonal(
+          onClick = onBackupsRowClick,
+          modifier = Modifier.padding(top = 12.dp)
+        ) {
+          Text(
+            text = stringResource(R.string.BackupsSettingsFragment_set_up)
+          )
         }
       }
     }
@@ -386,12 +373,12 @@ private fun BackupsOffLinkedDeviceRow(
 }
 
 @Composable
-private fun WaitingForNetworkRow(onBackupsRowClick: () -> Unit = {}, displayActionButton: Boolean = true) {
+private fun WaitingForNetworkRow(onBackupsRowClick: () -> Unit = {}) {
   Rows.TextRow(
     text = {
       Column {
         Text(text = stringResource(R.string.RemoteBackupsSettingsFragment__waiting_for_network))
-        ViewSettingsButton(onBackupsRowClick, displayActionButton)
+        ViewSettingsButton(onBackupsRowClick)
       }
     },
     icon = {
@@ -402,8 +389,7 @@ private fun WaitingForNetworkRow(onBackupsRowClick: () -> Unit = {}, displayActi
 
 @Composable
 private fun InactiveBackupsRow(
-  onBackupsRowClick: () -> Unit = {},
-  displayActionButton: Boolean = true
+  onBackupsRowClick: () -> Unit = {}
 ) {
   Rows.TextRow(
     text = {
@@ -418,7 +404,7 @@ private fun InactiveBackupsRow(
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        ViewSettingsButton(onBackupsRowClick, displayActionButton)
+        ViewSettingsButton(onBackupsRowClick)
       }
     },
     icon = {
@@ -436,8 +422,7 @@ private fun InactiveBackupsRow(
 
 @Composable
 private fun NotFoundBackupRow(
-  onBackupsRowClick: () -> Unit = {},
-  displayActionButton: Boolean = true
+  onBackupsRowClick: () -> Unit = {}
 ) {
   Rows.TextRow(
     modifier = Modifier.wrapContentHeight(),
@@ -465,7 +450,7 @@ private fun NotFoundBackupRow(
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        ViewSettingsButton(onBackupsRowClick, displayActionButton)
+        ViewSettingsButton(onBackupsRowClick)
       }
     }
   )
@@ -473,8 +458,7 @@ private fun NotFoundBackupRow(
 
 @Composable
 private fun PendingBackupRow(
-  onBackupsRowClick: () -> Unit = {},
-  displayActionButton: Boolean = true
+  onBackupsRowClick: () -> Unit = {}
 ) {
   Rows.TextRow(
     modifier = Modifier.wrapContentHeight(),
@@ -502,18 +486,14 @@ private fun PendingBackupRow(
           style = MaterialTheme.typography.bodyMedium
         )
 
-        ViewSettingsButton(onBackupsRowClick, displayActionButton)
+        ViewSettingsButton(onBackupsRowClick)
       }
     }
   )
 }
 
 @Composable
-private fun ViewSettingsButton(onClick: () -> Unit, visible: Boolean = true) {
-  if (!visible) {
-    return
-  }
-
+private fun ViewSettingsButton(onClick: () -> Unit) {
   Buttons.MediumTonal(
     onClick = onClick,
     modifier = Modifier.padding(top = 12.dp)
@@ -528,8 +508,7 @@ private fun ViewSettingsButton(onClick: () -> Unit, visible: Boolean = true) {
 private fun LocalStoreBackupRow(
   backupState: BackupState.LocalStore,
   lastBackupAt: Duration,
-  onBackupsRowClick: () -> Unit,
-  displayActionButton: Boolean = true
+  onBackupsRowClick: () -> Unit
 ) {
   Rows.TextRow(
     modifier = Modifier.wrapContentHeight(),
@@ -564,7 +543,7 @@ private fun LocalStoreBackupRow(
         )
 
         LastBackedUpText(lastBackupAt)
-        ViewSettingsButton(onBackupsRowClick, displayActionButton)
+        ViewSettingsButton(onBackupsRowClick)
       }
     }
   )
@@ -574,8 +553,7 @@ private fun LocalStoreBackupRow(
 private fun ActiveBackupsRow(
   backupState: BackupState.WithTypeAndRenewalTime,
   lastBackupAt: Duration,
-  onBackupsRowClick: () -> Unit = {},
-  displayActionButton: Boolean = true
+  onBackupsRowClick: () -> Unit = {}
 ) {
   Rows.TextRow(
     modifier = Modifier.wrapContentHeight(),
@@ -642,7 +620,7 @@ private fun ActiveBackupsRow(
 
         LastBackedUpText(lastBackupAt)
 
-        ViewSettingsButton(onBackupsRowClick, displayActionButton)
+        ViewSettingsButton(onBackupsRowClick)
       }
     }
   )

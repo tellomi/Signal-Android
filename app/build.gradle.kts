@@ -478,11 +478,9 @@ android {
         "proguard/proguard-google-play-services.pro",
         "proguard/proguard-jackson.pro",
         "proguard/proguard-sqlite.pro",
-        "proguard/proguard-appcompat-v7.pro",
         "proguard/proguard-square-okhttp.pro",
         "proguard/proguard-square-okio.pro",
         "proguard/proguard-rounded-image-view.pro",
-        "proguard/proguard-glide.pro",
         "proguard/proguard-shortcutbadger.pro",
         "proguard/proguard-retrofit.pro",
         "proguard/proguard-klinker.pro",
@@ -910,6 +908,8 @@ dependencies {
   implementation(libs.androidx.asynclayoutinflater)
   implementation(libs.androidx.asynclayoutinflater.appcompat)
   implementation(libs.androidx.emoji2)
+  implementation(libs.androidx.paging.runtime)
+  implementation(libs.androidx.paging.compose)
   implementation(libs.firebase.messaging) {
     exclude(group = "com.google.firebase", module = "firebase-core")
     exclude(group = "com.google.firebase", module = "firebase-analytics")

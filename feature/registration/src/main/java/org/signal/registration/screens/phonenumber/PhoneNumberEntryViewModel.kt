@@ -6,8 +6,6 @@
 package org.signal.registration.screens.phonenumber
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.i18n.phonenumbers.AsYouTypeFormatter
 import com.google.i18n.phonenumbers.NumberParseException
@@ -155,7 +153,11 @@ class PhoneNumberEntryViewModel(
         parentEventEmitter.navigateTo(RegistrationRoute.LinkAccount())
       }
       is PhoneNumberEntryScreenEvents.RegisterWithoutNumber -> {
-        parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginPayment)
+        if (state.sawArchiveRestoreSelectionScreen) {
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginCredentialEntry())
+        } else {
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginPayment)
+        }
       }
       is PhoneNumberEntryScreenEvents.CaptchaCompleted -> {
         stateEmitter(applyCaptchaCompleted(state, event.token, parentEventEmitter))
@@ -220,7 +222,8 @@ class PhoneNumberEntryViewModel(
       smsVerificationCodeRequest = parentState.lastSmsVerificationCodeRequest,
       preExistingRegistrationData = parentState.preExistingRegistrationData,
       restoredSvrCredentials = state.restoredSvrCredentials.takeUnless { parentState.doNotAttemptRecoveryPassword } ?: emptyList(),
-      pendingRestoreOption = parentState.pendingRestoreOption
+      pendingRestoreOption = parentState.pendingRestoreOption,
+      sawArchiveRestoreSelectionScreen = parentState.sawArchiveRestoreSelectionScreen
     )
   }
 
@@ -1133,16 +1136,6 @@ class PhoneNumberEntryViewModel(
       copy(isNumberPossible = isNumberPossible, isNumberInvalid = isNumberInvalid)
     } else {
       this
-    }
-  }
-
-  class Factory(
-    val repository: RegistrationRepository,
-    val parentState: StateFlow<RegistrationFlowState>,
-    val parentEventEmitter: (RegistrationFlowEvent) -> Unit
-  ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return PhoneNumberEntryViewModel(repository, parentState, parentEventEmitter) as T
     }
   }
 }

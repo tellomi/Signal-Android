@@ -42,10 +42,18 @@ object Environment {
   val IS_LINK_AND_SYNC_AVAILABLE: Boolean = true
 
   /**
-   * Tellomi（tellomi/tellomi#1210）：**写死关闭**。上游是 `IS_STAGING`——staging 包的手机号页因此出现「Register without number」，
-   * 与《网络安全法》即时通信实名要求冲突。上游 8.28.1 起对所有人开放了这个入口，升级到 8.28 时要再核一次别被合回去。
+   * Tellomi（tellomi/tellomi#1210）：**写死关闭**。v8.26 上游是 `IS_STAGING`——staging 包的手机号页因此出现「Register without number」，
+   * 与《网络安全法》即时通信实名要求冲突。上游 v8.28.3 曾对所有人打开（`true`），v8.28.4 又关回 `false`（#957 合上游时核过）；
+   * 以后每次合上游都要再核一次这里别被合成 true。
    */
-  const val PHONENUMBERLESS_REGISTRATION: Boolean = false
+  @JvmField
+  val PHONENUMBERLESS_REGISTRATION: Boolean = false
+
+  /** Whether this build is distributed through the Play Store, and so can use Google Play billing at all. */
+  @JvmStatic
+  fun supportsGooglePlayBilling(): Boolean {
+    return BuildConfig.APPLICATION_ID == GOOGLE_PLAY_BILLING_APPLICATION_ID
+  }
 
   object Backups {
     /**
@@ -60,7 +68,7 @@ object Environment {
 
     @JvmStatic
     fun supportsGooglePlayBilling(): Boolean {
-      return BuildConfig.APPLICATION_ID == GOOGLE_PLAY_BILLING_APPLICATION_ID
+      return Environment.supportsGooglePlayBilling()
     }
 
     @JvmStatic

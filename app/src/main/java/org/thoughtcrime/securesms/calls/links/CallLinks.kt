@@ -38,7 +38,8 @@ object CallLinks {
 
   private val TAG = Log.tag(CallLinks::class.java)
 
-  fun url(rootKeyBytes: ByteArray): String = urlForFormattedKey(CallLinkRootKey(rootKeyBytes).toString())
+  // 上游 v8.28（RingRTC 2.72）起 CallLinkRootKey.toString() 打码，拼链接要用 toUnredactedString()。
+  fun url(rootKeyBytes: ByteArray): String = urlForFormattedKey(CallLinkRootKey(rootKeyBytes).toUnredactedString())
 
   /** 单拆出来只为能单测：CallLinkRootKey 的格式化走 RingRTC 原生库，JVM 单测里加载不了。 */
   @VisibleForTesting

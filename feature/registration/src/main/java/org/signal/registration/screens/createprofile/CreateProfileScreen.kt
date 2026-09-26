@@ -11,6 +11,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -126,6 +127,9 @@ private fun CompactLayout(
   onAvatarClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
+  val givenNameInteractionSource = remember { MutableInteractionSource() }
+  // Tellomi（tellomi/tellomi#1215）：「姓氏（可选）」框去掉了，上游给它的 familyNameInteractionSource 不要
+
   RegistrationScaffold(
     modifier = modifier
       .fillMaxSize()
@@ -175,6 +179,7 @@ private fun CompactLayout(
               }
             )
           },
+          interactionSource = givenNameInteractionSource,
           singleLine = true,
           enabled = !state.isSubmitting,
           keyboardOptions = KeyboardOptions(

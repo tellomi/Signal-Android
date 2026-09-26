@@ -309,6 +309,11 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       RestoreDecision.COMPLETED -> RestoreDecisionState.Completed
     }
 
+    if (decision == RestoreDecision.COMPLETED) {
+      Log.i(TAG, "[setRestoreDecision] Data was restored. Clearing onboarding state.")
+      SignalStore.onboarding.clearAll()
+    }
+
     RegistrationUtil.maybeMarkRegistrationComplete()
   }
 
@@ -440,7 +445,7 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
         val selfPni = SignalStore.account.pni
         val selfE164 = SignalStore.account.e164
 
-        if (selfAci == null || selfPni == null || selfE164 == null) {
+        if (selfAci == null) {
           trySend(LocalBackupRestoreProgress.Error(IllegalStateException("Account not registered, cannot restore V2 backup")))
           return@launch
         }
@@ -753,7 +758,8 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
     val isAciChanged = SignalStore.account.aci != aci
 
     if (pni == null) {
-      Log.i(TAG, "[applyAccountData] No PNI in the account data. Registering an account with no phone number.")
+      Log.i(TAG, "[applyAccountData] No PNI in the account data. Registering an account with no phone number. Clearing any E164/PNI state from a previous registration.")
+      SignalStore.account.clearE164AndPni()
     }
 
     SignalStore.account.setAci(aci)
@@ -810,6 +816,9 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       // Registering releases any username we previously held, so it has to be re-reserved once storage service tells us what it was.
       Log.i(TAG, "[applyAccountData] Re-registration. Marking that we need to reclaim our username and link.")
       SignalStore.misc.needsUsernameRestore = true
+
+      Log.i(TAG, "[applyAccountData] Re-registration. Clearing onboarding state.")
+      SignalStore.onboarding.clearAll()
 
       // Tellomi（tellomi/tellomi#1266）：注册资料页不显示用户名框，标完成时清掉（RegistrationValues.isTellomiReRegistration）
       Log.i(TAG, "[applyAccountData] Re-registration. Hiding the username field on the profile screen.")
@@ -911,7 +920,7 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
 
       val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
       context.contentResolver.takePersistableUriPermission(rootUri, takeFlags)
-      SignalStore.settings.setSignalBackupDirectory(rootUri)
+      SignalStore.settings.signalBackupDirectory = rootUri
 
       if (BackupUtil.canUserAccessBackupDirectory(context)) {
         LocalBackupListener.setNextBackupTimeToIntervalFromNow(context)

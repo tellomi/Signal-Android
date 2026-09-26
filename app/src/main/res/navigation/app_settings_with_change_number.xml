@@ -225,22 +225,22 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <action
-            android:id="@+id/action_accountSettingsFragment_to_signalLoginViewDetailsFragment"
-            app:destination="@id/signalLoginViewDetailsFragment"
+            android:id="@+id/action_accountSettingsFragment_to_settingsSignalLoginDetailsFragment"
+            app:destination="@id/settingsSignalLoginDetailsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <action
-            android:id="@+id/action_accountSettingsFragment_to_authenticatorAppsFragment"
-            app:destination="@id/authenticatorAppsFragment"
+            android:id="@+id/action_accountSettingsFragment_to_authenticatorSetupFragment"
+            app:destination="@id/authenticatorSetupFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <action
-            android:id="@+id/action_accountSettingsFragment_to_passkeysFragment"
-            app:destination="@id/passkeysFragment"
+            android:id="@+id/action_accountSettingsFragment_to_authenticatorNameFragment"
+            app:destination="@id/authenticatorNameFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -248,24 +248,12 @@
     </fragment>
 
     <fragment
-        android:id="@+id/signalLoginViewDetailsFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.signallogin.SignalLoginViewDetailsFragment"
-        android:label="signal_login_view_details_fragment" />
-
-    <fragment
-        android:id="@+id/authenticatorAppsFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpAppListFragment"
-        android:label="authenticator_apps_fragment">
+        android:id="@+id/settingsSignalLoginDetailsFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.signallogin.SettingsSignalLoginDetailsFragment"
+        android:label="settings_signal_login_details_fragment">
         <action
-            android:id="@+id/action_authenticatorAppsFragment_to_authenticatorSetupFragment"
-            app:destination="@id/authenticatorSetupFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
-        <action
-            android:id="@+id/action_authenticatorAppsFragment_to_authenticatorNameFragment"
-            app:destination="@id/authenticatorNameFragment"
+            android:id="@+id/action_settingsSignalLoginDetailsFragment_to_backupKeyDisplayFragment"
+            app:destination="@id/backupKeyDisplayFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -320,11 +308,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/passkeysFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.passkeys.PasskeysFragment"
-        android:label="passkeys_fragment" />
-
-    <fragment
         android:id="@+id/linkedDeviceAccountSettingsFragment"
         android:name="org.thoughtcrime.securesms.components.settings.app.account.LinkedDeviceAccountSettingsFragment"
         android:label="linked_device_account_settings_fragment"
@@ -348,8 +331,7 @@
     <fragment
         android:id="@+id/deleteAccountFragment"
         android:name="org.thoughtcrime.securesms.delete.DeleteAccountFragment"
-        android:label="delete_account_fragment"
-        tools:layout="@layout/delete_account_fragment">
+        android:label="delete_account_fragment">
 
         <action
             android:id="@+id/action_deleteAccountFragment_to_deleteAccountCountryFragment"
@@ -549,6 +531,14 @@
         <action
             android:id="@+id/action_backupsPreferenceFragment_to_backupKeyDisplayFragment"
             app:destination="@id/backupKeyDisplayFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_localBackupsFragment_to_settingsSignalLoginDetailsFragment"
+            app:destination="@id/settingsSignalLoginDetailsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -1428,6 +1418,14 @@
         <action
             android:id="@+id/action_remoteBackupsSettingsFragment_to_backupKeyDisplayFragment"
             app:destination="@id/backupKeyDisplayFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_remoteBackupsSettingsFragment_to_settingsSignalLoginDetailsFragment"
+            app:destination="@id/settingsSignalLoginDetailsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"

@@ -9,15 +9,16 @@ import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -28,6 +29,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.compose.AndroidFragment
+import org.signal.core.ui.compose.navigationBarsCompat
+import org.signal.core.ui.compose.safeDrawingCompat
+import org.signal.core.ui.compose.statusBarsCompat
 import org.signal.core.ui.util.ThemeUtil
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.compose.mediakeyboard.MediaKeyboardController
@@ -48,8 +52,9 @@ private const val BUBBLE_HEIGHT_FRACTION = 0.55f
  * @param onEvent The MediaKeyboard events stream for interacting with the media keyboard
  * @param scrim The color information for the top and bottom scrim
  * @param isBubble Whether we're displaying content in a bubble
- * @param backgroundView The chat wallpaper
- * @param contentView The area that actually moves up when the keyboards appear
+ * @param conversationView The conversation's own view hierarchy, and the only interop view here.
+ *   A second one sharing pointer input would leave this one without its ACTION_HOVER_EXIT, which is
+ *   why the long press overlay is Compose. See stylus-hover-interop.md.
  */
 @Composable
 fun ChatScreen(
@@ -57,8 +62,8 @@ fun ChatScreen(
   onEvent: (MediaKeyboardEvents) -> Unit,
   scrims: ChatScrimState,
   isBubble: Boolean,
-  backgroundView: View,
-  contentView: View,
+  conversationView: View,
+  overlayController: ChatReactionOverlayController,
   modifier: Modifier = Modifier
 ) {
   val minimumHeight = dimensionResource(R.dimen.default_custom_keyboard_size)
@@ -83,18 +88,13 @@ fun ChatScreen(
       .fillMaxSize()
       // A bubble's host has already accounted for the system bars, but not for the keyboard, so
       // that one inset has to survive or nothing lifts the input off the system keyboard.
-      .then(if (isBubble) Modifier.consumeWindowInsets(WindowInsets.safeDrawing.exclude(WindowInsets.ime)) else Modifier)
+      .then(if (isBubble) Modifier.consumeWindowInsets(WindowInsets.safeDrawingCompat.exclude(WindowInsets.ime)) else Modifier)
   ) {
-    AndroidView(
-      factory = { backgroundView },
-      modifier = Modifier.fillMaxSize()
-    )
-
     Box(
       modifier = Modifier
         .align(Alignment.TopCenter)
         .fillMaxWidth()
-        .windowInsetsTopHeight(WindowInsets.statusBars)
+        .windowInsetsTopHeight(WindowInsets.statusBarsCompat)
         .background(Color(scrims.statusBarColor))
     )
 
@@ -102,7 +102,7 @@ fun ChatScreen(
       modifier = Modifier
         .align(Alignment.BottomCenter)
         .fillMaxWidth()
-        .windowInsetsBottomHeight(WindowInsets.navigationBars)
+        .windowInsetsBottomHeight(WindowInsets.navigationBarsCompat)
         .background(Color(scrims.navigationBarColor))
     )
 
@@ -133,9 +133,18 @@ fun ChatScreen(
       keyboardHeight = keyboardHeight
     ) {
       AndroidView(
-        factory = { contentView },
+        factory = { conversationView },
         modifier = Modifier.fillMaxSize()
       )
     }
+
+    // Above the scaffold so a closing keyboard neither covers nor resizes it. The bottom inset is
+    // left on; the placement subtracts the navigation bar itself.
+    ChatReactionOverlay(
+      controller = overlayController,
+      modifier = Modifier
+        .fillMaxSize()
+        .windowInsetsPadding(WindowInsets.statusBarsCompat.add(WindowInsets.safeDrawingCompat.only(WindowInsetsSides.Horizontal)))
+    )
   }
 }

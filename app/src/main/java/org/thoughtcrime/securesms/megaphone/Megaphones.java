@@ -135,7 +135,7 @@ public final class Megaphones {
       put(Event.BACKUP_MESSAGE_COUNT_UPSELL, shouldShowBackupMessageCountUpsell(context) ? new BackupUpsellSchedule(records, TimeUnit.DAYS.toMillis(60)) : NEVER);
       put(Event.BACKUPS_GENERIC_UPSELL, shouldShowGenericBackupsMegaphone(context) ? new BackupUpsellSchedule(records, TimeUnit.DAYS.toMillis(60)) : NEVER);
       put(Event.VERIFY_BACKUP_KEY, new VerifyBackupKeyReminderSchedule());
-      put(Event.USE_NEW_ON_DEVICE_BACKUPS, shouldShowUseNewOnDeviceBackupsMegaphone() ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(14)) : NEVER);
+      put(Event.USE_NEW_ON_DEVICE_BACKUPS, shouldShowUseNewOnDeviceBackupsMegaphone() ? RecurringSchedule.every(TimeUnit.DAYS.toMillis(7)) : NEVER);
 
       // The Great Wall of PIN Reminder -- megaphones below this may not be seen by users who never do reminders
       put(Event.PIN_REMINDER, new SignalPinReminderSchedule());
@@ -411,10 +411,10 @@ public final class Megaphones {
   @SuppressLint("InlinedApi")
   private static Megaphone buildBackupPermissionMegaphone(@NonNull Context context) {
     return new Megaphone.Builder(Event.BACKUP_SCHEDULE_PERMISSION, Megaphone.Style.BASIC)
-        .setTitle(R.string.BackupSchedulePermissionMegaphone__cant_back_up_chats)
-        .setImage(R.drawable.ic_cant_backup_megaphone)
-        .setBody(R.string.BackupSchedulePermissionMegaphone__your_chats_are_no_longer_being_automatically_backed_up)
-        .setActionButton(R.string.BackupSchedulePermissionMegaphone__back_up_chats, (megaphone, controller) -> {
+        .setTitle(R.string.BackupSchedulePermissionMegaphone__improve_backup_reliability)
+        .setImage(R.drawable.ic_improve_backup_reliability_megaphone)
+        .setBody(R.string.BackupSchedulePermissionMegaphone__allow_the_alarms_permission_to_improve_automatic_daily_backups)
+        .setActionButton(R.string.BackupSchedulePermissionMegaphone__allow, (megaphone, controller) -> {
           controller.onMegaphoneDialogFragmentRequested(new ReenableBackupsDialogFragment());
         })
         .setSecondaryButton(R.string.BackupSchedulePermissionMegaphone__not_now, (megaphone, controller) -> {
@@ -516,18 +516,13 @@ public final class Megaphones {
   }
 
   public static @NonNull Megaphone buildUseNewOnDeviceBackupsMegaphone() {
-    return new Megaphone.Builder(Event.USE_NEW_ON_DEVICE_BACKUPS, Megaphone.Style.BASIC)
-        .setImage(R.drawable.backups_megaphone_image)
-        .setTitle(R.string.UseNewOnDeviceBackups__title)
-        .setBody(R.string.UseNewOnDeviceBackups__body)
-        .setActionButton(R.string.UseNewOnDeviceBackups__upgrade, (megaphone, controller) -> {
+    return new Megaphone.Builder(Event.USE_NEW_ON_DEVICE_BACKUPS, Megaphone.Style.FULLSCREEN)
+        .setOnVisibleListener((megaphone, controller) -> {
+          Log.i(TAG, "Prompting the user to upgrade their on-device backups.");
+
           Intent intent = AppSettingsActivity.upgradeLocalBackups(controller.getMegaphoneActivity());
 
-          controller.onMegaphoneNavigationRequested(intent);
-          controller.onMegaphoneSnooze(Event.USE_NEW_ON_DEVICE_BACKUPS);
-        })
-        .setSecondaryButton(R.string.UseNewOnDeviceBackups__not_now, (megaphone, controller) -> {
-          controller.onMegaphoneSnooze(Event.USE_NEW_ON_DEVICE_BACKUPS);
+          controller.onMegaphoneNavigationRequested(intent, AppSettingsActivity.REQUEST_CODE_UPGRADE_LOCAL_BACKUPS);
         })
         .build();
   }
@@ -575,7 +570,7 @@ public final class Megaphones {
                          !NotificationChannels.getInstance().isMessagesChannelGroupEnabled() ||
                          !NotificationChannels.getInstance().areNotificationsEnabled();
     if (shouldShow) {
-      Locale locale = DynamicLanguageContextWrapper.getUsersSelectedLocale(context);
+      Locale locale = DynamicLanguageContextWrapper.getUsersSelectedLocale();
       if (!new TranslationDetection(context, locale)
           .textExistsInUsersLanguage(R.string.NotificationsMegaphone_turn_on_notifications,
                                      R.string.NotificationsMegaphone_never_miss_a_message,

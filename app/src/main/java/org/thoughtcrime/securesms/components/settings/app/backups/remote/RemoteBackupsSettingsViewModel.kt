@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.withContext
 import org.signal.core.util.bytes
-import org.signal.core.util.concurrent.SignalDispatchers
 import org.signal.core.util.logging.Log
 import org.signal.core.util.mebiBytes
 import org.signal.core.util.throttleLatest
@@ -152,31 +151,7 @@ class RemoteBackupsSettingsViewModel : ViewModel() {
         }
     }
 
-    viewModelScope.launch(Dispatchers.Default) {
-      var optimizedRemainingBytes = 0L
-      while (isActive) {
-        if (ArchiveRestoreProgress.state.let { it.restoreState.isMediaRestoreOperation || it.restoreStatus == RestoreStatus.FINISHED }) {
-          Log.d(TAG, "Backup is being restored. Collecting updates.")
-          ArchiveRestoreProgress
-            .stateFlow
-            .takeWhile { it.restoreState.isMediaRestoreOperation || it.restoreStatus == RestoreStatus.FINISHED }
-            .onEach { latest -> _restoreState.update { BackupRestoreState.Restoring(latest) } }
-            .collect()
-        } else if (
-          !SignalStore.backup.optimizeStorage &&
-          SignalStore.backup.userManuallySkippedMediaRestore &&
-          SignalDatabase.attachments.getOptimizedMediaAttachmentSize().also { optimizedRemainingBytes = it } > 0
-        ) {
-          _restoreState.update { BackupRestoreState.Ready(optimizedRemainingBytes.bytes.toUnitString()) }
-        } else if (SignalStore.backup.totalRestorableAttachmentSize > 0L) {
-          _restoreState.update { BackupRestoreState.Ready(SignalStore.backup.totalRestorableAttachmentSize.bytes.toUnitString()) }
-        } else {
-          _restoreState.update { BackupRestoreState.None }
-        }
-
-        delay(1.seconds)
-      }
-    }
+    observeRestoreState()
 
     viewModelScope.launch {
       var previous: ArchiveUploadProgressState.State? = null
@@ -229,6 +204,36 @@ class RemoteBackupsSettingsViewModel : ViewModel() {
     viewModelScope.launch(Dispatchers.IO) {
       BackupRepository.refreshBackupFileTimestamp()
     }
+
+    observeRestoreState()
+  }
+
+  private fun observeRestoreState() {
+    viewModelScope.launch(Dispatchers.Default) {
+      var optimizedRemainingBytes = 0L
+      while (isActive) {
+        if (ArchiveRestoreProgress.state.let { it.restoreState.isMediaRestoreOperation || it.restoreStatus == RestoreStatus.FINISHED }) {
+          Log.d(TAG, "Backup is being restored. Collecting updates.")
+          ArchiveRestoreProgress
+            .stateFlow
+            .takeWhile { it.restoreState.isMediaRestoreOperation || it.restoreStatus == RestoreStatus.FINISHED }
+            .onEach { latest -> _restoreState.update { BackupRestoreState.Restoring(latest) } }
+            .collect()
+        } else if (
+          !SignalStore.backup.optimizeStorage &&
+          SignalStore.backup.userManuallySkippedMediaRestore &&
+          SignalDatabase.attachments.getOptimizedMediaAttachmentSize().also { optimizedRemainingBytes = it } > 0
+        ) {
+          _restoreState.update { BackupRestoreState.Ready(optimizedRemainingBytes.bytes.toUnitString()) }
+        } else if (SignalStore.backup.totalRestorableAttachmentSize > 0L) {
+          _restoreState.update { BackupRestoreState.Ready(SignalStore.backup.totalRestorableAttachmentSize.bytes.toUnitString()) }
+        } else {
+          _restoreState.update { BackupRestoreState.None }
+        }
+
+        delay(1.seconds)
+      }
+    }
   }
 
   fun setCanBackUpUsingCellular(canBackUpUsingCellular: Boolean) {
@@ -275,18 +280,8 @@ class RemoteBackupsSettingsViewModel : ViewModel() {
   }
 
   fun getKeyRotationLimit() {
-    viewModelScope.launch(SignalDispatchers.IO) {
-      val canRotateKey = AppDependencies.archiveService
-        .getKeyRotationLimit()
-        .fold(
-          ifRight = { it.hasPermitsRemaining!! },
-          ifLeft = { error ->
-            Log.w(TAG, "Error while getting rotation limit: ${error::class.simpleName}. Default to allowing key rotations.")
-            true
-          }
-        )
-
-      if (!canRotateKey) {
+    viewModelScope.launch {
+      if (!BackupRepository.canRotateBackupKey()) {
         requestDialog(RemoteBackupsSettingsState.Dialog.KEY_ROTATION_LIMIT_REACHED)
       }
     }

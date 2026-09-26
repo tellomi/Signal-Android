@@ -8,6 +8,7 @@ import org.gradle.api.tasks.SourceSetContainer
 plugins {
   id("java-library")
   id("org.jetbrains.kotlin.jvm")
+  alias(libs.plugins.kotlinx.serialization)
   id("ktlint")
   id("com.squareup.wire")
 }
@@ -69,6 +70,8 @@ dependencies {
   api(libs.square.okio)
   api(libs.square.okhttp3)
 
+  api(libs.kotlinx.serialization.json)
+
   implementation(libs.google.jsr305)
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.kotlinx.coroutines.core.jvm)
@@ -76,10 +79,12 @@ dependencies {
 
   implementation(project(":core:util-jvm"))
   implementation(project(":core:models-jvm"))
+  implementation(project(":core:serialization"))
 
   testImplementation(testLibs.junit.junit)
   testImplementation(testLibs.assertk)
   // Tellomi（#1078）：HttpsProxySocketFactoryTest 现场签一张自签证书起本机 TLS 代理（app 的测试依赖里是同一版本）
   testImplementation(testLibs.bouncycastle.bcprov.jdk15on)
   testImplementation(testLibs.bouncycastle.bcpkix.jdk15on)
+  testImplementation(testFixtures(project(":core:serialization")))
 }

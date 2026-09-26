@@ -53,9 +53,11 @@ object TestTags {
   const val SIGNAL_LOGIN_PAYMENT_SCREEN = "signal_login_payment_screen"
   const val SIGNAL_LOGIN_PAYMENT_LEARN_MORE_LINK = "signal_login_payment_learn_more_link"
   const val SIGNAL_LOGIN_PAYMENT_PURCHASE_OPTION = "signal_login_payment_purchase_option"
+  const val SIGNAL_LOGIN_PAYMENT_PRICE_RETRY_BUTTON = "signal_login_payment_price_retry_button"
   const val SIGNAL_LOGIN_PAYMENT_EXISTING_LOGIN_OPTION = "signal_login_payment_existing_login_option"
   const val SIGNAL_LOGIN_PAYMENT_CONTINUE_BUTTON = "signal_login_payment_continue_button"
   const val SIGNAL_LOGIN_PAYMENT_RECEIPT_CREDENTIAL_FIELD = "signal_login_payment_receipt_credential_field"
+  const val SIGNAL_LOGIN_PAYMENT_UNAVAILABLE_DIALOG = "signal_login_payment_unavailable_dialog"
 
   // Signal Login Credential Entry Screen
   const val SIGNAL_LOGIN_CREDENTIAL_ENTRY_SCREEN = "signal_login_credential_entry_screen"
@@ -63,6 +65,7 @@ object TestTags {
   const val SIGNAL_LOGIN_CREDENTIAL_RECOVERY_KEY_FIELD = "signal_login_credential_recovery_key_field"
   const val SIGNAL_LOGIN_CREDENTIAL_REVEAL_RECOVERY_KEY_BUTTON = "signal_login_credential_reveal_recovery_key_button"
   const val SIGNAL_LOGIN_CREDENTIAL_NEED_HELP_BUTTON = "signal_login_credential_need_help_button"
+  const val SIGNAL_LOGIN_CREDENTIAL_SHOW_LOGIN_INFO_AGAIN_BUTTON = "signal_login_credential_show_login_info_again_button"
   const val SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON = "signal_login_credential_next_button"
 
   // Signal Login Info Screen
@@ -70,6 +73,17 @@ object TestTags {
   const val SIGNAL_LOGIN_INFO_CREDENTIAL_CARD = "signal_login_info_credential_card"
   const val SIGNAL_LOGIN_INFO_SAVE_TO_PASSWORD_MANAGER_BUTTON = "signal_login_info_save_to_password_manager_button"
   const val SIGNAL_LOGIN_INFO_SAVE_MANUALLY_BUTTON = "signal_login_info_save_manually_button"
+  const val CONFIRM_LOGIN_SAVED_TO_PASSWORD_MANAGER_SHEET = "confirm_login_saved_to_password_manager_sheet"
+  const val CONFIRM_LOGIN_SAVED_TO_PASSWORD_MANAGER_CONFIRM_BUTTON = "confirm_login_saved_to_password_manager_confirm_button"
+  const val CONFIRM_LOGIN_SAVED_TO_PASSWORD_MANAGER_SEE_LOGIN_INFO_AGAIN_BUTTON = "confirm_login_saved_to_password_manager_see_login_info_again_button"
+
+  // Save Signal Login Screen
+  const val SIGNAL_LOGIN_MANUAL_SAVE_SCREEN = "signal_login_manual_save_screen"
+  const val SIGNAL_LOGIN_MANUAL_SAVE_SAVE_AS_PDF_BUTTON = "signal_login_manual_save_save_as_pdf_button"
+  const val SIGNAL_LOGIN_MANUAL_SAVE_CONTINUE_BUTTON = "signal_login_manual_save_continue_button"
+  const val CONFIRM_LOGIN_SAVED_SHEET = "confirm_login_saved_sheet"
+  const val CONFIRM_LOGIN_SAVED_CONTINUE_BUTTON = "confirm_login_saved_continue_button"
+  const val CONFIRM_LOGIN_SAVED_SHOW_LOGIN_INFO_AGAIN_BUTTON = "confirm_login_saved_show_login_info_again_button"
 
   // Add Username Screen
   const val ADD_USERNAME_SCREEN = "add_username_screen"
@@ -102,6 +116,7 @@ object TestTags {
   const val ARCHIVE_RESTORE_SELECTION_FROM_BACKUP_FILE = "archive_restore_selection_from_backup_file"
   const val ARCHIVE_RESTORE_SELECTION_DEVICE_TRANSFER = "archive_restore_selection_device_transfer"
   const val ARCHIVE_RESTORE_SELECTION_NONE = "archive_restore_selection_none"
+  const val ARCHIVE_RESTORE_SELECTION_SPINNER = "archive_restore_selection_spinner"
 
   // Local Backup Restore Screen
   const val LOCAL_BACKUP_RESTORE_SCREEN = "local_backup_restore_screen"
@@ -200,13 +215,6 @@ object TestTags {
 
   // Totp Entry Screen
   const val TOTP_ENTRY_SCREEN = "totp_entry_screen"
-  const val TOTP_ENTRY_INPUT = "totp_entry_input"
-  const val TOTP_ENTRY_DIGIT_0 = "totp_entry_digit_0"
-  const val TOTP_ENTRY_DIGIT_1 = "totp_entry_digit_1"
-  const val TOTP_ENTRY_DIGIT_2 = "totp_entry_digit_2"
-  const val TOTP_ENTRY_DIGIT_3 = "totp_entry_digit_3"
-  const val TOTP_ENTRY_DIGIT_4 = "totp_entry_digit_4"
-  const val TOTP_ENTRY_DIGIT_5 = "totp_entry_digit_5"
   const val TOTP_ENTRY_CANCEL_BUTTON = "totp_entry_cancel_button"
 
   // Two Factor Selection Screen
