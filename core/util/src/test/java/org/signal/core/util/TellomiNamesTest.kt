@@ -51,7 +51,7 @@ class TellomiNamesTest {
       "李" to "李",
       "陈 志明" to "志明",
       "马克·卡尔" to "卡尔",
-      "张 三" to "张三",
+      "张\u00A0三" to "张三",
       "Kevin Zhang" to "KZ",
       "John Smith" to "JS",
       "Kevin 张" to "K张",
