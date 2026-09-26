@@ -56,6 +56,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.compose.ui.platform.ComposeView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
@@ -2165,14 +2166,29 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     }
   }
 
+  // Tellomi（#1206）：群里对方的名字只在一组的第一条上、头像只在一组的最后一条旁边，和气泡分组同一规则。
+  // 条件原样来自上游 setAuthor，挪成静态方法好测；只多了表情回应断组那一条。
+  @VisibleForTesting
+  static boolean showsGroupSenderName(@NonNull MessageRecord current, @NonNull Optional<MessageRecord> previous, boolean forceHeader) {
+    return !previous.isPresent() || previous.get().isUpdate() || !current.getFromRecipient().equals(previous.get().getFromRecipient()) ||
+           !DateUtils.isSameDay(previous.get().getTimestamp(), current.getTimestamp()) || !isWithinClusteringTime(current, previous.get()) || forceHeader ||
+           // Tellomi（#1206）：上一条挂着表情回应时这一条是组头（isStartOfMessageCluster 同一条），要显示名字
+           !previous.get().getReactions().isEmpty();
+  }
+
+  @VisibleForTesting
+  static boolean showsGroupSenderAvatar(@NonNull MessageRecord current, @NonNull Optional<MessageRecord> next, boolean forceHeader) {
+    return !next.isPresent() || next.get().isUpdate() || !current.getFromRecipient().equals(next.get().getFromRecipient()) || !isWithinClusteringTime(current, next.get()) || forceHeader ||
+           // Tellomi（#1206）：这一条挂着表情回应时它是组尾（isEndOfMessageCluster 同一条），要显示头像
+           !current.getReactions().isEmpty();
+  }
+
   @SuppressWarnings("ConstantConditions")
   private void setAuthor(@NonNull MessageRecord current, @NonNull Optional<MessageRecord> previous, @NonNull Optional<MessageRecord> next, boolean isGroupThread, boolean hasWallpaper) {
     if (isGroupThread && !current.isOutgoing() && !(displayMode instanceof ConversationItemDisplayMode.Starred)) {
       contactPhotoHolder.setVisibility(VISIBLE);
 
-      if (!previous.isPresent() || previous.get().isUpdate() || !current.getFromRecipient().equals(previous.get().getFromRecipient()) ||
-          !DateUtils.isSameDay(previous.get().getTimestamp(), current.getTimestamp()) || !isWithinClusteringTime(current, previous.get()) || forceGroupHeader(current))
-      {
+      if (showsGroupSenderName(current, previous, forceGroupHeader(current))) {
         groupSenderHolder.setVisibility(VISIBLE);
 
         if (hasWallpaper && hasNoBubble(current)) {
@@ -2185,7 +2201,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         groupSenderHolder.setVisibility(GONE);
       }
 
-      if (!next.isPresent() || next.get().isUpdate() || !current.getFromRecipient().equals(next.get().getFromRecipient()) || !isWithinClusteringTime(current, next.get()) || forceGroupHeader(current)) {
+      if (showsGroupSenderAvatar(current, next, forceGroupHeader(current))) {
         contactPhoto.setVisibility(VISIBLE);
         badgeImageView.setVisibility(VISIBLE);
       } else {
@@ -2370,6 +2386,10 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   private boolean isStartOfMessageCluster(@NonNull MessageRecord current, @NonNull Optional<MessageRecord> previous, boolean isGroupThread) {
     if (displayMode instanceof ConversationItemDisplayMode.Starred) {
+      return true;
+    }
+    // Tellomi（#1206）：上一条挂着表情回应时它是组尾（见 isEndOfMessageCluster），这一条就是组头，两边对称；上游只判了组尾
+    if (previous.isPresent() && !previous.get().getReactions().isEmpty()) {
       return true;
     }
     if (isGroupThread) {
