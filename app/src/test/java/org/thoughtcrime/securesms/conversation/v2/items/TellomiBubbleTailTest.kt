@@ -24,7 +24,9 @@ import org.signal.core.util.dp
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.conversation.ConversationItemDisplayMode
 import org.thoughtcrime.securesms.database.FakeMessageRecords
+import org.thoughtcrime.securesms.database.model.MmsMessageRecord
 import org.thoughtcrime.securesms.mms.SlideDeck
+import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.util.MediaUtil
 
 /**
@@ -119,12 +121,17 @@ class TellomiBubbleTailTest {
   @Test
   fun `voice notes, files and view-once messages without text still have a bubble, captionless photos do not`() {
     val context = ApplicationProvider.getApplicationContext<Application>()
-    fun mms(contentType: String, body: String = "", hasThumbnail: Boolean = false, voiceNote: Boolean = false, viewOnce: Boolean = false) =
-      FakeMessageRecords.buildMediaMmsMessageRecord(
+
+    // 都带一个附件：纯文字消息会走大号表情的判断，要装表情库（单测里没装，会一直等）。已删除 = 记着谁删的（deletedBy）
+    fun mms(contentType: String, body: String = "", hasThumbnail: Boolean = false, voiceNote: Boolean = false, viewOnce: Boolean = false, deleted: Boolean = false): MmsMessageRecord {
+      val attachment = FakeMessageRecords.buildDatabaseAttachment(contentType = contentType, hasThumbnail = hasThumbnail, voiceNote = voiceNote)
+      return FakeMessageRecords.buildMediaMmsMessageRecord(
         body = body,
         viewOnce = viewOnce,
-        slideDeck = SlideDeck(FakeMessageRecords.buildDatabaseAttachment(contentType = contentType, hasThumbnail = hasThumbnail, voiceNote = voiceNote))
+        deletedBy = if (deleted) RecipientId.from(1) else null,
+        slideDeck = SlideDeck(attachment)
       )
+    }
 
     // 旧版渲染里这几种都有底色：组尾要带尾巴
     assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.AUDIO_AAC, voiceNote = true), context), "voice note").isTrue()
@@ -134,7 +141,7 @@ class TellomiBubbleTailTest {
 
     // 图铺满了气泡、没有露出来的底色：不画
     assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, hasThumbnail = true), context), "captionless photo").isFalse()
-    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(remoteDelete = true), context), "deleted").isFalse()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms("application/pdf", deleted = true), context), "deleted").isFalse()
   }
 
   private fun outlineBounds(towardsRight: Boolean, coverRadiusDp: Float = TellomiBubbleTail.DEFAULT_COVER_RADIUS_DP): RectF {

@@ -20,6 +20,7 @@ import org.thoughtcrime.securesms.conversation.colors.ChatColors
 import org.thoughtcrime.securesms.database.model.MessageRecord
 import org.thoughtcrime.securesms.util.Projection
 import org.thoughtcrime.securesms.util.hasNoBubble
+import org.thoughtcrime.securesms.util.hasOnlyThumbnail
 import org.thoughtcrime.securesms.util.hasQuote
 import org.thoughtcrime.securesms.util.hasSticker
 import org.thoughtcrime.securesms.util.isCaptionlessMms
@@ -73,12 +74,14 @@ object TellomiBubbleTail {
 
   /**
    * 旧版渲染（[org.thoughtcrime.securesms.conversation.ConversationItem]）：这一条有没有看得见的气泡底色，没有的不画尾巴。
-   * 贴纸（带引用的除外）、大号表情、没有底色的图，没文字的媒体消息，已删除的消息，都算没有。
+   * 贴纸（带引用的除外）、大号表情、没有底色的图，没文字、图或视频铺满了气泡的，已删除的消息，都算没有。
+   * 没文字的语音、文件、联系人名片、阅后即焚照样有底色（[hasOnlyThumbnail] 把它们排除在外）。
    */
   @JvmStatic
   fun hasVisibleBubble(record: MessageRecord, context: Context): Boolean {
     val noBubble = record.hasNoBubble(context) && !(record.hasSticker() && record.hasQuote())
-    return !noBubble && !record.isCaptionlessMms(context) && !record.isRemoteDelete
+    val mediaFillsBubble = record.isCaptionlessMms(context) && record.hasOnlyThumbnail(context)
+    return !noBubble && !mediaFillsBubble && !record.isRemoteDelete
   }
 
   /**
