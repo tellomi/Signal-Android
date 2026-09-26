@@ -33,7 +33,7 @@
     <string name="delete">删除</string>
     <string name="please_wait">请稍候…</string>
     <string name="save">保存</string>
-    <string name="note_to_self">备忘录</string>
+    <string name="note_to_self">我的收藏</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">天气</string>
@@ -46,6 +46,8 @@
 
     <!-- AlbumThumbnailView -->
   <!-- Removed by excludeNonTranslatables <string name="AlbumThumbnailView_plus" translatable="false">\+%d</string> -->
+    <!-- Tellomi（#1257）：横滑相册的读屏文案 -->
+    <string name="AlbumCarouselView__item_d_of_d">第 %1$d 项，共 %2$d 项</string>
 
     <!-- ApplicationMigrationActivity -->
     <string name="ApplicationMigrationActivity__signal_is_updating">Tellomi 正在更新…</string>
@@ -293,6 +295,32 @@
     <string name="ClientDeprecatedActivity_dont_update">不要更新</string>
     <string name="ClientDeprecatedActivity_warning">警告</string>
     <string name="ClientDeprecatedActivity_your_version_of_signal_has_expired_you_can_view_your_message_history">您的 Tellomi 版本已过期，目前您只能查看消息记录，并且在升级 Tellomi 后才能收发消息。</string>
+    <!-- Tellomi（tellomi/tellomi#1138）：「必须更新」阻断页 -->
+    <string name="TellomiUpdateRequired__title">需要更新 Tellomi</string>
+    <string name="TellomiUpdateRequired__reason_server_rejected">此版本已无法与服务器正常通信，更新后才能继续收发消息。</string>
+    <string name="TellomiUpdateRequired__reason_build_expired">此版本已过旧，更新后才能继续收发消息。</string>
+    <string name="TellomiUpdateRequired__chats_kept">更新不会影响手机上的聊天记录。</string>
+    <string name="TellomiUpdateRequired__new_version">新版本 %1$s</string>
+    <string name="TellomiUpdateRequired__new_version_and_size">新版本 %1$s · %2$s</string>
+    <string name="TellomiUpdateRequired__update_now">立即更新</string>
+    <string name="TellomiUpdateRequired__preparing">正在准备下载…</string>
+    <string name="TellomiUpdateRequired__downloading">下载中 %1$d%%</string>
+    <string name="TellomiUpdateRequired__install">安装更新</string>
+    <string name="TellomiUpdateRequired__retry">重试</string>
+    <string name="TellomiUpdateRequired__open_settings">去设置</string>
+    <string name="TellomiUpdateRequired__install_permission">安装更新需要允许 Tellomi 安装应用。请在接下来的系统设置里允许，返回后会继续更新。</string>
+    <string name="TellomiUpdateRequired__download_failed">下载没有完成，请检查网络后重试。</string>
+    <string name="TellomiUpdateRequired__no_newer_version">暂时还没有可用的新版本，请过几分钟再试，或去官网下载。</string>
+    <string name="TellomiUpdateRequired__offline">连接网络后即可更新。</string>
+    <string name="TellomiUpdateRequired__download_from_website">去官网下载</string>
+    <string name="TellomiUpdateRequired__waiting_for_wifi">这个安装包原本只在连上 Wi-Fi 时下载。</string>
+    <string name="TellomiUpdateRequired__use_mobile_data">用移动数据下载</string>
+    <string name="TellomiUpdateRequired__download_notification_title">正在下载 Tellomi 更新</string>
+    <string name="TellomiUpdateRequired__view_chats_only">暂不更新，只看聊天记录</string>
+    <string name="TellomiUpdateRequired__read_only_banner">需要更新才能继续收发消息。</string>
+    <string name="TellomiUpdateRequired__input_needs_update">此版本需要更新才能收发消息。</string>
+    <string name="TellomiUpdateRequired__notification_text">此版本需要更新才能收发消息，点击即可更新。</string>
+    <string name="TellomiUpdateRequired__view_chats_only_confirm_message">更新之前可以看聊天记录，但不能收发消息。</string>
 
     <!-- ClockSkewActivity -->
     <!-- Title of the full-screen dialog shown when the device clock is too far off from the real time -->
@@ -532,6 +560,7 @@
     <plurals name="ConversationAdapter_n_unread_messages">
         <item quantity="other">%1$d 条未读消息</item>
     </plurals>
+    <string name="ConversationAdapter__tellomi_new_messages">新消息</string>
 
     <!-- ConversationFragment -->
     <!-- Toast text when contacts activity is not found -->
@@ -588,7 +617,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">左滑任何消息可快速回复</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">阅后即焚媒体在发送后被删除</string>
     <string name="ConversationFragment_you_already_viewed_this_message">您已查看该消息</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">你可在此对话中给自己做笔记，如果您关联了其它设备，新笔记将同步到其它设备上。</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">把消息转发到这里，或直接发给自己，随时查看。如果你的账号有已关联的设备，这里的新消息会同步过去。</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="other">%1$d 个群组成员名称相同。</item>
@@ -775,6 +804,12 @@
     <plurals name="ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations_linked_device_group">
         <item quantity="other">这些聊天中的所有消息将从您的全部设备中删除。您将仍然是未退出的群组中的成员。</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">删除「我的收藏」？</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">「我的收藏」里的内容会从这台设备上删除，无法恢复。</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">「我的收藏」里的内容会从这台设备和已关联设备上删除，无法恢复。</string>
     <string name="ConversationListFragment_deleting">正在删除</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="other">正在删除选定的聊天…</item>
@@ -844,7 +879,7 @@
     <!-- Title for a reminder bottom sheet to users who have re-registered that they need to go back to re-link their devices. -->
     <string name="RelinkDevicesReminderFragment__relink_your_devices">重新关联您的设备</string>
     <!-- Description for a reminder bottom sheet to users who have re-registered that they need to go back to re-link their devices. -->
-    <string name="RelinkDevicesReminderFragment__the_devices_you_added_were_unlinked">当您的设备注销时，您添加的设备会取消关联。请前往设置页面重新关联您的设备。</string>
+    <string name="RelinkDevicesReminderFragment__the_devices_you_added_were_unlinked">当您的设备退出登录时，您添加的设备会取消关联。请前往设置页面重新关联您的设备。</string>
     <!-- Button label for the re-link devices bottom sheet reminder to navigate to the Devices page in the settings. -->
     <string name="RelinkDevicesReminderFragment__open_settings">打开设置</string>
     <!-- Button label for the re-link devices bottom sheet reminder to dismiss the pop up. -->
@@ -1163,6 +1198,9 @@
     <string name="AddLinkDeviceFragment__retry">重试</string>
     <!-- Text shown in a dialog when the device being linked is too out-of-date to be linked to this account -->
     <string name="AddLinkDeviceFragment__the_device_you_are_trying_to_link_is_out_of_date">您尝试链接的设备版本过旧。请更新设备，然后重试。</string>
+    <string name="AddLinkDeviceFragment__tellomi_code_expired_or_foreign">这个二维码已过期，或者不是 Tellomi 的二维码。请扫描电脑上 Tellomi 当前显示的二维码。</string>
+    <string name="AddLinkDeviceFragment__tellomi_network_error">无法连接服务器，或者服务器正忙。请检查网络连接，稍后再试。</string>
+    <string name="AddLinkDeviceFragment__tellomi_scan_again">重新扫码</string>
 
     <!-- LinkDeviceSyncBottomSheet -->
     <!-- Option in bottom sheet to transfer message history -->
@@ -1526,7 +1564,7 @@
     <!-- Text shown on restore screen as information on what will happen if you skip -->
     <string name="RemoteRestoreActivity__your_media_will_restore_in_the_background">您的媒体会在后台恢复。 如果现在不恢复，您以后将无法恢复。</string>
     <!-- Dialog title -->
-    <string name="RestoreActivity__no_longer_registered_title">此设备已注销</string>
+    <string name="RestoreActivity__no_longer_registered_title">此设备已退出登录</string>
     <!-- Dialog message -->
     <string name="RestoreActivity__no_longer_registered_message">这可能是因为您在另一台设备上注册了 Tellomi 账户。</string>
 
@@ -1721,6 +1759,15 @@
     <string name="MediaOverviewActivity_Files">文件</string>
     <string name="MediaOverviewActivity_Audio">音频</string>
     <string name="MediaOverviewActivity_All">全部</string>
+    <!-- Tellomi（#1174）：「我的收藏」顶栏下方的分类，「全部」是会话本身，其它几项打开「所有媒体」对应的页 -->
+    <string name="TellomiSavedCategories__all">全部</string>
+    <string name="TellomiSavedCategories__photos_and_videos">图片与视频</string>
+    <string name="TellomiSavedCategories__files">文件</string>
+    <string name="TellomiSavedCategories__voice">语音</string>
+    <string name="TellomiSavedCategories__links">链接</string>
+    <!-- Tellomi（#1174）：「我的收藏」的所有媒体顶栏的搜索，在当前这一页里按文字筛 -->
+    <string name="TellomiSavedCategories__search">搜索</string>
+    <string name="TellomiSavedCategories__search_hint">搜文件名、说明文字和链接</string>
     <string name="MediaOverviewActivity_Links">链接</string>
     <string name="MediaOverviewActivity_link">链接</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
@@ -1778,6 +1825,9 @@
     <!-- Text in a card view to invite friends as part of the onboarding megaphone -->
     <string name="Megaphones_invite_friends">邀请好友</string>
     <string name="Megaphones_chat_colors">聊天颜色</string>
+    <!-- Tellomi（#1218） -->
+    <string name="TellomiOnboarding__search_by_username">搜索用户名</string>
+    <string name="TellomiOnboarding__my_qr_code">我的二维码</string>
     <string name="Megaphones_add_a_profile_photo">添加个人资料照片</string>
 
     <!-- Message body of megaphone telling users that a device was linked to their account. %1$s is the time it was linked -->
@@ -1865,11 +1915,11 @@
     <string name="MessageRecord_call_message_with_date">%1$s · %2$s</string>
     <string name="MessageRecord_s_updated_group">%1$s 已更新该群组。</string>
     <string name="MessageRecord_s_joined_signal">%1$s 加入 Tellomi！</string>
-    <string name="MessageRecord_you_disabled_disappearing_messages">您已禁用阅后即焚。</string>
-    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 已禁用阅后即焚。</string>
-    <string name="MessageRecord_you_set_disappearing_message_time_to_s">设置阅后即焚消失时间为 %1$s。</string>
-    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 设置阅后即焚消失时间为 %2$s。</string>
-    <string name="MessageRecord_disappearing_message_time_set_to_s">阅后即焚消息的销毁时间被设置为 %1$s。</string>
+    <string name="MessageRecord_you_disabled_disappearing_messages">您关闭了限时消息。</string>
+    <string name="MessageRecord_s_disabled_disappearing_messages">%1$s 关闭了限时消息。</string>
+    <string name="MessageRecord_you_set_disappearing_message_time_to_s">您设置了消息 %1$s 后消失。</string>
+    <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s 设置了消息 %2$s 后消失。</string>
+    <string name="MessageRecord_disappearing_message_time_set_to_s">限时消息时间已设为 %1$s。</string>
     <string name="MessageRecord_this_group_was_updated_to_a_new_group">此群已升级为新版群组。</string>
     <string name="MessageRecord_you_couldnt_be_added_to_the_new_group_and_have_been_invited_to_join">您被邀请重新加入之前无法加入的新版群组。</string>
     <string name="MessageRecord_chat_session_refreshed">聊天会话已刷新</string>
@@ -3012,8 +3062,8 @@
     <!-- Displayed in the notification when the recipient can accept payments -->
     <string name="ThreadRecord_can_accept_payments">%1$s现在可以接受付款啦</string>
     <string name="ThreadRecord_s_is_on_signal">%1$s 加入 Tellomi！</string>
-    <string name="ThreadRecord_disappearing_messages_disabled">已禁用阅后即焚</string>
-    <string name="ThreadRecord_disappearing_message_time_updated_to_s">设置阅后即焚消失时间为 %1$s</string>
+    <string name="ThreadRecord_disappearing_messages_disabled">限时消息已关闭</string>
+    <string name="ThreadRecord_disappearing_message_time_updated_to_s">限时消息时间已设为 %1$s</string>
     <string name="ThreadRecord_safety_number_changed">安全码已更改</string>
     <string name="ThreadRecord_your_safety_number_with_s_has_changed">您与 %1$s 的安全码已更改。</string>
     <string name="ThreadRecord_you_marked_verified">已将您标识为已验证</string>
@@ -3085,12 +3135,30 @@
     <string name="UsernameEditFragment_this_username_is_taken">该用户名已有人使用。</string>
     <string name="UsernameEditFragment_usernames_can_only_include">用户名仅能包含字母、数字和下划线。</string>
     <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">用户名不能以数字开头。</string>
+    <string name="UsernameEditFragment__tellomi_usernames_must_start_with_a_letter">用户名必须以字母开头。</string>
     <string name="UsernameEditFragment_username_is_invalid">用户名无效。</string>
     <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">用户名所含字符数量必须在 %1$d 与 %2$d 之间。</string>
     <!-- Explanation about what usernames provide -->
     <string name="UsernameEditFragment__usernames_let_others_message">用户名始终搭配一组数字。</string>
     <!-- Tellomi（#1106） -->
     <string name="UsernameEditFragment__tellomi_usernames_let_others_find_you">别人可以通过用户名找到你、给你发消息，不需要知道你的手机号。</string>
+    <!-- Tellomi（#1106 第四刀） -->
+    <plurals name="UsernameEditFragment__tellomi_change_cooldown">
+        <item quantity="other">你最近改过用户名，%d 天后可以再改。在那之前，只能改回原来的名字。</item>
+    </plurals>
+    <!-- Tellomi（#1106 第四刀） -->
+    <plurals name="UsernameEditFragment__tellomi_change_confirmation">
+        <item quantity="other">更改用户名会重置你现有的二维码和链接，而且之后 %d 天内不能再改。确定要更改吗？</item>
+    </plurals>
+    <plurals name="UsernameEditFragment__tellomi_recovery_confirmation">
+        <item quantity="other">恢复用户名会重置你现有的二维码和链接，而且之后 %d 天内不能再改。确定要恢复吗？</item>
+    </plurals>
+    <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
+        <item quantity="other">你在 %1$d 天内删除过用户名，现在设置也算一次更改：之后 %2$d 天内不能再改。确定要继续吗？</item>
+    </plurals>
+    <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
+        <item quantity="other">这样做将会删除你的用户名，并使你的二维码和链接失效。“%1$s”会为你保留 %2$d 天；这期间再设置用户名，之后 %3$d 天内不能再改。如果你 %3$d 天内改过用户名，删除后只能改回原来的名字。确定要删除吗？</item>
+    </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">这个号码是什么？</string>
     <string name="UsernameEditFragment__these_digits_help_keep">这些数字可以将您的用户名保密，以免您收到骚扰消息。请仅将您的用户名分享给您想要聊天的对象和群组。如果您更改用户名，您将会收到一组新的数字。</string>
@@ -3199,6 +3267,23 @@
     <string name="MediaPreviewFragment_media_delete_error">删除消息时出错，消息可能仍然存在。</string>
     <!-- A suffix to be attached to truncated captions that the user may tap onto to view the entire text caption -->
     <string name="MediaPreviewFragment_read_more_overflow_text">查看更多</string>
+    <!-- Tellomi（#1257 / 需求 F-11，owner 2026-09-25）：查看器里转发相册中的一张，先问「这张 / 全部 N 张」 -->
+    <string name="MediaPreviewFragment__forward_this_photo">这张图片</string>
+    <string name="MediaPreviewFragment__forward_this_video">这个视频</string>
+    <plurals name="MediaPreviewFragment__forward_all_d_photos">
+        <item quantity="other">全部 %d 张图片</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_videos">
+        <item quantity="other">全部 %d 个视频</item>
+    </plurals>
+    <plurals name="MediaPreviewFragment__forward_all_d_items">
+        <item quantity="other">全部 %d 项</item>
+    </plurals>
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频查看器的倍速按钮与面板；分享挪进「···」 -->
+    <string name="MediaPreviewFragment__playback_speed">播放速度</string>
+    <string name="MediaPreviewFragment__speed">速度</string>
+    <string name="MediaPreviewFragment__speed_normal">正常</string>
+    <string name="MediaPreviewFragment__share">分享</string>
 
     <!-- MessageNotifier -->
     <!-- Text shown in a system notification that is used to summarize your notification. The first placeholder is a pluralized string that describes how many messages (e.g. "3 messages"), and the second placeholder is a pluralized string that describes the number of unique chats those message appear in (e.g. "2 chats"). -->
@@ -3399,7 +3484,7 @@
 
     <!-- UnauthorizedReminder -->
     <!-- Message shown in a reminder banner when the user\'s device is no longer registered -->
-    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">此设备已注销。这可能是因为您使用您的手机号码在其他设备上注册了 Tellomi。</string>
+    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">此设备已退出登录。这可能是因为您使用您的手机号码在其他设备上注册了 Tellomi。</string>
     <!-- Action in reminder banner that will take user to re-register -->
     <string name="UnauthorizedReminder_reregister_action">重新注册设备</string>
     <!-- Message shown in a reminder banner when this linked device is no longer linked to a primary device -->
@@ -3824,7 +3909,7 @@
     <!-- The title of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
     <string name="EditProfileFragment_unregistered_dialog_title">设备未注册</string>
     <!-- The body of a dialog informing the user that they cannot use this app feature when they are unregistered. -->
-    <string name="EditProfileFragment_unregistered_dialog_body">此设备已注销。请重新注册以更改您的账户。</string>
+    <string name="EditProfileFragment_unregistered_dialog_body">此设备已退出登录。请重新注册以更改您的账户。</string>
     <!-- The button on a dialog informing the user that they cannot use this app feature when they are unregistered. When clicked, the user will be taken to a screen to help them re-register. -->
     <string name="EditProfileFragment_unregistered_dialog_reregister_button">重新注册</string>
 
@@ -4523,7 +4608,7 @@
     <!-- Button to save a message attachment (image, file etc.) -->
 
     <!-- conversation_expiring_off -->
-    <string name="conversation_expiring_off__disappearing_messages">阅后即焚</string>
+    <string name="conversation_expiring_off__disappearing_messages">限时消息</string>
 
     <!-- conversation_selection -->
     <!-- Button to view detailed information for a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
@@ -4538,6 +4623,14 @@
   <!-- Removed by excludeNonTranslatables <string name="conversation_selection__menu_unstar" translatable="false">Unstar (Labs)</string> -->
     <!-- Button to forward a message to another person or group chat; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
     <string name="conversation_selection__menu_forward">转发</string>
+    <!-- Tellomi（#1174）：长按菜单「收藏」，直接存进「我的收藏」 -->
+    <string name="conversation_selection__menu_tellomi_save">收藏</string>
+    <!-- Tellomi（#1174）：收藏成功的提示，后面跟「查看」按钮 -->
+    <string name="ConversationFragment__tellomi_saved_to_saved_messages">已收藏</string>
+    <!-- Tellomi（#1174）：收藏成功提示上的按钮，打开「我的收藏」 -->
+    <string name="ConversationFragment__tellomi_view_saved_messages">查看</string>
+    <!-- Tellomi（#1174）：收藏没发出去 -->
+    <string name="ConversationFragment__tellomi_couldnt_save">收藏失败，请重试</string>
     <!-- Button to reply to a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="conversation_selection__menu_reply">回复</string>
     <!-- Button to edit a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -5886,12 +5979,34 @@
     <string name="HelpSettingsFragment__version">版本</string>
     <!-- Displayed when copying help screen text to the clipboard -->
     <string name="HelpSettingsFragment__copied_to_clipboard">已复制到剪贴板</string>
+    <!-- Tellomi（#1165） -->
+    <string name="AboutSettings__tellomi_about_tellomi">关于 Tellomi</string>
+    <string name="AboutSettings__tellomi_version">版本 %1$s（构建 %2$s）</string>
+    <string name="AboutSettings__tellomi_section_updates">更新</string>
+    <string name="AboutSettings__tellomi_check_for_updates">版本更新</string>
+    <string name="AboutSettings__tellomi_checking_for_updates">正在检查更新，有新版本会通知你</string>
+    <string name="AboutSettings__tellomi_section_contact">联系我们</string>
+    <string name="AboutSettings__tellomi_official_website">官方网站</string>
+    <string name="AboutSettings__tellomi_contact_support">联系客服</string>
+    <string name="AboutSettings__tellomi_privacy_and_personal_data">隐私与个人数据</string>
+    <string name="AboutSettings__tellomi_report_abuse">违规举报</string>
+    <string name="AboutSettings__tellomi_tap_to_copy">点击复制</string>
+    <string name="AboutSettings__tellomi_section_legal">法律与合规</string>
+    <string name="AboutSettings__tellomi_terms_of_service">服务协议</string>
+    <string name="AboutSettings__tellomi_privacy_policy">隐私政策</string>
+    <string name="AboutSettings__tellomi_personal_information_collected">个人信息收集清单</string>
+    <string name="AboutSettings__tellomi_third_party_sharing">第三方信息共享及 SDK 清单</string>
+    <string name="AboutSettings__tellomi_system_permissions">系统权限调用清单</string>
+    <string name="AboutSettings__tellomi_complaints_and_reports">投诉举报规则</string>
+    <string name="AboutSettings__tellomi_section_open_source">开源</string>
+    <string name="AboutSettings__tellomi_open_source_licenses">开源许可</string>
+    <string name="AboutSettings__tellomi_source_code_notice">Tellomi 以 GNU AGPLv3 发布；源代码可在 www.tellomi.app/source 获取。</string>
     <string name="HelpSettingsFragment__debug_log">调试日志</string>
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">许可证</string>
     <string name="HelpSettingsFragment__terms_amp_privacy_policy">条款和隐私政策</string>
     <string name="HelpFragment__copyright_signal_messenger">版权所有 Signal Messenger</string>
-    <string name="HelpFragment__modifications_copyright_tellomi">修改部分版权所有 Tellomi</string>
+    <string name="HelpFragment__modifications_copyright_tellomi">修改部分版权所有 重庆半格智能科技有限公司</string>
     <string name="HelpFragment__licenced_under_the_agplv3">根据 GNU AGPLv3 授权许可</string>
     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
     <string name="HelpSettingsFragment__signal_is_a_501c3"></string>
@@ -6224,6 +6339,21 @@
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">只有管理员可发送消息至该群组。</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">您最多可选 5 个聊天</string>
+    <string name="TellomiForwardGrid__choose_chats">选择聊天</string>
+    <string name="TellomiForwardGrid__name_separator">、</string>
+    <string name="TellomiForwardGrid__search">搜索</string>
+    <string name="TellomiForwardGrid__share_to_other_apps">分享到其他 App</string>
+    <string name="TellomiForwardGrid__select_up_to_d_chats">最多选 %1$d 个聊天</string>
+    <string name="TellomiForwardGrid__recent">最近联系人</string>
+    <string name="TellomiForwardGrid__chats">聊天</string>
+    <string name="TellomiForwardGrid__contacts">联系人</string>
+    <string name="TellomiForwardGrid__groups">群组</string>
+    <string name="TellomiForwardGrid__no_results">没有找到“%1$s”</string>
+    <string name="TellomiForwardGrid__add_a_message">添加消息…</string>
+    <string name="TellomiForwardGrid__forwarded_to_s">已转发给 %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_s">已转发给 %1$s 和 %2$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_d_chats">已转发给 %1$s 等 %2$d 个聊天</string>
+    <string name="TellomiForwardGrid__forwarded_to_saved_s">已转发到 %1$s</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->
@@ -6375,7 +6505,7 @@
     <!-- Title of dialog telling user they need to re-register signal -->
     <string name="ReregisterSignalDialog__title">设备未注册</string>
     <!-- Message of dialog telling user they need to re-register signal as it is no longer registered -->
-    <string name="ReregisterSignalDialog__message">此设备已注销。请重新注册以继续在此设备上使用 Tellomi。</string>
+    <string name="ReregisterSignalDialog__message">此设备已退出登录。请重新注册以继续在此设备上使用 Tellomi。</string>
     <!-- Button text of re-registration dialog to re-register the device.  -->
     <string name="ReregisterSignalDialog__reregister_action">重新注册</string>
     <!-- Button text of re-registration dialog to cancel the dialog.  -->
@@ -7900,6 +8030,13 @@
     <string name="UsernameLinkSettings_qr_result_not_found_no_username">找不到此用户。</string>
     <!-- Body of a dialog that is displayed when we experienced a network error when looking up a username. -->
     <string name="UsernameLinkSettings_qr_result_network_error">网络连接出错，请重试。</string>
+    <!-- Tellomi（#947） -->
+    <string name="UsernameLinkSettings_qr_result_device_link_title">这是设备配对码</string>
+    <string name="UsernameLinkSettings_qr_result_device_link_body">要关联电脑或平板，请到「设置 → 已关联设备」里扫描。</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_content_title">扫描到的内容</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_open_link">打开链接</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copy">复制</string>
+    <string name="UsernameLinkSettings__tellomi_qr_result_copied">已复制</string>
     <!-- Body of a dialog that is displayed when we failed to reset your username link because you had no internet. -->
     <string name="UsernameLinkSettings_reset_link_result_network_unavailable">您没有网络，链接未设置。请稍后再试。</string>
     <!-- Body of a dialog that is displayed when we failed to reset your username link because of a transient network issue. -->
@@ -8097,6 +8234,8 @@
     <string name="FindByActivity__phone_number">手机号码</string>
     <!-- Help text under user entry for find by username -->
     <string name="FindByActivity__enter_username_description">请输入带有一个点和一组匹配数字的用户名。</string>
+    <!-- Tellomi（#1106 第四刀） -->
+    <string name="FindByActivity__tellomi_enter_username_description">输入对方的用户名。</string>
     <!-- Content description for next action button -->
     <string name="FindByActivity__next">下一步</string>
     <!-- Placeholder text for search input for selecting country code -->
@@ -8111,6 +8250,8 @@
     <string name="FindByActivity__username_not_found">未找到该用户名</string>
     <!-- Dialog body for invalid username. Placeholder is the entered username. -->
     <string name="FindByActivity__s_is_not_a_valid_username">%1$s 不是一个有效的用户名。请确认您输入了完整的用户名和与之搭配的一组数字。</string>
+    <!-- Tellomi（#1106 第四刀） -->
+    <string name="FindByActivity__tellomi_s_is_not_a_valid_username">%1$s 不是有效的用户名。</string>
     <!-- Dialog body for an invalid phone number. Placeholder is the entered phone number. -->
     <string name="FindByActivity__s_is_not_a_valid_phone_number">%1$s 不是一个有效的手机号码。请使用有效的手机号码再试一次</string>
     <!-- Dialog body for not found username -->
@@ -9032,14 +9173,14 @@
     <string name="ReminderView_icon_content_description">提醒图标</string>
 
     <!-- Row title for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我可以用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我有旧手机</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_scan_qr">从您当前的 Tellomi 账户扫描二维码以快速开始操作</string>
 
     <!-- Row title for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我无法用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我没有旧手机</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">您可以在同一个设备上重新安装 Tellomi</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">或者你是在同一台设备上重新安装 Tellomi</string>
 
     <!-- Screen title for selecting which restore method to use during registration -->
     <string name="SelectRestoreMethodFragment__restore_or_transfer_account">恢复或转移账户</string>
@@ -9848,6 +9989,9 @@
     <string name="SharedContactDetailsScreen__couldnt_open_maps">无法打开地图</string>
     <!-- Subject line of an email invitation to Signal -->
     <string name="SharedContactDetailsScreen__join_me_on_signal">和我一起使用 Tellomi 吧</string>
+
+    <!-- Tellomi (tellomi/tellomi#1124): shown when tapping the grayed-out Location button before the map service (Amap) is integrated -->
+    <string name="TellomiLocation__coming_soon">位置功能即将支持</string>
 
     <!-- EOF -->
 </resources>

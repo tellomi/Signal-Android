@@ -53,6 +53,7 @@ import org.thoughtcrime.securesms.net.SignalNetwork
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.NotificationIds
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.region.TellomiUploadPin
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.util.MediaUtil
 import org.thoughtcrime.securesms.util.RemoteConfig
@@ -144,7 +145,7 @@ class BackupMessagesJob private constructor(
     pendingNextBackupSecretData = pendingNextBackupSecretData?.toByteString() ?: ByteString.EMPTY,
     pendingMessageCutoffTime = pendingMessageCutoffTime,
     resumableUri = resumableMessagesBackupUploadSpec?.resumableUri ?: "",
-    uploadSpec = resumableMessagesBackupUploadSpec?.attachmentUploadForm?.toUploadSpec()
+    uploadSpec = resumableMessagesBackupUploadSpec?.let { it.attachmentUploadForm.toUploadSpec().copy(tellomiRegionId = it.tellomiRegionId) }
   ).encode()
 
   override fun getFactoryKey(): String = KEY
@@ -348,6 +349,12 @@ class BackupMessagesJob private constructor(
     this.pendingNextBackupSecretData = nextBackupSecretData
     this.pendingMessageCutoffTime = messageCutoffTime
 
+    // Tellomi（#1055 第三刀）：切过区就当规格作废，从头传，落到现在的区（契约第六节：在途续传不许静默换区）
+    if (resumableMessagesBackupUploadSpec?.let { TellomiUploadPin.canResume(it.tellomiRegionId) } == false) {
+      Log.w(TAG, "The upload spec was started in region ${resumableMessagesBackupUploadSpec?.tellomiRegionId}. Clearing it so we start over in the current one.", true)
+      resumableMessagesBackupUploadSpec = null
+    }
+
     val existingSpec = resumableMessagesBackupUploadSpec
     val form: AttachmentUploadForm = if (existingSpec == null) {
       when (val result = AppDependencies.archiveService.getMessageBackupUploadForm(tempBackupFile.length())) {
@@ -413,7 +420,7 @@ class BackupMessagesJob private constructor(
         progressListener = progressListener,
         existingResumeUrl = existingSpec?.resumableUri,
         onResumeUrlCreated = { url ->
-          resumableMessagesBackupUploadSpec = ResumableMessagesBackupUploadSpec(attachmentUploadForm = form, resumableUri = url)
+          resumableMessagesBackupUploadSpec = ResumableMessagesBackupUploadSpec(attachmentUploadForm = form, resumableUri = url, tellomiRegionId = TellomiUploadPin.currentRegionId())
         }
       )
     }
@@ -728,7 +735,8 @@ class BackupMessagesJob private constructor(
           key = backupMessagesJobData.uploadSpec.cdnKey,
           headers = backupMessagesJobData.uploadSpec.headers.associate { it.key to it.value_ },
           signedUploadLocation = backupMessagesJobData.uploadSpec.location
-        )
+        ),
+        tellomiRegionId = TellomiUploadPin.startedIn(backupMessagesJobData.uploadSpec)
       )
     }
   }

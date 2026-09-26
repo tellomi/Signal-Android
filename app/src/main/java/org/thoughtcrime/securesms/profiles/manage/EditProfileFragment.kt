@@ -24,6 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.signal.core.models.media.Media
 import org.signal.core.ui.logging.LoggingFragment
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.getParcelableCompat
 import org.signal.emoji.EmojiUtil
@@ -42,6 +43,7 @@ import org.thoughtcrime.securesms.profiles.manage.EditProfileViewModel.AvatarSta
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository.UsernameDeleteResult
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.registration.ui.RegistrationActivity
+import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.NameUtil.getAbbreviation
 import org.thoughtcrime.securesms.util.PlayStoreUtil
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter
@@ -149,6 +151,10 @@ class EditProfileFragment : LoggingFragment() {
         updateInitials(avatarInitials.text.toString())
       }
     }
+
+    // Tellomi：徽章是捐款得来的，阶段一不做捐赠（Environment.DONATIONS_ENABLED），整行不显示——
+    // 点进去是「成为定期捐款人」，还写着「Signal 是一个非营利机构」（两端差异清单 platform-parity-2026-09-26）。
+    binding.manageProfileBadgesContainer.isVisible = Environment.DONATIONS_ENABLED
 
     binding.manageProfileBadgesContainer.setOnClickListener { v: View ->
       if (!viewModel.isRegisteredAndUpToDate) {
@@ -273,7 +279,8 @@ class EditProfileFragment : LoggingFragment() {
     if (username.isNullOrEmpty()) {
       binding.manageProfileUsername.setText(R.string.ManageProfileFragment_username)
     } else {
-      binding.manageProfileUsername.text = username
+      // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+      binding.manageProfileUsername.text = TellomiUsernames.toDisplayUsername(username)
     }
 
     if (SignalStore.account.usernameSyncState == AccountValues.UsernameSyncState.USERNAME_AND_LINK_CORRUPTED) {
@@ -365,7 +372,8 @@ class EditProfileFragment : LoggingFragment() {
   private fun displayConfirmUsernameDeletionDialog() {
     MaterialAlertDialogBuilder(requireContext())
       .setTitle(R.string.ManageProfileFragment__delete_username_dialog_title)
-      .setMessage(requireContext().getString(R.string.ManageProfileFragment__delete_username_dialog_body, SignalStore.account.username))
+      // Tellomi（ADR-0066 §6.2）：删掉的用户名服务端给原主人保留 30 天，不是「可供其他人申请」；保留期内再设用户名也算改名（与 Desktop#4 同一句）
+      .setMessage(resources.getQuantityString(R.plurals.ManageProfileFragment__tellomi_delete_username_dialog_body, TellomiUsernames.RENAME_COOLDOWN_DAYS, SignalStore.account.username?.let { TellomiUsernames.toDisplayUsername(it) }, TellomiUsernames.USERNAME_HOLD_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS)) // Tellomi（#1106 第三刀）
       .setPositiveButton(R.string.delete) { _, _ -> onUserConfirmedUsernameDeletion() }
       .setNegativeButton(android.R.string.cancel) { d: DialogInterface?, w: Int -> }
       .show()
