@@ -41,7 +41,11 @@ object Environment {
   @JvmField
   val IS_LINK_AND_SYNC_AVAILABLE: Boolean = true
 
-  const val PHONENUMBERLESS_REGISTRATION: Boolean = IS_STAGING
+  /**
+   * Tellomi（tellomi/tellomi#1210）：**写死关闭**。上游是 `IS_STAGING`——staging 包的手机号页因此出现「Register without number」，
+   * 与《网络安全法》即时通信实名要求冲突。上游 8.28.1 起对所有人开放了这个入口，升级到 8.28 时要再核一次别被合回去。
+   */
+  const val PHONENUMBERLESS_REGISTRATION: Boolean = false
 
   object Backups {
     /**

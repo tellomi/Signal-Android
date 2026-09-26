@@ -14,6 +14,22 @@
         android:focusable="true"
         android:layoutDirection="ltr" />
 
+    <!-- Tellomi（#1257，owner 2026-09-25，照 Telegram）：视频的播放 / 暂停在屏幕中间，随四角按钮一起显隐 -->
+    <org.thoughtcrime.securesms.mediapreview.MediaPreviewCenterControlsView
+        android:id="@+id/media_preview_center_controls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <!-- Tellomi（#1257）：拖视频进度条时拇指上方的预览帧（只在拖动时出现，位置由代码摆） -->
+    <org.thoughtcrime.securesms.mediapreview.VideoScrubPreviewView
+        android:id="@+id/media_preview_scrub_preview"
+        android:layout_width="150dp"
+        android:layout_height="84dp"
+        android:layout_gravity="top|start"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/media_preview_details_container"
         android:layout_width="match_parent"
