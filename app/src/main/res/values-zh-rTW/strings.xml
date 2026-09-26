@@ -1728,6 +1728,15 @@
     <string name="MediaOverviewActivity_Files">檔案</string>
     <string name="MediaOverviewActivity_Audio">音訊</string>
     <string name="MediaOverviewActivity_All">全部</string>
+    <!-- Tellomi（#1174）：「我的收藏」顶栏下方的分类，「全部」是会话本身，其它几项打开「所有媒体」对应的页 -->
+    <string name="TellomiSavedCategories__all">全部</string>
+    <string name="TellomiSavedCategories__photos_and_videos">圖片與影片</string>
+    <string name="TellomiSavedCategories__files">檔案</string>
+    <string name="TellomiSavedCategories__voice">語音</string>
+    <string name="TellomiSavedCategories__links">連結</string>
+    <!-- Tellomi（#1174）：「我的收藏」的所有媒体顶栏的搜索，在当前这一页里按文字筛 -->
+    <string name="TellomiSavedCategories__search">搜尋</string>
+    <string name="TellomiSavedCategories__search_hint">搜尋檔案名稱、說明文字和連結</string>
     <string name="MediaOverviewActivity_Links">連結</string>
     <string name="MediaOverviewActivity_link">連結</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
