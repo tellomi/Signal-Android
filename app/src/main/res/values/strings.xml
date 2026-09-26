@@ -3246,6 +3246,16 @@
         <item quantity="one">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d day. Are you sure?</item>
         <item quantity="other">Changing your username will reset your existing QR code and link, and you won’t be able to change it again for %d days. Are you sure?</item>
     </plurals>
+    <!-- Tellomi（ADR-0066 §6.2）：没有用户名、但保留期内删过一个时，再设前的确认框。%1$d 为保留天数，%2$d 为改名冷却天数（都是 30）。与 Desktop#4 同一句。 -->
+    <plurals name="UsernameEditFragment__tellomi_set_after_delete_confirmation">
+        <item quantity="one">You deleted your username less than %1$d days ago, so setting one now counts as a change: you won’t be able to change it again for %2$d day. Are you sure?</item>
+        <item quantity="other">You deleted your username less than %1$d days ago, so setting one now counts as a change: you won’t be able to change it again for %2$d days. Are you sure?</item>
+    </plurals>
+    <!-- Tellomi（ADR-0066 §6.2）：删除用户名的确认框。删掉的名字服务端给原主人保留 %2$d 天，不是「可供其他人申请」；保留期内再设用户名也算改名。%1$s 为用户名，%3$d 为改名冷却天数。与 Desktop#4 同一句。 -->
+    <plurals name="ManageProfileFragment__tellomi_delete_username_dialog_body">
+        <item quantity="one">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d day. Are you sure?</item>
+        <item quantity="other">This will remove your username and disable your QR code and link. “%1$s” stays reserved for you for %2$d days; if you set a username during that time, you won’t be able to change it again for %3$d days. Are you sure?</item>
+    </plurals>
     <!-- Dialog title for explanation about numbers at the end of the username -->
     <string name="UsernameEditFragment__what_is_this_number">What is this number?</string>
     <string name="UsernameEditFragment__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>

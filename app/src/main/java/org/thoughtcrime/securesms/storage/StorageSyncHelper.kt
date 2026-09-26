@@ -6,6 +6,7 @@ import okio.ByteString
 import okio.ByteString.Companion.toByteString
 import org.signal.core.util.Base64.encodeWithPadding
 import org.signal.core.util.SqlUtil
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.Util
 import org.signal.core.util.UuidUtil
 import org.signal.core.util.logging.Log
@@ -348,6 +349,11 @@ object StorageSyncHelper {
     }
 
     if (update.new.proto.username != update.old.proto.username) {
+      // Tellomi（ADR-0066 §6.2）：别的设备把用户名删了（本机原来有、同步来的为空），同样记下删除时间。
+      // 同步时刻晚于真正删除的时刻，只会让保留期显得更长——多提示一次，不会漏。
+      if (TellomiUsernames.isUsernameDeletion(update.old.proto.username, update.new.proto.username)) {
+        SignalStore.account.tellomiUsernameDeletedAt = System.currentTimeMillis()
+      }
       SignalStore.account.username = update.new.proto.username
       SignalStore.account.usernameSyncState = AccountValues.UsernameSyncState.IN_SYNC
       SignalStore.account.usernameSyncErrorCount = 0

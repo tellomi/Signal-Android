@@ -151,9 +151,19 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     val usernameState = uiState.state.usernameState
     val isCaseChange = isCaseChange(editState)
 
-    if (!isCaseChange && SignalStore.account.username.isNotNullOrBlank() && !userConfirmedResetOk) {
-      events.onNext(Event.NEEDS_CONFIRM_RESET)
-      return
+    if (!userConfirmedResetOk) {
+      // Tellomi（ADR-0066 §6.2）：保留期内「删了再设」服务端也当改名，和换名一样先提醒（与 Desktop getUsernameSaveConfirmation 同一判法）
+      when (saveConfirmation(isCaseChange, SignalStore.account.username, SignalStore.account.tellomiUsernameDeletedAt, System.currentTimeMillis())) {
+        SaveConfirmation.CHANGE -> {
+          events.onNext(Event.NEEDS_CONFIRM_RESET)
+          return
+        }
+        SaveConfirmation.SET_AFTER_DELETE -> {
+          events.onNext(Event.NEEDS_CONFIRM_SET_AFTER_DELETE)
+          return
+        }
+        SaveConfirmation.NONE -> Unit
+      }
     }
 
     if (usernameState !is UsernameState.Reserved && usernameState !is UsernameState.CaseChange) {
@@ -440,7 +450,17 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     SUBMIT_FAIL_TAKEN,
     SKIPPED,
     NEEDS_CONFIRM_RESET,
+
+    /** Tellomi（ADR-0066 §6.2）：现在没有用户名，但保留期内删过一个；再设也算改名，先确认。 */
+    NEEDS_CONFIRM_SET_AFTER_DELETE,
     RATE_LIMIT_EXCEEDED
+  }
+
+  /** Tellomi（ADR-0066 §6.2）：保存前弹哪种确认框。 */
+  enum class SaveConfirmation {
+    NONE,
+    CHANGE,
+    SET_AFTER_DELETE
   }
 
   class Factory(private val mode: UsernameEditMode) : ViewModelProvider.Factory {
@@ -453,6 +473,21 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     private val TAG = Log.tag(UsernameEditViewModel::class.java)
 
     private const val NICKNAME_PUBLISHER_DEBOUNCE_TIMEOUT_MILLIS: Long = 500
+
+    /**
+     * Tellomi（ADR-0066 §6.2）：保存前弹哪种确认框。只改大小写 → 不弹；已有用户名 → 换名提醒（上游原有，文案带冷却天数）；
+     * 没有用户名、但保留期内删过一个 → 「删了再设也算改名」；第一次设 → 不弹。与 Desktop `getUsernameSaveConfirmation` 同一判法。
+     */
+    @VisibleForTesting
+    @JvmStatic
+    fun saveConfirmation(isCaseChange: Boolean, currentUsername: String?, deletedAtMillis: Long, nowMillis: Long): SaveConfirmation {
+      return when {
+        isCaseChange -> SaveConfirmation.NONE
+        currentUsername.isNotNullOrBlank() -> SaveConfirmation.CHANGE
+        TellomiUsernames.isWithinUsernameHold(deletedAtMillis, nowMillis) -> SaveConfirmation.SET_AFTER_DELETE
+        else -> SaveConfirmation.NONE
+      }
+    }
 
     /**
      * Tellomi（tellomi/tellomi#1106 第二刀 b，ADR-0066 §六「首次设置 / 修改 / 重新认领 / 修复都只产 `.01`」）：

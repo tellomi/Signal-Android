@@ -72,4 +72,32 @@ class TellomiUsernamesTest {
     assertThat(TellomiUsernames.renameCooldownDaysLeft(86401.seconds)).isEqualTo(2)
     assertThat(TellomiUsernames.renameCooldownDaysLeft(2.hours)).isEqualTo(1)
   }
+
+  /** ADR-0066 §6.2：删掉的用户名保留 30 天；没有记录不算，时钟往回拨算在内（宁可多提示一次）。与 Desktop 同一判法。 */
+  @Test
+  fun usernameHoldWindow() {
+    val day = 24L * 60 * 60 * 1000
+    val deletedAt = 1_700_000_000_000L
+    assertThat(TellomiUsernames.isWithinUsernameHold(0, deletedAt)).isFalse()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt)).isTrue()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt + 30 * day - 1)).isTrue()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt + 30 * day)).isFalse()
+    assertThat(TellomiUsernames.isWithinUsernameHold(deletedAt, deletedAt - day)).isTrue()
+  }
+
+  /** 与 Desktop `Username_test.dom.ts` 里 shouldRecordUsernameDeletion 的 5 条断言一一对应。 */
+  @Test
+  fun usernameDeletionFromSync() {
+    // 别的设备删了：同步回来的 AccountRecord 没有用户名（proto 里是空串）
+    assertThat(TellomiUsernames.isUsernameDeletion("kaixin.01", null)).isTrue()
+    assertThat(TellomiUsernames.isUsernameDeletion("kaixin.01", "")).isTrue()
+    // 首次同步、改名、两边都空：都不算删
+    assertThat(TellomiUsernames.isUsernameDeletion("", "kaixin.01")).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion("kaixin.01", "bob.01")).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion("", "")).isFalse()
+    // 本机原来就没有用户名（previous 为 null，比如刚装好还没同步过）：同步回来什么都不算删（taishi 包 7 不阻塞②）
+    assertThat(TellomiUsernames.isUsernameDeletion(null, null)).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion(null, "")).isFalse()
+    assertThat(TellomiUsernames.isUsernameDeletion(null, "kaixin.01")).isFalse()
+  }
 }

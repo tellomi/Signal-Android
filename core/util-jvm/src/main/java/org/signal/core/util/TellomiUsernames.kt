@@ -67,4 +67,26 @@ object TellomiUsernames {
   fun renameCooldownDaysLeft(retryAfter: Duration): Int {
     return ceil(retryAfter.toDouble(DurationUnit.DAYS)).toInt().coerceAtLeast(1)
   }
+
+  /**
+   * ADR-0066 §6.2：删掉或换掉的用户名，服务端给原主人保留 30 天（`Accounts.USERNAME_HOLD_DURATION`），别人拿不走；
+   * 保留期里再设任何用户名，服务端都当作改名，开始 [RENAME_COOLDOWN_DAYS] 天冷却。与 Desktop `USERNAME_HOLD_DAYS` 同值。
+   */
+  const val USERNAME_HOLD_DAYS = 30
+
+  /**
+   * 本机记下的删除时间是否还在保留期内。没有记录（0）→ 不在；时钟往回拨（now 早于删除时间）→ 算在内，宁可多提示一次。
+   * 与 Desktop `isWithinUsernameHold` 同一判法。
+   */
+  fun isWithinUsernameHold(deletedAtMillis: Long, nowMillis: Long): Boolean {
+    return deletedAtMillis > 0 && nowMillis - deletedAtMillis < USERNAME_HOLD_DAYS * 24L * 60 * 60 * 1000
+  }
+
+  /**
+   * 合并 AccountRecord 时要不要记删除时间：本机原来有用户名、同步来的为空（别的设备删了）→ 记；
+   * 首次同步（原来没有）、改名、两边都空都不记。与 Desktop `shouldRecordUsernameDeletion` 同一判法。
+   */
+  fun isUsernameDeletion(previous: String?, synced: String?): Boolean {
+    return !previous.isNullOrEmpty() && synced.isNullOrEmpty()
+  }
 }
