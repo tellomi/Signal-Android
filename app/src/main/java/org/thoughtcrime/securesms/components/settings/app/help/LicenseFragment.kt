@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.components.settings.app.help
 
+import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +37,8 @@ class LicenseFragment : ComposeFragment() {
   override fun FragmentContent() {
     val textState: State<List<String>> = Single
       .fromCallable {
-        requireContext().resources.openRawResource(R.raw.third_party_licenses).readToLines() +
+        tellomiSourceCodeNotice(requireContext()) +
+          requireContext().resources.openRawResource(R.raw.third_party_licenses).readToLines() +
           requireContext().assets.open("acknowledgments/libsignal.md").readToLines() +
           requireContext().assets.open("acknowledgments/ringrtc.md").readToLines()
       }
@@ -77,6 +79,14 @@ fun LicenseFragmentPreview() {
   Previews.Preview {
     LicenseScreen(listOf("Lorem ipsum", "Delor"))
   }
+}
+
+/**
+ * Tellomi（owner 2026-09-25）：许可证页最上面一句——许可证 + 源代码在官网哪一页（AGPL：给了别人 App，就要让人拿得到源代码），
+ * 后面空一行再接第三方许可。「关于」里不再放「源代码 github.com/tellomi」那一行。
+ */
+fun tellomiSourceCodeNotice(context: Context): List<String> {
+  return listOf(context.getString(R.string.AboutSettings__tellomi_source_code_notice), "")
 }
 
 private fun InputStream.readToLines(): List<String> {

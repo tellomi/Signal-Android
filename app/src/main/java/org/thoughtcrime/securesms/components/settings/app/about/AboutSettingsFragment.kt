@@ -126,8 +126,12 @@ interface AboutSettingsCallbacks {
 object TellomiAboutLinks {
   const val WEBSITE = "https://www.tellomi.app/"
   const val WEBSITE_LABEL = "www.tellomi.app"
-  const val SOURCE_CODE = "https://github.com/tellomi"
-  const val SOURCE_CODE_LABEL = "github.com/tellomi"
+
+  /**
+   * 源代码的获取页（AGPL-3.0：分发二进制时要让用户拿得到对应源代码）。owner 2026-09-25：「关于」里不放 GitHub 地址，
+   * 改成「许可证」页最上面一句说明（[tellomiSourceCodeNotice]），指向官网这一页（官网那页再列各仓库）。
+   */
+  const val SOURCE_CODE_PAGE = "https://www.tellomi.app/source/"
 
   const val SUPPORT_EMAIL = "support@tellomi.app"
   const val PRIVACY_EMAIL = "privacy@tellomi.app"
@@ -247,15 +251,6 @@ fun AboutSettingsScreen(
         Rows.TextRow(
           text = stringResource(R.string.AboutSettings__tellomi_open_source_licenses),
           onClick = callbacks::onLicensesClick
-        )
-      }
-
-      item {
-        Rows.LinkRow(
-          text = stringResource(R.string.AboutSettings__tellomi_source_code),
-          label = TellomiAboutLinks.SOURCE_CODE_LABEL,
-          icon = openIcon,
-          onClick = { callbacks.onOpenUrl(TellomiAboutLinks.SOURCE_CODE) }
         )
       }
 

@@ -6000,7 +6000,7 @@
     <string name="AboutSettings__tellomi_complaints_and_reports">投訴檢舉規則</string>
     <string name="AboutSettings__tellomi_section_open_source">開源</string>
     <string name="AboutSettings__tellomi_open_source_licenses">開源授權</string>
-    <string name="AboutSettings__tellomi_source_code">原始碼</string>
+    <string name="AboutSettings__tellomi_source_code_notice">Tellomi 以 GNU AGPLv3 發布；原始碼可在 www.tellomi.app/source 取得。</string>
     <string name="HelpSettingsFragment__debug_log">除錯紀錄</string>
     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
     <string name="HelpSettingsFragment__licenses">許可證</string>
