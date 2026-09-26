@@ -23,6 +23,7 @@ import org.thoughtcrime.securesms.database.LogDatabase;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
+import org.thoughtcrime.securesms.region.TellomiRegions;
 import org.thoughtcrime.securesms.util.RemoteConfig;
 
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class SubmitDebugLogRepository {
    * 取表单时要带尾斜杠（{@link #API_FORM_ENDPOINT}），nginx 的 location /debuglogs/ 才匹配；
    * 结果 URL = API_ENDPOINT + "/" + key。
    */
-  private static final String API_ENDPOINT      = "https://chat.tellomi.app/debuglogs";
+  private static final String API_ENDPOINT      = TellomiRegions.GLOBAL.getDebugLog(); // #1055：收进区域表
   private static final String API_FORM_ENDPOINT = API_ENDPOINT + "/";
 
   /** Ordered list of log sections. */

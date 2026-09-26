@@ -14,12 +14,7 @@ import okhttp3.TlsVersion
 import org.signal.core.util.Base64
 import org.signal.core.util.logging.Log
 import org.signal.network.config.HttpProxy
-import org.signal.network.config.SignalCdnUrl
-import org.signal.network.config.SignalCdsiUrl
 import org.signal.network.config.SignalServiceConfiguration
-import org.signal.network.config.SignalServiceUrl
-import org.signal.network.config.SignalStorageUrl
-import org.signal.network.config.SignalSvr2Url
 import org.signal.network.config.TrustStore
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.keyvalue.SettingsValues
@@ -32,6 +27,8 @@ import org.thoughtcrime.securesms.net.SequentialDns
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor
 import org.thoughtcrime.securesms.net.StaticDns
 import org.thoughtcrime.securesms.net.StorageServiceSizeLoggingInterceptor
+import org.thoughtcrime.securesms.region.TellomiRegions
+import org.thoughtcrime.securesms.region.TellomiServiceConfigurations
 import java.io.IOException
 import java.util.Optional
 
@@ -215,6 +212,8 @@ class SignalServiceNetworkAccess(context: Context) {
   // 真要做规避，得先有我们自己的 fronted 入口（域名 + CDN，服务端那半），
   // 那时把这段按上游的形状重建、并把 86 加进 defaultCensoredCountryCodes 才有意义。
   // 上游原文见 v8.26.4 的同一文件（G_HOST / F_* 常量 + buildGConfiguration + fConfig）。
+  // 重建时每个 CDN 只能放一个 URL，并且经 TellomiServiceConfigurations 组装：照抄上游的 fUrls / buildGConfiguration
+  // （每个 CDN 3–6 个 URL）会在构造时被下面的 init 拒绝（RegionProfile 契约第五节第 3 条，tellomi/tellomi#1055）。
   private val censorshipConfiguration: Map<Int, SignalServiceConfiguration> = emptyMap()
 
   // 注意 **不能**写成 `private val ... = uncensoredConfiguration.copy(...)`：
@@ -235,16 +234,12 @@ class SignalServiceNetworkAccess(context: Context) {
     COUNTRY_CODE_PAKISTAN
   )
 
-  val uncensoredConfiguration: SignalServiceConfiguration = SignalServiceConfiguration(
-    signalServiceUrls = arrayOf(SignalServiceUrl(BuildConfig.SIGNAL_URL, serviceTrustStore)),
-    signalCdnUrlMap = mapOf(
-      0 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, serviceTrustStore)),
-      2 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN2_URL, serviceTrustStore)),
-      3 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN3_URL, serviceTrustStore))
-    ),
-    signalStorageUrls = arrayOf(SignalStorageUrl(BuildConfig.STORAGE_URL, serviceTrustStore)),
-    signalCdsiUrls = arrayOf(SignalCdsiUrl(BuildConfig.SIGNAL_CDSI_URL, serviceTrustStore)),
-    signalSvr2Urls = arrayOf(SignalSvr2Url(BuildConfig.SIGNAL_SVR2_URL, serviceTrustStore)),
+  // Tellomi（#1055）：按区域表组装（RegionProfile 契约），global 档 = 原来这里的常量，逐字节一致；组装时断言 cdn3 恰好一个
+  val uncensoredConfiguration: SignalServiceConfiguration = TellomiServiceConfigurations.build(
+    profile = TellomiRegions.GLOBAL,
+    trustStore = serviceTrustStore,
+    cdsiUrl = BuildConfig.SIGNAL_CDSI_URL,
+    svr2Url = BuildConfig.SIGNAL_SVR2_URL,
     networkInterceptors = interceptors,
     dns = Optional.of(DNS),
     signalProxy = if (SignalStore.proxy.isProxyEnabled) Optional.ofNullable(SignalStore.proxy.proxy) else Optional.empty(),
@@ -254,6 +249,12 @@ class SignalServiceNetworkAccess(context: Context) {
     backupServerPublicParams = backupServerPublicParams,
     censored = false
   )
+
+  init {
+    // 契约第五节第 3 条：getConfiguration() 可能返回的每一份都要 cdn3 恰好一个，含将来按上游形状重建的规避配置。
+    // 必须放在 uncensoredConfiguration 之后：defaultCensoredConfiguration 的 getter 要读它。
+    (censorshipConfiguration.values + defaultCensoredConfiguration).forEach(TellomiServiceConfigurations::requireSingleCdn3)
+  }
 
   fun getConfiguration(): SignalServiceConfiguration {
     return getConfiguration(SignalStore.account.e164)
