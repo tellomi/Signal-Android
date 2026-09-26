@@ -4382,7 +4382,7 @@
     <string name="preferences_off">ਬੰਦ</string>
     <string name="preferences_on">ਚਾਲੂ</string>
     <string name="preferences_proxy_address">ਪ੍ਰੌਕਸੀ ਐਡਰੈੱਸ</string>
-    <string name="preferences_only_use_a_proxy_if">ਪ੍ਰੌਕਸੀ ਦੀ ਵਰਤੋਂ ਸਿਰਫ਼ ਤਾਂ ਹੀ ਕਰੋ ਜੇ ਤੁਸੀਂ ਮੋਬਾਈਲ ਡੇਟਾ ਜਾਂ ਵਾਈ-ਫਾਈ \'ਤੇ Tellomi ਸਿਗਨਲ ਨਾਲ ਕਨੈਕਟ ਹੋਣ ਦੇ ਯੋਗ ਨਹੀਂ ਹੋ।</string>
+    <string name="preferences_only_use_a_proxy_if">ਪ੍ਰੌਕਸੀ ਦੀ ਵਰਤੋਂ ਸਿਰਫ਼ ਤਾਂ ਹੀ ਕਰੋ ਜੇ ਤੁਸੀਂ ਮੋਬਾਈਲ ਡੇਟਾ ਜਾਂ ਵਾਈ-ਫਾਈ \'ਤੇ Tellomi ਨਾਲ ਕਨੈਕਟ ਹੋਣ ਦੇ ਯੋਗ ਨਹੀਂ ਹੋ।</string>
     <string name="preferences_share">ਸਾਂਝਾ ਕਰੋ</string>
     <string name="preferences_save">ਸੰਭਾਲੋ</string>
     <string name="preferences_connecting_to_proxy">ਪ੍ਰੌਕਸੀ ਨਾਲ ਕਨੈਕਟ ਕਰ ਰਿਹਾ ਹੈ…</string>
@@ -5159,7 +5159,7 @@
     <string name="NewDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_old_device">ਤੁਹਾਡੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Tellomi ਨੂੰ ਟਿਕਾਣੇ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੈ।</string>
     <string name="NewDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_old_device">ਤੁਹਾਡੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Tellomi ਨੂੰ ਟਿਕਾਣਾ ਸੇਵਾਵਾਂ ਸਮਰੱਥ ਕੀਤੇ ਹੋਣ ਦੀ ਲੋੜ ਹੈ।</string>
     <string name="NewDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_old_device">ਤੁਹਾਡੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Tellomi ਨੂੰ Wi-Fi ਚਾਲੂ ਕੀਤੇ ਹੋਣ ਦੀ ਲੋੜ ਹੈ। Wi-Fi ਦਾ ਚਾਲੂ ਹੋਣਾ ਜ਼ਰੂਰੀ ਹੈ ਪਰ ਇਸਦਾ ਕਿਸੇ Wi-Fi ਨੈੱਟਵਰਕ ਨਾਲ ਕਨੈਕਟ ਹੋਣਾ ਜ਼ਰੂਰੀ ਨਹੀਂ।</string>
-    <string name="NewDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">ਅਫ਼ਸੋਸ, ਜਾਪਦਾ ਹੈ ਕਿ ਇਹ ਡਿਵਾਈਸ Wi-Fi ਡਾਇਰੈਕਟ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦੀ। Tellomi ਸਿਗਨਲ ਤੁਹਾਡੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Wi-Fi ਡਾਇਰੈਕਟ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ। ਤੁਸੀਂ ਹਾਲੇ ਵੀ ਆਪਣੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਤੋਂ ਆਪਣੇ ਖਾਤੇ ਨੂੰ ਬਹਾਲ ਕਰਨ ਲਈ ਬੈਕਅੱਪ ਨੂੰ ਬਹਾਲ ਕਰ ਸਕਦੇ ਹੋ।</string>
+    <string name="NewDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">ਅਫ਼ਸੋਸ, ਜਾਪਦਾ ਹੈ ਕਿ ਇਹ ਡਿਵਾਈਸ Wi-Fi ਡਾਇਰੈਕਟ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦੀ। Tellomi ਤੁਹਾਡੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Wi-Fi ਡਾਇਰੈਕਟ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ। ਤੁਸੀਂ ਹਾਲੇ ਵੀ ਆਪਣੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਤੋਂ ਆਪਣੇ ਖਾਤੇ ਨੂੰ ਬਹਾਲ ਕਰਨ ਲਈ ਬੈਕਅੱਪ ਨੂੰ ਬਹਾਲ ਕਰ ਸਕਦੇ ਹੋ।</string>
     <string name="NewDeviceTransferSetup__restore_a_backup">ਬੈਕਅੱਪ ਬਹਾਲ ਕਰੋ</string>
     <string name="NewDeviceTransferSetup__an_unexpected_error_occurred_while_attempting_to_connect_to_your_old_device">ਤੁਹਾਡੀ ਪੁਰਾਣੀ Android ਡਿਵਾਈਸ ਨਾਲ ਕਨੈਕਟ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦੇ ਸਮੇਂ ਕੋਈ ਅਚਨਚੇਤ ਤਰੁੱਟੀ ਆਈ।</string>
 
@@ -5168,7 +5168,7 @@
     <string name="OldDeviceTransferSetup__signal_needs_the_location_permission_to_discover_and_connect_with_your_new_device">ਤੁਹਾਡੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Tellomi ਨੂੰ ਟਿਕਾਣੇ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੈ।</string>
     <string name="OldDeviceTransferSetup__signal_needs_location_services_enabled_to_discover_and_connect_with_your_new_device">ਤੁਹਾਡੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Tellomi ਨੂੰ ਟਿਕਾਣਾ ਸੇਵਾਵਾਂ ਸਮਰੱਥ ਕੀਤੇ ਹੋਣ ਦੀ ਲੋੜ ਹੈ।</string>
     <string name="OldDeviceTransferSetup__signal_needs_wifi_on_to_discover_and_connect_with_your_new_device">ਤੁਹਾਡੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Tellomi ਨੂੰ Wi-Fi ਚਾਲੂ ਕੀਤੇ ਹੋਣ ਦੀ ਲੋੜ ਹੈ। Wi-Fi ਦਾ ਚਾਲੂ ਹੋਣਾ ਜ਼ਰੂਰੀ ਹੈ ਪਰ ਇਸਦਾ ਕਿਸੇ Wi-Fi ਨੈੱਟਵਰਕ ਨਾਲ ਕਨੈਕਟ ਹੋਣਾ ਜ਼ਰੂਰੀ ਨਹੀਂ।</string>
-    <string name="OldDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">ਅਫ਼ਸੋਸ, ਜਾਪਦਾ ਹੈ ਕਿ ਇਹ ਡਿਵਾਈਸ Wi-Fi ਡਾਇਰੈਕਟ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦੀ। Tellomi ਸਿਗਨਲ ਤੁਹਾਡੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Wi-Fi ਡਾਇਰੈਕਟ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ। ਤੁਸੀਂ ਹਾਲੇ ਵੀ ਆਪਣੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਤੋਂ ਆਪਣੇ ਖਾਤੇ ਨੂੰ ਬਹਾਲ ਕਰਨ ਲਈ ਬੈਕਅੱਪ ਤਿਆਰ ਕਰ ਸਕਦੇ ਹੋ।</string>
+    <string name="OldDeviceTransferSetup__sorry_it_appears_your_device_does_not_support_wifi_direct">ਅਫ਼ਸੋਸ, ਜਾਪਦਾ ਹੈ ਕਿ ਇਹ ਡਿਵਾਈਸ Wi-Fi ਡਾਇਰੈਕਟ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦੀ। Tellomi ਤੁਹਾਡੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਨੂੰ ਲੱਭਣ ਅਤੇ ਕਨੈਕਟ ਕਰਨ ਲਈ Wi-Fi ਡਾਇਰੈਕਟ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ। ਤੁਸੀਂ ਹਾਲੇ ਵੀ ਆਪਣੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਤੋਂ ਆਪਣੇ ਖਾਤੇ ਨੂੰ ਬਹਾਲ ਕਰਨ ਲਈ ਬੈਕਅੱਪ ਤਿਆਰ ਕਰ ਸਕਦੇ ਹੋ।</string>
     <string name="OldDeviceTransferSetup__create_a_backup">ਬੈਕਅੱਪ ਬਣਾਓ</string>
     <string name="OldDeviceTransferSetup__an_unexpected_error_occurred_while_attempting_to_connect_to_your_old_device">ਤੁਹਾਡੀ ਨਵੀਂ Android ਡਿਵਾਈਸ ਨਾਲ ਕਨੈਕਟ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦੇ ਸਮੇਂ ਕੋਈ ਅਚਨਚੇਤ ਤਰੁੱਟੀ ਆਈ।</string>
 

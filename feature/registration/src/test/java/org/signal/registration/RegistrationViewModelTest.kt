@@ -86,9 +86,44 @@ class RegistrationViewModelTest {
     advanceUntilIdle()
 
     val state = viewModel.state.value
-    assertThat(state.backStack).isEqualTo(savedState.backStack)
+    // Tellomi（tellomi/tellomi#1112）：旧版本存下的 Permissions 在恢复时被滤掉，其余原样
+    assertThat(state.backStack).isEqualTo(
+      listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.PhoneNumberEntry,
+        RegistrationRoute.VerificationCodeEntry
+      )
+    )
     assertThat(state.sessionMetadata).isEqualTo(freshSession)
     assertThat(state.sessionE164).isEqualTo("+15551234567")
+  }
+
+  @Test
+  fun `restore drops permission routes persisted by an older version`() = runTest(testDispatcher) {
+    val savedSession = createSessionMetadata("session-legacy")
+
+    val savedState = RegistrationFlowState(
+      backStack = listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.AllowNotifications(RegistrationRoute.LinkAccount()),
+        RegistrationRoute.LinkAccount(),
+        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry)
+      ),
+      sessionMetadata = savedSession
+    )
+
+    coEvery { mockRepository.restoreFlowState() } returns savedState
+    coEvery { mockRepository.validateSession("session-legacy") } returns savedSession
+
+    val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.backStack).isEqualTo(
+      listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.LinkAccount()
+      )
+    )
   }
 
   @Test
@@ -114,10 +149,10 @@ class RegistrationViewModelTest {
     advanceUntilIdle()
 
     val state = viewModel.state.value
+    // Tellomi（tellomi/tellomi#1112）：上游重置成 Welcome → Permissions → PhoneNumberEntry
     assertThat(state.backStack).isEqualTo(
       listOf(
         RegistrationRoute.Welcome,
-        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry),
         RegistrationRoute.PhoneNumberEntry
       )
     )
@@ -689,6 +724,24 @@ class RegistrationViewModelTest {
     )
 
     assertThat(result.sessionMetadata).isEqualTo(newSession)
+  }
+
+  @Test
+  fun `applyEvent SessionExpired clears the session but keeps the number`() = runTest(testDispatcher) {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 1）：手机号页下一次「下一步」要开新会话，号码不用重填。
+    coEvery { mockRepository.restoreFlowState() } returns null
+    coEvery { mockRepository.getPreExistingRegistrationData() } returns null
+
+    val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+
+    val result = viewModel.applyEvent(
+      RegistrationFlowState(sessionMetadata = createSessionMetadata("expired-session"), sessionE164 = "+15551234567"),
+      RegistrationFlowEvent.SessionExpired
+    )
+
+    assertThat(result.sessionMetadata).isNull()
+    assertThat(result.sessionE164).isEqualTo("+15551234567")
   }
 
   @Test

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import org.thoughtcrime.securesms.jobmanager.Constraint;
+import org.thoughtcrime.securesms.net.TellomiCrossBorderNetworkGate;
 import org.thoughtcrime.securesms.util.NetworkUtil;
 
 public class NetworkConstraint implements Constraint {
@@ -45,7 +46,8 @@ public class NetworkConstraint implements Constraint {
   }
 
   public static boolean isMet(@NonNull Context context) {
-    return NetworkUtil.isConnected(context);
+    // Tellomi：跨境同意之前，要网络的任务一律等着（而不是跑了再失败；tellomi/tellomi#1133）。
+    return NetworkUtil.isConnected(context) && !TellomiCrossBorderNetworkGate.isBlocking();
   }
 
   public static final class Factory implements Constraint.Factory<NetworkConstraint> {

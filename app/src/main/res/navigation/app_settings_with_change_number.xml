@@ -120,6 +120,14 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <!-- Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」 -->
+        <action
+            android:id="@+id/action_appSettingsFragment_to_aboutSettingsFragment"
+            app:destination="@id/aboutSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_appSettingsFragment_to_inviteFragment"
             app:destination="@id/inviteFragment"
@@ -713,6 +721,20 @@
             android:defaultValue="0"
             app:argType="integer"
             app:nullable="false" />
+    </fragment>
+
+    <!-- Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」，版本 / 许可证 / 法律文件从「帮助」搬到这里 -->
+    <fragment
+        android:id="@+id/aboutSettingsFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.about.AboutSettingsFragment"
+        android:label="about_settings_fragment">
+        <action
+            android:id="@+id/action_aboutSettingsFragment_to_licenseFragment"
+            app:destination="@id/licenseFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
 
     <fragment

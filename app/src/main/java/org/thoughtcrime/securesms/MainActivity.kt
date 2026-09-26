@@ -94,6 +94,7 @@ import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.ui.permissions.Permissions
 import org.signal.core.ui.rememberIsSplitPane
 import org.signal.core.util.AppForegroundObserver
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.Util
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.getParcelableCompat
@@ -138,6 +139,7 @@ import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceExitActivity
 import org.thoughtcrime.securesms.groups.ui.creategroup.CreateGroupActivity
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity
+import org.thoughtcrime.securesms.main.ConnectionTitle
 import org.thoughtcrime.securesms.main.EmptyDetailScreen
 import org.thoughtcrime.securesms.main.MainBottomChrome
 import org.thoughtcrime.securesms.main.MainBottomChromeCallback
@@ -164,6 +166,7 @@ import org.thoughtcrime.securesms.megaphone.Megaphone
 import org.thoughtcrime.securesms.megaphone.MegaphoneActionController
 import org.thoughtcrime.securesms.megaphone.Megaphones
 import org.thoughtcrime.securesms.net.DeviceTransferBlockingInterceptor
+import org.thoughtcrime.securesms.notifications.TellomiNotificationPrimerBottomSheet
 import org.thoughtcrime.securesms.notifications.VitalsViewModel
 import org.thoughtcrime.securesms.notifications.profiles.NotificationProfile
 import org.thoughtcrime.securesms.notifications.profiles.NotificationProfiles
@@ -307,6 +310,13 @@ class MainActivity :
               }
             }
           }
+        }
+      }
+
+      launch {
+        // Tellomi（tellomi/tellomi#1218 F-04）：标题显示连接状态
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+          ConnectionTitle.observe(this@MainActivity).collect { toolbarViewModel.setConnectionTitle(it) }
         }
       }
 
@@ -739,6 +749,9 @@ class MainActivity :
         }
         .setCancelable(false)
         .show()
+    } else {
+      // Tellomi（#1112 / #1218 F-01）：注册流程里不再要通知权限，改在第一次进首屏时说明一次
+      TellomiNotificationPrimerBottomSheet.showIfNeeded(this)
     }
 
     vitalsViewModel.checkSlowNotificationHeuristics()
@@ -772,7 +785,8 @@ class MainActivity :
     }
 
     if (resultCode == RESULT_OK && requestCode == UsernameEditFragment.REQUEST_CODE) {
-      val snackbarString = getString(R.string.ConversationListFragment_username_recovered_toast, SignalStore.account.username)
+      // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+      val snackbarString = getString(R.string.ConversationListFragment_username_recovered_toast, SignalStore.account.username?.let { TellomiUsernames.toDisplayUsername(it) })
       mainNavigationViewModel.snackbarRegistry.emit(
         SnackbarState(
           message = snackbarString,

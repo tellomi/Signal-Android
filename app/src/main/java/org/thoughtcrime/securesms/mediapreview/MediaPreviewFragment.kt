@@ -10,6 +10,9 @@ import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.text.Annotation
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -47,7 +50,6 @@ import kotlinx.coroutines.withContext
 import org.signal.core.models.database.AttachmentId
 import org.signal.core.models.media.Media
 import org.signal.core.ui.logging.LoggingFragment
-import org.signal.core.util.Debouncer
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.logging.Log
 import org.signal.core.util.requireDrawable
@@ -57,8 +59,8 @@ import org.thoughtcrime.securesms.attachments.DatabaseAttachment
 import org.thoughtcrime.securesms.components.ViewBinderDelegate
 import org.thoughtcrime.securesms.components.mention.MentionAnnotation
 import org.thoughtcrime.securesms.conversation.ConversationMessage
-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.TellomiForwardGridBottomSheet
 import org.thoughtcrime.securesms.database.DatabaseObserver
 import org.thoughtcrime.securesms.database.MediaTable
 import org.thoughtcrime.securesms.database.SignalDatabase
@@ -85,7 +87,6 @@ import org.thoughtcrime.securesms.util.SpanUtil
 import org.thoughtcrime.securesms.util.ViewUtil
 import org.thoughtcrime.securesms.util.visible
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 import org.signal.core.ui.R as CoreUiR
 
@@ -98,7 +99,17 @@ class MediaPreviewFragment :
   private val viewModel: MediaPreviewViewModel by viewModels(ownerProducer = {
     requireActivity()
   })
-  private val debouncer = Debouncer(2, TimeUnit.SECONDS)
+
+  // Tellomi（#1257，照 Telegram Android）：播放中控件自动收起，见 autoHideControlsTick。
+  private val autoHideHandler = Handler(Looper.getMainLooper())
+  private var autoHideIdleSinceMs = 0L
+  private var isScrubbingVideo = false
+  private val autoHideTick = object : Runnable {
+    override fun run() {
+      autoHideControlsTick()
+      autoHideHandler.postDelayed(this, autoHideTickMs)
+    }
+  }
   private val args: MediaIntentFactory.MediaPreviewArgs by lazy { MediaIntentFactory.requireArguments(requireArguments()) }
 
   private lateinit var pagerAdapter: MediaPreviewAdapter
@@ -204,7 +215,7 @@ class MediaPreviewFragment :
       override fun onPageSelected(position: Int) {
         super.onPageSelected(position)
         if (position != viewModel.currentPosition) {
-          debouncer.clear()
+          noteAutoHideActivity()
         }
         viewModel.setCurrentPage(position)
       }
@@ -297,12 +308,7 @@ class MediaPreviewFragment :
     bindMenuItems(currentItem)
     tryBindMediaPreviewPlaybackControls(currentItem, currentPosition)
 
-    val albumThumbnailMedia: List<Media> = if (currentState.allMediaInAlbumRail) {
-      currentState.mediaRecords.mapNotNull { it.toMedia() }
-    } else {
-      currentState.albums[currentItem.attachment?.mmsId] ?: emptyList()
-    }
-    bindAlbumRail(albumThumbnailMedia, currentItem)
+    bindAlbumRail(currentState.currentAlbum, currentItem)
 
     crossfadeViewIn(binding.mediaPreviewDetailsContainer)
   }
@@ -385,7 +391,7 @@ class MediaPreviewFragment :
       menu.findItem(R.id.delete).isVisible = false
     }
 
-    // Tellomi（#1257）：从会话里打开时可以「回复」正在看的这一张
+    // Tellomi（#1257）：从会话里打开时可以「回复」（引用整条消息）
     val replyAttachment = currentItem.attachment
     menu.findItem(R.id.reply)?.isVisible = replyAttachment != null &&
       replyAttachment.mmsId > 0 &&
@@ -455,6 +461,7 @@ class MediaPreviewFragment :
   private fun scrubPreviewListener(attachmentId: AttachmentId): MediaPreviewPlayerControlView.ScrubListener {
     return object : MediaPreviewPlayerControlView.ScrubListener {
       override fun onScrubStart(positionMs: Long, thumbCenterXOnScreen: Float, pillTopOnScreen: Float) {
+        isScrubbingVideo = true
         frameExtractor?.release()
         frameExtractor = VideoFrameExtractor(attachmentId, ViewUtil.dpToPx(VideoScrubPreviewView.LONG_SIDE_DP))
         binding.mediaPreviewScrubPreview.showAt(thumbCenterXOnScreen, pillTopOnScreen)
@@ -467,6 +474,8 @@ class MediaPreviewFragment :
       }
 
       override fun onScrubStop(positionMs: Long) {
+        isScrubbingVideo = false
+        noteAutoHideActivity()
         binding.mediaPreviewScrubPreview.dismiss()
         frameExtractor?.release()
         frameExtractor = null
@@ -595,7 +604,8 @@ class MediaPreviewFragment :
       }
 
       MultiselectForwardFragmentArgs.create(requireContext(), conversationMessage.multiselectCollection.toSet()) { args ->
-        MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+        // Tellomi（#1259）：「全部」也打开头像网格，和「这一张」同一个面板
+        TellomiForwardGridBottomSheet.show(childFragmentManager, args)
       }
     }
   }
@@ -743,7 +753,8 @@ class MediaPreviewFragment :
   }
 
   override fun onPlaying() {
-    debouncer.publish { fullscreenHelper.hideSystemUI() }
+    // 上游是开始播放 2 秒后收起一次；改成 autoHideControlsTick 的空闲计时（照 Telegram：控件露着、正在播、连续 3 秒没被打断才收）。
+    noteAutoHideActivity()
   }
 
   override fun onStopped(tag: String?) {
@@ -752,7 +763,6 @@ class MediaPreviewFragment :
     }
 
     if (pagerAdapter.getFragmentTag(viewModel.currentPosition) == tag) {
-      debouncer.clear()
       // Tellomi（#1257，照 Telegram）：超过 30 秒、不循环的视频放完了，把控件叫出来（正中是播放键）。
       if (binding.mediaPreviewPlaybackControls.player?.playbackState == Player.STATE_ENDED) {
         chromeHiddenUntilTap = false
@@ -762,6 +772,11 @@ class MediaPreviewFragment :
   }
 
   override fun onDestroy() {
+    // Tellomi（#1257）：查看器真的关了（不是转屏重建）就复位「从哪个会话打开」，
+    // 免得之后从会话设置的媒体条等别处打开同一个会话的查看器也显示「回复」。
+    if (activity?.isFinishing == true) {
+      MediaPreviewCache.replyTargetThreadId = -1
+    }
     super.onDestroy()
     val observer = dbChangeObserver
     if (observer != null) {
@@ -783,7 +798,8 @@ class MediaPreviewFragment :
       mediaUri = uri,
       contentType = contentType
     ) { args: MultiselectForwardFragmentArgs ->
-      MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+      // Tellomi（#1259 F-1 / F-2）：查看器的转发也打开头像网格；查看器固定夜间模式，网格跟着是深色（「这张 / 全部 N 张」在 #1257 查看器里做）
+      TellomiForwardGridBottomSheet.show(childFragmentManager, args)
     }
   }
 
@@ -893,12 +909,11 @@ class MediaPreviewFragment :
     return attachmentCount <= 1 && MessageConstraintsUtil.isValidRemoteDeleteSend(listOf(messageRecord), System.currentTimeMillis())
   }
 
-  /** Tellomi（#1257）：记下「回复哪条消息的哪一张」，关掉查看器；会话页回到前台时接手（ConversationFragment.onResume）。 */
+  /** Tellomi（#1257）：记下「回复哪条消息」，关掉查看器；会话页回到前台时接手（ConversationFragment.onResume）。 */
   private fun replyToCurrentItem(currentItem: MediaTable.MediaRecord) {
     val attachment = currentItem.attachment ?: return
-    val uri = attachment.displayUri ?: attachment.uri ?: return
     pauseCurrentMediaIfVideo()
-    MediaPreviewCache.pendingReply = MediaPreviewCache.PendingReply(currentItem.threadId, attachment.mmsId, uri)
+    MediaPreviewCache.pendingReply = MediaPreviewCache.PendingReply(currentItem.threadId, attachment.mmsId)
     requireActivity().finish()
   }
 
@@ -916,8 +931,18 @@ class MediaPreviewFragment :
     startActivity(MediaSendLauncher.editor(context = requireContext(), media = listOf(media)))
   }
 
+  override fun onResume() {
+    super.onResume()
+    noteAutoHideActivity()
+    autoHideHandler.removeCallbacks(autoHideTick)
+    autoHideHandler.postDelayed(autoHideTick, autoHideTickMs)
+    (activity as? MediaPreviewActivity)?.onUserTouch = { noteAutoHideActivity() }
+  }
+
   override fun onPause() {
     super.onPause()
+    autoHideHandler.removeCallbacks(autoHideTick)
+    (activity as? MediaPreviewActivity)?.onUserTouch = null
     getMediaPreviewFragmentFromChildFragmentManager(binding.mediaPager.currentItem)?.pause()
     speedPopup?.dismiss()
   }
@@ -931,7 +956,45 @@ class MediaPreviewFragment :
     viewModel.onDestroyView()
   }
 
+  private fun noteAutoHideActivity() {
+    autoHideIdleSinceMs = SystemClock.uptimeMillis()
+  }
+
+  /**
+   * Tellomi（#1257，照 Telegram Android `PhotoViewer`：`scheduleActionBarHide` 3 秒，按下取消、抬手重排，子菜单开着不收，开着无障碍不排）：
+   * 控件露着时每 250ms 看一次，连续 3 秒没被打断才收起。没在播、正在拖进度条、「⋮」或倍速菜单开着、窗口没焦点（对话框 / 弹出菜单）、
+   * 开着 TalkBack 都算打断，计时从头来；碰一下屏幕（`MediaPreviewActivity.dispatchTouchEvent`）也从头来。照片不收（只对正在播的视频）。
+   */
+  private fun autoHideControlsTick() {
+    if (view == null || chromeHiddenUntilTap || !fullscreenHelper.isSystemUiVisible || isAutoHideBlocked()) {
+      noteAutoHideActivity()
+      return
+    }
+    if (SystemClock.uptimeMillis() - autoHideIdleSinceMs >= autoHideDelayMs) {
+      fullscreenHelper.hideSystemUI()
+      noteAutoHideActivity()
+    }
+  }
+
+  private fun isAutoHideBlocked(): Boolean {
+    val player = binding.mediaPreviewPlaybackControls.player
+    if (player == null || !player.isPlaying) return true
+    if (isScrubbingVideo || speedPopup?.isShowing == true || binding.toolbar.isOverflowMenuShowing) return true
+    if (!requireActivity().hasWindowFocus()) return true
+    return isTouchExplorationEnabled()
+  }
+
+  private fun isTouchExplorationEnabled(): Boolean {
+    touchExplorationOverrideForTesting?.let { return it }
+    return requireContext().getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled == true
+  }
+
   companion object {
+    /** 播放中控件自动收起：产品里 3 秒、每 250ms 看一次；测试（AlbumViewerScreenshots）可以改。 */
+    var autoHideDelayMs = 3_000L
+    var autoHideTickMs = 250L
+    var touchExplorationOverrideForTesting: Boolean? = null
+
     private const val EXPANDED_CAPTION_HEIGHT_FALLBACK_DP = 400
     private const val EXPANDED_CAPTION_HEIGHT_PERCENT: Float = 0.7F
 

@@ -37,6 +37,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -69,6 +70,8 @@ import org.signal.registration.fakes.FakeStorageController
 import org.signal.registration.fakes.SystemOutLogger
 import org.signal.registration.proto.SvrCredential
 import org.signal.registration.screens.remotebackuprestore.RemoteBackupRestoreProgress
+import org.signal.registration.screens.shared.TellomiCrossBorderConsent
+import org.signal.registration.screens.shared.TellomiLegalConsent
 import org.signal.registration.screens.util.MockMultiplePermissionsState
 import org.signal.registration.screens.util.MockPermissionsState
 import org.signal.registration.test.TestTags
@@ -140,9 +143,24 @@ class RegistrationEndToEndTest {
     val context = ApplicationProvider.getApplicationContext<Application>()
     Shadows.shadowOf(context).grantPermissions(*RegistrationPermissions.getRequiredPermissions(context).toTypedArray())
 
+    // Tellomi：同意流程有专门的用例（TellomiLegalConsentTest）；这里测注册主流程，先当作已经同意过（tellomi/tellomi#1211）。
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    TellomiCrossBorderConsent.recordAgreement(context)
+
     networkController = FakeNetworkController()
     storageController = FakeStorageController()
     repository = RegistrationRepository(context, networkController, storageController, isLinkAndSyncAvailable = false)
+
+    // Tellomi（tellomi/tellomi#1210）：Tellomi 没有备份服务，恢复方式选择页不列「从 Tellomi 备份」。这里的上游用例里有一批
+    // 走远端备份恢复，打开测试开关让它们照样跑（那条流程的代码还在，只是界面上没有入口）。默认关的样子由
+    // ArchiveRestoreSelectionViewModelTest 覆盖。
+    TellomiRegistration.remoteBackupsAvailableForTesting = true
+  }
+
+  @After
+  fun tearDownTellomiOverrides() {
+    TellomiRegistration.remoteBackupsAvailableForTesting = null
   }
 
   @Test

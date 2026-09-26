@@ -35,11 +35,12 @@ public final class DeviceTransferBlockingInterceptor implements Interceptor {
 
   @Override
   public @NonNull Response intercept(@NonNull Chain chain) throws IOException {
-    if (!blockNetworking) {
+    if (!isBlockingNetwork()) {
       return chain.proceed(chain.request());
     }
 
-    Log.w(TAG, "Preventing request because in transfer mode.");
+    Log.w(TAG, blockNetworking ? "Preventing request because in transfer mode."
+                               : "Preventing request because cross-border consent has not been given yet.");
     return new Response.Builder().request(chain.request())
                                  .protocol(Protocol.HTTP_1_1)
                                  .receivedResponseAtMillis(System.currentTimeMillis())
@@ -49,8 +50,12 @@ public final class DeviceTransferBlockingInterceptor implements Interceptor {
                                  .build();
   }
 
+  /**
+   * Tellomi：跨境同意之前也拦（tellomi/tellomi#1133，见 {@link TellomiCrossBorderNetworkGate}）。
+   * 两条 websocket 的 canConnect 和服务端的 OkHttp 请求都经过这里。
+   */
   public boolean isBlockingNetwork() {
-    return blockNetworking;
+    return blockNetworking || TellomiCrossBorderNetworkGate.isBlocking();
   }
 
   public void blockNetwork() {

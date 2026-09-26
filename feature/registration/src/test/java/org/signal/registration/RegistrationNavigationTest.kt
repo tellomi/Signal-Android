@@ -5,7 +5,6 @@
 
 package org.signal.registration
 
-import android.Manifest
 import android.app.Application
 import android.os.Looper
 import androidx.compose.ui.test.assertIsDisplayed
@@ -27,6 +26,8 @@ import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
+import org.signal.registration.screens.shared.TellomiCrossBorderConsent
+import org.signal.registration.screens.shared.TellomiLegalConsent
 import org.signal.registration.screens.util.MockMultiplePermissionsState
 import org.signal.registration.screens.util.MockPermissionsState
 import org.signal.registration.test.TestTags
@@ -51,6 +52,11 @@ class RegistrationNavigationTest {
 
   @Before
   fun setup() {
+    // Tellomi：首次启动提示和跨境告知另有用例（TellomiLegalConsentTest）；这里测导航，先当作都同意过（tellomi/tellomi#1211、#1133）。
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    TellomiCrossBorderConsent.recordAgreement(context)
+
     mockRepository = mockk<RegistrationRepository>(relaxed = true)
     coEvery { mockRepository.restoreFlowState() } returns null
     coEvery { mockRepository.getPreExistingRegistrationData() } returns null
@@ -83,8 +89,12 @@ class RegistrationNavigationTest {
     composeTestRule.onNodeWithTag(TestTags.WELCOME_SCREEN).assertIsDisplayed()
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1112）：注册流程里一个权限都不要。Robolectric 默认什么权限都没授，
+   * 上游在这里会进 Permissions；Tellomi 必须直达输手机号。
+   */
   @Test
-  fun `clicking Get Started navigates from Welcome to Permissions`() {
+  fun `clicking Get Started goes straight to PhoneNumber without a permissions screen`() {
     // Given
     val permissionsState = createMockPermissionsState()
 
@@ -102,8 +112,9 @@ class RegistrationNavigationTest {
     composeTestRule.onNodeWithTag(TestTags.WELCOME_GET_STARTED_BUTTON).performClick()
     Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-    // Then - verify Permissions screen is displayed
-    composeTestRule.onNodeWithTag(TestTags.PERMISSIONS_SCREEN).assertIsDisplayed()
+    // Then - no Permissions screen; PhoneNumber is displayed
+    composeTestRule.onNodeWithTag(TestTags.PERMISSIONS_SCREEN).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_SCREEN).assertIsDisplayed()
   }
 
   @Test
@@ -131,59 +142,7 @@ class RegistrationNavigationTest {
     composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_SCREEN).assertIsDisplayed()
   }
 
-  @Test
-  fun `clicking Next on Permissions when they are all granted navigates to PhoneNumber`() {
-    // Given
-    val permissionsState = createMockPermissionsState(allPermissionsGranted = true)
-
-    composeTestRule.setContent {
-      SignalTheme {
-        RegistrationNavHost(
-          registrationRepository = mockRepository,
-          registrationViewModel = viewModel,
-          permissionsState = permissionsState
-        )
-      }
-    }
-
-    // Navigate to Permissions screen first
-    composeTestRule.onNodeWithTag(TestTags.WELCOME_GET_STARTED_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // When
-    composeTestRule.onNodeWithTag(TestTags.PERMISSIONS_NEXT_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // Then - verify PhoneNumber screen is displayed
-    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_SCREEN).assertIsDisplayed()
-  }
-
-  @Test
-  fun `clicking Not now on Permissions navigates to PhoneNumber`() {
-    // Given
-    val permissionsState = createMockPermissionsState()
-
-    composeTestRule.setContent {
-      SignalTheme {
-        RegistrationNavHost(
-          registrationRepository = mockRepository,
-          registrationViewModel = viewModel,
-          permissionsState = permissionsState
-        )
-      }
-    }
-
-    // Navigate to Permissions screen first
-    composeTestRule.onNodeWithTag(TestTags.WELCOME_GET_STARTED_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // When
-    composeTestRule.onNodeWithTag(TestTags.PERMISSIONS_NOT_NOW_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // Then - verify PhoneNumber screen is displayed
-    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_SCREEN).assertIsDisplayed()
-  }
+  // Tellomi（#1112）：上游这里还有两条用例点 Permissions 页的「下一步 / 以后再说」；那一页已经没有入口，用例随之删掉。
 
   // Note: Back navigation testing in Navigation 3 requires testing through
   // actual back button presses at the Activity level, which is better suited
@@ -191,7 +150,7 @@ class RegistrationNavigationTest {
   // and not directly accessible in unit tests.
 
   @Test
-  fun `clicking I have my old phone navigates to Permissions for restore`() {
+  fun `clicking I have my old phone goes straight to the quick restore scan`() {
     // Given
     val permissionsState = createMockPermissionsState()
 
@@ -210,9 +169,9 @@ class RegistrationNavigationTest {
     composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON).performClick()
     Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-    // Then - verify Permissions screen is displayed
-    // (After permissions, user would go to RestoreViaQr screen)
-    composeTestRule.onNodeWithTag(TestTags.PERMISSIONS_SCREEN).assertIsDisplayed()
+    // Then - Tellomi（#1112）：不经过 Permissions，直接到扫码恢复（相机权限由扫码页在用的时候自己要）
+    composeTestRule.onNodeWithTag(TestTags.PERMISSIONS_SCREEN).assertDoesNotExist()
+    assert(viewModel.state.value.backStack.last() == RegistrationRoute.QuickRestoreQrScan) { "backStack should end at QuickRestoreQrScan, was: ${viewModel.state.value.backStack}" }
   }
 
   @Test
@@ -306,7 +265,7 @@ class RegistrationNavigationTest {
 
   @Test
   @Config(qualifiers = "w1280dp-h800dp-xhdpi")
-  fun `clicking Link Device on Welcome navigates to AllowNotifications when notifications permission is required`() {
+  fun `clicking Link Device on Welcome goes straight to LinkAccount without asking for notifications`() {
     // Given
     every { mockRepository.isLinkAndSyncAvailable } returns true
     val permissionsState = createMockPermissionsState()
@@ -325,65 +284,9 @@ class RegistrationNavigationTest {
     composeTestRule.onNodeWithTag(TestTags.WELCOME_LINK_DEVICE_BUTTON).performClick()
     Shadows.shadowOf(Looper.getMainLooper()).idle()
 
-    // Then - notifications permission is required on the default Robolectric SDK (>= 33)
-    composeTestRule.onNodeWithTag(TestTags.ALLOW_NOTIFICATIONS_SCREEN).assertIsDisplayed()
-  }
-
-  @Test
-  @Config(qualifiers = "w1280dp-h800dp-xhdpi")
-  fun `clicking Next on AllowNotifications navigates to LinkAccount`() {
-    // Given
-    every { mockRepository.isLinkAndSyncAvailable } returns true
-    val permissionsState = createMockPermissionsState()
-    Shadows.shadowOf(ApplicationProvider.getApplicationContext<Application>())
-      .grantPermissions(Manifest.permission.POST_NOTIFICATIONS)
-
-    composeTestRule.setContent {
-      SignalTheme {
-        RegistrationNavHost(
-          registrationRepository = mockRepository,
-          registrationViewModel = viewModel,
-          permissionsState = permissionsState
-        )
-      }
-    }
-
-    composeTestRule.onNodeWithTag(TestTags.WELCOME_LINK_DEVICE_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // When
-    composeTestRule.onNodeWithTag(TestTags.ALLOW_NOTIFICATIONS_NEXT_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // Then
-    composeTestRule.onNodeWithTag(TestTags.LINK_ACCOUNT_SCREEN).assertIsDisplayed()
-  }
-
-  @Test
-  @Config(qualifiers = "w1280dp-h800dp-xhdpi")
-  fun `clicking Not now on AllowNotifications navigates to LinkAccount`() {
-    // Given
-    every { mockRepository.isLinkAndSyncAvailable } returns true
-    val permissionsState = createMockPermissionsState()
-
-    composeTestRule.setContent {
-      SignalTheme {
-        RegistrationNavHost(
-          registrationRepository = mockRepository,
-          registrationViewModel = viewModel,
-          permissionsState = permissionsState
-        )
-      }
-    }
-
-    composeTestRule.onNodeWithTag(TestTags.WELCOME_LINK_DEVICE_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // When
-    composeTestRule.onNodeWithTag(TestTags.ALLOW_NOTIFICATIONS_NOT_NOW_BUTTON).performClick()
-    Shadows.shadowOf(Looper.getMainLooper()).idle()
-
-    // Then
+    // Then - Tellomi（tellomi/tellomi#1112）：默认 Robolectric SDK（>= 33）上没授通知，上游会先进 AllowNotifications；
+    // Tellomi 注册 / 链接流程里不要权限，通知改到第一次进首屏时说明（#1218 F-01）
+    composeTestRule.onNodeWithTag(TestTags.ALLOW_NOTIFICATIONS_SCREEN).assertDoesNotExist()
     composeTestRule.onNodeWithTag(TestTags.LINK_ACCOUNT_SCREEN).assertIsDisplayed()
   }
 

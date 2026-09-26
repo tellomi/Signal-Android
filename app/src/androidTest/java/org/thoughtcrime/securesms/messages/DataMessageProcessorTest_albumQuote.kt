@@ -19,9 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.signal.core.models.database.AttachmentId
-import org.signal.core.util.Base64
 import org.thoughtcrime.securesms.attachments.DatabaseAttachment
-import org.thoughtcrime.securesms.attachments.PointerAttachment
 import org.thoughtcrime.securesms.attachments.UriAttachment
 import org.thoughtcrime.securesms.database.AttachmentTable
 import org.thoughtcrime.securesms.database.SignalDatabase
@@ -36,8 +34,8 @@ import java.io.ByteArrayOutputStream
 import java.security.SecureRandom
 
 /**
- * Tellomi（tellomi/tellomi#1257）：对方在查看器里回复了我发的相册里的某一张。引用在协议里只指向整条消息，
- * 对方带来的缩略图是那一张——相册要显示对方带来的那张，不是本地相册的第一张；单张与没带缩略图时照上游。
+ * Tellomi（tellomi/tellomi#1257，owner 2026-09-26「回复整条」）：对方引用我发的相册时，不管对方带来的缩略图是哪一张，
+ * 都照上游用本机原消息里的图（防伪）；单张与没带缩略图时同样。
  */
 @Suppress("ClassName")
 @RunWith(AndroidJUnit4::class)
@@ -56,15 +54,14 @@ class DataMessageProcessorTest_albumQuote {
   }
 
   @Test
-  fun quoteOfAnAlbumItem_showsTheThumbnailTheSenderChose() {
-    val (sentAt, _) = insertOutgoingImages(count = 3)
-    val key = randomKey()
+  fun quoteOfAnAlbum_keepsTheLocalFirstItemEvenWithTheSendersThumbnail() {
+    val (sentAt, firstId) = insertOutgoingImages(count = 3)
 
-    val quote = validatedQuote(sentAt, thumbnailKey = key)
+    val quote = validatedQuote(sentAt, thumbnailKey = randomKey())
 
     assertThat(quote.isOriginalMissing).isFalse()
-    assertThat(quote.attachment).isNotNull().isInstanceOf(PointerAttachment::class)
-    assertThat(quote.attachment!!.remoteKey).isEqualTo(Base64.encodeWithPadding(key))
+    assertThat(quote.attachment).isNotNull().isInstanceOf(DatabaseAttachment::class)
+    assertThat((quote.attachment as DatabaseAttachment).attachmentId).isEqualTo(firstId)
   }
 
   @Test
