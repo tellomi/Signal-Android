@@ -144,6 +144,7 @@ import org.signal.donations.InAppPaymentType
 import org.signal.emoji.EmojiEventListener
 import org.signal.ringrtc.CallLinkRootKey
 import org.thoughtcrime.securesms.BlockUnblockDialog
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.MainActivity
 import org.thoughtcrime.securesms.MuteDialog
 import org.thoughtcrime.securesms.R
@@ -5374,7 +5375,14 @@ class ConversationFragment :
 
           AttachmentKeyboardButton.CONTACT -> conversationActivityResultContracts.launchSelectContact()
 
-          AttachmentKeyboardButton.LOCATION -> conversationActivityResultContracts.launchSelectLocation(recipient.chatColors)
+          AttachmentKeyboardButton.LOCATION -> if (BuildConfig.MAPS_AVAILABLE) {
+            conversationActivityResultContracts.launchSelectLocation(recipient.chatColors)
+          } else {
+            // Tellomi（tellomi/tellomi#1235、#1124）：高德接上之前不提供发送位置，格子已置灰（AttachmentKeyboardButtonAdapter）
+            toast(R.string.TellomiLocation__coming_soon, Toast.LENGTH_SHORT)
+            // 点一个用不了的格子不收起附件面板，下面的 container.hideInput() 不走（taishi 审查 b9 不阻塞 2）
+            return
+          }
 
           AttachmentKeyboardButton.PAYMENT -> AttachmentManager.selectPayment(this@ConversationFragment, recipient)
 

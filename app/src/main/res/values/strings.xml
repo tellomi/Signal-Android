@@ -10131,5 +10131,8 @@
     <!-- Subject line of an email invitation to Signal -->
     <string name="SharedContactDetailsScreen__join_me_on_signal">Join me on Tellomi</string>
 
+    <!-- Tellomi (tellomi/tellomi#1124): shown when tapping the grayed-out Location button before the map service (Amap) is integrated -->
+    <string name="TellomiLocation__coming_soon">Location sharing is coming soon</string>
+
     <!-- EOF -->
 </resources>
