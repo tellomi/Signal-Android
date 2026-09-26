@@ -105,12 +105,14 @@ import org.thoughtcrime.securesms.components.mention.MentionAnnotation;
 import org.thoughtcrime.securesms.contactshare.Contact;
 import org.thoughtcrime.securesms.conversation.clicklisteners.AttachmentCancelClickListener;
 import org.thoughtcrime.securesms.conversation.clicklisteners.ResendClickListener;
+import org.thoughtcrime.securesms.conversation.colors.ChatColors;
 import org.thoughtcrime.securesms.conversation.colors.Colorizer;
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectCollection;
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectPart;
 import org.thoughtcrime.securesms.conversation.ui.payment.PaymentMessageView;
 import org.thoughtcrime.securesms.conversation.v2.items.InteractiveConversationElement;
 import org.thoughtcrime.securesms.conversation.v2.items.SenderNameWithLabelView;
+import org.thoughtcrime.securesms.conversation.v2.items.TellomiBubbleTail;
 import org.thoughtcrime.securesms.conversation.v2.items.V2ConversationItemUtils;
 import org.thoughtcrime.securesms.database.AttachmentTable;
 import org.thoughtcrime.securesms.database.MediaTable;
@@ -183,7 +185,8 @@ import kotlin.jvm.functions.Function1;
 public final class ConversationItem extends RelativeLayout implements BindableConversationItem,
                                                                       RecipientForeverObserver,
                                                                       OpenableGift,
-                                                                      InteractiveConversationElement
+                                                                      InteractiveConversationElement,
+                                                                      TellomiBubbleTail.Provider
 {
   private static final String TAG = Log.tag(ConversationItem.class);
 
@@ -286,6 +289,11 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   private       MediaItem          mediaItem;
   private       boolean            canPlayContent;
   private       Projection.Corners bodyBubbleCorners;
+
+  /** Tellomi：这一条画不画小尾巴、用什么颜色（#1206）。 */
+  private           boolean    tellomiHasTail;
+  private @ColorInt int        tellomiTailColor;
+  private @Nullable ChatColors tellomiTailChatColors;
   private       Colorizer          colorizer;
   private       boolean            hasWallpaper;
   private       float              lastYDownRelativeToThis;
@@ -943,6 +951,10 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   private void setBubbleState(MessageRecord messageRecord, @NonNull Recipient recipient, boolean hasWallpaper, @NonNull Colorizer colorizer) {
     this.hasWallpaper = hasWallpaper;
+
+    // Tellomi：尾巴和气泡同色（#1206）。我发的用聊天颜色（可能是渐变），对方的用气泡默认色。
+    tellomiTailChatColors = messageRecord.isOutgoing() ? recipient.getChatColors() : null;
+    tellomiTailColor      = messageRecord.isOutgoing() ? recipient.getChatColors().asSingleColor() : getDefaultBubbleColor(hasWallpaper);
 
     ViewUtil.updateLayoutParams(bodyBubble, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     bodyText.setTextColor(colorizer.getIncomingBodyTextColor(context, hasWallpaper));
@@ -2292,7 +2304,18 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
     int background;
 
-    if (isSingularMessage(current, previous, next, isGroupThread) || displayMode == ConversationItemDisplayMode.EditHistory.INSTANCE) {
+    boolean singular = isSingularMessage(current, previous, next, isGroupThread) || displayMode == ConversationItemDisplayMode.EditHistory.INSTANCE;
+    boolean start    = !singular && isStartOfMessageCluster(current, previous, isGroupThread);
+    boolean end      = !singular && !start && isEndOfMessageCluster(current, next, isGroupThread);
+
+    // Tellomi：一组的最后一条、单独一条画小尾巴（#1206，规范 #1204 第 1、2 节）。带尾巴时发送方那侧的下角用小圆角，
+    // 被尾巴盖住：单独一条换成「开头」的形状，组里最后一条换成「中间」的形状。
+    tellomiHasTail = TellomiBubbleTail.shouldDraw(singular || end,
+                                                  !current.getReactions().isEmpty(),
+                                                  !hasNoBubble(current) && !isCaptionlessMms(current) && !current.isRemoteDelete(),
+                                                  displayMode);
+
+    if (singular && !tellomiHasTail) {
       if (current.isOutgoing()) {
         background = R.drawable.message_bubble_background_sent_alone;
         outliner.setRadius(bigRadius);
@@ -2304,7 +2327,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         pulseOutliner.setRadius(bigRadius);
         bodyBubbleCorners = new Projection.Corners(bigRadius);
       }
-    } else if (isStartOfMessageCluster(current, previous, isGroupThread)) {
+    } else if (singular || start) {
       if (current.isOutgoing()) {
         background = R.drawable.message_bubble_background_sent_start;
         setOutlinerRadii(outliner, bigRadius, bigRadius, smallRadius, bigRadius);
@@ -2316,7 +2339,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         setOutlinerRadii(pulseOutliner, bigRadius, bigRadius, bigRadius, smallRadius);
         bodyBubbleCorners = getBodyBubbleCorners(bigRadius, bigRadius, bigRadius, smallRadius);
       }
-    } else if (isEndOfMessageCluster(current, next, isGroupThread)) {
+    } else if (end && !tellomiHasTail) {
       if (current.isOutgoing()) {
         background = R.drawable.message_bubble_background_sent_end;
         setOutlinerRadii(outliner, bigRadius, smallRadius, bigRadius, bigRadius);
@@ -2534,6 +2557,20 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   @Override
   public boolean shouldProjectContent() {
     return canPlayContent() && bodyBubble.getVisibility() == VISIBLE;
+  }
+
+  @Override
+  public @Nullable TellomiBubbleTail.Spec getTellomiTail(@NonNull RecyclerView parent) {
+    if (!tellomiHasTail || messageRecord == null || bodyBubbleCorners == null || !bodyBubble.isShown() || bodyBubble.getScaleX() != 1f) {
+      return null;
+    }
+
+    Projection projection = Projection.relativeToParent(parent, bodyBubble, bodyBubbleCorners)
+                                      .translateX(bodyBubble.getTranslationX())
+                                      .translateX(getTranslationX())
+                                      .translateY(getTranslationY());
+
+    return new TellomiBubbleTail.Spec(projection, messageRecord.isOutgoing() == ViewUtil.isLtr(parent), tellomiTailColor, tellomiTailChatColors);
   }
 
   @Override

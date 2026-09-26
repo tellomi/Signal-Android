@@ -71,6 +71,21 @@ class V2ConversationItemShape(
     }
   }
 
+  /**
+   * Tellomi：这一条画小尾巴时，尾巴那一角（发送方那侧的下角）改成小圆角，被尾巴盖住（#1206，规范 #1204 第 1 节）。
+   * 在 [setMessageShape] 之后调用。
+   */
+  fun applyTellomiTail(isOutgoing: Boolean) {
+    val c = cornersLTR
+    val newCorners = if (isOutgoing) {
+      Projection.Corners(c.topLeft, c.topRight, smallRadius, c.bottomLeft)
+    } else {
+      Projection.Corners(c.topLeft, c.topRight, c.bottomRight, smallRadius)
+    }
+    cornersLTR = newCorners
+    cornersRTL = Projection.Corners(newCorners.toRelativeRadii(false))
+  }
+
   private fun setBodyBubbleCorners(
     topStart: Float,
     topEnd: Float,
