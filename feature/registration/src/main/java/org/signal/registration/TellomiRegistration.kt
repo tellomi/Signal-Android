@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -54,6 +54,23 @@ object TellomiRegistration {
   /** 恢复方式选择页列不列「从 Tellomi 备份」。 */
   val isRemoteBackupAvailable: Boolean
     get() = remoteBackupsAvailableForTesting ?: REMOTE_BACKUPS_AVAILABLE
+
+  /**
+   * 同一个注册会话最多能发几条验证码短信：香港配置 `send-sms-verification-code.delays: [30s, 1m, 5m]`，列表长度 = 条数
+   * （`deploy/hk/enable-aliyun-sms.sh`）。「收不到验证码？」面板用它说清额度（tellomi/tellomi#1214），
+   * 与 iOS `TSConstants.smsVerificationCodesPerSession` 同值。
+   */
+  const val SMS_VERIFICATION_CODES_PER_SESSION = 3
+
+  private val CODE_IN_TEXT = Regex("(?<![0-9])([0-9]{3})[ -]?([0-9]{3})(?![0-9])")
+
+  /**
+   * 在一段文字（整条短信、剪贴板里的「123-456」）里找一个完整的 6 位验证码：中间最多一个空格或连字符，
+   * 前后不紧挨别的数字（手机号那样的长串不算）。上游只接受「去掉非数字后恰好 6 位」，
+   * 整条短信里还有「5 分钟内有效」就凑成 7 位、整串被忽略（tellomi/tellomi#1214）。
+   */
+  @JvmStatic
+  fun verificationCodeIn(text: String): String? = CODE_IN_TEXT.find(text)?.let { it.groupValues[1] + it.groupValues[2] }
 
   /**
    * 限流等待时长给人看的样子，按界面语言用系统 ICU 排版：中文「1分钟30秒」、英文「1 minute, 30 seconds」。

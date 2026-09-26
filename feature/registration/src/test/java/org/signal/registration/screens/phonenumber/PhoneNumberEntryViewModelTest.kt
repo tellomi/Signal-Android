@@ -949,6 +949,90 @@ class PhoneNumberEntryViewModelTest {
       .isInstanceOf<RegistrationRoute.VerificationCodeEntry>()
   }
 
+  // ==================== Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 4）：复用的会话已经没了 ====================
+  // 从验证码页返回、停到会话过期再点「下一步」：上游 ResetState，人被打回欢迎页、号码清掉。现在清掉旧会话、开新会话重来一次。
+
+  private fun reusedSessionState(session: SessionMetadata) = PhoneNumberEntryState(
+    countryCode = "1",
+    nationalNumber = "5551234567",
+    sessionE164 = "+15551234567",
+    sessionMetadata = session
+  )
+
+  private fun assertStartedOverWithANewSession(newSession: SessionMetadata) {
+    assertThat(emittedEvents).hasSize(5)
+    assertThat(emittedEvents[0]).isEqualTo(RegistrationFlowEvent.SessionExpired)
+    assertThat(emittedEvents[1]).isInstanceOf<RegistrationFlowEvent.VerificationCodeRequested>()
+    assertThat(emittedEvents[2]).isEqualTo(RegistrationFlowEvent.SessionUpdated(newSession))
+    assertThat(emittedEvents[3]).isInstanceOf<RegistrationFlowEvent.E164Chosen>()
+    assertThat(emittedEvents[4])
+      .isInstanceOf<RegistrationFlowEvent.NavigateToScreen>()
+      .prop(RegistrationFlowEvent.NavigateToScreen::route)
+      .isInstanceOf<RegistrationRoute.VerificationCodeEntry>()
+    assertThat(emittedStates.last().sessionMetadata).isEqualTo(newSession)
+    coVerify(exactly = 1) { mockRepository.createSession("+15551234567") }
+  }
+
+  @Test
+  fun `PhoneNumberSubmitted with a reused session that is gone starts a new session instead of resetting`() = runTest {
+    val oldSession = createSessionMetadata(id = "old-session")
+    val newSession = createSessionMetadata(id = "new-session")
+    coEvery { mockRepository.requestVerificationCode("old-session", any(), any()) } returns
+      RequestResult.NonSuccess(RequestVerificationCodeError.SessionNotFound("Session expired"))
+    coEvery { mockRepository.createSession(any()) } returns RequestResult.Success(newSession)
+    coEvery { mockRepository.requestVerificationCode("new-session", any(), any()) } returns RequestResult.Success(newSession)
+
+    viewModel.applyEvent(reusedSessionState(oldSession), PhoneNumberEntryScreenEvents.PhoneNumberConfirmed, parentEventEmitter, stateEmitter)
+
+    assertStartedOverWithANewSession(newSession)
+  }
+
+  @Test
+  fun `PhoneNumberSubmitted with a reused session that is no longer valid starts a new session instead of resetting`() = runTest {
+    val oldSession = createSessionMetadata(id = "old-session")
+    val newSession = createSessionMetadata(id = "new-session")
+    coEvery { mockRepository.requestVerificationCode("old-session", any(), any()) } returns
+      RequestResult.NonSuccess(RequestVerificationCodeError.InvalidSessionId("Invalid session"))
+    coEvery { mockRepository.createSession(any()) } returns RequestResult.Success(newSession)
+    coEvery { mockRepository.requestVerificationCode("new-session", any(), any()) } returns RequestResult.Success(newSession)
+
+    viewModel.applyEvent(reusedSessionState(oldSession), PhoneNumberEntryScreenEvents.PhoneNumberConfirmed, parentEventEmitter, stateEmitter)
+
+    assertStartedOverWithANewSession(newSession)
+  }
+
+  @Test
+  fun `PhoneNumberSubmitted with a reused session that is gone at the push challenge starts a new session`() = runTest {
+    val oldSession = createSessionMetadata(id = "old-session", requestedInformation = listOf("pushChallenge"))
+    val newSession = createSessionMetadata(id = "new-session")
+    coEvery { mockRepository.awaitPushChallengeToken() } returns "test-push-challenge-token"
+    coEvery { mockRepository.submitPushChallengeToken("old-session", any()) } returns
+      RequestResult.NonSuccess(UpdateSessionError.SessionNotFound("Session expired"))
+    coEvery { mockRepository.createSession(any()) } returns RequestResult.Success(newSession)
+    coEvery { mockRepository.requestVerificationCode("new-session", any(), any()) } returns RequestResult.Success(newSession)
+
+    viewModel.applyEvent(reusedSessionState(oldSession), PhoneNumberEntryScreenEvents.PhoneNumberConfirmed, parentEventEmitter, stateEmitter)
+
+    assertStartedOverWithANewSession(newSession)
+  }
+
+  @Test
+  fun `PhoneNumberSubmitted gives up after one new session and resets like upstream`() = runTest {
+    // 新会话不算「复用」：它也说没了就照上游 ResetState，不来回重试。
+    val oldSession = createSessionMetadata(id = "old-session")
+    val newSession = createSessionMetadata(id = "new-session")
+    coEvery { mockRepository.requestVerificationCode(any(), any(), any()) } returns
+      RequestResult.NonSuccess(RequestVerificationCodeError.SessionNotFound("Session expired"))
+    coEvery { mockRepository.createSession(any()) } returns RequestResult.Success(newSession)
+
+    viewModel.applyEvent(reusedSessionState(oldSession), PhoneNumberEntryScreenEvents.PhoneNumberConfirmed, parentEventEmitter, stateEmitter)
+
+    assertThat(emittedEvents).hasSize(2)
+    assertThat(emittedEvents[0]).isEqualTo(RegistrationFlowEvent.SessionExpired)
+    assertThat(emittedEvents[1]).isEqualTo(RegistrationFlowEvent.ResetState)
+    coVerify(exactly = 1) { mockRepository.createSession(any()) }
+  }
+
   @Test
   fun `PhoneNumberSubmitted skips the SMS request when one was recently sent for the same number`() = runTest {
     val existingSession = createSessionMetadata()
@@ -1606,6 +1690,61 @@ class PhoneNumberEntryViewModelTest {
 
     assertThat(emittedStates).hasSize(1)
     assertThat(emittedStates.last().dialogs.networkError).isTrue()
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1210）：香港服务端的新会话先要人机验证（`requestedInformation: ["captcha"]`，没有 GMS 过不了推送挑战），
+   * 人机验证之后再请求验证码才是主路。440 要和直接请求那条一样：非 +86 给行内提示，不弹「几小时后重试」。
+   */
+  @Test
+  fun `CaptchaCompleted with a non +86 number and a third party service error shows the region inline error`() = runTest {
+    val sessionMetadata = createSessionMetadata()
+    val initialState = PhoneNumberEntryState(
+      countryCode = "1",
+      nationalNumber = "5551234567",
+      sessionMetadata = sessionMetadata
+    )
+
+    coEvery { mockRepository.submitCaptchaToken(any(), any()) } returns
+      RequestResult.Success(sessionMetadata)
+    coEvery { mockRepository.requestVerificationCode(any(), any(), any()) } returns
+      RequestResult.NonSuccess(
+        RequestVerificationCodeError.ThirdPartyServiceError(
+          ThirdPartyServiceErrorResponse("providerUnavailable", false)
+        )
+      )
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.CaptchaCompleted("captcha-token"), parentEventEmitter, stateEmitter)
+
+    assertThat(emittedStates.last().isRegionUnavailable).isTrue()
+    assertThat(emittedStates.last().dialogs.unableToSendSms).isFalse()
+    // 人机验证页已经退回号码页；不再往别处跳，行内提示才看得见
+    assertThat(emittedEvents).isEmpty()
+  }
+
+  /** Tellomi（#1210）：+86 人机验证之后遇到 440 仍按上游弹框，与直接请求那条（`PhoneNumberSubmitted handles third party service error`）同一口径。 */
+  @Test
+  fun `CaptchaCompleted with a +86 number and a third party service error still shows the unable to send sms dialog`() = runTest {
+    val sessionMetadata = createSessionMetadata()
+    val initialState = PhoneNumberEntryState(
+      countryCode = "86",
+      nationalNumber = "13800000061",
+      sessionMetadata = sessionMetadata
+    )
+
+    coEvery { mockRepository.submitCaptchaToken(any(), any()) } returns
+      RequestResult.Success(sessionMetadata)
+    coEvery { mockRepository.requestVerificationCode(any(), any(), any()) } returns
+      RequestResult.NonSuccess(
+        RequestVerificationCodeError.ThirdPartyServiceError(
+          ThirdPartyServiceErrorResponse("Provider error", false)
+        )
+      )
+
+    viewModel.applyEvent(initialState, PhoneNumberEntryScreenEvents.CaptchaCompleted("captcha-token"), parentEventEmitter, stateEmitter)
+
+    assertThat(emittedStates.last().dialogs.unableToSendSms).isTrue()
+    assertThat(emittedStates.last().isRegionUnavailable).isFalse()
   }
 
   // ==================== ParentStateChanged Tests ====================
