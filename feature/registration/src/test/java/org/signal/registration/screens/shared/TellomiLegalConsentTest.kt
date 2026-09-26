@@ -11,6 +11,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -243,6 +244,38 @@ class TellomiLegalConsentTest {
       }
     }
     return events
+  }
+
+  /** 号码页右上角菜单的「关联设备」也要连服务端（要二维码），同意跨境之前网络是关着的：先问，同意了再往下走（A3b 审查）。 */
+  @Test
+  fun `linking a device from the phone number menu asks for cross-border consent first`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    val events = setPhoneNumberScreen(PhoneNumberEntryState(isLinkAndSyncAvailable = true))
+
+    composeTestRule.onNodeWithContentDescription(context.getString(R.string.RegistrationActivity_open_menu)).performClick()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_link_device)).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    assert(events.isEmpty()) { "Linking must wait for the cross-border consent, but got $events" }
+
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
+
+    assert(TellomiCrossBorderConsent.hasAgreed(context))
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    assert(events == listOf(PhoneNumberEntryScreenEvents.LinkDevice)) { "Agreeing should go on to linking, but got $events" }
+  }
+
+  @Test
+  fun `linking a device from the phone number menu goes straight on once cross-border is agreed`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    TellomiCrossBorderConsent.recordAgreement(context)
+    val events = setPhoneNumberScreen(PhoneNumberEntryState(isLinkAndSyncAvailable = true))
+
+    composeTestRule.onNodeWithContentDescription(context.getString(R.string.RegistrationActivity_open_menu)).performClick()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_link_device)).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    assert(events == listOf(PhoneNumberEntryScreenEvents.LinkDevice)) { "Expected LinkDevice, but got $events" }
   }
 
   private fun setPhoneNumberScreen(state: PhoneNumberEntryState): List<PhoneNumberEntryScreenEvents> {
