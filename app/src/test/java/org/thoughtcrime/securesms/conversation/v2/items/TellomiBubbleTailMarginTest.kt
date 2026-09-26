@@ -37,7 +37,7 @@ import kotlin.math.roundToInt
  * （规范 #1204 第 2 节最后一条，owner 2026-09-26 定照规范加）。
  *
  * 我发的：气泡离屏幕边 16 + 6；对方发的：单聊离屏幕边 16 + 6，群里离头像 8 + 6。
- * 两套渲染（V2、旧版 ConversationItem）各排一次版，量气泡的实际位置。
+ * 两套渲染（V2、旧版 ConversationItem）各排一次版，量气泡的实际位置；「正在输入」气泡也带尾巴（#93），一样量。
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(application = Application::class, qualifiers = "w400dp-h800dp")
@@ -126,6 +126,22 @@ class TellomiBubbleTailMarginTest {
       val starredSource = item.findViewById<View>(R.id.conversation_item_starred_source_stub).layoutParams as ViewGroup.MarginLayoutParams
       assertThat(starredSource.marginStart, name = name(layout) + " starred source").isEqualTo(bubble.marginStart)
     }
+  }
+
+  @Test
+  fun `typing - their typing bubble starts 16 + 6 from the screen edge in a 1-1 chat, and 8 + 6 after the avatar in a group`() {
+    val root = inflate(R.layout.conversation_typing_view)
+    val card = root.findViewById<View>(R.id.indicator_card)
+    val avatar = root.findViewById<View>(R.id.typing_avatar_1)
+
+    // setTypists：单聊不露头像，群里露第一个打字的人的头像
+    avatar.visibility = View.GONE
+    layOut(root)
+    assertThat(card.left, name = "typing bubble in a 1:1 chat").isEqualTo(dp(16 + 6))
+
+    avatar.visibility = View.VISIBLE
+    layOut(root)
+    assertThat(card.left - avatar.right, name = "typing bubble in a group").isEqualTo(dp(8 + 6))
   }
 
   private fun dp(value: Int): Int = (value * density).roundToInt()
