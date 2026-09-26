@@ -151,6 +151,7 @@ import org.thoughtcrime.securesms.main.MainToolbarMode;
 import org.thoughtcrime.securesms.main.MainToolbarViewModel;
 import org.thoughtcrime.securesms.main.Material3OnScrollHelperBinder;
 import org.thoughtcrime.securesms.megaphone.Megaphones;
+import org.thoughtcrime.securesms.megaphone.TellomiOnboarding;
 import org.thoughtcrime.securesms.notifications.MarkReadReceiver;
 import org.thoughtcrime.securesms.profiles.manage.UsernameEditFragment;
 import org.thoughtcrime.securesms.ratelimit.RecaptchaProofBottomSheetFragment;
@@ -1070,6 +1071,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
         list.scrollToPosition(0);
       }
       onPostSubmitList(conversations.size());
+      TellomiOnboarding.onConversationListChanged(conversations);
     });
   }
 
@@ -1362,6 +1364,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
 
       SignalStore.onboarding().setShowNewGroup(true);
       SignalStore.onboarding().setShowInviteFriends(true);
+      TellomiOnboarding.onConversationListEmpty();
     }
   }
 

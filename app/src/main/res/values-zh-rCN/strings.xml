@@ -1796,6 +1796,9 @@
     <!-- Text in a card view to invite friends as part of the onboarding megaphone -->
     <string name="Megaphones_invite_friends">邀请好友</string>
     <string name="Megaphones_chat_colors">聊天颜色</string>
+    <!-- Tellomi（#1218） -->
+    <string name="TellomiOnboarding__search_by_username">搜索用户名</string>
+    <string name="TellomiOnboarding__my_qr_code">我的二维码</string>
     <string name="Megaphones_add_a_profile_photo">添加个人资料照片</string>
 
     <!-- Message body of megaphone telling users that a device was linked to their account. %1$s is the time it was linked -->
