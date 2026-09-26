@@ -9,6 +9,7 @@ import android.app.Application
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -45,6 +46,27 @@ class TellomiRegistrationTest {
   fun hoursDropSecondsAndSubSecondRoundsUpToOneSecond() {
     assertThat(TellomiRegistration.retryAfterText(2.hours + 5.minutes + 7.seconds, Locale.US)).isEqualTo("2 hours, 5 minutes")
     assertThat(TellomiRegistration.retryAfterText(300.milliseconds, Locale.US)).isEqualTo("1 second")
+  }
+
+  /** Tellomi（tellomi/tellomi#1214）：从粘贴进来的整条短信里找验证码。 */
+  @Test
+  fun verificationCodeInPastedText() {
+    assertThat(TellomiRegistration.verificationCodeIn("123456")).isEqualTo("123456")
+    assertThat(TellomiRegistration.verificationCodeIn("123-456")).isEqualTo("123456")
+    assertThat(TellomiRegistration.verificationCodeIn("123 456")).isEqualTo("123456")
+    assertThat(TellomiRegistration.verificationCodeIn("【Tellomi】您的验证码是 482913，5 分钟内有效，请勿泄露。")).isEqualTo("482913")
+    assertThat(TellomiRegistration.verificationCodeIn("Your Tellomi code: 482-913")).isEqualTo("482913")
+    // 手机号那样的长串、7 位、5 位都不是验证码。
+    assertThat(TellomiRegistration.verificationCodeIn("+86 138 0013 8000")).isNull()
+    assertThat(TellomiRegistration.verificationCodeIn("13800138000")).isNull()
+    assertThat(TellomiRegistration.verificationCodeIn("1234567")).isNull()
+    assertThat(TellomiRegistration.verificationCodeIn("12-345")).isNull()
+  }
+
+  @Test
+  fun hongKongDeploymentAllowsThreeCodesPerSession() {
+    // deploy/hk/enable-aliyun-sms.sh：send-sms-verification-code.delays: [30s, 1m, 5m]
+    assertThat(TellomiRegistration.SMS_VERIFICATION_CODES_PER_SESSION).isEqualTo(3)
   }
 
   @Test

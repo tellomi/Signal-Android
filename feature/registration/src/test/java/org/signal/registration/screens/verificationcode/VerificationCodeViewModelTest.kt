@@ -7,7 +7,9 @@ package org.signal.registration.screens.verificationcode
 
 import assertk.assertThat
 import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
@@ -255,6 +257,45 @@ class VerificationCodeViewModelTest {
     coVerify { mockRepository.submitVerificationCode(sessionMetadata.id, "123456") }
     assertThat(emittedStates.first().digits).isEqualTo(listOf("1", "2", "3", "4", "5", "6"))
     assertThat(emittedStates.first().isSubmittingCode).isTrue()
+  }
+
+  @Test
+  fun `DigitChanged with a pasted SMS that contains other digits extracts the code`() = runTest {
+    // Tellomi（tellomi/tellomi#1214）：「5 分钟内有效」里的 5 让数字凑成 7 位，上游会把整串忽略。
+    val sessionMetadata = createSessionMetadata()
+    val initialState = VerificationCodeState(
+      sessionMetadata = sessionMetadata,
+      e164 = "+8613800138000"
+    )
+
+    coEvery { mockRepository.submitVerificationCode(any(), any()) } returns
+      RequestResult.NonSuccess(
+        SubmitVerificationCodeError.InvalidSessionIdOrVerificationCode("Wrong code")
+      )
+
+    viewModel.applyEvent(
+      initialState,
+      VerificationCodeScreenEvents.DigitChanged(0, "【Tellomi】您的验证码是 482913，5 分钟内有效。"),
+      stateEmitter
+    )
+
+    coVerify { mockRepository.submitVerificationCode(sessionMetadata.id, "482913") }
+    assertThat(emittedStates.first().digits).isEqualTo(listOf("4", "8", "2", "9", "1", "3"))
+  }
+
+  @Test
+  fun `typing after an incorrect code hides the inline error`() = runTest {
+    // Tellomi（tellomi/tellomi#1214）：错码提示是行内的，不再是会自己消失的 Snackbar；重新输入就收起。
+    val initialState = VerificationCodeState(
+      sessionMetadata = createSessionMetadata(),
+      e164 = "+8613800138000",
+      snackbars = VerificationCodeState.Snackbars(incorrectVerificationCode = true)
+    )
+
+    viewModel.applyEvent(initialState, VerificationCodeScreenEvents.DigitChanged(0, "4"), stateEmitter)
+
+    assertThat(emittedStates.last().snackbars.incorrectVerificationCode).isFalse()
+    assertThat(emittedStates.last().digits.first()).isEqualTo("4")
   }
 
   @Test
@@ -672,7 +713,7 @@ class VerificationCodeViewModelTest {
   }
 
   @Test
-  fun `CodeEntered with session not found navigates back to phone number entry`() = runTest {
+  fun `CodeEntered with session not found says it expired, then navigates back to phone number entry`() = runTest {
     val sessionMetadata = createSessionMetadata()
     val initialState = VerificationCodeState(
       sessionMetadata = sessionMetadata,
@@ -686,8 +727,15 @@ class VerificationCodeViewModelTest {
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
 
+    // Tellomi（tellomi/tellomi#1214）：上游不声不响地退回；先弹框说「验证已过期」，关掉才退回。
+    assertThat(emittedEvents).isEmpty()
+    assertThat(emittedStates.last().dialogs.sessionExpired).isTrue()
+
+    viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
+
     assertThat(emittedEvents).hasSize(1)
     assertThat(emittedEvents.first()).isEqualTo(RegistrationFlowEvent.NavigateBack)
+    assertThat(emittedStates.last().dialogs.sessionExpired).isFalse()
   }
 
   @Test
@@ -720,7 +768,7 @@ class VerificationCodeViewModelTest {
   }
 
   @Test
-  fun `CodeEntered with no code requested and not verified navigates back`() = runTest {
+  fun `CodeEntered with no code requested and not verified says the code is no longer valid, then navigates back`() = runTest {
     val unverifiedSession = createSessionMetadata(verified = false)
     val initialState = VerificationCodeState(
       sessionMetadata = createSessionMetadata(),
@@ -733,6 +781,12 @@ class VerificationCodeViewModelTest {
       )
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.CodeEntered("123456"), stateEmitter)
+
+    // Tellomi（tellomi/tellomi#1214）：同上，先说清楚再退回。
+    assertThat(emittedEvents).isEmpty()
+    assertThat(emittedStates.last().dialogs.codeNoLongerValid).isTrue()
+
+    viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
 
     assertThat(emittedEvents).hasSize(1)
     assertThat(emittedEvents.first()).isEqualTo(RegistrationFlowEvent.NavigateBack)
@@ -1184,7 +1238,7 @@ class VerificationCodeViewModelTest {
   }
 
   @Test
-  fun `ResendSms with InvalidSessionId navigates back to phone number entry`() = runTest {
+  fun `ResendSms with InvalidSessionId explains the expired session before navigating back`() = runTest {
     val sessionMetadata = createSessionMetadata()
     val initialState = VerificationCodeState(sessionMetadata = sessionMetadata)
 
@@ -1195,12 +1249,18 @@ class VerificationCodeViewModelTest {
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.ResendSms, stateEmitter)
 
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b8）：先说清楚，用户关掉对话框才退回手机号页。
+    assertThat(emittedEvents).isEmpty()
+    assertThat(emittedStates.last().dialogs.sessionExpired).isTrue()
+
+    viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
+
     assertThat(emittedEvents).hasSize(1)
     assertThat(emittedEvents.first()).isEqualTo(RegistrationFlowEvent.NavigateBack)
   }
 
   @Test
-  fun `ResendSms with SessionNotFound navigates back to phone number entry`() = runTest {
+  fun `ResendSms with SessionNotFound explains the expired session before navigating back`() = runTest {
     val sessionMetadata = createSessionMetadata()
     val initialState = VerificationCodeState(sessionMetadata = sessionMetadata)
 
@@ -1210,6 +1270,12 @@ class VerificationCodeViewModelTest {
       )
 
     viewModel.applyEvent(initialState, VerificationCodeScreenEvents.ResendSms, stateEmitter)
+
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b8）：先说清楚，用户关掉对话框才退回手机号页。
+    assertThat(emittedEvents).isEmpty()
+    assertThat(emittedStates.last().dialogs.sessionExpired).isTrue()
+
+    viewModel.applyEvent(emittedStates.last(), VerificationCodeScreenEvents.SessionExpiredDialogDismissed, stateEmitter)
 
     assertThat(emittedEvents).hasSize(1)
     assertThat(emittedEvents.first()).isEqualTo(RegistrationFlowEvent.NavigateBack)
@@ -1370,6 +1436,36 @@ class VerificationCodeViewModelTest {
     vm.applyEvent(VerificationCodeState(), VerificationCodeScreenEvents.Foregrounded, stateEmitter)
 
     assertThat(emittedEvents).hasSize(0)
+  }
+
+  // Tellomi（tellomi/tellomi#1214，ADR-0051 §二「App 回前台重算」，taishi 审查 b8）
+
+  @Test
+  fun `Foregrounded recomputes the resend countdown from the recorded deadline`() = runTest {
+    val now = 100.minutes.inWholeMilliseconds
+    coEvery { mockRepository.getInProgressRegistrationDataLastUpdated() } returns now - 1.minutes.inWholeMilliseconds
+    parentState.value = parentState.value.copy(lastSmsVerificationCodeRequest = VerificationCodeRequest("+15551234567", now + 10.seconds.inWholeMilliseconds))
+
+    val vm = VerificationCodeViewModel(mockRepository, parentState, parentEventEmitter, clock = { now })
+    // App 在后台被冻结期间界面没往下数：还显示 50 秒，按截止时刻其实只剩 10 秒。
+    val frozen = VerificationCodeState(rateLimits = SmsAndCallRateLimits(smsResendTimeRemaining = 50.seconds, callRequestTimeRemaining = null))
+    vm.applyEvent(frozen, VerificationCodeScreenEvents.Foregrounded, stateEmitter)
+
+    assertThat(emittedStates.last().rateLimits.smsResendTimeRemaining).isEqualTo(10.seconds)
+    assertThat(emittedStates.last().rateLimits.callRequestTimeRemaining).isNull()
+  }
+
+  @Test
+  fun `Foregrounded leaves a countdown without a recorded deadline alone`() = runTest {
+    val now = 100.minutes.inWholeMilliseconds
+    coEvery { mockRepository.getInProgressRegistrationDataLastUpdated() } returns now - 1.minutes.inWholeMilliseconds
+
+    val vm = VerificationCodeViewModel(mockRepository, parentState, parentEventEmitter, clock = { now })
+    val frozen = VerificationCodeState(rateLimits = SmsAndCallRateLimits(smsResendTimeRemaining = 50.seconds, callRequestTimeRemaining = 0.seconds))
+    vm.applyEvent(frozen, VerificationCodeScreenEvents.Foregrounded, stateEmitter)
+
+    assertThat(emittedStates.last().rateLimits.smsResendTimeRemaining).isEqualTo(50.seconds)
+    assertThat(emittedStates.last().rateLimits.callRequestTimeRemaining).isEqualTo(0.seconds)
   }
 
   @Test

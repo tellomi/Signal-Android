@@ -62,7 +62,11 @@ data class VerificationCodeState(
     val unableToSendSms: Boolean = false,
     val couldNotRequestCodeWithSelectedTransport: Boolean = false,
     /** Nonnull when the delivery provider rejected the request. Carries the failed transport for accurate wording. */
-    val providerRejectedTransport: VerificationCodeTransport? = null
+    val providerRejectedTransport: VerificationCodeTransport? = null,
+    /** Tellomi（tellomi/tellomi#1214）：会话过期（404）。上游不声不响地退回手机号页；先说清楚，关掉再退回。 */
+    val sessionExpired: Boolean = false,
+    /** Tellomi（tellomi/tellomi#1214）：这个会话里已经不能再提交验证码（没发过码，或者已经失效）。同上。 */
+    val codeNoLongerValid: Boolean = false
   )
 
   /**
@@ -91,9 +95,11 @@ data class VerificationCodeState(
 
   /**
    * Returns true if the "Having Trouble" button should be shown.
-   * Matches the old behavior of showing after 3 incorrect code attempts.
+   *
+   * Tellomi（tellomi/tellomi#1214，ADR-0051 §二）：一进页面就显示。上游要连错 3 次才出现，可收不到短信的人没有码可交，
+   * 得先用假码烧掉每个会话 5 次里的 3 次才看得到这些出路（taishi 审查 b8）。
    */
-  fun shouldShowHavingTrouble(): Boolean = incorrectCodeAttempts >= 3
+  fun shouldShowHavingTrouble(): Boolean = true
 }
 
 /**
