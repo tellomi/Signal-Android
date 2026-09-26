@@ -303,6 +303,7 @@ class AddUsernameViewModel(
       UsernameUtil.InvalidReason.TOO_SHORT -> AddUsernameState.ValidationError.TOO_SHORT
       UsernameUtil.InvalidReason.TOO_LONG -> AddUsernameState.ValidationError.TOO_LONG
       UsernameUtil.InvalidReason.STARTS_WITH_NUMBER -> AddUsernameState.ValidationError.CANNOT_START_WITH_DIGIT
+      UsernameUtil.InvalidReason.STARTS_WITH_UNDERSCORE -> AddUsernameState.ValidationError.CANNOT_START_WITH_UNDERSCORE
       else -> AddUsernameState.ValidationError.INVALID_CHARACTERS
     }
   }

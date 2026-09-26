@@ -3219,6 +3219,8 @@
     <string name="UsernameEditFragment_this_username_is_taken">This username is taken.</string>
     <string name="UsernameEditFragment_usernames_can_only_include">Usernames can only include a–Z, 0–9, and underscores.</string>
     <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">Usernames cannot begin with a number.</string>
+    <!-- Tellomi（ADR-0066 §六）：用户名必须字母开头。libsignal 放行 `_` 开头，客户端收紧 -->
+    <string name="UsernameEditFragment__tellomi_usernames_must_start_with_a_letter">Usernames must begin with a letter.</string>
     <string name="UsernameEditFragment_username_is_invalid">Username is invalid.</string>
     <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">Usernames must be between %1$d and %2$d characters.</string>
     <!-- Explanation about what usernames provide -->
