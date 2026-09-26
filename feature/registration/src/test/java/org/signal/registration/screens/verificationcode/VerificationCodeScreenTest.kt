@@ -296,7 +296,8 @@ class VerificationCodeScreenTest {
       }
     }
 
-    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON).performScrollTo().assertIsDisplayed().performClick()
+    // 页脚不在滚动区域里（ADR-0051 §二 F 的左右排），不用先滚
+    composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON).assertIsDisplayed().performClick()
 
     assert(VerificationCodeScreenEvents.HavingTrouble in events) { "Expected HavingTrouble but got $events" }
   }
@@ -355,5 +356,30 @@ class VerificationCodeScreenTest {
     composeTestRule.onNodeWithText("OK").performClick()
 
     assertThat(events).contains(VerificationCodeScreenEvents.SessionExpiredDialogDismissed)
+  }
+
+  /**
+   * Tellomi（taishi 审查 b8 不阻塞 4）：ADR-0051 §二 F（`docs/adr/0051-sign-in-ux-redesign.md:108`）——
+   * 「收不到验证码？」在左、倒计时 / 「重新发送」在右，同一行放在页脚，都在验证码格子下面。
+   */
+  @Config(qualifiers = "w411dp-h891dp")
+  @Test
+  fun `didn't get the code sits on the left of resend in one footer row`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        VerificationCodeScreen(
+          state = VerificationCodeState(e164 = "+8613800138000", incorrectCodeAttempts = 0),
+          onEvent = {}
+        )
+      }
+    }
+
+    val trouble = composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON).fetchSemanticsNode().boundsInRoot
+    val resend = composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_RESEND_SMS_BUTTON).fetchSemanticsNode().boundsInRoot
+    val lastDigit = composeTestRule.onNodeWithTag(TestTags.VERIFICATION_CODE_DIGIT_5).fetchSemanticsNode().boundsInRoot
+
+    assert(trouble.right <= resend.left) { "Didn't get the code should be left of resend: $trouble vs $resend" }
+    assert(kotlin.math.abs(trouble.center.y - resend.center.y) < 1f) { "Both should be on one row: $trouble vs $resend" }
+    assert(trouble.top >= lastDigit.bottom) { "The row should be below the code: $trouble vs digit $lastDigit" }
   }
 }

@@ -269,26 +269,19 @@ private fun OnePaneLayout(
           state = state,
           emitter = onEvent
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        if (state.shouldShowHavingTrouble()) {
-          TroubleButton(onEvent)
-        }
       }
     },
     footer = {
       RegistrationScaffold.FooterSurface(
         isElevated = scrollState.canScrollForward
       ) {
-        Row(
+        CodeFooterRow(
+          state = state,
+          onEvent = onEvent,
           modifier = Modifier
             .fillMaxWidth()
-            .padding(params.footerPadding),
-          horizontalArrangement = Arrangement.SpaceAround
-        ) {
-          AlternateCodeOptions(state, onEvent)
-        }
+            .padding(params.footerPadding)
+        )
       }
     }
   )
@@ -333,29 +326,45 @@ private fun TwoPaneLayout(
           state = state,
           emitter = onEvent
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        if (state.shouldShowHavingTrouble()) {
-          TroubleButton(onEvent)
-        }
       }
     },
     footer = {
       RegistrationScaffold.FooterSurface(
         isElevated = firstPaneScrollState.canScrollForward || secondPaneScrollState.canScrollForward
       ) {
-        Row(
+        CodeFooterRow(
+          state = state,
+          onEvent = onEvent,
           modifier = Modifier
             .fillMaxWidth()
-            .padding(params.footerPadding),
-          horizontalArrangement = Arrangement.End
-        ) {
-          AlternateCodeOptions(state, onEvent)
-        }
+            .padding(params.footerPadding)
+        )
       }
     }
   )
+}
+
+/**
+ * Tellomi（tellomi/tellomi#1214，taishi 审查 b8 不阻塞 4）：ADR-0051 §二 F（`docs/adr/0051-sign-in-ux-redesign.md:108`）——
+ * 「收不到验证码？」在左、倒计时 / 「重新发送」在右，同一行放在页脚。原来「收不到验证码？」居中放在验证码下面、重发单独占页脚。
+ * 「收不到验证码？」不显示时（上游只在输错几次后才给），重发照旧靠右。
+ */
+@Composable
+private fun CodeFooterRow(
+  state: VerificationCodeState,
+  onEvent: (VerificationCodeScreenEvents) -> Unit,
+  modifier: Modifier = Modifier
+) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    if (state.shouldShowHavingTrouble()) {
+      TroubleButton(onEvent)
+    }
+    Spacer(modifier = Modifier.weight(1f))
+    AlternateCodeOptions(state, onEvent)
+  }
 }
 
 @Composable
@@ -363,8 +372,6 @@ private fun TroubleButton(onEvent: (VerificationCodeScreenEvents) -> Unit) {
   TextButton(
     onClick = { onEvent(VerificationCodeScreenEvents.HavingTrouble) },
     modifier = Modifier
-      .fillMaxWidth()
-      .wrapContentWidth(Alignment.CenterHorizontally)
       .testTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON)
   ) {
     Text(
