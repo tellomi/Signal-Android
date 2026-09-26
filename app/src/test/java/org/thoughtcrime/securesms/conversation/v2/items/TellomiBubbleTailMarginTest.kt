@@ -52,6 +52,9 @@ class TellomiBubbleTailMarginTest {
   @Before
   fun setUp() {
     // 两套布局里都有 EmojiTextView，构造时就要表情库：单测里没人去装，EmojiSource.latest 会一直等。按包里自带的装一份
+    // EmojiDependencies.init 先到先得：同一个测试 JVM 里前面的用例（MockAppDependenciesRule → AppDependencies.init）可能已经
+    // 装上了 App 自己的 EmojiDependenciesProvider，下面这次 init 就不算数，它去读 SignalStore.internal.forceBuiltInEmoji——一起钉成 true
+    every { signalStore.internal.forceBuiltInEmoji } returns true
     EmojiDependencies.init(
       ApplicationProvider.getApplicationContext(),
       mockk(relaxed = true) { every { provideForceBuiltInEmoji() } returns true }
