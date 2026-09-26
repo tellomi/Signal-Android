@@ -13,6 +13,7 @@ import org.signal.core.models.ServiceId.ACI
 import org.signal.core.models.ServiceId.PNI
 import org.signal.core.ui.fonts.SignalSymbols
 import org.signal.core.util.BidiUtil
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.UsernameUtil.isValidUsernameForSearch
 import org.signal.core.util.Util
 import org.signal.core.util.UuidUtil
@@ -582,7 +583,8 @@ class Recipient(
   fun getDisplayName(context: Context): String {
     var name = getNameFromLocalData(context)
     if (Util.isEmpty(name)) {
-      name = usernameValue
+      // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+      name = usernameValue?.let { TellomiUsernames.toDisplayUsername(it) }
     }
     if (Util.isEmpty(name)) {
       name = getUnknownDisplayName(context)
@@ -666,7 +668,7 @@ class Recipient(
       systemProfileName.toString(),
       profileName.givenName,
       profileName.toString(),
-      username.orElse(null),
+      username.map { TellomiUsernames.toDisplayUsername(it) }.orElse(null), // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
       getDisplayName(context)
     ).firstOrNull { it.isNotNullOrBlank() }
 

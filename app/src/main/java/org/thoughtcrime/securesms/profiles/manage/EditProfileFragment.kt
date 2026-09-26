@@ -24,6 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.signal.core.models.media.Media
 import org.signal.core.ui.logging.LoggingFragment
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.getParcelableCompat
 import org.signal.emoji.EmojiUtil
@@ -273,7 +274,8 @@ class EditProfileFragment : LoggingFragment() {
     if (username.isNullOrEmpty()) {
       binding.manageProfileUsername.setText(R.string.ManageProfileFragment_username)
     } else {
-      binding.manageProfileUsername.text = username
+      // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+      binding.manageProfileUsername.text = TellomiUsernames.toDisplayUsername(username)
     }
 
     if (SignalStore.account.usernameSyncState == AccountValues.UsernameSyncState.USERNAME_AND_LINK_CORRUPTED) {
@@ -365,7 +367,7 @@ class EditProfileFragment : LoggingFragment() {
   private fun displayConfirmUsernameDeletionDialog() {
     MaterialAlertDialogBuilder(requireContext())
       .setTitle(R.string.ManageProfileFragment__delete_username_dialog_title)
-      .setMessage(requireContext().getString(R.string.ManageProfileFragment__delete_username_dialog_body, SignalStore.account.username))
+      .setMessage(requireContext().getString(R.string.ManageProfileFragment__delete_username_dialog_body, SignalStore.account.username?.let { TellomiUsernames.toDisplayUsername(it) })) // Tellomi（#1106 第三刀）
       .setPositiveButton(R.string.delete) { _, _ -> onUserConfirmedUsernameDeletion() }
       .setNegativeButton(android.R.string.cancel) { d: DialogInterface?, w: Int -> }
       .show()
