@@ -33,7 +33,7 @@
     <string name="delete">删除</string>
     <string name="please_wait">请稍候…</string>
     <string name="save">保存</string>
-    <string name="note_to_self">备忘录</string>
+    <string name="note_to_self">我的收藏</string>
 
     <!-- Alternate label for the Signal Application in the device\'s home screen launcher, as in a weather/climate application. -->
     <string name="app_icon_label_weather">天气</string>
@@ -589,7 +589,7 @@
     <string name="ConversationFragment_you_can_swipe_to_the_left_reply">左滑任何消息可快速回复</string>
     <string name="ConversationFragment_view_once_media_is_deleted_after_sending">阅后即焚媒体在发送后被删除</string>
     <string name="ConversationFragment_you_already_viewed_this_message">您已查看该消息</string>
-    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">你可在此对话中给自己做笔记，如果您关联了其它设备，新笔记将同步到其它设备上。</string>
+    <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">把消息转发到这里，或直接发给自己，随时查看。如果你的账号有已关联的设备，这里的新消息会同步过去。</string>
     <!-- Text in banner to show how many people have the same name. -->
     <plurals name="ConversationFragment__d_group_members_have_the_same_name">
         <item quantity="other">%1$d 个群组成员名称相同。</item>
@@ -776,6 +776,12 @@
     <plurals name="ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations_linked_device_group">
         <item quantity="other">这些聊天中的所有消息将从您的全部设备中删除。您将仍然是未退出的群组中的成员。</item>
     </plurals>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的标题 -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_title">删除「我的收藏」？</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（没有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message">「我的收藏」里的内容会从这台设备上删除，无法恢复。</string>
+    <!-- Tellomi（#1174）：只删「我的收藏」时确认框的说明（有已关联设备） -->
+    <string name="ConversationListFragment__tellomi_delete_saved_messages_message_linked_device">「我的收藏」里的内容会从这台设备和已关联设备上删除，无法恢复。</string>
     <string name="ConversationListFragment_deleting">正在删除</string>
     <plurals name="ConversationListFragment_deleting_selected_conversations">
         <item quantity="other">正在删除选定的聊天…</item>
@@ -1722,6 +1728,15 @@
     <string name="MediaOverviewActivity_Files">文件</string>
     <string name="MediaOverviewActivity_Audio">音频</string>
     <string name="MediaOverviewActivity_All">全部</string>
+    <!-- Tellomi（#1174）：「我的收藏」顶栏下方的分类，「全部」是会话本身，其它几项打开「所有媒体」对应的页 -->
+    <string name="TellomiSavedCategories__all">全部</string>
+    <string name="TellomiSavedCategories__photos_and_videos">图片与视频</string>
+    <string name="TellomiSavedCategories__files">文件</string>
+    <string name="TellomiSavedCategories__voice">语音</string>
+    <string name="TellomiSavedCategories__links">链接</string>
+    <!-- Tellomi（#1174）：「我的收藏」的所有媒体顶栏的搜索，在当前这一页里按文字筛 -->
+    <string name="TellomiSavedCategories__search">搜索</string>
+    <string name="TellomiSavedCategories__search_hint">搜文件名、说明文字和链接</string>
     <string name="MediaOverviewActivity_Links">链接</string>
     <string name="MediaOverviewActivity_link">链接</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
@@ -4539,6 +4554,14 @@
   <!-- Removed by excludeNonTranslatables <string name="conversation_selection__menu_unstar" translatable="false">Unstar (Labs)</string> -->
     <!-- Button to forward a message to another person or group chat; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD  -->
     <string name="conversation_selection__menu_forward">转发</string>
+    <!-- Tellomi（#1174）：长按菜单「收藏」，直接存进「我的收藏」 -->
+    <string name="conversation_selection__menu_tellomi_save">收藏</string>
+    <!-- Tellomi（#1174）：收藏成功的提示，后面跟「查看」按钮 -->
+    <string name="ConversationFragment__tellomi_saved_to_saved_messages">已收藏</string>
+    <!-- Tellomi（#1174）：收藏成功提示上的按钮，打开「我的收藏」 -->
+    <string name="ConversationFragment__tellomi_view_saved_messages">查看</string>
+    <!-- Tellomi（#1174）：收藏没发出去 -->
+    <string name="ConversationFragment__tellomi_couldnt_save">收藏失败，请重试</string>
     <!-- Button to reply to a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
     <string name="conversation_selection__menu_reply">回复</string>
     <!-- Button to edit a message; Action item with hyphenation. Translation can use soft hyphen - Unicode U+00AD -->
@@ -6225,6 +6248,21 @@
     <string name="MultiselectForwardFragment__only_admins_can_send_messages_to_this_group">只有管理员可发送消息至该群组。</string>
     <!-- Error message shown when users try to choose more than 5 chats to send a message to -->
     <string name="MultiselectForwardFragment__you_cant_select_more_chats">您最多可选 5 个聊天</string>
+    <string name="TellomiForwardGrid__choose_chats">选择聊天</string>
+    <string name="TellomiForwardGrid__name_separator">、</string>
+    <string name="TellomiForwardGrid__search">搜索</string>
+    <string name="TellomiForwardGrid__share_to_other_apps">分享到其他 App</string>
+    <string name="TellomiForwardGrid__select_up_to_d_chats">最多选 %1$d 个聊天</string>
+    <string name="TellomiForwardGrid__recent">最近联系人</string>
+    <string name="TellomiForwardGrid__chats">聊天</string>
+    <string name="TellomiForwardGrid__contacts">联系人</string>
+    <string name="TellomiForwardGrid__groups">群组</string>
+    <string name="TellomiForwardGrid__no_results">没有找到“%1$s”</string>
+    <string name="TellomiForwardGrid__add_a_message">添加消息…</string>
+    <string name="TellomiForwardGrid__forwarded_to_s">已转发给 %1$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_s">已转发给 %1$s 和 %2$s</string>
+    <string name="TellomiForwardGrid__forwarded_to_s_and_d_chats">已转发给 %1$s 等 %2$d 个聊天</string>
+    <string name="TellomiForwardGrid__forwarded_to_saved_s">已转发到 %1$s</string>
 
     <!-- Media V2 -->
     <!-- Dialog message when sending a story via an add to group story button -->
