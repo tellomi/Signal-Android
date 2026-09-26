@@ -22,7 +22,16 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import org.signal.core.util.dp
 import org.thoughtcrime.securesms.R
+import org.thoughtcrime.securesms.contactshare.Contact
 import org.thoughtcrime.securesms.conversation.ConversationItemDisplayMode
+import org.thoughtcrime.securesms.database.FakeMessageRecords
+import org.thoughtcrime.securesms.database.model.MmsMessageRecord
+import org.thoughtcrime.securesms.database.model.Quote
+import org.thoughtcrime.securesms.mms.QuoteModel
+import org.thoughtcrime.securesms.mms.SlideDeck
+import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.stickers.StickerLocator
+import org.thoughtcrime.securesms.util.MediaUtil
 
 /**
  * Tellomi：气泡的小尾巴（tellomi/tellomi#1206；规范 #1204 第 1、2 节）。
@@ -111,6 +120,52 @@ class TellomiBubbleTailTest {
   @Test
   fun `the typing indicator reports its tail to the same decoration`() {
     assertThat(TellomiBubbleTail.Provider::class.java.isAssignableFrom(org.thoughtcrime.securesms.conversation.v2.ConversationTypingIndicatorAdapter.ViewHolder::class.java)).isTrue()
+  }
+
+  @Test
+  fun `voice notes, files and view-once messages without text still have a bubble, captionless photos do not`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+
+    // 都带一个附件：纯文字消息会走大号表情的判断，要装表情库（单测里没装，会一直等）。已删除 = 记着谁删的（deletedBy）
+    fun mms(contentType: String, body: String = "", hasThumbnail: Boolean = false, voiceNote: Boolean = false, viewOnce: Boolean = false, deleted: Boolean = false): MmsMessageRecord {
+      val attachment = FakeMessageRecords.buildDatabaseAttachment(contentType = contentType, hasThumbnail = hasThumbnail, voiceNote = voiceNote)
+      return FakeMessageRecords.buildMediaMmsMessageRecord(
+        body = body,
+        viewOnce = viewOnce,
+        deletedBy = if (deleted) RecipientId.from(1) else null,
+        slideDeck = SlideDeck(attachment)
+      )
+    }
+
+    // 旧版渲染里这几种都有底色：组尾要带尾巴
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.AUDIO_AAC, voiceNote = true), context), "voice note").isTrue()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms("application/pdf"), context), "file").isTrue()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, hasThumbnail = true, viewOnce = true), context), "view-once photo").isTrue()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, body = "看这个", hasThumbnail = true), context), "photo with a caption").isTrue()
+
+    // 图铺满了气泡、没有露出来的底色：不画
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms(MediaUtil.IMAGE_JPEG, hasThumbnail = true), context), "captionless photo").isFalse()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(mms("application/pdf", deleted = true), context), "deleted").isFalse()
+  }
+
+  @Test
+  fun `a sticker has no bubble unless it quotes something`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    val stickerDeck = SlideDeck(FakeMessageRecords.buildDatabaseAttachment(contentType = MediaUtil.IMAGE_WEBP, stickerLocator = StickerLocator("pack", "key", 1, null)))
+    val quote = Quote(1L, RecipientId.from(2), "原消息", false, SlideDeck(), emptyList(), QuoteModel.Type.NORMAL)
+
+    // 单独的贴纸没有底色；带引用的贴纸，引用那块有底色
+    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(body = "", slideDeck = stickerDeck), context), "sticker").isFalse()
+    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(body = "", slideDeck = stickerDeck, quote = quote), context), "sticker quoting a message").isTrue()
+  }
+
+  @Test
+  fun `a contact card without text keeps its bubble`() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    val contact = Contact(Contact.Name("小", "林", null, null, null, null), null, emptyList(), emptyList(), emptyList(), null)
+
+    // 联系人名片（没有附件、没有文字）是一张有底色的卡片
+    assertThat(TellomiBubbleTail.hasVisibleBubble(FakeMessageRecords.buildMediaMmsMessageRecord(body = "", contacts = listOf(contact)), context), "contact card").isTrue()
   }
 
   private fun outlineBounds(towardsRight: Boolean, coverRadiusDp: Float = TellomiBubbleTail.DEFAULT_COVER_RADIUS_DP): RectF {

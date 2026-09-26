@@ -5,6 +5,7 @@
 
 package org.thoughtcrime.securesms.conversation.v2.items
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -16,7 +17,13 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import org.thoughtcrime.securesms.conversation.ConversationItemDisplayMode
 import org.thoughtcrime.securesms.conversation.colors.ChatColors
+import org.thoughtcrime.securesms.database.model.MessageRecord
 import org.thoughtcrime.securesms.util.Projection
+import org.thoughtcrime.securesms.util.hasNoBubble
+import org.thoughtcrime.securesms.util.hasOnlyThumbnail
+import org.thoughtcrime.securesms.util.hasQuote
+import org.thoughtcrime.securesms.util.hasSticker
+import org.thoughtcrime.securesms.util.isCaptionlessMms
 
 /**
  * Tellomi：气泡的小尾巴（tellomi/tellomi#1206；设计规范 #1204 `docs/product/specs/bubbles-and-motion-design.md` 第 1、2 节）。
@@ -64,6 +71,18 @@ object TellomiBubbleTail {
 
   /** 尾巴默认盖住的那一角的圆角半径，dp：V2 和旧版气泡带尾巴的那一角都改成了 4。 */
   const val DEFAULT_COVER_RADIUS_DP = 4f
+
+  /**
+   * 旧版渲染（[org.thoughtcrime.securesms.conversation.ConversationItem]）：这一条有没有看得见的气泡底色，没有的不画尾巴。
+   * 贴纸（带引用的除外）、大号表情、没有底色的图，没文字、图或视频铺满了气泡的，已删除的消息，都算没有。
+   * 没文字的语音、文件、联系人名片、阅后即焚照样有底色（[hasOnlyThumbnail] 把它们排除在外）。
+   */
+  @JvmStatic
+  fun hasVisibleBubble(record: MessageRecord, context: Context): Boolean {
+    val noBubble = record.hasNoBubble(context) && !(record.hasSticker() && record.hasQuote())
+    val mediaFillsBubble = record.isCaptionlessMms(context) && record.hasOnlyThumbnail(context)
+    return !noBubble && !mediaFillsBubble && !record.isRemoteDelete
+  }
 
   /**
    * 往 [path] 里加尾巴的轮廓。[cornerX] / [bottomY] 是气泡带尾巴那一角（下角）的坐标，
