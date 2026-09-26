@@ -26,4 +26,12 @@ data class MediaPreviewState(
   /** True when the currently-visible page is a known UltraHDR image and no shared-element transition is running. */
   val shouldRenderHdr: Boolean
     get() = !isInSharedAnimation && currentMediaUri?.let { hdrCapableUris.contains(it) } == true
+
+  /** Tellomi（#1257）：查看器底部缩略条、「这张 / 全部 N 张」用的「本组」。 */
+  val currentAlbum: List<Media>
+    get() = if (allMediaInAlbumRail) {
+      mediaRecords.mapNotNull { it.toMedia() }
+    } else {
+      mediaRecords.getOrNull(position)?.attachment?.mmsId?.let { albums[it] } ?: emptyList()
+    }
 }

@@ -297,12 +297,7 @@ class MediaPreviewFragment :
     bindMenuItems(currentItem)
     tryBindMediaPreviewPlaybackControls(currentItem, currentPosition)
 
-    val albumThumbnailMedia: List<Media> = if (currentState.allMediaInAlbumRail) {
-      currentState.mediaRecords.mapNotNull { it.toMedia() }
-    } else {
-      currentState.albums[currentItem.attachment?.mmsId] ?: emptyList()
-    }
-    bindAlbumRail(albumThumbnailMedia, currentItem)
+    bindAlbumRail(currentState.currentAlbum, currentItem)
 
     crossfadeViewIn(binding.mediaPreviewDetailsContainer)
   }
