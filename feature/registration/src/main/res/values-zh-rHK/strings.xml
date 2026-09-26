@@ -763,4 +763,18 @@
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">輸入由驗證應用程式所產生的一次性驗證碼。</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">取消</string>
+
+    <!-- Tellomi：注册同意（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。与 iOS zh_HK / zh_TW 同句 -->
+    <string name="TellomiConsent__terms_link">《用戶服務協議》</string>
+    <string name="TellomiConsent__privacy_link">《隱私政策》</string>
+    <string name="TellomiConsent__row">我已年滿 18 週歲，已閱讀並同意%1$s和%2$s</string>
+    <string name="TellomiConsent__checkbox_content_description">同意用戶服務協議和隱私政策</string>
+    <string name="TellomiConsent__dialog_title">用戶協議及隱私政策</string>
+    <string name="TellomiConsent__dialog_body">請閱讀並同意%1$s和%2$s</string>
+    <string name="TellomiConsent__agree_and_continue">同意並繼續</string>
+    <string name="TellomiConsent__disagree">不同意</string>
+    <string name="TellomiConsent__first_launch_title">歡迎使用 Tellomi</string>
+    <string name="TellomiConsent__first_launch_body">我們按%1$s處理您的個人信息：註冊只需要手機號碼；訊息、資料和附件都是端到端加密的，我們讀不到。</string>
+    <string name="TellomiConsent__first_launch_agree">同意</string>
+    <string name="TellomiConsent__first_launch_disagree_hint">需要同意後才能使用 Tellomi；不同意的話，我們不會收集任何資訊。</string>
 </resources>
