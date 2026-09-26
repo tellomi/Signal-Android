@@ -360,7 +360,7 @@ android {
     buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.tellomi.app\"")
     buildConfigField("String", "SIGNAL_CDN2_URL", "\"https://cdn2.tellomi.app\"")
     buildConfigField("String", "SIGNAL_CDN3_URL", "\"https://cdn3.tellomi.app\"")
-    buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\"")
+    buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.tellomi.invalid\"")
     // 服务故障探测（ServiceOutageDetectionJob）：对这个名字做 DNS 解析，127.0.0.1 = 正常、
     // 127.0.0.2 = 挂「服务故障」横幅。上游值是 Signal 自己的 uptime 主机，那是 **Signal 的**运维信号——
     // 境外会跟着 Signal 的故障挂横幅；大陆那个名字被 DNS 污染（随机公网 IP），探测永远判不出结果，
@@ -630,7 +630,7 @@ android {
       buildConfigField("String", "SIGNAL_CDN_URL", "\"https://cdn.tellomi.app\"")
       buildConfigField("String", "SIGNAL_CDN2_URL", "\"https://cdn2.tellomi.app\"")
       buildConfigField("String", "SIGNAL_CDN3_URL", "\"https://cdn3.tellomi.app\"")
-      buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.staging.signal.org\"")
+      buildConfigField("String", "SIGNAL_CDSI_URL", "\"https://cdsi.tellomi.invalid\"")
       buildConfigField("String", "SIGNAL_SVR2_URL", "\"https://svr2.tellomi.invalid\"")
       buildConfigField("String", "SVR2_MRENCLAVE_LEGACY", "\"97f151f6ed078edbbfd72fa9cae694dcc08353f1f5e8d9ccd79a971b10ffc535\"")
       buildConfigField("String", "SVR2_MRENCLAVE", "\"3c699f4975aaa3d172c0aad042f94f031b2b03e10b9c19a45116a01693d83302\"")
