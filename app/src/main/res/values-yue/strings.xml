@@ -532,6 +532,7 @@
     <plurals name="ConversationAdapter_n_unread_messages">
         <item quantity="other">%1$d 個未讀訊息</item>
     </plurals>
+    <string name="ConversationAdapter__tellomi_new_messages">新訊息</string>
 
     <!-- ConversationFragment -->
     <!-- Toast text when contacts activity is not found -->
