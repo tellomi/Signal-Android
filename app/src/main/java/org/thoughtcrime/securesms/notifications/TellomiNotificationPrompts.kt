@@ -35,12 +35,15 @@ object TellomiNotificationPrompts {
   }
 
   /**
-   * 首屏说明页该不该弹：Android 13+、还没授通知、这台设备上还没弹过。
+   * 首屏说明页该不该弹：Android 13+、还没授通知、这台设备上还没弹过，并且跨境已经同意过。
    * 更早的系统通知默认开着，没有可问的。
+   *
+   * [crossBorderPending]：已注册、还没同意跨境的人（升级上来的），首屏先盖着跨境告知（tellomi/tellomi#1133）；
+   * 说明页等同意以后、下次回到首屏再出，不抢在告知前面。
    */
   @JvmStatic
   fun shouldShowPrimer(sdkInt: Int, isPermissionGranted: Boolean, hasSeenPrimer: Boolean, crossBorderPending: Boolean = false): Boolean {
-    return sdkInt >= RUNTIME_PERMISSION_SDK && !isPermissionGranted && !hasSeenPrimer
+    return sdkInt >= RUNTIME_PERMISSION_SDK && !isPermissionGranted && !hasSeenPrimer && !crossBorderPending
   }
 
   /**

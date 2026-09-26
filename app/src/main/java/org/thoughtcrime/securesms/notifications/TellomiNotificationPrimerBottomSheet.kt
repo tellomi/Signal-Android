@@ -40,6 +40,7 @@ import org.signal.core.ui.compose.horizontalGutters
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.net.TellomiCrossBorderNetworkGate
 
 /**
  * Tellomi（tellomi/tellomi#1218 F-01、#1112）：注册完成后**第一次进首屏**时的通知说明页。
@@ -66,7 +67,7 @@ class TellomiNotificationPrimerBottomSheet : ComposeBottomSheetDialogFragment() 
      */
     @JvmStatic
     fun showIfNeeded(activity: FragmentActivity) {
-      if (!TellomiNotificationPrompts.shouldShowPrimer(Build.VERSION.SDK_INT, isPermissionGranted(activity), SignalStore.uiHints.hasSeenTellomiNotificationPrimer())) {
+      if (!TellomiNotificationPrompts.shouldShowPrimer(Build.VERSION.SDK_INT, isPermissionGranted(activity), SignalStore.uiHints.hasSeenTellomiNotificationPrimer(), TellomiCrossBorderNetworkGate.isBlocking())) {
         return
       }
 
@@ -79,7 +80,7 @@ class TellomiNotificationPrimerBottomSheet : ComposeBottomSheetDialogFragment() 
           Log.i(TAG, "Another sheet is showing; deferring the notification primer.")
           return@post
         }
-        if (!TellomiNotificationPrompts.shouldShowPrimer(Build.VERSION.SDK_INT, isPermissionGranted(activity), SignalStore.uiHints.hasSeenTellomiNotificationPrimer())) {
+        if (!TellomiNotificationPrompts.shouldShowPrimer(Build.VERSION.SDK_INT, isPermissionGranted(activity), SignalStore.uiHints.hasSeenTellomiNotificationPrimer(), TellomiCrossBorderNetworkGate.isBlocking())) {
           return@post
         }
         TellomiNotificationPrimerBottomSheet().show(fragmentManager, FRAGMENT_TAG)

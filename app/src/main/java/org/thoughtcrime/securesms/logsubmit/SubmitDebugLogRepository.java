@@ -22,6 +22,7 @@ import org.signal.core.util.tracing.Tracer;
 import org.signal.debuglogsviewer.DebugLogsViewer;
 import org.thoughtcrime.securesms.database.LogDatabase;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
+import org.thoughtcrime.securesms.net.DeviceTransferBlockingInterceptor;
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.region.TellomiRegions;
@@ -332,6 +333,8 @@ public class SubmitDebugLogRepository {
   /**
    * 上传调试日志用的 client。自建的，不走 {@link AppDependencies#getOkHttpClient()}。
    * 放在嵌套类里：用例只碰它，不会触发外层 {@link #SECTIONS} 的静态初始化（那里要读 RemoteConfig）。
+   * Tellomi：挂上和服务端请求同一道闸 {@link DeviceTransferBlockingInterceptor}——设备转移时、以及跨境同意之前
+   * （tellomi/tellomi#1133）都不发。闸关着时它回 555，{@code uploadContent} 里 {@code isSuccessful()} 不过，上传照常以 IOException 失败。
    */
   @VisibleForTesting
   static final class UploadClient {
@@ -340,6 +343,7 @@ public class SubmitDebugLogRepository {
     static @NonNull OkHttpClient build() {
       return new OkHttpClient.Builder()
           .addInterceptor(new StandardUserAgentInterceptor())
+          .addInterceptor(DeviceTransferBlockingInterceptor.getInstance())
           .dns(SignalServiceNetworkAccess.DNS)
           .readTimeout(30, TimeUnit.SECONDS)
           .writeTimeout(30, TimeUnit.SECONDS)
