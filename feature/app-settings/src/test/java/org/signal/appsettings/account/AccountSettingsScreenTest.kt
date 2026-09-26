@@ -436,6 +436,8 @@ class AccountSettingsScreenTest {
     assertThat(events).contains(AccountSettingsEvent.RemoveTotpAppConfirmed(METHODS[0].id))
   }
 
+  // Tellomi：下面四条「了解更多」的链接跟着 main 里 scripts/brand/rename-links.py 的映射走
+  // （support.signal.org/hc/articles/<id> → tellomi.app/help/<id>，#966）；脚本不碰测试目录，这里手改。
   @Test
   fun givenTheMaxAppsDialog_whenIClickLearnMore_thenIExpectLearnMoreAndDismissEvents() {
     setContent(createState(signalLogin = signalLogin(), dialog = Dialog.MaxTotpAppsReached))
@@ -443,7 +445,7 @@ class AccountSettingsScreenTest {
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.DIALOG_MAX_TOTP_APPS_REACHED).assertIsDisplayed()
     composeTestRule.onNodeWithTag(Dialogs.TEST_TAG_ALERT_DIALOG_DISMISS_BUTTON).performClick()
 
-    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://support.signal.org/hc/articles/11228705649690"))
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11228705649690"))
     assertThat(events).contains(AccountSettingsEvent.DialogDismissed)
   }
 
@@ -454,7 +456,7 @@ class AccountSettingsScreenTest {
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.DIALOG_MAX_MFA_KEYS_REACHED).assertIsDisplayed()
     composeTestRule.onNodeWithTag(Dialogs.TEST_TAG_ALERT_DIALOG_DISMISS_BUTTON).performClick()
 
-    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://support.signal.org/hc/articles/11228705649690"))
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11228705649690"))
     assertThat(events).contains(AccountSettingsEvent.DialogDismissed)
   }
 
@@ -465,7 +467,7 @@ class AccountSettingsScreenTest {
     scrollTo(AccountSettingsTestTags.LINK_SIGNAL_LOGIN_LEARN_MORE)
     clickLink(AccountSettingsTestTags.LINK_SIGNAL_LOGIN_LEARN_MORE)
 
-    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://support.signal.org/hc/articles/11197884108826"))
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11197884108826"))
   }
 
   @Test
@@ -475,7 +477,7 @@ class AccountSettingsScreenTest {
     scrollTo(AccountSettingsTestTags.LINK_TWO_FACTOR_LEARN_MORE)
     clickLink(AccountSettingsTestTags.LINK_TWO_FACTOR_LEARN_MORE)
 
-    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://support.signal.org/hc/articles/11228705649690"))
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11228705649690"))
   }
 
   @Test

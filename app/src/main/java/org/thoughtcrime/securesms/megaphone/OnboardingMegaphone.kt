@@ -242,6 +242,7 @@ enum class OnboardingListItem(
     icon = CoreUiR.drawable.symbol_at_24,
     cardColor = R.color.onboarding_background_5
   ),
+
   // Tellomi（tellomi/tellomi#1218 F-02）：找朋友三条路——没有 CDSI，用户名、二维码、邀请是别人找到你的全部办法
   FIND_BY_USERNAME(
     title = R.string.TellomiOnboarding__search_by_username,

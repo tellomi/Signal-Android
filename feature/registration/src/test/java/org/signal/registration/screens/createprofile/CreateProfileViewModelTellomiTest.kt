@@ -20,6 +20,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.signal.core.util.billing.OneTimePurchaseApi
 import org.signal.core.util.logging.Log
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.StoredProfileData
@@ -51,7 +52,8 @@ class CreateProfileViewModelTellomiTest {
       context = mockk<Context>(relaxed = true),
       networkController = network,
       storageController = storage,
-      isLinkAndSyncAvailable = false
+      isLinkAndSyncAvailable = false,
+      signalLoginPurchaseApi = OneTimePurchaseApi.Empty
     )
     return CreateProfileViewModel(repository, parentEventEmitter = { })
   }

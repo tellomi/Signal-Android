@@ -34,9 +34,11 @@ public class ContactUtilTest_getDisplayName {
     assertEquals("Dr Paige A Hall II", ContactUtil.getDisplayName(contactWithName("Paige", "Hall", "Dr", "II", "A", null)));
   }
 
+  // Tellomi（tellomi/tellomi#1210）：ProfileName 里中日韩姓名姓在前、中间不加空格（见 ProfileNameTest 的 tellomi_ 用例），
+  // 上游这条（v8.28 新加）写的是「山田 太郎」。
   @Test
   public void givenCjkvGivenAndFamily_thenIExpectFamilyFirst() {
-    assertEquals("山田 太郎", ContactUtil.getDisplayName(contactWithName("太郎", "山田", null, null, null, null)));
+    assertEquals("山田太郎", ContactUtil.getDisplayName(contactWithName("太郎", "山田", null, null, null, null)));
   }
 
   @Test
