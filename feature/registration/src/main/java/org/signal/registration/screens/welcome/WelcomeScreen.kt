@@ -335,19 +335,14 @@ private fun LargeLayout(
 }
 
 /**
- * Tellomi（owner 2026-09-27，`docs/product/BRAND.md`「插画」）：Signal 的欢迎插画换成 unDraw「Casual Chat」
- * （`docs/brand/illustrations/casual-chat-{light,dark}.svg` 转的 VectorDrawable，深色在 drawable-night；许可见 ILLUSTRATIONS-LICENSE.md）。
+ * Tellomi（owner 2026-09-27，`docs/brand/README.md`「插画」「开屏轮播」）：上游的单张欢迎插画换成四张 Open Doodles 的轮播，
+ * 下面带一排小圆点；实现见 [TellomiWelcomeCarousel]。
  */
 @Composable
 private fun HeroImage(
   modifier: Modifier = Modifier
 ) {
-  Image(
-    painter = painterResource(R.drawable.tellomi_welcome_illustration),
-    contentDescription = null,
-    modifier = modifier.attachDebugLogHelper(),
-    contentScale = ContentScale.Fit
-  )
+  TellomiWelcomeCarousel(modifier = modifier)
 }
 
 /**
