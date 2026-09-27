@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Tellomi：Signal 的欢迎插画已删（这个老注册页不再走，USE_NEW_REGISTRATION = true），指向新的开屏插画，owner 2026-09-27 -->
+    <!-- Tellomi：Signal 的欢迎插画已删（这个老注册页不再走，USE_NEW_REGISTRATION = true），指向开屏轮播的第一张，owner 2026-09-27 -->
     <ImageView
         android:id="@+id/image"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:importantForAccessibility="no"
-        android:src="@drawable/tellomi_welcome_illustration"
+        android:src="@drawable/tellomi_welcome_swinging"
         app:layout_constraintBottom_toTopOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
