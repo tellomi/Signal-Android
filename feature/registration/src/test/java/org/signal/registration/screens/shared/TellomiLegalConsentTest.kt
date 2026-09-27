@@ -168,6 +168,20 @@ class TellomiLegalConsentTest {
     assert(events.isEmpty()) { "Reading the full notice must not send or cancel anything, but got $events" }
   }
 
+  /** Tellomi（owner 2026-09-27 下午，需求 6.6）：弹窗正文缩成一句「传到境外、是否同意」；服务器在哪、存在哪都在全文里。 */
+  @Test
+  fun `the dialog body is one sentence asking about the transfer`() {
+    val body = context.getString(R.string.TellomiCrossBorder__dialog_body)
+    assert(body == "Some of your personal information will be transferred outside mainland China for processing. Do you agree?") { "Unexpected dialog body: $body" }
+  }
+
+  @Config(qualifiers = "zh-rCN")
+  @Test
+  fun `the dialog body is one sentence asking about the transfer in simplified chinese`() {
+    val body = context.getString(R.string.TellomiCrossBorder__dialog_body)
+    assert(body == "您的部分个人信息将传输到中国大陆境外处理，是否同意？") { "Unexpected dialog body: $body" }
+  }
+
   /** Tellomi（tellomi/tellomi#1338，需求 6.6 判据 5）：被弹窗取代的 5 个 key 不再留在资源里。 */
   @Test
   fun `the keys replaced by the dialog are gone`() {
