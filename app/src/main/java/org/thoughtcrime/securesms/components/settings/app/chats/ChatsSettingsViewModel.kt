@@ -37,7 +37,8 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
       userUnregistered = TextSecurePreferences.isUnauthorizedReceived(AppDependencies.application) || !SignalStore.account.isRegistered,
       clientDeprecated = SignalStore.misc.isClientDeprecated,
       isPlaintextExportEnabled = RemoteConfig.localPlaintextExport,
-      chatExportState = ChatExportState.None
+      chatExportState = ChatExportState.None,
+      expandShortLinks = SignalStore.tellomiLinks.expandShortLinks
     )
   )
 
@@ -86,6 +87,12 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
     store.update { it.copy(generateLinkPreviews = enabled) }
     SignalStore.settings.isLinkPreviewsEnabled = enabled
     repository.syncLinkPreviewsState()
+  }
+
+  /** Tellomi（#1422）：只存本机，不同步（ADR-0063 §8.1 第 9 行）。 */
+  fun setExpandShortLinksEnabled(enabled: Boolean) {
+    store.update { it.copy(expandShortLinks = enabled) }
+    SignalStore.tellomiLinks.expandShortLinks = enabled
   }
 
   fun setUseAddressBook(enabled: Boolean) {

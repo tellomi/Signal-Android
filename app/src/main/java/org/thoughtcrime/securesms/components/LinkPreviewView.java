@@ -132,7 +132,8 @@ public class LinkPreviewView extends FrameLayout {
     site.setVisibility(GONE);
     thumbnail.setVisibility(GONE);
     spinner.setVisibility(GONE);
-    noPreview.setVisibility(VISIBLE);
+    // Tellomi：只有群邀请失效那一句还显示；调用方在 isShownWithoutPreview() 为 false 时整个预览区都不显示
+    noPreview.setVisibility(isShownWithoutPreview(customError) ? VISIBLE : GONE);
     noPreview.setText(getLinkPreviewErrorString(customError));
   }
 
@@ -263,6 +264,14 @@ public class LinkPreviewView extends FrameLayout {
   public void setDownloadClickedListener(SlidesClickedListener listener) {
     thumbnailState = thumbnailState.withDownloadListener(listener);
     thumbnailState.applyState(thumbnail);
+  }
+
+  /**
+   * Tellomi（ADR-0063 §5.1 铁律 2，tellomi/tellomi#1422）：取不到预览就不显示预览区，输入框和分享页都一样，
+   * 不再出「No link preview available」。唯一的例外是群邀请确定已失效：照上游提示发送者「This group link is not active」。
+   */
+  public static boolean isShownWithoutPreview(@Nullable LinkPreviewRepository.Error error) {
+    return error == LinkPreviewRepository.Error.GROUP_LINK_INACTIVE;
   }
 
   private @StringRes static int getLinkPreviewErrorString(@Nullable LinkPreviewRepository.Error customError) {

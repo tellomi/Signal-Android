@@ -3930,6 +3930,11 @@
     <string name="preferences__muted_chats_that_are_archived_will_remain_archived">当收到新消息时，已存档的静音聊天将会保持存档状态。</string>
     <string name="preferences__generate_link_previews">生成链接预览</string>
     <string name="preferences__retrieve_link_previews_from_websites_for_messages">直接从您发送的链接网站中生成预览。</string>
+    <!-- Tellomi：链接卡片的设置与文案（ADR-0063 §8.1 第 9 行、§5.5；tellomi/tellomi#1422） -->
+    <string name="TellomiLinks__generate_link_previews_description">开启后，发送链接时你的设备会访问该网站。</string>
+    <string name="TellomiLinks__expand_short_links">展开短链接</string>
+    <string name="TellomiLinks__expand_short_links_description">生成预览前，你的设备会先打开一次短链接，取得完整地址。短链接服务能看到这次访问。</string>
+    <string name="TellomiLinks__link_copied">已复制链接</string>
     <string name="preferences__change_passphrase">修改密码</string>
     <string name="preferences__change_your_passphrase">修改您的密码</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->

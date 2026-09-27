@@ -75,6 +75,19 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
+    <!-- Tellomi（ADR-0063 §4.9 第 3 步，tellomi/tellomi#1422）：TellomiExplicitBrowser 要看得见默认浏览器和它的 Custom Tabs 服务，
+         才能把 Custom Tabs 钉在那个浏览器的包名上（API 30+ 的包可见性）。 -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService" />
+        </intent>
+    </queries>
+
     <application
         android:name=".ApplicationContext"
         android:allowBackup="true"

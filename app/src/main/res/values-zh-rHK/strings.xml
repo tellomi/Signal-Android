@@ -3930,6 +3930,11 @@
     <string name="preferences__muted_chats_that_are_archived_will_remain_archived">當收到新訊息時，已存檔的靜音聊天將會保持存檔狀態。</string>
     <string name="preferences__generate_link_previews">產生連結預覽</string>
     <string name="preferences__retrieve_link_previews_from_websites_for_messages">為您傳送的訊息直接從網站提取連結預覽。</string>
+    <!-- Tellomi：链接卡片的设置与文案（ADR-0063 §8.1 第 9 行、§5.5；tellomi/tellomi#1422） -->
+    <string name="TellomiLinks__generate_link_previews_description">開啟後，傳送連結時你的裝置會存取該網站。</string>
+    <string name="TellomiLinks__expand_short_links">展開短連結</string>
+    <string name="TellomiLinks__expand_short_links_description">產生預覽前，你的裝置會先開啟一次短連結，取得完整網址。短連結服務能看到這次存取。</string>
+    <string name="TellomiLinks__link_copied">已複製連結</string>
     <string name="preferences__change_passphrase">更改密碼</string>
     <string name="preferences__change_your_passphrase">變更您的密碼</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->

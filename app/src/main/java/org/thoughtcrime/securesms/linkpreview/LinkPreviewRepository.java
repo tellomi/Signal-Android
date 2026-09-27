@@ -7,12 +7,12 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Consumer;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import org.signal.core.util.ByteUnit;
 import org.signal.core.util.Hex;
 import org.signal.core.util.Result;
 import org.signal.core.util.bitmaps.BitmapDecodingException;
@@ -38,11 +38,8 @@ import org.thoughtcrime.securesms.jobs.AvatarGroupsV2DownloadJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewUtil.OpenGraph;
 import org.thoughtcrime.securesms.mms.PushMediaConstraints;
-import org.thoughtcrime.securesms.net.CallRequestController;
 import org.thoughtcrime.securesms.net.CompositeRequestController;
-import org.thoughtcrime.securesms.net.LinkPreviewRedirectValidationInterceptor;
 import org.thoughtcrime.securesms.net.RequestController;
-import org.thoughtcrime.securesms.net.UserAgentInterceptor;
 import org.thoughtcrime.securesms.profiles.AvatarHelper;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.service.webrtc.links.CallLinkCredentials;
@@ -53,7 +50,6 @@ import org.thoughtcrime.securesms.util.AvatarUtil;
 import org.thoughtcrime.securesms.util.ImageCompressionUtil;
 import org.thoughtcrime.securesms.util.LinkUtil;
 import org.thoughtcrime.securesms.util.MediaUtil;
-import org.thoughtcrime.securesms.util.OkHttpUtil;
 import org.whispersystems.signalservice.api.SignalServiceMessageReceiver;
 import org.whispersystems.signalservice.api.groupsv2.GroupLinkNotActiveException;
 import org.whispersystems.signalservice.api.messages.SignalServiceStickerManifest;
@@ -62,8 +58,8 @@ import org.whispersystems.signalservice.api.util.OptionalUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -71,29 +67,24 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.Pair;
-import okhttp3.CacheControl;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class LinkPreviewRepository {
 
   private static final String TAG = Log.tag(LinkPreviewRepository.class);
 
-  private static final CacheControl NO_CACHE = new CacheControl.Builder().noCache().build();
-
-  private static final long FAILSAFE_MAX_TEXT_SIZE  = ByteUnit.MEGABYTES.toBytes(2);
-  private static final long FAILSAFE_MAX_IMAGE_SIZE = ByteUnit.MEGABYTES.toBytes(2);
-
-  private final OkHttpClient client;
+  /**
+   * Tellomi（ADR-0063 §4.4，tellomi/tellomi#1422）：第三方页面和预览图改由 {@link TellomiLinkFetcher} 抓，
+   * 请求头、cookie、重定向、私网、超时、体积、每条链接的请求数都按抓取契约；上游这里自己建的 OkHttpClient 不再用。
+   */
+  private final TellomiLinkFetcher fetcher;
 
   public LinkPreviewRepository() {
-    this.client = new OkHttpClient.Builder()
-                                  .cache(null)
-                                  .addInterceptor(new UserAgentInterceptor("WhatsApp/2"))
-                                  .addNetworkInterceptor(new LinkPreviewRedirectValidationInterceptor())
-                                  .build();
+    this(TellomiLinkFetcher.getDefault());
+  }
+
+  @VisibleForTesting
+  LinkPreviewRepository(@NonNull TellomiLinkFetcher fetcher) {
+    this.fetcher = fetcher;
   }
 
   public @NonNull Single<Result<LinkPreview, Error>> getLinkPreview(@NonNull String url) {
@@ -143,7 +134,10 @@ public class LinkPreviewRepository {
     } else if (CallLinks.isCallLink(url)) {
       metadataController = fetchCallLinkPreview(context, url, callback);
     } else {
-      metadataController = fetchMetadata(url, metadata -> {
+      TellomiLinkFetcher.Session session = fetcher.newSession();
+      compositeController.addController(session::cancel);
+
+      metadataController = fetchMetadata(session, url, metadata -> {
         if (metadata.isEmpty()) {
           callback.onError(Error.PREVIEW_NOT_AVAILABLE);
           return;
@@ -154,7 +148,7 @@ public class LinkPreviewRepository {
           return;
         }
 
-        RequestController imageController = fetchThumbnail(metadata.getImageUrl().get(), attachment -> {
+        RequestController imageController = fetchThumbnail(session, metadata.getImageUrl().get(), attachment -> {
           if (!metadata.getTitle().isPresent() && !attachment.isPresent()) {
             callback.onError(Error.PREVIEW_NOT_AVAILABLE);
           } else {
@@ -170,88 +164,63 @@ public class LinkPreviewRepository {
     return compositeController;
   }
 
-  private @NonNull RequestController fetchMetadata(@NonNull String url, Consumer<Metadata> callback) {
-    Call call = client.newCall(new Request.Builder().url(url).cacheControl(NO_CACHE).build());
+  private @NonNull RequestController fetchMetadata(@NonNull TellomiLinkFetcher.Session session, @NonNull String url, Consumer<Metadata> callback) {
+    SignalExecutors.UNBOUNDED.execute(() -> {
+      // 失败的类别由抓取器记日志（不带 URL）；这里不再打异常，异常信息里可能有 URL（ADR-0063 §6.5）
+      TellomiLinkFetcher.Result result = session.fetch(url, TellomiLinkFetcher.Step.HTML);
 
-    call.enqueue(new okhttp3.Callback() {
-      @Override
-      public void onFailure(@NonNull Call call, @NonNull IOException e) {
-        Log.w(TAG, "Request failed.", e);
+      if (result instanceof TellomiLinkFetcher.Result.Failure && ((TellomiLinkFetcher.Result.Failure) result).isDirectImage()) {
+        // We've been linked directly to an image.
+        okhttp3.HttpUrl imageUrl = Objects.requireNonNull(((TellomiLinkFetcher.Result.Failure) result).getFinalUrl());
+        // The best we can do for a title is the filename in the URL itself,
+        // but that's no worse than the body of the message.
+        List<String> requestedUrlPathSegments = imageUrl.pathSegments();
+        String       filename                 = requestedUrlPathSegments.get(requestedUrlPathSegments.size() - 1);
+        callback.accept(new Metadata(Optional.of(filename), Optional.empty(), 0, Optional.of(imageUrl.toString())));
+        return;
+      }
+
+      if (!(result instanceof TellomiLinkFetcher.Result.Body)) {
         callback.accept(Metadata.empty());
+        return;
       }
 
-      @Override
-      public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-        if (!response.isSuccessful()) {
-          Log.w(TAG, "Non-successful response. Code: " + response.code());
-          callback.accept(Metadata.empty());
-          return;
-        } else if (response.body() == null) {
-          Log.w(TAG, "No response body.");
-          callback.accept(Metadata.empty());
-          return;
-        }
+      String           body        = ((TellomiLinkFetcher.Result.Body) result).text();
+      OpenGraph        openGraph   = LinkPreviewUtil.parseOpenGraphFields(body);
+      Optional<String> title       = openGraph.getTitle();
+      Optional<String> description = openGraph.getDescription();
+      Optional<String> imageUrl    = openGraph.getImageUrl();
+      long             date        = openGraph.getDate();
 
-        if (MediaUtil.isImageType(response.header("Content-Type"))) {
-          // We've been linked directly to an image.
-          okhttp3.HttpUrl imageUrl = response.request().url();
-          // The best we can do for a title is the filename in the URL itself,
-          // but that's no worse than the body of the message.
-          List<String> requestedUrlPathSegments = imageUrl.pathSegments();
-          String       filename                 = requestedUrlPathSegments.get(requestedUrlPathSegments.size() - 1);
-          callback.accept(new Metadata(Optional.of(filename), Optional.empty(), 0, Optional.of(imageUrl.toString())));
-          return;
-        }
-
-        String body;
-        try {
-          body = OkHttpUtil.readAsString(response.body(), FAILSAFE_MAX_TEXT_SIZE);
-        } catch (IOException e) {
-          Log.w(TAG, "Failed to read body", e);
-          callback.accept(Metadata.empty());
-          return;
-        }
-
-        OpenGraph        openGraph   = LinkPreviewUtil.parseOpenGraphFields(body);
-        Optional<String> title       = openGraph.getTitle();
-        Optional<String> description = openGraph.getDescription();
-        Optional<String> imageUrl    = openGraph.getImageUrl();
-        long             date        = openGraph.getDate();
-
-        if (imageUrl.isPresent() && !LinkUtil.isValidPreviewUrl(imageUrl.get())) {
-          Log.i(TAG, "Image URL was invalid or for a non-whitelisted domain. Skipping.");
-          imageUrl = Optional.empty();
-        }
-
-        callback.accept(new Metadata(title, description, date, imageUrl));
+      if (imageUrl.isPresent() && !LinkUtil.isValidPreviewUrl(imageUrl.get())) {
+        Log.i(TAG, "Image URL was invalid or for a non-whitelisted domain. Skipping.");
+        imageUrl = Optional.empty();
       }
+
+      callback.accept(new Metadata(title, description, date, imageUrl));
     });
 
-    return new CallRequestController(call);
+    return session::cancel;
   }
 
-  private @NonNull RequestController fetchThumbnail(@NonNull String imageUrl, @NonNull Consumer<Optional<Attachment>> callback) {
-    Call                  call       = client.newCall(new Request.Builder().url(imageUrl).build());
-    CallRequestController controller = new CallRequestController(call);
-
+  private @NonNull RequestController fetchThumbnail(@NonNull TellomiLinkFetcher.Session session, @NonNull String imageUrl, @NonNull Consumer<Optional<Attachment>> callback) {
     SignalExecutors.UNBOUNDED.execute(() -> {
-      try (Response response = call.execute()) {
-        if (!response.isSuccessful() || response.body() == null) {
-          callback.accept(Optional.empty());
-          return;
-        }
+      TellomiLinkFetcher.Result result = session.fetch(imageUrl, TellomiLinkFetcher.Step.IMAGE);
 
-        InputStream bodyStream = response.body().byteStream();
-        controller.setStream(bodyStream);
+      if (!(result instanceof TellomiLinkFetcher.Result.Body)) {
+        callback.accept(Optional.empty());
+        return;
+      }
 
-        byte[]                           data        = OkHttpUtil.readAsBytes(bodyStream, FAILSAFE_MAX_IMAGE_SIZE);
+      try {
+        byte[]                           data        = ((TellomiLinkFetcher.Result.Body) result).getBytes();
         Bitmap                           bitmap      = BitmapFactory.decodeByteArray(data, 0, data.length);
         Optional<Attachment>             thumbnail   = Optional.empty();
         PushMediaConstraints.MediaConfig mediaConfig = PushMediaConstraints.MediaConfig.getDefault(AppDependencies.getApplication());
 
         if (bitmap != null) {
           for (final int maxDimension : mediaConfig.getImageSizeTargets()) {
-            ImageCompressionUtil.Result result = ImageCompressionUtil.compressWithinConstraints(
+            ImageCompressionUtil.Result compressed = ImageCompressionUtil.compressWithinConstraints(
                 AppDependencies.getApplication(),
                 MediaUtil.IMAGE_JPEG,
                 bitmap,
@@ -260,8 +229,8 @@ public class LinkPreviewRepository {
                 mediaConfig.getImageQualitySetting()
             );
 
-            if (result != null) {
-              thumbnail = Optional.of(bytesToAttachment(result.getData(), result.getWidth(), result.getHeight(), result.getMimeType()));
+            if (compressed != null) {
+              thumbnail = Optional.of(bytesToAttachment(compressed.getData(), compressed.getWidth(), compressed.getHeight(), compressed.getMimeType()));
               break;
             }
           }
@@ -270,14 +239,13 @@ public class LinkPreviewRepository {
         if (bitmap != null) bitmap.recycle();
 
         callback.accept(thumbnail);
-      } catch (IOException | IllegalArgumentException | BitmapDecodingException e) {
-        Log.w(TAG, "Exception during link preview image retrieval.", e);
-        controller.cancel();
+      } catch (IllegalArgumentException | BitmapDecodingException e) {
+        Log.w(TAG, "Failed to decode the link preview image: " + e.getClass().getSimpleName());
         callback.accept(Optional.empty());
       }
     });
 
-    return controller;
+    return session::cancel;
   }
 
   private static RequestController fetchStickerPackLinkPreview(@NonNull Context context,
