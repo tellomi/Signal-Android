@@ -66,6 +66,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -314,30 +315,48 @@ private fun EntryRow(
   }
 }
 
-/** F-6、F-9：加载中是骨架；一条都没有时是一句说明（上限读服务端配置）；否则「最近发送的文件」列表。 */
+/**
+ * F-6、F-9：「最近发送的文件」标题常驻（owner 2026-09-28：空的时候不显示标题，看起来像没有这个功能）；
+ * 加载中是骨架；一条都没有时是插画 + 一句说明（上限读服务端配置，照 Telegram iOS `AttachmentFileEmptyItem` 的结构，独立实现）；否则列表。
+ */
 private fun LazyListScope.recentFiles(
   state: AttachmentFilesState,
   onEvent: (AttachmentFilesEvent) -> Unit
 ) {
   val files = state.files
+  item(key = "recent-header") {
+    Texts.SectionHeader(text = stringResource(R.string.AttachmentFilesScreen__recently_sent_files))
+  }
   when {
     files == null -> items(FilesMetrics.SKELETON_ROWS) { SkeletonRow() }
 
     files.isEmpty() -> item(key = "empty") {
-      Text(
-        text = stringResource(R.string.AttachmentFilesScreen__empty, state.maxFileSize.bytes.toUnitString()),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-          .padding(horizontal = 24.dp, vertical = 16.dp)
-          .testTag(TestTags.ATTACHMENT_FILES_EMPTY)
-      )
+          .fillMaxWidth()
+          .padding(start = 24.dp, end = 24.dp, top = 20.dp, bottom = 24.dp)
+      ) {
+        Icon(
+          imageVector = SignalIcons.File.imageVector,
+          contentDescription = null,
+          tint = MaterialTheme.colorScheme.onSurfaceVariant,
+          modifier = Modifier
+            .size(56.dp)
+            .testTag(TestTags.ATTACHMENT_FILES_EMPTY_ILLUSTRATION)
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+          text = stringResource(R.string.AttachmentFilesScreen__empty, state.maxFileSize.bytes.toUnitString()),
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          textAlign = TextAlign.Center,
+          modifier = Modifier.testTag(TestTags.ATTACHMENT_FILES_EMPTY)
+        )
+      }
     }
 
     else -> {
-      item(key = "recent-header") {
-        Texts.SectionHeader(text = stringResource(R.string.AttachmentFilesScreen__recently_sent_files))
-      }
       items(files, key = { "recent-${it.attachmentId}" }) { file ->
         FileRow(
           file = file,
