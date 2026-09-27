@@ -78,6 +78,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -402,6 +403,13 @@ internal object PickerMetrics {
   val checkTouchSize = 29.dp
   val checkVisualSize = 24.dp
   val checkBorder = 1.5.dp
+
+  /**
+   * 网格格子里的勾：右上角 42 × 42 的整块角区都算点勾，圆离上、右各 6（照 Telegram Android `PhotoAttachPhotoCell`：
+   * checkFrame 42dp、CheckBox2 离上右 5 + 1）。29 的触摸区手指落在圆旁边一点就进了预览（owner 2026-09-28）。
+   */
+  val tileCheckTouchSize = 42.dp
+  val tileCheckVisualInset = 6.dp
 }
 
 @Composable
@@ -683,6 +691,8 @@ private fun PickerTile(
       selectionIndex = selectionIndex,
       color = recipientChatColor ?: MaterialTheme.colorScheme.primary,
       onClick = { onEvent(MediaSelectScreenEvents.MediaClick(media)) },
+      touchSize = PickerMetrics.tileCheckTouchSize,
+      visualInset = PickerMetrics.tileCheckVisualInset,
       modifier = Modifier
         .align(Alignment.TopEnd)
         .testTag(TestTags.mediaPickerCheck(media.uri.toString()))
@@ -690,22 +700,27 @@ private fun PickerTile(
   }
 }
 
-/** 编号勾：白色 1.5dp 描边 + 阴影；没选是半透明的空圈，选中填强调色并显示第几张（照 Telegram 两端的编号勾，24dp 同 Telegram Android CheckBox2）。 */
+/**
+ * 编号勾：白色 1.5dp 描边 + 阴影；没选是半透明的空圈，选中填强调色并显示第几张（照 Telegram 两端的编号勾，24dp 同 Telegram Android CheckBox2）。
+ * [touchSize] 是整个触摸区；给了 [visualInset] 时圆贴触摸区的右上角、离上右各这么多，否则居中。
+ */
 @Composable
 internal fun SelectionCheck(
   selectionIndex: Int,
   color: Color,
   onClick: () -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  touchSize: Dp = PickerMetrics.checkTouchSize,
+  visualInset: Dp? = null
 ) {
   val isSelected = selectionIndex >= 0
   val description = stringResource(R.string.MediaSelectScreen__select)
   val stateText = if (isSelected) pluralStringResource(R.plurals.MediaSelectScreen__selected_number_n, selectionIndex + 1, selectionIndex + 1) else ""
 
   Box(
-    contentAlignment = Alignment.Center,
+    contentAlignment = if (visualInset != null) Alignment.TopEnd else Alignment.Center,
     modifier = modifier
-      .size(PickerMetrics.checkTouchSize)
+      .size(touchSize)
       .clickable(onClick = onClick, role = Role.Checkbox)
       .semantics {
         contentDescription = description
@@ -716,6 +731,7 @@ internal fun SelectionCheck(
     Box(
       contentAlignment = Alignment.Center,
       modifier = Modifier
+        .then(if (visualInset != null) Modifier.padding(top = visualInset, end = visualInset) else Modifier)
         .size(PickerMetrics.checkVisualSize)
         .shadow(elevation = 2.dp, shape = CircleShape, clip = false)
         .background(color = if (isSelected) color else Color.Black.copy(alpha = 0.12f), shape = CircleShape)
