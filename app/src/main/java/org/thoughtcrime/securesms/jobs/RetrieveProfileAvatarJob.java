@@ -169,8 +169,11 @@ public class RetrieveProfileAvatarJob extends BaseJob {
     } catch (PushNetworkException e) {
       if (forUnblurred) AvatarDownloadStateCache.set(recipient, AvatarDownloadStateCache.DownloadState.FAILED);
       if (e.getCause() instanceof NonSuccessfulResponseCodeException) {
-        Log.w(TAG, "Removing profile avatar (no image available) for: " + recipient.getId().serialize());
-        AvatarHelper.delete(context, recipient.getId());
+        // Tellomi（tellomi/tellomi#1367）：对方先 PUT 资料、再上传头像文件，中间拉到资料就会 404。上游在这里删掉本地头像、
+        // 照样把新路径记进库，而 RetrieveProfileJob 只在远端路径和库里不同时才派本任务，这张头像就再也不会重下。
+        // 改成保留旧头像和旧路径：下一次拉资料时路径仍然不同，会再派本任务重试。
+        Log.w(TAG, "Avatar not available yet, keeping the previous one and retrying on the next profile fetch for: " + recipient.getId().serialize());
+        return;
       } else {
         throw e;
       }
