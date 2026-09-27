@@ -68,7 +68,7 @@ object ContactDiscovery {
       return
     }
 
-    if (TextUtils.isEmpty(SignalStore.account.e164)) {
+    if (TextUtils.isEmpty(SignalStore.account.e164) && !SignalStore.account.isPhoneNumberless) {
       Log.w(TAG, "Have not yet set our own local number. Skipping.")
       return
     }

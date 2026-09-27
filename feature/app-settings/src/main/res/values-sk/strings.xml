@@ -52,29 +52,53 @@
     <string name="AccountSettingsFragment__your_signal_login_is_used_to_recover">Váš Tellomi Login sa používa na obnovenie vášho účtu. Ponechajte si tieto kľúče bezpečne uložené v správcovi hesiel, ktorému dôverujete.</string>
     <!-- Section header for the two-factor authentication section of account settings -->
     <string name="AccountSettingsFragment__two_factor_authentication">Dvojfaktorová autentifikácia</string>
-    <!-- Account setting that takes the user to the authenticator app setup flow -->
+    <!-- Row that opens the menu of second factors the user can add -->
+    <string name="AccountSettingsFragment__set_up">Nastaviť</string>
+    <!-- Menu option that starts setting up an authenticator app -->
     <string name="AccountSettingsFragment__authenticator_app">Aplikácia na autentifikáciu</string>
-    <!-- Description of the authenticator app setting when none are configured -->
+    <!-- Description of the authenticator app menu option -->
     <string name="AccountSettingsFragment__one_time_verification_codes">Jednorazové overovacie kódy</string>
-    <!-- Description of the authenticator app setting saying how many are configured -->
-    <plurals name="AccountSettingsFragment__d_configured">
-        <item quantity="one">%1$d nastavený</item>
-        <item quantity="few">%1$d nastavené</item>
-        <item quantity="many">%1$d nastavených</item>
-        <item quantity="other">%1$d nastavených</item>
-    </plurals>
-    <!-- Account setting that takes the user to the passkeys screen -->
-    <string name="AccountSettingsFragment__passkeys">Prístupové kľúče</string>
-    <!-- Description of the passkeys setting when none exist -->
-    <string name="AccountSettingsFragment__device_biometrics_or_fido2_security_key">Biometrické údaje zariadenia alebo bezpečnostný kľúč FIDO2</string>
-    <!-- Description of the passkeys setting saying how many exist -->
-    <plurals name="AccountSettingsFragment__d_passkeys">
-        <item quantity="one">%1$d prístupový kľúč</item>
-        <item quantity="few">%1$d prístupové kľúče</item>
-        <item quantity="many">%1$d prístupových kľúčov</item>
-        <item quantity="other">%1$d prístupových kľúčov</item>
-    </plurals>
-    <!-- Description of two-factor authentication, shown below the two-factor authentication rows -->
+    <!-- Name of a passkey in the list of second factors on the account -->
+    <string name="AccountSettingsFragment__passkey">Prístupový kľúč</string>
+    <!-- Subtitle of a second factor saying what kind it is and when it was added. First placeholder is the kind, second is a date or time. -->
+    <string name="AccountSettingsFragment__s_added_s">%1$s · Pridané %2$s</string>
+    <!-- Content description of the button that opens a second factor\'s options -->
+    <string name="AccountSettingsFragment__open_two_factor_options">Otvoriť možnosti dvojfaktorovej autentifikácie</string>
+    <!-- Menu option that renames a second factor -->
+    <string name="AccountSettingsFragment__rename">Premenovať</string>
+    <!-- Menu option that removes a second factor -->
+    <string name="AccountSettingsFragment__remove">Odstrániť</string>
+    <!-- Title of the dialog confirming removal of an authenticator app -->
+    <string name="AccountSettingsFragment__remove_authenticator_app">Odstrániť aplikáciu na autentifikáciu?</string>
+    <!-- Body of the dialog confirming removal of an authenticator app -->
+    <string name="AccountSettingsFragment__you_wont_be_able_to_use_this_app">Túto aplikáciu nebudete môcť použiť na jednorazové overovacie kódy, keď sa prihlásite.</string>
+    <!-- Title of the device screen lock prompt shown before a two-factor authentication method can be removed -->
+    <string name="AccountSettingsFragment__unlock_to_remove_two_factor_method">Odomknite pre odstránenie dvojfaktorovej metódy</string>
+    <!-- Title of the sheet explaining that the device screen lock is needed before a two-factor authentication method can be removed -->
+    <string name="AccountSettingsFragment__to_remove_this_method_confirm_its_you">Ak chcete túto metódu odstrániť, potvrďte, že ste to vy</string>
+    <!-- Title of the device screen lock prompt shown before the Signal Login details can be viewed -->
+    <string name="AccountSettingsFragment__unlock_to_view_signal_login">Odomknite pre zobrazenie Tellomi Login</string>
+    <!-- Title of the sheet explaining that the device screen lock is needed before the Signal Login details can be viewed -->
+    <string name="AccountSettingsFragment__to_view_your_signal_login_confirm_its_you">Ak chcete zobraziť svoj Tellomi Login, potvrďte, že ste to vy</string>
+    <!-- Title of the device screen lock prompt shown before the delete account flow can be opened -->
+    <string name="AccountSettingsFragment__unlock_to_confirm_its_you">Unlock to confirm it\'s you</string>
+    <!-- Title of the sheet explaining that the device screen lock is needed before the delete account flow can be opened -->
+    <string name="AccountSettingsFragment__to_delete_your_account_confirm_its_you">To delete your account, confirm it\'s you</string>
+    <!-- Toast shown when the device screen lock wasn\'t confirmed, so nothing happened -->
+    <string name="AccountSettingsFragment__authentication_required">Vyžaduje sa overenie</string>
+    <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
+    <string name="AccountSettingsFragment__cant_add_authenticator_app">Nie je možné pridať aplikáciu na autentifikáciu</string>
+    <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
+    <string name="AccountSettingsFragment__you_cant_add_more_than_d">Nemôžete pridať viac ako %1$d aplikácie na autentifikáciu. Skúste najprv jednu odstrániť.</string>
+    <!-- Body of the dialog shown when the account has room for another authenticator app but already has as many two-factor methods of all kinds as it\'s allowed -->
+    <string name="AccountSettingsFragment__you_cant_add_more_than_d_two_factor_methods">You can\'t add more than %1$d two-factor authentication methods. Try removing one first.</string>
+    <!-- Shown in place of the list when we couldn\'t work out which second factors are on the account -->
+    <string name="AccountSettingsFragment__couldnt_load_your_two_factor_methods">Nepodarilo sa načítať vaše metódy dvojfaktorovej autentifikácie. Skontrolujte svoje pripojenie a skúste to znova.</string>
+    <!-- Toast shown after an authenticator app has been removed -->
+    <string name="AccountSettingsFragment__authenticator_app_removed">Aplikácia na autentifikáciu bola odstránená</string>
+    <!-- Toast shown when an authenticator app couldn\'t be removed -->
+    <string name="AccountSettingsFragment__couldnt_remove_authenticator_app">Nepodarilo sa odstrániť aplikáciu na autentifikáciu. Skontrolujte svoje pripojenie a skúste to znova.</string>
+    <!-- Description of two-factor authentication, shown below the two-factor authentication list -->
     <string name="AccountSettingsFragment__use_a_second_form_of_authentication">Použite ďalšiu formu autentifikácie, aby ste ochránili svoj účet pri používaní Tellomi Login na novom zariadení.</string>
     <!-- Clickable text that takes the user to a support article -->
     <string name="AccountSettingsFragment__learn_more">Zistiť viac</string>
@@ -104,6 +128,8 @@
     <string name="TotpSetupScreen__copied_to_clipboard">Skopírované do schránky</string>
     <!-- Toast shown when there is no app installed that can handle the authenticator setup link -->
     <string name="TotpSetupScreen__no_authenticator_app_found">Nenašla sa žiadna aplikácia na autentifikáciu</string>
+    <!-- Dialog message shown when the account already has as many authenticator apps as it\'s allowed -->
+    <string name="TotpSetupScreen__you_cant_add_more_than_d">Nemôžete pridať viac ako %1$d aplikácie na autentifikáciu. Skúste najprv jednu odstrániť.</string>
     <!-- Dialog message shown when we couldn\'t reach the service to start setting up an authenticator app -->
     <string name="TotpSetupScreen__couldnt_reach_signal">Nepodarilo sa spojiť so Tellomi. Skontrolujte svoje pripojenie a skúste to znova.</string>
     <!-- Header of the third step of authenticator app setup -->
@@ -113,82 +139,20 @@
     <!-- Button that advances from the setup instructions to entering a code -->
     <string name="TotpSetupScreen__continue">Pokračovať</string>
 
-    <!-- PasskeysScreen -->
-    <!-- Title of the screen where the user sets up passkeys -->
-    <string name="PasskeysScreen__passkeys">Prístupové kľúče</string>
-    <!-- Description of passkeys shown at the top of the screen -->
-    <string name="PasskeysScreen__with_passkeys_you_can_easily_add">Pomocou prístupových kľúčov môžete k svojmu účtu ľahko pridať druhú bezpečnostnú formu overenia. Prístupové kľúče môžu používať biometrické údaje vášho zariadenia alebo kompatibilný bezpečnostný kľúč FIDO2.</string>
-    <!-- Clickable text that takes the user to a support article -->
-    <string name="PasskeysScreen__learn_more">Zistiť viac</string>
-    <!-- Bullet point explaining that a passkey can be given a name -->
-    <string name="PasskeysScreen__give_your_passkey_a_friendly_name">Dajte svojmu prístupovému kľúču priateľský názov pre ľahkú identifikáciu</string>
-    <!-- Bullet point explaining how a passkey is stored -->
-    <string name="PasskeysScreen__use_your_devices_biometrics">Na uloženie prístupového kľúča použite biometrické údaje svojho zariadenia alebo bezpečnostný kľúč FIDO2</string>
-    <!-- Bullet point explaining that passkeys can be added and removed -->
-    <string name="PasskeysScreen__add_or_remove_passkeys_at_anytime">Prístupové kľúče môžete kedykoľvek pridať alebo odstrániť.</string>
-    <!-- Button that starts creating a passkey -->
-    <string name="PasskeysScreen__set_up_a_passkey">Nastaviť prístupový kľúč</string>
-    <!-- Description of passkeys shown at the top of the screen once some already exist -->
-    <string name="PasskeysScreen__set_up_a_passkey_with">Nastavte si prístupový kľúč s biometrickými údajmi vášho zariadenia alebo kompatibilným bezpečnostným kľúčom FIDO2.</string>
-    <!-- Button that starts creating a passkey once some already exist -->
-    <string name="PasskeysScreen__add_a_new_passkey">Pridať nový prístupový kľúč</string>
-    <!-- Label under a passkey\'s name saying when it was added. The placeholder is a relative time like "today, 11:00 AM" -->
-    <string name="PasskeysScreen__added_s">Pridaný „%1$s“</string>
-    <!-- Accessibility description of the button that opens a passkey\'s menu -->
-    <string name="PasskeysScreen__open_passkey_options">Otvoriť možnosti prístupového kľúča</string>
-    <!-- Menu option that renames a passkey -->
-    <string name="PasskeysScreen__rename">Premenovať</string>
-    <!-- Menu option that removes a passkey -->
-    <string name="PasskeysScreen__remove">Odstrániť</string>
-
     <!-- TotpCodeEntryScreen -->
     <!-- Title of the screen where the user enters the code from their authenticator app -->
     <string name="TotpCodeEntryScreen__enter_your_code">Zadajte svoj kód</string>
     <!-- Instructions shown above the code entry field -->
     <string name="TotpCodeEntryScreen__enter_the_6_digit_code">Zadajte 6-miestny kód z vašej aplikácie na autentifikáciu.</string>
-    <!-- Label of the code entry field -->
-    <string name="TotpCodeEntryScreen__code">Kód</string>
     <!-- Button that submits the entered code -->
-    <string name="TotpCodeEntryScreen__done">Hotovo</string>
+    <string name="TotpCodeEntryScreen__next">Ďalej</string>
     <!-- Error shown under the code field when the code the user entered was rejected -->
     <string name="TotpCodeEntryScreen__incorrect_code">Nesprávny kód. Zadajte kód zobrazený vo vašej aplikácii na autentifikáciu.</string>
     <!-- Error shown under the code field when we couldn\'t reach the service to check the code -->
     <string name="TotpCodeEntryScreen__couldnt_reach_signal">Nepodarilo sa spojiť so Tellomi. Skontrolujte svoje pripojenie a skúste to znova.</string>
-    <!-- TotpAppListScreen -->
-    <!-- Title of the screen listing the authenticator apps on the account -->
-    <string name="TotpAppListScreen__authenticator_app">Aplikácia na autentifikáciu</string>
-    <!-- Description of what an authenticator app is for, shown at the top of the screen -->
-    <string name="TotpAppListScreen__set_up_an_authenticator_app">Nastavte aplikáciu na autentifikáciu na generovanie jednorazových overovacích kódov</string>
-    <!-- Clickable text that takes the user to a support article -->
-    <string name="TotpAppListScreen__learn_more">Zistiť viac</string>
-    <!-- Button that starts setting up another authenticator app -->
-    <string name="TotpAppListScreen__add_authenticator_app">Pridať aplikáciu na autentifikáciu</string>
-    <!-- Section header above the list of configured authenticator apps -->
-    <string name="TotpAppListScreen__authenticator_apps">Aplikácie na autentifikáciu</string>
-    <!-- Shown in place of the list when no authenticator apps are configured -->
-    <string name="TotpAppListScreen__no_authenticator_apps">Žiadne aplikácie na autentifikáciu</string>
-    <!-- Subtitle of an authenticator app row saying when it was configured. Placeholder is a date or time. -->
-    <string name="TotpAppListScreen__added_s">Pridané %1$s</string>
-    <!-- Content description of the button that opens an authenticator app\'s options -->
-    <string name="TotpAppListScreen__open_authenticator_app_options">Otvoriť možnosti aplikácie na autentifikáciu</string>
-    <!-- Menu option that renames an authenticator app -->
-    <string name="TotpAppListScreen__rename">Premenovať</string>
-    <!-- Menu option that removes an authenticator app -->
-    <string name="TotpAppListScreen__remove">Odstrániť</string>
-    <!-- Title of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__remove_authenticator_app">Odstrániť aplikáciu na autentifikáciu?</string>
-    <!-- Body of the dialog confirming removal of an authenticator app -->
-    <string name="TotpAppListScreen__you_wont_be_able_to_use_this_app">Túto aplikáciu nebudete môcť použiť na jednorazové overovacie kódy, keď sa prihlásite.</string>
-    <!-- Title of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__cant_add_authenticator_app">Nie je možné pridať aplikáciu na autentifikáciu</string>
-    <!-- Body of the dialog shown when the account already has as many authenticator apps as it\'s allowed -->
-    <string name="TotpAppListScreen__you_cant_add_more_than_d">Nemôžete pridať viac ako %1$d aplikácie na autentifikáciu. Skúste najprv jednu odstrániť.</string>
-    <!-- Dialog message shown when we couldn\'t work out which authenticator apps are on the account -->
-    <string name="TotpAppListScreen__couldnt_load_authenticator_apps">Nepodarilo sa načítať vaše aplikácie na autentifikáciu. Skontrolujte svoje pripojenie a skúste to znova.</string>
-    <!-- Toast shown after an authenticator app has been removed -->
-    <string name="TotpAppListScreen__authenticator_app_removed">Aplikácia na autentifikáciu bola odstránená</string>
-    <!-- Toast shown when an authenticator app couldn\'t be removed -->
-    <string name="TotpAppListScreen__couldnt_remove_authenticator_app">Nepodarilo sa odstrániť aplikáciu na autentifikáciu. Skontrolujte svoje pripojenie a skúste to znova.</string>
+
+    <!-- Default name given to an authenticator app the moment it\'s set up, before the user chooses their own name for it -->
+    <string name="TotpRepository__authenticator">Authenticator</string>
 
     <!-- TotpNameEntryScreen -->
     <!-- Title of the screen where the user names an authenticator app -->
@@ -207,4 +171,48 @@
     <string name="TotpNameEntryScreen__authenticator_app_renamed">Aplikácia na autentifikáciu bola premenovaná</string>
     <!-- Toast shown when we couldn\'t reach the service to save the name -->
     <string name="TotpNameEntryScreen__couldnt_save_name">Názov sa nepodarilo uložiť. Skontrolujte svoje pripojenie a skúste to znova.</string>
+
+    <!-- DeleteAccountScreen -->
+    <!-- DeleteAccountFragment -->
+    <string name="DeleteAccountFragment__deleting_your_account_will">Deleting your account will:</string>
+    <string name="DeleteAccountFragment__enter_your_phone_number">Enter your phone number</string>
+    <string name="DeleteAccountFragment__delete_account">Delete account</string>
+    <string name="DeleteAccountFragment__delete_your_account_info_and_profile_photo">Delete your account info and profile photo</string>
+    <string name="DeleteAccountFragment__delete_all_your_messages">Delete all your messages</string>
+    <string name="DeleteAccountFragment__delete_s_in_your_payments_account">Delete %1$s in your payments account</string>
+    <string name="DeleteAccountFragment__no_country_code">No country code specified</string>
+    <string name="DeleteAccountFragment__no_number">No number specified</string>
+    <string name="DeleteAccountFragment__the_phone_number">The phone number you entered doesn\'t match your account\'s.</string>
+    <string name="DeleteAccountFragment__are_you_sure">Are you sure you want to delete your account?</string>
+    <string name="DeleteAccountFragment__this_will_delete_your_signal_account">This will delete your Tellomi account and reset the application. The app will close after the process is complete.</string>
+    <string name="DeleteAccountFragment__failed_to_delete_local_data">Failed to delete local data. You can manually clear it in the system application settings.</string>
+    <string name="DeleteAccountFragment__launch_app_settings">Launch App Settings</string>
+    <!-- Title of progress dialog shown when a user deletes their account and the process is leaving all groups -->
+    <string name="DeleteAccountFragment__leaving_groups">Leaving groups…</string>
+    <!-- Title of progress dialog shown when a user deletes their account and the process has left all groups -->
+    <string name="DeleteAccountFragment__deleting_account">Deleting account…</string>
+    <!-- Message of progress dialog shown when a user deletes their account and the process is canceling their subscription -->
+    <string name="DeleteAccountFragment__canceling_your_subscription">Canceling your subscription…</string>
+    <!-- Message of progress dialog shown when a user deletes their account and the process is leaving groups -->
+    <string name="DeleteAccountFragment__depending_on_the_number_of_groups">Depending on the number of groups you\'re in, this might take a few minutes</string>
+    <!-- Message of progress dialog shown when a user deletes their account and the process has left all groups -->
+    <string name="DeleteAccountFragment__deleting_all_user_data_and_resetting">Deleting user data and resetting the app</string>
+    <!-- Title of error dialog shown when a network error occurs during account deletion -->
+    <string name="DeleteAccountFragment__account_not_deleted">Account Not Deleted</string>
+    <!-- Message of error dialog shown when a network error occurs during account deletion -->
+    <string name="DeleteAccountFragment__there_was_a_problem">There was a problem completing the deletion process. Check your network connection and try again.</string>
+    <!-- Body text above the bullet list on the delete account screen, shown when the account has a username. Placeholder is the username. -->
+    <string name="DeleteAccountScreen__deleting_your_account_with_username_s_will">Deleting your account with username \"%1$s\" will:</string>
+    <!-- Bullet point on the delete account screen, shown in place of the plain one when the account has a username. Placeholder is the username. -->
+    <string name="DeleteAccountScreen__delete_your_account_info_and_profile_photo_including_your_username_s">Delete your account info and profile photo including your username \"%1$s\"</string>
+    <!-- Bullet point on the delete account screen warning the user that the deletion is permanent -->
+    <string name="DeleteAccountScreen__this_action_can_not_be_undone">This action can not be undone</string>
+    <!-- Message of the deletion confirmation dialog, shown when the account has a username. Placeholder is the username. -->
+    <string name="DeleteAccountScreen__this_will_delete_your_signal_account_with_username_s">This will delete your Tellomi account with username \"%1$s\" and reset the application. The app will close after the process is complete.</string>
+    <!-- Label of the checkbox the user has to tick in the confirmation dialog before they can delete their account -->
+    <string name="DeleteAccountScreen__yes_delete_my_account">Yes, delete my account</string>
+
+    <!-- Shared with the registration screens -->
+    <string name="RegistrationActivity_select_your_country">Select your country</string>
+    <string name="RegistrationActivity_phone_number_description">Phone number</string>
 </resources>

@@ -131,6 +131,11 @@ class Recipient(
   val phoneNumberSharing: PhoneNumberSharingState = PhoneNumberSharingState.UNKNOWN,
   val nickname: ProfileName = ProfileName.EMPTY,
   val note: String? = null,
+  /**
+   * A name supplied by a third party through a shared contact card, for someone we would otherwise
+   * have no name for. Deliberately ranks below [profileName], so a real profile always wins.
+   */
+  val sharedName: ProfileName = ProfileName.EMPTY,
   val keyTransparencyData: ByteArray? = null
 ) {
 
@@ -555,7 +560,8 @@ class Recipient(
     return getGroupName(context).isNotNullOrBlank() ||
       nickname.toString().isNotNullOrBlank() ||
       systemContactName.isNotNullOrBlank() ||
-      profileName.toString().isNotNullOrBlank()
+      profileName.toString().isNotNullOrBlank() ||
+      sharedName.toString().isNotNullOrBlank()
   }
 
   fun isMatch(query: String): Boolean {
@@ -571,6 +577,8 @@ class Recipient(
       systemProfileName.givenName,
       profileName.toString(),
       profileName.givenName,
+      sharedName.toString(),
+      sharedName.givenName,
       username.orElse("")
     ).firstOrNull { it.isNotNullOrBlank() }?.lowercase()
 
@@ -592,12 +600,24 @@ class Recipient(
     return BidiUtil.isolateBidi(name)
   }
 
-  fun hasNonUsernameDisplayName(context: Context): Boolean {
-    return getNameFromLocalData(context).isNotNullOrBlank()
+  val hasUsernameOrSharedName: Boolean
+    get() = username.isPresent || !sharedName.isEmpty
+
+  /** Excludes shared name and username. */
+  fun hasPersistentDisplayName(context: Context): Boolean {
+    return getNameFromLocalData(context, includeSharedName = false).isNotNullOrBlank()
+  }
+
+  /** Excludes the e164 and email, which a shared name outranks for display. */
+  fun hasDisplayNameOutrankingSharedName(): Boolean {
+    return nickname.toString().isNotBlank() ||
+      systemContactName.isNotNullOrBlank() ||
+      systemProfileName.toString().isNotBlank() ||
+      profileName.toString().isNotBlank()
   }
 
   /** A full-length display name for this user, ignoring the username. */
-  private fun getNameFromLocalData(context: Context): String? {
+  private fun getNameFromLocalData(context: Context, includeSharedName: Boolean = true): String? {
     var name = getGroupName(context)
 
     if (name.isNullOrBlank()) {
@@ -610,6 +630,10 @@ class Recipient(
 
     if (name.isBlank()) {
       name = profileName.toString()
+    }
+
+    if (name.isBlank() && includeSharedName) {
+      name = sharedName.toString()
     }
 
     if (name.isBlank() && e164Value.isNotNullOrBlank()) {
@@ -668,6 +692,8 @@ class Recipient(
       systemProfileName.toString(),
       profileName.givenName,
       profileName.toString(),
+      sharedName.givenName,
+      sharedName.toString(),
       username.map { TellomiUsernames.toDisplayUsername(it) }.orElse(null), // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
       getDisplayName(context)
     ).firstOrNull { it.isNotNullOrBlank() }
@@ -745,6 +771,8 @@ class Recipient(
       FallbackAvatar.forTextOrDefault(systemContactName, avatarColor)
     } else if (!profileName.isEmpty) {
       FallbackAvatar.forTextOrDefault(profileName.toString(), avatarColor)
+    } else if (!sharedName.isEmpty) {
+      FallbackAvatar.forTextOrDefault(sharedName.toString(), avatarColor)
     } else {
       FallbackAvatar.Resource.Person(avatarColor)
     }
@@ -903,6 +931,7 @@ class Recipient(
       phoneNumberSharing == other.phoneNumberSharing &&
       nickname == other.nickname &&
       note == other.note &&
+      sharedName == other.sharedName &&
       keyTransparencyData.contentEquals(other.keyTransparencyData)
   }
 

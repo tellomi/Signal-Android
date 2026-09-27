@@ -124,7 +124,7 @@ object RemoteConfig {
   @WorkerThread
   @Throws(IOException::class)
   fun refreshSync() {
-    val result = NetworkResultUtil.toBasicLegacy(SignalNetwork.remoteConfig.getRemoteConfig())
+    val result = NetworkResultUtil.toBasicLegacy(SignalNetwork.remoteConfigApi.getRemoteConfig())
     update(result.config)
   }
 
@@ -589,6 +589,16 @@ object RemoteConfig {
   ) { value ->
     !value.asBoolean(false)
   }
+
+  /**
+   * Whether to use the rewritten contact sharing flow, which lists Signal connections alongside the address book and can share a contact by ACI.
+   */
+  @JvmStatic
+  val contactSharingV2: Boolean by remoteBoolean(
+    key = "android.contactSharingV2",
+    defaultValue = false,
+    hotSwappable = true
+  )
 
   /** Whether or not to use the UUID in verification codes.  */
   val verifyV2: Boolean by remoteBoolean(
@@ -1545,6 +1555,23 @@ object RemoteConfig {
   val unreadReminderIntervalSeconds: Long by remoteLong(
     key = "client.unreadReminderIntervalSeconds",
     defaultValue = 3.days.inWholeSeconds,
+    hotSwappable = true
+  )
+
+  /** The maximum number of authenticator apps a user can have on their account. */
+  val maxTotpApps: Int by remoteInt(
+    key = "global.maxTotpApps",
+    defaultValue = 2,
+    hotSwappable = true
+  )
+
+  /**
+   * The maximum number of two-factor methods of every kind, authenticator apps and passkeys alike, a user can have on
+   * their account. Every method counts against this, so it's the limit on the total rather than on any one kind.
+   */
+  val maxMfaKeys: Int by remoteInt(
+    key = "global.maxMfaKeys",
+    defaultValue = 10,
     hotSwappable = true
   )
   // endregion

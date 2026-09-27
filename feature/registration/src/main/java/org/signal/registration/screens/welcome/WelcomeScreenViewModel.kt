@@ -6,8 +6,6 @@
 package org.signal.registration.screens.welcome
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -82,15 +80,5 @@ class WelcomeScreenViewModel(
     }
 
     return state.copy(showRestoreOrTransfer = parentState.preExistingRegistrationData == null)
-  }
-
-  class Factory(
-    private val repository: RegistrationRepository,
-    private val parentState: StateFlow<RegistrationFlowState>,
-    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
-  ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return WelcomeScreenViewModel(repository, parentState, parentEventEmitter) as T
-    }
   }
 }

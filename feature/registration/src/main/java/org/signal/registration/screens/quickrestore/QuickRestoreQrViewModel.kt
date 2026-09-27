@@ -6,8 +6,6 @@
 package org.signal.registration.screens.quickrestore
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -102,7 +100,9 @@ class QuickRestoreQrViewModel(
 
   private suspend fun handleProvisioningMessage(message: NetworkController.ProvisioningMessage) {
     parentEventEmitter(RegistrationFlowEvent.RestoreMethodTokenReceived(message.restoreMethodToken))
-    parentEventEmitter(RegistrationFlowEvent.E164Chosen(message.e164))
+    if (message.e164 != null) {
+      parentEventEmitter(RegistrationFlowEvent.E164Chosen(message.e164))
+    }
 
     if (message.platform == NetworkController.ProvisioningMessage.Platform.IOS && message.tier == null) {
       // iOS without a backup tier cannot do a quick restore — navigate to the choose-restore screen
@@ -218,14 +218,5 @@ class QuickRestoreQrViewModel(
 
   override fun onCleared() {
     provisioningJob?.cancel()
-  }
-
-  class Factory(
-    private val repository: RegistrationRepository,
-    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
-  ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return QuickRestoreQrViewModel(repository, parentEventEmitter) as T
-    }
   }
 }

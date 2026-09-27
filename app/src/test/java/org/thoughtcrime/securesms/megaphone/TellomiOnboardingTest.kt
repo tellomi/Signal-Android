@@ -142,6 +142,19 @@ class TellomiOnboardingTest {
     assertTrue(OnboardingState.DisplayState().hasNoVisibleContent())
   }
 
+  /**
+   * 上游 v8.28 加的「设置用户名」卡只给无号码账号（`isPhoneNumberless`）出，首次启动就把开关打开（#957 合上游时接进来）。
+   * 有号码的账号这张卡永远不出、开关也就永远关不掉——只剩它的时候不能算「还有引导」，否则首屏引导收不掉。
+   */
+  @Test
+  fun `set up username flag alone does not keep the megaphone alive unless the account has no number`() {
+    SignalStore.onboarding.setShowSetUpUsername(true)
+
+    assertFalse(SignalStore.account.isPhoneNumberless)
+    assertFalse(SignalStore.onboarding.hasOnboarding(ApplicationProvider.getApplicationContext()))
+    assertTrue(OnboardingState.DisplayState().hasNoVisibleContent())
+  }
+
   /** 没设用户名时二维码页会闪退（取的是 `username!!`），先去设用户名。 */
   @Test
   fun `my qr code opens the qr page only when there is a username`() {

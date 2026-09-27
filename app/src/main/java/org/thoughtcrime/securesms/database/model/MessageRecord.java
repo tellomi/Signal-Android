@@ -554,10 +554,11 @@ public abstract class MessageRecord extends DisplayRecord {
         String previouslyKnownAs;
         if (!Util.isEmpty(profileChangeDetails.learnedProfileName.e164)) {
           previouslyKnownAs = SignalE164Util.prettyPrint(profileChangeDetails.learnedProfileName.e164);
-        } else {
+        } else if (!Util.isEmpty(profileChangeDetails.learnedProfileName.username)) {
           // Tellomi（#1106，ADR-0066 §六）：「您向 kaixin 发起了聊天。」——只改显示，库里存的仍是完整用户名
-          String username = profileChangeDetails.learnedProfileName.username;
-          previouslyKnownAs = username != null ? TellomiUsernames.toDisplayUsername(username) : null;
+          previouslyKnownAs = TellomiUsernames.toDisplayUsername(profileChangeDetails.learnedProfileName.username);
+        } else {
+          previouslyKnownAs = profileChangeDetails.learnedProfileName.sharedName;
         }
 
         if (!Util.isEmpty(previouslyKnownAs)) {

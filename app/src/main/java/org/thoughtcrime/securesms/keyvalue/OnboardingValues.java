@@ -9,10 +9,11 @@ import java.util.List;
 
 public final class OnboardingValues extends SignalStoreValues {
 
-  private static final String SHOW_NEW_GROUP      = "onboarding.new_group";
-  private static final String SHOW_INVITE_FRIENDS = "onboarding.invite_friends";
-  private static final String SHOW_APPEARANCE     = "onboarding.appearance";
-  private static final String SHOW_ADD_PHOTO      = "onboarding.add_photo";
+  private static final String SHOW_NEW_GROUP       = "onboarding.new_group";
+  private static final String SHOW_INVITE_FRIENDS  = "onboarding.invite_friends";
+  private static final String SHOW_APPEARANCE      = "onboarding.appearance";
+  private static final String SHOW_ADD_PHOTO       = "onboarding.add_photo";
+  private static final String SHOW_SET_UP_USERNAME = "onboarding.set_up_username";
 
   // Tellomi（tellomi/tellomi#1218 F-02、第 5 条）：首屏「开始使用」换成找朋友三条路（搜索用户名 / 我的二维码 / 邀请朋友）+ 设头像；
   // 上游的「新建群组」「聊天颜色」两张不出。三条路在出现第一个真人会话后自动收起（TellomiOnboarding）。
@@ -29,6 +30,7 @@ public final class OnboardingValues extends SignalStoreValues {
     putBoolean(SHOW_INVITE_FRIENDS, true);
     putBoolean(SHOW_APPEARANCE, true);
     putBoolean(SHOW_ADD_PHOTO, true);
+    putBoolean(SHOW_SET_UP_USERNAME, true);
     putBoolean(SHOW_FIND_BY_USERNAME, true);
     putBoolean(SHOW_MY_QR_CODE, true);
   }
@@ -43,6 +45,7 @@ public final class OnboardingValues extends SignalStoreValues {
     setShowInviteFriends(false);
     setShowAppearance(false);
     setShowAddPhoto(false);
+    setShowSetUpUsername(false);
     setShowFindByUsername(false);
     setShowMyQrCode(false);
   }
@@ -54,12 +57,17 @@ public final class OnboardingValues extends SignalStoreValues {
     setShowInviteFriends(false);
   }
 
-  /** Tellomi：只看会显示的四张（上游的「新建群组」「聊天颜色」不出，开关就不算）。 */
+  /**
+   * Tellomi：只看会显示的四张（上游的「新建群组」「聊天颜色」不出，开关就不算）。
+   * 上游 v8.28 加的「设置用户名」只给无号码账号、还没有用户名时出（条件同 {@code OnboardingState.DisplayState}），
+   * 有号码的账号只剩这个开关时不算，不然首屏引导永远收不掉。
+   */
   public boolean hasOnboarding(@NonNull Context context) {
     return shouldShowFindByUsername() ||
            shouldShowMyQrCode()       ||
            shouldShowInviteFriends()  ||
-           shouldShowAddPhoto();
+           shouldShowAddPhoto()       ||
+           (shouldShowSetUpUsername() && SignalStore.account().isPhoneNumberless() && SignalStore.account().getUsername() == null);
   }
 
   public void setShowNewGroup(boolean value) {
@@ -92,6 +100,14 @@ public final class OnboardingValues extends SignalStoreValues {
 
   public boolean shouldShowAddPhoto() {
     return getBoolean(SHOW_ADD_PHOTO, false);
+  }
+
+  public void setShowSetUpUsername(boolean value) {
+    putBoolean(SHOW_SET_UP_USERNAME, value);
+  }
+
+  public boolean shouldShowSetUpUsername() {
+    return getBoolean(SHOW_SET_UP_USERNAME, false);
   }
 
   public void setShowFindByUsername(boolean value) {

@@ -21,10 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.onConsumedWindowInsetsChanged
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +30,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -61,6 +59,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import org.signal.core.ui.compose.navigationBarsCompat
+import org.signal.core.ui.compose.safeDrawingCompat
+import org.signal.core.ui.compose.systemBarsCompat
 import org.signal.core.ui.getWindowSizeClass
 import org.signal.core.ui.isHeightCompact
 import kotlin.coroutines.cancellation.CancellationException
@@ -132,11 +133,16 @@ fun MediaKeyboardScaffold(
     derivedStateOf { imeInsets.getBottom(density) != imeAnimationTarget.getBottom(density) }
   }
 
-  // Written together, so nothing waiting on the controller can see a keyboard that is neither
-  // visible nor still animating out.
   SideEffect {
     controller.isSystemKeyboardVisible = systemKeyboardVisible
-    controller.isSystemKeyboardAnimating = systemKeyboardAnimating
+  }
+
+  // The controller outlives us. current is left set so a rebuilt view restores its keyboard.
+  DisposableEffect(controller) {
+    onDispose {
+      controller.isSystemKeyboardVisible = false
+      controller.awaitingSystemKeyboard = false
+    }
   }
 
   var hasReportedKeyboardVisibility by remember { mutableStateOf(false) }
@@ -254,12 +260,12 @@ fun MediaKeyboardScaffold(
   }
 
   var ancestorConsumedBottomPx by remember { mutableIntStateOf(0) }
-  val safeDrawingInsets = WindowInsets.safeDrawing
+  val safeDrawingInsets = WindowInsets.safeDrawingCompat
 
   val windowInsets = if (adjustContentForInput) {
     safeDrawingInsets
   } else {
-    WindowInsets.systemBars.add(WindowInsets.displayCutout)
+    WindowInsets.systemBarsCompat.add(WindowInsets.displayCutout)
   }
 
   Box(modifier = modifier.fillMaxSize()) {
@@ -280,7 +286,7 @@ fun MediaKeyboardScaffold(
             .height(height)
             .graphicsLayer { translationY = backProgress.value * heightPx }
             .background(registry.containerColorFor(visibleKey).takeOrElse { MaterialTheme.colorScheme.surfaceContainerLow })
-            .navigationBarsPadding()
+            .windowInsetsPadding(WindowInsets.navigationBarsCompat)
         ) {
           registry.contentFor(visibleKey)?.invoke()
         }

@@ -38,8 +38,9 @@ import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
 
 public class UsernameEditFragment extends LoggingFragment {
 
-  private static final float DISABLED_ALPHA           = 0.5f;
-  public static final String IGNORE_TEXT_CHANGE_EVENT = "ignore.text.change.event";
+  private static final float  DISABLED_ALPHA           = 0.5f;
+  private static final String USERNAME_SUPPORT_URL     = "https://tellomi.app/help/6712070553754";
+  public static final  String IGNORE_TEXT_CHANGE_EVENT = "ignore.text.change.event";
 
   public static final int REQUEST_CODE = 4242;
 
@@ -143,10 +144,10 @@ public class UsernameEditFragment extends LoggingFragment {
     });
 
     binding.usernameDescription.setLinkColor(ContextCompat.getColor(requireContext(), org.signal.core.ui.R.color.signal_colorPrimary));
-    // Tellomi（tellomi/tellomi#1106）：上游的说明是「用户名始终搭配一组数字」，「了解更多」弹的是「这个号码是什么？」——
-    // 去掉后缀之后两段都不成立。说明换成布局里的 Tellomi 文案，「了解更多」不再显示。
+    // Tellomi（tellomi/tellomi#1106）：上游的说明是「用户名始终搭配一组数字」，「了解更多」讲的也是这组数字（v8.26 弹「这个号码是什么？」，
+    // v8.28 起改成链到帮助文章）——去掉后缀之后两段都不成立。说明换成布局里的 Tellomi 文案，「了解更多」不再显示。
     binding.usernameDescription.setLearnMoreVisible(false);
-    binding.usernameDescription.setOnLinkClickListener(this::onLearnMore);
+    binding.usernameDescription.setLink(USERNAME_SUPPORT_URL);
 
     ViewUtil.focusAndShowKeyboard(binding.usernameText);
   }
@@ -171,15 +172,6 @@ public class UsernameEditFragment extends LoggingFragment {
     } else {
       viewModel.onUsernameSubmitted(false);
     }
-  }
-
-
-  private void onLearnMore(@Nullable View unused) {
-    new MaterialAlertDialogBuilder(requireContext())
-        .setTitle(getString(R.string.UsernameEditFragment__what_is_this_number))
-        .setMessage(R.string.UsernameEditFragment__these_digits_help_keep)
-        .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
-        .show();
   }
 
   private void onUiStateChanged(@NonNull UsernameEditViewModel.State state) {
