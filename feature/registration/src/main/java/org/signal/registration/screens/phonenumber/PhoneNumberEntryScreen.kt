@@ -5,13 +5,6 @@
 
 package org.signal.registration.screens.phonenumber
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -47,8 +40,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,11 +61,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.core.os.ConfigurationCompat
-import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.delay
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
@@ -85,8 +72,6 @@ import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.TextFields
-import org.signal.core.util.Util
-import org.signal.core.util.logging.Log
 import org.signal.registration.R
 import org.signal.registration.RegistrationDependencies
 import org.signal.registration.TellomiRegistration
@@ -107,26 +92,6 @@ import org.signal.registration.test.TestTags
 import java.util.Locale
 import org.signal.core.ui.R as CoreR
 
-private const val TAG = "PhoneNumberScreen"
-
-/**
- * Reads the device's own phone number from the SIM as an E164 string, but only if the relevant phone permission has
- * already been granted. Returns null if the permission is missing or the number is unavailable. We never prompt for
- * the permission solely to prefill the number.
- */
-@SuppressLint("MissingPermission")
-private fun readDeviceNumberE164(context: Context): String? {
-  val hasPhonePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ||
-    ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) == PackageManager.PERMISSION_GRANTED
-
-  if (!hasPhonePermission) {
-    return null
-  }
-
-  val deviceNumber = Util.getDeviceNumber(context).orElse(null) ?: return null
-  return PhoneNumberUtil.getInstance().format(deviceNumber, PhoneNumberUtil.PhoneNumberFormat.E164)
-}
-
 /**
  * Phone number entry screen
  */
@@ -137,59 +102,13 @@ fun PhoneNumberScreen(
   modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current
-  var hasRequestedPhoneNumberHint by rememberSaveable { mutableStateOf(false) }
-  val currentNationalNumber by rememberUpdatedState(state.nationalNumber)
 
-  val prefillFromDeviceNumberIfAllowed = {
-    if (currentNationalNumber.isEmpty()) {
-      readDeviceNumberE164(context)?.let { e164 ->
-        onEvent(PhoneNumberEntryScreenEvents.FullPhoneNumberEntered(e164))
-      }
-    }
-  }
+  // Tellomi（tellomi/tellomi#1338）：去掉上游进页即弹的 Google Play 服务号码提示（Identity.getSignInClient(...)
+  // .getPhoneNumberHintIntent）。它在用户同意协议和跨境告知之前就调 Play 服务，违反「同意之前不联网、不调第三方」；
+  // 连带去掉它失败时的 SIM 读号兜底（要 READ_PHONE_STATE，Tellomi 不声明也不申请，本来就总是读不到）。号码只能用户自己输。
 
-  val phoneNumberHintLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-    val phoneNumber = try {
-      Identity.getSignInClient(context).getPhoneNumberFromIntent(result.data)
-    } catch (e: Exception) {
-      Log.w(TAG, "Failed to retrieve phone number from hint.", e)
-      null
-    }
-
-    if (phoneNumber != null) {
-      onEvent(PhoneNumberEntryScreenEvents.FullPhoneNumberEntered(phoneNumber, autoConfirm = true))
-    }
-  }
-
-  LaunchedEffect(state.initialized) {
-    if (!state.initialized || hasRequestedPhoneNumberHint || state.nationalNumber.isNotEmpty() || state.preExistingRegistrationData != null) {
-      return@LaunchedEffect
-    }
-    hasRequestedPhoneNumberHint = true
-
-    try {
-      Identity.getSignInClient(context)
-        .getPhoneNumberHintIntent(GetPhoneNumberHintIntentRequest.builder().build())
-        .addOnSuccessListener { pendingIntent ->
-          try {
-            phoneNumberHintLauncher.launch(IntentSenderRequest.Builder(pendingIntent).build())
-          } catch (e: Exception) {
-            Log.w(TAG, "Failed to launch phone number hint intent.", e)
-            prefillFromDeviceNumberIfAllowed()
-          }
-        }
-        .addOnFailureListener { e ->
-          Log.w(TAG, "Phone number hint unavailable. Falling back to device number.", e)
-          prefillFromDeviceNumberIfAllowed()
-        }
-    } catch (e: Exception) {
-      Log.w(TAG, "Unable to request phone number hint. Falling back to device number.", e)
-      prefillFromDeviceNumberIfAllowed()
-    }
-  }
-
-  // Tellomi：先同意、再发号码（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。「下一步」和号码提示的自动确认
-  // 都要先走到下面这个确认号码的对话框，所以只在这里拦：没勾 → 先二次确认；同意 = 勾选框看得见地打勾，停一下再出确认框；
+  // Tellomi：先同意、再发号码（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。「下一步」（号码提示的自动确认已随
+  // #1338 去掉）要先走到下面这个确认号码的对话框，所以只在这里拦：没勾 → 先二次确认；同意 = 勾选框看得见地打勾，停一下再出确认框；
   // 不同意 = 和点「修改号码」一样，什么都不发生。
   var consentChecked by remember { mutableStateOf(TellomiLegalConsent.hasAgreedToTerms(context)) }
   val onConsentCheckedChange: (Boolean) -> Unit = { checked ->
