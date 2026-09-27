@@ -134,15 +134,27 @@ class AttachmentFilesScreenTest {
     assertThat(kept.toSet()).isEqualTo(picked.toSet())
   }
 
+  // owner 2026-09-28：一条都没有时连「最近发送的文件」标题都不显示，看起来像没这个功能 → 标题常驻，空的时候标题下面是插画 + 说明
+  // （照 Telegram iOS `AttachmentFileEmptyItem` 的空状态：一张图 + 一句话，独立实现）。
+
   @Test
-  fun `Given no files were ever sent, when shown, then one line says what can be sent with the server limit and there is no search`() {
+  fun `Given no files were ever sent, when shown, then the header stays and an illustration and the server limit are shown with no search`() {
     setPage(AttachmentFilesState(files = emptyList(), maxFileSize = 104_857_600L, dock = DOCK))
 
     val expected = context.getString(R.string.AttachmentFilesScreen__empty, 104_857_600L.bytes.toUnitString())
     composeTestRule.onNodeWithTag(TestTags.ATTACHMENT_FILES_EMPTY).assert(hasText(expected))
     assertThat(expected.contains("100")).isTrue()
     composeTestRule.onNodeWithTag(TestTags.ATTACHMENT_FILES_SEARCH_BUTTON).assertDoesNotExist()
-    composeTestRule.onNodeWithText(context.getString(R.string.AttachmentFilesScreen__recently_sent_files)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.AttachmentFilesScreen__recently_sent_files)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.ATTACHMENT_FILES_EMPTY_ILLUSTRATION, useUnmergedTree = true).assertIsDisplayed()
+  }
+
+  @Test
+  fun `Given recent files are loading, when shown, then the header is already there and there is no illustration`() {
+    setPage(AttachmentFilesState(files = null, dock = DOCK))
+
+    composeTestRule.onNodeWithText(context.getString(R.string.AttachmentFilesScreen__recently_sent_files)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.ATTACHMENT_FILES_EMPTY_ILLUSTRATION, useUnmergedTree = true).assertDoesNotExist()
   }
 
   // endregion

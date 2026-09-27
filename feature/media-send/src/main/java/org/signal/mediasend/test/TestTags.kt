@@ -87,6 +87,7 @@ object TestTags {
   const val ATTACHMENT_FILES_SEND = "attachment_files_send"
   const val ATTACHMENT_FILES_SKELETON = "attachment_files_skeleton"
   const val ATTACHMENT_FILES_EMPTY = "attachment_files_empty"
+  const val ATTACHMENT_FILES_EMPTY_ILLUSTRATION = "attachment_files_empty_illustration"
   const val ATTACHMENT_FILES_SHOW_MORE = "attachment_files_show_more"
   const val ATTACHMENT_FILES_NO_RESULTS = "attachment_files_no_results"
 
