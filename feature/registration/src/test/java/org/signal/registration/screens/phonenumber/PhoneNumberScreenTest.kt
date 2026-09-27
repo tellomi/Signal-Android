@@ -23,6 +23,13 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.hasLength
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
+import io.mockk.verify
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -437,5 +444,32 @@ class PhoneNumberScreenTest {
     composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).performClick()
 
     composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_PHONE_FIELD).assertIsFocused()
+  }
+
+  // ==================== Tellomi（tellomi/tellomi#1338）：同意之前不调 Google Play 服务 ====================
+
+  @Test
+  fun `entering the screen does not ask Google Play services for a phone number hint`() {
+    // 号码页出现时用户还没同意协议和跨境告知；上游在这里（state.initialized 变 true、号码为空）自动调
+    // Identity.getSignInClient(...).getPhoneNumberHintIntent(...) 弹 Google 的号码选择器。
+    mockkStatic(Identity::class)
+    try {
+      every { Identity.getSignInClient(any<Context>()) } returns mockk<SignInClient>(relaxed = true)
+      val events = mutableListOf<PhoneNumberEntryScreenEvents>()
+
+      composeTestRule.setContent {
+        SignalTheme {
+          PhoneNumberScreen(state = PhoneNumberEntryState(initialized = true), onEvent = { events += it })
+        }
+      }
+      composeTestRule.waitForIdle()
+
+      verify(exactly = 0) { Identity.getSignInClient(any<Context>()) }
+      assert(events.none { it is PhoneNumberEntryScreenEvents.FullPhoneNumberEntered }) {
+        "Expected no prefilled number before consent but got $events"
+      }
+    } finally {
+      unmockkStatic(Identity::class)
+    }
   }
 }
