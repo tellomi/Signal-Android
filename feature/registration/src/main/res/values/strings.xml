@@ -931,6 +931,12 @@
     <!-- Shown in the first-launch privacy notice after the user taps Disagree -->
     <string name="TellomiConsent__first_launch_disagree_hint">You need to agree before using Tellomi. If you don\'t, we won\'t collect any information.</string>
 
+    <!-- Tellomi（ADR-0066 §6.1b，owner 2026-09-27）：用户名一律小写；输入框下常驻的规则提示，和打了大写被当场转小写时短暂换上的那一句 -->
+    <!-- Permanent gray hint under every username field (set, change, reclaim): what a username may contain -->
+    <string name="TellomiUsername__rules_hint">Lowercase letters, numbers and underscores only; starts with a letter; 3–20 characters.</string>
+    <!-- Shown for about 2 seconds in place of the rules hint after typed or pasted uppercase letters were changed to lowercase; not an error -->
+    <string name="TellomiUsername__lowercased_hint">Changed to lowercase</string>
+
     <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338） -->
     <!-- Title of the small cross-border transfer dialog shown before the phone number is sent (also on upgrade and when linking this device) -->
     <string name="TellomiCrossBorder__dialog_title">Cross-border transfer of personal information</string>

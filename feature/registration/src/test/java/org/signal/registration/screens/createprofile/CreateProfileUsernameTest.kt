@@ -134,6 +134,29 @@ class CreateProfileUsernameTest {
     coVerify(exactly = 1) { repository.reserveUsername("kaixin", null) }
   }
 
+  /** Tellomi（ADR-0066 §6.1b）：输入框已经当场转小写，视图模型再兜一层——保留的永远是小写（加密进用户名链接的也是它）。 */
+  @Test
+  fun `an uppercase username is kept and reserved in lowercase`() = runTest(testDispatcher) {
+    coEvery { repository.reserveUsername("kaixin") } returns RequestResult.Success(Username("kaixin.01"))
+
+    viewModel.onEvent(CreateProfileScreenEvents.UsernameChanged("KaiXin"))
+    advanceUntilIdle()
+
+    assertThat(entry.text).isEqualTo("kaixin")
+    coVerify(exactly = 1) { repository.reserveUsername("kaixin", null) }
+  }
+
+  /** §6.1b 第 3 条：大写以外不合规的字符（空格、减号……）不自动删，照旧就地报错。 */
+  @Test
+  fun `other invalid characters still show the error after lowercasing`() = runTest(testDispatcher) {
+    viewModel.onEvent(CreateProfileScreenEvents.UsernameChanged("Kai Xin"))
+    advanceUntilIdle()
+
+    assertThat(entry.text).isEqualTo("kai xin")
+    assertThat(entry.error).isEqualTo(TellomiUsernameEntry.Error.INVALID_CHARACTERS)
+    coVerify(exactly = 0) { repository.reserveUsername(any(), any()) }
+  }
+
   @Test
   fun `invalid usernames never reach the service`() = runTest(testDispatcher) {
     viewModel.onEvent(CreateProfileScreenEvents.GivenNameChanged("开心"))

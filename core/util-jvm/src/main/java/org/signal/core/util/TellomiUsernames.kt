@@ -35,7 +35,8 @@ object TellomiUsernames {
    */
   @JvmStatic
   fun toProtocolUsername(input: String): String {
-    val trimmed = input.trim().removePrefix("@")
+    // §6.1b：一律小写（hash 本来就不分大小写；这样 `Username` 的字符串、存进 Recipient 的也都是小写）
+    val trimmed = lowercaseAscii(input.trim().removePrefix("@"))
     return if (trimmed.contains(DELIMITER)) trimmed else "$trimmed$DELIMITER$FIXED_DISCRIMINATOR"
   }
 
@@ -43,10 +44,25 @@ object TellomiUsernames {
    * 协议层的完整用户名 → 界面上显示的样子：**只有 `.01` 结尾的去掉后缀**（`kaixin.01` → `kaixin`）；
    * 别的后缀**完整显示**（`kaixin.57` 原样）——ADR-0066 §九的反向用例：别人用 `kaixin.57` 注册，
    * 官方客户端必须显示 `kaixin.57`，不能显示成 `kaixin`，否则就是冒充。
+   *
+   * §6.1b（owner 2026-09-27）：**一律显示小写**。老数据里的大写（`Chang.01`）只在显示时转，不迁移——唯一性本来就不分大小写。
    */
   @JvmStatic
   fun toDisplayUsername(username: String): String {
-    return username.removeSuffix("$DELIMITER$FIXED_DISCRIMINATOR")
+    return lowercaseAscii(username.removeSuffix("$DELIMITER$FIXED_DISCRIMINATOR"))
+  }
+
+  /**
+   * ADR-0066 §6.1b（owner 2026-09-27）：用户名一律小写。只把 `A`–`Z` 换成 `a`–`z`，别的字符原样：
+   * - 长度不变，输入框里当场转小写时光标 / 选区不跳；
+   * - 用户名本来只许 `a–z 0–9 _`，别的字符（空格、中文、`Ä`、`İ`……）留给就地报错，不能被「转」成合法的样子。
+   */
+  @JvmStatic
+  fun lowercaseAscii(text: String): String {
+    if (text.none { it in 'A'..'Z' }) return text
+    return buildString(text.length) {
+      for (c in text) append(if (c in 'A'..'Z') c + ('a' - 'A') else c)
+    }
   }
 
   /**

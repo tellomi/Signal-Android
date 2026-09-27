@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.TellomiNames
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
 import org.signal.network.service.UsernameService.ConfirmUsernameError
@@ -151,7 +152,8 @@ class CreateProfileViewModel(
    * 去掉习惯打的 `@`；格式不对立刻说；格式对了立刻显示「正在检查…」，停顿之后才去服务端。
    */
   private fun applyUsernameChanged(state: CreateProfileState, value: String, stateEmitter: (CreateProfileState) -> Unit) {
-    val text = value.removePrefix("@")
+    // Tellomi（ADR-0066 §6.1b）：用户名一律小写。输入框已经当场转了，这里再兜一层（候选、以后别的入口）
+    val text = TellomiUsernames.lowercaseAscii(value.removePrefix("@"))
     val entry = state.usernameEntry
     if (text == entry.text || entry.confirmed != null) {
       return

@@ -157,6 +157,7 @@ object TestTags {
   const val CREATE_PROFILE_AVATAR_INITIALS = "create_profile_avatar_initials"
   const val CREATE_PROFILE_USERNAME_FIELD = "create_profile_username_field"
   const val CREATE_PROFILE_USERNAME_SUPPORTING_TEXT = "create_profile_username_supporting_text"
+  const val CREATE_PROFILE_USERNAME_RULES_HINT = "create_profile_username_rules_hint"
   const val CREATE_PROFILE_USERNAME_CANDIDATE = "create_profile_username_candidate"
 
   // Phone Number Discoverability Screen

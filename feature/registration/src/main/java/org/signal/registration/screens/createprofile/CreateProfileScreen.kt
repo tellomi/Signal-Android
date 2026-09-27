@@ -34,7 +34,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,14 +54,17 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import org.signal.core.ui.WindowBreakpoint
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
@@ -272,6 +280,9 @@ private fun LargeLayout(
 /**
  * Tellomi（tellomi/tellomi#1215 第二刀）：用户名（选填）。说明行一直占一行（出错 / 查到 / 在查都在这一行），界面不跳；
  * 不可用时下面给三个候选，点了照常走一遍检查。
+ *
+ * ADR-0066 §6.1b（owner 2026-09-27）：说明行上面再常驻一行灰色规则提示；打了（或粘贴了）大写当场转小写（[TellomiUsernameInput]），
+ * 光标 / 选区不跳，规则提示换成「已自动转成小写」约 2 秒。所以输入框自己拿着 [TextFieldValue]（选区在这里），文字仍以视图模型为准。
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -280,10 +291,39 @@ private fun TellomiUsernameField(
   enabled: Boolean,
   onEvent: (CreateProfileScreenEvents) -> Unit
 ) {
+  var fieldValue by remember { mutableStateOf(TextFieldValue(entry.text, TextRange(entry.text.length))) }
+  var lowercasedCount by remember { mutableIntStateOf(0) }
+  var showLowercasedHint by remember { mutableStateOf(false) }
+
+  // 视图模型改了文字（去掉 @、点了候选……）才覆盖输入框，光标放到末尾；自己打的字视图模型原样收下，不会走到这里
+  LaunchedEffect(entry.text) {
+    if (entry.text != fieldValue.text) {
+      fieldValue = TextFieldValue(entry.text, TextRange(entry.text.length))
+    }
+  }
+
+  LaunchedEffect(lowercasedCount) {
+    if (lowercasedCount > 0) {
+      showLowercasedHint = true
+      delay(TellomiUsernameInput.LOWERCASED_HINT_MS)
+      showLowercasedHint = false
+    }
+  }
+
   Column(modifier = Modifier.fillMaxWidth()) {
     OutlinedTextField(
-      value = entry.text,
-      onValueChange = { onEvent(CreateProfileScreenEvents.UsernameChanged(it)) },
+      value = fieldValue,
+      onValueChange = { typed ->
+        val lowered = TellomiUsernameInput.lowercase(typed)
+        if (lowered !== typed) {
+          lowercasedCount++
+        }
+        val textChanged = lowered.text != fieldValue.text
+        fieldValue = lowered
+        if (textChanged) {
+          onEvent(CreateProfileScreenEvents.UsernameChanged(lowered.text))
+        }
+      },
       label = { Text(stringResource(R.string.TellomiRegistration__username_optional)) },
       singleLine = true,
       enabled = enabled,
@@ -315,15 +355,25 @@ private fun TellomiUsernameField(
         else -> null
       },
       supportingText = {
-        Text(
-          text = usernameSupportingText(entry),
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          modifier = Modifier
-            .testTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT)
-            // 「正在检查 / 不可用 / 你的链接」变了读屏要念出来（taishi 审查包 4）。停顿 500ms 才查，一次输入最多念两回
-            .semantics { liveRegion = LiveRegionMode.Polite }
-        )
+        Column {
+          // 规则提示：出错时也保持灰色（输入框出错时整个说明区默认是红色）
+          Text(
+            text = stringResource(if (showLowercasedHint) R.string.TellomiUsername__lowercased_hint else R.string.TellomiUsername__rules_hint),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+              .testTag(TestTags.CREATE_PROFILE_USERNAME_RULES_HINT)
+              .semantics { liveRegion = LiveRegionMode.Polite }
+          )
+          Text(
+            text = usernameSupportingText(entry),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+              .testTag(TestTags.CREATE_PROFILE_USERNAME_SUPPORTING_TEXT)
+              // 「正在检查 / 不可用 / 你的链接」变了读屏要念出来（taishi 审查包 4）。停顿 500ms 才查，一次输入最多念两回
+              .semantics { liveRegion = LiveRegionMode.Polite }
+          )
+        }
       },
       modifier = Modifier
         .fillMaxWidth()
