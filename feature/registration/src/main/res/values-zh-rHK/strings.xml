@@ -904,9 +904,15 @@
     <string name="TellomiConsent__first_launch_agree">同意</string>
     <string name="TellomiConsent__first_launch_disagree_hint">需要同意後才能使用 Tellomi；不同意的話，我們不會收集任何資訊。</string>
 
-    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1，逐字照需求第六节 6.3（tellomi/tellomi#1338）。「境外接收方」用 Android 那一行（Google / FCM） -->
-    <string name="TellomiCrossBorder__title">您的個人信息將傳輸到中國大陸境外處理</string>
-    <string name="TellomiCrossBorder__intro">Tellomi 的伺服器位於中國香港，附件等加密資料存放在 Cloudflare 位於北美西部的儲存區域。註冊和使用 Tellomi，會把您的部分個人信息傳輸到中國大陸境外處理。請讀完下面幾項，再決定是否單獨同意。同意之前，App 不會連接任何伺服器。</string>
+    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338）。「境外接收方」用 Android 那一行（Google / FCM） -->
+    <string name="TellomiCrossBorder__dialog_title">個人信息出境</string>
+    <string name="TellomiCrossBorder__dialog_body">Tellomi 的伺服器在中國香港，附件、頭像和備份存放在 Cloudflare（美國），您的部分個人信息會因此傳輸到中國大陸境外處理。是否單獨同意？</string>
+    <string name="TellomiCrossBorder__dialog_full_notice_link">查看《個人信息出境告知》</string>
+    <string name="TellomiCrossBorder__dialog_policy_updated">《隱私政策》已更新至 2.0.0 版。</string>
+    <string name="TellomiCrossBorder__policy_updated_link">查看《隱私政策》2.0.0</string>
+    <string name="TellomiCrossBorder__linked_dialog_body">跨境傳輸的單獨同意已在您的手機上取得，這部裝置不再另行詢問。關聯之後，這部裝置上的資訊也按《個人信息出境告知》處理。</string>
+    <string name="TellomiCrossBorder__disagree_hint">不同意的話，App 不會連接任何伺服器，也不會發送您的任何資訊；在中國大陸服務上線之前，您將無法使用 Tellomi。您可以退出 App，或者之後再同意。</string>
+    <string name="TellomiCrossBorder__full_notice_title">個人信息出境告知</string>
     <string name="TellomiCrossBorder__item_where_title">是否出境</string>
     <string name="TellomiCrossBorder__item_where_body">是。Tellomi 的伺服器部署在阿里雲位於中國香港的數據中心；附件、頭像和伺服器資料庫備份存放在 Cloudflare R2（儲存區域：北美西部）。您的聊天記錄保存在您自己的裝置上，不保存在伺服器上。</string>
     <string name="TellomiCrossBorder__item_recipients_title">境外接收方</string>
@@ -925,13 +931,9 @@
     <string name="TellomiCrossBorder__item_procedure_body">根據《促進和規範數據跨境流動規定》第五條第（四）項，關鍵信息基礎設施運營者以外的個人信息處理者，自當年 1 月 1 日起累計向境外提供不滿 10 萬人個人信息（不含敏感個人信息）的，免予申報數據出境安全評估、訂立個人信息出境標準合同和通過個人信息保護認證。Tellomi 目前屬於這一情形；人數接近上述標準時，我們將依法辦理。免予這些程序，不影響我們告知您、取得您的單獨同意和開展個人信息保護影響評估的義務。</string>
     <string name="TellomiCrossBorder__item_consent_title">單獨同意和撤回</string>
     <string name="TellomiCrossBorder__item_consent_body">點「同意並繼續」，即表示您單獨同意上述跨境傳輸；同意《隱私政策》不等於同意跨境傳輸。您可以隨時電郵至 privacy@tellomi.app 撤回（App 內的撤回入口上線後，也可以在 App 內操作）。現階段 Tellomi 只能透過境外的伺服器提供服務，撤回後，在中國大陸服務上線之前您將無法繼續使用 Tellomi，您可以同時註銷帳號。撤回不影響撤回之前已經進行的處理。</string>
+    <string name="TellomiCrossBorder__linked_item_consent_body">上述跨境傳輸的單獨同意在您的手機上取得，這部裝置不另行收集。您可以隨時電郵至 privacy@tellomi.app 撤回；撤回後，在中國大陸服務上線之前您將無法繼續使用 Tellomi。</string>
     <string name="TellomiCrossBorder__privacy_link">查看《隱私政策》第二十、二十一節</string>
     <string name="TellomiCrossBorder__third_party_link">查看《第三方信息共享及 SDK 清單》</string>
-    <string name="TellomiCrossBorder__disagree_hint">不同意的話，App 不會連接任何伺服器，也不會發送您的任何資訊；在中國大陸服務上線之前，您將無法使用 Tellomi。您可以退出 App，或者之後回到這一頁再同意。</string>
-    <string name="TellomiCrossBorder__policy_updated">《隱私政策》已更新至 2.0.0 版：訊息、通話、附件、個人資料和群組資訊都是端到端加密的；同時寫明了伺服器位於中國香港，以及本頁所說的個人信息跨境傳輸。</string>
-    <string name="TellomiCrossBorder__policy_updated_link">查看《隱私政策》2.0.0</string>
-    <string name="TellomiCrossBorder__linked_title">關聯裝置前請了解：個人信息跨境傳輸</string>
-    <string name="TellomiCrossBorder__linked_intro">這部裝置將關聯到您的 Tellomi 帳號。個人信息跨境傳輸的單獨同意在您的手機上取得，這部裝置不再另行詢問；下面是同一份告知，供您了解。關聯之後，這部裝置上的資訊也按下面的方式處理。</string>
-    <string name="TellomiCrossBorder__linked_item_consent_body">上述跨境傳輸的單獨同意在您的手機上取得，這部裝置不另行收集。您可以隨時電郵至 privacy@tellomi.app 撤回；撤回後，在中國大陸服務上線之前您將無法繼續使用 Tellomi。</string>
+    <string name="TellomiCrossBorder__full_notice_close">返回</string>
     <string name="TellomiCrossBorder__linked_ack">知道了</string>
 </resources>

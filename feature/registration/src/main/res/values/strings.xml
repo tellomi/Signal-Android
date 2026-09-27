@@ -931,11 +931,23 @@
     <!-- Shown in the first-launch privacy notice after the user taps Disagree -->
     <string name="TellomiConsent__first_launch_disagree_hint">You need to agree before using Tellomi. If you don\'t, we won\'t collect any information.</string>
 
-    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1，逐字照需求第六节 6.3（tellomi/tellomi#1338） -->
-    <!-- Title of the cross-border data transfer notice shown before the phone number is sent during registration -->
-    <string name="TellomiCrossBorder__title">Your personal information will be processed outside mainland China</string>
-    <!-- Introduction of the cross-border data transfer notice -->
-    <string name="TellomiCrossBorder__intro">Tellomi’s servers are in Hong Kong, China, and encrypted data such as attachments is stored with Cloudflare in western North America. Signing up for and using Tellomi transfers some of your personal information outside mainland China. Please read the points below before deciding whether to give your separate consent. Until you agree, the app won’t connect to any server.</string>
+    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338） -->
+    <!-- Title of the small cross-border transfer dialog shown before the phone number is sent (also on upgrade and when linking this device) -->
+    <string name="TellomiCrossBorder__dialog_title">Cross-border transfer of personal information</string>
+    <!-- Body of the cross-border transfer dialog: where the data goes, and the question asking for separate consent -->
+    <string name="TellomiCrossBorder__dialog_body">Tellomi’s servers are in Hong Kong, China, and attachments, profile photos and backups are stored with Cloudflare (United States), so some of your personal information is transferred outside mainland China. Do you give your separate consent?</string>
+    <!-- Link in the cross-border transfer dialog that opens the full notice (rendered in the app, not loaded from the web) -->
+    <string name="TellomiCrossBorder__dialog_full_notice_link">Read the Cross-Border Transfer Notice</string>
+    <!-- Shown at the top of the cross-border transfer dialog when an already registered device sees it after upgrading: the Privacy Policy was updated -->
+    <string name="TellomiCrossBorder__dialog_policy_updated">Our Privacy Policy has been updated to version 2.0.0.</string>
+    <!-- Link under the Privacy Policy update line that opens the Privacy Policy -->
+    <string name="TellomiCrossBorder__policy_updated_link">Read Privacy Policy 2.0.0</string>
+    <!-- Body of the cross-border transfer dialog shown before this device is linked to an account (consent is given on the phone) -->
+    <string name="TellomiCrossBorder__linked_dialog_body">Separate consent to the cross-border transfer is given on your phone, so this device won’t ask for it again. After linking, information on this device is handled as described in the Cross-Border Transfer Notice.</string>
+    <!-- Shown in the cross-border transfer dialog after the user taps Disagree -->
+    <string name="TellomiCrossBorder__disagree_hint">If you don’t agree, the app won’t connect to any server or send any of your information, and you won’t be able to use Tellomi until our mainland China service launches. You can close the app, or agree later.</string>
+    <!-- Title of the full cross-border transfer notice opened from the dialog -->
+    <string name="TellomiCrossBorder__full_notice_title">Cross-Border Transfer Notice</string>
     <!-- Cross-border notice item 1 title: whether data leaves mainland China -->
     <string name="TellomiCrossBorder__item_where_title">Does my information leave mainland China?</string>
     <!-- Cross-border notice item 1 body: where servers and storage are located -->
@@ -970,24 +982,16 @@
     <string name="TellomiCrossBorder__item_procedure_body">Under Article 5(4) of the Provisions on Promoting and Regulating Cross-Border Data Flows, a personal information handler other than a critical information infrastructure operator that has provided the personal information of fewer than 100,000 people (excluding sensitive personal information) outside mainland China since January 1 of the current year is exempt from the data export security assessment, the standard contract and personal information protection certification. Tellomi currently falls into this category; as the number approaches this threshold, we’ll complete the required procedure. The exemption doesn’t change our duties to inform you, obtain your separate consent and carry out a personal information protection impact assessment.</string>
     <!-- Cross-border notice item 9 title: separate consent and withdrawal -->
     <string name="TellomiCrossBorder__item_consent_title">Separate consent and withdrawal</string>
-    <!-- Cross-border notice item 9 body: this page is the separate consent and can be withdrawn -->
+    <!-- Cross-border notice item 9 body: tapping Agree and Continue is the separate consent, and it can be withdrawn -->
     <string name="TellomiCrossBorder__item_consent_body">Tapping “Agree and Continue” means you separately consent to the transfer described above; agreeing to the Privacy Policy is not the same as consenting to this transfer. You can withdraw at any time by emailing privacy@tellomi.app (or in the app once that option is available). Because Tellomi can currently only be provided through servers outside mainland China, after withdrawing you won’t be able to keep using Tellomi until our mainland China service launches; you can also delete your account. Withdrawing doesn’t affect processing carried out before it.</string>
-    <!-- Link at the bottom of the cross-border notice that opens the Privacy Policy sections about storage location and cross-border transfer -->
-    <string name="TellomiCrossBorder__privacy_link">Read sections 20 and 21 of the Privacy Policy</string>
-    <!-- Link at the bottom of the cross-border notice that opens the Third-Party Sharing and SDK List -->
-    <string name="TellomiCrossBorder__third_party_link">Read the Third-Party Sharing and SDK List</string>
-    <!-- Shown on the cross-border notice after the user taps Disagree -->
-    <string name="TellomiCrossBorder__disagree_hint">If you don’t agree, the app won’t connect to any server or send any of your information, and you won’t be able to use Tellomi until our mainland China service launches. You can close the app, or come back to this page and agree later.</string>
-    <!-- Shown above the introduction of the cross-border notice when an already registered device sees it after upgrading: the Privacy Policy was updated -->
-    <string name="TellomiCrossBorder__policy_updated">Our Privacy Policy has been updated to version 2.0.0: messages, calls, attachments, profiles and group information are end-to-end encrypted, and it now states that our servers are in Hong Kong, China, and describes the cross-border transfer on this page.</string>
-    <!-- Link under the Privacy Policy update line that opens the Privacy Policy -->
-    <string name="TellomiCrossBorder__policy_updated_link">Read Privacy Policy 2.0.0</string>
-    <!-- Title of the read-only cross-border notice shown before this device is linked to an account (consent is given on the phone) -->
-    <string name="TellomiCrossBorder__linked_title">Before you link this device: cross-border transfer of personal information</string>
-    <!-- Introduction of the read-only cross-border notice shown before linking this device -->
-    <string name="TellomiCrossBorder__linked_intro">This device is about to be linked to your Tellomi account. Separate consent to the cross-border transfer is given on your phone, so this device won’t ask for it again. Below is the same notice for your reference. After linking, information on this device is processed in the same way.</string>
-    <!-- Cross-border notice item 9 body on the read-only notice shown before linking this device -->
+    <!-- Cross-border notice item 9 body in the version shown before linking this device -->
     <string name="TellomiCrossBorder__linked_item_consent_body">Separate consent to the transfer above is given on your phone; this device doesn’t collect it again. You can withdraw at any time by emailing privacy@tellomi.app; after withdrawing, you won’t be able to keep using Tellomi until our mainland China service launches.</string>
-    <!-- The only button of the read-only cross-border notice shown before linking this device -->
+    <!-- Link at the bottom of the full cross-border notice that opens the Privacy Policy sections about storage location and cross-border transfer -->
+    <string name="TellomiCrossBorder__privacy_link">Read sections 20 and 21 of the Privacy Policy</string>
+    <!-- Link at the bottom of the full cross-border notice that opens the Third-Party Sharing and SDK List -->
+    <string name="TellomiCrossBorder__third_party_link">Read the Third-Party Sharing and SDK List</string>
+    <!-- Button that closes the full cross-border notice and goes back to the dialog -->
+    <string name="TellomiCrossBorder__full_notice_close">Back</string>
+    <!-- The only button of the cross-border transfer dialog shown before linking this device -->
     <string name="TellomiCrossBorder__linked_ack">Got It</string>
 </resources>

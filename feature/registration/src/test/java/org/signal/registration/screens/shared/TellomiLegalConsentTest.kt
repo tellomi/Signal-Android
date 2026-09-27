@@ -134,11 +134,47 @@ class TellomiLegalConsentTest {
 
     setPhoneNumberScreen(confirmingState)
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
     composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_is_the_phone_number)).assertDoesNotExist()
-    // Tellomi（tellomi/tellomi#1338）：新注册走完整同意，带第三方清单链接；「隐私政策已更新」只给升级上来的已注册设备（需求 6.2 c）
+    // Tellomi（tellomi/tellomi#1338，需求 6.6 判据 1）：两行小弹窗 + 「查看《个人信息出境告知》」；弹窗里没有 9 项全文、没有「隐私政策已更新」
+    assertFullNoticeShown()
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.FULL_NOTICE_LINK_TEST_TAG).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__item_where_body)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__item_procedure_body)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__third_party_link)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_policy_updated)).assertDoesNotExist()
+  }
+
+  /** Tellomi（tellomi/tellomi#1338，需求 6.6 判据 2）：弹窗里的链接打开全文（本地字符串），「返回」回到弹窗，什么都没记、没发。 */
+  @Test
+  fun `the full notice link opens the nine items on top, and Back returns to the dialog`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    val events = setPhoneNumberScreen(confirmingState)
+
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.FULL_NOTICE_LINK_TEST_TAG).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__full_notice_title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__item_where_body)).assertExists()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__item_procedure_body)).assertExists()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__item_consent_body)).assertExists()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_item_consent_body)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__privacy_link)).assertExists()
     composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__third_party_link)).assertExists()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__policy_updated)).assertDoesNotExist()
+
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.FULL_NOTICE_CLOSE_TEST_TAG).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__full_notice_title)).assertDoesNotExist()
+    assertFullNoticeShown()
+    assert(!TellomiCrossBorderConsent.hasAgreed(context))
+    assert(events.isEmpty()) { "Reading the full notice must not send or cancel anything, but got $events" }
+  }
+
+  /** Tellomi（tellomi/tellomi#1338，需求 6.6 判据 5）：被弹窗取代的 5 个 key 不再留在资源里。 */
+  @Test
+  fun `the keys replaced by the dialog are gone`() {
+    val left = listOf("title", "intro", "linked_title", "linked_intro", "policy_updated")
+      .map { "TellomiCrossBorder__$it" }
+      .filter { context.resources.getIdentifier(it, "string", context.packageName) != 0 }
+    assert(left.isEmpty()) { "Keys replaced by the dialog are still in the resources: $left" }
   }
 
   @Test
@@ -149,7 +185,7 @@ class TellomiLegalConsentTest {
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
 
     assert(TellomiCrossBorderConsent.hasAgreed(context))
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertDoesNotExist()
     composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_is_the_phone_number)).assertIsDisplayed()
     assert(events.isEmpty()) { "Agreeing must not submit the number by itself, but got $events" }
   }
@@ -161,7 +197,7 @@ class TellomiLegalConsentTest {
 
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG).performClick()
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertIsDisplayed()
     composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__disagree_hint)).assertIsDisplayed()
     assert(!TellomiCrossBorderConsent.hasAgreed(context))
     assert(events.isEmpty()) { "Disagreeing must not send or cancel anything, but got $events" }
@@ -176,7 +212,7 @@ class TellomiLegalConsentTest {
 
     setPhoneNumberScreen(confirmingState)
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertIsDisplayed()
   }
 
   /** Tellomi（tellomi/tellomi#1338）：告知定稿成独立版本 cb-1（需求 6.1 ①）；同意过草稿 0.1.0-draft 的设备要再出这一页。 */
@@ -187,7 +223,7 @@ class TellomiLegalConsentTest {
     assert(!TellomiCrossBorderConsent.hasAgreed(context)) { "Consent to 0.1.0-draft must not count for the final notice" }
 
     setPhoneNumberScreen(confirmingState)
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertIsDisplayed()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
 
     val recorded = TellomiLegalConsent.prefs(context).getString("cross_border.version", null)
@@ -212,22 +248,41 @@ class TellomiLegalConsentTest {
     assert(recorded == "2.0.0") { "Expected 2.0.0 to be recorded, but got $recorded" }
   }
 
-  /** Tellomi（tellomi/tellomi#1338）：已注册设备升级后的盖页，导语上方加「隐私政策已更新至 2.0.0」和链接（需求 6.2 c）；其余照完整同意。 */
+  /**
+   * Tellomi（tellomi/tellomi#1338）：已注册设备升级后的盖页（需求 6.2 c；6.6 判据 3）：同一个弹窗，最上面是
+   * 「《隐私政策》已更新至 2.0.0 版。」+ 链接，其余照完整同意；关不掉（cancelable = false，由网络闸传）。
+   */
   @Test
-  fun `the upgrade notice shows the privacy policy update above the full consent`() {
+  fun `the upgrade dialog shows the privacy policy update at the top of the full consent`() {
     var agreed = false
     composeTestRule.setContent {
       SignalTheme {
-        TellomiCrossBorderNotice(onAgree = { agreed = true }, onCancel = {}, showPolicyUpdated = true)
+        TellomiCrossBorderNotice(onAgree = { agreed = true }, onCancel = {}, showPolicyUpdated = true, cancelable = false)
       }
     }
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__policy_updated)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_policy_updated)).assertIsDisplayed()
     composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__policy_updated_link)).assertIsDisplayed()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
-    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG).assertIsDisplayed()
+    assertFullNoticeShown()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
     assert(agreed)
+  }
+
+  /** Tellomi（tellomi/tellomi#1338）：关联设备的全文页第 9 项换成「同意在手机上取得」。 */
+  @Test
+  fun `the linked dialog's full notice uses the linked item 9 body`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        TellomiCrossBorderNotice(onAgree = {}, onCancel = {}, readOnly = true)
+      }
+    }
+
+    assertReadOnlyNoticeShown()
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.FULL_NOTICE_LINK_TEST_TAG).performClick()
+
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__full_notice_title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_item_consent_body)).assertExists()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__item_consent_body)).assertDoesNotExist()
   }
 
   @Test
@@ -280,11 +335,11 @@ class TellomiLegalConsentTest {
     composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_OR_TRANSFER_BUTTON).performClick()
     composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON).performClick()
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertIsDisplayed()
     assert(events.isEmpty()) { "Nothing may go out before cross-border consent, but got $events" }
     // Tellomi（tellomi/tellomi#1338）：恢复 / 转移是主设备，保留完整同意（「不同意」「同意并继续」），不是关联设备的只读版
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG).assertIsDisplayed()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_dialog_body)).assertDoesNotExist()
 
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).performClick()
 
@@ -299,7 +354,7 @@ class TellomiLegalConsentTest {
 
     composeTestRule.onNodeWithTag(TestTags.WELCOME_GET_STARTED_BUTTON).performClick()
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertDoesNotExist()
     assert(events == listOf<WelcomeScreenEvents>(WelcomeScreenEvents.Continue)) { "Unexpected events: $events" }
   }
 
@@ -320,7 +375,7 @@ class TellomiLegalConsentTest {
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.ACK_TEST_TAG).performClick()
 
     assertAcknowledgedAsCb1(networkReleased)
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_dialog_body)).assertDoesNotExist()
     assert(events == listOf<WelcomeScreenEvents>(WelcomeScreenEvents.LinkDevice)) { "Got It should go on to linking, but got $events" }
   }
 
@@ -334,18 +389,15 @@ class TellomiLegalConsentTest {
     return events
   }
 
-  /** 只读版：关联的标题和导语、第 9 项换成「同意在手机上取得」、两条链接、只有一个「知道了」，没有「同意」「不同意」。 */
+  /** 只读版（需求 6.6 判据 4）：同一个弹窗标题、关联设备的正文、「查看《个人信息出境告知》」、只有一个「知道了」，没有「同意」「不同意」。 */
   private fun assertReadOnlyNoticeShown() {
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_title)).assertIsDisplayed()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_intro)).assertIsDisplayed()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_item_consent_body)).assertExists()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__privacy_link)).assertExists()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__third_party_link)).assertExists()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_dialog_body)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.FULL_NOTICE_LINK_TEST_TAG).assertIsDisplayed()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.ACK_TEST_TAG).assertIsDisplayed()
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__item_consent_body)).assertDoesNotExist()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__policy_updated)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_body)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_policy_updated)).assertDoesNotExist()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).assertDoesNotExist()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG).assertDoesNotExist()
   }
@@ -439,12 +491,13 @@ class TellomiLegalConsentTest {
     assert(events.isEmpty()) { "Nothing may be sent before separate consent, but got $events" }
   }
 
-  /** 完整版：主设备的标题、「不同意」「同意并继续」，没有只读版的标题和「知道了」。 */
+  /** 完整版弹窗：标题、主设备的正文、「不同意」「同意并继续」，没有关联设备的正文和「知道了」。 */
   private fun assertFullNoticeShown() {
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_body)).assertIsDisplayed()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).assertIsDisplayed()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG).assertIsDisplayed()
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_dialog_body)).assertDoesNotExist()
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.ACK_TEST_TAG).assertDoesNotExist()
   }
 
@@ -468,7 +521,7 @@ class TellomiLegalConsentTest {
     composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.ACK_TEST_TAG).performClick()
 
     assertAcknowledgedAsCb1(networkReleased)
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_dialog_body)).assertDoesNotExist()
     assert(events == listOf(PhoneNumberEntryScreenEvents.LinkDevice)) { "Got It should go on to linking, but got $events" }
   }
 
@@ -481,7 +534,7 @@ class TellomiLegalConsentTest {
     composeTestRule.onNodeWithContentDescription(context.getString(R.string.RegistrationActivity_open_menu)).performClick()
     composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_link_device)).performClick()
 
-    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertDoesNotExist()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__dialog_title)).assertDoesNotExist()
     assert(events == listOf(PhoneNumberEntryScreenEvents.LinkDevice)) { "Expected LinkDevice, but got $events" }
   }
 

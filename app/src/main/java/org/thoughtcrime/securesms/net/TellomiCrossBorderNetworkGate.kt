@@ -11,6 +11,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.util.logging.Log
@@ -81,15 +86,22 @@ object TellomiCrossBorderNetworkGate {
     overlay.tag = OVERLAY_TAG
     overlay.setContent {
       SignalTheme {
+        // Tellomi（tellomi/tellomi#1338，需求 6.6）：告知改成小弹窗后，背后用空白盖页（App 底色）挡住原来的界面，同意后才进 App。
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+        )
         TellomiCrossBorderNotice(
           onAgree = {
             TellomiCrossBorderConsent.recordAgreement(activity)
             decorView.removeView(overlay)
           },
-          // 已注册的人不同意就用不了 Tellomi：返回键不关这一页。
+          // 已注册的人不同意就用不了 Tellomi：返回键、点外面都不关这个弹窗。
           onCancel = {},
-          // Tellomi（tellomi/tellomi#1338）：升级上来的已注册设备，导语上方提示「隐私政策已更新至 2.0.0」并给链接（需求 6.2 c）。
-          showPolicyUpdated = true
+          // Tellomi（tellomi/tellomi#1338）：升级上来的已注册设备，最上面提示「隐私政策已更新至 2.0.0」并给链接（需求 6.2 c）。
+          showPolicyUpdated = true,
+          cancelable = false
         )
       }
     }
