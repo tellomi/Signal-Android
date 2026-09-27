@@ -433,7 +433,7 @@ public class MmsMessageRecord extends MessageRecord {
                          if (preview.getAttachmentId() != null) {
                            DatabaseAttachment attachment = attachmentIdMap.get(preview.getAttachmentId());
                            if (attachment != null) {
-                             return new LinkPreview(preview.getUrl(), preview.getTitle(), preview.getDescription(), preview.getDate(), attachment);
+                             return new LinkPreview(preview.getUrl(), preview.getTitle(), preview.getDescription(), preview.getDate(), attachment, preview.getRich());
                            } else {
                              return preview;
                            }

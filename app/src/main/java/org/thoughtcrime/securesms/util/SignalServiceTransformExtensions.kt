@@ -34,6 +34,7 @@ import org.thoughtcrime.securesms.mms.QuoteModel
 import org.thoughtcrime.securesms.polls.Poll
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.whispersystems.signalservice.api.messages.SignalServiceAttachmentRemoteId
+import org.whispersystems.signalservice.api.messages.TellomiRichContent
 import org.whispersystems.signalservice.internal.push.AttachmentPointer
 import org.whispersystems.signalservice.internal.push.BodyRange
 import org.whispersystems.signalservice.internal.push.CallMessage
@@ -347,7 +348,8 @@ private fun LinkPreview.toProto(): Either<DataMessageError, Preview> = either {
     title = title,
     description = description,
     date = date,
-    image = thumbnail.orElse(null)?.toAttachmentPointerProto()?.bind()
+    image = thumbnail.orElse(null)?.toAttachmentPointerProto()?.bind(),
+    rich = TellomiRichContent.forSending(rich) // Tellomi（ADR-0063 §7.4）
   )
 }
 

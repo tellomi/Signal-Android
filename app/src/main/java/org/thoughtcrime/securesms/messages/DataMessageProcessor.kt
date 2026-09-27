@@ -105,6 +105,7 @@ import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.thoughtcrime.securesms.util.hasGiftBadge
 import org.thoughtcrime.securesms.util.isStory
 import org.whispersystems.signalservice.api.crypto.EnvelopeMetadata
+import org.whispersystems.signalservice.api.messages.TellomiRichContent
 import org.whispersystems.signalservice.api.payments.Money
 import org.whispersystems.signalservice.internal.push.BodyRange
 import org.whispersystems.signalservice.internal.push.Content
@@ -1689,7 +1690,8 @@ object DataMessageProcessor {
         val isForCallLink = url.isPresent && CallLinks.isCallLink(url.get())
 
         if ((hasTitle || isForCallLink || isStoryEmbed) && (presentInBody || isStoryEmbed) && validDomain) {
-          val linkPreview = LinkPreview(url.get(), title.orElse(""), description.orElse(""), preview.date ?: 0, thumbnail.toOptional())
+          // Tellomi（ADR-0063 §7.4，tellomi/tellomi#1420）：rich（1000 号字段）按收到的字节带着，含本机不认识的字段。
+          val linkPreview = LinkPreview(url.get(), title.orElse(""), description.orElse(""), preview.date ?: 0, thumbnail.toOptional(), TellomiRichContent.receivedBytes(preview))
           linkPreview
         } else {
           warn(String.format("Discarding an invalid link preview. hasTitle: %b presentInBody: %b isStoryEmbed: %b validDomain: %b", hasTitle, presentInBody, isStoryEmbed, validDomain))

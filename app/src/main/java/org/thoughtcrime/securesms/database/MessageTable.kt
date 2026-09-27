@@ -592,7 +592,7 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
             val attachment = attachmentIdMap[preview.attachmentId]
 
             if (attachment != null) {
-              previews += LinkPreview(preview.url, preview.title, preview.description, preview.date, attachment)
+              previews += LinkPreview(preview.url, preview.title, preview.description, preview.date, attachment, preview.rich)
             } else {
               previews += preview
             }
@@ -4388,7 +4388,7 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
           null
         }
 
-        val updatedPreview = LinkPreview(preview.url, preview.title, preview.description, preview.date, attachmentId)
+        val updatedPreview = LinkPreview(preview.url, preview.title, preview.description, preview.date, attachmentId, preview.rich)
         linkPreviewJson.put(JSONObject(updatedPreview.serialize()))
       } catch (e: JSONException) {
         Log.w(TAG, "Failed to serialize shared contact. Skipping it.", e)
