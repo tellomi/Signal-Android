@@ -6,6 +6,7 @@ import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
+import org.thoughtcrime.securesms.logout.TellomiLogout;
 
 import java.io.IOException;
 
@@ -36,11 +37,20 @@ public final class DeviceTransferBlockingInterceptor implements Interceptor {
   @Override
   public @NonNull Response intercept(@NonNull Chain chain) throws IOException {
     if (!isBlockingNetwork()) {
+      // Tellomi（ADR-0072 §4.1 第 3 步）：主动退出登录之后本机不联网，只放行同一个号码的验证会话（重新登录要用）。
+      if (TellomiLogout.isLoggedOut() && !TellomiLogout.isAllowedWhileLoggedOut(chain.request().url().encodedPath())) {
+        Log.w(TAG, "Preventing request because this device is logged out.");
+        return blockedResponse(chain);
+      }
       return chain.proceed(chain.request());
     }
 
     Log.w(TAG, blockNetworking ? "Preventing request because in transfer mode."
                                : "Preventing request because cross-border consent has not been given yet.");
+    return blockedResponse(chain);
+  }
+
+  private static @NonNull Response blockedResponse(@NonNull Chain chain) {
     return new Response.Builder().request(chain.request())
                                  .protocol(Protocol.HTTP_1_1)
                                  .receivedResponseAtMillis(System.currentTimeMillis())

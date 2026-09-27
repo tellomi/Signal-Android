@@ -72,6 +72,9 @@ sealed interface AccountSettingsAction {
   /** Open registration so the user can re-register. */
   data object LaunchReRegistration : AccountSettingsAction
 
+  /** Tellomi（ADR-0072）：打开「退出登录」替代方案页。 */
+  data object NavigateToLogout : AccountSettingsAction
+
   /** Ask the user to get past their screen lock before we send them into the delete account flow. */
   data object AuthenticateToDeleteAccount : AccountSettingsAction
 

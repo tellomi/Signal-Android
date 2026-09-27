@@ -96,6 +96,9 @@ sealed interface AccountSettingsEvent {
   /** The fragment reported that clearing application data failed. */
   data object DataWipeFailed : AccountSettingsEvent
 
+  /** Tellomi（ADR-0072）：点了「退出登录」，去替代方案页。 */
+  data object LogoutClicked : AccountSettingsEvent
+
   /** The user tapped the delete account row, which asks for the screen lock first. */
   data object DeleteAccountClicked : AccountSettingsEvent
 

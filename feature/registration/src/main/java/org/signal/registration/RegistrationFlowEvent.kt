@@ -116,4 +116,10 @@ sealed interface RegistrationFlowEvent {
 
   /** Registration has been completed. Will finalize any pending state, then navigate to flow's conclusion. */
   data object RegistrationComplete : RegistrationFlowEvent
+
+  /** Tellomi（ADR-0072 §4.2）：欢迎页点了「上次登录」，手机号页要直接用本机账号的号码去要验证码。 */
+  data object ReloginRequested : RegistrationFlowEvent
+
+  /** Tellomi：手机号页已经处理了 [ReloginRequested]。 */
+  data object ReloginRequestHandled : RegistrationFlowEvent
 }

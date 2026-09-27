@@ -19,6 +19,9 @@ object TestTags {
   const val WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON = "welcome_restore_has_old_phone_button"
   const val WELCOME_RESTORE_NO_OLD_PHONE_BUTTON = "welcome_restore_no_old_phone_button"
 
+  // Tellomi（ADR-0072）：已退出登录时欢迎页的「上次登录」
+  const val WELCOME_LAST_LOGIN = "welcome_last_login"
+
   // Permissions Screen
   const val PERMISSIONS_SCREEN = "permissions_screen"
   const val PERMISSIONS_NEXT_BUTTON = "permissions_next_button"
@@ -47,6 +50,7 @@ object TestTags {
   const val PHONE_NUMBER_PHONE_FIELD = "phone_number_phone_field"
   const val PHONE_NUMBER_CLEAR_BUTTON = "phone_number_clear_button"
   const val PHONE_NUMBER_NEXT_BUTTON = "phone_number_next_button"
+  const val PHONE_NUMBER_WIPE_FOR_NEW_NUMBER_DIALOG = "phone_number_wipe_for_new_number_dialog"
   const val PHONE_NUMBER_REGISTER_WITHOUT_NUMBER_BUTTON = "phone_number_register_without_number_button"
 
   // Signal Login Payment Screen

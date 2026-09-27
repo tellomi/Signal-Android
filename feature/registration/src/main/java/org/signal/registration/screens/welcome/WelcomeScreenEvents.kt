@@ -20,4 +20,7 @@ sealed class WelcomeScreenEvents {
   data object DoesNotHaveOldPhone : WelcomeScreenEvents()
 
   data object ViewTermsAndPrivacy : WelcomeScreenEvents()
+
+  /** Tellomi（ADR-0072 §4.2）：点了「上次登录」，直接用本机账号的号码去要验证码。 */
+  data object ReloginClicked : WelcomeScreenEvents()
 }

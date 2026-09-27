@@ -591,6 +591,17 @@ class AccountSettingsViewModelTest {
     assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToSignalLoginDetails)
   }
 
+  /** Tellomi（ADR-0072，tellomi/tellomi#1414）：「退出登录」直接去替代方案页，那里才有确认。 */
+  @Test
+  fun `LogoutClicked opens the logout screen`() = runTest(testDispatcher) {
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.LogoutClicked)
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToLogout)
+  }
+
   @Test
   fun `DeleteAccountClicked asks for the screen lock first`() = runTest(testDispatcher) {
     val viewModel = createViewModel()

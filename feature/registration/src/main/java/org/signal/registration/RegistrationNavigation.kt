@@ -114,6 +114,7 @@ import org.signal.registration.screens.pincreation.PinCreationScreen
 import org.signal.registration.screens.pincreation.PinCreationScreenActions
 import org.signal.registration.screens.pincreation.PinCreationViewModel
 import org.signal.registration.screens.pinentry.PinEntryForRegistrationLockViewModel
+import org.signal.registration.screens.pinentry.PinEntryForReloginViewModel
 import org.signal.registration.screens.pinentry.PinEntryForSmsBypassViewModel
 import org.signal.registration.screens.pinentry.PinEntryForSvrRestoreViewModel
 import org.signal.registration.screens.pinentry.PinEntryScreen
@@ -255,6 +256,13 @@ sealed interface RegistrationRoute : NavKey, Parcelable {
 
   @Serializable
   data class AccountLocked(val timeRemainingMs: Long) : RegistrationRoute
+
+  /**
+   * Tellomi（ADR-0072 §4.2）：已退出登录的账号开着注册锁，号码验证通过之后在本机核对 PIN（本地 PIN 哈希），通过就解锁本机。
+   * 不同于 [PinEntryForRegistrationLock]：那条路核对完要再注册一次，这里不注册。
+   */
+  @Serializable
+  data object PinEntryForRelogin : RegistrationRoute
 
   @Serializable
   data object PinCreate : RegistrationRoute
@@ -1074,6 +1082,23 @@ private fun EntryProviderScope<NavKey>.navigationEntries(
         parentState = registrationViewModel.state,
         parentEventEmitter = registrationViewModel::onEvent,
         svrCredentials = key.svrCredentials
+      )
+    }
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    PinEntryScreen(
+      state = state,
+      onEvent = { viewModel.onEvent(it) }
+    )
+  }
+
+  // -- Tellomi：已退出登录的账号重新登录时，本机核对注册锁 PIN（ADR-0072 §4.2）
+  entry<RegistrationRoute.PinEntryForRelogin> {
+    val viewModel: PinEntryForReloginViewModel = viewModel {
+      PinEntryForReloginViewModel(
+        repository = registrationRepository,
+        parentState = registrationViewModel.state,
+        parentEventEmitter = registrationViewModel::onEvent
       )
     }
     val state by viewModel.state.collectAsStateWithLifecycle()

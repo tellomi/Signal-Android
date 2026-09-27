@@ -203,6 +203,14 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <!-- Tellomi（ADR-0072，tellomi/tellomi#1414）：账号页最底部的「退出登录」 -->
+        <action
+            android:id="@+id/action_accountSettingsFragment_to_logoutFragment"
+            app:destination="@id/logoutFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_accountSettingsFragment_to_advancedPinSettingsActivity"
             app:destination="@id/advancedPinSettingsFragment"
@@ -241,6 +249,34 @@
         <action
             android:id="@+id/action_accountSettingsFragment_to_authenticatorNameFragment"
             app:destination="@id/authenticatorNameFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+
+    <!-- Tellomi（ADR-0072，tellomi/tellomi#1414）：「退出登录」替代方案页。三条替代方案打开现有的页面。 -->
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.logout.LogoutFragment"
+        android:label="logout_fragment">
+        <action
+            android:id="@+id/action_logoutFragment_to_privacySettings"
+            app:destination="@id/privacy_settings"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_logoutFragment_to_storagePreferenceFragment"
+            app:destination="@id/storagePreferenceFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_logoutFragment_to_changePhoneNumberFragment"
+            app:destination="@id/app_settings_change_number"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"

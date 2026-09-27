@@ -940,4 +940,9 @@
     <string name="TellomiCrossBorder__third_party_link">檢視《第三方信息共享及 SDK 清單》</string>
     <string name="TellomiCrossBorder__full_notice_close">返回</string>
     <string name="TellomiCrossBorder__linked_ack">知道了</string>
+
+    <!-- Tellomi：主设备退出登录之后重新登录（ADR-0072，tellomi/tellomi#1414） -->
+    <string name="TellomiRelogin__last_login">上次登入</string>
+    <string name="TellomiRelogin__use_another_number">用其他號碼登入</string>
+    <string name="TellomiRelogin__new_number_wipe_body">用新號碼登入會刪除這支手機上 %1$s 的聊天記錄。確定繼續嗎？</string>
 </resources>

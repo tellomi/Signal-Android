@@ -200,6 +200,21 @@ fun PhoneNumberScreen(
     )
   }
 
+  // Tellomi（ADR-0072 §4.2）：本机是已退出登录的账号，输入的却是另一个号码——一台手机只放一个账号，先说清会删掉旧号码的聊天记录。
+  state.dialogs.confirmWipeForNewNumber?.let { maskedOldNumber ->
+    Dialogs.SimpleAlertDialog(
+      title = "",
+      body = stringResource(R.string.TellomiRelogin__new_number_wipe_body, maskedOldNumber),
+      confirm = stringResource(R.string.RegistrationActivity_continue),
+      dismiss = stringResource(R.string.PinEntryScreen__cancel),
+      onConfirm = { onEvent(PhoneNumberEntryScreenEvents.WipeForNewNumberConfirmed) },
+      onDeny = { onEvent(PhoneNumberEntryScreenEvents.WipeForNewNumberCancelled) },
+      onDismissRequest = { onEvent(PhoneNumberEntryScreenEvents.WipeForNewNumberCancelled) },
+      confirmColor = MaterialTheme.colorScheme.error,
+      modifier = Modifier.testTag(TestTags.PHONE_NUMBER_WIPE_FOR_NEW_NUMBER_DIALOG)
+    )
+  }
+
   Box(
     modifier = modifier
       .fillMaxSize()

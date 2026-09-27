@@ -34,6 +34,7 @@ import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.SubmitVerificationCodeError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.registration.PendingRestoreOption
+import org.signal.registration.PreExistingRegistrationData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
@@ -423,6 +424,12 @@ class VerificationCodeViewModel(
 
     parentEventEmitter(RegistrationFlowEvent.VerificationCodeAccepted(code))
 
+    // Tellomi（ADR-0072 §4.2）：本机是主动退出登录的，这个验证会话只用来证明本人，到这里就够了——不往下注册。
+    val loggedOutAccount = parentState.value.preExistingRegistrationData?.takeIf { it.loggedOut }
+    if (loggedOutAccount != null) {
+      return applyReloginVerified(state, loggedOutAccount)
+    }
+
     // Attempt to register
     val registerResult = repository.registerAccountWithSession(e164 = state.e164, sessionId = sessionMetadata.id, skipDeviceTransfer = true)
 
@@ -493,6 +500,32 @@ class VerificationCodeViewModel(
         state.copy(snackbars = state.snackbars.copy(unknownError = true))
       }
     }
+  }
+
+  /**
+   * Tellomi（ADR-0072 §4.2）：已退出登录的账号，号码验证通过之后的去向。**不调 `POST /v1/registration`**——同一个号码再注册，
+   * 服务端走 reclaimAccount，排队的消息全清。
+   *
+   * - 会话的号码必须就是本机账号的号码；手机号页已经把别的号码拦去「清空本机」，这里是兜底，对不上就报错、什么都不做。
+   * - 开了注册锁：去本机核对 PIN（[RegistrationRoute.PinEntryForRelogin]）。
+   * - 否则直接解锁本机，结束流程。
+   */
+  private suspend fun applyReloginVerified(state: VerificationCodeState, loggedOutAccount: PreExistingRegistrationData): VerificationCodeState {
+    if (loggedOutAccount.e164 != state.e164) {
+      Log.w(TAG, "[Relogin] The verified number doesn't match the logged-out account. Not registering and not unlocking.")
+      return state.copy(snackbars = state.snackbars.copy(registrationError = true))
+    }
+
+    if (loggedOutAccount.registrationLockEnabled) {
+      Log.i(TAG, "[Relogin] Number verified. Registration lock is on, so checking the PIN locally before unlocking.")
+      parentEventEmitter.navigateTo(RegistrationRoute.PinEntryForRelogin)
+      return state
+    }
+
+    Log.i(TAG, "[Relogin] Number verified. Unlocking this device without re-registering.")
+    repository.completeRelogin()
+    parentEventEmitter.navigateTo(RegistrationRoute.FullyComplete)
+    return state
   }
 
   /**
