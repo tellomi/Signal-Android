@@ -9,13 +9,16 @@ import android.app.Application
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.test.core.app.ApplicationProvider
@@ -100,6 +103,39 @@ class MediaPickerGridTest {
     composeTestRule.onNodeWithTag(TestTags.mediaPickerTile(MEDIA[2].uri.toString())).performClick()
 
     assertThat(events).contains(MediaSelectScreenEvents.OpenMedia(MEDIA[2]))
+  }
+
+  // owner 2026-09-28：「点右上角的勾，有时会跳到发送预览」——勾的触摸区只有 29dp，手指落在圆旁边一点就算点了照片。
+  // 照 Telegram Android `PhotoAttachPhotoCell` 的 checkFrame：右上角 42 × 42 的整块角区都算点勾，角区外才是点照片。
+
+  @Test
+  fun `Given a tile, when tapped inside the top-end corner but beside the drawn check, then the selection is toggled`() {
+    setContent(selectedMedia = emptyList())
+
+    for (offset in listOf(36 to 36, 41 to 8, 8 to 41, 2 to 2)) {
+      events.clear()
+      composeTestRule.onNodeWithTag(TestTags.mediaPickerTile(MEDIA[2].uri.toString())).performTouchInput {
+        click(Offset(width - offset.first.dp.toPx(), offset.second.dp.toPx()))
+      }
+      composeTestRule.waitForIdle()
+
+      assertThat(events.filterNot { it is MediaSelectScreenEvents.Refresh }, name = "tap at $offset").containsExactly(MediaSelectScreenEvents.MediaClick(MEDIA[2]))
+    }
+  }
+
+  @Test
+  fun `Given a tile, when tapped just outside the top-end corner, then it is opened in the editor`() {
+    setContent(selectedMedia = emptyList())
+
+    for (offset in listOf(46 to 20, 20 to 46)) {
+      events.clear()
+      composeTestRule.onNodeWithTag(TestTags.mediaPickerTile(MEDIA[2].uri.toString())).performTouchInput {
+        click(Offset(width - offset.first.dp.toPx(), offset.second.dp.toPx()))
+      }
+      composeTestRule.waitForIdle()
+
+      assertThat(events.filterNot { it is MediaSelectScreenEvents.Refresh }, name = "tap at $offset").containsExactly(MediaSelectScreenEvents.OpenMedia(MEDIA[2]))
+    }
   }
 
   // 判据 5：选完在网格里写说明直接发出。
