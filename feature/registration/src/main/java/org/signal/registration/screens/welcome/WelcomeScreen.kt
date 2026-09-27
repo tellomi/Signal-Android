@@ -351,7 +351,7 @@ private fun HeroImage(
 }
 
 /**
- * Tellomi（owner 2026-09-27，`docs/product/BRAND.md`「开屏」）：插画下面只显示字标（`docs/brand/wordmark.svg`，浅色墨、深色白），
+ * Tellomi（owner 2026-09-27，`docs/product/BRAND.md`「开屏」）：插画下面只显示字标 Tell@mi（`docs/brand/wordmark/tellomi-wordmark-{light,dark}.svg`，浅色黑、深色白），
  * 不放上游的「Take privacy with you…」这类句子；上游的「条款与隐私政策」链接也去掉了（首次打开的隐私提示和号码页的勾选里都有）。
  * 字标只在这一处引用 `R.drawable.tellomi_wordmark`（深色在 drawable-night），只定高度、宽度按图自己的比例：字标还会重新设计，换文件就行，不用改代码。
  */
