@@ -1120,6 +1120,14 @@ class RegistrationRepository(
       check(e164 != null) { "Must provide an e164 when registering with a phone number" }
     }
 
+    // Tellomi（ADR-0072 §二）：已退出登录的主设备重新登录只用验证会话证明本人。同一个号码再调 POST /v1/registration，服务端走
+    // reclaimAccount——清空排队的消息、删掉资料的历史版本，退出期间别人发来的消息就全丢了。界面上的每条路都已经绕开注册，
+    // 这里是最后一道闸：本机还是「已退出登录」就一律不发请求。换号码要先清空本机（那之后就不再是已退出登录）。
+    if (storageController.getPreExistingRegistrationData()?.loggedOut == true) {
+      Log.w(TAG, "[registerAccount] Refusing to register: this device is logged out (ADR-0072). Re-login must never call POST /v1/registration.")
+      return@withContext RequestResult.ApplicationError(IllegalStateException("Logged out device must not re-register"))
+    }
+
     Log.i(TAG, "[registerAccount] Starting registration for $e164. sessionId: ${sessionId != null}, recoveryPassword: ${recoveryPassword != null}, receiptCredentialPresentation: ${receiptCredentialPresentation != null}, aci: ${aci != null}, phoneNumberless: $phoneNumberless, registrationLock: ${registrationLock != null}, skipDeviceTransfer: $skipDeviceTransfer, existingAep: ${existingAccountEntropyPool != null}, totp: ${totp != null}")
 
     val inProgressData = storageController.readInProgressRegistrationData()
@@ -1404,6 +1412,30 @@ class RegistrationRepository(
 
   suspend fun getPreExistingRegistrationData(): PreExistingRegistrationData? {
     return storageController.getPreExistingRegistrationData()
+  }
+
+  /** Tellomi（ADR-0072 §4.2）：本机核对注册锁 PIN（本地 PIN 哈希），不联网。 */
+  suspend fun verifyLocalPinForRelogin(pin: String): Boolean = withContext(Dispatchers.IO) {
+    storageController.verifyLocalPin(pin)
+  }
+
+  /** Tellomi：重新登录时本机核对 PIN 的输错记录。 */
+  suspend fun getReloginPinAttempts(): ReloginPinAttempts = withContext(Dispatchers.IO) {
+    storageController.getReloginPinAttempts()
+  }
+
+  /** Tellomi：见 [getReloginPinAttempts]。 */
+  suspend fun setReloginPinAttempts(attempts: ReloginPinAttempts) = withContext(Dispatchers.IO) {
+    storageController.setReloginPinAttempts(attempts)
+  }
+
+  /**
+   * Tellomi（ADR-0072 §4.2 第 4 步）：验证会话已经证明本人（开了注册锁的也核对过 PIN），解锁本机：去掉「已退出登录」标记、
+   * 重新登记推送令牌、连上服务器。不调注册接口。
+   */
+  suspend fun completeRelogin() = withContext(Dispatchers.IO) {
+    Log.i(TAG, "[completeRelogin] Number verified for the logged-out account. Unlocking without re-registering.")
+    storageController.completeRelogin()
   }
 
   /**

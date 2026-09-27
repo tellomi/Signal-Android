@@ -97,7 +97,9 @@ class RegistrationViewModel(
 
   suspend fun applyEvent(state: RegistrationFlowState, event: RegistrationFlowEvent): RegistrationFlowState {
     return when (event) {
-      is RegistrationFlowEvent.ResetState -> RegistrationFlowState(isRestoringNavigationState = false)
+      // Tellomi（ADR-0072）：重置时留住本机已有的注册数据。上游清成默认值，[PreExistingRegistrationData.loggedOut] 跟着没了，
+      // 已退出登录的人被打回欢迎页后就会按全新注册走、调 POST /v1/registration，服务端清空排队的消息。
+      is RegistrationFlowEvent.ResetState -> RegistrationFlowState(isRestoringNavigationState = false, preExistingRegistrationData = state.preExistingRegistrationData)
       is RegistrationFlowEvent.SessionUpdated -> state.copy(sessionMetadata = event.session)
       is RegistrationFlowEvent.SessionExpired -> state.copy(sessionMetadata = null)
       is RegistrationFlowEvent.E164Chosen -> state.copy(sessionE164 = event.e164)
@@ -135,6 +137,8 @@ class RegistrationViewModel(
         val completeNavEvent = RegistrationFlowEvent.NavigateToScreen(RegistrationRoute.FullyComplete)
         applyNavigationToScreenEvent(state, completeNavEvent)
       }
+      is RegistrationFlowEvent.ReloginRequested -> state.copy(reloginRequested = true)
+      is RegistrationFlowEvent.ReloginRequestHandled -> state.copy(reloginRequested = false)
     }
   }
 
@@ -274,6 +278,10 @@ class RegistrationViewModel(
       // No need to persist anything new, fields accounted for in proto already
       is RegistrationFlowEvent.Registered,
       is RegistrationFlowEvent.MasterKeyRestoredFromSvr -> { }
+
+      // Tellomi：只在这一次打开手机号页时有用，不存盘
+      is RegistrationFlowEvent.ReloginRequested,
+      is RegistrationFlowEvent.ReloginRequestHandled -> { }
     }
   }
 }

@@ -30,11 +30,13 @@ import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.registration.PendingRestoreOption
+import org.signal.registration.PreExistingRegistrationData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
 import org.signal.registration.TellomiRegistration
+import org.signal.registration.TellomiRelogin
 import org.signal.registration.screens.countrycode.Country
 import org.signal.registration.screens.countrycode.CountryUtils
 import org.signal.registration.screens.localbackuprestore.LocalBackupRestoreResult
@@ -103,7 +105,17 @@ class PhoneNumberEntryViewModel(
   suspend fun applyEvent(state: PhoneNumberEntryState, event: PhoneNumberEntryScreenEvents, parentEventEmitter: (RegistrationFlowEvent) -> Unit, stateEmitter: (PhoneNumberEntryState) -> Unit) {
     when (event) {
       is PhoneNumberEntryScreenEvents.Initialize -> {
-        stateEmitter(applyInitialize(state))
+        var localState = applyInitialize(state)
+        stateEmitter(localState)
+
+        // Tellomi（ADR-0072 §4.2）：欢迎页点了「上次登录」——号码已经按本机账号填好，直接去要验证码。
+        if (parentState.value.reloginRequested && loggedOutAccount(localState) != null) {
+          parentEventEmitter(RegistrationFlowEvent.ReloginRequestHandled)
+          localState = localState.copy(showSpinner = true)
+          stateEmitter(localState)
+          localState = applyPhoneNumberSubmitted(localState, parentEventEmitter)
+          stateEmitter(localState.copy(showSpinner = false))
+        }
       }
       is PhoneNumberEntryScreenEvents.ParentStateChanged -> {
         stateEmitter(applyParentState(state, event.parentState))
@@ -200,7 +212,22 @@ class PhoneNumberEntryViewModel(
       is PhoneNumberEntryScreenEvents.InvalidPhoneNumberDialogDismissed -> {
         stateEmitter(state.copy(dialogs = state.dialogs.copy(invalidPhoneNumber = false)))
       }
+      is PhoneNumberEntryScreenEvents.WipeForNewNumberConfirmed -> {
+        Log.w(TAG, "[Relogin] User chose a different number than the logged-out account. Wiping this device before registering it.")
+        stateEmitter(state.copy(showSpinner = true, dialogs = state.dialogs.copy(confirmWipeForNewNumber = null)))
+        repository.clearLocalDataAndRestart()
+      }
+      is PhoneNumberEntryScreenEvents.WipeForNewNumberCancelled -> {
+        stateEmitter(state.copy(dialogs = state.dialogs.copy(confirmWipeForNewNumber = null)))
+      }
     }
+  }
+
+  /**
+   * Tellomi（ADR-0072）：本机是主动退出登录的账号时返回它的数据，否则 null。手机号页打开时父状态可能还没合进本页状态，所以两边都看。
+   */
+  private fun loggedOutAccount(state: PhoneNumberEntryState): PreExistingRegistrationData? {
+    return (state.preExistingRegistrationData ?: parentState.value.preExistingRegistrationData)?.takeIf { it.loggedOut }
   }
 
   private suspend fun applyInitialize(inputState: PhoneNumberEntryState): PhoneNumberEntryState {
@@ -314,6 +341,20 @@ class PhoneNumberEntryViewModel(
   ): PhoneNumberEntryState {
     var state = inputState.withNormalizedNationalNumber()
     val e164 = "+${state.countryCode}${state.nationalNumber}"
+
+    // Tellomi（ADR-0072 §4.2）：本机是主动退出登录的账号。同一个号码只走验证会话（人机验证 / 推送挑战 / 短信验证码）证明本人，
+    // 跳过下面的恢复、恢复密码注册、SVR 免短信——那几条最后都会调 POST /v1/registration，服务端清空排队的消息。
+    // 另一个号码：先确认、清空本机，再按正常注册走。
+    val loggedOutAccount = loggedOutAccount(state)
+    if (loggedOutAccount != null) {
+      if (loggedOutAccount.e164 != e164) {
+        Log.i(TAG, "[Relogin] A different number than the logged-out account. Asking before wiping this device.")
+        return state.copy(dialogs = state.dialogs.copy(confirmWipeForNewNumber = TellomiRelogin.maskE164(loggedOutAccount.e164)))
+      }
+
+      Log.i(TAG, "[Relogin] Same number as the logged-out account. Verifying with a session only; never re-registering.")
+      return applySessionBasedRegistration(state, e164, parentEventEmitter)
+    }
 
     // If the user selected a restore option before entering their phone number, navigate to the restore flow
     if (state.pendingRestoreOption != null) {
@@ -530,7 +571,8 @@ class PhoneNumberEntryViewModel(
     // 换 master key。而服务端的 `POST v2/svr/auth/check` **只查凭证本身、不查有没有 enclave**，
     // 会回 200（iOS 上实测过，#964 就是被这个 200 骗去要 PIN 的），所以不能靠它自己失败。
     // 直接不进这条路，落到下面的会话验证码流程。
-    if (state.restoredSvrCredentials.isNotEmpty() && repository.svrEnclaveAvailable) {
+    // Tellomi（ADR-0072）：已退出登录的账号也不走这条——它的终点是用恢复密码注册（POST /v1/registration）。
+    if (state.restoredSvrCredentials.isNotEmpty() && repository.svrEnclaveAvailable && loggedOutAccount(state) == null) {
       when (val result = repository.checkSvrCredentials(e164, state.restoredSvrCredentials)) {
         is RequestResult.Success -> {
           Log.i(TAG, "[CheckSVRCredentials] Successfully validated credentials for $e164.")

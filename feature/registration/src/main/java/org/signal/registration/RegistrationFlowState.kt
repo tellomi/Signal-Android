@@ -77,7 +77,13 @@ data class RegistrationFlowState(
   val lastCallVerificationCodeRequest: VerificationCodeRequest? = null,
 
   /** If true, the ViewModel is still deciding whether to restore a previous flow or start fresh. */
-  val isRestoringNavigationState: Boolean = true
+  val isRestoringNavigationState: Boolean = true,
+
+  /**
+   * Tellomi（ADR-0072 §4.2）：用户在欢迎页点了「上次登录」，手机号页一打开就用本机账号的号码直接去要验证码（不用再点「下一步」）。
+   * 手机号页处理完就清掉（[RegistrationFlowEvent.ReloginRequestHandled]），也不存盘，免得返回时又自动提交一次。
+   */
+  val reloginRequested: Boolean = false
 ) : Parcelable {
 
   /**
@@ -88,7 +94,7 @@ data class RegistrationFlowState(
     get() = backStack.any { it is RegistrationRoute.ArchiveRestoreSelection }
 
   override fun toString(): String {
-    return "RegistrationFlowState(backStack=${backStack.joinToString()}, sessionMetadata=$sessionMetadata, sessionE164=$sessionE164, submittedVerificationCode=${submittedVerificationCode?.censor()}, accountEntropyPool=${accountEntropyPool?.displayValue?.censor()}, aci=${aci?.logString()}, storageCapable=$storageCapable, isPhoneNumberlessAccount=$isPhoneNumberlessAccount, temporaryMasterKey=${temporaryMasterKey?.toString()?.censor()}, preExistingRegistrationData=$preExistingRegistrationData, doNotAttemptRecoveryPassword=$doNotAttemptRecoveryPassword, pendingRestoreOption=$pendingRestoreOption, unverifiedRestoredAep=${unverifiedRestoredAep?.displayValue?.censor()}, restoreMethodToken=${restoreMethodToken?.censor()}, lastSmsVerificationCodeRequest=$lastSmsVerificationCodeRequest, lastCallVerificationCodeRequest=$lastCallVerificationCodeRequest, isRestoringNavigation=$isRestoringNavigationState)"
+    return "RegistrationFlowState(backStack=${backStack.joinToString()}, sessionMetadata=$sessionMetadata, sessionE164=$sessionE164, submittedVerificationCode=${submittedVerificationCode?.censor()}, accountEntropyPool=${accountEntropyPool?.displayValue?.censor()}, aci=${aci?.logString()}, storageCapable=$storageCapable, isPhoneNumberlessAccount=$isPhoneNumberlessAccount, temporaryMasterKey=${temporaryMasterKey?.toString()?.censor()}, preExistingRegistrationData=$preExistingRegistrationData, doNotAttemptRecoveryPassword=$doNotAttemptRecoveryPassword, pendingRestoreOption=$pendingRestoreOption, unverifiedRestoredAep=${unverifiedRestoredAep?.displayValue?.censor()}, restoreMethodToken=${restoreMethodToken?.censor()}, lastSmsVerificationCodeRequest=$lastSmsVerificationCodeRequest, lastCallVerificationCodeRequest=$lastCallVerificationCodeRequest, isRestoringNavigation=$isRestoringNavigationState, reloginRequested=$reloginRequested)"
   }
 }
 

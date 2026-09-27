@@ -33,6 +33,28 @@ class TellomiLogoutWordingTest {
     R.string.ReregisterSignalDialog__message
   )
 
+  /** Tellomi（ADR-0072 §4.5，tellomi/tellomi#1414）：港台繁体用「登出」，同样不能写成「註銷」。 */
+  @Test
+  @Config(qualifiers = "zh-rHK")
+  fun `Hong Kong - device logged out is never worded as account deletion`() {
+    assertNoDeletionWording()
+  }
+
+  @Test
+  @Config(qualifiers = "zh-rTW")
+  fun `Taiwan - device logged out is never worded as account deletion`() {
+    assertNoDeletionWording()
+  }
+
+  private fun assertNoDeletionWording() {
+    val context = ApplicationProvider.getApplicationContext<Application>()
+    for (id in deviceLoggedOutStrings + R.string.LoggedOutNotification_you_have_been_logged_out) {
+      val text = context.getString(id)
+      assertThat(text).doesNotContain("註銷")
+      assertThat(text).doesNotContain("注销")
+    }
+  }
+
   @Test
   fun `device logged out is worded as logged out, not account deletion`() {
     val context = ApplicationProvider.getApplicationContext<Application>()

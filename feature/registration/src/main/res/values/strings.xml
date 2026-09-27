@@ -1000,4 +1000,12 @@
     <string name="TellomiCrossBorder__full_notice_close">Back</string>
     <!-- The only button of the cross-border transfer dialog shown before linking this device -->
     <string name="TellomiCrossBorder__linked_ack">Got It</string>
+
+    <!-- Tellomi：主设备退出登录之后重新登录（ADR-0072，tellomi/tellomi#1414） -->
+    <!-- Welcome screen after the user logged out on this phone: label above the masked phone number of the account that was logged in here -->
+    <string name="TellomiRelogin__last_login">Last logged in</string>
+    <!-- Welcome screen after the user logged out: the main button, for logging in with a different number than the one shown -->
+    <string name="TellomiRelogin__use_another_number">Log in with another number</string>
+    <!-- Asked when a logged-out phone is used to log in with a different number. %1$s is the masked number of the account that was logged in, e.g. +86 138****5678 -->
+    <string name="TellomiRelogin__new_number_wipe_body">Logging in with a new number will delete the chat history of %1$s on this phone. Continue?</string>
 </resources>

@@ -135,6 +135,7 @@ class AccountSettingsFragment : ComposeFragment() {
         }
       }
       AccountSettingsAction.NavigateToDeleteAccount -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_deleteAccountFragment)
+      AccountSettingsAction.NavigateToLogout -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_logoutFragment)
       AccountSettingsAction.OpenPlayStore -> PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(requireContext())
       AccountSettingsAction.LaunchReRegistration -> startActivity(RegistrationActivity.newIntentForReRegistration(requireContext()))
       AccountSettingsAction.WipeAllData -> {

@@ -15,12 +15,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import org.signal.registration.TellomiRelogin
 import org.signal.registration.screens.util.navigateTo
 
 /**
@@ -33,7 +36,7 @@ import org.signal.registration.screens.util.navigateTo
  * 电话、存储不要（`docs/legal/permissions.md` §三、§十）。两个路由本身保留，只是不再有人导航过去。
  */
 class WelcomeScreenViewModel(
-  repository: RegistrationRepository,
+  private val repository: RegistrationRepository,
   private val parentState: StateFlow<RegistrationFlowState>,
   private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
 ) : EventDrivenViewModel<WelcomeScreenEvents>(TAG) {
@@ -71,6 +74,11 @@ class WelcomeScreenViewModel(
       WelcomeScreenEvents.DoesNotHaveOldPhone -> parentEventEmitter.navigateTo(RegistrationRoute.ArchiveRestoreSelection.forManualRestore())
       WelcomeScreenEvents.LinkDevice -> parentEventEmitter.navigateTo(RegistrationRoute.LinkAccount())
       WelcomeScreenEvents.ViewTermsAndPrivacy -> _actions.trySend(WelcomeScreenActions.ViewTermsAndPrivacy)
+      WelcomeScreenEvents.ReloginClicked -> {
+        // Tellomi（ADR-0072 §4.2）：手机号页一打开就用本机账号的号码去要验证码，不用再输、再点「下一步」。
+        parentEventEmitter(RegistrationFlowEvent.ReloginRequested)
+        parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry)
+      }
     }
   }
 
@@ -79,6 +87,27 @@ class WelcomeScreenViewModel(
       return state
     }
 
-    return state.copy(showRestoreOrTransfer = parentState.preExistingRegistrationData == null)
+    // Tellomi（ADR-0072 §4.1 第 4 步）：主动退出登录的账号，欢迎页上方显示「上次登录」（打码的号码 + 头像）。
+    val loggedOutAccount = parentState.preExistingRegistrationData?.takeIf { it.loggedOut }
+    val lastLogin = loggedOutAccount?.let {
+      state.lastLogin ?: WelcomeScreenState.LastLogin(maskedE164 = TellomiRelogin.maskE164(it.e164)).also { loadLastLoginProfile() }
+    }
+
+    return state.copy(
+      showRestoreOrTransfer = parentState.preExistingRegistrationData == null,
+      lastLogin = lastLogin
+    )
+  }
+
+  /** 头像和名字从本机读（不联网），读到了再补进「上次登录」。 */
+  private fun loadLastLoginProfile() {
+    viewModelScope.launch {
+      val profile = repository.getStoredProfileData()
+      val name = profile.givenName.trim()
+      val initial = if (name.isEmpty()) "" else String(Character.toChars(name.codePointAt(0)))
+      _state.update { state ->
+        state.copy(lastLogin = state.lastLogin?.copy(avatar = profile.avatar, initial = initial))
+      }
+    }
   }
 }

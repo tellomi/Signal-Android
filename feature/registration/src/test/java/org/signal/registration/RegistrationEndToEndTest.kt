@@ -746,6 +746,91 @@ class RegistrationEndToEndTest {
     assert(committed!!.accountData?.e164 == E164) { "Expected committed e164 $E164 but was ${committed.accountData?.e164}" }
   }
 
+  // -- Tellomi（ADR-0072，tellomi/tellomi#1414）：主设备「退出登录」之后用同一个号码重新登录。
+  // 判据：整条路上一次 POST /v1/registration 都不发（服务端的 reclaimAccount 会清空退出期间排队的消息）。
+
+  @Test
+  fun `Tellomi - a logged-out phone logs back in from the last-login card with sms alone and never re-registers`() {
+    storageController.preExistingRegistrationData = preExistingRegistrationData(E164).copy(loggedOut = true)
+
+    var registrationComplete = false
+    launchRegistrationFlow(onRegistrationComplete = { registrationComplete = true })
+
+    // The welcome screen shows the account that was logged in here, masked, and no restore or transfer
+    waitForTag(TestTags.WELCOME_LAST_LOGIN)
+    waitForText("+86 555****3456")
+    assert(composeTestRule.onAllNodesWithTag(TestTags.WELCOME_RESTORE_OR_TRANSFER_BUTTON).fetchSemanticsNodes().isEmpty()) {
+      "Expected no restore/transfer option on the welcome screen of a logged-out phone"
+    }
+
+    // Tapping it goes straight to the code for that number, with no number entry or confirmation in between
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_LAST_LOGIN).performClick()
+    submitVerificationCode(VERIFICATION_CODE)
+
+    waitFor("re-login to complete") { registrationComplete }
+
+    assert(networkController.lastSubmittedVerificationCode == VERIFICATION_CODE) { "Expected the code to be submitted to the verification session" }
+    assert(networkController.lastRegisterAccountRequest == null) { "Re-login must never call POST /v1/registration, but it did: ${networkController.lastRegisterAccountRequest}" }
+    assert(storageController.reloginCompletedCount == 1) { "Expected the device to be unlocked once but was ${storageController.reloginCompletedCount}" }
+    assert(storageController.committedData == null) { "Re-login must not commit new registration data" }
+  }
+
+  @Test
+  fun `Tellomi - a logged-out phone with registration lock checks the pin locally and never re-registers`() {
+    storageController.preExistingRegistrationData = preExistingRegistrationData(E164).copy(registrationLockEnabled = true, loggedOut = true)
+    storageController.localPin = PIN
+
+    var registrationComplete = false
+    launchRegistrationFlow(onRegistrationComplete = { registrationComplete = true })
+
+    waitForTag(TestTags.WELCOME_LAST_LOGIN)
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_LAST_LOGIN).performClick()
+    submitVerificationCode(VERIFICATION_CODE)
+
+    // A wrong PIN is counted and does not unlock
+    waitForTag(TestTags.PIN_ENTRY_SCREEN)
+    composeTestRule.onNodeWithTag(TestTags.PIN_ENTRY_INPUT).performTextInput("0000")
+    composeTestRule.onNodeWithTag(TestTags.PIN_ENTRY_CONTINUE_BUTTON).performClick()
+    waitFor("the wrong pin to be counted") { storageController.reloginPinAttempts.failed == 1 }
+    assert(!registrationComplete) { "A wrong PIN must not unlock the device" }
+
+    // The right PIN unlocks, still without registering and without asking SVR
+    composeTestRule.onNodeWithTag(TestTags.PIN_ENTRY_INPUT).performTextClearance()
+    composeTestRule.onNodeWithTag(TestTags.PIN_ENTRY_INPUT).performTextInput(PIN)
+    composeTestRule.onNodeWithTag(TestTags.PIN_ENTRY_CONTINUE_BUTTON).performClick()
+
+    waitFor("re-login to complete") { registrationComplete }
+
+    assert(networkController.lastRegisterAccountRequest == null) { "Re-login must never call POST /v1/registration, but it did: ${networkController.lastRegisterAccountRequest}" }
+    assert(networkController.lastRestoreMasterKeyRequest == null) { "The PIN is checked against the local hash, not SVR" }
+    assert(storageController.reloginCompletedCount == 1) { "Expected the device to be unlocked once but was ${storageController.reloginCompletedCount}" }
+    assert(storageController.reloginPinAttempts.failed == 0) { "Expected the wrong-PIN count to reset after the right PIN" }
+  }
+
+  @Test
+  fun `Tellomi - a logged-out phone that enters another number is asked before being wiped and never re-registers`() {
+    storageController.preExistingRegistrationData = preExistingRegistrationData("+8613800000010").copy(loggedOut = true)
+    storageController.allowClearLocalDataAndRestart = true
+
+    launchRegistrationFlow()
+
+    waitForTag(TestTags.WELCOME_LAST_LOGIN)
+    goToPhoneNumberEntry()
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_PHONE_FIELD).performTextClearance()
+    enterPhoneNumber()
+
+    // Asked first, naming the masked number whose chats would go
+    waitForTag(TestTags.PHONE_NUMBER_WIPE_FOR_NEW_NUMBER_DIALOG)
+    waitForText(ApplicationProvider.getApplicationContext<Application>().getString(R.string.TellomiRelogin__new_number_wipe_body, "+86 138****0010"))
+    assert(storageController.clearLocalDataAndRestartCount == 0) { "Nothing may be wiped before the user confirms" }
+
+    composeTestRule.onNodeWithTag(Dialogs.TEST_TAG_ALERT_DIALOG_CONFIRM_BUTTON).performClick()
+    waitFor("the device to be wiped") { storageController.clearLocalDataAndRestartCount == 1 }
+
+    assert(networkController.lastRegisterAccountRequest == null) { "Nothing may be registered before the wipe: ${networkController.lastRegisterAccountRequest}" }
+    assert(storageController.reloginCompletedCount == 0) { "A different number must not unlock the logged-out account" }
+  }
+
   @Test
   fun `re-registering the same number onto an unexpectedly reglocked account is unlocked by entering the pin, without an sms verification`() {
     // The reglock is governed by a master key held in SVR, not the one derived from the pre-existing AEP

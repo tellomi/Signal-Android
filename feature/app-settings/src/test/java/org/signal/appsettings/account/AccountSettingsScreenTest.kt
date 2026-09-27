@@ -12,6 +12,7 @@ import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -25,6 +26,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performSemanticsAction
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isLessThan
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -292,6 +294,38 @@ class AccountSettingsScreenTest {
       .performClick()
 
     assertThat(events).contains(AccountSettingsEvent.DeleteAccountClicked)
+  }
+
+  /** Tellomi（ADR-0072，tellomi/tellomi#1414）：最底部红字「退出登录」，在删号上方，点了去替代方案页。 */
+  @Test
+  fun givenANormalRegisteredUser_whenIClickLogOut_thenIExpectLogoutEvent() {
+    setContent(createState())
+
+    scrollTo(AccountSettingsTestTags.ROW_DELETE_ACCOUNT)
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_LOG_OUT)
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .assertTextContains(context.getString(R.string.TellomiLogout__log_out))
+      .performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.LogoutClicked)
+
+    val logOutTop = composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_LOG_OUT).fetchSemanticsNode().boundsInRoot.top
+    val deleteTop = composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_DELETE_ACCOUNT).fetchSemanticsNode().boundsInRoot.top
+    assertThat(logOutTop).isLessThan(deleteTop)
+  }
+
+  /** Tellomi：被服务端登出时推送令牌注销不了，退出登录和删号一样置灰。 */
+  @Test
+  fun givenUnregisteredUser_whenLogOutDisplayed_thenDisabled() {
+    setContent(createState(userUnregistered = true))
+
+    scrollTo(AccountSettingsTestTags.ROW_DELETE_ACCOUNT)
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_LOG_OUT)
+      .assertIsDisplayed()
+      .assertIsNotEnabled()
   }
 
   @Test

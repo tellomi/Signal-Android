@@ -94,6 +94,7 @@ import org.thoughtcrime.securesms.jobs.RefreshAttributesJob
 import org.thoughtcrime.securesms.jobs.ResetSvrGuessCountJob
 import org.thoughtcrime.securesms.jobs.StorageAccountRestoreJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.logout.TellomiLogout
 import org.thoughtcrime.securesms.net.SignalNetwork
 import org.thoughtcrime.securesms.pin.SvrRepository
 import org.thoughtcrime.securesms.pin.SvrWrongPinException
@@ -198,6 +199,13 @@ class AppRegistrationNetworkController(
     aci: ACI?,
     totp: Int?
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
+    // Tellomi（ADR-0072 §二）：已退出登录的手机重新登录绝不走注册（服务端 reclaimAccount 会清空排队的消息）。
+    // 注册模块里已经拦了，HTTP 层（DeviceTransferBlockingInterceptor）也只放行验证会话；这里是 App 这一侧的闸。
+    if (TellomiLogout.isLoggedOut()) {
+      Log.w(TAG, "[registerAccount] Refusing: this device is logged out. Re-login must never call POST /v1/registration.")
+      return RequestResult.ApplicationError(IllegalStateException("Logged out device must not re-register"))
+    }
+
     return registrationApi.registerAccount(
       e164 = e164,
       password = password,

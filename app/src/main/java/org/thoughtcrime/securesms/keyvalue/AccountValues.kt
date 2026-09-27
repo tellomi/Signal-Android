@@ -83,6 +83,13 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
     /** Tellomi（ADR-0066 §6.2）：这个账号上一次删掉用户名的时间（本机删的，或从存储服务同步到被别的设备删的）。 */
     private const val KEY_TELLOMI_USERNAME_DELETED_AT = "account.tellomi_username_deleted_at"
 
+    /** Tellomi（ADR-0072）：主设备主动「退出登录」了。见 [org.thoughtcrime.securesms.logout.TellomiLogout]。 */
+    private const val KEY_TELLOMI_LOGGED_OUT = "account.tellomi_logged_out"
+
+    /** Tellomi（ADR-0072 §4.2）：重新登录时本机核对注册锁 PIN 连续输错的次数，和输满之后锁到什么时候。 */
+    private const val KEY_TELLOMI_RELOGIN_PIN_FAILED = "account.tellomi_relogin_pin_failed"
+    private const val KEY_TELLOMI_RELOGIN_PIN_LOCKED_UNTIL = "account.tellomi_relogin_pin_locked_until"
+
     private const val KEY_E164 = "account.e164"
     private const val KEY_ACI = "account.aci"
     private const val KEY_PNI = "account.pni"
@@ -530,6 +537,23 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
    * 只在本机，不进备份：换机后没有记录，最多少提示一次，服务端照样按保留期开始冷却。
    */
   var tellomiUsernameDeletedAt: Long by longValue(KEY_TELLOMI_USERNAME_DELETED_AT, 0)
+
+  /**
+   * Tellomi（ADR-0072）：这台主设备主动「退出登录」了。服务端照旧认为它注册着，本机锁住：不联网、不跑要登录凭据的任务、
+   * 不显示任何内容，数据原样留着，直到同一个号码重新登录。只在本机，不进备份。
+   */
+  @get:JvmName("isTellomiLoggedOut")
+  val tellomiLoggedOut: Boolean
+    get() = getBoolean(KEY_TELLOMI_LOGGED_OUT, false)
+
+  /** 同步写盘：这个标记就是闸，写下去之前不能认为已经退出，进程被杀也不能丢。 */
+  fun setTellomiLoggedOut(loggedOut: Boolean) {
+    getStore().beginWrite().putBoolean(KEY_TELLOMI_LOGGED_OUT, loggedOut).commit()
+  }
+
+  var tellomiReloginPinFailed: Int by integerValue(KEY_TELLOMI_RELOGIN_PIN_FAILED, 0)
+
+  var tellomiReloginPinLockedUntil: Long by longValue(KEY_TELLOMI_RELOGIN_PIN_LOCKED_UNTIL, 0)
 
   /**
    * Function for testing backup/restore

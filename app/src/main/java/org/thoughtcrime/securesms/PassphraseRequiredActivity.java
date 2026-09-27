@@ -26,6 +26,7 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceTransferActivity;
 import org.thoughtcrime.securesms.keyvalue.RestoreDecisionStateUtil;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
+import org.thoughtcrime.securesms.logout.TellomiLogout;
 import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity;
 import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrationActivity;
@@ -66,6 +67,7 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   private static final int STATE_CLOCK_SKEW          = 13;
   private static final int STATE_RESUME_REGISTRATION = 14;
   private static final int STATE_UPDATE_REQUIRED     = 15;
+  private static final int STATE_LOGGED_OUT          = 16;
 
   private SignalServiceNetworkAccess networkAccess;
   private BroadcastReceiver          clearKeyReceiver;
@@ -180,6 +182,7 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
       case STATE_CLOCK_SKEW:          return getClockSkewIntent();
       case STATE_RESUME_REGISTRATION: return getResumeRegistrationIntent();
       case STATE_UPDATE_REQUIRED:     return ClientDeprecatedActivity.createIntent(this);
+      case STATE_LOGGED_OUT:          return getLoggedOutIntent();
       default:                        return null;
     }
   }
@@ -195,6 +198,10 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
       return STATE_PROMPT_PASSPHRASE;
     } else if (ApplicationMigrations.isUpdate(this) && ApplicationMigrations.isUiBlockingMigrationRunning()) {
       return STATE_UI_BLOCKING_UPGRADE;
+    } else if (TellomiLogout.isLoggedOut()) {
+      // Tellomi（ADR-0072 §4.1 第 3、4 步）：主动退出登录之后任何入口（桌面图标、通知、分享、快捷方式）都只到欢迎页，
+      // 不进聊天界面、不解开任何内容；欢迎页上是「上次登录」。
+      return STATE_LOGGED_OUT;
     } else if (!TextSecurePreferences.hasPromptedPushRegistration(this)) {
       return STATE_WELCOME_PUSH_SCREEN;
     } else if (shouldResumeLinkingRegistration()) {
@@ -302,6 +309,12 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
     }
     Intent intent = RestoreActivity.getRestoreIntent(this);
     return getRoutedIntent(intent, MainActivity.clearTop(this));
+  }
+
+  private Intent getLoggedOutIntent() {
+    Intent intent = org.signal.registration.RegistrationActivity.createIntent(this, MainActivity.clearTop(this));
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+    return intent;
   }
 
   private Intent getResumeRegistrationIntent() {

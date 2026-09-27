@@ -82,4 +82,10 @@ sealed class PhoneNumberEntryScreenEvents {
 
   /** The user dismissed the invalid phone number dialog. */
   data object InvalidPhoneNumberDialogDismissed : PhoneNumberEntryScreenEvents()
+
+  /** Tellomi（ADR-0072 §4.2）：本机已退出登录、输入了另一个号码，用户确认清空本机后用新号码注册。 */
+  data object WipeForNewNumberConfirmed : PhoneNumberEntryScreenEvents()
+
+  /** Tellomi：用户取消了「用新号码登录会删除本机聊天记录」的确认。 */
+  data object WipeForNewNumberCancelled : PhoneNumberEntryScreenEvents()
 }

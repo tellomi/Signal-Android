@@ -215,4 +215,23 @@
     <!-- Shared with the registration screens -->
     <string name="RegistrationActivity_select_your_country">Select your country</string>
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
+
+    <!-- Tellomi：主设备「退出登录」（ADR-0072，tellomi/tellomi#1414）。「退出登录」只是这台设备不再用这个账号，账号还在；删号是「注销账号」 -->
+    <string name="TellomiLogout__log_out">退出登录</string>
+    <string name="TellomiLogout__intro">退出前，看看这些能不能帮到你：</string>
+    <string name="TellomiLogout__screen_lock">屏幕锁定</string>
+    <string name="TellomiLogout__screen_lock_description">担心别人看到？打开后要先解锁才能进入 Tellomi。</string>
+    <string name="TellomiLogout__manage_storage">管理存储空间</string>
+    <string name="TellomiLogout__manage_storage_description">空间不够？清理不需要的图片和文件。</string>
+    <string name="TellomiLogout__change_number">更换手机号</string>
+    <string name="TellomiLogout__change_number_description">换了手机号？聊天记录和联系人都会保留。</string>
+    <string name="TellomiLogout__also_log_out_linked_devices">同时让已链接的设备退出</string>
+    <string name="TellomiLogout__confirm_title">退出登录？</string>
+    <string name="TellomiLogout__confirm_body">聊天记录会保留在这台手机上，用同一个手机号重新登录后恢复。退出期间别人发来的消息会在服务器上等你，最多保留 30 天。</string>
+    <string name="TellomiLogout__log_out_and_delete_data">退出并删除本机数据</string>
+    <string name="TellomiLogout__cancel">取消</string>
+    <string name="TellomiLogout__delete_title">删除本机数据？</string>
+    <string name="TellomiLogout__delete_body">这台手机上的聊天记录和文件会全部删除，不能恢复。你的账号不受影响，可以在任何设备上重新登录。</string>
+    <string name="TellomiLogout__delete_and_log_out">删除并退出</string>
+    <string name="TellomiLogout__needs_network">退出登录需要联网，请稍后再试。</string>
 </resources>

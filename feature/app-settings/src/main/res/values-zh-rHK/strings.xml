@@ -215,4 +215,23 @@
     <!-- Shared with the registration screens -->
     <string name="RegistrationActivity_select_your_country">Select your country</string>
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
+
+    <!-- Tellomi：主设备「退出登录」（ADR-0072，tellomi/tellomi#1414）。港台用「登出」 -->
+    <string name="TellomiLogout__log_out">登出</string>
+    <string name="TellomiLogout__intro">登出前，看看這些能不能幫到你：</string>
+    <string name="TellomiLogout__screen_lock">螢幕鎖定</string>
+    <string name="TellomiLogout__screen_lock_description">擔心別人看到？開啟後要先解鎖才能進入 Tellomi。</string>
+    <string name="TellomiLogout__manage_storage">管理儲存空間</string>
+    <string name="TellomiLogout__manage_storage_description">空間不夠？清理不需要的圖片和檔案。</string>
+    <string name="TellomiLogout__change_number">變更電話號碼</string>
+    <string name="TellomiLogout__change_number_description">換了電話號碼？聊天記錄和聯絡人都會保留。</string>
+    <string name="TellomiLogout__also_log_out_linked_devices">同時登出已連結的裝置</string>
+    <string name="TellomiLogout__confirm_title">登出？</string>
+    <string name="TellomiLogout__confirm_body">聊天記錄會保留在這部手機上，用同一個電話號碼重新登入後恢復。登出期間別人傳來的訊息會在伺服器上等你，最多保留 30 天。</string>
+    <string name="TellomiLogout__log_out_and_delete_data">登出並刪除本機資料</string>
+    <string name="TellomiLogout__cancel">取消</string>
+    <string name="TellomiLogout__delete_title">刪除本機資料？</string>
+    <string name="TellomiLogout__delete_body">這部手機上的聊天記錄和檔案會全部刪除，無法復原。你的帳戶不受影響，可以在任何裝置上重新登入。</string>
+    <string name="TellomiLogout__delete_and_log_out">刪除並登出</string>
+    <string name="TellomiLogout__needs_network">登出需要連接網絡，請稍後再試。</string>
 </resources>

@@ -215,4 +215,40 @@
     <!-- Shared with the registration screens -->
     <string name="RegistrationActivity_select_your_country">Select your country</string>
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
+
+    <!-- Tellomi：主设备「退出登录」（ADR-0072，tellomi/tellomi#1414）。「退出登录」只是这台设备不再用这个账号，账号还在；删号是「注销账号」 -->
+    <!-- Account settings row, the logout alternatives page title, its bottom action, and the default action of the confirmation dialog: stop using the account on this device (the account itself stays) -->
+    <string name="TellomiLogout__log_out">Log out</string>
+    <!-- Intro at the top of the logout page, above alternatives that might solve the user's problem without logging out -->
+    <string name="TellomiLogout__intro">Before you log out, see if one of these helps:</string>
+    <!-- Logout page alternative: turn on screen lock -->
+    <string name="TellomiLogout__screen_lock">Screen lock</string>
+    <!-- Description under the screen lock alternative -->
+    <string name="TellomiLogout__screen_lock_description">Worried someone might see? Once it\'s on, Tellomi has to be unlocked before it opens.</string>
+    <!-- Logout page alternative: manage storage -->
+    <string name="TellomiLogout__manage_storage">Manage storage</string>
+    <!-- Description under the manage storage alternative -->
+    <string name="TellomiLogout__manage_storage_description">Running out of space? Clear out photos and files you don\'t need.</string>
+    <!-- Logout page alternative: change phone number -->
+    <string name="TellomiLogout__change_number">Change phone number</string>
+    <!-- Description under the change phone number alternative -->
+    <string name="TellomiLogout__change_number_description">Got a new number? Your chats and contacts are kept.</string>
+    <!-- Switch on the logout page, only shown when the account has linked devices (desktop etc.). Off by default -->
+    <string name="TellomiLogout__also_log_out_linked_devices">Also log out linked devices</string>
+    <!-- Title of the dialog confirming logout -->
+    <string name="TellomiLogout__confirm_title">Log out?</string>
+    <!-- Body of the dialog confirming logout: chats stay on this phone; messages wait on the server for up to 30 days -->
+    <string name="TellomiLogout__confirm_body">Your chat history stays on this phone and comes back when you log in again with the same phone number. Messages sent to you while you\'re logged out wait on the server for up to 30 days.</string>
+    <!-- Destructive option in the logout dialog: log out and delete everything on this phone -->
+    <string name="TellomiLogout__log_out_and_delete_data">Log out and delete data on this phone</string>
+    <!-- Cancel button in the logout dialogs -->
+    <string name="TellomiLogout__cancel">Cancel</string>
+    <!-- Title of the second confirmation before deleting everything on this phone -->
+    <string name="TellomiLogout__delete_title">Delete data on this phone?</string>
+    <!-- Body of the second confirmation before deleting everything on this phone -->
+    <string name="TellomiLogout__delete_body">All chat history and files on this phone will be deleted and can\'t be recovered. Your account isn\'t affected, and you can log in again on any device.</string>
+    <!-- Destructive button of the second confirmation: delete everything on this phone and log out -->
+    <string name="TellomiLogout__delete_and_log_out">Delete and log out</string>
+    <!-- Shown when logging out fails because the phone is offline; the app stays logged in -->
+    <string name="TellomiLogout__needs_network">You need to be online to log out. Please try again later.</string>
 </resources>

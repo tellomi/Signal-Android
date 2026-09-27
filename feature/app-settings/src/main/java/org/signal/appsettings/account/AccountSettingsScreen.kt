@@ -96,6 +96,7 @@ object AccountSettingsTestTags {
   const val ROW_RE_REGISTER = "row-re-register"
   const val ROW_DELETE_ALL_DATA = "row-delete-all-data"
   const val ROW_DELETE_ACCOUNT = "row-delete-account"
+  const val ROW_LOG_OUT = "row-log-out"
   const val DIALOG_CONFIRM_DELETE_ALL_DATA = "dialog-confirm-delete-all-data"
   const val DIALOG_CONFIRM_PIN = "dialog-confirm-pin"
   const val DIALOG_CONFIRM_REGISTRATION_LOCK = "dialog-confirm-registration-lock"
@@ -333,6 +334,22 @@ fun AccountSettingsScreen(
             modifier = Modifier.testTag(AccountSettingsTestTags.ROW_DELETE_ALL_DATA)
           )
         }
+      }
+
+      // Tellomi（ADR-0072，tellomi/tellomi#1414）：最底部红字「退出登录」，放在删号上方（需求 §3.2）。退出要先注销推送令牌，
+      // 被服务端登出 / 版本过期时发不出去，和删号一样置灰。
+      item {
+        Rows.TextRow(
+          text = {
+            Text(
+              text = stringResource(R.string.TellomiLogout__log_out),
+              color = if (state.isNotDeprecatedOrUnregistered) SignalTheme.colors.colorAlert else SignalTheme.colors.colorAlertDisabled
+            )
+          },
+          enabled = state.isNotDeprecatedOrUnregistered,
+          onClick = { onEvent(AccountSettingsEvent.LogoutClicked) },
+          modifier = Modifier.testTag(AccountSettingsTestTags.ROW_LOG_OUT)
+        )
       }
 
       item {

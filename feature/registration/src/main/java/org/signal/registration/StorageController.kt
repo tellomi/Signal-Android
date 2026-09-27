@@ -185,7 +185,34 @@ interface StorageController {
    * altogether if everything is already present).
    */
   suspend fun getStoredProfileData(): StoredProfileData
+
+  /**
+   * Tellomi（ADR-0072 §4.2）：本机「已退出登录」时重新登录，开了注册锁要在本机核对 PIN——用本地保存的 PIN 哈希，不联网，
+   * 也不碰 SVR。没有本地哈希时返回 false。默认实现（没有退出登录能力的宿主）一律 false。
+   */
+  suspend fun verifyLocalPin(pin: String): Boolean = false
+
+  /** Tellomi（ADR-0072 §4.2）：重新登录时本机核对 PIN 输错的记录，跨进程保留（输错按次数限制处理）。 */
+  suspend fun getReloginPinAttempts(): ReloginPinAttempts = ReloginPinAttempts()
+
+  /** Tellomi：见 [getReloginPinAttempts]。 */
+  suspend fun setReloginPinAttempts(attempts: ReloginPinAttempts) = Unit
+
+  /**
+   * Tellomi（ADR-0072 §4.2 第 4 步）：同一个号码的验证会话已经 `verified=true`（开了注册锁的还核对过 PIN），把本机解锁：
+   * 去掉「已退出登录」标记、重新登记推送令牌、连上服务器收排队的消息。**不调注册接口**——那会让服务端清空排队的消息。
+   */
+  suspend fun completeRelogin() = Unit
 }
+
+/**
+ * Tellomi（ADR-0072 §4.2）：重新登录时本机核对注册锁 PIN 的输错记录。[failed] 是这一轮连续输错的次数，
+ * [lockedUntilMs] 非 0 时表示到这个时刻（epoch 毫秒）之前不再接受 PIN。
+ */
+data class ReloginPinAttempts(
+  val failed: Int = 0,
+  val lockedUntilMs: Long = 0
+)
 
 /**
  * Snapshot of profile data already present on the device — used to pre-seed (or auto-skip) the
@@ -300,9 +327,14 @@ data class PreExistingRegistrationData(
   val registrationLockEnabled: Boolean,
   val unrestrictedUnidentifiedAccess: Boolean,
   val aciIdentityKeyPair: IdentityKeyPair,
-  val pniIdentityKeyPair: IdentityKeyPair
+  val pniIdentityKeyPair: IdentityKeyPair,
+  /**
+   * Tellomi（ADR-0072）：这台手机是主动「退出登录」的——账号在服务端照旧注册着，本机只是锁住了。此时同一个号码只做验证会话
+   * 证明本人，**绝不**调 `POST /v1/registration`（服务端的 reclaimAccount 会清空排队的消息）；换号码要先清空本机。
+   */
+  val loggedOut: Boolean = false
 ) : Parcelable {
   override fun toString(): String {
-    return "PreExistingRegistrationData(e164=$e164, aci=$aci, pni=$pni, servicePassword=${servicePassword.censor()}, aep=${aep.displayValue.censor()}, registrationLockEnabled=$registrationLockEnabled, unrestrictedUnidentifiedAccess=$unrestrictedUnidentifiedAccess, aciIdentityKeyPair=xxx, pniIdentityKeyPair=xxx)"
+    return "PreExistingRegistrationData(e164=$e164, aci=$aci, pni=$pni, servicePassword=${servicePassword.censor()}, aep=${aep.displayValue.censor()}, registrationLockEnabled=$registrationLockEnabled, unrestrictedUnidentifiedAccess=$unrestrictedUnidentifiedAccess, aciIdentityKeyPair=xxx, pniIdentityKeyPair=xxx, loggedOut=$loggedOut)"
   }
 }

@@ -45,6 +45,7 @@ import org.signal.libsignal.protocol.state.KyberPreKeyRecord
 import org.signal.libsignal.protocol.state.SignedPreKeyRecord
 import org.signal.libsignal.zkgroup.profiles.ProfileKey
 import org.signal.registration.PreExistingRegistrationData
+import org.signal.registration.ReloginPinAttempts
 import org.signal.registration.RestoreDecision
 import org.signal.registration.StorageController
 import org.signal.registration.StoredProfileData
@@ -88,6 +89,7 @@ import org.thoughtcrime.securesms.keyvalue.PhoneNumberPrivacyValues
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.keyvalue.Skipped
 import org.thoughtcrime.securesms.keyvalue.isDecisionPending
+import org.thoughtcrime.securesms.logout.TellomiLogout
 import org.thoughtcrime.securesms.notifications.NotificationIds
 import org.thoughtcrime.securesms.pin.SvrRepository
 import org.thoughtcrime.securesms.profiles.AvatarHelper
@@ -101,6 +103,7 @@ import org.thoughtcrime.securesms.service.LocalBackupListener
 import org.thoughtcrime.securesms.service.RotateSignedPreKeyListener
 import org.thoughtcrime.securesms.util.BackupUtil
 import org.thoughtcrime.securesms.util.TextSecurePreferences
+import org.whispersystems.signalservice.api.kbs.PinHashUtil
 import org.whispersystems.signalservice.api.link.TransferArchiveResponse
 import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import java.io.File
@@ -163,8 +166,36 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       registrationLockEnabled = SignalStore.svr.isRegistrationLockEnabled,
       unrestrictedUnidentifiedAccess = TextSecurePreferences.isUniversalUnidentifiedAccess(context),
       aciIdentityKeyPair = aciIdentityKeyPair,
-      pniIdentityKeyPair = pniIdentityKeyPair
+      pniIdentityKeyPair = pniIdentityKeyPair,
+      loggedOut = TellomiLogout.isLoggedOut()
     )
+  }
+
+  /** Tellomi（ADR-0072 §4.2 第 3 步）：用本地保存的 PIN 哈希核对，不联网、不碰 SVR。 */
+  override suspend fun verifyLocalPin(pin: String): Boolean = withContext(Dispatchers.Default) {
+    val localPinHash = SignalStore.svr.localPinHash
+    if (localPinHash == null) {
+      Log.w(TAG, "[verifyLocalPin] No local PIN hash to check against.")
+      return@withContext false
+    }
+    PinHashUtil.verifyLocalPinHash(localPinHash, pin)
+  }
+
+  override suspend fun getReloginPinAttempts(): ReloginPinAttempts = withContext(Dispatchers.Default) {
+    ReloginPinAttempts(
+      failed = SignalStore.account.tellomiReloginPinFailed,
+      lockedUntilMs = SignalStore.account.tellomiReloginPinLockedUntil
+    )
+  }
+
+  override suspend fun setReloginPinAttempts(attempts: ReloginPinAttempts) = withContext(Dispatchers.Default) {
+    SignalStore.account.tellomiReloginPinFailed = attempts.failed
+    SignalStore.account.tellomiReloginPinLockedUntil = attempts.lockedUntilMs
+  }
+
+  /** Tellomi（ADR-0072 §4.2 第 4 步）：解锁本机，见 [TellomiLogout.completeRelogin]。 */
+  override suspend fun completeRelogin() = withContext(Dispatchers.Default) {
+    TellomiLogout.completeRelogin(context)
   }
 
   override suspend fun clearAllData() = withContext(Dispatchers.IO) {

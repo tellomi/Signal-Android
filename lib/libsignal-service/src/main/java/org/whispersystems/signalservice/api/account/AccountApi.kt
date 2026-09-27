@@ -73,6 +73,21 @@ class AccountApi(private val authWebSocket: SignalWebSocket.AuthenticatedWebSock
   }
 
   /**
+   * Tellomi（ADR-0072 §4.1 第 2 步）：主设备「退出登录」时让服务端停止给这台设备发推送。
+   *
+   * 服务端清掉这台设备的 gcmId、把 fetchesMessages 置为 false（`AccountController.deleteGcmRegistrationId`）；
+   * 小米 / 华为走 gcmId 前缀，同一个请求就覆盖了。不用 [clearFcmToken]：它走 gRPC 的 ClearPushToken，
+   * 服务端会把 fetchesMessages 置为 true，表示「这台设备改用常连收消息」——和退出登录的意思正相反。
+   *
+   * DELETE /v1/accounts/gcm/
+   * - 204: Success
+   */
+  fun deleteGcmRegistrationId(): NetworkResult<Unit> {
+    val request = WebSocketRequestMessage.delete("/v1/accounts/gcm/")
+    return NetworkResult.fromWebSocketRequest(authWebSocket, request)
+  }
+
+  /**
    * Set account attributes.
    *
    * PUT /v1/accounts/attributes

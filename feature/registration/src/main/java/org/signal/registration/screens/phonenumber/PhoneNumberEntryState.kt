@@ -82,6 +82,11 @@ data class PhoneNumberEntryState(
     val rateLimitedRetryAfter: Duration? = null,
     val unableToSendSms: Boolean = false,
     val couldNotRequestCodeWithSelectedTransport: Boolean = false,
-    val invalidPhoneNumber: Boolean = false
+    val invalidPhoneNumber: Boolean = false,
+    /**
+     * Tellomi（ADR-0072 §4.2）：本机是已退出登录的账号，用户却输入了另一个号码。非空时弹框确认「用新号码登录会删除这台手机上 {打码的旧号码} 的聊天记录」，
+     * 值就是那个打码的旧号码。
+     */
+    val confirmWipeForNewNumber: String? = null
   )
 }

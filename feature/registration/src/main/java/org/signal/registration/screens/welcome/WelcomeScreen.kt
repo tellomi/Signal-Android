@@ -8,6 +8,7 @@
 package org.signal.registration.screens.welcome
 
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.util.DisplayMetrics
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +27,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -218,7 +221,8 @@ private fun CompactLayout(
           PrimaryDeviceCallToActionButtons(
             onEvent = onEvent,
             onRestoreOrTransferClick = onRestoreOrTransferClick,
-            showRestoreOrTransfer = state.showRestoreOrTransfer
+            showRestoreOrTransfer = state.showRestoreOrTransfer,
+            lastLogin = state.lastLogin
           )
 
           Spacer(modifier = Modifier.height(48.dp))
@@ -270,7 +274,8 @@ private fun MediumLayout(
           PrimaryDeviceCallToActionButtons(
             onEvent = onEvent,
             onRestoreOrTransferClick = onRestoreOrTransferClick,
-            showRestoreOrTransfer = state.showRestoreOrTransfer
+            showRestoreOrTransfer = state.showRestoreOrTransfer,
+            lastLogin = state.lastLogin
           )
         }
       }
@@ -316,7 +321,8 @@ private fun LargeLayout(
 
             Spacer(modifier = Modifier.height(77.dp))
 
-            if (displayLinkAsPrimaryOption) {
+            // Tellomi（ADR-0072）：已退出登录的主设备不把「关联设备」当主路径，照手机的样子给「上次登录」。
+            if (displayLinkAsPrimaryOption && state.lastLogin == null) {
               SecondaryDeviceCallToActionButtons(
                 onEvent = onEvent
               )
@@ -324,7 +330,8 @@ private fun LargeLayout(
               PrimaryDeviceCallToActionButtons(
                 onEvent = onEvent,
                 onRestoreOrTransferClick = onRestoreOrTransferClick,
-                showRestoreOrTransfer = state.showRestoreOrTransfer
+                showRestoreOrTransfer = state.showRestoreOrTransfer,
+                lastLogin = state.lastLogin
               )
             }
           }
@@ -370,15 +377,27 @@ private fun Headline(
 private fun PrimaryDeviceCallToActionButtons(
   onEvent: (WelcomeScreenEvents) -> Unit,
   onRestoreOrTransferClick: () -> Unit,
-  showRestoreOrTransfer: Boolean
+  showRestoreOrTransfer: Boolean,
+  lastLogin: WelcomeScreenState.LastLogin? = null
 ) {
+  // Tellomi（ADR-0072 §4.1 第 4 步 / §4.2）：已退出登录时，按钮上面是「上次登录」，点一下直接进验证码；
+  // 下面的主按钮改叫「用其他号码登录」（输了别的号码会先确认清空本机）。
+  if (lastLogin != null) {
+    LastLoginCard(
+      lastLogin = lastLogin,
+      onClick = { onEvent(WelcomeScreenEvents.ReloginClicked) }
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+  }
+
   Buttons.LargeTonal(
     onClick = { onEvent(WelcomeScreenEvents.Continue) },
     modifier = Modifier
       .fillMaxWidth()
       .testTag(TestTags.WELCOME_GET_STARTED_BUTTON)
   ) {
-    Text(stringResource(R.string.RegistrationActivity_continue))
+    Text(stringResource(if (lastLogin != null) R.string.TellomiRelogin__use_another_number else R.string.RegistrationActivity_continue))
   }
 
   if (showRestoreOrTransfer) {
@@ -427,6 +446,89 @@ private fun ColumnScope.SecondaryDeviceCallToActionButtons(
     ) {
       Text(
         text = stringResource(R.string.WelcomeScreen__create_account)
+      )
+    }
+  }
+}
+
+/**
+ * Tellomi（ADR-0072 §4.1 第 4 步）：「上次登录」——头像（没有头像时名字的第一个字）+ 打码的号码，整块可点。
+ * 样子照下面「恢复或转移」底部卡里的行（[RestoreActionRow]）：圆角色块、左图右字。
+ */
+@Composable
+private fun LastLoginCard(
+  lastLogin: WelcomeScreenState.LastLogin,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier
+) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = modifier
+      .fillMaxWidth()
+      .clip(RoundedCornerShape(18.dp))
+      .background(MaterialTheme.colorScheme.surfaceVariant)
+      .clickable(onClick = onClick)
+      .padding(horizontal = 16.dp, vertical = 12.dp)
+      .testTag(TestTags.WELCOME_LAST_LOGIN)
+  ) {
+    LastLoginAvatar(lastLogin = lastLogin)
+
+    Column(
+      modifier = Modifier
+        .weight(1f)
+        .padding(horizontal = 12.dp)
+    ) {
+      Text(
+        text = stringResource(R.string.TellomiRelogin__last_login),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+
+      Text(
+        text = lastLogin.maskedE164,
+        style = MaterialTheme.typography.bodyLarge
+      )
+    }
+
+    Icon(
+      imageVector = SignalIcons.ChevronRight.imageVector,
+      contentDescription = null,
+      tint = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+  }
+}
+
+@Composable
+private fun LastLoginAvatar(lastLogin: WelcomeScreenState.LastLogin) {
+  val avatar = remember(lastLogin.avatar) {
+    lastLogin.avatar?.let { bytes -> BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.asImageBitmap() }
+  }
+
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = Modifier
+      .size(40.dp)
+      .clip(CircleShape)
+      .background(MaterialTheme.colorScheme.primaryContainer)
+  ) {
+    when {
+      avatar != null -> Image(
+        bitmap = avatar,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxSize()
+      )
+
+      lastLogin.initial.isNotEmpty() -> Text(
+        text = lastLogin.initial,
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onPrimaryContainer
+      )
+
+      else -> Icon(
+        imageVector = SignalIcons.PersonCircle.imageVector,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onPrimaryContainer
       )
     }
   }
@@ -573,6 +675,14 @@ private fun rememberDisplayLinkAndSyncAsPrimaryPath(isLinkAndSyncAvailable: Bool
 private fun WelcomeScreenPreview() {
   Previews.Preview {
     WelcomeScreen(state = WelcomeScreenState(), onEvent = {})
+  }
+}
+
+@AllDevicePreviews
+@Composable
+private fun WelcomeScreenLastLoginPreview() {
+  Previews.Preview {
+    WelcomeScreen(state = WelcomeScreenState(showRestoreOrTransfer = false, lastLogin = WelcomeScreenState.LastLogin(maskedE164 = "+86 138****5678", initial = "林")), onEvent = {})
   }
 }
 
