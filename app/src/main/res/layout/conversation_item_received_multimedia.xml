@@ -19,7 +19,7 @@
         android:id="@+id/reply_icon_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/body_bubble"
+        android:layout_alignEnd="@id/body_bubble"
         android:layout_alignTop="@id/body_bubble"
         android:layout_alignBottom="@id/body_bubble"
         android:alpha="0">
