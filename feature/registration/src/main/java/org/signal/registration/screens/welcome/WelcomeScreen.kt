@@ -97,8 +97,14 @@ fun WelcomeScreen(
   val context = LocalContext.current
   var pendingNetworkEvent by remember { mutableStateOf<WelcomeScreenEvents?>(null) }
   val gatedOnEvent: (WelcomeScreenEvents) -> Unit = { event ->
-    val needsNetwork = event == WelcomeScreenEvents.HasOldPhone || event == WelcomeScreenEvents.LinkDevice
-    if (needsNetwork && !TellomiCrossBorderConsent.hasAgreed(context)) {
+    // Tellomi（tellomi/tellomi#1338）：关联设备只要看过告知（hasAgreed，含「知道了」）；恢复 / 转移是主设备，
+    // 要亲自点过「同意并继续」——只点过关联的「知道了」、又退回来恢复的，还要出完整同意。
+    val needsNotice = when (event) {
+      WelcomeScreenEvents.LinkDevice -> !TellomiCrossBorderConsent.hasAgreed(context)
+      WelcomeScreenEvents.HasOldPhone -> !TellomiCrossBorderConsent.hasGivenSeparateConsent(context)
+      else -> false
+    }
+    if (needsNotice) {
       pendingNetworkEvent = event
     } else {
       onEvent(event)
@@ -152,13 +158,21 @@ fun WelcomeScreen(
   TellomiFirstLaunchNotice()
 
   pendingNetworkEvent?.let { event ->
+    // Tellomi（tellomi/tellomi#1338）：关联设备的同意在手机上取得，这台只出只读告知、一个「知道了」（需求 6.1 ④）；
+    // 「我可以用旧手机」是恢复 / 转移成主设备，照旧完整同意。
+    val linking = event == WelcomeScreenEvents.LinkDevice
     TellomiCrossBorderNotice(
       onAgree = {
-        TellomiCrossBorderConsent.recordAgreement(context)
+        if (linking) {
+          TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
+        } else {
+          TellomiCrossBorderConsent.recordAgreement(context)
+        }
         pendingNetworkEvent = null
         onEvent(event)
       },
-      onCancel = { pendingNetworkEvent = null }
+      onCancel = { pendingNetworkEvent = null },
+      readOnly = linking
     )
   }
 }

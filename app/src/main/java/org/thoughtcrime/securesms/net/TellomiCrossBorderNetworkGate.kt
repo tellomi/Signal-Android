@@ -87,7 +87,9 @@ object TellomiCrossBorderNetworkGate {
             decorView.removeView(overlay)
           },
           // 已注册的人不同意就用不了 Tellomi：返回键不关这一页。
-          onCancel = {}
+          onCancel = {},
+          // Tellomi（tellomi/tellomi#1338）：升级上来的已注册设备，导语上方提示「隐私政策已更新至 2.0.0」并给链接（需求 6.2 c）。
+          showPolicyUpdated = true
         )
       }
     }
