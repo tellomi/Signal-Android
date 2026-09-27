@@ -43,52 +43,9 @@ object BlessedPacks {
   @JvmField
   val CROCOS_FEELINGS = Pack("3044281a51307306e5442f2e9070953a", "c4caaa84397e1a630a5960f54a0b82753c88a5e52e0defe615ba4dd80f130cbf")
 
-  private val packs = listOf(
-    BlessedPackInfo(
-      pack = ROCKY_TALK,
-      installMode = BlessedPackInfo.InstallMode.InstallByDefault
-    ),
-    BlessedPackInfo(
-      pack = MY_DAILY_LIFE,
-      installMode = BlessedPackInfo.InstallMode.InstallByDefault
-    ),
-    BlessedPackInfo(
-      pack = ZOZO,
-      installMode = BlessedPackInfo.InstallMode.InstallByDefault
-    ),
-    BlessedPackInfo(
-      pack = CROCOS_FEELINGS,
-      installMode = BlessedPackInfo.InstallMode.InstallByDefault
-    ),
-    BlessedPackInfo(
-      pack = SWOON_HANDS,
-      installMode = BlessedPackInfo.InstallMode.AvailableAsReference
-    ),
-    BlessedPackInfo(
-      pack = SWOON_FACES,
-      installMode = BlessedPackInfo.InstallMode.AvailableAsReference
-    ),
-    BlessedPackInfo(
-      pack = MY_DAILY_LIFE_2,
-      installMode = BlessedPackInfo.InstallMode.AvailableAsReference
-    ),
-    BlessedPackInfo(
-      pack = BANDIT,
-      installMode = BlessedPackInfo.InstallMode.AvailableAsReference
-    ),
-    BlessedPackInfo(
-      pack = DAY_BY_DAY,
-      installMode = BlessedPackInfo.InstallMode.AvailableAsReference
-    ),
-    BlessedPackInfo(
-      pack = COZY_SEASON,
-      installMode = BlessedPackInfo.InstallMode.AvailableAsReference
-    ),
-    BlessedPackInfo(
-      pack = CHUG_THE_MOUSE,
-      installMode = BlessedPackInfo.InstallMode.AvailableAsReference
-    )
-  )
+  // Tellomi (tellomi/tellomi#1406): ship no Signal sticker packs by default. The constants above stay
+  // because old upgrade migrations reference them; a future Tellomi-owned list plugs in here.
+  private val packs: List<BlessedPackInfo> = emptyList()
 
   private val packIds: Set<String> by lazy {
     packs.map { it.pack.packId }.toSet()
