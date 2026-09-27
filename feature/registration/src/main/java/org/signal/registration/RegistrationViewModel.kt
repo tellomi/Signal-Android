@@ -8,11 +8,7 @@ package org.signal.registration
 import android.Manifest
 import android.os.Build
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -25,14 +21,13 @@ import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.ui.navigation.ResultEventBus
 import org.signal.core.util.logging.Log
 import org.signal.registration.screens.restoreselection.RegisteredState
-import kotlin.reflect.KClass
 
 /**
  * ViewModel shared across the registration flow.
  * Manages state and logic for registration screens.
  */
 class RegistrationViewModel(
-  private val repository: RegistrationRepository,
+  val repository: RegistrationRepository,
   private val savedStateHandle: SavedStateHandle,
   startDestination: RegistrationRoute? = null,
   private val startFresh: Boolean = false
@@ -80,7 +75,7 @@ class RegistrationViewModel(
         val restored = repository.restoreFlowState()
         if (restored != null) {
           Log.i(TAG, "[init] Restored flow state from disk. Backstack size: ${restored.backStack.size}, hasSession: ${restored.sessionMetadata != null}")
-          _state.value = validateRestoredState(restored).copy(isRestoringNavigationState = false)
+          _state.value = validateRestoredState(dropPermissionRoutes(restored)).copy(isRestoringNavigationState = false)
         } else {
           _state.value = _state.value.copy(
             preExistingRegistrationData = repository.getPreExistingRegistrationData(),
@@ -91,6 +86,10 @@ class RegistrationViewModel(
     }
   }
 
+  override fun onCleared() {
+    repository.close()
+  }
+
   override suspend fun processEvent(event: RegistrationFlowEvent) {
     _state.value = applyEvent(_state.value, event)
     persistFlowState(event)
@@ -98,8 +97,11 @@ class RegistrationViewModel(
 
   suspend fun applyEvent(state: RegistrationFlowState, event: RegistrationFlowEvent): RegistrationFlowState {
     return when (event) {
-      is RegistrationFlowEvent.ResetState -> RegistrationFlowState(isRestoringNavigationState = false)
+      // Tellomi（ADR-0072）：重置时留住本机已有的注册数据。上游清成默认值，[PreExistingRegistrationData.loggedOut] 跟着没了，
+      // 已退出登录的人被打回欢迎页后就会按全新注册走、调 POST /v1/registration，服务端清空排队的消息。
+      is RegistrationFlowEvent.ResetState -> RegistrationFlowState(isRestoringNavigationState = false, preExistingRegistrationData = state.preExistingRegistrationData)
       is RegistrationFlowEvent.SessionUpdated -> state.copy(sessionMetadata = event.session)
+      is RegistrationFlowEvent.SessionExpired -> state.copy(sessionMetadata = null)
       is RegistrationFlowEvent.E164Chosen -> state.copy(sessionE164 = event.e164)
       is RegistrationFlowEvent.VerificationCodeAccepted -> state.copy(submittedVerificationCode = event.code)
       is RegistrationFlowEvent.VerificationCodeRequested -> state.copy(
@@ -135,6 +137,8 @@ class RegistrationViewModel(
         val completeNavEvent = RegistrationFlowEvent.NavigateToScreen(RegistrationRoute.FullyComplete)
         applyNavigationToScreenEvent(state, completeNavEvent)
       }
+      is RegistrationFlowEvent.ReloginRequested -> state.copy(reloginRequested = true)
+      is RegistrationFlowEvent.ReloginRequestHandled -> state.copy(reloginRequested = false)
     }
   }
 
@@ -217,13 +221,26 @@ class RegistrationViewModel(
 
     Log.i(TAG, "[validateRestoredState] User is NOT registered, resetting to PhoneNumberEntry.")
     return state.copy(
+      // Tellomi（#1112）：上游在 Welcome 与 PhoneNumberEntry 之间放一页 Permissions；Tellomi 注册流程不要权限页
       backStack = listOf(
         RegistrationRoute.Welcome,
-        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry),
         RegistrationRoute.PhoneNumberEntry
       ),
       sessionMetadata = null
     )
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1112）：注册流程不再有权限页，但 0.1.2 及更早的版本会把 [RegistrationRoute.Permissions] /
+   * [RegistrationRoute.AllowNotifications] 存进回退栈。升级后恢复进度时把它们滤掉，免得按返回键又回到权限页。
+   */
+  private fun dropPermissionRoutes(state: RegistrationFlowState): RegistrationFlowState {
+    val backStack = state.backStack.filterNot { it is RegistrationRoute.Permissions || it is RegistrationRoute.AllowNotifications }
+    if (backStack.size == state.backStack.size) {
+      return state
+    }
+    Log.i(TAG, "[dropPermissionRoutes] Dropped ${state.backStack.size - backStack.size} permission route(s) persisted by an older version.")
+    return state.copy(backStack = backStack.ifEmpty { listOf(RegistrationRoute.Welcome) })
   }
 
   fun getRequiredLinkedDevicePermission(): String? {
@@ -247,6 +264,7 @@ class RegistrationViewModel(
       is RegistrationFlowEvent.NavigateBack,
       is RegistrationFlowEvent.NavigateBackToScreen,
       is RegistrationFlowEvent.SessionUpdated,
+      is RegistrationFlowEvent.SessionExpired,
       is RegistrationFlowEvent.E164Chosen,
       is RegistrationFlowEvent.VerificationCodeAccepted,
       is RegistrationFlowEvent.VerificationCodeRequested,
@@ -260,12 +278,10 @@ class RegistrationViewModel(
       // No need to persist anything new, fields accounted for in proto already
       is RegistrationFlowEvent.Registered,
       is RegistrationFlowEvent.MasterKeyRestoredFromSvr -> { }
-    }
-  }
 
-  class Factory(private val repository: RegistrationRepository, private val startDestination: RegistrationRoute? = null, private val startFresh: Boolean = false) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-      return RegistrationViewModel(repository, extras.createSavedStateHandle(), startDestination, startFresh) as T
+      // Tellomi：只在这一次打开手机号页时有用，不存盘
+      is RegistrationFlowEvent.ReloginRequested,
+      is RegistrationFlowEvent.ReloginRequestHandled -> { }
     }
   }
 }

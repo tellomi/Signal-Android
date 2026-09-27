@@ -72,7 +72,8 @@ class DisabledInputView @JvmOverloads constructor(
 
         when {
           clientExpired -> {
-            message.setText(R.string.ExpiredBuildReminder_this_version_of_signal_has_expired)
+            // Tellomi（#1143 需求 3.4，taishi 审查包 11）：服务端判定（499）时并没有过期，不说「已过期」，说要更新才能收发。
+            message.setText(R.string.TellomiUpdateRequired__input_needs_update)
             actionButton.setText(R.string.ConversationFragment__update_build)
             actionButton.setOnClickListener { listener?.onUpdateAppClicked() }
           }

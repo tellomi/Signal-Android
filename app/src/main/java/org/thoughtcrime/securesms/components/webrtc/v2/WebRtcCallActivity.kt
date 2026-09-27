@@ -40,8 +40,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -90,6 +92,7 @@ import org.thoughtcrime.securesms.webrtc.CallParticipantsViewState
 import org.thoughtcrime.securesms.webrtc.audio.SignalAudioManager
 import org.thoughtcrime.securesms.webrtc.audio.SignalAudioManager.ChosenAudioDeviceIdentifier
 import org.whispersystems.signalservice.api.messages.calls.HangupMessage
+import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.seconds
 
 /** Conversion */
@@ -103,6 +106,14 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
     private const val CUSTOM_REACTION_BOTTOM_SHEET_TAG = "CallReaction"
     private const val SAVED_STATE_PIP_ASPECT_RATIO = "pip_aspect_ratio"
     private const val SAVED_STATE_LOCAL_PARTICIPANT_LANDSCAPE = "local_participant_landscape"
+
+    /**
+     * The system rejects picture-in-picture aspect ratios outside of [1/2.39, 2.39] with an
+     * IllegalArgumentException. We stay a hair inside those bounds so that rounding when converting
+     * to a [Rational] can never push us back over the line.
+     */
+    private const val MIN_PIP_ASPECT_RATIO = 0.42f
+    private const val MAX_PIP_ASPECT_RATIO = 2.38f
   }
 
   private lateinit var callScreen: CallScreenMediator
@@ -244,6 +255,10 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
   }
 
   override fun onStart() {
+    // This instance outlived being backgrounded (e.g. the screen was turned off and back on), so any relaunch scheduled in onStop() is unnecessary.
+    // Cancel it before super.onStart() dispatches the app-foregrounded event, otherwise it would yank the call out of PiP and into fullscreen.
+    AppDependencies.signalCallManager.cancelPipRelaunch()
+
     super.onStart()
 
     ephemeralStateDisposable = AppDependencies.signalCallManager
@@ -569,6 +584,19 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
         }
 
         launch {
+          viewModel.callParticipantsState
+            .map { it.allRemoteParticipants.size > 1 }
+            .distinctUntilChanged()
+            .collectLatest { hasMultipleRemoteParticipants ->
+              // A call that grows past a single remote participant can no longer be edge to edge, even if
+              // we already went immersive back when it was one-to-one.
+              if (hasMultipleRemoteParticipants) {
+                FullscreenHelper.showSystemUI(window)
+              }
+            }
+        }
+
+        launch {
           viewModel.getSafetyNumberChangeEvent().collect { handleSafetyNumberChangeEvent(it) }
         }
 
@@ -694,7 +722,7 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
     // Ignore invalid aspect ratios (uninitialized texture view, video off, etc.)
     if (aspectRatio <= 0f) return
 
-    val clampedAspectRatio = aspectRatio.coerceIn(0.41f, 2.39f)
+    val clampedAspectRatio = aspectRatio.coerceIn(MIN_PIP_ASPECT_RATIO, MAX_PIP_ASPECT_RATIO)
 
     // Only update if aspect ratio changed meaningfully (>10%) to avoid feedback loops from noise
     val changeRatio = if (lastPipAspectRatio > 0f) {
@@ -713,7 +741,7 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
 
   private fun floatToRational(value: Float): Rational {
     val denominator = 1000
-    val numerator = (value * denominator).toInt()
+    val numerator = (value.coerceIn(MIN_PIP_ASPECT_RATIO, MAX_PIP_ASPECT_RATIO) * denominator).roundToInt()
     return Rational(numerator, denominator)
   }
 
@@ -1280,12 +1308,19 @@ class WebRtcCallActivity : BaseActivity(), SafetyNumberChangeDialog.Callback, Re
       fullScreenHelper.showSystemUI()
     }
 
-    override fun onHidden() {
+    override fun onHidden(isFullBleedCall: Boolean) {
       val controlState = viewModel.getWebRtcControls().value
-      if (!controlState.displayErrorControls()) {
-        fullScreenHelper.hideSystemUI()
-        videoTooltip?.dismiss()
+      if (controlState.displayErrorControls()) {
+        return
       }
+
+      // Only an edge-to-edge call goes immersive with the controls. Anything else keeps the system bars
+      // up and pads around them instead, so the grid doesn't reflow every time the controls fade.
+      if (isFullBleedCall) {
+        fullScreenHelper.hideSystemUI()
+      }
+
+      videoTooltip?.dismiss()
     }
   }
 

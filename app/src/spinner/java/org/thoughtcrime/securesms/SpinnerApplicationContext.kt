@@ -92,7 +92,9 @@ class SpinnerApplicationContext : ApplicationContext() {
         StorageServicePlugin.PATH to StorageServicePlugin(),
         AttachmentPlugin.PATH to AttachmentPlugin(),
         BackupPlugin.PATH to BackupPlugin(),
-        ApiPlugin.PATH to ApiPlugin()
+        ApiPlugin.PATH to ApiPlugin(),
+        // Tellomi（#1055 第三刀）：模拟器上切区
+        TellomiRegionPlugin.PATH to TellomiRegionPlugin()
       )
     )
 

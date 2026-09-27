@@ -53,9 +53,11 @@ import org.thoughtcrime.securesms.net.SignalNetwork
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.NotificationIds
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.region.TellomiUploadPin
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.util.MediaUtil
 import org.thoughtcrime.securesms.util.RemoteConfig
+import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.whispersystems.signalservice.api.messages.AttachmentTransferProgress
 import org.whispersystems.signalservice.api.messages.SignalServiceAttachment
 import org.whispersystems.signalservice.api.push.exceptions.ResumeLocationInvalidException
@@ -88,8 +90,17 @@ class BackupMessagesJob private constructor(
 
     const val KEY = "BackupMessagesJob"
 
+    private fun isRegistered(): Boolean {
+      return SignalStore.account.isRegistered && !TextSecurePreferences.isUnauthorizedReceived(AppDependencies.application)
+    }
+
     private fun isBackupAllowed(): Boolean {
       return when {
+        !isRegistered() -> {
+          Log.w(TAG, "Backup not allowed: not registered.", true)
+          false
+        }
+
         SignalStore.registration.restoreDecisionState.isDecisionPending -> {
           Log.i(TAG, "Backup not allowed: a restore decision is pending.", true)
           false
@@ -144,7 +155,7 @@ class BackupMessagesJob private constructor(
     pendingNextBackupSecretData = pendingNextBackupSecretData?.toByteString() ?: ByteString.EMPTY,
     pendingMessageCutoffTime = pendingMessageCutoffTime,
     resumableUri = resumableMessagesBackupUploadSpec?.resumableUri ?: "",
-    uploadSpec = resumableMessagesBackupUploadSpec?.attachmentUploadForm?.toUploadSpec()
+    uploadSpec = resumableMessagesBackupUploadSpec?.let { it.attachmentUploadForm.toUploadSpec().copy(tellomiRegionId = it.tellomiRegionId) }
   ).encode()
 
   override fun getFactoryKey(): String = KEY
@@ -217,7 +228,13 @@ class BackupMessagesJob private constructor(
       // We're building a new file, so whatever the previous attempt left behind is dead, including any SVRB state we may advance past below.
       clearPendingBackupFile()
 
-      val auth = when (val result = AppDependencies.archiveService.getSvrBAuth()) {
+      if (!isRegistered()) {
+        Log.w(TAG, "Deregistered before storing to SVRB. Aborting.", true)
+        backupErrorHandled = true
+        return Result.failure()
+      }
+
+      val auth = when (val result = SignalNetwork.archiveService.getSvrBAuth()) {
         is Either.Right -> result.value
         is Either.Left -> when (val error = result.value) {
           is ArchiveError.CredentialError.RateLimited -> {
@@ -236,16 +253,22 @@ class BackupMessagesJob private constructor(
         }
       }
 
-      if (SignalStore.backup.backupSecretRestoreRequired) {
+      val svrbReInitRan = SignalStore.backup.backupSecretRestoreRequired
+      if (svrbReInitRan) {
         Log.i(TAG, "[svrb-restore] First backup of re-registered account without remote restore, read remote data if available to re-init")
 
         val forwardSecrecyMetadata: ByteArray? = when (val result = BackupRepository.getRemoteBackupForwardSecrecyMetadata()) {
-          is Either.Right -> result.value
+          is Either.Right -> {
+            if (result.value == null) {
+              Log.w(TAG, "[svrb-restore] Read the remote backup header, but it contained no forward secrecy metadata!", true)
+            }
+            result.value
+          }
           is Either.Left -> when (val error = result.value) {
             is ArchiveError.CredentialError.Unauthorized,
             is ArchiveError.EntitlementError.NotEntitled,
             is ArchiveError.CredentialError.NotFound -> {
-              Log.i(TAG, "[svrb-restore] No backup data found, continuing.", true)
+              Log.i(TAG, "[svrb-restore] No backup data found (${error::class.simpleName}), continuing.", true)
               null
             }
             is ArchiveError.CredentialError.ZkVerificationFailed -> {
@@ -267,7 +290,7 @@ class BackupMessagesJob private constructor(
         }
 
         if (forwardSecrecyMetadata != null) {
-          when (val result = SignalNetwork.svrB.restore(auth, SignalStore.backup.messageBackupKey, forwardSecrecyMetadata)) {
+          when (val result = SignalNetwork.svrBApi.restore(auth, SignalStore.backup.messageBackupKey, forwardSecrecyMetadata)) {
             is SvrBApi.RestoreResult.Success -> {
               Log.i(TAG, "[svrb-restore] Remote secrecy data restored successfully.")
               SignalStore.backup.nextBackupSecretData = result.data.nextBackupSecretData
@@ -299,19 +322,22 @@ class BackupMessagesJob private constructor(
               return Result.fatalFailure(RuntimeException(result.throwable))
             }
           }
+        } else {
+          Log.w(TAG, "[svrb-restore] No remote forward secrecy metadata to restore from, skipping the SVRB restore.", true)
         }
 
+        Log.i(TAG, "[svrb-restore] Re-init finished. Have local secret data: ${SignalStore.backup.nextBackupSecretData != null}", true)
         SignalStore.backup.backupSecretRestoreRequired = false
       }
 
       val backupSecretData = SignalStore.backup.nextBackupSecretData ?: run {
-        Log.i(TAG, "First SVRB backup! Creating new backup chain.", true)
-        val secretData = SignalNetwork.svrB.createNewBackupChain(auth, SignalStore.backup.messageBackupKey)
+        Log.i(TAG, "First SVRB backup! Creating new backup chain. (reInitRan: $svrbReInitRan)", true)
+        val secretData = SignalNetwork.svrBApi.createNewBackupChain(auth, SignalStore.backup.messageBackupKey)
         SignalStore.backup.nextBackupSecretData = secretData
         secretData
       }
 
-      val svrBMetadata: SvrBStoreResponse = when (val result = SignalNetwork.svrB.store(auth, SignalStore.backup.messageBackupKey, backupSecretData)) {
+      val svrBMetadata: SvrBStoreResponse = when (val result = SignalNetwork.svrBApi.store(auth, SignalStore.backup.messageBackupKey, backupSecretData)) {
         is SvrBApi.StoreResult.Success -> result.data
         is SvrBApi.StoreResult.NetworkError -> return Result.retry(result.retryAfter?.inWholeMilliseconds ?: defaultBackoff()).logW(TAG, "SVRB transient network error.", result.exception, true)
         is SvrBApi.StoreResult.SvrError -> return Result.retry(defaultBackoff()).logW(TAG, "SVRB error.", result.throwable, true)
@@ -348,9 +374,15 @@ class BackupMessagesJob private constructor(
     this.pendingNextBackupSecretData = nextBackupSecretData
     this.pendingMessageCutoffTime = messageCutoffTime
 
+    // Tellomi（#1055 第三刀）：切过区就当规格作废，从头传，落到现在的区（契约第六节：在途续传不许静默换区）
+    if (resumableMessagesBackupUploadSpec?.let { TellomiUploadPin.canResume(it.tellomiRegionId) } == false) {
+      Log.w(TAG, "The upload spec was started in region ${resumableMessagesBackupUploadSpec?.tellomiRegionId}. Clearing it so we start over in the current one.", true)
+      resumableMessagesBackupUploadSpec = null
+    }
+
     val existingSpec = resumableMessagesBackupUploadSpec
     val form: AttachmentUploadForm = if (existingSpec == null) {
-      when (val result = AppDependencies.archiveService.getMessageBackupUploadForm(tempBackupFile.length())) {
+      when (val result = SignalNetwork.archiveService.getMessageBackupUploadForm(tempBackupFile.length())) {
         is Either.Right -> result.value
         is Either.Left -> when (val error = result.value) {
           is ArchiveError.NetworkError -> {
@@ -405,7 +437,7 @@ class BackupMessagesJob private constructor(
     }
 
     val uploadResult = FileInputStream(tempBackupFile).use { fileStream ->
-      SignalNetwork.archive.uploadBackupFile(
+      SignalNetwork.archiveApi.uploadBackupFile(
         uploadForm = form,
         data = fileStream,
         dataLength = tempBackupFile.length(),
@@ -413,7 +445,7 @@ class BackupMessagesJob private constructor(
         progressListener = progressListener,
         existingResumeUrl = existingSpec?.resumableUri,
         onResumeUrlCreated = { url ->
-          resumableMessagesBackupUploadSpec = ResumableMessagesBackupUploadSpec(attachmentUploadForm = form, resumableUri = url)
+          resumableMessagesBackupUploadSpec = ResumableMessagesBackupUploadSpec(attachmentUploadForm = form, resumableUri = url, tellomiRegionId = TellomiUploadPin.currentRegionId())
         }
       )
     }
@@ -728,7 +760,8 @@ class BackupMessagesJob private constructor(
           key = backupMessagesJobData.uploadSpec.cdnKey,
           headers = backupMessagesJobData.uploadSpec.headers.associate { it.key to it.value_ },
           signedUploadLocation = backupMessagesJobData.uploadSpec.location
-        )
+        ),
+        tellomiRegionId = TellomiUploadPin.startedIn(backupMessagesJobData.uploadSpec)
       )
     }
   }

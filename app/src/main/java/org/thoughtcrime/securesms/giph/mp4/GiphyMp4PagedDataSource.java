@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import org.signal.core.util.logging.Log;
 import org.signal.paging.PagedDataSource;
-import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.giph.model.GiphyImage;
 import org.thoughtcrime.securesms.giph.model.GiphyResponse;
@@ -31,31 +30,28 @@ import okhttp3.Response;
 final class GiphyMp4PagedDataSource implements PagedDataSource<String, GiphyImage> {
 
   /**
-   * Tellomi（#1078，ADR-0064 §4.4）：api_key 优先用服务端下发的那把，无值才回落编译期常量。
+   * Tellomi（#1078，ADR-0064 §4.4）：api_key 只用服务端下发的那把（`global.gif.apiKey.android`）。
    *
-   * **不能再做成 `static final`**：`static final` 在类加载时求值，那时 RemoteConfig 可能
+   * **不能做成 `static final`**：`static final` 在类加载时求值，那时 RemoteConfig 可能
    * 还没初始化，而且服务端换 key 之后（`hotSwappable = true`）这个进程再也拿不到新值——
-   * 表现是「后台改了 key，用户还得杀进程重开」。每次取 URI 时现算，成本是拼一个字符串。
+   * 表现是「后台改了 key，用户还得杀进程重开」。每次请求时现取，成本是拼一个字符串。
    *
-   * 上游那把 key 是 **Signal 自己的**，我们一直在用它请求 GIPHY。
+   * Tellomi（#1235）：去掉了回落到编译期常量——上游那把 key 是 **Signal 自己的**。
+   * 服务端还没下发时 {@link #performFetch} 不发请求，GIF 面板为空，等远程配置到了再说。
    */
-  private static @NonNull Uri baseGiphyUri() {
-    String apiKey = RemoteConfig.gifApiKey();
-    if (TextUtils.isEmpty(apiKey)) {
-      apiKey = BuildConfig.GIPHY_API_KEY;
-    }
+  private static @NonNull Uri baseGiphyUri(@NonNull String apiKey) {
     return Uri.parse("https://api.giphy.com/v1/gifs/")
               .buildUpon()
               .appendQueryParameter("api_key", apiKey)
               .build();
   }
 
-  private static @NonNull Uri trendingUri() {
-    return baseGiphyUri().buildUpon().appendPath("trending").build();
+  private static @NonNull Uri trendingUri(@NonNull String apiKey) {
+    return baseGiphyUri(apiKey).buildUpon().appendPath("trending").build();
   }
 
-  private static @NonNull Uri searchUri() {
-    return baseGiphyUri().buildUpon().appendPath("search").build();
+  private static @NonNull Uri searchUri(@NonNull String apiKey) {
+    return baseGiphyUri(apiKey).buildUpon().appendPath("search").build();
   }
 
 
@@ -103,10 +99,15 @@ final class GiphyMp4PagedDataSource implements PagedDataSource<String, GiphyImag
   }
 
   private @NonNull GiphyResponse performFetch(int start, int length) throws IOException {
+    String apiKey = RemoteConfig.gifApiKey();
+    if (TextUtils.isEmpty(apiKey)) {
+      throw new IOException("No GIPHY api key from the server yet (global.gif.apiKey.android)");
+    }
+
     String url;
 
-    if (TextUtils.isEmpty(searchString)) url = getTrendingUrl(start, length);
-    else                                 url = getSearchUrl(start, length, searchString);
+    if (TextUtils.isEmpty(searchString)) url = getTrendingUrl(apiKey, start, length);
+    else                                 url = getSearchUrl(apiKey, start, length, searchString);
 
     Request request = new Request.Builder().url(url).build();
 
@@ -124,16 +125,16 @@ final class GiphyMp4PagedDataSource implements PagedDataSource<String, GiphyImag
     }
   }
 
-  private String getTrendingUrl(int start, int length) {
-    return trendingUri().buildUpon()
+  private String getTrendingUrl(@NonNull String apiKey, int start, int length) {
+    return trendingUri(apiKey).buildUpon()
                        .appendQueryParameter("offset", String.valueOf(start))
                        .appendQueryParameter("limit", String.valueOf(length))
                        .build()
                        .toString();
   }
 
-  private String getSearchUrl(int start, int length, @NonNull String query) {
-    return searchUri().buildUpon()
+  private String getSearchUrl(@NonNull String apiKey, int start, int length, @NonNull String query) {
+    return searchUri(apiKey).buildUpon()
                      .appendQueryParameter("offset", String.valueOf(start))
                      .appendQueryParameter("limit", String.valueOf(length))
                      .appendQueryParameter("q", query)

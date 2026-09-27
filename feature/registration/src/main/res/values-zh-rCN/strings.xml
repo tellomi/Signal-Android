@@ -44,6 +44,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">选择国家</string>
     <string name="RegistrationActivity_phone_number_description">手机号码</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">清空号码</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">账户 ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -55,6 +57,8 @@
     <string name="RegistrationActivity_next">下一步</string>
     <!-- Button on the phone number screen that starts registering with a purchased Signal Login instead of a phone number -->
     <string name="RegistrationActivity_register_without_number">免手机号注册</string>
+    <!-- Button on the phone number screen, shown when the user already said they have an account to restore, that goes straight to entering their existing Signal Login -->
+    <string name="RegistrationActivity_use_account_id">使用账户 ID</string>
     <!-- Dialog title to confirm phone number -->
     <string name="RegistrationActivity_is_the_phone_number">下方的手机号码是否正确？</string>
     <!-- Dialog body to confirm phone number -->
@@ -136,13 +140,13 @@
 
     <!-- RestoreWelcomeBottomSheet -->
     <!-- Row title for restore/transfer using a previous registered phone/device -->
-    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我可以用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_have_my_old_phone">我有旧手机</string>
     <!-- Row subtitle for restore/transfer using a previous registered phone/device -->
     <string name="WelcomeFragment_restore_action_scan_qr">从您当前的 Tellomi 账户扫描二维码以快速开始操作</string>
     <!-- Row title for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我无法用旧手机</string>
+    <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">我没有旧手机</string>
     <!-- Row subtitle for restore/transfer without using a previous device -->
-    <string name="WelcomeFragment_restore_action_reinstalling">您可以在同一个设备上重新安装 Tellomi</string>
+    <string name="WelcomeFragment_restore_action_reinstalling">或者你是在同一台设备上重新安装 Tellomi</string>
 
     <!-- ArchiveRestoreSelectionScreen -->
     <!-- Title text for the archive restore selection screen -->
@@ -161,12 +165,6 @@
     <string name="ArchiveRestoreSelectionScreen__skip_restore_title">继续但不转移</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__skip_restore_description">消息和媒体不会被转移</string>
-    <!-- Title for the backup folder option card (V2 format) -->
-    <string name="ArchiveRestoreSelectionScreen__from_a_backup_folder">从备份文件夹</string>
-    <!-- Title for the backup file option card (V1 legacy format) -->
-    <string name="ArchiveRestoreSelectionScreen__from_a_backup_file">从备份文件</string>
-    <!-- Subtitle for the backup folder/file option cards -->
-    <string name="ArchiveRestoreSelectionScreen__choose_a_backup_youve_saved">选择您保存的备份</string>
     <!-- Title for the device transfer option card -->
     <string name="ArchiveRestoreSelectionScreen__from_your_old_phone">从您的旧手机</string>
     <!-- Subtitle for the device transfer option card -->
@@ -211,8 +209,6 @@
     <string name="LocalBackupRestoreScreen__enter_backup_passphrase">输入备份密码词组</string>
     <!-- Description for V1 passphrase entry screen -->
     <string name="LocalBackupRestoreScreen__enter_the_30_digit_passphrase">您的本地备份密码词组是一个 30 位代码，它是恢复账户和数据的必要密钥。</string>
-    <!-- Label for the recovery key text field -->
-    <string name="LocalBackupRestoreScreen__recovery_key">恢复密钥</string>
     <!-- Label for the backup passphrase text field -->
     <string name="LocalBackupRestoreScreen__passphrase">密码词组</string>
     <!-- Error text when passphrase is too long -->
@@ -230,8 +226,6 @@
     <string name="EnterAepScreen__recovery_key">恢复密钥</string>
     <!-- Link for users who don\'t have their recovery key -->
     <string name="EnterAepScreen__no_recovery_key">没有恢复密钥？</string>
-    <!-- Error text when key is too long -->
-    <string name="EnterAepScreen__too_long">密钥过长（%1$d/%2$d）</string>
     <!-- Error text when key is invalid -->
     <string name="EnterAepScreen__invalid_recovery_key">恢复密钥无效</string>
     <!-- Error text when key is correct format but does not match account -->
@@ -254,8 +248,6 @@
     <string name="LocalBackupRestoreScreen__restoring_backup">正在恢复备份</string>
     <!-- Description shown while restore is in progress -->
     <string name="LocalBackupRestoreScreen__restoring_description">正在恢复您的消息和数据，请稍候。</string>
-    <!-- Description shown when restore is complete -->
-    <string name="LocalBackupRestoreScreen__restore_complete_description">Your messages and account data have been restored successfully.</string>
     <!-- Continue button text after restore is complete -->
     <string name="LocalBackupRestoreScreen__continue_button">继续</string>
     <!-- Title shown when restore fails -->
@@ -579,6 +571,23 @@
     <string name="CreateProfileScreen__next">下一步</string>
     <!-- Content description for the avatar selection control. -->
     <string name="CreateProfileScreen__set_avatar_description">设置头像</string>
+    <!-- Tellomi（#1215） -->
+    <string name="TellomiRegistration__phone_number_not_shown">你的手机号默认不对任何人显示。</string>
+    <!-- Tellomi（#1215 第二刀） -->
+    <string name="TellomiRegistration__username_optional">用户名（选填）</string>
+    <string name="TellomiRegistration__username_your_link">你的链接：%1$s</string>
+    <string name="TellomiRegistration__username_checking">正在检查…</string>
+    <string name="TellomiRegistration__username_not_available">这个用户名不可用</string>
+    <string name="TellomiRegistration__username_too_short">至少 3 个字符</string>
+    <string name="TellomiRegistration__username_too_long">最多 20 个字符</string>
+    <string name="TellomiRegistration__username_invalid_characters">只能用字母、数字和下划线</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">需要以字母开头</string>
+    <string name="TellomiRegistration__username_check_failed">暂时查不到，稍后再试</string>
+    <string name="TellomiRegistration__username_too_many_attempts">尝试次数过多，请稍后再试</string>
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="other">%d 天后才能设置用户名</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">可以试试：</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -614,7 +623,7 @@
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
     <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">您可以使用 Tellomi Login 功能在无手机号码的情况下注册 Tellomi。通过单次购买，您将会收到一个账户密钥以开始使用 Tellomi。</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">您可以使用 Tellomi Login 功能在无手机号码的情况下注册 Tellomi。通过单次购买，您将会收到一个账户 ID 以开始使用 Tellomi。</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">了解详情</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -628,7 +637,7 @@
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">我有 Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
-    <string name="SignalLoginPaymentScreen__use_your_existing_account_key">使用您已有的账户密钥</string>
+    <string name="SignalLoginPaymentScreen__use_your_existing_account_key">使用您已有的登录信息</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">登录和恢复您的账户</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
@@ -641,10 +650,48 @@
     <string name="SignalLoginPaymentScreen__continue">继续</string>
     <!-- Error shown when the purchase does not go through. -->
     <string name="SignalLoginPaymentScreen__your_purchase_could_not_be_completed">您的购买无法完成。您尚未被扣款。</string>
+    <!-- Shown in place of the price when Google Play cannot offer the purchase. -->
+    <string name="SignalLoginPaymentScreen__unavailable">不可用</string>
+    <!-- Label for the button that retries loading the purchase price after it failed to load. -->
+    <string name="SignalLoginPaymentScreen__retry">重试</string>
+    <!-- Shown in place of the price when the user already paid for a Signal Login but it was never redeemed. -->
+    <string name="SignalLoginPaymentScreen__already_paid">已支付</string>
+    <!-- Error shown when Signal Login cannot be purchased on this device, for example because the Google Play Store is unavailable. -->
+    <string name="SignalLoginPaymentScreen__signal_login_cant_be_purchased">Tellomi Login 目前无法在这台设备上购买。请稍后再试。</string>
+    <!-- Message shown when the user\'s payment has gone through but has not finished processing yet. -->
+    <string name="SignalLoginPaymentScreen__your_payment_is_still_processing">您的付款仍在处理中。付款完成后请返回并点击“继续”，系统不会重复扣款。</string>
     <!-- Label for the internal-testing text field where a receipt credential can be pasted to skip payment. Not shown to real users. -->
   <!-- Removed by excludeNonTranslatables <string name="SignalLoginPaymentScreen__paste_a_receipt_credential" translatable="false">Paste a receipt credential (testing)</string> -->
     <!-- Error shown when a manually-pasted receipt credential can\'t be parsed or is rejected. Internal testing only. -->
   <!-- Removed by excludeNonTranslatables <string name="SignalLoginPaymentScreen__this_receipt_credential_is_invalid" translatable="false">This receipt credential is invalid.</string> -->
+    <!-- Title of the dialog shown when Google Play services is too old to take a payment. -->
+    <string name="SignalLoginPaymentScreen__update_google_play_services">更新 Google Play 服务</string>
+    <!-- Body of the dialog shown when Google Play services is too old to take a payment. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_update_google_play_services">如要购买 Tellomi Login，请在此设备上更新 Google Play 服务。</string>
+    <!-- Button that updates Google Play services. -->
+    <string name="SignalLoginPaymentScreen__update">更新</string>
+    <!-- Title of the dialog shown when Google Play services is not installed. -->
+    <string name="SignalLoginPaymentScreen__google_play_services_missing">缺少 Google Play 服务</string>
+    <!-- Body of the dialog shown when Google Play services is not installed. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_google_play_services_needs_to_be_installed">如要购买 Tellomi Login，您需要安装 Google Play 服务。</string>
+    <!-- Button that installs Google Play services. -->
+    <string name="SignalLoginPaymentScreen__install_play_services">安装 Play 服务</string>
+    <!-- Title of the dialog shown while Google Play services is updating itself. -->
+    <string name="SignalLoginPaymentScreen__google_play_services_are_updating">Google Play 服务正在更新</string>
+    <!-- Body of the dialog shown while Google Play services is updating itself. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_wait_for_google_play_services">如要购买 Tellomi Login，请等待 Google Play 服务完成更新。</string>
+    <!-- Title of the dialog shown when Google Play cannot be used to take a payment. -->
+    <string name="SignalLoginPaymentScreen__google_play_is_required">需要使用 Google Play</string>
+    <!-- Body of the dialog shown when Google Play services is installed but turned off. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_enable_google_play_services">如要购买 Tellomi Login，请在此设备上启用 Google Play 服务，然后登录 Google Play 商店。</string>
+    <!-- Body of the dialog shown when the device cannot run Google Play services at all. -->
+    <string name="SignalLoginPaymentScreen__you_cant_purchase_a_signal_login_on_this_device">您无法购买 Tellomi Login，因为此设备不支持 Google Play 服务。请联系手机制造商寻求帮助。</string>
+    <!-- Body of the dialog shown when Google Play services works but nobody is signed into the Play Store. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_sign_into_the_google_play_store">如要购买 Tellomi Login，请登录 Google Play 商店。</string>
+    <!-- Body of the dialog shown when this version of Signal cannot make Google Play purchases at all. -->
+    <string name="SignalLoginPaymentScreen__you_cant_purchase_a_signal_login_in_this_version">您在此版本的 Tellomi 中无法购买 Tellomi Login。请从 Google Play 商店安装 Tellomi 以进行购买。</string>
+    <!-- Button that opens the Google Play store so the user can sign into it. -->
+    <string name="SignalLoginPaymentScreen__open_play_store">打开 Play 商店</string>
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
@@ -657,10 +704,42 @@
     <string name="SignalLoginInfoScreen__save_manually">手动保存</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
     <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">您的 Tellomi Login 信息无法保存。请改为手动保存。</string>
+    <!-- Title of the dialog shown when the Signal Login could not be found in the password manager after saving it. -->
+    <string name="SignalLoginInfoScreen__error_confirming_login_info">确认登录信息时出错</string>
+    <!-- Description telling the user that the Signal Login we saved could not be read back out of their password manager. -->
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_confirmed">您的 Tellomi Login 信息无法确认。请确保您已将其保存在密码管理器中，或手动将其保存。</string>
+
+    <!-- Sheet that double-checks the user\'s Signal Login really made it into their password manager -->
+    <!-- Title of the sheet asking the user to confirm their Signal Login was saved to their password manager. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__confirm_your_login_info_is_saved">确认您的登录信息已保存</string>
+    <!-- Description telling the user they are about to be asked to fill in the Signal Login they just saved. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__confirm_that_your_login_info_was_saved">请确认您的 Tellomi Login 信息已正确保存。下一步将提示您输入已保存的密码。</string>
+    <!-- Action button that starts checking the password manager for the Signal Login. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__confirm_login_info">确认登录信息</string>
+    <!-- Action button that sends the user back to their Signal Login. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__see_login_info_again">再次查看登录信息</string>
+
+    <!-- Save Signal Login screen -->
+    <!-- Title of the screen that spells out the Signal Login so the user can record it themselves. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__save_your_signal_login">保存您的 Tellomi Login 信息</string>
+    <!-- Description telling the user to keep their Signal Login somewhere safe and private. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__store_your_signal_login_somewhere_safe">请将您的 Tellomi Login 信息妥善保存在安全的地方。切勿将您的登录信息分享给任何人。</string>
+    <!-- Action button that saves the Signal Login to a PDF file. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__save_as_pdf">保存为 PDF</string>
+    <!-- Action button for users who are done recording their Signal Login. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__continue">继续</string>
+
+    <!-- Sheet that double-checks the user really saved their Signal Login -->
+    <!-- Title of the sheet asking the user to confirm they saved their Signal Login. -->
+    <string name="ConfirmLoginSavedBottomSheet__confirm_your_login_info_is_saved">确认您的登录信息已保存</string>
+    <!-- Description warning the user that they are about to be asked for their Signal Login and that it cannot be recovered. -->
+    <string name="ConfirmLoginSavedBottomSheet__you_will_be_prompted_to_sign_in">系统接下来会提示您使用 Tellomi Login 信息登录账户。请确保您已保存或复制这些信息。Tellomi 将无法帮助您恢复账户。</string>
+    <!-- Action button confirming the Signal Login is saved. -->
+    <string name="ConfirmLoginSavedBottomSheet__continue">继续</string>
+    <!-- Action button that sends the user back to their Signal Login. -->
+    <string name="ConfirmLoginSavedBottomSheet__show_login_info_again">再次显示登录信息</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
-    <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
-    <string name="AccountIdField__too_long">密钥过长。%1$d/%2$d 个字符。</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
     <string name="AccountIdField__invalid_account_id">账户 ID 无效</string>
 
@@ -683,6 +762,12 @@
     <string name="SignalLoginCredentialEntryScreen__next">下一步</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
     <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">账户 ID 或恢复密钥不正确</string>
+    <!-- Description shown instead when the user is typing back the Signal Login they were just given, to check they recorded it correctly. -->
+    <string name="SignalLoginCredentialEntryScreen__enter_your_signal_login_to_confirm_it_was_recorded_correctly">请输入您的 Tellomi Login 信息，以确认您已正确记录这些信息。</string>
+    <!-- Button that takes the user back to their Signal Login if they can\'t remember what they recorded. -->
+    <string name="SignalLoginCredentialEntryScreen__show_login_info_again">再次显示登录信息</string>
+    <!-- Error shown when what the user typed back doesn\'t match the Signal Login they were given. -->
+    <string name="SignalLoginCredentialEntryScreen__that_doesnt_match_the_signal_login_you_were_shown">这与显示给您的 Tellomi Login 信息不符</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -695,12 +780,8 @@
     <string name="AddUsernameScreen__username">用户名</string>
     <!-- Helper text below the username field. Followed by a "learn more" link. -->
     <string name="AddUsernameScreen__usernames_are_always_paired_with_a_set_of_numbers">用户名始终搭配一组数字。</string>
-    <!-- Link in the helper text that opens an explanation of the digits paired with a username. -->
+    <!-- Link in the helper text that opens a support article about usernames. -->
     <string name="AddUsernameScreen__learn_more">了解详情</string>
-    <!-- Title of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__what_is_this_number">这个号码是什么？</string>
-    <!-- Body of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__these_digits_help_keep">这些数字可以将您的用户名保密，以免您收到骚扰消息。请仅将您的用户名分享给您想要聊天的对象和群组。如果您更改用户名，您将会收到一组新的数字。</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">跳过</string>
     <!-- Button that submits the chosen username. -->
@@ -713,6 +794,7 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">用户名只能包含字母、数字和下划线</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">用户名不能以数字开头</string>
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">用户名必须以字母开头</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">该用户名不可用。请尝试使用其他用户名。</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
@@ -723,12 +805,18 @@
     <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">用户名无效，请至少输入 %1$d 位数。</string>
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">用户名无效，请至多输入 %1$d 位数。</string>
-    <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">用户名无效，数字部分只能包含数字。</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
     <string name="AddUsernameScreen__this_number_cant_be_00">该数字不能为 00。请输入 1 – 9 之间的数字</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
     <string name="AddUsernameScreen__this_number_cant_start_with_0">两位数以上的数字不能以 0 开头</string>
+    <!-- Title of the dialog confirming the user wants to skip choosing a username. -->
+    <string name="AddUsernameScreen__are_you_sure">确定吗？</string>
+    <!-- Body of the dialog confirming the user wants to skip choosing a username. -->
+    <string name="AddUsernameScreen__without_a_username_people_wont_be_able_to_find_you">如果没有用户名，其他用户无法在 Tellomi 上找到您。</string>
+    <!-- Button in the skip-username confirmation dialog that returns to the screen without skipping. -->
+    <string name="AddUsernameScreen__cancel">取消</string>
+    <!-- Button in the skip-username confirmation dialog that skips choosing a username. -->
+    <string name="AddUsernameScreen__continue">继续</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->
@@ -763,4 +851,98 @@
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">输入您的身份验证器应用生成的一次性验证码。</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">取消</string>
+
+    <!-- Tellomi（#1210） -->
+    <string name="TellomiRegistration__region_not_supported">暂未开放该地区的手机号注册，目前只支持中国大陆（+86）手机号。</string>
+    <string name="TellomiRegistration__you_will_receive_a_verification_code">我们会发一条短信验证码，确认这个号码是你的。</string>
+    <string name="TellomiRegistration__a_verification_code_will_be_sent">我们会向这个号码发一条短信验证码，确认它是你的。</string>
+    <string name="TellomiRegistration__captcha_retry">重试</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：注册资料页只剩一个框、填全名。旧键 TellomiRegistration__first_name 暂留在下一行：
+         它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
+    <string name="TellomiRegistration__name">名字</string>
+    <string name="TellomiRegistration__first_name">名字</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">验证码不对，请核对短信后重新输入</string>
+    <string name="TellomiRegistration__didnt_get_code">收不到验证码？</string>
+    <string name="TellomiRegistration__help_check_number">确认号码没有填错：%1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">短信可能被拦截了：打开手机自带的「手机管家」或「安全中心」，看看「骚扰拦截」里有没有。</string>
+    <string name="TellomiRegistration__help_wait_with_quota">短信偶尔会晚到一会儿，请先等一等。每次注册最多只能发 %1$d 条验证码，请不要频繁重发。</string>
+    <string name="TellomiRegistration__help_voice">也可以改成打电话念验证码。</string>
+    <string name="TellomiRegistration__help_support">还是收不到？发邮件到 support@tellomi.app，我们帮你看看。</string>
+    <string name="TellomiRegistration__help_change_number">改号码</string>
+    <string name="TellomiRegistration__help_contact_support">联系客服</string>
+    <string name="TellomiRegistration__help_more">更多帮助</string>
+    <string name="TellomiRegistration__session_expired">这次验证已经过期，请确认号码后重新获取验证码。</string>
+    <string name="TellomiRegistration__code_no_longer_valid">这个验证码已经不能用了：可能已过期，或者输错的次数太多。请重新获取验证码。</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <string name="TellomiRegistration__new_phone">换了新手机？</string>
+    <string name="TellomiRegistration__old_phone_here">旧 Android 手机还在身边</string>
+    <string name="TellomiRegistration__old_phone_here_description">用旧 Android 手机上的 Tellomi 扫一个二维码，把账户和聊天记录直接传过来</string>
+    <string name="TellomiRegistration__old_phone_not_here">旧手机不在身边，或者是 iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">在这台手机上重装的话，可以用本地备份恢复；否则直接注册，只是以前的聊天记录不会跟过来，旧手机上的 Tellomi 也会退出登录</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">没法从 iPhone 传过来</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">iPhone 上的聊天记录目前没法传到 Android 手机。直接注册就行，只是以前的聊天记录不会跟过来，旧手机上的 Tellomi 也会退出登录。</string>
+    <string name="TellomiRegistration__register_directly">直接注册</string>
+    <string name="TellomiRegistration__skip_restore_dialog_title">不恢复聊天记录？</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">以前的聊天记录不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">旧手机上的 Tellomi 会退出登录，以前的聊天记录也不会出现在这台手机上。</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">继续</string>
+
+    <!-- Tellomi：注册同意（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E） -->
+    <string name="TellomiConsent__terms_link">《用户服务协议》</string>
+    <string name="TellomiConsent__privacy_link">《隐私政策》</string>
+    <string name="TellomiConsent__row">我已年满 18 周岁，已阅读并同意%1$s和%2$s</string>
+    <string name="TellomiConsent__checkbox_content_description">同意用户服务协议和隐私政策</string>
+    <string name="TellomiConsent__dialog_title">用户协议及隐私政策</string>
+    <string name="TellomiConsent__dialog_body">请阅读并同意%1$s和%2$s</string>
+    <string name="TellomiConsent__agree_and_continue">同意并继续</string>
+    <string name="TellomiConsent__disagree">不同意</string>
+    <string name="TellomiConsent__first_launch_title">欢迎使用 Tellomi</string>
+    <string name="TellomiConsent__first_launch_body">我们按%1$s处理您的个人信息：注册只需要手机号；消息、资料和附件都是端到端加密的，我们读不到。</string>
+    <string name="TellomiConsent__first_launch_agree">同意</string>
+    <string name="TellomiConsent__first_launch_disagree_hint">需要同意后才能使用 Tellomi；不同意的话，我们不会收集任何信息。</string>
+
+    <!-- Tellomi（ADR-0066 §6.1b，owner 2026-09-27）：用户名一律小写 -->
+    <string name="TellomiUsername__rules_hint">只能用小写字母、数字和下划线，以字母开头，3–20 位。</string>
+    <string name="TellomiUsername__lowercased_hint">已自动转成小写</string>
+
+    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338） -->
+    <string name="TellomiCrossBorder__dialog_title">个人信息出境</string>
+    <string name="TellomiCrossBorder__dialog_body">您的部分个人信息将传输到中国大陆境外处理，是否同意？</string>
+    <string name="TellomiCrossBorder__dialog_full_notice_link">查看《个人信息出境告知》</string>
+    <string name="TellomiCrossBorder__dialog_policy_updated">《隐私政策》已更新至 2.0.0 版。</string>
+    <string name="TellomiCrossBorder__policy_updated_link">查看《隐私政策》2.0.0</string>
+    <string name="TellomiCrossBorder__linked_dialog_body">跨境传输的单独同意已在您的手机上取得，这台设备不再另行询问。关联之后，这台设备上的信息也按《个人信息出境告知》处理。</string>
+    <string name="TellomiCrossBorder__disagree_hint">不同意的话，App 不会连接任何服务器，也不会发送您的任何信息；在中国大陆服务上线之前，您将无法使用 Tellomi。您可以退出 App，或者之后再同意。</string>
+    <string name="TellomiCrossBorder__full_notice_title">个人信息出境告知</string>
+    <string name="TellomiCrossBorder__item_where_title">是否出境</string>
+    <string name="TellomiCrossBorder__item_where_body">是。Tellomi 的服务端部署在阿里云位于中国香港的数据中心；附件、头像和服务端数据库备份存放在 Cloudflare R2（存储区域：北美西部）。您的聊天记录保存在您自己的设备上，不保存在服务器上。</string>
+    <string name="TellomiCrossBorder__item_recipients_title">境外接收方</string>
+    <string name="TellomiCrossBorder__item_recipients_body">· 重庆半格智能科技有限公司部署在香港的 Tellomi 服务端（中国香港）\n· 阿里云计算有限公司：为上述服务端提供云服务器（中国香港数据中心）\n· Cloudflare, Inc.（美国）：存放附件、头像、数据库备份和调试日志；通话中继；注册时的人机验证；域名解析\n· Google LLC（美国）：推送通知（FCM），仅在手机装有 Google 服务时\n· GIPHY, Inc.（美国）：仅在您使用 GIF 搜索时，经我们在香港的代理收到搜索词，看不到您的 IP 地址</string>
+    <string name="TellomiCrossBorder__item_contact_title">联系方式</string>
+    <string name="TellomiCrossBorder__item_contact_body">个人信息处理者：重庆半格智能科技有限公司。个人信息保护和跨境传输相关问题，请发邮件至 privacy@tellomi.app。</string>
+    <string name="TellomiCrossBorder__item_purpose_title">处理目的</string>
+    <string name="TellomiCrossBorder__item_purpose_body">注册和登录（含人机验证）；投递和暂存消息；存放附件、头像和数据库备份；接通语音和视频通话（含通话中继）；推送通知；域名解析；GIF 搜索；保存您主动提交的调试日志。</string>
+    <string name="TellomiCrossBorder__item_method_title">处理方式和保存期限</string>
+    <string name="TellomiCrossBorder__item_method_body">消息正文、个人资料、群组信息和附件内容都经过端到端加密，境外的服务器和存储服务里只有密文，Tellomi 和上述接收方都无法读取。以明文处理的只有注册所需的手机号码、账号和设备标识、推送令牌、连接时的 IP 地址等少数几项。\n保存期限：账号数据在账号存续期间保存，注销时删除；等待投递的消息送达后立即删除；附件上传后 50 天删除；服务器的网络请求日志保存 186 天。详见《隐私政策》第二十二节。</string>
+    <string name="TellomiCrossBorder__item_kinds_title">涉及的个人信息</string>
+    <string name="TellomiCrossBorder__item_kinds_body">手机号码；账号和设备标识；公钥；推送令牌（Android 版另有 Firebase 安装标识）；连接时的 IP 地址；用户名的哈希值；人机验证时的浏览器和设备信息；加密的消息、附件、头像、个人资料、群组信息和数据库备份（密文）；您主动提交的调试日志；使用 GIF 搜索时的搜索词。</string>
+    <string name="TellomiCrossBorder__item_rights_title">您的权利</string>
+    <string name="TellomiCrossBorder__item_rights_body">您可以按《隐私政策》第二十六、二十七节的方式查阅、复制、更正、删除您的个人信息，注销账号，或者撤回本同意。境外接收方处理的个人信息，也可以发邮件至 privacy@tellomi.app，由我们负责处理并协调相应接收方。</string>
+    <string name="TellomiCrossBorder__item_procedure_title">出境的法定程序</string>
+    <string name="TellomiCrossBorder__item_procedure_body">根据《促进和规范数据跨境流动规定》第五条第（四）项，关键信息基础设施运营者以外的个人信息处理者，自当年 1 月 1 日起累计向境外提供不满 10 万人个人信息（不含敏感个人信息）的，免予申报数据出境安全评估、订立个人信息出境标准合同和通过个人信息保护认证。Tellomi 目前属于这一情形；人数接近上述标准时，我们将依法办理。免予这些程序，不影响我们告知您、取得您的单独同意和开展个人信息保护影响评估的义务。</string>
+    <string name="TellomiCrossBorder__item_consent_title">单独同意和撤回</string>
+    <string name="TellomiCrossBorder__item_consent_body">点「同意并继续」，即表示您单独同意上述跨境传输；同意《隐私政策》不等于同意跨境传输。您可以随时发邮件至 privacy@tellomi.app 撤回（App 内的撤回入口上线后，也可以在 App 内操作）。现阶段 Tellomi 只能通过境外的服务器提供服务，撤回后，在中国大陆服务上线之前您将无法继续使用 Tellomi，您可以同时注销账号。撤回不影响撤回之前已经进行的处理。</string>
+    <string name="TellomiCrossBorder__linked_item_consent_body">上述跨境传输的单独同意在您的手机上取得，这台设备不另行收集。您可以随时发邮件至 privacy@tellomi.app 撤回；撤回后，在中国大陆服务上线之前您将无法继续使用 Tellomi。</string>
+    <string name="TellomiCrossBorder__privacy_link">查看《隐私政策》第二十、二十一节</string>
+    <string name="TellomiCrossBorder__third_party_link">查看《第三方信息共享及 SDK 清单》</string>
+    <string name="TellomiCrossBorder__full_notice_close">返回</string>
+    <string name="TellomiCrossBorder__linked_ack">知道了</string>
+
+    <!-- Tellomi：主设备退出登录之后重新登录（ADR-0072，tellomi/tellomi#1414） -->
+    <string name="TellomiRelogin__last_login">上次登录</string>
+    <string name="TellomiRelogin__use_another_number">用其他号码登录</string>
+    <string name="TellomiRelogin__new_number_wipe_body">用新号码登录会删除这台手机上 %1$s 的聊天记录。确定继续吗？</string>
 </resources>

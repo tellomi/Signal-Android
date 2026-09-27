@@ -14,6 +14,7 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.jobs.FcmRefreshJob;
 import org.thoughtcrime.securesms.jobs.SubmitRateLimitPushChallengeJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
+import org.thoughtcrime.securesms.logout.TellomiLogout;
 import org.thoughtcrime.securesms.registration.fcm.PushChallengeRequest;
 import org.thoughtcrime.securesms.util.NetworkUtil;
 import org.thoughtcrime.securesms.util.SignalLocalMetrics;
@@ -45,6 +46,10 @@ public class FcmReceiveService extends FirebaseMessagingService {
       handleRateLimitPushChallenge(rateLimitChallenge);
     } else if (verificationCodeRequest != null && SignalStore.account().isPrimaryDevice()) {
       handleVerificationCodeRequested(verificationCodeRequest, remoteMessage.getSentTime());
+    } else if (TellomiLogout.isLoggedOut()) {
+      // Tellomi（ADR-0072 §4.1 第 3 步）：退出登录时已经注销了推送令牌，万一还有推送到达也不去拉消息。
+      // 上面的注册推送挑战照常处理：重新登录的验证会话要用它（有 FCM 的手机因此免人机验证）。
+      Log.i(TAG, "Logged out. Ignoring the push instead of fetching messages.");
     } else {
       handleReceivedNotification(AppDependencies.getApplication(), remoteMessage);
     }
@@ -52,6 +57,10 @@ public class FcmReceiveService extends FirebaseMessagingService {
 
   @Override
   public void onDeletedMessages() {
+    if (TellomiLogout.isLoggedOut()) {
+      Log.i(TAG, "onDeleteMessages() -- Logged out. Not fetching.");
+      return;
+    }
     Log.w(TAG, "onDeleteMessages() -- Messages may have been dropped. Doing a normal message fetch.");
     handleReceivedNotification(AppDependencies.getApplication(), null);
   }
@@ -62,6 +71,12 @@ public class FcmReceiveService extends FirebaseMessagingService {
 
     if (!SignalStore.account().isRegistered()) {
       Log.i(TAG, "Got a new FCM token, but the user isn't registered.");
+      return;
+    }
+
+    if (TellomiLogout.isLoggedOut()) {
+      // Tellomi（ADR-0072）：重新登录时会重新登记推送令牌，现在不给服务端。
+      Log.i(TAG, "Got a new FCM token, but this device is logged out.");
       return;
     }
 

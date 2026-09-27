@@ -47,6 +47,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import org.signal.core.ui.compose.FastScrollCharacterProvider
 import org.signal.core.util.BreakIteratorCompat
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.requireDrawable
 import org.signal.emoji.EmojiUtil
 import org.thoughtcrime.securesms.R
@@ -558,12 +559,14 @@ object ContactSearchModels {
         ContactSearchConfiguration.NewRowMode.ADD_TO_GROUP -> R.string.contact_selection_list__unknown_contact_add_to_group
       }
 
+      // Tellomi（ADR-0066 §6.1b）：用户名一律显示小写（按小写去查，toProtocolUsername）；电话号码不受影响
+      val query = if (model.data.sectionKey == ContactSearchConfiguration.SectionKey.USERNAME) TellomiUsernames.lowercaseAscii(model.data.query) else model.data.query
       if (nameText > 0) {
         name.setText(nameText)
-        number.text = model.data.query
+        number.text = query
         number.visible = true
       } else {
-        name.text = model.data.query
+        name.text = query
         number.visible = false
       }
 

@@ -6,8 +6,6 @@
 package org.signal.registration.screens.linkaccount
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -77,11 +75,11 @@ class LinkAccountViewModel(
         state
       }
       LinkAccountScreenEvent.CreateAccountClick -> {
-        // Revisit permission screen if necessary
+        // Tellomi（#1112）：注册流程不要权限页，上游这里会先插一页 Permissions，改为直达输手机号
         if (parentState.value.backStack.any { it == RegistrationRoute.PhoneNumberEntry }) {
           parentEventEmitter(RegistrationFlowEvent.NavigateBackToScreen(RegistrationRoute.PhoneNumberEntry))
         } else {
-          parentEventEmitter.navigateTo(RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry), popCurrent = true)
+          parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry, popCurrent = true)
         }
         state
       }
@@ -197,16 +195,5 @@ class LinkAccountViewModel(
 
   override fun onCleared() {
     provisioningJob?.cancel()
-  }
-
-  class Factory(
-    private val repository: RegistrationRepository,
-    private val parentState: StateFlow<RegistrationFlowState>,
-    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
-    private val showCreateAccount: Boolean = true
-  ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return LinkAccountViewModel(repository, parentState, parentEventEmitter, showCreateAccount) as T
-    }
   }
 }

@@ -63,7 +63,7 @@
         android:id="@+id/toolbar_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/tellomi_saved_categories_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -127,6 +127,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Tellomi（#1174）：「我的收藏」顶栏下方的分类，别的会话一直 gone；顶栏背景铺到它底边，列表留白跟着顶栏背景走 -->
+    <org.thoughtcrime.securesms.conversation.v2.TellomiSavedCategoriesBar
+        android:id="@+id/tellomi_saved_categories_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
     <FrameLayout
         android:id="@+id/conversation_banner_frame"
         android:layout_width="0dp"
@@ -134,7 +144,7 @@
         android:clipChildren="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/tellomi_saved_categories_bar">
 
         <org.thoughtcrime.securesms.conversation.v2.ConversationBannerView
             android:id="@+id/conversation_banner"
@@ -336,14 +346,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/reactions_shade"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/reactions_screen_light_shade_color"
-        android:foreground="@color/reactions_screen_dark_shade_color"
-        android:visibility="gone" />
-
     <org.thoughtcrime.securesms.components.menu.SignalBottomActionBar
         android:id="@+id/conversation_bottom_action_bar"
         android:layout_width="0dp"
@@ -354,16 +356,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ViewStub
-        android:id="@+id/conversation_reaction_scrubber_stub"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:inflatedId="@+id/conversation_reaction_scrubber"
-        android:layout="@layout/conversation_reaction_scrubber"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

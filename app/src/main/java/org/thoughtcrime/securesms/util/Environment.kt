@@ -4,6 +4,7 @@ import com.google.android.gms.wallet.WalletConstants
 import org.signal.donations.GooglePayApi
 import org.signal.donations.StripeApi
 import org.thoughtcrime.securesms.BuildConfig
+import org.thoughtcrime.securesms.region.TellomiRegions
 
 object Environment {
   /**
@@ -40,7 +41,19 @@ object Environment {
   @JvmField
   val IS_LINK_AND_SYNC_AVAILABLE: Boolean = true
 
-  const val PHONENUMBERLESS_REGISTRATION: Boolean = IS_STAGING
+  /**
+   * Tellomi（tellomi/tellomi#1210）：**写死关闭**。v8.26 上游是 `IS_STAGING`——staging 包的手机号页因此出现「Register without number」，
+   * 与《网络安全法》即时通信实名要求冲突。上游 v8.28.3 曾对所有人打开（`true`），v8.28.4 又关回 `false`（#957 合上游时核过）；
+   * 以后每次合上游都要再核一次这里别被合成 true。
+   */
+  @JvmField
+  val PHONENUMBERLESS_REGISTRATION: Boolean = false
+
+  /** Whether this build is distributed through the Play Store, and so can use Google Play billing at all. */
+  @JvmStatic
+  fun supportsGooglePlayBilling(): Boolean {
+    return BuildConfig.APPLICATION_ID == GOOGLE_PLAY_BILLING_APPLICATION_ID
+  }
 
   object Backups {
     /**
@@ -55,7 +68,7 @@ object Environment {
 
     @JvmStatic
     fun supportsGooglePlayBilling(): Boolean {
-      return BuildConfig.APPLICATION_ID == GOOGLE_PLAY_BILLING_APPLICATION_ID
+      return Environment.supportsGooglePlayBilling()
     }
 
     @JvmStatic
@@ -80,7 +93,8 @@ object Environment {
   object Calling {
     @JvmStatic
     fun defaultSfuUrl(): String {
-      return if (IS_STAGING) BuildConfig.SIGNAL_STAGING_SFU_URL else BuildConfig.SIGNAL_SFU_URL
+      // Tellomi（#1055）：从当前区取。我们的 staging 与 prod 用同一个会合点（SIGNAL_STAGING_SFU_URL 与 SIGNAL_SFU_URL 同值）
+      return TellomiRegions.current().sfu
     }
   }
 }

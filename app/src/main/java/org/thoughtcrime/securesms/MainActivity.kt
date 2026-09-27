@@ -36,11 +36,8 @@ import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -82,6 +79,7 @@ import kotlinx.coroutines.withContext
 import org.signal.core.ui.BottomSheetUtil
 import org.signal.core.ui.NavigationType
 import org.signal.core.ui.compose.Snackbars
+import org.signal.core.ui.compose.navigationBarsCompat
 import org.signal.core.ui.compose.split.ListDetailEvents
 import org.signal.core.ui.compose.split.ListDetailNavDisplay
 import org.signal.core.ui.compose.split.ListDetailPaneLayout
@@ -90,10 +88,12 @@ import org.signal.core.ui.compose.split.ListPaneChrome
 import org.signal.core.ui.compose.split.PaneAnchor
 import org.signal.core.ui.compose.split.rememberListDetailPaneLayout
 import org.signal.core.ui.compose.split.rememberListDetailPaneMetrics
+import org.signal.core.ui.compose.systemBarsCompat
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.ui.permissions.Permissions
 import org.signal.core.ui.rememberIsSplitPane
 import org.signal.core.util.AppForegroundObserver
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.Util
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.getParcelableCompat
@@ -138,6 +138,7 @@ import org.thoughtcrime.securesms.devicetransfer.olddevice.OldDeviceExitActivity
 import org.thoughtcrime.securesms.groups.ui.creategroup.CreateGroupActivity
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity
+import org.thoughtcrime.securesms.main.ConnectionTitle
 import org.thoughtcrime.securesms.main.EmptyDetailScreen
 import org.thoughtcrime.securesms.main.MainBottomChrome
 import org.thoughtcrime.securesms.main.MainBottomChromeCallback
@@ -164,6 +165,7 @@ import org.thoughtcrime.securesms.megaphone.Megaphone
 import org.thoughtcrime.securesms.megaphone.MegaphoneActionController
 import org.thoughtcrime.securesms.megaphone.Megaphones
 import org.thoughtcrime.securesms.net.DeviceTransferBlockingInterceptor
+import org.thoughtcrime.securesms.notifications.TellomiNotificationPrimerBottomSheet
 import org.thoughtcrime.securesms.notifications.VitalsViewModel
 import org.thoughtcrime.securesms.notifications.profiles.NotificationProfile
 import org.thoughtcrime.securesms.notifications.profiles.NotificationProfiles
@@ -200,7 +202,6 @@ class MainActivity :
     private const val KEY_STARTING_TAB = "STARTING_TAB"
     private const val KEY_DETAIL_LOCATION = "DETAIL_LOCATION"
     private const val KEY_EXIT_DETAIL = "EXIT_DETAIL"
-    const val RESULT_CONFIG_CHANGED = RESULT_FIRST_USER + 901
 
     /** Width the navigation rail occupies inside the list pane. */
     private val RAIL_WIDTH = 80.dp
@@ -249,11 +250,7 @@ class MainActivity :
     VitalsViewModel(application)
   }
 
-  private val openSettings: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-    if (result.resultCode == RESULT_CONFIG_CHANGED) {
-      recreate()
-    }
-  }
+  private val openSettings: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
 
   private val toolbarViewModel: MainToolbarViewModel by viewModels()
   private val toolbarCallback = ToolbarCallback()
@@ -307,6 +304,13 @@ class MainActivity :
               }
             }
           }
+        }
+      }
+
+      launch {
+        // Tellomi（tellomi/tellomi#1218 F-04）：标题显示连接状态
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+          ConnectionTitle.observe(this@MainActivity).collect { toolbarViewModel.setConnectionTitle(it) }
         }
       }
 
@@ -483,7 +487,7 @@ class MainActivity :
               MainSnackbar(
                 hostKey = SnackbarHostKey.Global,
                 onDismissed = mainBottomChromeCallback::onSnackbarDismissed,
-                modifier = Modifier.navigationBarsPadding()
+                modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBarsCompat)
               )
             }
           },
@@ -635,7 +639,7 @@ class MainActivity :
             )
 
             if (!isSplitPane) {
-              Spacer(Modifier.navigationBarsPadding())
+              Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBarsCompat))
             }
           }
         }
@@ -658,14 +662,14 @@ class MainActivity :
         val modifier = when {
           isSplitPane -> {
             Modifier
-              .systemBarsPadding()
+              .windowInsetsPadding(WindowInsets.systemBarsCompat)
               .displayCutoutPadding()
           }
 
           else ->
             Modifier
               .windowInsetsPadding(
-                WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal)
+                WindowInsets.navigationBarsCompat.only(WindowInsetsSides.Horizontal)
                   .add(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal))
               )
         }
@@ -739,6 +743,9 @@ class MainActivity :
         }
         .setCancelable(false)
         .show()
+    } else {
+      // Tellomi（#1112 / #1218 F-01）：注册流程里不再要通知权限，改在第一次进首屏时说明一次
+      TellomiNotificationPrimerBottomSheet.showIfNeeded(this)
     }
 
     vitalsViewModel.checkSlowNotificationHeuristics()
@@ -762,17 +769,14 @@ class MainActivity :
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == MainNavigator.REQUEST_CONFIG_CHANGES && resultCode == RESULT_CONFIG_CHANGED) {
-      recreate()
-    }
-
     if (resultCode == RESULT_OK && requestCode == CreateSvrPinActivity.REQUEST_NEW_PIN) {
       mainNavigationViewModel.snackbarRegistry.emit(SnackbarState(message = getString(R.string.ConfirmKbsPinFragment__pin_created), hostKey = MainSnackbarHostKey.MainChrome))
       mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneCompleted(Megaphones.Event.PINS_FOR_ALL))
     }
 
     if (resultCode == RESULT_OK && requestCode == UsernameEditFragment.REQUEST_CODE) {
-      val snackbarString = getString(R.string.ConversationListFragment_username_recovered_toast, SignalStore.account.username)
+      // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+      val snackbarString = getString(R.string.ConversationListFragment_username_recovered_toast, SignalStore.account.username?.let { TellomiUsernames.toDisplayUsername(it) })
       mainNavigationViewModel.snackbarRegistry.emit(
         SnackbarState(
           message = snackbarString,
@@ -790,6 +794,10 @@ class MainActivity :
         )
       )
       mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneSnoozed(Megaphones.Event.VERIFY_BACKUP_KEY))
+    }
+
+    if (requestCode == AppSettingsActivity.REQUEST_CODE_UPGRADE_LOCAL_BACKUPS) {
+      mainNavigationViewModel.onEvent(MainNavigationEvents.MegaphoneSnoozed(Megaphones.Event.USE_NEW_ON_DEVICE_BACKUPS))
     }
   }
 

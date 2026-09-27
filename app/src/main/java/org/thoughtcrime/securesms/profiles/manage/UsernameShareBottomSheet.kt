@@ -10,6 +10,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.signal.core.util.Base64
 import org.signal.core.util.DimensionUnit
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.Util
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.libsignal.usernames.Username
@@ -65,7 +66,8 @@ class UsernameShareBottomSheet : DSLSettingsBottomSheetFragment() {
       val username = recipient.username.get()
       customPref(
         CopyButton.Model(
-          text = username,
+          // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示；下面的链接仍用完整用户名算 hash
+          text = TellomiUsernames.toDisplayUsername(username),
           onClick = {
             copyToClipboard(it)
           }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.flowOf
 import org.signal.archive.LocalBackupRestoreProgress
 import org.signal.core.models.AccountEntropyPool
 import org.signal.registration.PreExistingRegistrationData
+import org.signal.registration.ReloginPinAttempts
 import org.signal.registration.RestoreDecision
 import org.signal.registration.StorageController
 import org.signal.registration.StoredProfileData
@@ -91,7 +92,40 @@ class FakeStorageController : StorageController {
     }
   }
 
-  override suspend fun clearLocalDataAndRestart() = notExpected()
+  /** Tellomi（ADR-0072）：已退出登录时换号码会清空本机；只有专门测这件事的用例才打开。 */
+  var allowClearLocalDataAndRestart: Boolean = false
+
+  /** How many times the app was asked to wipe itself and restart. */
+  var clearLocalDataAndRestartCount: Int = 0
+    private set
+
+  override suspend fun clearLocalDataAndRestart() {
+    if (!allowClearLocalDataAndRestart) {
+      notExpected()
+    }
+    clearLocalDataAndRestartCount++
+  }
+
+  /** Tellomi（ADR-0072 §4.2）：本机保存的注册锁 PIN（本地哈希代表的那个 PIN），null 表示没有本地 PIN。 */
+  var localPin: String? = null
+
+  var reloginPinAttempts: ReloginPinAttempts = ReloginPinAttempts()
+
+  /** How many times the logged-out device was unlocked after a successful re-login. */
+  var reloginCompletedCount: Int = 0
+    private set
+
+  override suspend fun verifyLocalPin(pin: String): Boolean = localPin != null && pin == localPin
+
+  override suspend fun getReloginPinAttempts(): ReloginPinAttempts = reloginPinAttempts
+
+  override suspend fun setReloginPinAttempts(attempts: ReloginPinAttempts) {
+    reloginPinAttempts = attempts
+  }
+
+  override suspend fun completeRelogin() {
+    reloginCompletedCount++
+  }
 
   override suspend fun readInProgressRegistrationData(): RegistrationData = synchronized(dataLock) { inProgressData }
 

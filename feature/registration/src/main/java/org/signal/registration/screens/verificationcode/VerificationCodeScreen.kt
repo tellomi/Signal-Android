@@ -5,6 +5,8 @@
 
 package org.signal.registration.screens.verificationcode
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -37,18 +40,28 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import kotlinx.coroutines.delay
@@ -57,12 +70,14 @@ import org.signal.core.ui.compose.Dialogs
 import org.signal.core.ui.compose.Previews
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.registration.R
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.screens.shared.ContactSupportDialog
 import org.signal.registration.test.TestTags
+import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -100,9 +115,10 @@ fun VerificationCodeScreen(
 
   LaunchedEffect(state.snackbars) {
     val (message, dismissedEvent) = when {
-      state.snackbars.incorrectVerificationCode -> resources.getString(R.string.VerificationCodeScreen__incorrect_code) to VerificationCodeScreenEvents.IncorrectVerificationCodeSnackbarDismissed
+      // Tellomi（tellomi/tellomi#1214）：错码不再用 Snackbar，改在输入框下面就地提示（见 CodeField）。
       state.snackbars.networkError -> resources.getString(R.string.VerificationCodeScreen__network_error) to VerificationCodeScreenEvents.NetworkErrorSnackbarDismissed
-      state.snackbars.rateLimitedRetryAfter != null -> resources.getString(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, state.snackbars.rateLimitedRetryAfter.toString()) to VerificationCodeScreenEvents.RateLimitedSnackbarDismissed
+      // Tellomi（#1210）：上游把 Duration.toString()（「1m 30s」）原样填进去
+      state.snackbars.rateLimitedRetryAfter != null -> resources.getString(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, TellomiRegistration.retryAfterText(state.snackbars.rateLimitedRetryAfter, ConfigurationCompat.getLocales(resources.configuration)[0] ?: Locale.getDefault())) to VerificationCodeScreenEvents.RateLimitedSnackbarDismissed
       state.snackbars.unknownError -> resources.getString(R.string.VerificationCodeScreen__an_unexpected_error_occurred) to VerificationCodeScreenEvents.UnknownErrorSnackbarDismissed
       state.snackbars.registrationError -> resources.getString(R.string.VerificationCodeScreen__registration_error) to VerificationCodeScreenEvents.RegistrationErrorSnackbarDismissed
       else -> return@LaunchedEffect
@@ -124,6 +140,11 @@ fun VerificationCodeScreen(
 
   if (state.showContactSupportSheet) {
     ContactSupportBottomSheet(
+      e164 = state.e164,
+      onChangeNumber = {
+        onEvent(VerificationCodeScreenEvents.DismissContactSupport)
+        onEvent(VerificationCodeScreenEvents.WrongNumber)
+      },
       onContactSupport = { onEvent(VerificationCodeScreenEvents.ContactSupportDialog) },
       onDismiss = { onEvent(VerificationCodeScreenEvents.DismissContactSupport) }
     )
@@ -167,6 +188,15 @@ fun VerificationCodeScreen(
  */
 @Composable
 private fun RequestCodeErrorDialogs(dialogs: VerificationCodeState.Dialogs, onEvent: (VerificationCodeScreenEvents) -> Unit) {
+  if (dialogs.sessionExpired || dialogs.codeNoLongerValid) {
+    Dialogs.SimpleMessageDialog(
+      message = stringResource(if (dialogs.sessionExpired) R.string.TellomiRegistration__session_expired else R.string.TellomiRegistration__code_no_longer_valid),
+      dismiss = stringResource(android.R.string.ok),
+      onDismiss = { onEvent(VerificationCodeScreenEvents.SessionExpiredDialogDismissed) }
+    )
+    return
+  }
+
   dialogs.providerRejectedTransport?.let { transport ->
     val message = when (transport) {
       VerificationCodeTransport.VOICE -> stringResource(R.string.VerificationCodeScreen__could_not_call_provider_rejected)
@@ -184,7 +214,9 @@ private fun RequestCodeErrorDialogs(dialogs: VerificationCodeState.Dialogs, onEv
     dialogs.networkError -> stringResource(R.string.VerificationCodeScreen__network_error) to VerificationCodeScreenEvents.NetworkErrorDialogDismissed
     dialogs.rateLimitedRetryAfter != null -> {
       val message = if (dialogs.rateLimitedRetryAfter.isPositive()) {
-        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, dialogs.rateLimitedRetryAfter.toString())
+        // Tellomi（#1210）：上游把 Duration.toString()（「1m 30s」）原样填进去
+        val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.getDefault()
+        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, TellomiRegistration.retryAfterText(dialogs.rateLimitedRetryAfter, locale))
       } else {
         stringResource(R.string.VerificationCodeScreen__too_many_attempts)
       }
@@ -237,26 +269,19 @@ private fun OnePaneLayout(
           state = state,
           emitter = onEvent
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        if (state.shouldShowHavingTrouble()) {
-          TroubleButton(onEvent)
-        }
       }
     },
     footer = {
       RegistrationScaffold.FooterSurface(
         isElevated = scrollState.canScrollForward
       ) {
-        Row(
+        CodeFooterRow(
+          state = state,
+          onEvent = onEvent,
           modifier = Modifier
             .fillMaxWidth()
-            .padding(params.footerPadding),
-          horizontalArrangement = Arrangement.SpaceAround
-        ) {
-          AlternateCodeOptions(state, onEvent)
-        }
+            .padding(params.footerPadding)
+        )
       }
     }
   )
@@ -301,29 +326,45 @@ private fun TwoPaneLayout(
           state = state,
           emitter = onEvent
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        if (state.shouldShowHavingTrouble()) {
-          TroubleButton(onEvent)
-        }
       }
     },
     footer = {
       RegistrationScaffold.FooterSurface(
         isElevated = firstPaneScrollState.canScrollForward || secondPaneScrollState.canScrollForward
       ) {
-        Row(
+        CodeFooterRow(
+          state = state,
+          onEvent = onEvent,
           modifier = Modifier
             .fillMaxWidth()
-            .padding(params.footerPadding),
-          horizontalArrangement = Arrangement.End
-        ) {
-          AlternateCodeOptions(state, onEvent)
-        }
+            .padding(params.footerPadding)
+        )
       }
     }
   )
+}
+
+/**
+ * Tellomi（tellomi/tellomi#1214，taishi 审查 b8 不阻塞 4）：ADR-0051 §二 F（`docs/adr/0051-sign-in-ux-redesign.md:108`）——
+ * 「收不到验证码？」在左、倒计时 / 「重新发送」在右，同一行放在页脚。原来「收不到验证码？」居中放在验证码下面、重发单独占页脚。
+ * 「收不到验证码？」不显示时（上游只在输错几次后才给），重发照旧靠右。
+ */
+@Composable
+private fun CodeFooterRow(
+  state: VerificationCodeState,
+  onEvent: (VerificationCodeScreenEvents) -> Unit,
+  modifier: Modifier = Modifier
+) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    if (state.shouldShowHavingTrouble()) {
+      TroubleButton(onEvent)
+    }
+    Spacer(modifier = Modifier.weight(1f))
+    AlternateCodeOptions(state, onEvent)
+  }
 }
 
 @Composable
@@ -331,12 +372,10 @@ private fun TroubleButton(onEvent: (VerificationCodeScreenEvents) -> Unit) {
   TextButton(
     onClick = { onEvent(VerificationCodeScreenEvents.HavingTrouble) },
     modifier = Modifier
-      .fillMaxWidth()
-      .wrapContentWidth(Alignment.CenterHorizontally)
       .testTag(TestTags.VERIFICATION_CODE_HAVING_TROUBLE_BUTTON)
   ) {
     Text(
-      text = stringResource(R.string.VerificationCodeScreen__having_trouble),
+      text = stringResource(R.string.TellomiRegistration__didnt_get_code),
       color = MaterialTheme.colorScheme.primary
     )
   }
@@ -350,6 +389,20 @@ private fun CodeField(
 ) {
   val digits = state.digits
 
+  // Tellomi（tellomi/tellomi#1214）：错码就地提示——格子标红、横抖、一次「拒绝」触感、下面一行字，不再弹 Snackbar
+  // （Telegram LoginActivity.shakeWrongCode 同样是触感 + 清空 + 横抖；只参考机制）。
+  val showError = state.snackbars.incorrectVerificationCode
+  val shake = remember { Animatable(0f) }
+  val haptic = LocalHapticFeedback.current
+  LaunchedEffect(state.incorrectCodeAttempts) {
+    if (state.incorrectCodeAttempts > 0 && showError) {
+      haptic.performHapticFeedback(HapticFeedbackType.Reject)
+      for (x in listOf(-12f, 12f, -9f, 9f, -5f, 5f, -2f, 0f)) {
+        shake.animateTo(x, animationSpec = tween(durationMillis = 55))
+      }
+    }
+  }
+
   Box(
     modifier = Modifier.fillMaxWidth(),
     contentAlignment = Alignment.Center
@@ -358,6 +411,7 @@ private fun CodeField(
       Row(
         modifier = Modifier
           .fillMaxWidth()
+          .offset { IntOffset(shake.value.dp.roundToPx(), 0) }
           .testTag(TestTags.VERIFICATION_CODE_INPUT),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -373,7 +427,8 @@ private fun CodeField(
               else -> TestTags.VERIFICATION_CODE_DIGIT_2
             },
             modifier = Modifier.weight(1f, fill = false),
-            enabled = !state.isSubmittingCode
+            enabled = !state.isSubmittingCode,
+            isError = showError
           )
           if (i < 2) {
             Spacer(modifier = Modifier.width(4.dp))
@@ -401,9 +456,24 @@ private fun CodeField(
               else -> TestTags.VERIFICATION_CODE_DIGIT_5
             },
             modifier = Modifier.weight(1f, fill = false),
-            enabled = !state.isSubmittingCode
+            enabled = !state.isSubmittingCode,
+            isError = showError
           )
         }
+      }
+
+      if (showError) {
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+          text = stringResource(R.string.TellomiRegistration__incorrect_code_inline),
+          color = MaterialTheme.colorScheme.error,
+          style = MaterialTheme.typography.bodyMedium,
+          textAlign = TextAlign.Center,
+          modifier = Modifier
+            .fillMaxWidth()
+            .semantics { liveRegion = LiveRegionMode.Polite }
+            .testTag(TestTags.VERIFICATION_CODE_ERROR)
+        )
       }
 
       if (state.isSubmittingCode) {
@@ -443,6 +513,12 @@ private fun AlternateCodeOptions(state: VerificationCodeState, onEvent: (Verific
       textAlign = TextAlign.Center,
       style = MaterialTheme.typography.labelLarge
     )
+  }
+
+  // Tellomi（#1210）：没有语音通道时不显示「给我打电话」（上游一直显示，点了只会报「无法致电」）。
+  // 服务端对不可用的会话返回 nextCall = null 时同样不显示，而不是上游那样置灰留着。
+  if (!TellomiRegistration.VOICE_VERIFICATION_AVAILABLE || state.rateLimits.callRequestTimeRemaining == null) {
+    return
   }
 
   Spacer(modifier = Modifier.width(8.dp))
@@ -512,7 +588,8 @@ private fun DigitField(
   focusRequester: FocusRequester,
   testTag: String,
   modifier: Modifier = Modifier,
-  enabled: Boolean = true
+  enabled: Boolean = true,
+  isError: Boolean = false
 ) {
   TextField(
     value = value,
@@ -520,6 +597,8 @@ private fun DigitField(
     modifier = modifier
       .width(48.dp)
       .focusRequester(focusRequester)
+      // Tellomi（tellomi/tellomi#1214）：告诉系统自动填充和输入法这是短信验证码，整串候选会一次进来（applyFullCode 负责分到六格）。
+      .semantics { contentType = ContentType.SmsOtpCode }
       .testTag(testTag)
       .onKeyEvent { keyEvent ->
         if ((keyEvent.key == Key.Backspace || keyEvent.key == Key.Delete) && value.isEmpty()) {
@@ -534,7 +613,11 @@ private fun DigitField(
     shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
     enabled = enabled,
+    isError = isError,
     colors = TextFieldDefaults.colors(
+      errorContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+      errorIndicatorColor = MaterialTheme.colorScheme.error,
+      errorTextColor = MaterialTheme.colorScheme.error,
       focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
       unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
       disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,

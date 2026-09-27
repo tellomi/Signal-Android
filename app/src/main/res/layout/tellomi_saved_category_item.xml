@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tellomi（#1174）：「我的收藏」顶栏下方分类的一项。样子照聊天列表顶部的文件夹（chat_folder_item）；文字是固定的几个词，用普通 TextView。 -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/name"
+    style="@style/Signal.Text.LabelLarge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/rounded_rectangle_surface_variant"
+    android:backgroundTint="@color/signal_colorSurfaceVariant"
+    android:gravity="center"
+    android:minHeight="36dp"
+    android:paddingHorizontal="16dp"
+    tools:text="全部" />

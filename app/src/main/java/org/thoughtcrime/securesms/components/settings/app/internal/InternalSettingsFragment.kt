@@ -76,7 +76,12 @@ import org.thoughtcrime.securesms.megaphone.Megaphones
 import org.thoughtcrime.securesms.payments.DataExportUtil
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.recipients.RecipientId
+import org.thoughtcrime.securesms.region.TellomiRegionId
+import org.thoughtcrime.securesms.region.TellomiRegionSelector
+import org.thoughtcrime.securesms.region.TellomiRegionSwitcher
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.registration.data.QuickstartCredentialExporter
+import org.thoughtcrime.securesms.ringrtc.CameraFpsRanges
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.util.ConversationUtil
 import org.thoughtcrime.securesms.util.TextSecurePreferences
@@ -99,6 +104,8 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
 
   private lateinit var viewModel: InternalSettingsViewModel
   private var searchMenuItem: MenuItem? = null
+
+  private val cameraFpsRangeDescription: String? by lazy { CameraFpsRanges.captureCameraRangesDescription(requireContext()) }
 
   private var scrollToPosition: Int = 0
   private val layoutManager: LinearLayoutManager?
@@ -241,6 +248,14 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
           }
         )
       }
+
+      clickPref(
+        title = DSLSettingsText.from("Copy service password"),
+        summary = DSLSettingsText.from("Copy the password used to authenticate with the service."),
+        onClick = {
+          onCopyServicePasswordClicked()
+        }
+      )
 
       clickPref(
         title = DSLSettingsText.from("Unregister"),
@@ -581,6 +596,49 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
 
       dividerPref()
 
+      // Tellomi（#1055 第三刀）：区域与切区，设备上验判据 2 用
+      sectionHeaderPref(DSLSettingsText.from("Tellomi region"))
+
+      val activeRegion = TellomiRegions.current()
+      textPref(
+        title = DSLSettingsText.from("Active: ${activeRegion.id.id} (${activeRegion.grpcChatHost})"),
+        summary = DSLSettingsText.from("Stored: ${SignalStore.tellomiRegion.currentId ?: "<none>"}, last switch: ${SignalStore.tellomiRegion.lastSwitchAt.takeIf { it > 0 }?.let { java.util.Date(it).toString() } ?: "<none>"}")
+      )
+
+      TellomiRegions.profiles().forEach { profile ->
+        clickPref(
+          title = DSLSettingsText.from("Switch to ${profile.id.id}${if (profile.enabled) "" else " (disabled)"}"),
+          summary = DSLSettingsText.from(profile.chat),
+          onClick = { switchTellomiRegion(profile.id) }
+        )
+      }
+
+      // #1055 第四刀：手动跑一次选路器的探测，看它会怎么建议（不切区）
+      clickPref(
+        title = DSLSettingsText.from("Probe regions"),
+        summary = DSLSettingsText.from("TLS handshake with each enabled region's chat host; shows the selector's decision without switching."),
+        onClick = { probeTellomiRegions() }
+      )
+
+      if (BuildConfig.DEBUG) {
+        clickPref(
+          title = DSLSettingsText.from("Test region domain"),
+          summary = DSLSettingsText.from(SignalStore.tellomiRegion.testRegionDomain ?: "Off. Set one (e.g. tellomi.test) to replace cn with an enabled region under it."),
+          onClick = {
+            promptUserForString(
+              title = "Test region domain",
+              message = "Empty turns it off. Debug builds only.",
+              initialValue = SignalStore.tellomiRegion.testRegionDomain ?: ""
+            ) { value ->
+              SignalStore.tellomiRegion.testRegionDomain = value.trim().ifEmpty { null }
+              viewModel.refresh()
+            }
+          }
+        )
+      }
+
+      dividerPref()
+
       sectionHeaderPref(DSLSettingsText.from("Conversations and Shortcuts"))
 
       clickPref(
@@ -670,10 +728,10 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
 
       radioPref(
         title = DSLSettingsText.from("Production server"),
-        summary = DSLSettingsText.from(BuildConfig.SIGNAL_SFU_URL),
-        isChecked = state.callingServer == BuildConfig.SIGNAL_SFU_URL,
+        summary = DSLSettingsText.from(TellomiRegions.current().sfu),
+        isChecked = state.callingServer == TellomiRegions.current().sfu,
         onClick = {
-          viewModel.setInternalGroupCallingServer(BuildConfig.SIGNAL_SFU_URL)
+          viewModel.setInternalGroupCallingServer(TellomiRegions.current().sfu)
         }
       )
 
@@ -832,6 +890,25 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
             initialValue = state.callingStatsIntervalSecs.takeIf { it > 0 }
           ) { intervalSecs ->
             viewModel.setInternalCallingStatsIntervalSecs(intervalSecs ?: 0)
+          }
+        }
+      )
+
+      clickPref(
+        title = DSLSettingsText.from("Minimum Capture FPS"),
+        summary = DSLSettingsText.from(
+          buildString {
+            append(if (state.callingMinimumCaptureFps > 0) "${state.callingMinimumCaptureFps} fps" else "Default")
+            cameraFpsRangeDescription?.let { append("\n$it") }
+          }
+        ),
+        onClick = {
+          promptUserForInt(
+            title = "Minimum Capture FPS",
+            message = "Floor for the camera's capture framerate range. 0 for default logic. Applies on next call start.",
+            initialValue = state.callingMinimumCaptureFps.takeIf { it > 0 }
+          ) { minimumFps ->
+            viewModel.setInternalCallingMinimumCaptureFps(minimumFps ?: 0)
           }
         }
       )
@@ -1125,6 +1202,24 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
       .show()
   }
 
+  private fun onCopyServicePasswordClicked() {
+    val servicePassword = SignalStore.account.servicePassword
+    if (servicePassword == null) {
+      Toast.makeText(requireContext(), "No service password set!", Toast.LENGTH_SHORT).show()
+      return
+    }
+
+    MaterialAlertDialogBuilder(requireContext())
+      .setTitle("Copy service password?")
+      .setMessage("Your service password lets anyone who has it send messages as you on the service. Treat it like a password: don't paste it anywhere you don't fully trust. It will be cleared from the clipboard after ${Util.SENSITIVE_CLIPBOARD_TIMEOUT_SECONDS} seconds.")
+      .setPositiveButton("Copy") { _, _ ->
+        Util.copyToClipboardSensitive(requireContext(), servicePassword)
+        Toast.makeText(requireContext(), "Copied service password", Toast.LENGTH_SHORT).show()
+      }
+      .setNegativeButton(android.R.string.cancel, null)
+      .show()
+  }
+
   private fun copyPaymentsDataToClipboard() {
     MaterialAlertDialogBuilder(requireContext())
       .setMessage(
@@ -1313,6 +1408,35 @@ class InternalSettingsFragment : DSLSettingsFragment(R.string.preferences__inter
       }
       .setNegativeButton(android.R.string.cancel, null)
       .show()
+  }
+
+  private fun probeTellomiRegions() {
+    SimpleTask.run({ TellomiRegionSelector.forCurrentProcess().probe() }) { decision ->
+      val lines = decision.results.entries.sortedBy { it.key.id }.joinToString("\n") { (id, result) ->
+        when (result) {
+          is TellomiRegionSelector.ProbeResult.Ok -> "${id.id}: ${result.rttMs} ms"
+          is TellomiRegionSelector.ProbeResult.Failed -> "${id.id}: failed (${result.error})"
+        }
+      }
+      MaterialAlertDialogBuilder(requireContext())
+        .setTitle("${decision.reason.id}: ${decision.current.id} → ${decision.recommended.id}")
+        .setMessage(lines)
+        .setPositiveButton(android.R.string.ok, null)
+        .show()
+    }
+  }
+
+  private fun switchTellomiRegion(id: TellomiRegionId) {
+    SimpleTask.run({
+      try {
+        if (TellomiRegionSwitcher.instance.switchTo(id)) "Switched to ${id.id}" else "Already on ${id.id}"
+      } catch (e: TellomiRegionSwitcher.SwitchException) {
+        "Can't switch to ${id.id}: ${e.reason}"
+      }
+    }) { message ->
+      Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+      viewModel.refresh()
+    }
   }
 
   /**

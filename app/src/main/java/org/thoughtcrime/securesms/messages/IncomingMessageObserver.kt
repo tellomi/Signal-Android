@@ -40,6 +40,7 @@ import org.thoughtcrime.securesms.jobs.PushProcessMessageJob
 import org.thoughtcrime.securesms.jobs.RequestGroupV2InfoJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.keyvalue.isDecisionPending
+import org.thoughtcrime.securesms.logout.TellomiLogout
 import org.thoughtcrime.securesms.messages.MessageDecryptor.FollowUpOperation
 import org.thoughtcrime.securesms.messages.protocol.BufferedProtocolStore
 import org.thoughtcrime.securesms.notifications.NotificationChannels
@@ -161,7 +162,8 @@ class IncomingMessageObserver(
 
     MessageRetrievalThread().start()
 
-    val registered = SignalStore.account.isRegistered && !TextSecurePreferences.isUnauthorizedReceived(context)
+    // Tellomi（ADR-0072）：主动退出登录的和被服务端登出的一样，不起常驻前台服务。
+    val registered = SignalStore.account.isRegistered && !TextSecurePreferences.isUnauthorizedReceived(context) && !TellomiLogout.isLoggedOut()
     if (registered && (!SignalStore.account.fcmEnabled || SignalStore.settings.forceWebsocketMode.isEnabled)) {
       SignalExecutors.UNBOUNDED.execute {
         if (!SafeForegroundService.start(context, ForegroundService::class.java)) {
@@ -263,6 +265,7 @@ class IncomingMessageObserver(
 
     val registered = SignalStore.account.isRegistered
     val unauthorizedReceived = TextSecurePreferences.isUnauthorizedReceived(context)
+    val loggedOut = TellomiLogout.isLoggedOut()
     val fcmEnabled = SignalStore.account.fcmEnabled
     val hasNetwork = NetworkConstraint.isMet(context)
     val hasProxy = SignalStore.proxy.isProxyEnabled
@@ -274,6 +277,7 @@ class IncomingMessageObserver(
     val lastInteractionString = if (appVisibleSnapshot) "N/A" else timeIdle.toString() + " ms (" + (if (timeIdle < maxBackgroundTime) "within limit" else "over limit") + ")"
     val conclusion = registered &&
       !unauthorizedReceived &&
+      !loggedOut &&
       !clockSkewDetected &&
       (appVisibleSnapshot || timeIdle < maxBackgroundTime || !fcmEnabled || forceWebsocket) &&
       hasNetwork
@@ -282,14 +286,14 @@ class IncomingMessageObserver(
 
     Log.d(
       TAG,
-      "[$needsConnectionString] Network: $hasNetwork, Foreground: $appVisibleSnapshot, Time Since Last Interaction: $lastInteractionString, FCM: $fcmEnabled, WS Open or Keep-alives: $websocketAlreadyOpen, Registered: $registered, Unauthorized: $unauthorizedReceived, Proxy: $hasProxy, Force websocket: $forceWebsocket, Clock skew: $clockSkewDetected ($clockSkew)"
+      "[$needsConnectionString] Network: $hasNetwork, Foreground: $appVisibleSnapshot, Time Since Last Interaction: $lastInteractionString, FCM: $fcmEnabled, WS Open or Keep-alives: $websocketAlreadyOpen, Registered: $registered, Unauthorized: $unauthorizedReceived, Logged out: $loggedOut, Proxy: $hasProxy, Force websocket: $forceWebsocket, Clock skew: $clockSkewDetected ($clockSkew)"
     )
 
     return conclusion
   }
 
   private fun isConnectionAvailable(): Boolean {
-    return !TextSecurePreferences.isUnauthorizedReceived(context) && SignalStore.account.isRegistered && (authWebSocket.stateSnapshot == WebSocketConnectionState.CONNECTED || (authWebSocket.shouldSendKeepAlives() && NetworkConstraint.isMet(context)))
+    return !TextSecurePreferences.isUnauthorizedReceived(context) && !TellomiLogout.isLoggedOut() && SignalStore.account.isRegistered && (authWebSocket.stateSnapshot == WebSocketConnectionState.CONNECTED || (authWebSocket.shouldSendKeepAlives() && NetworkConstraint.isMet(context)))
   }
 
   private fun waitForConnectionNecessary() {

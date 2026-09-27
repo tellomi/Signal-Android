@@ -8,7 +8,8 @@ import androidx.annotation.VisibleForTesting;
 import org.conscrypt.ConscryptSignal;
 import org.signal.core.util.logging.Log;
 import org.signal.network.util.HttpsProxySocketFactory;
-import org.thoughtcrime.securesms.BuildConfig;
+import org.thoughtcrime.securesms.region.TellomiRegionProfile;
+import org.thoughtcrime.securesms.region.TellomiRegions;
 import org.thoughtcrime.securesms.util.RemoteConfig;
 
 import java.io.IOException;
@@ -104,7 +105,9 @@ public class ContentProxySelector extends ProxySelector {
     if (remote != null && !remote.isEmpty()) {
       Log.w(TAG, "Ignoring global.gif.proxyUrl, not an https:// URL with a host. Falling back to the build-time proxy.");
     }
-    return new Endpoint(BuildConfig.CONTENT_PROXY_HOST, BuildConfig.CONTENT_PROXY_PORT);
+    // Tellomi（#1055）：回落值从当前区取。服务端下发的地址仍然优先——它会绕过区域，归 M6 定（REGION_PROFILE.md 第八节，#1252）
+    TellomiRegionProfile region = TellomiRegions.current();
+    return new Endpoint(region.getContentProxyHost(), region.getContentProxyPort());
   }
 
   /**

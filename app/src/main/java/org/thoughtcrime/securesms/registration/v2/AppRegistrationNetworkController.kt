@@ -19,15 +19,20 @@ import kotlinx.coroutines.withContext
 import org.signal.core.models.AccountEntropyPool
 import org.signal.core.models.MasterKey
 import org.signal.core.models.ServiceId.ACI
+import org.signal.core.util.Util
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
 import org.signal.libsignal.protocol.IdentityKey
 import org.signal.libsignal.protocol.IdentityKeyPair
 import org.signal.libsignal.protocol.ecc.ECPrivateKey
 import org.signal.libsignal.usernames.Username
+import org.signal.libsignal.zkgroup.VerificationFailedException
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredential
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialPresentation
 import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequest
+import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialRequestContext
+import org.signal.libsignal.zkgroup.receipts.ReceiptCredentialResponse
+import org.signal.libsignal.zkgroup.receipts.ReceiptSerial
 import org.signal.network.NetworkResult
 import org.signal.network.api.ArchiveApiV2
 import org.signal.network.api.RegistrationApiV2
@@ -38,8 +43,10 @@ import org.signal.network.api.RegistrationApiV2.CreateLoginReceiptCredentialErro
 import org.signal.network.api.RegistrationApiV2.CreateLoginReceiptCredentialResult
 import org.signal.network.api.RegistrationApiV2.CreateSessionError
 import org.signal.network.api.RegistrationApiV2.DeviceAttributes
+import org.signal.network.api.RegistrationApiV2.GetLoginConfigurationError
 import org.signal.network.api.RegistrationApiV2.GetSessionStatusError
 import org.signal.network.api.RegistrationApiV2.LinkDeviceResponse
+import org.signal.network.api.RegistrationApiV2.LoginConfiguration
 import org.signal.network.api.RegistrationApiV2.LoginPurchasePaymentProvider
 import org.signal.network.api.RegistrationApiV2.PreKeyCollection
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
@@ -72,6 +79,7 @@ import org.signal.registration.NetworkController.SetAccountAttributesError
 import org.signal.registration.NetworkController.SetProfileError
 import org.signal.registration.NetworkController.SetRegistrationLockError
 import org.signal.registration.NetworkController.VerifyBackupKeyError
+import org.signal.registration.ReceiptCredentialResult
 import org.signal.registration.proto.RegistrationProvisionMessage
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.backup.v2.BackupRepository
@@ -86,14 +94,18 @@ import org.thoughtcrime.securesms.jobs.RefreshAttributesJob
 import org.thoughtcrime.securesms.jobs.ResetSvrGuessCountJob
 import org.thoughtcrime.securesms.jobs.StorageAccountRestoreJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.logout.TellomiLogout
 import org.thoughtcrime.securesms.net.SignalNetwork
 import org.thoughtcrime.securesms.pin.SvrRepository
 import org.thoughtcrime.securesms.pin.SvrWrongPinException
 import org.thoughtcrime.securesms.profiles.AvatarHelper
 import org.thoughtcrime.securesms.profiles.ProfileName
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.registration.fcm.PushChallengeRequest
 import org.thoughtcrime.securesms.registration.ui.restore.StorageServiceRestore
+import org.thoughtcrime.securesms.registration.ui.restore.e164OrNull
+import org.thoughtcrime.securesms.registration.ui.restore.pniIdentityKeyPair
 import org.thoughtcrime.securesms.registration.util.RegistrationUtil
 import org.thoughtcrime.securesms.registration.viewmodel.SvrAuthCredentialSet
 import org.thoughtcrime.securesms.util.Environment
@@ -110,6 +122,7 @@ import org.whispersystems.signalservice.internal.push.ProvisionMessage
 import org.whispersystems.signalservice.internal.push.SyncMessage
 import java.io.Closeable
 import java.io.IOException
+import java.security.SecureRandom
 import java.util.Locale
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration
@@ -186,6 +199,13 @@ class AppRegistrationNetworkController(
     aci: ACI?,
     totp: Int?
   ): RequestResult<RegisterAccountResponse, RegisterAccountError> {
+    // Tellomi（ADR-0072 §二）：已退出登录的手机重新登录绝不走注册（服务端 reclaimAccount 会清空排队的消息）。
+    // 注册模块里已经拦了，HTTP 层（DeviceTransferBlockingInterceptor）也只放行验证会话；这里是 App 这一侧的闸。
+    if (TellomiLogout.isLoggedOut()) {
+      Log.w(TAG, "[registerAccount] Refusing: this device is logged out. Re-login must never call POST /v1/registration.")
+      return RequestResult.ApplicationError(IllegalStateException("Logged out device must not re-register"))
+    }
+
     return registrationApi.registerAccount(
       e164 = e164,
       password = password,
@@ -202,6 +222,10 @@ class AppRegistrationNetworkController(
     )
   }
 
+  override suspend fun getLoginConfiguration(): RequestResult<LoginConfiguration, GetLoginConfigurationError> {
+    return registrationApi.getLoginConfiguration()
+  }
+
   override suspend fun createLoginPurchaseReceiptCredential(
     purchaseIdentifier: String,
     receiptCredentialRequest: ReceiptCredentialRequest,
@@ -214,8 +238,27 @@ class AppRegistrationNetworkController(
     )
   }
 
-  override fun createReceiptCredentialPresentation(receiptCredential: ReceiptCredential): ReceiptCredentialPresentation {
-    return AppDependencies.clientZkReceiptOperations.createReceiptCredentialPresentation(receiptCredential)
+  override fun createReceiptCredentialRequestContext(): ReceiptCredentialRequestContext {
+    val receiptSerial = ReceiptSerial(Util.getSecretBytes(ReceiptSerial.SIZE))
+    return AppDependencies.clientZkReceiptOperations.createReceiptCredentialRequestContext(SecureRandom(), receiptSerial)
+  }
+
+  override fun receiveReceiptCredential(requestContext: ReceiptCredentialRequestContext, response: ReceiptCredentialResponse): ReceiptCredentialResult<ReceiptCredential> {
+    return try {
+      ReceiptCredentialResult.Success(AppDependencies.clientZkReceiptOperations.receiveReceiptCredential(requestContext, response))
+    } catch (e: VerificationFailedException) {
+      Log.w(TAG, "Could not verify the issued receipt credential.", e)
+      ReceiptCredentialResult.VerificationFailed
+    }
+  }
+
+  override fun createReceiptCredentialPresentation(receiptCredential: ReceiptCredential): ReceiptCredentialResult<ReceiptCredentialPresentation> {
+    return try {
+      ReceiptCredentialResult.Success(AppDependencies.clientZkReceiptOperations.createReceiptCredentialPresentation(receiptCredential))
+    } catch (e: VerificationFailedException) {
+      Log.w(TAG, "Could not verify the receipt credential while building its presentation.", e)
+      ReceiptCredentialResult.VerificationFailed
+    }
   }
 
   /** Tellomi：见 NetworkController.svrEnclaveAvailable 与 docs/signal/ENCLAVES.md。 */
@@ -258,7 +301,7 @@ class AppRegistrationNetworkController(
   }
 
   override fun getCaptchaUrl(): String {
-    return BuildConfig.SIGNAL_CAPTCHA_URL
+    return TellomiRegions.current().captchaRegistration
   }
 
   override suspend fun restoreMasterKeyFromSvr(
@@ -334,11 +377,11 @@ class AppRegistrationNetworkController(
       return@withContext RequestResult.NonSuccess(SetRegistrationLockError.NoPinSet)
     }
 
-    SignalNetwork.account.enableRegistrationLock(masterKey)
+    SignalNetwork.accountApi.enableRegistrationLock(masterKey)
   }
 
   override suspend fun disableRegistrationLock(): RequestResult<Unit, SetRegistrationLockError> = withContext(Dispatchers.IO) {
-    SignalNetwork.account.disableRegistrationLock()
+    SignalNetwork.accountApi.disableRegistrationLock()
   }
 
   override suspend fun getSvrCredentials(): RequestResult<SvrCredentials, GetSvrCredentialsError> = withContext(Dispatchers.IO) {
@@ -363,7 +406,7 @@ class AppRegistrationNetworkController(
   override suspend fun setAccountAttributes(
     attributes: AccountAttributes
   ): RequestResult<Unit, SetAccountAttributesError> = withContext(Dispatchers.IO) {
-    when (val result = SignalNetwork.account.setAccountAttributes(attributes.toServiceAccountAttributes())) {
+    when (val result = SignalNetwork.accountApi.setAccountAttributes(attributes.toServiceAccountAttributes())) {
       is NetworkResult.Success -> RequestResult.Success(Unit)
       is NetworkResult.StatusCodeError -> {
         when (result.code) {
@@ -380,7 +423,7 @@ class AppRegistrationNetworkController(
   override suspend fun getRemoteBackupInfo(aep: AccountEntropyPool): RequestResult<NetworkController.GetBackupInfoResponse, NetworkController.GetBackupInfoError> = withContext(Dispatchers.IO) {
     val aci = SignalStore.account.aci ?: return@withContext RequestResult.ApplicationError(IllegalStateException("ACI not available"))
 
-    AppDependencies.archiveService
+    SignalNetwork.archiveService
       .getMessageBackupInfoForKey(aci, aep.deriveMessageBackupKey())
       .fold(
         ifRight = { info ->
@@ -402,7 +445,7 @@ class AppRegistrationNetworkController(
     val aci = SignalStore.account.aci ?: return@withContext RequestResult.ApplicationError(IllegalStateException("ACI not available"))
 
     // Uses API directly because ArchiveService uses stored key
-    when (val result = SignalNetwork.archiveV2.triggerBackupIdReservation(messageBackupKey = aep.deriveMessageBackupKey(), mediaRootBackupKey = null, aci = aci)) {
+    when (val result = SignalNetwork.archiveApiV2.triggerBackupIdReservation(messageBackupKey = aep.deriveMessageBackupKey(), mediaRootBackupKey = null, aci = aci)) {
       is RequestResult.Success -> {
         // Anything cached was issued against the backup-id we just replaced, so it can never verify.
         SignalStore.backup.messageCredentials.clearAll()
@@ -463,11 +506,11 @@ class AppRegistrationNetworkController(
   }
 
   override suspend fun reserveUsername(nickname: String, discriminator: String?): RequestResult<Username, ReserveUsernameError> {
-    return AppDependencies.usernameService.reserveUsername(nickname, discriminator)
+    return SignalNetwork.usernameService.reserveUsername(nickname, discriminator)
   }
 
   override suspend fun confirmUsername(username: Username): RequestResult<ConfirmedUsername, ConfirmUsernameError> {
-    return AppDependencies.usernameService.confirmUsername(username)
+    return SignalNetwork.usernameService.confirmUsername(username)
   }
 
   override suspend fun restoreAccountRecord(
@@ -494,7 +537,7 @@ class AppRegistrationNetworkController(
   ): RequestResult<Long, NetworkController.GetBackupInfoError> = withContext(Dispatchers.IO) {
     val aci = SignalStore.account.aci ?: return@withContext RequestResult.ApplicationError(IllegalStateException("ACI not available"))
 
-    val location = when (val result = AppDependencies.archiveService.getMessageBackupFileLocationForKey(aci, aep.deriveMessageBackupKey())) {
+    val location = when (val result = SignalNetwork.archiveService.getMessageBackupFileLocationForKey(aci, aep.deriveMessageBackupKey())) {
       is Either.Right -> result.value
       is Either.Left -> return@withContext result.value.toGetBackupInfoError()
     }
@@ -581,14 +624,23 @@ class AppRegistrationNetworkController(
 
         if (result is SecondaryProvisioningCipher.ProvisioningDecryptResult.Success) {
           val msg = result.message
+          val aci = ACI.parseOrNull(msg.aci)
+
+          if (aci == null) {
+            Log.w(TAG, "[startProvisioning] Provisioning message was missing a valid ACI")
+            trySend(ProvisioningEvent.Error(IOException("Provisioning message was missing a valid ACI")))
+            return@start
+          }
+
           trySend(
             ProvisioningEvent.MessageReceived(
               ProvisioningMessage(
                 accountEntropyPool = msg.accountEntropyPool,
-                e164 = msg.e164,
+                aci = aci,
+                e164 = msg.e164OrNull,
                 pin = msg.pin,
                 aciIdentityKeyPair = IdentityKeyPair(IdentityKey(msg.aciIdentityKeyPublic.toByteArray()), ECPrivateKey(msg.aciIdentityKeyPrivate.toByteArray())),
-                pniIdentityKeyPair = IdentityKeyPair(IdentityKey(msg.pniIdentityKeyPublic.toByteArray()), ECPrivateKey(msg.pniIdentityKeyPrivate.toByteArray())),
+                pniIdentityKeyPair = msg.pniIdentityKeyPair,
                 platform = when (msg.platform) {
                   RegistrationProvisionMessage.Platform.ANDROID -> ProvisioningMessage.Platform.ANDROID
                   RegistrationProvisionMessage.Platform.IOS -> ProvisioningMessage.Platform.IOS
@@ -824,7 +876,7 @@ class AppRegistrationNetworkController(
     while (timeRemaining > 0 && coroutineContext.isActive) {
       Log.d(TAG, "[awaitTransferArchiveFromPrimary] Willing to wait for $timeRemaining ms...")
 
-      when (val result = SignalNetwork.linkDevice.waitForPrimaryDevice(timeout = 60.seconds)) {
+      when (val result = SignalNetwork.linkDeviceApi.waitForPrimaryDevice(timeout = 60.seconds)) {
         is NetworkResult.Success -> {
           Log.i(TAG, "[awaitTransferArchiveFromPrimary] Primary responded (hasArchive=${result.result.hasArchive}, error=${result.result.error})")
           return result.result

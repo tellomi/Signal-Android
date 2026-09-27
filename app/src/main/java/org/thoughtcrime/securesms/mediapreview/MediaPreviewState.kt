@@ -26,4 +26,11 @@ data class MediaPreviewState(
   /** True when the currently-visible page is a known UltraHDR image and no shared-element transition is running. */
   val shouldRenderHdr: Boolean
     get() = !isInSharedAnimation && currentMediaUri?.let { hdrCapableUris.contains(it) } == true
+
+  /**
+   * Tellomi（#1257）：查看器底部缩略条、「这张 / 全部 N 张」用的「本组」＝当前这一页所在的那条消息。
+   * 从会话设置的媒体条打开（[allMediaInAlbumRail]）时 [mediaRecords] 是整段会话的媒体，不能拿来当「本组」。
+   */
+  val currentAlbum: List<Media>
+    get() = mediaRecords.getOrNull(position)?.attachment?.mmsId?.let { albums[it] } ?: emptyList()
 }

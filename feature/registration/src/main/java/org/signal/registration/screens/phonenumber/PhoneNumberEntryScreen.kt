@@ -5,15 +5,9 @@
 
 package org.signal.registration.screens.phonenumber
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,8 +40,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +48,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -68,10 +61,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.i18n.phonenumbers.PhoneNumberUtil
+import androidx.core.os.ConfigurationCompat
+import kotlinx.coroutines.delay
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
@@ -80,39 +71,26 @@ import org.signal.core.ui.compose.IconButtons.IconButton
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
-import org.signal.core.util.Util
-import org.signal.core.util.logging.Log
+import org.signal.core.ui.compose.TextFields
 import org.signal.registration.R
 import org.signal.registration.RegistrationDependencies
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.OnePaneRegistrationScaffold
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.screens.shared.AccountIdErrorText
+import org.signal.registration.screens.shared.AccountIdFormat
 import org.signal.registration.screens.shared.AccountIdVisualTransformation
+import org.signal.registration.screens.shared.TellomiConsentRow
+import org.signal.registration.screens.shared.TellomiCrossBorderConsent
+import org.signal.registration.screens.shared.TellomiCrossBorderNotice
+import org.signal.registration.screens.shared.TellomiLegalConsent
+import org.signal.registration.screens.shared.TellomiTermsConsentDialog
 import org.signal.registration.screens.shared.accountIdTextStyle
 import org.signal.registration.test.TestTags
+import java.util.Locale
 import org.signal.core.ui.R as CoreR
-
-private const val TAG = "PhoneNumberScreen"
-
-/**
- * Reads the device's own phone number from the SIM as an E164 string, but only if the relevant phone permission has
- * already been granted. Returns null if the permission is missing or the number is unavailable. We never prompt for
- * the permission solely to prefill the number.
- */
-@SuppressLint("MissingPermission")
-private fun readDeviceNumberE164(context: Context): String? {
-  val hasPhonePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ||
-    ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) == PackageManager.PERMISSION_GRANTED
-
-  if (!hasPhonePermission) {
-    return null
-  }
-
-  val deviceNumber = Util.getDeviceNumber(context).orElse(null) ?: return null
-  return PhoneNumberUtil.getInstance().format(deviceNumber, PhoneNumberUtil.PhoneNumberFormat.E164)
-}
 
 /**
  * Phone number entry screen
@@ -124,73 +102,76 @@ fun PhoneNumberScreen(
   modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current
-  var hasRequestedPhoneNumberHint by rememberSaveable { mutableStateOf(false) }
-  val currentNationalNumber by rememberUpdatedState(state.nationalNumber)
 
-  val prefillFromDeviceNumberIfAllowed = {
-    if (currentNationalNumber.isEmpty()) {
-      readDeviceNumberE164(context)?.let { e164 ->
-        onEvent(PhoneNumberEntryScreenEvents.FullPhoneNumberEntered(e164))
-      }
-    }
+  // Tellomi（tellomi/tellomi#1338）：去掉上游进页即弹的 Google Play 服务号码提示（Identity.getSignInClient(...)
+  // .getPhoneNumberHintIntent）。它在用户同意协议和跨境告知之前就调 Play 服务，违反「同意之前不联网、不调第三方」；
+  // 连带去掉它失败时的 SIM 读号兜底（要 READ_PHONE_STATE，Tellomi 不声明也不申请，本来就总是读不到）。号码只能用户自己输。
+
+  // Tellomi：先同意、再发号码（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E）。「下一步」（号码提示的自动确认已随
+  // #1338 去掉）要先走到下面这个确认号码的对话框，所以只在这里拦：没勾 → 先二次确认；同意 = 勾选框看得见地打勾，停一下再出确认框；
+  // 不同意 = 和点「修改号码」一样，什么都不发生。
+  var consentChecked by remember { mutableStateOf(TellomiLegalConsent.hasAgreedToTerms(context)) }
+  val onConsentCheckedChange: (Boolean) -> Unit = { checked ->
+    consentChecked = checked
+    TellomiLegalConsent.setAgreedToTerms(context, checked)
   }
-
-  val phoneNumberHintLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-    val phoneNumber = try {
-      Identity.getSignInClient(context).getPhoneNumberFromIntent(result.data)
-    } catch (e: Exception) {
-      Log.w(TAG, "Failed to retrieve phone number from hint.", e)
-      null
-    }
-
-    if (phoneNumber != null) {
-      onEvent(PhoneNumberEntryScreenEvents.FullPhoneNumberEntered(phoneNumber, autoConfirm = true))
-    }
-  }
-
-  LaunchedEffect(state.initialized) {
-    if (!state.initialized || hasRequestedPhoneNumberHint || state.nationalNumber.isNotEmpty() || state.preExistingRegistrationData != null) {
-      return@LaunchedEffect
-    }
-    hasRequestedPhoneNumberHint = true
-
-    try {
-      Identity.getSignInClient(context)
-        .getPhoneNumberHintIntent(GetPhoneNumberHintIntentRequest.builder().build())
-        .addOnSuccessListener { pendingIntent ->
-          try {
-            phoneNumberHintLauncher.launch(IntentSenderRequest.Builder(pendingIntent).build())
-          } catch (e: Exception) {
-            Log.w(TAG, "Failed to launch phone number hint intent.", e)
-            prefillFromDeviceNumberIfAllowed()
-          }
-        }
-        .addOnFailureListener { e ->
-          Log.w(TAG, "Phone number hint unavailable. Falling back to device number.", e)
-          prefillFromDeviceNumberIfAllowed()
-        }
-    } catch (e: Exception) {
-      Log.w(TAG, "Unable to request phone number hint. Falling back to device number.", e)
-      prefillFromDeviceNumberIfAllowed()
+  var holdConfirmForCheckmark by remember { mutableStateOf(false) }
+  // Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。手机号是第一条发往境外（香港）服务端的个人信息，
+  // 所以这一页排在协议同意之后、确认号码之前；同意过同一版本就不再出现。
+  // Tellomi（tellomi/tellomi#1338）：号码注册是主设备，要亲自点过「同意并继续」；关联设备的「知道了」不算（hasGivenSeparateConsent）。
+  var crossBorderAgreed by remember { mutableStateOf(TellomiCrossBorderConsent.hasGivenSeparateConsent(context)) }
+  // 右上角菜单的「关联设备」也要连服务端（二维码），同意之前网络是关着的：和欢迎页一样先问，同意了再往下走。
+  var pendingLinkDevice by remember { mutableStateOf(false) }
+  val gatedOnEvent: (PhoneNumberEntryScreenEvents) -> Unit = { event ->
+    if (event == PhoneNumberEntryScreenEvents.LinkDevice && !TellomiCrossBorderConsent.hasAgreed(context)) {
+      pendingLinkDevice = true
+    } else {
+      onEvent(event)
     }
   }
 
   if (state.dialogs.confirmNumber) {
-    Dialogs.SimpleAlertDialog(
-      title = stringResource(R.string.RegistrationActivity_is_the_phone_number),
-      body = "+${state.countryCode} ${state.formattedNumber}\n\n${stringResource(R.string.RegistrationActivity_a_verification_code)}",
-      confirm = stringResource(id = android.R.string.ok),
-      dismiss = stringResource(R.string.RegistrationActivity_edit_number),
-      onConfirm = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberConfirmed) },
-      onDismiss = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberCancelled) }
-    )
+    when {
+      !consentChecked -> TellomiTermsConsentDialog(
+        onAgree = {
+          onConsentCheckedChange(true)
+          holdConfirmForCheckmark = true
+        },
+        onDisagree = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberCancelled) }
+      )
+
+      holdConfirmForCheckmark -> LaunchedEffect(Unit) {
+        delay(350)
+        holdConfirmForCheckmark = false
+      }
+
+      !crossBorderAgreed -> TellomiCrossBorderNotice(
+        onAgree = {
+          TellomiCrossBorderConsent.recordAgreement(context)
+          crossBorderAgreed = true
+        },
+        onCancel = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberCancelled) }
+      )
+
+      else -> Dialogs.SimpleAlertDialog(
+        title = stringResource(R.string.RegistrationActivity_is_the_phone_number),
+        // Tellomi（#1210）：上游写「运营商可能收取短信费用」，大陆接收短信不收费；改成说明验证码的用途
+        body = "+${state.countryCode} ${state.formattedNumber}\n\n${stringResource(R.string.TellomiRegistration__a_verification_code_will_be_sent)}",
+        confirm = stringResource(id = android.R.string.ok),
+        dismiss = stringResource(R.string.RegistrationActivity_edit_number),
+        onConfirm = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberConfirmed) },
+        onDismiss = { onEvent(PhoneNumberEntryScreenEvents.PhoneNumberCancelled) }
+      )
+    }
   }
 
   val simpleError: Pair<String, PhoneNumberEntryScreenEvents>? = when {
     state.dialogs.networkError -> stringResource(R.string.VerificationCodeScreen__network_error) to PhoneNumberEntryScreenEvents.NetworkErrorDialogDismissed
     state.dialogs.rateLimitedRetryAfter != null -> {
       val message = if (state.dialogs.rateLimitedRetryAfter.isPositive()) {
-        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, state.dialogs.rateLimitedRetryAfter.toString())
+        // Tellomi（#1210）：上游把 Duration.toString()（「1m 30s」）原样填进去
+        val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.getDefault()
+        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, TellomiRegistration.retryAfterText(state.dialogs.rateLimitedRetryAfter, locale))
       } else {
         stringResource(R.string.VerificationCodeScreen__too_many_attempts)
       }
@@ -219,15 +200,44 @@ fun PhoneNumberScreen(
     )
   }
 
+  // Tellomi（ADR-0072 §4.2）：本机是已退出登录的账号，输入的却是另一个号码——一台手机只放一个账号，先说清会删掉旧号码的聊天记录。
+  state.dialogs.confirmWipeForNewNumber?.let { maskedOldNumber ->
+    Dialogs.SimpleAlertDialog(
+      title = "",
+      body = stringResource(R.string.TellomiRelogin__new_number_wipe_body, maskedOldNumber),
+      confirm = stringResource(R.string.RegistrationActivity_continue),
+      dismiss = stringResource(R.string.PinEntryScreen__cancel),
+      onConfirm = { onEvent(PhoneNumberEntryScreenEvents.WipeForNewNumberConfirmed) },
+      onDeny = { onEvent(PhoneNumberEntryScreenEvents.WipeForNewNumberCancelled) },
+      onDismissRequest = { onEvent(PhoneNumberEntryScreenEvents.WipeForNewNumberCancelled) },
+      confirmColor = MaterialTheme.colorScheme.error,
+      modifier = Modifier.testTag(TestTags.PHONE_NUMBER_WIPE_FOR_NEW_NUMBER_DIALOG)
+    )
+  }
+
   Box(
     modifier = modifier
       .fillMaxSize()
       .testTag(TestTags.PHONE_NUMBER_SCREEN)
   ) {
     when (val layoutParams = RegistrationScaffold.rememberLayoutParams()) {
-      is RegistrationScaffold.Params.OnePane -> OnePaneLayout(layoutParams, state, onEvent)
-      is RegistrationScaffold.Params.TwoPane -> TwoPaneLayout(layoutParams, state, onEvent)
+      is RegistrationScaffold.Params.OnePane -> OnePaneLayout(layoutParams, state, gatedOnEvent, consentChecked, onConsentCheckedChange)
+      is RegistrationScaffold.Params.TwoPane -> TwoPaneLayout(layoutParams, state, gatedOnEvent, consentChecked, onConsentCheckedChange)
     }
+  }
+
+  if (pendingLinkDevice) {
+    TellomiCrossBorderNotice(
+      // Tellomi（tellomi/tellomi#1338）：关联设备只出只读告知、一个「知道了」，点了记下 cb-1、放开网络（需求 6.1 ④）；
+      // 这不是单独同意，所以不动 crossBorderAgreed——退回来改走「下一步」时还要出完整同意。
+      onAgree = {
+        TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
+        pendingLinkDevice = false
+        onEvent(PhoneNumberEntryScreenEvents.LinkDevice)
+      },
+      onCancel = { pendingLinkDevice = false },
+      readOnly = true
+    )
   }
 }
 
@@ -236,7 +246,9 @@ fun PhoneNumberScreen(
 private fun OnePaneLayout(
   params: RegistrationScaffold.Params.OnePane,
   state: PhoneNumberEntryState,
-  onEvent: (PhoneNumberEntryScreenEvents) -> Unit
+  onEvent: (PhoneNumberEntryScreenEvents) -> Unit,
+  consentChecked: Boolean,
+  onConsentCheckedChange: (Boolean) -> Unit
 ) {
   val scrollState = rememberScrollState()
   val topBarScrollBehavior = RegistrationScaffold.rememberTopBarScrollBehavior()
@@ -267,7 +279,7 @@ private fun OnePaneLayout(
       RegistrationScaffold.FooterSurface(
         isElevated = scrollState.canScrollForward
       ) {
-        NextButton(state, onEvent)
+        Footer(params, state, onEvent, consentChecked, onConsentCheckedChange)
       }
     }
   )
@@ -278,7 +290,9 @@ private fun OnePaneLayout(
 private fun TwoPaneLayout(
   params: RegistrationScaffold.Params.TwoPane,
   state: PhoneNumberEntryState,
-  onEvent: (PhoneNumberEntryScreenEvents) -> Unit
+  onEvent: (PhoneNumberEntryScreenEvents) -> Unit,
+  consentChecked: Boolean,
+  onConsentCheckedChange: (Boolean) -> Unit
 ) {
   val firstPaneScrollState = rememberScrollState()
   val secondPaneScrollState = rememberScrollState()
@@ -317,7 +331,7 @@ private fun TwoPaneLayout(
       RegistrationScaffold.FooterSurface(
         isElevated = firstPaneScrollState.canScrollForward || secondPaneScrollState.canScrollForward
       ) {
-        NextButton(state, onEvent)
+        Footer(params, state, onEvent, consentChecked, onConsentCheckedChange)
       }
     }
   )
@@ -388,22 +402,45 @@ private fun Description(twoPane: Boolean = false) {
   )
 
   Text(
-    text = stringResource(R.string.RegistrationActivity_you_will_receive_a_verification_code),
+    text = stringResource(R.string.TellomiRegistration__you_will_receive_a_verification_code), // Tellomi（#1210）：同上
     style = if (twoPane) MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal) else MaterialTheme.typography.bodyLarge,
     color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier = Modifier.padding(top = 16.dp)
   )
 }
 
+/**
+ * Tellomi：协议行贴在「下一步」上面（ADR-0051 §E：勾选行贴底），默认不勾（tellomi/tellomi#1211）。
+ */
+@Composable
+private fun Footer(
+  params: RegistrationScaffold.Params,
+  state: PhoneNumberEntryState,
+  onEvent: (PhoneNumberEntryScreenEvents) -> Unit,
+  consentChecked: Boolean,
+  onConsentCheckedChange: (Boolean) -> Unit
+) {
+  Column {
+    TellomiConsentRow(
+      checked = consentChecked,
+      onCheckedChange = onConsentCheckedChange,
+      modifier = Modifier.padding(start = 20.dp, end = 32.dp, top = 8.dp)
+    )
+
+    NextButton(params, state, onEvent)
+  }
+}
+
 @Composable
 private fun NextButton(
+  params: RegistrationScaffold.Params,
   state: PhoneNumberEntryState,
   onEvent: (PhoneNumberEntryScreenEvents) -> Unit
 ) {
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = 32.dp, vertical = 16.dp),
+      .padding(params.footerPadding),
     horizontalArrangement = Arrangement.End,
     verticalAlignment = Alignment.CenterVertically
   ) {
@@ -413,7 +450,15 @@ private fun NextButton(
         enabled = !state.showSpinner,
         modifier = Modifier.testTag(TestTags.PHONE_NUMBER_REGISTER_WITHOUT_NUMBER_BUTTON)
       ) {
-        Text(stringResource(R.string.RegistrationActivity_register_without_number))
+        Text(
+          stringResource(
+            if (state.sawArchiveRestoreSelectionScreen) {
+              R.string.RegistrationActivity_use_account_id
+            } else {
+              R.string.RegistrationActivity_register_without_number
+            }
+          )
+        )
       }
 
       Spacer(modifier = Modifier.weight(1f))
@@ -506,6 +551,7 @@ private fun PhoneNumberInputFields(
 ) {
   var phoneNumberTextFieldValue by remember { mutableStateOf(TextFieldValue(state.formattedNumber)) }
   val focusRequester = remember { FocusRequester() }
+  val interactionSource = remember { MutableInteractionSource() }
   val hasValidCountry = state.countryName.isNotEmpty()
   val isAccountId = state.enteredAccountId != null
   val label = if (isAccountId) R.string.RegistrationActivity_account_id else R.string.RegistrationActivity_phone_number_description
@@ -513,6 +559,9 @@ private fun PhoneNumberInputFields(
   val supportingText: (@Composable () -> Unit)? = when {
     accountIdError != null -> {
       { AccountIdErrorText(accountIdError) }
+    }
+    state.isRegionUnavailable -> {
+      { Text(stringResource(R.string.TellomiRegistration__region_not_supported)) }
     }
     state.isNumberInvalid -> {
       { Text(stringResource(R.string.RegistrationActivity_not_a_valid_phone_number)) }
@@ -578,15 +627,19 @@ private fun PhoneNumberInputFields(
     TextField(
       value = phoneNumberTextFieldValue,
       onValueChange = { newValue ->
-        onEvent(PhoneNumberEntryScreenEvents.NationalNumberChanged(oldValue = phoneNumberTextFieldValue.text, newValue = newValue.text))
-        phoneNumberTextFieldValue = newValue
+        // An account ID that is already complete leaves the state untouched, so there is no re-sync to lean on: the
+        // field has to turn away the extra characters itself.
+        val accepted = if (isAccountId) newValue.copy(text = AccountIdFormat.normalizeAndTruncate(newValue.text)) else newValue
+        onEvent(PhoneNumberEntryScreenEvents.NationalNumberChanged(oldValue = phoneNumberTextFieldValue.text, newValue = accepted.text))
+        phoneNumberTextFieldValue = accepted
       },
       modifier = Modifier
         .weight(1f)
         .focusRequester(focusRequester)
         .testTag(TestTags.PHONE_NUMBER_PHONE_FIELD),
-      label = { Text(stringResource(label)) },
-      isError = state.isNumberInvalid || state.accountIdError != null,
+      label = { TextFields.Label(stringResource(label), phoneNumberTextFieldValue.text.isNotEmpty(), interactionSource) },
+      interactionSource = interactionSource,
+      isError = state.isNumberInvalid || state.accountIdError != null || state.isRegionUnavailable,
       supportingText = supportingText,
       keyboardOptions = if (isAccountId) {
         KeyboardOptions(
@@ -609,6 +662,28 @@ private fun PhoneNumberInputFields(
         }
       ),
       singleLine = true,
+      // Tellomi（tellomi/tellomi#1213，ADR-0051 §C）：非空时有清空 ×。
+      trailingIcon = if (phoneNumberTextFieldValue.text.isNotEmpty()) {
+        {
+          IconButton(
+            onClick = {
+              onEvent(PhoneNumberEntryScreenEvents.NationalNumberChanged(oldValue = phoneNumberTextFieldValue.text, newValue = ""))
+              phoneNumberTextFieldValue = TextFieldValue("")
+              // 框没有焦点时 × 也显示；清完就能接着输，和 iOS 一致（taishi 审查 b13 不阻塞）。
+              focusRequester.requestFocus()
+            },
+            modifier = Modifier.testTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON)
+          ) {
+            Icon(
+              imageVector = SignalIcons.X.imageVector,
+              contentDescription = stringResource(R.string.TellomiRegistration__clear_phone_number),
+              tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+          }
+        }
+      } else {
+        null
+      },
       visualTransformation = if (isAccountId) AccountIdVisualTransformation else VisualTransformation.None,
       textStyle = if (isAccountId) {
         accountIdTextStyle().copy(color = MaterialTheme.colorScheme.onSurface)
@@ -641,6 +716,20 @@ private fun PhoneNumberScreenRegisterWithoutNumberPreview() {
   Previews.Preview {
     PhoneNumberScreen(
       state = PhoneNumberEntryState(isPhoneNumberlessRegistrationAvailable = true),
+      onEvent = {}
+    )
+  }
+}
+
+@AllDevicePreviews
+@Composable
+private fun PhoneNumberScreenUseAccountIdPreview() {
+  Previews.Preview {
+    PhoneNumberScreen(
+      state = PhoneNumberEntryState(
+        isPhoneNumberlessRegistrationAvailable = true,
+        sawArchiveRestoreSelectionScreen = true
+      ),
       onEvent = {}
     )
   }

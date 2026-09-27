@@ -438,7 +438,7 @@ public final class ContactSelectionListFragment extends LoggingFragment {
 
   private void requestContactPermissions() {
     Permissions.with(this)
-               .request(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
+               .request(Manifest.permission.READ_CONTACTS)
                .ifNecessary()
                .onAllGranted(() -> {
                  contactSearchView.setAlpha(0.5f);
@@ -674,7 +674,8 @@ public final class ContactSelectionListFragment extends LoggingFragment {
             } else {
               new MaterialAlertDialogBuilder(requireContext())
                   .setTitle(R.string.ContactSelectionListFragment_username_not_found)
-                  .setMessage(getString(R.string.ContactSelectionListFragment_s_is_not_a_signal_user, username))
+                  // Tellomi（ADR-0066 §6.1b）：用户名一律显示小写
+                  .setMessage(getString(R.string.ContactSelectionListFragment_s_is_not_a_signal_user, TellomiUsernames.lowercaseAscii(username)))
                   .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                   .show();
             }
@@ -929,8 +930,9 @@ public final class ContactSelectionListFragment extends LoggingFragment {
     });
   }
 
+  // Tellomi（#1240）：只读通讯录（本机显示联系人名字），不写，所以不再要求 WRITE_CONTACTS。
   private boolean hasContactsPermissions(@NonNull Context context) {
-    return Permissions.hasAll(context, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS);
+    return Permissions.hasAll(context, Manifest.permission.READ_CONTACTS);
   }
 
   private void addMoreSection(@NonNull ContactSearchConfiguration.Builder builder) {

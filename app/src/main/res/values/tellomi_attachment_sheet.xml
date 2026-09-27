@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tellomi（tellomi/tellomi#1115）：会话页「+」打开的附件 Sheet——窗口透明，聊天露在 Sheet 上面。
+     决定透不透明的是清单里的 Theme.… 那个（实测 API 36：只把它改成不透明，聊天就看不见了；只改下面运行时那个没影响）。
+     DynamicTheme 在 onCreate 里换成 Signal.… 那个，两边写成一样，免得运行时主题和清单对不上。 -->
+<resources>
+    <style name="Theme.Signal.DayNight.NoActionBar.AttachmentSheet">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Signal.DayNight.NoActionBar.AttachmentSheet">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+</resources>

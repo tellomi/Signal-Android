@@ -45,12 +45,14 @@ data class AddUsernameState(
     INVALID_CHARACTERS,
     CANNOT_START_WITH_DIGIT,
 
+    /** Tellomi（ADR-0066）：`_` 开头——Tellomi 的规则是字母开头。 */
+    CANNOT_START_WITH_UNDERSCORE,
+
     /** The nickname is valid, but no username could be reserved for it. */
     NOT_AVAILABLE,
 
     DISCRIMINATOR_TOO_SHORT,
     DISCRIMINATOR_TOO_LONG,
-    DISCRIMINATOR_INVALID_CHARACTERS,
     DISCRIMINATOR_CANNOT_BE_00,
     DISCRIMINATOR_CANNOT_START_WITH_ZERO,
 
@@ -59,8 +61,8 @@ data class AddUsernameState(
   }
 
   data class Dialogs(
-    /** Explains what the digits after the username are for. */
-    val learnMore: Boolean = false,
+    /** Confirms the user wants to skip choosing a username. */
+    val confirmSkip: Boolean = false,
     val networkError: Boolean = false,
     val unknownError: Boolean = false,
     /** The reserved username was claimed by someone else before it could be confirmed. */

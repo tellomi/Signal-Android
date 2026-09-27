@@ -84,6 +84,47 @@
   <string name="MediaSelectScreen__to_show_photos_and_videos">顯示相片和影片：</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Tellomi 需要存取權以顯示你的相片和影片。</string>
+  <!-- Tellomi（tellomi/tellomi#1261）选图网格 -->
+  <string name="MediaSelectScreen__recents">最近</string>
+  <string name="MediaSelectScreen__close">關閉</string>
+  <string name="MediaSelectScreen__more_options">更多選項</string>
+  <string name="MediaSelectScreen__send_in_high_quality">以高畫質傳送</string>
+  <string name="MediaSelectScreen__send_in_standard_quality">以標準畫質傳送</string>
+  <string name="MediaSelectScreen__send_separately">分開傳送</string>
+  <string name="MediaSelectScreen__open_media">打開</string>
+  <string name="MediaSelectScreen__select">選取</string>
+  <string name="MediaSelectScreen__you_have_limited_access">你已限制 Tellomi 存取相片。</string>
+  <plurals name="MediaSelectScreen__n_selected">
+    <item quantity="other">已選 %d 項</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__selected_number_n">
+    <item quantity="other">第 %d 張</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__at_most_n_items">
+    <item quantity="other">一次最多選 %d 張</item>
+  </plurals>
+  <!-- Tellomi（tellomi/tellomi#1261 P-3）只看已选 -->
+  <string name="MediaSelectScreen__back">返回</string>
+  <string name="MediaSelectScreen__drag_to_reorder">拖曳可調整順序</string>
+  <string name="MediaSelectScreen__undo">復原</string>
+  <plurals name="MediaSelectScreen__n_deselected">
+    <item quantity="other">已取消選取 %d 張</item>
+  </plurals>
+  <!-- Tellomi（tellomi/tellomi#1121）附件 Sheet「文件」页 -->
+  <string name="AttachmentFilesScreen__files">檔案</string>
+  <string name="AttachmentFilesScreen__search">搜尋</string>
+  <string name="AttachmentFilesScreen__select_from_gallery">從相簿中選擇</string>
+  <string name="AttachmentFilesScreen__select_from_files">從檔案中選擇</string>
+  <string name="AttachmentFilesScreen__coming_soon">即將支援</string>
+  <string name="AttachmentFilesScreen__recently_sent_files">最近傳送的檔案</string>
+  <string name="AttachmentFilesScreen__empty">傳送和接收任何類型的檔案，每個最大 %1$s。</string>
+  <string name="AttachmentFilesScreen__not_on_device">已不在本機</string>
+  <string name="AttachmentFilesScreen__cant_send_not_on_device">這個檔案已不在本機，無法再次傳送。</string>
+  <string name="AttachmentFilesScreen__files_you_sent">我傳送的檔案</string>
+  <string name="AttachmentFilesScreen__show_more">顯示更多</string>
+  <string name="AttachmentFilesScreen__no_results">找不到「%1$s」的相關結果。</string>
+  <string name="AttachmentFilesScreen__add_a_caption">新增說明…</string>
+  <string name="AttachmentFilesScreen__send">傳送</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">照片</string>
@@ -133,12 +174,6 @@
   <!-- Toasted when user device does not support video recording -->
   <string name="CameraFragment__video_recording_is_not_supported_on_your_device">你的裝置不支援錄製影片</string>
 
-  <!-- CameraXFragment -->
-  <string name="CameraXFragment_tap_for_photo_hold_for_video">輕觸一下拍照，長按錄製影片</string>
-  <!-- Accessibility content description to describe the capture button when taking an image/video -->
-  <string name="CameraXFragment_capture_description">擷取</string>
-  <string name="CameraXFragment_change_camera_description">切換相機</string>
-  <string name="CameraXFragment_open_gallery_description">開啟相簿</string>
   <!-- Button text asking for access to camera permissions -->
   <string name="CameraXFragment_allow_access">允許存取</string>
   <!-- Dialog title asking users for camera and microphone permission -->
@@ -173,16 +208,6 @@
   <string name="CameraXFragment_photo_capture_failed">無法擷取相片。請重試。</string>
   <!-- Error message shown when we try to take a photo, but fail when trying to process it (convert it into something the user can see). -->
   <string name="CameraXFragment_photo_processing_failed">無法處理相片。請重試。</string>
-  <!-- Accessibility label for the switch camera button -->
-  <string name="CameraXFragment_switch_camera">切換鏡頭</string>
-  <!-- Accessibility label for flash button when flash is off -->
-  <string name="CameraXFragment_flash_off">關閉閃光燈</string>
-  <!-- Accessibility label for flash button when flash is on -->
-  <string name="CameraXFragment_flash_on">開啟閃光燈</string>
-  <!-- Accessibility label for flash button when flash is set to auto -->
-  <string name="CameraXFragment_flash_auto">閃光燈自動模式</string>
-  <!-- Accessibility label for the send button in media selection -->
-  <string name="CameraXFragment_send">傳送</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
   <string name="CameraXFragment_paused">已暫停</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
@@ -245,6 +270,11 @@
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">繼續</string>
 
+  <!-- The title of a dialog shown when the user scanned a transfer QR code from a device that is too old to accept their account. -->
+  <string name="ReRegistrationScannedDialog__transfer_failed_title">Can\'t transfer account</string>
+  <!-- The body of a dialog shown when the user scanned a transfer QR code from a device that is too old to accept their account. -->
+  <string name="ReRegistrationScannedDialog__the_device_you_are_transferring_to_is_out_of_date">The device you\'re transferring to is out of date. Update Tellomi on that device and try again.</string>
+
     <!-- Gif label displayed in a pill in the editor specifying the type of media being sent. -->
     <plurals name="MediaEditScreen__gif">
         <item quantity="other">%1$d 個 GIF</item>
@@ -267,4 +297,8 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">第 %1$d 個，共 %2$d 個</string>
+  <!-- Tellomi：相机扫到新手机上的「转移帐户」码时，进转移页之前的防骗确认 -->
+  <string name="TellomiReRegistrationScannedDialog__title">這是轉移帳號的 QR 碼</string>
+  <string name="TellomiReRegistrationScannedDialog__body">新手機正在要求轉走你的帳號。只有在你自己換手機、正在新手機上註冊時才繼續。如果是別人要你掃的，請取消——繼續會把你的帳號轉到對方手機上。</string>
+  <string name="TellomiReRegistrationScannedDialog__continue">繼續</string>
 </resources>

@@ -210,7 +210,7 @@ public final class AvatarUtil {
 
   @NonNull
   private static Drawable getNoteToSelfDrawable(@NonNull Context context, @NonNull AvatarColor avatarColor, int size) {
-    return createFallbackDrawable(context, new FallbackAvatar.Resource.NoteToSelf(avatarColor), size);
+    return createFallbackDrawable(context, new FallbackAvatar.Resource.NoteToSelf(FallbackAvatar.Resource.NoteToSelf.TELLOMI_SAVED_MESSAGES_COLOR), size);
   }
 
   @NonNull

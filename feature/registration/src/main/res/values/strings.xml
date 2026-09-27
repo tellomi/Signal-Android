@@ -46,6 +46,8 @@
     <!-- Hint text to select a country -->
     <string name="RegistrationActivity_select_a_country">Select a country</string>
     <string name="RegistrationActivity_phone_number_description">Phone number</string>
+    <!-- Tellomi（tellomi/tellomi#1213）：手机号输入框右侧的清空按钮（读屏用） -->
+    <string name="TellomiRegistration__clear_phone_number">Clear phone number</string>
     <!-- Label the phone number field takes on when what has been typed reads as an account ID rather than a number -->
     <string name="RegistrationActivity_account_id">Account ID</string>
     <!-- Error shown beneath the phone number field when the entered number is not valid -->
@@ -57,6 +59,8 @@
     <string name="RegistrationActivity_next">Next</string>
     <!-- Button on the phone number screen that starts registering with a purchased Signal Login instead of a phone number -->
     <string name="RegistrationActivity_register_without_number">Register without number</string>
+    <!-- Button on the phone number screen, shown when the user already said they have an account to restore, that goes straight to entering their existing Signal Login -->
+    <string name="RegistrationActivity_use_account_id">Use account ID</string>
     <!-- Dialog title to confirm phone number -->
     <string name="RegistrationActivity_is_the_phone_number">Is the phone number below correct?</string>
     <!-- Dialog body to confirm phone number -->
@@ -163,12 +167,6 @@
     <string name="ArchiveRestoreSelectionScreen__skip_restore_title">Continue without transferring</string>
     <!-- Description for an option that, when clicked, will take the user to a flow to restore form a local backup -->
     <string name="ArchiveRestoreSelectionScreen__skip_restore_description">Messages &amp; media won’t be transferred</string>
-    <!-- Title for the backup folder option card (V2 format) -->
-    <string name="ArchiveRestoreSelectionScreen__from_a_backup_folder">From a backup folder</string>
-    <!-- Title for the backup file option card (V1 legacy format) -->
-    <string name="ArchiveRestoreSelectionScreen__from_a_backup_file">From a backup file</string>
-    <!-- Subtitle for the backup folder/file option cards -->
-    <string name="ArchiveRestoreSelectionScreen__choose_a_backup_youve_saved">Choose a backup you\'ve saved</string>
     <!-- Title for the device transfer option card -->
     <string name="ArchiveRestoreSelectionScreen__from_your_old_phone">From your old phone</string>
     <!-- Subtitle for the device transfer option card -->
@@ -213,8 +211,6 @@
     <string name="LocalBackupRestoreScreen__enter_backup_passphrase">Enter backup passphrase</string>
     <!-- Description for V1 passphrase entry screen -->
     <string name="LocalBackupRestoreScreen__enter_the_30_digit_passphrase">Your local backup passphrase is a 30-digit code required to recover your account and data.</string>
-    <!-- Label for the recovery key text field -->
-    <string name="LocalBackupRestoreScreen__recovery_key">Recovery key</string>
     <!-- Label for the backup passphrase text field -->
     <string name="LocalBackupRestoreScreen__passphrase">Passphrase</string>
     <!-- Error text when passphrase is too long -->
@@ -232,8 +228,6 @@
     <string name="EnterAepScreen__recovery_key">Recovery key</string>
     <!-- Link for users who don\'t have their recovery key -->
     <string name="EnterAepScreen__no_recovery_key">No recovery key?</string>
-    <!-- Error text when key is too long -->
-    <string name="EnterAepScreen__too_long">Too long (%1$d/%2$d)</string>
     <!-- Error text when key is invalid -->
     <string name="EnterAepScreen__invalid_recovery_key">Invalid recovery key</string>
     <!-- Error text when key is correct format but does not match account -->
@@ -256,8 +250,6 @@
     <string name="LocalBackupRestoreScreen__restoring_backup">Restoring backup</string>
     <!-- Description shown while restore is in progress -->
     <string name="LocalBackupRestoreScreen__restoring_description">Please wait while your messages and data are being restored.</string>
-    <!-- Description shown when restore is complete -->
-    <string name="LocalBackupRestoreScreen__restore_complete_description">Your messages and account data have been restored successfully.</string>
     <!-- Continue button text after restore is complete -->
     <string name="LocalBackupRestoreScreen__continue_button">Continue</string>
     <!-- Title shown when restore fails -->
@@ -583,6 +575,26 @@
     <string name="CreateProfileScreen__next">Next</string>
     <!-- Content description for the avatar selection control. -->
     <string name="CreateProfileScreen__set_avatar_description">Set avatar</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：替掉「谁可以通过手机号找到我」那一行。phone_number_sharing 默认就是不分享（PhoneNumberPrivacyValues: DEFAULT = 不显示） -->
+    <string name="TellomiRegistration__phone_number_not_shown">Your phone number isn\'t shown to anyone by default.</string>
+    <!-- Tellomi（tellomi/tellomi#1215 第二刀）：注册资料页的选填用户名。规则 TR-ID-01：字母开头、3–20 位、a–z 0–9 _；不带「.数字」（ADR-0066 判别位固定 01） -->
+    <string name="TellomiRegistration__username_optional">Username (optional)</string>
+    <string name="TellomiRegistration__username_your_link">Your link: %1$s</string>
+    <string name="TellomiRegistration__username_checking">Checking…</string>
+    <string name="TellomiRegistration__username_not_available">This username isn\'t available</string>
+    <string name="TellomiRegistration__username_too_short">Use at least 3 characters</string>
+    <string name="TellomiRegistration__username_too_long">Use 20 characters or fewer</string>
+    <string name="TellomiRegistration__username_invalid_characters">Use only letters, numbers and underscores</string>
+    <string name="TellomiRegistration__username_must_start_with_letter">Start with a letter</string>
+    <string name="TellomiRegistration__username_check_failed">Couldn\'t check this username. Try again in a moment.</string>
+    <!-- Tellomi（#1215 第二刀，taishi 审查包 4）：保留用户名被限流、Retry-After 在一小时以内时，用户名框下的说明（只有一行） -->
+    <string name="TellomiRegistration__username_too_many_attempts">Too many attempts. Try again later.</string>
+    <!-- Tellomi（#1215 第二刀，taishi 审查包 4）：回收号码的新主人会继承上一个人的 30 天改名冷却（ADR-0066 §6.2），这期间设不了用户名。%d 为还要等的天数（向上取整，至少 1）。说明行只有一行，要短 -->
+    <plurals name="TellomiRegistration__username_cooldown">
+        <item quantity="one">You can set a username in %d day</item>
+        <item quantity="other">You can set a username in %d days</item>
+    </plurals>
+    <string name="TellomiRegistration__username_try">Try:</string>
 
     <!-- Phone number discoverability picker -->
     <!-- Title row label shown on the create-profile screen pointing at the discoverability picker. -->
@@ -618,7 +630,7 @@
     <!-- Title of the screen where the user buys a Signal Login to register without a phone number. -->
     <string name="SignalLoginPaymentScreen__signal_login">Tellomi Login</string>
     <!-- Description of what a Signal Login is. Followed by a "learn more" link. -->
-    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Register without a phone number using Tellomi Login. With a one-time purchase, you\'ll receive an account key to get started.</string>
+    <string name="SignalLoginPaymentScreen__register_without_a_phone_number">Register without a phone number using Tellomi Login. With a one-time purchase, you\'ll receive an account ID to get started.</string>
     <!-- Link at the end of the description that opens a support article about Signal Login. -->
     <string name="SignalLoginPaymentScreen__learn_more">Learn more</string>
     <!-- Subtitle of the purchase option, clarifying the price is not a subscription. -->
@@ -632,7 +644,7 @@
     <!-- Title of the option for users who already bought a Signal Login. -->
     <string name="SignalLoginPaymentScreen__i_have_a_signal_login">I have a Tellomi Login</string>
     <!-- Subtitle of the existing-login option. -->
-    <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Use your existing account key</string>
+    <string name="SignalLoginPaymentScreen__use_your_existing_account_key">Use your existing login info</string>
     <!-- Selling point of the existing-login option: the account can be restored. -->
     <string name="SignalLoginPaymentScreen__login_and_restore_your_account">Login and restore your account</string>
     <!-- Selling point of the existing-login option, thanking the user for their previous purchase. -->
@@ -645,10 +657,48 @@
     <string name="SignalLoginPaymentScreen__continue">Continue</string>
     <!-- Error shown when the purchase does not go through. -->
     <string name="SignalLoginPaymentScreen__your_purchase_could_not_be_completed">Your purchase could not be completed. You have not been charged.</string>
+    <!-- Shown in place of the price when Google Play cannot offer the purchase. -->
+    <string name="SignalLoginPaymentScreen__unavailable">Unavailable</string>
+    <!-- Label for the button that retries loading the purchase price after it failed to load. -->
+    <string name="SignalLoginPaymentScreen__retry">Retry</string>
+    <!-- Shown in place of the price when the user already paid for a Signal Login but it was never redeemed. -->
+    <string name="SignalLoginPaymentScreen__already_paid">Already paid</string>
+    <!-- Error shown when Signal Login cannot be purchased on this device, for example because the Google Play Store is unavailable. -->
+    <string name="SignalLoginPaymentScreen__signal_login_cant_be_purchased">Tellomi Login can\'t be purchased on this device right now. Try again later.</string>
+    <!-- Message shown when the user\'s payment has gone through but has not finished processing yet. -->
+    <string name="SignalLoginPaymentScreen__your_payment_is_still_processing">Your payment is still processing. Come back and tap continue once it goes through, and you won\'t be charged again.</string>
     <!-- Label for the internal-testing text field where a receipt credential can be pasted to skip payment. Not shown to real users. -->
     <string name="SignalLoginPaymentScreen__paste_a_receipt_credential" translatable="false">Paste a receipt credential (testing)</string>
     <!-- Error shown when a manually-pasted receipt credential can\'t be parsed or is rejected. Internal testing only. -->
     <string name="SignalLoginPaymentScreen__this_receipt_credential_is_invalid" translatable="false">This receipt credential is invalid.</string>
+    <!-- Title of the dialog shown when Google Play services is too old to take a payment. -->
+    <string name="SignalLoginPaymentScreen__update_google_play_services">Update Google Play services</string>
+    <!-- Body of the dialog shown when Google Play services is too old to take a payment. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_update_google_play_services">To purchase a Tellomi Login, update Google Play services on this device.</string>
+    <!-- Button that updates Google Play services. -->
+    <string name="SignalLoginPaymentScreen__update">Update</string>
+    <!-- Title of the dialog shown when Google Play services is not installed. -->
+    <string name="SignalLoginPaymentScreen__google_play_services_missing">Google Play services missing</string>
+    <!-- Body of the dialog shown when Google Play services is not installed. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_google_play_services_needs_to_be_installed">To purchase a Tellomi Login, Google Play services needs to be installed.</string>
+    <!-- Button that installs Google Play services. -->
+    <string name="SignalLoginPaymentScreen__install_play_services">Install Play Services</string>
+    <!-- Title of the dialog shown while Google Play services is updating itself. -->
+    <string name="SignalLoginPaymentScreen__google_play_services_are_updating">Google Play services are updating</string>
+    <!-- Body of the dialog shown while Google Play services is updating itself. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_wait_for_google_play_services">To purchase a Tellomi Login please wait for Google Play services to finish updating.</string>
+    <!-- Title of the dialog shown when Google Play cannot be used to take a payment. -->
+    <string name="SignalLoginPaymentScreen__google_play_is_required">Google Play is required</string>
+    <!-- Body of the dialog shown when Google Play services is installed but turned off. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_enable_google_play_services">To purchase a Tellomi Login, enable Google Play services on this device and sign into the Google Play store.</string>
+    <!-- Body of the dialog shown when the device cannot run Google Play services at all. -->
+    <string name="SignalLoginPaymentScreen__you_cant_purchase_a_signal_login_on_this_device">You can\'t purchase a Tellomi Login because this device does not support Google Play services. Contact the phone manufacturer for assistance.</string>
+    <!-- Body of the dialog shown when Google Play services works but nobody is signed into the Play Store. -->
+    <string name="SignalLoginPaymentScreen__to_purchase_a_signal_login_sign_into_the_google_play_store">To purchase a Tellomi Login, please sign into the Google Play store.</string>
+    <!-- Body of the dialog shown when this version of Signal cannot make Google Play purchases at all. -->
+    <string name="SignalLoginPaymentScreen__you_cant_purchase_a_signal_login_in_this_version">You can\'t purchase a Tellomi Login in this version of Tellomi. Install Tellomi from the Google Play store to buy one.</string>
+    <!-- Button that opens the Google Play store so the user can sign into it. -->
+    <string name="SignalLoginPaymentScreen__open_play_store">Open Play Store</string>
 
     <!-- Signal Login details screen -->
     <!-- Title of the screen that shows the user their newly purchased Signal Login. -->
@@ -657,14 +707,48 @@
     <string name="SignalLoginInfoScreen__thanks_for_your_purchase">Thanks for your purchase. Use your Tellomi Login to register and restore your account. If you forget your keys, you will not be able to recover your account.</string>
     <!-- Action button that stores the Signal Login in the device password manager. -->
     <string name="SignalLoginInfoScreen__save_to_password_manager">Save to password manager</string>
+    <!-- Toast shown when the user taps the disabled save to password manager button and the device has no password manager. -->
+    <string name="SignalLoginInfoScreen__no_password_manager_available">You don\'t have a password manager set up, or the password manager you\'re using isn\'t supported.</string>
     <!-- Action button for users who would rather write the Signal Login down themselves. -->
     <string name="SignalLoginInfoScreen__save_manually">Save manually</string>
     <!-- Error shown when the Signal Login could not be stored in the password manager. -->
     <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_saved">Your Tellomi Login could not be saved. Please save it manually instead.</string>
+    <!-- Title of the dialog shown when the Signal Login could not be found in the password manager after saving it. -->
+    <string name="SignalLoginInfoScreen__error_confirming_login_info">Error confirming login info</string>
+    <!-- Description telling the user that the Signal Login we saved could not be read back out of their password manager. -->
+    <string name="SignalLoginInfoScreen__your_signal_login_could_not_be_confirmed">Your Tellomi Login could not be confirmed. Make sure you\'ve saved it in your password manager, or save it manually.</string>
+
+    <!-- Sheet that double-checks the user\'s Signal Login really made it into their password manager -->
+    <!-- Title of the sheet asking the user to confirm their Signal Login was saved to their password manager. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__confirm_your_login_info_is_saved">Confirm your login info is saved</string>
+    <!-- Description telling the user they are about to be asked to fill in the Signal Login they just saved. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__confirm_that_your_login_info_was_saved">Confirm that your Tellomi Login was saved correctly. You will be prompted to fill in your saved password in the next step.</string>
+    <!-- Action button that starts checking the password manager for the Signal Login. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__confirm_login_info">Confirm login info</string>
+    <!-- Action button that sends the user back to their Signal Login. -->
+    <string name="ConfirmLoginSavedToPasswordManagerBottomSheet__see_login_info_again">See login info again</string>
+
+    <!-- Save Signal Login screen -->
+    <!-- Title of the screen that spells out the Signal Login so the user can record it themselves. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__save_your_signal_login">Save your Tellomi Login</string>
+    <!-- Description telling the user to keep their Signal Login somewhere safe and private. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__store_your_signal_login_somewhere_safe">Store your Tellomi Login somewhere safe and secure. Never share your login info with anyone.</string>
+    <!-- Action button that saves the Signal Login to a PDF file. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__save_as_pdf">Save as PDF</string>
+    <!-- Action button for users who are done recording their Signal Login. -->
+    <string name="SignalLoginViewDetailsForManualSaveScreen__continue">Continue</string>
+
+    <!-- Sheet that double-checks the user really saved their Signal Login -->
+    <!-- Title of the sheet asking the user to confirm they saved their Signal Login. -->
+    <string name="ConfirmLoginSavedBottomSheet__confirm_your_login_info_is_saved">Confirm your login info is saved</string>
+    <!-- Description warning the user that they are about to be asked for their Signal Login and that it cannot be recovered. -->
+    <string name="ConfirmLoginSavedBottomSheet__you_will_be_prompted_to_sign_in">You will be prompted to sign in with your Tellomi Login next. Make sure you\'ve saved or copied these details. Tellomi will not be able to help you recover your account.</string>
+    <!-- Action button confirming the Signal Login is saved. -->
+    <string name="ConfirmLoginSavedBottomSheet__continue">Continue</string>
+    <!-- Action button that sends the user back to their Signal Login. -->
+    <string name="ConfirmLoginSavedBottomSheet__show_login_info_again">Show login info again</string>
 
     <!-- Errors shown beneath an account ID text field, wherever one is offered -->
-    <!-- Error shown when too many characters were entered in an account ID field. First placeholder is how many were entered, second is the maximum. -->
-    <string name="AccountIdField__too_long">Too long. %1$d/%2$d characters.</string>
     <!-- Error shown when the entered account ID contains characters that can\'t appear in one. -->
     <string name="AccountIdField__invalid_account_id">Invalid account ID</string>
 
@@ -687,6 +771,12 @@
     <string name="SignalLoginCredentialEntryScreen__next">Next</string>
     <!-- Error shown when the service rejects the entered login, which means one of the two halves is wrong. -->
     <string name="SignalLoginCredentialEntryScreen__incorrect_account_id_or_recovery_key">Incorrect account ID or recovery key</string>
+    <!-- Description shown instead when the user is typing back the Signal Login they were just given, to check they recorded it correctly. -->
+    <string name="SignalLoginCredentialEntryScreen__enter_your_signal_login_to_confirm_it_was_recorded_correctly">Enter your Tellomi Login to confirm it was recorded correctly.</string>
+    <!-- Button that takes the user back to their Signal Login if they can\'t remember what they recorded. -->
+    <string name="SignalLoginCredentialEntryScreen__show_login_info_again">Show login info again</string>
+    <!-- Error shown when what the user typed back doesn\'t match the Signal Login they were given. -->
+    <string name="SignalLoginCredentialEntryScreen__that_doesnt_match_the_signal_login_you_were_shown">That doesn\'t match the Tellomi Login you were shown</string>
 
     <!-- Add username screen -->
     <!-- Title of the screen offering the user an optional username. -->
@@ -699,12 +789,8 @@
     <string name="AddUsernameScreen__username">Username</string>
     <!-- Helper text below the username field. Followed by a "learn more" link. -->
     <string name="AddUsernameScreen__usernames_are_always_paired_with_a_set_of_numbers">Usernames are always paired with a set of numbers.</string>
-    <!-- Link in the helper text that opens an explanation of the digits paired with a username. -->
+    <!-- Link in the helper text that opens a support article about usernames. -->
     <string name="AddUsernameScreen__learn_more">Learn more</string>
-    <!-- Title of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__what_is_this_number">What is this number?</string>
-    <!-- Body of the dialog explaining the digits paired with a username. -->
-    <string name="AddUsernameScreen__these_digits_help_keep">These digits help keep your username private so you can avoid unwanted messages. Share your username with only the people and groups you\'d like to chat with. If you change usernames you\'ll get a new set of digits.</string>
     <!-- Button that skips choosing a username. -->
     <string name="AddUsernameScreen__skip">Skip</string>
     <!-- Button that submits the chosen username. -->
@@ -717,6 +803,8 @@
     <string name="AddUsernameScreen__usernames_can_only_contain">Usernames can only contain letters, numbers, and underscores</string>
     <!-- Validation error shown when the entered username starts with a digit. -->
     <string name="AddUsernameScreen__usernames_cannot_begin_with_a_number">Usernames cannot begin with a number</string>
+    <!-- Tellomi（ADR-0066 §六）：用户名必须字母开头。libsignal 放行 `_` 开头，客户端收紧 -->
+    <string name="AddUsernameScreen__tellomi_usernames_must_start_with_a_letter">Usernames must begin with a letter</string>
     <!-- Error shown when the chosen username cannot be reserved. -->
     <string name="AddUsernameScreen__this_username_is_not_available">This username is not available. Please try another.</string>
     <!-- Error shown when the user\'s temporary hold on a username expired before they submitted it. -->
@@ -727,12 +815,18 @@
     <string name="AddUsernameScreen__enter_a_minimum_of_d_digits">Invalid username, enter a minimum of %1$d digits.</string>
     <!-- Validation error shown when the number the user entered after their username has too many digits. -->
     <string name="AddUsernameScreen__enter_a_maximum_of_d_digits">Invalid username, enter a maximum of %1$d digits.</string>
-    <!-- Validation error shown when the number the user entered after their username contains something other than digits. -->
-    <string name="AddUsernameScreen__numbers_can_only_contain_digits">Invalid username, numbers can only contain digits.</string>
     <!-- Validation error shown when the number the user entered after their username is 00. -->
     <string name="AddUsernameScreen__this_number_cant_be_00">This number can\'t be 00. Enter a digit between 1–9</string>
     <!-- Validation error shown when the number the user entered after their username has a leading zero. -->
     <string name="AddUsernameScreen__this_number_cant_start_with_0">Numbers with more than 2 digits can\'t start with 0</string>
+    <!-- Title of the dialog confirming the user wants to skip choosing a username. -->
+    <string name="AddUsernameScreen__are_you_sure">Are you sure?</string>
+    <!-- Body of the dialog confirming the user wants to skip choosing a username. -->
+    <string name="AddUsernameScreen__without_a_username_people_wont_be_able_to_find_you">Without a username people won\'t be able to find you on Tellomi.</string>
+    <!-- Button in the skip-username confirmation dialog that returns to the screen without skipping. -->
+    <string name="AddUsernameScreen__cancel">Cancel</string>
+    <!-- Button in the skip-username confirmation dialog that skips choosing a username. -->
+    <string name="AddUsernameScreen__continue">Continue</string>
 
     <!-- ContactSupportDialog -->
     <!-- Title of the dialog asking the user whether they want to attach a debug log to their support request -->
@@ -748,7 +842,7 @@
     <!-- Title of the two-factor authentication code entry screen -->
     <string name="TotpEntryScreen__two_factor_authentication">Two-factor authentication</string>
     <!-- Subtitle explaining where to find the code -->
-    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue enter the 6-digit code from your authenticator app.</string>
+    <string name="TotpEntryScreen__to_continue_enter_the_code">To continue, enter the 6-digit code from your authenticator app.</string>
     <!-- Button text to cancel entering a code -->
     <string name="TotpEntryScreen__cancel">Cancel</string>
 
@@ -767,4 +861,151 @@
     <string name="TwoFactorSelectionScreen__enter_a_one_time_code">Enter a one-time code generated by your authenticator app.</string>
     <!-- Button text to cancel two-factor authentication -->
     <string name="TwoFactorSelectionScreen__cancel">Cancel</string>
+
+    <!-- Tellomi（tellomi/tellomi#1210） -->
+    <!-- Inline error under the phone number field: the server has no SMS provider for this number's region (HK server only serves mainland China numbers) -->
+    <string name="TellomiRegistration__region_not_supported">Registration isn\'t open to numbers from this region yet. For now, only mainland China (+86) numbers can register.</string>
+    <string name="TellomiRegistration__you_will_receive_a_verification_code">We\'ll text you a verification code to confirm this number is yours.</string>
+    <string name="TellomiRegistration__a_verification_code_will_be_sent">We\'ll text a verification code to this number to confirm it\'s yours.</string>
+    <string name="TellomiRegistration__captcha_retry">Retry</string>
+    <!-- Tellomi（tellomi/tellomi#1215）：注册资料页只剩一个框、填全名。旧键 TellomiRegistration__first_name 暂留在下一行：
+         它后面紧跟 #18 追加的一块，改它会和 #18 冲突；#18、#21 都合进去之后再删 -->
+    <string name="TellomiRegistration__name">Name</string>
+    <string name="TellomiRegistration__first_name">First name</string>
+
+    <!-- Tellomi（tellomi/tellomi#1214）：验证码页 -->
+    <string name="TellomiRegistration__incorrect_code_inline">Incorrect code. Check the text message and try again.</string>
+    <string name="TellomiRegistration__didnt_get_code">Didn\'t get the code?</string>
+    <string name="TellomiRegistration__help_check_number">Check that the number is right: %1$s</string>
+    <string name="TellomiRegistration__help_spam_filter">The text may have been filtered. Open your phone\'s built-in security or phone manager app and look in its blocked or spam messages.</string>
+    <string name="TellomiRegistration__help_wait_with_quota">Texts sometimes arrive a little late, so give it a moment. Each registration can send at most %1$d codes, so please don\'t resend too often.</string>
+    <string name="TellomiRegistration__help_voice">You can also get the code by phone call instead of a text.</string>
+    <string name="TellomiRegistration__help_support">Still nothing? Email support@tellomi.app and we\'ll take a look.</string>
+    <string name="TellomiRegistration__help_change_number">Change number</string>
+    <string name="TellomiRegistration__help_contact_support">Contact support</string>
+    <string name="TellomiRegistration__help_more">More help</string>
+    <string name="TellomiRegistration__session_expired">This verification has expired. Please check your number and get a new code.</string>
+    <string name="TellomiRegistration__code_no_longer_valid">This code can no longer be used. It may have expired, or been entered wrong too many times. Please get a new code.</string>
+
+    <!-- Tellomi（tellomi/tellomi#1216） -->
+    <!-- One-line text link under the Continue button on the welcome screen, for people moving to a new phone (replaces the large 'Restore or transfer' button) -->
+    <string name="TellomiRegistration__new_phone">New phone?</string>
+    <!-- Welcome screen bottom sheet: title of the choice for people whose old Android phone is at hand -->
+    <string name="TellomiRegistration__old_phone_here">My old Android phone is here</string>
+    <string name="TellomiRegistration__old_phone_here_description">Scan a QR code with Tellomi on your old Android phone to move your account and messages over directly</string>
+    <string name="TellomiRegistration__old_phone_not_here">My old phone isn\'t here, or it\'s an iPhone</string>
+    <string name="TellomiRegistration__old_phone_not_here_description">Reinstalling on this phone? You can restore an on-device backup. Otherwise just register. Your earlier messages won\'t come with you, and Tellomi on your old phone will be logged out.</string>
+    <!-- Tellomi: shown after scanning the QR code with an iPhone when there is no backup service; messages can't be moved from an iPhone to an Android phone -->
+    <string name="TellomiRegistration__no_transfer_from_iphone_title">Messages can\'t be moved from an iPhone</string>
+    <string name="TellomiRegistration__no_transfer_from_iphone_body">Messages on an iPhone can\'t be transferred to an Android phone yet. You can just register: your earlier messages won\'t come with you, and Tellomi on your old phone will be logged out.</string>
+    <string name="TellomiRegistration__register_directly">Register without transferring</string>
+    <!-- Confirmation dialog before continuing registration without restoring messages (there is no backup service) -->
+    <string name="TellomiRegistration__skip_restore_dialog_title">Continue without restoring?</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body">Your earlier messages won\'t appear on this phone.</string>
+    <string name="TellomiRegistration__skip_restore_dialog_body_old_phone_signs_out">Tellomi on your old phone will be logged out, and your earlier messages won\'t appear on this phone.</string>
+    <string name="TellomiRegistration__skip_restore_dialog_confirm">Continue</string>
+
+    <!-- Tellomi：注册同意（tellomi/tellomi#1211；ADR-0038 · ADR-0051 §E） -->
+    <!-- Name of the Terms of Service document, shown as a tappable link inside consent sentences -->
+    <string name="TellomiConsent__terms_link">Terms of Service</string>
+    <!-- Name of the Privacy Policy document, shown as a tappable link inside consent sentences -->
+    <string name="TellomiConsent__privacy_link">Privacy Policy</string>
+    <!-- Consent sentence next to the checkbox on the phone number screen. %1$s = Terms of Service link, %2$s = Privacy Policy link -->
+    <string name="TellomiConsent__row">I\'m 18 or older and have read and agree to the %1$s and %2$s</string>
+    <!-- Content description of the consent checkbox on the phone number screen -->
+    <string name="TellomiConsent__checkbox_content_description">Agree to the Terms of Service and Privacy Policy</string>
+    <!-- Title of the dialog asking the user to agree before the phone number is sent -->
+    <string name="TellomiConsent__dialog_title">Terms and Privacy Policy</string>
+    <!-- Body of the consent dialog. %1$s = Terms of Service link, %2$s = Privacy Policy link -->
+    <string name="TellomiConsent__dialog_body">Please read and agree to the %1$s and %2$s.</string>
+    <!-- Button in the consent dialog: agree and continue registration -->
+    <string name="TellomiConsent__agree_and_continue">Agree and Continue</string>
+    <!-- Button in consent dialogs: do not agree -->
+    <string name="TellomiConsent__disagree">Disagree</string>
+    <!-- Title of the privacy notice shown the first time the app is opened -->
+    <string name="TellomiConsent__first_launch_title">Welcome to Tellomi</string>
+    <!-- Body of the first-launch privacy notice. %1$s = Privacy Policy link -->
+    <string name="TellomiConsent__first_launch_body">We handle your personal information according to our %1$s. Signing up only needs your phone number, and your messages, profile and attachments are end-to-end encrypted — we can\'t read them.</string>
+    <!-- Button in the first-launch privacy notice: agree -->
+    <string name="TellomiConsent__first_launch_agree">Agree</string>
+    <!-- Shown in the first-launch privacy notice after the user taps Disagree -->
+    <string name="TellomiConsent__first_launch_disagree_hint">You need to agree before using Tellomi. If you don\'t, we won\'t collect any information.</string>
+
+    <!-- Tellomi（ADR-0066 §6.1b，owner 2026-09-27）：用户名一律小写；输入框下常驻的规则提示，和打了大写被当场转小写时短暂换上的那一句 -->
+    <!-- Permanent gray hint under every username field (set, change, reclaim): what a username may contain -->
+    <string name="TellomiUsername__rules_hint">Lowercase letters, numbers and underscores only; starts with a letter; 3–20 characters.</string>
+    <!-- Shown for about 2 seconds in place of the rules hint after typed or pasted uppercase letters were changed to lowercase; not an error -->
+    <string name="TellomiUsername__lowercased_hint">Changed to lowercase</string>
+
+    <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338） -->
+    <!-- Title of the small cross-border transfer dialog shown before the phone number is sent (also on upgrade and when linking this device) -->
+    <string name="TellomiCrossBorder__dialog_title">Cross-border transfer of personal information</string>
+    <!-- Body of the cross-border transfer dialog: one sentence saying some personal information is transferred outside mainland China, asking whether the user agrees -->
+    <string name="TellomiCrossBorder__dialog_body">Some of your personal information will be transferred outside mainland China for processing. Do you agree?</string>
+    <!-- Link in the cross-border transfer dialog that opens the full notice (rendered in the app, not loaded from the web) -->
+    <string name="TellomiCrossBorder__dialog_full_notice_link">Read the Cross-Border Transfer Notice</string>
+    <!-- Shown at the top of the cross-border transfer dialog when an already registered device sees it after upgrading: the Privacy Policy was updated -->
+    <string name="TellomiCrossBorder__dialog_policy_updated">Our Privacy Policy has been updated to version 2.0.0.</string>
+    <!-- Link under the Privacy Policy update line that opens the Privacy Policy -->
+    <string name="TellomiCrossBorder__policy_updated_link">Read Privacy Policy 2.0.0</string>
+    <!-- Body of the cross-border transfer dialog shown before this device is linked to an account (consent is given on the phone) -->
+    <string name="TellomiCrossBorder__linked_dialog_body">Separate consent to the cross-border transfer is given on your phone, so this device won’t ask for it again. After linking, information on this device is handled as described in the Cross-Border Transfer Notice.</string>
+    <!-- Shown in the cross-border transfer dialog after the user taps Disagree -->
+    <string name="TellomiCrossBorder__disagree_hint">If you don’t agree, the app won’t connect to any server or send any of your information, and you won’t be able to use Tellomi until our mainland China service launches. You can close the app, or agree later.</string>
+    <!-- Title of the full cross-border transfer notice opened from the dialog -->
+    <string name="TellomiCrossBorder__full_notice_title">Cross-Border Transfer Notice</string>
+    <!-- Cross-border notice item 1 title: whether data leaves mainland China -->
+    <string name="TellomiCrossBorder__item_where_title">Does my information leave mainland China?</string>
+    <!-- Cross-border notice item 1 body: where servers and storage are located -->
+    <string name="TellomiCrossBorder__item_where_body">Yes. Tellomi’s servers run in Alibaba Cloud’s data center in Hong Kong, China. Attachments, profile photos and server database backups are stored in Cloudflare R2 (storage region: western North America). Your chat history stays on your own devices, not on our servers.</string>
+    <!-- Cross-border notice item 2 title: overseas recipients -->
+    <string name="TellomiCrossBorder__item_recipients_title">Recipients outside mainland China</string>
+    <!-- Cross-border notice item 2 body: who receives the data outside mainland China, one per line -->
+    <string name="TellomiCrossBorder__item_recipients_body">· Tellomi’s servers in Hong Kong, operated by Chongqing Bange Intelligent Technology Co., Ltd. (Hong Kong, China)\n· Alibaba Cloud Computing Co., Ltd.: cloud servers for the above (Hong Kong data center)\n· Cloudflare, Inc. (United States): storage of attachments, profile photos, database backups and debug logs; call relay; human verification at sign-up; DNS\n· Google LLC (United States): push notifications (FCM), only on phones with Google services\n· GIPHY, Inc. (United States): only when you use GIF search; receives your search terms through our Hong Kong proxy and can’t see your IP address</string>
+    <!-- Cross-border notice item 3 title: contact -->
+    <string name="TellomiCrossBorder__item_contact_title">Contact</string>
+    <!-- Cross-border notice item 3 body: the personal information handler and how to contact it -->
+    <string name="TellomiCrossBorder__item_contact_body">Personal information handler: Chongqing Bange Intelligent Technology Co., Ltd. For questions about personal information protection or this transfer, email privacy@tellomi.app.</string>
+    <!-- Cross-border notice item 4 title: purposes of processing -->
+    <string name="TellomiCrossBorder__item_purpose_title">Purposes</string>
+    <!-- Cross-border notice item 4 body: purposes of processing -->
+    <string name="TellomiCrossBorder__item_purpose_body">Signing up and signing in (including human verification); delivering and temporarily storing messages; storing attachments, profile photos and database backups; connecting voice and video calls (including call relay); push notifications; DNS; GIF search; keeping debug logs you choose to submit.</string>
+    <!-- Cross-border notice item 5 title: how the data is processed and how long it is kept -->
+    <string name="TellomiCrossBorder__item_method_title">How it’s processed and how long it’s kept</string>
+    <!-- Cross-border notice item 5 body: end-to-end encryption, what is processed in plaintext, and retention -->
+    <string name="TellomiCrossBorder__item_method_body">Message content, profiles, group information and attachments are end-to-end encrypted. The servers and storage outside mainland China only hold ciphertext that neither Tellomi nor the recipients above can read. Only a few items are processed in plaintext, such as your phone number, account and device identifiers, push tokens and your IP address when connecting.\nRetention: account data is kept while your account exists and deleted when you delete your account; messages waiting for delivery are deleted as soon as they’re delivered; attachments are deleted 50 days after upload; server request logs are kept for 186 days. See section 22 of the Privacy Policy.</string>
+    <!-- Cross-border notice item 6 title: kinds of personal information -->
+    <string name="TellomiCrossBorder__item_kinds_title">Personal information involved</string>
+    <!-- Cross-border notice item 6 body: kinds of personal information transferred -->
+    <string name="TellomiCrossBorder__item_kinds_body">Phone number; account and device identifiers; public keys; push tokens (plus the Firebase installation ID on Android); IP address when connecting; hash of your username; browser and device information during human verification; encrypted messages, attachments, profile photos, profiles, group information and database backups (ciphertext); debug logs you choose to submit; search terms when you use GIF search.</string>
+    <!-- Cross-border notice item 7 title: your rights -->
+    <string name="TellomiCrossBorder__item_rights_title">Your rights</string>
+    <!-- Cross-border notice item 7 body: how to exercise personal information rights -->
+    <string name="TellomiCrossBorder__item_rights_body">You can access, copy, correct or delete your personal information, delete your account, or withdraw this consent as described in sections 26 and 27 of the Privacy Policy. For personal information processed by the recipients outside mainland China, you can also email privacy@tellomi.app, and we’ll handle it and coordinate with the recipient.</string>
+    <!-- Cross-border notice item 8 title: legal procedure for the transfer -->
+    <string name="TellomiCrossBorder__item_procedure_title">Legal procedure for the transfer</string>
+    <!-- Cross-border notice item 8 body: the legal basis that exempts the transfer from the export procedures -->
+    <string name="TellomiCrossBorder__item_procedure_body">Under Article 5(4) of the Provisions on Promoting and Regulating Cross-Border Data Flows, a personal information handler other than a critical information infrastructure operator that has provided the personal information of fewer than 100,000 people (excluding sensitive personal information) outside mainland China since January 1 of the current year is exempt from the data export security assessment, the standard contract and personal information protection certification. Tellomi currently falls into this category; as the number approaches this threshold, we’ll complete the required procedure. The exemption doesn’t change our duties to inform you, obtain your separate consent and carry out a personal information protection impact assessment.</string>
+    <!-- Cross-border notice item 9 title: separate consent and withdrawal -->
+    <string name="TellomiCrossBorder__item_consent_title">Separate consent and withdrawal</string>
+    <!-- Cross-border notice item 9 body: tapping Agree and Continue is the separate consent, and it can be withdrawn -->
+    <string name="TellomiCrossBorder__item_consent_body">Tapping “Agree and Continue” means you separately consent to the transfer described above; agreeing to the Privacy Policy is not the same as consenting to this transfer. You can withdraw at any time by emailing privacy@tellomi.app (or in the app once that option is available). Because Tellomi can currently only be provided through servers outside mainland China, after withdrawing you won’t be able to keep using Tellomi until our mainland China service launches; you can also delete your account. Withdrawing doesn’t affect processing carried out before it.</string>
+    <!-- Cross-border notice item 9 body in the version shown before linking this device -->
+    <string name="TellomiCrossBorder__linked_item_consent_body">Separate consent to the transfer above is given on your phone; this device doesn’t collect it again. You can withdraw at any time by emailing privacy@tellomi.app; after withdrawing, you won’t be able to keep using Tellomi until our mainland China service launches.</string>
+    <!-- Link at the bottom of the full cross-border notice that opens the Privacy Policy sections about storage location and cross-border transfer -->
+    <string name="TellomiCrossBorder__privacy_link">Read sections 20 and 21 of the Privacy Policy</string>
+    <!-- Link at the bottom of the full cross-border notice that opens the Third-Party Sharing and SDK List -->
+    <string name="TellomiCrossBorder__third_party_link">Read the Third-Party Sharing and SDK List</string>
+    <!-- Button that closes the full cross-border notice and goes back to the dialog -->
+    <string name="TellomiCrossBorder__full_notice_close">Back</string>
+    <!-- The only button of the cross-border transfer dialog shown before linking this device -->
+    <string name="TellomiCrossBorder__linked_ack">Got It</string>
+
+    <!-- Tellomi：主设备退出登录之后重新登录（ADR-0072，tellomi/tellomi#1414） -->
+    <!-- Welcome screen after the user logged out on this phone: label above the masked phone number of the account that was logged in here -->
+    <string name="TellomiRelogin__last_login">Last logged in</string>
+    <!-- Welcome screen after the user logged out: the main button, for logging in with a different number than the one shown -->
+    <string name="TellomiRelogin__use_another_number">Log in with another number</string>
+    <!-- Asked when a logged-out phone is used to log in with a different number. %1$s is the masked number of the account that was logged in, e.g. +86 138****5678 -->
+    <string name="TellomiRelogin__new_number_wipe_body">Logging in with a new number will delete the chat history of %1$s on this phone. Continue?</string>
 </resources>

@@ -40,7 +40,7 @@ class WelcomePermissionsTest {
   fun givenAnyApi_whenIGetWelcomePermissions_thenIExpectContacts() {
     val result = WelcomePermissions.getWelcomePermissions(true)
 
-    assertTrue(Manifest.permission.WRITE_CONTACTS in result)
+    assertFalse(Manifest.permission.WRITE_CONTACTS in result) // Tellomi（#1240）：只读通讯录
     assertTrue(Manifest.permission.READ_CONTACTS in result)
   }
 

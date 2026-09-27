@@ -10,12 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.badges.BadgeImageView;
+import org.thoughtcrime.securesms.conversation.v2.items.TellomiBubbleTail;
 import org.thoughtcrime.securesms.recipients.Recipient;
+import org.thoughtcrime.securesms.util.Projection;
 
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class ConversationTypingView extends ConstraintLayout {
   private BadgeImageView      badge2;
   private BadgeImageView      badge3;
   private View                bubble;
+  private ClippedCardView     tellomiIndicatorCard;
+  private int                 tellomiBubbleColor;
   private TypingIndicatorView indicator;
   private TextView            typistCount;
 
@@ -47,6 +52,7 @@ public class ConversationTypingView extends ConstraintLayout {
     badge3      = findViewById(R.id.typing_badge_3);
     typistCount = findViewById(R.id.typing_count);
     bubble      = findViewById(R.id.typing_bubble);
+    tellomiIndicatorCard = findViewById(R.id.indicator_card);
     indicator   = findViewById(R.id.typing_indicator);
   }
 
@@ -68,6 +74,8 @@ public class ConversationTypingView extends ConstraintLayout {
       presentGroupThreadAvatars(requestManager, typists);
     }
 
+    tellomiBubbleColor = ContextCompat.getColor(getContext(), hasWallpaper ? R.color.conversation_item_recv_bubble_color_wallpaper : R.color.conversation_item_recv_bubble_color_normal);
+
     if (hasWallpaper) {
       bubble.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.conversation_item_recv_bubble_color_wallpaper));
       typistCount.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.conversation_item_recv_bubble_color_wallpaper), PorterDuff.Mode.SRC_IN);
@@ -83,6 +91,24 @@ public class ConversationTypingView extends ConstraintLayout {
 
   public boolean isActive() {
     return indicator.isActive();
+  }
+
+  /**
+   * Tellomi（#1206，设计规范 bubbles-and-motion-design.md 第 2 节）：「正在输入」气泡和对方的消息一样带尾巴，在对方那侧的下角。
+   * 卡片四角都是 18，尾巴轮廓把那一角的圆角一起盖住（{@link TellomiBubbleTail#addOutline}）。没在显示时返回 null。
+   */
+  public @Nullable TellomiBubbleTail.Spec tellomiGetTail(@NonNull RecyclerView parent) {
+    if (!indicator.isActive() || tellomiIndicatorCard == null || tellomiIndicatorCard.getVisibility() != VISIBLE || tellomiIndicatorCard.getWidth() == 0) {
+      return null;
+    }
+
+    float      radius     = tellomiIndicatorCard.getRadius();
+    Projection projection = Projection.relativeToParent(parent, tellomiIndicatorCard, new Projection.Corners(radius))
+                                      .translateX(getTranslationX())
+                                      .translateY(getTranslationY());
+    boolean    isRtl      = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+
+    return new TellomiBubbleTail.Spec(projection, isRtl, tellomiBubbleColor, null, radius / getResources().getDisplayMetrics().density);
   }
 
   private void presentGroupThreadAvatars(@NonNull RequestManager requestManager, @NonNull List<Recipient> typists) {

@@ -6,8 +6,6 @@
 package org.signal.registration.screens.restoreselection
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +24,7 @@ import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
 import org.signal.registration.RestoreDecision
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.util.navigateTo
 
 /**
@@ -39,7 +38,8 @@ class ArchiveRestoreSelectionViewModel(
   private val repository: RegistrationRepository,
   parentState: StateFlow<RegistrationFlowState>,
   private val parentEventEmitter: (RegistrationFlowEvent) -> Unit,
-  private val knownAep: AccountEntropyPool? = null
+  private val knownAep: AccountEntropyPool? = null,
+  oldPhoneIsIphone: Boolean = false
 ) : EventDrivenViewModel<ArchiveRestoreSelectionScreenEvents>(TAG) {
 
   companion object {
@@ -48,7 +48,11 @@ class ArchiveRestoreSelectionViewModel(
 
   private val _state = MutableStateFlow(
     ArchiveRestoreSelectionState(
-      restoreOptions = restoreOptions
+      // Tellomi（tellomi/tellomi#1210）：五个入口（RegistrationRoute.ArchiveRestoreSelection.for…）都会塞「从 Tellomi 备份」，
+      // 在这个唯一出口统一滤掉，不去改五处上游
+      restoreOptions = restoreOptions.filter { it != ArchiveRestoreOption.SignalSecureBackup || TellomiRegistration.isRemoteBackupAvailable },
+      skippingSignsOutOldPhone = registeredState == RegisteredState.NotRegistered,
+      showsNoTransferFromIphone = oldPhoneIsIphone && !TellomiRegistration.isRemoteBackupAvailable
     )
   )
   val state: StateFlow<ArchiveRestoreSelectionState> = _state.asStateFlow()
@@ -68,7 +72,7 @@ class ArchiveRestoreSelectionViewModel(
   }
 
   private fun applyParentState(state: ArchiveRestoreSelectionState, parentState: RegistrationFlowState): ArchiveRestoreSelectionState {
-    return state.copy(restoreMethodToken = parentState.restoreMethodToken, storageCapable = parentState.storageCapable)
+    return state.copy(restoreMethodToken = parentState.restoreMethodToken, storageCapable = parentState.storageCapable, isPhoneNumberlessAccount = parentState.isPhoneNumberlessAccount)
   }
 
   @VisibleForTesting
@@ -125,16 +129,28 @@ class ArchiveRestoreSelectionViewModel(
             state.copy(showSkipWarningDialog = false)
           }
           RegisteredState.RegisteredAndPinUnknown -> {
-            notifyOldDevice(state.restoreMethodToken, RestoreMethod.DECLINE)
-            repository.setRestoreDecision(RestoreDecision.SKIPPED)
-            if (state.storageCapable) {
-              Log.i(TAG, "[ConfirmSkip] Account is storage capable. Navigating to PIN entry to restore the existing PIN.")
-              parentEventEmitter.navigateTo(RegistrationRoute.PinEntryForSvrRestore)
+            if (state.isPhoneNumberlessAccount) {
+              Log.i(TAG, "[ConfirmSkip] Account has no phone number, and therefore no PIN. Completing registration.")
+              val skipping = state.copy(showSkipWarningDialog = false, isSkipping = true)
+              stateEmitter(skipping)
+
+              notifyOldDevice(state.restoreMethodToken, RestoreMethod.DECLINE)
+              repository.setRestoreDecision(RestoreDecision.SKIPPED)
+              repository.restoreAccountRecord()
+              parentEventEmitter(RegistrationFlowEvent.RegistrationComplete)
+              skipping
             } else {
-              Log.i(TAG, "[ConfirmSkip] Account is not storage capable. Navigating to PIN creation.")
-              parentEventEmitter.navigateTo(RegistrationRoute.PinCreate)
+              notifyOldDevice(state.restoreMethodToken, RestoreMethod.DECLINE)
+              repository.setRestoreDecision(RestoreDecision.SKIPPED)
+              if (state.storageCapable) {
+                Log.i(TAG, "[ConfirmSkip] Account is storage capable. Navigating to PIN entry to restore the existing PIN.")
+                parentEventEmitter.navigateTo(RegistrationRoute.PinEntryForSvrRestore)
+              } else {
+                Log.i(TAG, "[ConfirmSkip] Account is not storage capable. Navigating to PIN creation.")
+                parentEventEmitter.navigateTo(RegistrationRoute.PinCreate)
+              }
+              state.copy(showSkipWarningDialog = false)
             }
-            state.copy(showSkipWarningDialog = false)
           }
           RegisteredState.RegisteredAndPinKnown -> {
             val skipping = state.copy(showSkipWarningDialog = false, isSkipping = true)
@@ -150,6 +166,19 @@ class ArchiveRestoreSelectionViewModel(
       }
       is ArchiveRestoreSelectionScreenEvents.DismissSkipWarning -> {
         state.copy(showSkipWarningDialog = false)
+      }
+      is ArchiveRestoreSelectionScreenEvents.TellomiRegisterDirectly -> {
+        // 这一页已经把后果说清了（聊天记录不会跟过来、旧手机会退出登录），不再弹跳过确认；iOS「旧手机是 Android」那页同样不弹。
+        // 告诉旧手机「不恢复」，它就不用一直等在「请在新手机上继续」。iOS 选「直接注册」也会发
+        // （RegistrationCoordinatorImpl.sendRestoreMethodIfNecessary 的 .decline）。
+        notifyOldDevice(state.restoreMethodToken, RestoreMethod.DECLINE)
+        parentEventEmitter.navigateTo(RegistrationRoute.PhoneNumberEntry)
+        state
+      }
+      is ArchiveRestoreSelectionScreenEvents.TellomiBack -> {
+        // 回注册根页，不回扫码页：码已经扫过了，iPhone 再扫一次也一样传不过来。
+        parentEventEmitter(RegistrationFlowEvent.NavigateBackToScreen(RegistrationRoute.Welcome))
+        state
       }
     }
     stateEmitter(result)
@@ -169,19 +198,6 @@ class ArchiveRestoreSelectionViewModel(
       } else {
         Log.w(TAG, "[notifyOldDevice] Failed to notify old device: $result")
       }
-    }
-  }
-
-  class Factory(
-    private val restoreOptions: List<ArchiveRestoreOption>,
-    private val registeredState: RegisteredState,
-    private val knownAep: AccountEntropyPool?,
-    private val repository: RegistrationRepository,
-    private val parentState: StateFlow<RegistrationFlowState>,
-    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
-  ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return ArchiveRestoreSelectionViewModel(restoreOptions, registeredState, repository, parentState, parentEventEmitter, knownAep) as T
     }
   }
 }

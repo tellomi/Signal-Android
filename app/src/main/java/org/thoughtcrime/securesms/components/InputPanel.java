@@ -3,8 +3,8 @@ package org.thoughtcrime.securesms.components;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.Camera;
 import android.text.SpannableString;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
@@ -82,7 +82,6 @@ import java.util.concurrent.TimeUnit;
 
 public class InputPanel extends ConstraintLayout
     implements AudioRecordingHandler,
-               KeyboardAwareLinearLayout.OnKeyboardShownListener,
                EmojiEventListener,
                ConversationStickerSuggestionAdapter.EventListener
 {
@@ -196,7 +195,7 @@ public class InputPanel extends ConstraintLayout
 
     mediaKeyboard.setOnClickListener(v -> listener.onEmojiToggle());
 
-    if (Camera.getNumberOfCameras() > 0) {
+    if (getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
       quickCameraToggle.setOnClickListener(v -> listener.onQuickCameraToggleClicked());
       quickCameraToggle.setVisibility(View.VISIBLE);
     } else {
@@ -343,6 +342,12 @@ public class InputPanel extends ConstraintLayout
   }
 
   public void setLinkPreviewNoPreview(@Nullable LinkPreviewRepository.Error customError) {
+    // Tellomi（ADR-0063 §5.1）：取不到预览就不显示预览区；只有群邀请失效时照上游提示发送者
+    if (!LinkPreviewView.isShownWithoutPreview(customError)) {
+      linkPreviewStub.setVisibility(View.GONE);
+      return;
+    }
+
     LinkPreviewView linkPreview = requireLinkPreview();
     linkPreview.setVisibility(View.VISIBLE);
     linkPreview.setNoPreview(customError);
@@ -396,6 +401,15 @@ public class InputPanel extends ConstraintLayout
 
   public boolean isStickerMode() {
     return mediaKeyboard.isStickerMode();
+  }
+
+  /** True only while a keyboard of ours is the one on screen. */
+  public void setMediaKeyboardToggleOffersIme(boolean offersIme) {
+    if (offersIme) {
+      mediaKeyboard.setToIme();
+    } else {
+      mediaKeyboard.setToMedia();
+    }
   }
 
   public View getMediaKeyboardToggleAnchorView() {
@@ -712,11 +726,6 @@ public class InputPanel extends ConstraintLayout
   }
 
   @Override
-  public void onKeyboardShown() {
-    mediaKeyboard.setToMedia();
-  }
-
-  @Override
   public void onKeyEvent(KeyEvent keyEvent) {
     composeText.dispatchKeyEvent(keyEvent);
   }
@@ -739,6 +748,10 @@ public class InputPanel extends ConstraintLayout
 
   public boolean isRecordingInLockedMode() {
     return microphoneRecorderView.isRecordingLocked();
+  }
+
+  public boolean isRecordingInProgress() {
+    return microphoneRecorderView.isRecording();
   }
 
   public void releaseRecordingLockAndSend() {

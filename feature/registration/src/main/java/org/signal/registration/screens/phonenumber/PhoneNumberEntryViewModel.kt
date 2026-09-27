@@ -6,8 +6,6 @@
 package org.signal.registration.screens.phonenumber
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.i18n.phonenumbers.AsYouTypeFormatter
 import com.google.i18n.phonenumbers.NumberParseException
@@ -32,10 +30,13 @@ import org.signal.network.api.RegistrationApiV2.SessionMetadata
 import org.signal.network.api.RegistrationApiV2.UpdateSessionError
 import org.signal.network.api.RegistrationApiV2.VerificationCodeTransport
 import org.signal.registration.PendingRestoreOption
+import org.signal.registration.PreExistingRegistrationData
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationFlowState
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import org.signal.registration.TellomiRegistration
+import org.signal.registration.TellomiRelogin
 import org.signal.registration.screens.countrycode.Country
 import org.signal.registration.screens.countrycode.CountryUtils
 import org.signal.registration.screens.localbackuprestore.LocalBackupRestoreResult
@@ -104,23 +105,34 @@ class PhoneNumberEntryViewModel(
   suspend fun applyEvent(state: PhoneNumberEntryState, event: PhoneNumberEntryScreenEvents, parentEventEmitter: (RegistrationFlowEvent) -> Unit, stateEmitter: (PhoneNumberEntryState) -> Unit) {
     when (event) {
       is PhoneNumberEntryScreenEvents.Initialize -> {
-        stateEmitter(applyInitialize(state))
+        var localState = applyInitialize(state)
+        stateEmitter(localState)
+
+        // Tellomi（ADR-0072 §4.2）：欢迎页点了「上次登录」——号码已经按本机账号填好，直接去要验证码。
+        if (parentState.value.reloginRequested && loggedOutAccount(localState) != null) {
+          parentEventEmitter(RegistrationFlowEvent.ReloginRequestHandled)
+          localState = localState.copy(showSpinner = true)
+          stateEmitter(localState)
+          localState = applyPhoneNumberSubmitted(localState, parentEventEmitter)
+          stateEmitter(localState.copy(showSpinner = false))
+        }
       }
       is PhoneNumberEntryScreenEvents.ParentStateChanged -> {
         stateEmitter(applyParentState(state, event.parentState))
       }
+      // Tellomi（#1210）：改号码或区号就清掉「暂未开放该地区」的行内提示
       is PhoneNumberEntryScreenEvents.CountryCodeChanged -> {
-        stateEmitter(applyCountryCodeChanged(state, event.value))
+        stateEmitter(applyCountryCodeChanged(state, event.value).copy(isRegionUnavailable = false))
       }
       is PhoneNumberEntryScreenEvents.CountrySelected -> {
-        stateEmitter(applyCountrySelected(state, event.countryCode, event.regionCode, event.countryName, event.countryEmoji))
+        stateEmitter(applyCountrySelected(state, event.countryCode, event.regionCode, event.countryName, event.countryEmoji).copy(isRegionUnavailable = false))
       }
       is PhoneNumberEntryScreenEvents.FullPhoneNumberEntered -> {
-        val populatedState = applyFullPhoneNumberEntered(state, event.e164)
+        val populatedState = applyFullPhoneNumberEntered(state, event.e164).copy(isRegionUnavailable = false)
         stateEmitter(populatedState.copy(dialogs = populatedState.dialogs.copy(confirmNumber = event.autoConfirm && populatedState.isNumberPossible)))
       }
       is PhoneNumberEntryScreenEvents.NationalNumberChanged -> {
-        stateEmitter(applyPhoneNumberChanged(state, event.oldValue, event.newValue))
+        stateEmitter(applyPhoneNumberChanged(state, event.oldValue, event.newValue).copy(isRegionUnavailable = false))
       }
       is PhoneNumberEntryScreenEvents.NextClicked -> {
         val accountId = state.enteredAccountId
@@ -153,7 +165,11 @@ class PhoneNumberEntryViewModel(
         parentEventEmitter.navigateTo(RegistrationRoute.LinkAccount())
       }
       is PhoneNumberEntryScreenEvents.RegisterWithoutNumber -> {
-        parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginPayment)
+        if (state.sawArchiveRestoreSelectionScreen) {
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginCredentialEntry())
+        } else {
+          parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginPayment)
+        }
       }
       is PhoneNumberEntryScreenEvents.CaptchaCompleted -> {
         stateEmitter(applyCaptchaCompleted(state, event.token, parentEventEmitter))
@@ -196,7 +212,22 @@ class PhoneNumberEntryViewModel(
       is PhoneNumberEntryScreenEvents.InvalidPhoneNumberDialogDismissed -> {
         stateEmitter(state.copy(dialogs = state.dialogs.copy(invalidPhoneNumber = false)))
       }
+      is PhoneNumberEntryScreenEvents.WipeForNewNumberConfirmed -> {
+        Log.w(TAG, "[Relogin] User chose a different number than the logged-out account. Wiping this device before registering it.")
+        stateEmitter(state.copy(showSpinner = true, dialogs = state.dialogs.copy(confirmWipeForNewNumber = null)))
+        repository.clearLocalDataAndRestart()
+      }
+      is PhoneNumberEntryScreenEvents.WipeForNewNumberCancelled -> {
+        stateEmitter(state.copy(dialogs = state.dialogs.copy(confirmWipeForNewNumber = null)))
+      }
     }
+  }
+
+  /**
+   * Tellomi（ADR-0072）：本机是主动退出登录的账号时返回它的数据，否则 null。手机号页打开时父状态可能还没合进本页状态，所以两边都看。
+   */
+  private fun loggedOutAccount(state: PhoneNumberEntryState): PreExistingRegistrationData? {
+    return (state.preExistingRegistrationData ?: parentState.value.preExistingRegistrationData)?.takeIf { it.loggedOut }
   }
 
   private suspend fun applyInitialize(inputState: PhoneNumberEntryState): PhoneNumberEntryState {
@@ -218,7 +249,8 @@ class PhoneNumberEntryViewModel(
       smsVerificationCodeRequest = parentState.lastSmsVerificationCodeRequest,
       preExistingRegistrationData = parentState.preExistingRegistrationData,
       restoredSvrCredentials = state.restoredSvrCredentials.takeUnless { parentState.doNotAttemptRecoveryPassword } ?: emptyList(),
-      pendingRestoreOption = parentState.pendingRestoreOption
+      pendingRestoreOption = parentState.pendingRestoreOption,
+      sawArchiveRestoreSelectionScreen = parentState.sawArchiveRestoreSelectionScreen
     )
   }
 
@@ -287,6 +319,7 @@ class PhoneNumberEntryViewModel(
 
     // Only attempt to split out a country code / trunk prefix on a bulk entry (paste or autofill)
     if (insertedCharCount(oldValue, newValue) > 1) {
+      tellomiFullNumberInserted(numberState, oldValue, newValue)?.let { return it }
       if (newValue.trimStart().startsWith("+")) {
         redistributeFullPhoneNumber(numberState, "+$digitsOnly")?.let { return it }
       } else {
@@ -308,6 +341,20 @@ class PhoneNumberEntryViewModel(
   ): PhoneNumberEntryState {
     var state = inputState.withNormalizedNationalNumber()
     val e164 = "+${state.countryCode}${state.nationalNumber}"
+
+    // Tellomi（ADR-0072 §4.2）：本机是主动退出登录的账号。同一个号码只走验证会话（人机验证 / 推送挑战 / 短信验证码）证明本人，
+    // 跳过下面的恢复、恢复密码注册、SVR 免短信——那几条最后都会调 POST /v1/registration，服务端清空排队的消息。
+    // 另一个号码：先确认、清空本机，再按正常注册走。
+    val loggedOutAccount = loggedOutAccount(state)
+    if (loggedOutAccount != null) {
+      if (loggedOutAccount.e164 != e164) {
+        Log.i(TAG, "[Relogin] A different number than the logged-out account. Asking before wiping this device.")
+        return state.copy(dialogs = state.dialogs.copy(confirmWipeForNewNumber = TellomiRelogin.maskE164(loggedOutAccount.e164)))
+      }
+
+      Log.i(TAG, "[Relogin] Same number as the logged-out account. Verifying with a session only; never re-registering.")
+      return applySessionBasedRegistration(state, e164, parentEventEmitter)
+    }
 
     // If the user selected a restore option before entering their phone number, navigate to the restore flow
     if (state.pendingRestoreOption != null) {
@@ -524,7 +571,8 @@ class PhoneNumberEntryViewModel(
     // 换 master key。而服务端的 `POST v2/svr/auth/check` **只查凭证本身、不查有没有 enclave**，
     // 会回 200（iOS 上实测过，#964 就是被这个 200 骗去要 PIN 的），所以不能靠它自己失败。
     // 直接不进这条路，落到下面的会话验证码流程。
-    if (state.restoredSvrCredentials.isNotEmpty() && repository.svrEnclaveAvailable) {
+    // Tellomi（ADR-0072）：已退出登录的账号也不走这条——它的终点是用恢复密码注册（POST /v1/registration）。
+    if (state.restoredSvrCredentials.isNotEmpty() && repository.svrEnclaveAvailable && loggedOutAccount(state) == null) {
       when (val result = repository.checkSvrCredentials(e164, state.restoredSvrCredentials)) {
         is RequestResult.Success -> {
           Log.i(TAG, "[CheckSVRCredentials] Successfully validated credentials for $e164.")
@@ -568,6 +616,10 @@ class PhoneNumberEntryViewModel(
       parentEventEmitter.navigateTo(RegistrationRoute.VerificationCodeEntry)
       return state
     }
+
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 4）：复用的是之前留下的会话（例如从验证码页返回、停了一阵再点「下一步」）时，
+    // 它在服务端可能已经过期。下面遇到「会话没了」不照上游 ResetState 把人打回欢迎页，而是换新会话重来一次（见 retryWithNewSession）。
+    val reusingSession = state.sessionMetadata != null
 
     var sessionMetadata: SessionMetadata = state.sessionMetadata ?: when (val response = this@PhoneNumberEntryViewModel.repository.createSession(e164)) {
       is RequestResult.Success<SessionMetadata> -> {
@@ -613,6 +665,10 @@ class PhoneNumberEntryViewModel(
           }
           is RequestResult.NonSuccess -> {
             if (updateResult.error is UpdateSessionError.SessionNotFound) {
+              if (reusingSession) {
+                Log.w(TAG, "[SubmitPushChallengeToken] The session we reused is gone. Starting a new one.")
+                return retryWithNewSession(state, e164, parentEventEmitter)
+              }
               Log.w(TAG, "[SubmitPushChallengeToken] Session not found when submitting push challenge token.")
               parentEventEmitter(RegistrationFlowEvent.ResetState)
               return state
@@ -675,22 +731,31 @@ class PhoneNumberEntryViewModel(
             state.copy(dialogs = state.dialogs.copy(couldNotRequestCodeWithSelectedTransport = true))
           }
           is RequestVerificationCodeError.InvalidSessionId -> {
-            Log.w(TAG, "[RequestVerificationCode] Invalid session ID when requesting verification code.")
-            parentEventEmitter(RegistrationFlowEvent.ResetState)
-            state
+            if (reusingSession) {
+              Log.w(TAG, "[RequestVerificationCode] The session we reused is no longer valid. Starting a new one.")
+              retryWithNewSession(state, e164, parentEventEmitter)
+            } else {
+              Log.w(TAG, "[RequestVerificationCode] Invalid session ID when requesting verification code.")
+              parentEventEmitter(RegistrationFlowEvent.ResetState)
+              state
+            }
           }
           is RequestVerificationCodeError.MissingRequestInformationOrAlreadyVerified -> {
             Log.w(TAG, "[RequestVerificationCode] Missing request information or already verified.")
             state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
           }
           is RequestVerificationCodeError.SessionNotFound -> {
-            Log.w(TAG, "[RequestVerificationCode] Session not found when requesting verification code.")
-            parentEventEmitter(RegistrationFlowEvent.ResetState)
-            state
+            if (reusingSession) {
+              Log.w(TAG, "[RequestVerificationCode] The session we reused is gone. Starting a new one.")
+              retryWithNewSession(state, e164, parentEventEmitter)
+            } else {
+              Log.w(TAG, "[RequestVerificationCode] Session not found when requesting verification code.")
+              parentEventEmitter(RegistrationFlowEvent.ResetState)
+              state
+            }
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
-            Log.w(TAG, "[RequestVerificationCode] Third party service error.")
-            state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+            applyThirdPartyServiceError(state)
           }
         }
       }
@@ -715,6 +780,15 @@ class PhoneNumberEntryViewModel(
     parentEventEmitter(RegistrationFlowEvent.E164Chosen(e164))
     parentEventEmitter.navigateTo(RegistrationRoute.VerificationCodeEntry)
     return state
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1214，taishi 审查 b19 不阻塞 4）：复用的旧会话在服务端已经没了。清掉它（父状态也清，号码保留，同验证码页的
+   * 「会话已过期」），不带会话把这一步重做一次，也就是开新会话再请求验证码。新会话不算「复用」，再遇到「会话没了」就照上游 ResetState，不会来回重试。
+   */
+  private suspend fun retryWithNewSession(state: PhoneNumberEntryState, e164: String, parentEventEmitter: (RegistrationFlowEvent) -> Unit): PhoneNumberEntryState {
+    parentEventEmitter(RegistrationFlowEvent.SessionExpired)
+    return applySessionBasedRegistration(state.copy(sessionMetadata = null), e164, parentEventEmitter)
   }
 
   private suspend fun applyCaptchaCompleted(inputState: PhoneNumberEntryState, token: String, parentEventEmitter: (RegistrationFlowEvent) -> Unit): PhoneNumberEntryState {
@@ -802,7 +876,7 @@ class PhoneNumberEntryViewModel(
             state
           }
           is RequestVerificationCodeError.ThirdPartyServiceError -> {
-            state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+            applyThirdPartyServiceError(state)
           }
         }
       }
@@ -841,6 +915,24 @@ class PhoneNumberEntryViewModel(
     parentEventEmitter(RegistrationFlowEvent.SessionUpdated(error.session))
     parentEventEmitter(RegistrationFlowEvent.E164Chosen(e164))
     parentEventEmitter.navigateTo(RegistrationRoute.VerificationCodeEntry)
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1210）：请求验证码回 440（[RequestVerificationCodeError.ThirdPartyServiceError]）之后给什么。
+   * 直接请求（[applySessionBasedRegistration]）和人机验证之后再请求（[applyCaptchaCompleted]）共用这一处——
+   * 香港服务端的新会话先要人机验证（没有 GMS 过不了推送挑战），后一条才是主路。
+   *
+   * 号码不是 +86：这个地区没有短信通道（香港只开放中国大陆号码），等多久都不会好。上游照样弹「请在几小时后重试」，
+   * 改成号码框下的行内提示。+86 遇到 440 仍按上游当临时故障处理。
+   */
+  private fun applyThirdPartyServiceError(state: PhoneNumberEntryState): PhoneNumberEntryState {
+    return if (state.countryCode !in TellomiRegistration.SMS_VERIFICATION_CALLING_CODES) {
+      Log.w(TAG, "[RequestVerificationCode] Third party service error for a region without SMS verification (+${state.countryCode}).")
+      state.copy(isRegionUnavailable = true)
+    } else {
+      Log.w(TAG, "[RequestVerificationCode] Third party service error.")
+      state.copy(dialogs = state.dialogs.copy(unableToSendSms = true))
+    }
   }
 
   private fun formatNumber(nationalNumber: String): String {
@@ -924,6 +1016,93 @@ class PhoneNumberEntryViewModel(
     }
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1213）：一次插进来的那一段本身就是完整号码时，整框换成它，不和框里已有的数字拼接；
+   * 「0086…」按「+86…」处理。认三种写法：「+…」「00…」，以及框里已有数字时、以当前区号开头的一串（空框的这种上游已经会拆）。
+   * 去掉前缀后还得是有效号码才算，免得把「0013 8000」这种本地号码片段读成 +1 38000。
+   * 第三种写法另外要求去掉区号后的位数等于当前地区示例号码的有效位数：号码长度不固定的地区（DE、AT、FI 等），
+   * 以区号数字开头的本地号码去掉「区号」后常常也是有效号码，只看有效会把它静默改成另一个号码。
+   *
+   * 插入段是按新旧两串的公共前后缀推断的，全选再粘时可能被截短（新旧号码尾部都是「000」）；
+   * 所以插入段不算时再看整框：整框以 00 开头、去掉 00 是有效号码，也按「+」处理（上游对整框的「+」有同样的判断）。
+   * 都不算就返回 null，交回上游的处理。iOS 的 RegistrationPhoneNumberInputView.tellomiFullPhoneNumber 是同一套规则。
+   */
+  private fun tellomiFullNumberInserted(state: PhoneNumberEntryState, oldValue: String, newValue: String): PhoneNumberEntryState? {
+    val inserted = insertedText(oldValue, newValue).tellomiHalfWidth().filter { it.isDigit() || it == '+' }
+    val digits = inserted.filter { it.isDigit() }
+    val international = when {
+      inserted.startsWith("+") -> digits
+      inserted.startsWith("00") -> digits.drop(2)
+      oldValue.any { it.isDigit() } && inserted == digits && isCallingCodeAndFullNationalNumber(state, digits) -> digits
+      else -> null
+    }
+    if (international != null && isValidFullNumber(international)) {
+      return redistributeFullPhoneNumber(state, "+$international")
+    }
+
+    val field = newValue.tellomiHalfWidth().filter { it.isDigit() || it == '+' }
+    val fieldInternational = field.filter { it.isDigit() }.drop(2)
+    return if (field.startsWith("00") && isValidFullNumber(fieldInternational)) redistributeFullPhoneNumber(state, "+$fieldInternational") else null
+  }
+
+  /**
+   * Tellomi（taishi 审查 b20 不阻塞 1，两端对齐）：全角「＋」换成「+」，全角数字换成 ASCII 数字，别的原样留着。
+   * isDigit() 虽然认全角数字，但「00」开头、以区号开头这两条是按 ASCII 比的，全角「＋」更是直接被丢掉。
+   * iOS 的 RegistrationPhoneNumberInputView.tellomiHalfWidth 是同一条。
+   */
+  private fun String.tellomiHalfWidth(): String {
+    return map { c ->
+      when (c) {
+        '\uFF0B' -> '+'
+        in '\uFF10'..'\uFF19' -> '0' + (c - '\uFF10')
+        else -> c
+      }
+    }.joinToString("")
+  }
+
+  /** [digits] 以当前区号开头，而且去掉区号后的位数等于当前地区示例号码的有效位数（见 [exampleNationalSignificantNumberLength]）。 */
+  private fun isCallingCodeAndFullNationalNumber(state: PhoneNumberEntryState, digits: String): Boolean {
+    val countryCode = state.countryCode
+    if (countryCode.isEmpty() || !digits.startsWith(countryCode)) return false
+    return digits.length - countryCode.length == exampleNationalSignificantNumberLength(state.regionCode)
+  }
+
+  /**
+   * 示例号码的有效位数（不含长途前缀）：先取手机号的示例，没有再取「固话或手机」，和 iOS 上游 exampleNationalNumber 的取法相同。
+   * 用有效位数而不是本国格式的位数：台湾本国格式带长途前缀 0（0912 345 678，10 位），有效位数是 9。
+   */
+  private fun exampleNationalSignificantNumberLength(regionCode: String): Int? {
+    val example = phoneNumberUtil.getExampleNumberForType(regionCode, PhoneNumberUtil.PhoneNumberType.MOBILE)
+      ?: phoneNumberUtil.getExampleNumberForType(regionCode, PhoneNumberUtil.PhoneNumberType.FIXED_LINE_OR_MOBILE)
+      ?: return null
+    return phoneNumberUtil.getNationalSignificantNumber(example).length
+  }
+
+  private fun isValidFullNumber(digits: String): Boolean {
+    return try {
+      phoneNumberUtil.isValidNumber(phoneNumberUtil.parse("+$digits", null))
+    } catch (_: NumberParseException) {
+      false
+    }
+  }
+
+  /** The text that replaced the changed middle part of [old] to make [new]; see [insertedCharCount]. */
+  private fun insertedText(old: String, new: String): String {
+    val max = minOf(old.length, new.length)
+
+    var prefix = 0
+    while (prefix < max && old[prefix] == new[prefix]) {
+      prefix++
+    }
+
+    var suffix = 0
+    while (suffix < max - prefix && old[old.length - 1 - suffix] == new[new.length - 1 - suffix]) {
+      suffix++
+    }
+
+    return new.substring(prefix, (new.length - suffix).coerceAtLeast(prefix))
+  }
+
   private fun insertedCharCount(old: String, new: String): Int {
     val max = minOf(old.length, new.length)
 
@@ -999,16 +1178,6 @@ class PhoneNumberEntryViewModel(
       copy(isNumberPossible = isNumberPossible, isNumberInvalid = isNumberInvalid)
     } else {
       this
-    }
-  }
-
-  class Factory(
-    val repository: RegistrationRepository,
-    val parentState: StateFlow<RegistrationFlowState>,
-    val parentEventEmitter: (RegistrationFlowEvent) -> Unit
-  ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return PhoneNumberEntryViewModel(repository, parentState, parentEventEmitter) as T
     }
   }
 }

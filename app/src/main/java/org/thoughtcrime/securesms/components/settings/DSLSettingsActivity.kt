@@ -52,7 +52,14 @@ open class DSLSettingsActivity : PassphraseRequiredActivity() {
 
     dynamicTheme.onCreate(this)
 
-    onBackPressedDispatcher.addCallback(this, OnBackPressed())
+    val onBackPressed = OnBackPressed()
+    onBackPressedDispatcher.addCallback(this, onBackPressed)
+    if (usesSystemBackAtRoot) {
+      // Tellomi（交互审计 A-22）：根页的返回交给系统，拖返回手势时才看得到上一页（预测性返回）；子页照旧由这里弹栈。
+      navController.addOnDestinationChangedListener { controller, _, _ ->
+        onBackPressed.isEnabled = controller.previousBackStackEntry != null
+      }
+    }
   }
 
   override fun onResume() {
@@ -62,7 +69,6 @@ open class DSLSettingsActivity : PassphraseRequiredActivity() {
 
   override fun onNavigateUp(): Boolean {
     return if (!Navigation.findNavController(this, R.id.nav_host_fragment).popBackStack()) {
-      onWillFinish()
       finish()
       true
     } else {
@@ -87,7 +93,21 @@ open class DSLSettingsActivity : PassphraseRequiredActivity() {
     }
   }
 
+  /**
+   * Tellomi：根页返回交给系统后，系统直接 finish，不再经过 [onNavigateUp]；
+   * [onWillFinish] 挪到这里，两条路都会先调到它（例如设置页要在结束前 setResult）。
+   */
+  override fun finish() {
+    onWillFinish()
+    super.finish()
+  }
+
   protected open fun onWillFinish() {}
+
+  /**
+   * 根页的返回是否交给系统（预测性返回）。有共享元素返场或自定义退场动画的页面改成 false，照旧由自己 finish。
+   */
+  protected open val usesSystemBackAtRoot: Boolean = true
 
   protected open fun resolveNavGraphId(): Int = intent.getIntExtra(ARG_NAV_GRAPH, -1)
 

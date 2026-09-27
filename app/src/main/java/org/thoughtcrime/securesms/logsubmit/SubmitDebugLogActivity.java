@@ -451,7 +451,8 @@ public class SubmitDebugLogActivity extends BaseActivity {
           ShareCompat.IntentBuilder.from(this)
                                    .setText(url)
                                    .setType("text/plain")
-                                   .setEmailTo(new String[] { "support@signal.org" })
+                                   // Tellomi（tellomi/tellomi#1235）：上游这里写死 Signal 的客服邮箱，调试日志链接会被引导发给 Signal
+                                   .setEmailTo(new String[] { getString(R.string.SupportEmailUtil_support_email) })
                                    .startChooser();
         });
 

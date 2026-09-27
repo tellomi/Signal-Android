@@ -60,7 +60,7 @@
         android:id="@+id/conversation_item_starred_source_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/tellomi_bubble_tail_side_edge"
         android:layout_marginBottom="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -91,7 +91,7 @@
         android:id="@+id/conversation_item_body_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/tellomi_bubble_tail_side_after_avatar"
         android:layout_marginEnd="48dp"
         android:orientation="vertical"
         app:cardElevation="0dp"
@@ -100,7 +100,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/contact_photo"
         app:layout_constraintTop_toBottomOf="@id/conversation_item_starred_source_wrapper"
-        app:layout_goneMarginStart="16dp"
+        app:layout_goneMarginStart="@dimen/tellomi_bubble_tail_side_edge"
         tools:background="@color/black">
 
         <FrameLayout

@@ -17,10 +17,13 @@ import org.signal.core.util.requireInt
 import org.signal.core.util.requireLong
 import org.signal.core.util.requireString
 import org.thoughtcrime.securesms.BuildConfig
+import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.apkupdate.ApkUpdateDownloadManagerReceiver
 import org.thoughtcrime.securesms.jobmanager.Job
+import org.thoughtcrime.securesms.jobmanager.JsonJobData
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.util.Environment
 import org.thoughtcrime.securesms.util.FileUtils
 import java.io.FileInputStream
@@ -34,23 +37,79 @@ import java.security.MessageDigest
  * It uses the DownloadManager to actually download the APK for some easy reliability, considering the
  * file it's downloading it rather large (70+ MB).
  */
-class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(parameters) {
+class ApkUpdateJob private constructor(
+  parameters: Parameters,
+  /**
+   * Tellomi（tellomi/tellomi#1138）：「必须更新」阻断页发起的检查允许用移动数据下载（需求 3.4「移动网络」），
+   * 而且会把一条还在等 Wi-Fi 的旧下载改排成可用流量的。后台定期检查仍只走 Wi-Fi（#1038）。
+   */
+  val allowMeteredNetwork: Boolean,
+  /**
+   * Tellomi（taishi 审查 b14 包 7 不阻塞 2）：用户在阻断页的「重试」上明确点了重来。已经允许流量、却卡着不动（没在下）的那条下载
+   * 也删掉重排；否则重试后页面还跟着同一条卡住的下载，90 秒后又转失败。自动的检查仍不动暂停中的流量下载（要改 3）。
+   */
+  val restartStuckDownload: Boolean = false
+) : BaseJob(parameters) {
 
   companion object {
     const val KEY = "UpdateApkJob"
     private val TAG = Log.tag(ApkUpdateJob::class.java)
+
+    private const val KEY_ALLOW_METERED_NETWORK = "allow_metered_network"
+    private const val KEY_RESTART_STUCK_DOWNLOAD = "restart_stuck_download"
+
+    private val TRUSTED_VERSION_NAME = Regex("^\\d+(\\.\\d+){1,3}$")
+
+    /**
+     * Tellomi（tellomi/tellomi#1138，taishi 审查 b14 要改 3）：阻断页发起的检查遇到一条已存在、还没在下的下载时，
+     * 要不要删掉它、改排成可用流量的。只改排只许 Wi-Fi 的那种；已经允许流量的（比如信号差暂停着）不动，
+     * 否则网络越差越从 0 重下、越费流量。
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun shouldReenqueueForMeteredNetwork(allowMeteredNetwork: Boolean, existingIsRunning: Boolean, existingAllowsMetered: Boolean, restartStuckDownload: Boolean = false): Boolean {
+      return allowMeteredNetwork && !existingIsRunning && (!existingAllowsMetered || restartStuckDownload)
+    }
+
+    /**
+     * Tellomi（tellomi/tellomi#1138，taishi 审查 b14 不阻塞 3）：清单还没签名（#1136），versionName 会原样显示在阻断页和「关于」页，
+     * url 会被拿去下载。存之前先卡一下形状：版本号只许「数字.数字」，下载地址只许和清单同一个 https 源。
+     */
+    @JvmStatic
+    fun isTrustedDescriptor(versionName: String?, url: String?, manifestUrl: String): Boolean {
+      if (versionName == null || versionName.length > 20 || !TRUSTED_VERSION_NAME.matches(versionName)) {
+        return false
+      }
+      val manifest = runCatching { java.net.URI(manifestUrl) }.getOrNull() ?: return false
+      if (manifest.scheme != "https" || manifest.host.isNullOrEmpty()) {
+        return false
+      }
+      return url != null && url.startsWith("https://${manifest.host}/")
+    }
   }
 
-  constructor() : this(
+  @JvmOverloads
+  constructor(allowMeteredNetwork: Boolean = false, restartStuckDownload: Boolean = false) : this(
     Parameters.Builder()
       .setQueue(KEY)
       .setMaxInstancesForFactory(2)
       .addConstraint(NetworkConstraint.KEY)
       .setMaxAttempts(2)
-      .build()
+      .build(),
+    allowMeteredNetwork,
+    restartStuckDownload
   )
 
-  override fun serialize(): ByteArray? = null
+  override fun serialize(): ByteArray? {
+    // 上游这里是 null；不带流量标记的仍写 null，和已经排在队列里的旧任务同一种形状。
+    if (!allowMeteredNetwork) {
+      return null
+    }
+    return JsonJobData.Builder()
+      .putBoolean(KEY_ALLOW_METERED_NETWORK, true)
+      .putBoolean(KEY_RESTART_STUCK_DOWNLOAD, restartStuckDownload)
+      .serialize()
+  }
 
   override fun getFactoryKey(): String = KEY
 
@@ -61,10 +120,12 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
       return
     }
 
-    Log.d(TAG, "Checking for APK update at ${BuildConfig.APK_UPDATE_MANIFEST_URL}")
+    // Tellomi（#1055）：清单地址从当前区取（只有 website 档有）
+    val manifestUrl = TellomiRegions.current().apkUpdateManifestUrl
+    Log.d(TAG, "Checking for APK update at $manifestUrl")
 
     val client = OkHttpClient()
-    val request = Request.Builder().url(BuildConfig.APK_UPDATE_MANIFEST_URL).build()
+    val request = Request.Builder().url(manifestUrl!!).build()
 
     val rawUpdateDescriptor: String = client.newCall(request).execute().use { response ->
       if (!response.isSuccessful || response.body == null) {
@@ -78,11 +139,22 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
     if (updateDescriptor.versionCode <= 0 || updateDescriptor.versionName == null || updateDescriptor.url == null || updateDescriptor.digest == null) {
       Log.w(TAG, "Invalid update descriptor! $updateDescriptor")
       return
+    } else if (!isTrustedDescriptor(updateDescriptor.versionName, updateDescriptor.url, manifestUrl)) {
+      Log.w(TAG, "Update descriptor has an unexpected version name or download URL! $updateDescriptor")
+      return
     } else {
       Log.d(TAG, "Got descriptor: $updateDescriptor")
     }
 
-    if (shouldUpdate(getCurrentAppVersionCode(), updateDescriptor, SignalStore.apkUpdate.lastApkUploadTime, Environment.IS_WEBSITE)) {
+    val newerVersionAvailable = shouldUpdate(getCurrentAppVersionCode(), updateDescriptor, SignalStore.apkUpdate.lastApkUploadTime, Environment.IS_WEBSITE)
+    // Tellomi（#1138）：「关于」页与阻断页据此显示新版本号。
+    if (newerVersionAvailable) {
+      SignalStore.apkUpdate.setAvailableUpdate(updateDescriptor.versionCode, updateDescriptor.versionName)
+    } else {
+      SignalStore.apkUpdate.clearAvailableUpdate()
+    }
+
+    if (newerVersionAvailable) {
       Log.i(TAG, "Newer version code available. Current: (versionCode: ${getCurrentAppVersionCode()}, uploadTime: ${SignalStore.apkUpdate.lastApkUploadTime}), Update: (versionCode: ${updateDescriptor.versionCode}, uploadTime: ${updateDescriptor.uploadTimestamp})")
       val digest: ByteArray = Hex.fromStringCondensed(updateDescriptor.digest)
       val downloadStatus: DownloadStatus = getDownloadStatus(updateDescriptor.url, digest)
@@ -94,6 +166,13 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
         handleDownloadComplete(downloadStatus.downloadId)
       } else if (downloadStatus.status == DownloadStatus.Status.MISSING) {
         Log.i(TAG, "Download status missing, starting download...")
+        handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest, updateDescriptor.uploadTimestamp ?: 0)
+      } else if (shouldReenqueueForMeteredNetwork(allowMeteredNetwork, downloadStatus.isRunning, SignalStore.apkUpdate.downloadAllowsMetered, restartStuckDownload)) {
+        // Tellomi（#1138）：后台排的下载只许走 Wi-Fi，没有 Wi-Fi 时会一直停在排队状态。必须更新时改排成可用流量的。
+        // 只动只许 Wi-Fi、又不在下的那条；已经允许流量的（暂停中也算）不动（taishi 审查 b14 要改 3）。
+        Log.i(TAG, "Required update: re-enqueuing a Wi-Fi-only download that is not running so it may use metered networks.")
+        context.getDownloadManager().remove(downloadStatus.downloadId)
+        SignalStore.apkUpdate.clearDownloadAttributes()
         handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest, updateDescriptor.uploadTimestamp ?: 0)
       }
     } else {
@@ -148,7 +227,7 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
             DownloadStatus(DownloadStatus.Status.MISSING, downloadId)
           }
         } else {
-          DownloadStatus(DownloadStatus.Status.PENDING, downloadId)
+          DownloadStatus(DownloadStatus.Status.PENDING, downloadId, isRunning = jobStatus == DownloadManager.STATUS_RUNNING)
         }
       }
     }
@@ -160,19 +239,29 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
     deleteExistingDownloadedApks(context)
 
     val downloadRequest = DownloadManager.Request(Uri.parse(uri)).apply {
-      setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+      if (allowMeteredNetwork) {
+        // Tellomi（#1138）：必须更新允许用流量。Request 的默认值就是任何网络、计费网络也可以，这里写明。
+        setAllowedOverMetered(true)
+        // 默认允许漫游；上游只许 Wi-Fi，等于不漫游。国际漫游时别下这约 120 MB（taishi 审查 b14 不阻塞 1）。
+        setAllowedOverRoaming(false)
+      } else {
+        setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+      }
       // Tellomi：这三行是系统下载通知里用户能看到的字，上游写死了 Signal。
       // 文件名与下面 deleteExistingDownloadedApks 的前缀必须一起改，否则旧包清不掉、越攒越多。
-      setTitle("正在下载 Tellomi 更新")
+      // Tellomi（#1138）：流量下载的通知现在看得见了（taishi 审查 b14 不阻塞 2），标题跟着 App 语言，不再写死简体中文。
+      setTitle(context.getString(R.string.TellomiUpdateRequired__download_notification_title))
       setDescription("Tellomi $versionName")
       setDestinationInExternalFilesDir(context, null, "tellomi-update.apk")
-      setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
+      // 上游为 Wi-Fi 后台下载设了 HIDDEN。用户点出来的流量下载要在通知栏看得见进度（taishi 审查 b14 不阻塞 2；
+      // 能不能在通知里取消看各家 ROM，不作承诺，taishi 审查包 7 不阻塞 5）。
+      setNotificationVisibility(if (allowMeteredNetwork) DownloadManager.Request.VISIBILITY_VISIBLE else DownloadManager.Request.VISIBILITY_HIDDEN)
     }
 
     val downloadId = context.getDownloadManager().enqueue(downloadRequest)
     // DownloadManager will trigger [UpdateApkReadyListener] when finished via a broadcast
 
-    SignalStore.apkUpdate.setDownloadAttributes(downloadId, digest, uploadTimestamp)
+    SignalStore.apkUpdate.setDownloadAttributes(downloadId, digest, uploadTimestamp, allowsMetered = allowMeteredNetwork)
   }
 
   private fun handleDownloadComplete(downloadId: Long) {
@@ -233,7 +322,7 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
     val uploadTimestamp: Long? = null
   )
 
-  private class DownloadStatus(val status: Status, val downloadId: Long) {
+  private class DownloadStatus(val status: Status, val downloadId: Long, val isRunning: Boolean = false) {
     enum class Status {
       PENDING,
       COMPLETE,
@@ -243,7 +332,8 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
 
   class Factory : Job.Factory<ApkUpdateJob?> {
     override fun create(parameters: Parameters, serializedData: ByteArray?): ApkUpdateJob {
-      return ApkUpdateJob(parameters)
+      val data = JsonJobData.deserialize(serializedData)
+      return ApkUpdateJob(parameters, data.getBooleanOrDefault(KEY_ALLOW_METERED_NETWORK, false), data.getBooleanOrDefault(KEY_RESTART_STUCK_DOWNLOAD, false))
     }
   }
 }

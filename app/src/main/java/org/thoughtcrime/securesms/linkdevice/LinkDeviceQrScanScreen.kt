@@ -114,6 +114,10 @@ fun LinkDeviceQrScanScreen(
       is LinkDeviceResult.KeyError -> makeToast(context, R.string.DeviceProvisioningActivity_content_progress_key_error, onLinkDeviceFailure)
       is LinkDeviceResult.LimitExceeded -> makeToast(context, R.string.DeviceProvisioningActivity_sorry_you_have_too_many_devices_linked_already, onLinkDeviceFailure)
       is LinkDeviceResult.BadCode -> makeToast(context, R.string.DeviceActivity_sorry_this_is_not_a_valid_device_link_qr_code, onLinkDeviceFailure)
+      is LinkDeviceResult.ExpiredOrForeignCode -> {
+        Toast.makeText(context, R.string.AddLinkDeviceFragment__tellomi_code_expired_or_foreign, Toast.LENGTH_LONG).show()
+        onLinkDeviceFailure()
+      }
       is LinkDeviceResult.None -> Unit
     }
   }

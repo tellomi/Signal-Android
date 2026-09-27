@@ -37,6 +37,7 @@ import org.thoughtcrime.securesms.mms.PartAuthority
 import org.thoughtcrime.securesms.net.NotPushRegisteredException
 import org.thoughtcrime.securesms.net.SignalNetwork
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.region.TellomiUploadPin
 import org.thoughtcrime.securesms.service.AttachmentProgressService
 import org.thoughtcrime.securesms.transport.UndeliverableMessageException
 import org.thoughtcrime.securesms.util.MediaUtil
@@ -171,6 +172,12 @@ class AttachmentUploadJob private constructor(
       uploadSpec = null
     }
 
+    // Tellomi（#1055 第三刀）：切过区就当规格过期，从头传，落到现在的区（契约第六节：在途续传不许静默换区）
+    if (uploadSpec != null && !TellomiUploadPin.canResume(uploadSpec!!)) {
+      Log.w(TAG, "[$attachmentId] Upload spec was started in region ${TellomiUploadPin.startedIn(uploadSpec!!)}. Clearing.")
+      uploadSpec = null
+    }
+
     Log.i(TAG, "[$attachmentId] Uploading attachment for message ${databaseAttachment.mmsId}")
     try {
       val existingSpec = uploadSpec?.let { ResumableUploadSpec.from(it) }
@@ -178,7 +185,7 @@ class AttachmentUploadJob private constructor(
       val ciphertextLength = AttachmentCipherStreamUtil.getCiphertextLength(PaddingInputStream.getPaddedSize(databaseAttachment.size))
 
       val uploadForm = if (existingSpec == null) {
-        when (val result = SignalNetwork.attachments.getAttachmentV4UploadForm(ciphertextLength)) {
+        when (val result = SignalNetwork.attachmentApi.getAttachmentV4UploadForm(ciphertextLength)) {
           is RequestResult.Success -> result.result
           is RequestResult.NonSuccess -> throw result.error
           is RequestResult.RetryableNetworkError -> throw RetryLaterException(result.retryAfter ?: defaultBackoff().milliseconds.toJavaDuration())
@@ -201,14 +208,14 @@ class AttachmentUploadJob private constructor(
 
       getAttachmentNotificationIfNeeded(databaseAttachment).use { notification ->
         buildAttachmentStream(databaseAttachment, notification).use { localAttachment ->
-          val uploadResult: AttachmentUploadResult = SignalNetwork.attachments.uploadAttachmentV4(
+          val uploadResult: AttachmentUploadResult = SignalNetwork.attachmentApi.uploadAttachmentV4(
             form = uploadForm,
             key = key,
             iv = iv,
             checksumSha256 = checksumSha256,
             attachmentStream = localAttachment,
             existingSpec = existingSpec,
-            onSpecCreated = { spec -> uploadSpec = spec.toProto() }
+            onSpecCreated = { spec -> uploadSpec = TellomiUploadPin.stamp(spec.toProto()) }
           ).successOrThrow()
 
           SignalDatabase.attachments.finalizeAttachmentAfterUpload(databaseAttachment.attachmentId, uploadResult)

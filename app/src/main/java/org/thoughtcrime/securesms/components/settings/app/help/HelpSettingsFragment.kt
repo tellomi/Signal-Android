@@ -5,14 +5,10 @@
 
 package org.thoughtcrime.securesms.components.settings.app.help
 
-import android.widget.Toast
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -23,12 +19,8 @@ import androidx.navigation.fragment.findNavController
 import org.signal.core.ui.compose.ComposeFragment
 import org.signal.core.ui.compose.Dividers
 import org.signal.core.ui.compose.Rows
-import org.signal.core.ui.compose.Rows.TextAndLabel
-import org.signal.core.ui.compose.Rows.defaultPadding
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
-import org.signal.core.util.Util
-import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
@@ -75,17 +67,6 @@ class HelpSettingsFragment : ComposeFragment() {
 
         item {
           Rows.TextRow(
-            text = stringResource(R.string.HelpSettingsFragment__version),
-            label = BuildConfig.VERSION_NAME,
-            onLongClick = {
-              Util.copyToClipboard(context, BuildConfig.VERSION_NAME)
-              Toast.makeText(context, R.string.HelpSettingsFragment__copied_to_clipboard, Toast.LENGTH_SHORT).show()
-            }
-          )
-        }
-
-        item {
-          Rows.TextRow(
             text = stringResource(id = R.string.HelpSettingsFragment__debug_log),
             onClick = {
               navController.safeNavigate(R.id.action_helpSettingsFragment_to_submitDebugLogActivity)
@@ -93,50 +74,8 @@ class HelpSettingsFragment : ComposeFragment() {
           )
         }
 
-        item {
-          Rows.TextRow(
-            text = stringResource(id = R.string.HelpSettingsFragment__licenses),
-            onClick = {
-              navController.safeNavigate(R.id.action_helpSettingsFragment_to_licenseFragment)
-            }
-          )
-        }
-
-        item {
-          Rows.LinkRow(
-            text = stringResource(R.string.HelpSettingsFragment__terms_amp_privacy_policy),
-            icon = ImageVector.vectorResource(R.drawable.symbol_open_20),
-            onClick = {
-              CommunicationActions.openBrowserLink(context, getString(R.string.terms_and_privacy_policy_url))
-            }
-          )
-        }
-
-        item {
-          Row(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(defaultPadding()),
-            verticalAlignment = CenterVertically
-          ) {
-            TextAndLabel(
-              label = StringBuilder().apply {
-                // Tellomi（#984，owner 2026-09-23 定）：三行并列。
-                //   1) 上游署名 —— AGPL 要求派生作品保留原作者的版权声明，不能换成我们自己；
-                //   2) 我们对修改部分的署名；
-                //   3) 许可证。
-                // 上游这里还有第四行「Signal is a 501c3 nonprofit」，去掉了：Tellomi 不是
-                // 非营利组织，换个名字就是一句关于自身法律主体的假话。
-                // iOS 的 ABOUT_SECTION_FOOTER_TELLOMI 要和这三行一字一句对齐。
-                append(getString(R.string.HelpFragment__copyright_signal_messenger))
-                append("\n")
-                append(getString(R.string.HelpFragment__modifications_copyright_tellomi))
-                append("\n")
-                append(getString(R.string.HelpFragment__licenced_under_the_agplv3))
-              }.toString()
-            )
-          }
-        }
+        // Tellomi（tellomi/tellomi#1165）：版本、许可证、条款与隐私政策、页脚三行署名都搬到「关于 Tellomi」（与「帮助」平级），
+        // 这里只留支持中心、联系我们、调试日志。
       }
     }
   }

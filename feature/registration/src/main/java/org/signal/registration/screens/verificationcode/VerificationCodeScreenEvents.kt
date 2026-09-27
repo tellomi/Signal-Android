@@ -76,6 +76,9 @@ sealed class VerificationCodeScreenEvents {
   /** The delivery-provider-rejected dialog was dismissed. */
   data object ProviderRejectedDialogDismissed : VerificationCodeScreenEvents()
 
+  /** Tellomi（tellomi/tellomi#1214）：「验证已过期 / 验证码已失效」对话框关掉，退回手机号页。 */
+  data object SessionExpiredDialogDismissed : VerificationCodeScreenEvents()
+
   /** The incorrect verification code snackbar was shown and dismissed. */
   data object IncorrectVerificationCodeSnackbarDismissed : VerificationCodeScreenEvents()
 

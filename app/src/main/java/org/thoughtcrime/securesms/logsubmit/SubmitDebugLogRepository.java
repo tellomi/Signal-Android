@@ -8,6 +8,7 @@ import android.os.ParcelFileDescriptor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 
 import org.json.JSONException;
@@ -21,8 +22,10 @@ import org.signal.core.util.tracing.Tracer;
 import org.signal.debuglogsviewer.DebugLogsViewer;
 import org.thoughtcrime.securesms.database.LogDatabase;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
+import org.thoughtcrime.securesms.net.DeviceTransferBlockingInterceptor;
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
+import org.thoughtcrime.securesms.region.TellomiRegions;
 import org.thoughtcrime.securesms.util.RemoteConfig;
 
 import java.io.IOException;
@@ -75,8 +78,10 @@ public class SubmitDebugLogRepository {
    * 取表单时要带尾斜杠（{@link #API_FORM_ENDPOINT}），nginx 的 location /debuglogs/ 才匹配；
    * 结果 URL = API_ENDPOINT + "/" + key。
    */
-  private static final String API_ENDPOINT      = "https://chat.tellomi.app/debuglogs";
-  private static final String API_FORM_ENDPOINT = API_ENDPOINT + "/";
+  // #1055：地址收进区域表，用的时候按当前区取
+  private static String apiEndpoint() {
+    return TellomiRegions.current().getDebugLog();
+  }
 
   /** Ordered list of log sections. */
   private static final List<LogSection> SECTIONS = new ArrayList<LogSection>() {{
@@ -325,16 +330,32 @@ public class SubmitDebugLogRepository {
     }
   }
 
+  /**
+   * 上传调试日志用的 client。自建的，不走 {@link AppDependencies#getOkHttpClient()}。
+   * 放在嵌套类里：用例只碰它，不会触发外层 {@link #SECTIONS} 的静态初始化（那里要读 RemoteConfig）。
+   * Tellomi：挂上和服务端请求同一道闸 {@link DeviceTransferBlockingInterceptor}——设备转移时、以及跨境同意之前
+   * （tellomi/tellomi#1133）都不发。闸关着时它回 555，{@code uploadContent} 里 {@code isSuccessful()} 不过，上传照常以 IOException 失败。
+   */
+  @VisibleForTesting
+  static final class UploadClient {
+    private UploadClient() {}
+
+    static @NonNull OkHttpClient build() {
+      return new OkHttpClient.Builder()
+          .addInterceptor(new StandardUserAgentInterceptor())
+          .addInterceptor(DeviceTransferBlockingInterceptor.getInstance())
+          .dns(SignalServiceNetworkAccess.DNS)
+          .readTimeout(30, TimeUnit.SECONDS)
+          .writeTimeout(30, TimeUnit.SECONDS)
+          .build();
+    }
+  }
+
   @WorkerThread
   private @NonNull String uploadContent(@NonNull String contentType, @NonNull RequestBody requestBody) throws IOException {
-    OkHttpClient client = new OkHttpClient.Builder()
-        .addInterceptor(new StandardUserAgentInterceptor())
-        .dns(SignalServiceNetworkAccess.DNS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
-        .build();
+    OkHttpClient client = UploadClient.build();
 
-    try (Response response = client.newCall(new Request.Builder().url(API_FORM_ENDPOINT).get().build()).execute()) {
+    try (Response response = client.newCall(new Request.Builder().url(apiEndpoint() + "/").get().build()).execute()) {
       ResponseBody body = response.body();
 
       if (!response.isSuccessful()) {
@@ -374,7 +395,7 @@ public class SubmitDebugLogRepository {
         }
       }
 
-      return API_ENDPOINT + "/" + item;
+      return apiEndpoint() + "/" + item;
     } catch (JSONException e) {
       Log.w(TAG, "Error during upload.", e);
       throw new IOException(e);

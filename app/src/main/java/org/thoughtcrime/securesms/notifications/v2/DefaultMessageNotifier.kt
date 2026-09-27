@@ -19,6 +19,7 @@ import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.logout.TellomiLogout
 import org.thoughtcrime.securesms.notifications.MessageNotifier
 import org.thoughtcrime.securesms.notifications.MessageNotifier.ReminderReceiver
 import org.thoughtcrime.securesms.notifications.NotificationCancellationHelper
@@ -89,6 +90,10 @@ class DefaultMessageNotifier(context: Application) : MessageNotifier {
     visibleBubbleThread = conversationId
   }
 
+  override fun getVisibleBubbleThread(): Optional<ConversationId> {
+    return Optional.ofNullable(visibleBubbleThread)
+  }
+
   override fun clearVisibleBubbleThread() {
     setVisibleBubbleThread(null)
   }
@@ -136,6 +141,12 @@ class DefaultMessageNotifier(context: Application) : MessageNotifier {
     defaultBubbleState: BubbleState
   ) {
     NotificationChannels.getInstance().ensureCustomChannelConsistency()
+
+    // Tellomi（ADR-0072 §4.1 第 3 步）：主动退出登录之后不显示任何内容，通知也不出。
+    if (TellomiLogout.isLoggedOut()) {
+      Log.i(TAG, "Logged out. Not showing message notifications.")
+      return
+    }
 
     if (!Recipient.isSelfSet) {
       Log.w(TAG, "Attempting to update notifications without local self, aborting")

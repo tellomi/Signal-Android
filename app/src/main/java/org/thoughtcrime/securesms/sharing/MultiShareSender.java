@@ -7,6 +7,7 @@ import android.net.Uri;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 import androidx.core.util.Consumer;
 
@@ -317,7 +318,8 @@ public final class MultiShareSender {
     }
   }
 
-  private static List<LinkPreview> buildLinkPreviews(@NonNull Context context, @Nullable LinkPreview linkPreview) {
+  @VisibleForTesting
+  static List<LinkPreview> buildLinkPreviews(@NonNull Context context, @Nullable LinkPreview linkPreview) {
     if (linkPreview == null) {
       return Collections.emptyList();
     } else {
@@ -340,7 +342,8 @@ public final class MultiShareSender {
                                                                                                    thumbnail.caption,
                                                                                                    thumbnail.blurHash,
                                                                                                    thumbnail.transformProperties).asAttachment()
-          )
+          ),
+          linkPreview.getRich() // Tellomi（ADR-0063 §7.4）：转发时 rich 原样带过去
       ));
     }
   }

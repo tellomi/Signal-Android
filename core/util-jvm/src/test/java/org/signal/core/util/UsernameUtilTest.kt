@@ -58,6 +58,29 @@ class UsernameUtilTest {
     assertThat(checkNickname("abcdefghijklmnopqrstuvwxyz")).isEqualTo(UsernameUtil.InvalidReason.TOO_LONG)
   }
 
+  /**
+   * Tellomi（ADR-0066 §六 第 73 行 / ADR-0036）：新建 / 修改时必须字母开头。libsignal 只拒数字开头、放行 `_` 开头，
+   * 服务端只见到哈希，所以这条只能在客户端收紧。`_` 在中间、结尾照旧合法。
+   */
+  @Test
+  fun checkUsername_tellomiMustStartWithLetter() {
+    assertThat(checkNickname("_kaixin")).isEqualTo(UsernameUtil.InvalidReason.STARTS_WITH_UNDERSCORE)
+    assertThat(checkNickname("___")).isEqualTo(UsernameUtil.InvalidReason.STARTS_WITH_UNDERSCORE)
+    assertThat(checkNickname("_1abc")).isEqualTo(UsernameUtil.InvalidReason.STARTS_WITH_UNDERSCORE)
+    // 其余判断照旧先由 libsignal 给出：太短、非法字符不会被报成「下划线开头」
+    assertThat(checkNickname("_a")).isEqualTo(UsernameUtil.InvalidReason.TOO_SHORT)
+    assertThat(checkNickname("_ab cd")).isEqualTo(UsernameUtil.InvalidReason.INVALID_CHARACTERS)
+    assertThat(checkNickname("kai_xin")).isNull()
+    assertThat(checkNickname("kaixin_")).isNull()
+  }
+
+  /** 搜索不跟着收紧：别人（或 Desktop 修好之前）已有的 `_` 开头用户名照样能找到。 */
+  @Test
+  fun isValidUsernameForSearch_underscoreStartStillSearchable() {
+    assertThat(UsernameUtil.isValidUsernameForSearch("_kaixin")).isTrue()
+    assertThat(UsernameUtil.isValidUsernameForSearch("_kaixin.01")).isTrue()
+  }
+
   /** Tellomi（tellomi/tellomi#1181）：搜索仍按协议上限 32——之前已有的长用户名必须还能搜到，20 只约束新建。 */
   @Test
   fun isValidUsernameForSearch_existingLongUsernamesStillSearchable() {

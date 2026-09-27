@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,18 +28,26 @@ import org.signal.core.util.TellomiUsernames;
 import org.signal.core.util.UsernameUtil;
 import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.ui.logging.LoggingFragment;
+import org.signal.registration.screens.createprofile.TellomiUsernameInput;
+import org.signal.registration.screens.createprofile.TellomiUsernameInputFilter;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.contactshare.SimpleTextWatcher;
 import org.thoughtcrime.securesms.databinding.UsernameEditFragmentBinding;
+import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.util.FragmentResultContract;
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
 
+import java.util.Arrays;
+
+import kotlin.Unit;
+
 public class UsernameEditFragment extends LoggingFragment {
 
-  private static final float DISABLED_ALPHA           = 0.5f;
-  public static final String IGNORE_TEXT_CHANGE_EVENT = "ignore.text.change.event";
+  private static final float  DISABLED_ALPHA           = 0.5f;
+  private static final String USERNAME_SUPPORT_URL     = "https://tellomi.app/help/6712070553754";
+  public static final  String IGNORE_TEXT_CHANGE_EVENT = "ignore.text.change.event";
 
   public static final int REQUEST_CODE = 4242;
 
@@ -46,6 +55,13 @@ public class UsernameEditFragment extends LoggingFragment {
   private UsernameEditFragmentBinding binding;
   private LifecycleDisposable         lifecycleDisposable;
   private UsernameEditFragmentArgs    args;
+
+  /** Tellomi（ADR-0066 §6.1b）：「已自动转成小写」到时换回规则提示。 */
+  private final Runnable restoreRulesHint = () -> {
+    if (binding != null) {
+      binding.usernameRulesHint.setText(org.signal.registration.R.string.TellomiUsername__rules_hint);
+    }
+  };
 
   private static final LayoutTransition ANIMATED_LAYOUT = new LayoutTransition();
   private static final LayoutTransition STATIC_LAYOUT   = new LayoutTransition();
@@ -100,9 +116,22 @@ public class UsernameEditFragment extends LoggingFragment {
     lifecycleDisposable.add(viewModel.getUsernameInputState().subscribe(this::presentUsernameInputState));
 
     binding.usernameSubmitButton.setOnClickListener(v -> promptOrSubmitUsername());
-    binding.usernameDeleteButton.setOnClickListener(v -> viewModel.onUsernameDeleted());
+    // Tellomi（ADR-0066 §6.2；taishi 审 a5）：上游清空昵称后点「删除」直接删；照个人资料页的删除框，先说清保留 30 天、期间再设也算改名
+    binding.usernameDeleteButton.setOnClickListener(v -> confirmUsernameDeletion());
     binding.usernameDoneButton.setOnClickListener(v -> viewModel.onUsernameSubmitted(false));
     binding.usernameSkipButton.setOnClickListener(v -> viewModel.onUsernameSkipped());
+
+    // Tellomi（ADR-0066 §6.1b，owner 2026-09-27）：用户名一律小写。键入 / 粘贴的大写当场转小写（替换文字等长，光标不跳），
+    // 规则提示换成「已自动转成小写」约 2 秒；别的不合规字符不动，照旧由下面的红字就地报错。设置 / 修改 / 找回都是这一页。
+    InputFilter[] existingFilters = binding.usernameText.getFilters();
+    InputFilter[] filters         = Arrays.copyOf(existingFilters, existingFilters.length + 1);
+    filters[existingFilters.length] = new TellomiUsernameInputFilter(() -> {
+      if (binding.usernameText.getTag() != IGNORE_TEXT_CHANGE_EVENT) {
+        showLowercasedHint();
+      }
+      return Unit.INSTANCE;
+    });
+    binding.usernameText.setFilters(filters);
 
     binding.usernameText.addTextChangedListener(new SimpleTextWatcher() {
       @Override
@@ -141,10 +170,10 @@ public class UsernameEditFragment extends LoggingFragment {
     });
 
     binding.usernameDescription.setLinkColor(ContextCompat.getColor(requireContext(), org.signal.core.ui.R.color.signal_colorPrimary));
-    // Tellomi（tellomi/tellomi#1106）：上游的说明是「用户名始终搭配一组数字」，「了解更多」弹的是「这个号码是什么？」——
-    // 去掉后缀之后两段都不成立。说明换成布局里的 Tellomi 文案，「了解更多」不再显示。
+    // Tellomi（tellomi/tellomi#1106）：上游的说明是「用户名始终搭配一组数字」，「了解更多」讲的也是这组数字（v8.26 弹「这个号码是什么？」，
+    // v8.28 起改成链到帮助文章）——去掉后缀之后两段都不成立。说明换成布局里的 Tellomi 文案，「了解更多」不再显示。
     binding.usernameDescription.setLearnMoreVisible(false);
-    binding.usernameDescription.setOnLinkClickListener(this::onLearnMore);
+    binding.usernameDescription.setLink(USERNAME_SUPPORT_URL);
 
     ViewUtil.focusAndShowKeyboard(binding.usernameText);
   }
@@ -152,13 +181,15 @@ public class UsernameEditFragment extends LoggingFragment {
   @Override
   public void onDestroyView() {
     super.onDestroyView();
+    binding.usernameRulesHint.removeCallbacks(restoreRulesHint);
     binding = null;
   }
 
   private void promptOrSubmitUsername() {
     if (viewModel.isSameUsernameRecovery()) {
       new MaterialAlertDialogBuilder(requireContext())
-          .setMessage(R.string.UsernameEditFragment_recovery_dialog_confirmation)
+          // Tellomi（ADR-0066 §6.2）：恢复要 confirm 一个用户名，服务端按换名算，会开始（或重新开始）30 天冷却，确认前就说清楚（与 Desktop#9 同一句）
+          .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_recovery_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
           .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
             viewModel.onUsernameSubmitted(true);
             dialog.dismiss();
@@ -168,15 +199,6 @@ public class UsernameEditFragment extends LoggingFragment {
     } else {
       viewModel.onUsernameSubmitted(false);
     }
-  }
-
-
-  private void onLearnMore(@Nullable View unused) {
-    new MaterialAlertDialogBuilder(requireContext())
-        .setTitle(getString(R.string.UsernameEditFragment__what_is_this_number))
-        .setMessage(R.string.UsernameEditFragment__these_digits_help_keep)
-        .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
-        .show();
   }
 
   private void onUiStateChanged(@NonNull UsernameEditViewModel.State state) {
@@ -191,6 +213,8 @@ public class UsernameEditFragment extends LoggingFragment {
       case TOO_SHORT, TOO_LONG -> getString(R.string.UsernameEditFragment_usernames_must_be_between_a_and_b_characters, UsernameUtil.MIN_NICKNAME_LENGTH, UsernameUtil.MAX_NICKNAME_LENGTH);
       case INVALID_CHARACTERS -> getString(R.string.UsernameEditFragment_usernames_can_only_include);
       case CANNOT_START_WITH_NUMBER -> getString(R.string.UsernameEditFragment_usernames_cannot_begin_with_a_number);
+      // Tellomi（ADR-0066）：字母开头
+      case CANNOT_START_WITH_UNDERSCORE -> getString(R.string.UsernameEditFragment__tellomi_usernames_must_start_with_a_letter);
       case INVALID_GENERIC -> getString(R.string.UsernameEditFragment_username_is_invalid);
       case TAKEN -> getString(R.string.UsernameEditFragment_this_username_is_taken);
       case DISCRIMINATOR_HAS_INVALID_CHARACTERS, DISCRIMINATOR_NOT_AVAILABLE -> getString(R.string.UsernameEditFragment__this_username_is_not_available_try_another_number);
@@ -198,6 +222,8 @@ public class UsernameEditFragment extends LoggingFragment {
       case DISCRIMINATOR_TOO_SHORT -> getString(R.string.UsernameEditFragment__invalid_username_enter_a_minimum_of_d_digits, UsernameUtil.MIN_DISCRIMINATOR_LENGTH);
       case DISCRIMINATOR_CANNOT_BE_00 -> getString(R.string.UsernameEditFragment__this_number_cant_be_00);
       case DISCRIMINATOR_CANNOT_START_WITH_0 -> getString(R.string.UsernameEditFragment__this_number_cant_start_with_0);
+      // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）
+      case CHANGE_COOLDOWN -> getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_cooldown, state.renameCooldownDaysLeft, state.renameCooldownDaysLeft);
     };
 
     int colorRes = error != null ? org.signal.core.ui.R.color.signal_colorError : org.signal.core.ui.R.color.signal_colorPrimary;
@@ -215,6 +241,13 @@ public class UsernameEditFragment extends LoggingFragment {
     // 上游只在「还没有用户名、也还没拿到判别位」时藏，其余时候显示并允许自己改数字。
     binding.discriminatorText.setVisibility(View.GONE);
     binding.divider.setVisibility(View.GONE);
+  }
+
+  /** Tellomi（ADR-0066 §6.1b）：规则提示换成「已自动转成小写」，[TellomiUsernameInput.LOWERCASED_HINT_MS] 后恢复；连着打就从最后一次重新计时。 */
+  private void showLowercasedHint() {
+    binding.usernameRulesHint.removeCallbacks(restoreRulesHint);
+    binding.usernameRulesHint.setText(org.signal.registration.R.string.TellomiUsername__lowercased_hint);
+    binding.usernameRulesHint.postDelayed(restoreRulesHint, TellomiUsernameInput.LOWERCASED_HINT_MS);
   }
 
   private void presentButtonState(@NonNull UsernameEditViewModel.ButtonState buttonState) {
@@ -338,11 +371,37 @@ public class UsernameEditFragment extends LoggingFragment {
         break;
       case NEEDS_CONFIRM_RESET:
         new MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.UsernameEditFragment_change_confirmation_message)
+            // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：每次换名都会开始 30 天冷却，确认前就说清楚（与 Desktop#2 同一句）
+            .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
+            .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+            .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))
+            .show();
+        break;
+      case NEEDS_CONFIRM_SET_AFTER_DELETE:
+        // Tellomi（ADR-0066 §6.2）：保留期内删过用户名，现在再设也算改名（与 Desktop#4 同一句）
+        new MaterialAlertDialogBuilder(requireContext())
+            .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_set_after_delete_confirmation,
+                                                         TellomiUsernames.RENAME_COOLDOWN_DAYS,
+                                                         TellomiUsernames.USERNAME_HOLD_DAYS,
+                                                         TellomiUsernames.RENAME_COOLDOWN_DAYS))
             .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))
             .show();
     }
+  }
+
+  private void confirmUsernameDeletion() {
+    String username = SignalStore.account().getUsername();
+    new MaterialAlertDialogBuilder(requireContext())
+        .setTitle(R.string.ManageProfileFragment__delete_username_dialog_title)
+        .setMessage(getResources().getQuantityString(R.plurals.ManageProfileFragment__tellomi_delete_username_dialog_body,
+                                                     TellomiUsernames.RENAME_COOLDOWN_DAYS,
+                                                     username != null ? TellomiUsernames.toDisplayUsername(username) : "",
+                                                     TellomiUsernames.USERNAME_HOLD_DAYS,
+                                                     TellomiUsernames.RENAME_COOLDOWN_DAYS))
+        .setPositiveButton(R.string.delete, (dialog, which) -> viewModel.onUsernameDeleted())
+        .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+        .show();
   }
 
   private void closeScreen() {

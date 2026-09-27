@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tellomi（#1257）：查看器底栏与中间播放键的圆形半透明底 -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#33FFFFFF">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#99202022" />
+        </shape>
+    </item>
+</ripple>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tellomi（#1257）：查看器里的深色半透明胶囊（进度条、倍速角标等），照 Telegram 的玻璃胶囊做独立实现 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#99202022" />
+    <corners android:radius="22dp" />
+</shape>

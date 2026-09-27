@@ -24,7 +24,7 @@ object WelcomePermissions {
     },
     CONTACTS {
       override fun getPermissions(isUserBackupSelectionRequired: Boolean): List<String> {
-        return listOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
+        return listOf(Manifest.permission.READ_CONTACTS) // Tellomi（#1240）：只读通讯录
       }
     },
     STORAGE {

@@ -1,9 +1,14 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 package org.signal.core.util
+
+import kotlin.math.ceil
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.DurationUnit
 
 /**
  * Tellomi（tellomi/tellomi#1106，ADR-0066）：用户名不带「.数字」。
@@ -30,7 +35,8 @@ object TellomiUsernames {
    */
   @JvmStatic
   fun toProtocolUsername(input: String): String {
-    val trimmed = input.trim().removePrefix("@")
+    // §6.1b：一律小写（hash 本来就不分大小写；这样 `Username` 的字符串、存进 Recipient 的也都是小写）
+    val trimmed = lowercaseAscii(input.trim().removePrefix("@"))
     return if (trimmed.contains(DELIMITER)) trimmed else "$trimmed$DELIMITER$FIXED_DISCRIMINATOR"
   }
 
@@ -38,9 +44,65 @@ object TellomiUsernames {
    * 协议层的完整用户名 → 界面上显示的样子：**只有 `.01` 结尾的去掉后缀**（`kaixin.01` → `kaixin`）；
    * 别的后缀**完整显示**（`kaixin.57` 原样）——ADR-0066 §九的反向用例：别人用 `kaixin.57` 注册，
    * 官方客户端必须显示 `kaixin.57`，不能显示成 `kaixin`，否则就是冒充。
+   *
+   * §6.1b（owner 2026-09-27）：**一律显示小写**。老数据里的大写（`Chang.01`）只在显示时转，不迁移——唯一性本来就不分大小写。
    */
   @JvmStatic
   fun toDisplayUsername(username: String): String {
-    return username.removeSuffix("$DELIMITER$FIXED_DISCRIMINATOR")
+    return lowercaseAscii(username.removeSuffix("$DELIMITER$FIXED_DISCRIMINATOR"))
+  }
+
+  /**
+   * ADR-0066 §6.1b（owner 2026-09-27）：用户名一律小写。只把 `A`–`Z` 换成 `a`–`z`，别的字符原样：
+   * - 长度不变，输入框里当场转小写时光标 / 选区不跳；
+   * - 用户名本来只许 `a–z 0–9 _`，别的字符（空格、中文、`Ä`、`İ`……）留给就地报错，不能被「转」成合法的样子。
+   */
+  @JvmStatic
+  fun lowercaseAscii(text: String): String {
+    if (text.none { it in 'A'..'Z' }) return text
+    return buildString(text.length) {
+      for (c in text) append(if (c in 'A'..'Z') c + ('a' - 'A') else c)
+    }
+  }
+
+  /**
+   * ADR-0066 §6.2：换用户名之后 30 天内不能再换（服务端 `USERNAME_CHANGE_COOLDOWN`，tellomi/Signal-Server#4；首次设置不计）。
+   * 只用在改名前的提醒；还剩多久永远以服务端 429 的 `Retry-After` 为准。
+   */
+  const val RENAME_COOLDOWN_DAYS = 30
+
+  /**
+   * reserve 回 429 时分辨「改名冷却」和普通限流：限流桶（`usernameReserve`，100 次 / 15 分钟）的 `Retry-After` 是秒级，
+   * 冷却的是天级，**超过一小时就是冷却**。与 Desktop `isRenameCooldown`（tellomi/Signal-Desktop#2）同一条线，三端一致。
+   */
+  fun isRenameCooldown(retryAfter: Duration?): Boolean {
+    return retryAfter != null && retryAfter > 1.hours
+  }
+
+  /** 冷却还剩几天：向上取整、至少 1（刚改完的 `Retry-After` 2591999 秒是 30 天，还剩两小时是 1 天）。与 Desktop 同一算法。 */
+  fun renameCooldownDaysLeft(retryAfter: Duration): Int {
+    return ceil(retryAfter.toDouble(DurationUnit.DAYS)).toInt().coerceAtLeast(1)
+  }
+
+  /**
+   * ADR-0066 §6.2：删掉或换掉的用户名，服务端给原主人保留 30 天（`Accounts.USERNAME_HOLD_DURATION`），别人拿不走；
+   * 保留期里再设任何用户名，服务端都当作改名，开始 [RENAME_COOLDOWN_DAYS] 天冷却。与 Desktop `USERNAME_HOLD_DAYS` 同值。
+   */
+  const val USERNAME_HOLD_DAYS = 30
+
+  /**
+   * 本机记下的删除时间是否还在保留期内。没有记录（0）→ 不在；时钟往回拨（now 早于删除时间）→ 算在内，宁可多提示一次。
+   * 与 Desktop `isWithinUsernameHold` 同一判法。
+   */
+  fun isWithinUsernameHold(deletedAtMillis: Long, nowMillis: Long): Boolean {
+    return deletedAtMillis > 0 && nowMillis - deletedAtMillis < USERNAME_HOLD_DAYS * 24L * 60 * 60 * 1000
+  }
+
+  /**
+   * 合并 AccountRecord 时要不要记删除时间：本机原来有用户名、同步来的为空（别的设备删了）→ 记；
+   * 首次同步（原来没有）、改名、两边都空都不记。与 Desktop `shouldRecordUsernameDeletion` 同一判法。
+   */
+  fun isUsernameDeletion(previous: String?, synced: String?): Boolean {
+    return !previous.isNullOrEmpty() && synced.isNullOrEmpty()
   }
 }

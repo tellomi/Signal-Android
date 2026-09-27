@@ -6,6 +6,7 @@
 package org.thoughtcrime.securesms.keyvalue
 
 import org.signal.core.util.logging.Log
+import org.thoughtcrime.securesms.BuildConfig
 
 class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
   companion object {
@@ -17,6 +18,10 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
     private const val LAST_SUCCESSFUL_CHECK = "apk_update.last_successful_check"
     private const val LAST_APK_UPLOAD_TIME = "apk_update.last_apk_upload_time"
     private const val PENDING_APK_UPLOAD_TIME = "apk_update.pending_apk_upload_time"
+    private const val AVAILABLE_UPDATE_VERSION_NAME = "apk_update.available_update_version_name"
+    private const val AVAILABLE_UPDATE_VERSION_CODE = "apk_update.available_update_version_code"
+    private const val DOWNLOAD_ALLOWS_METERED = "apk_update.download_allows_metered"
+    private const val READ_ONLY_CHOSEN_VERSION_CODE = "apk_update.read_only_chosen_version_code"
   }
 
   public override fun onFirstEverAppLaunch() = Unit
@@ -38,14 +43,52 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
   /** The upload time of the APK we're trying to install */
   val pendingApkUploadTime: Long by longValue(PENDING_APK_UPLOAD_TIME, 0)
 
-  fun setDownloadAttributes(id: Long, digest: ByteArray?, apkUploadTime: Long) {
-    Log.d(TAG, "Saving download attributes. id: $id, apkUploadTime: $apkUploadTime")
+  /**
+   * Tellomi（tellomi/tellomi#1138，taishi 审查 b14 要改 1 / 3）：[downloadId] 这条下载是否允许用流量。
+   * 阻断页发起的是 true；上游的后台检查只许 Wi-Fi，是 false（旧记录没有这个键，也按 false）。
+   */
+  val downloadAllowsMetered: Boolean by booleanValue(DOWNLOAD_ALLOWS_METERED, false)
+
+  /**
+   * Tellomi（tellomi/tellomi#1138，owner 2026-09-24 规则 1）：用户在「必须更新」阻断页选「暂不更新，只看聊天记录」时的 versionCode。
+   * 等于当前 versionCode 就不再自动盖阻断页；装上新版本后自然作废。0 = 没选过。
+   */
+  var readOnlyChosenVersionCode: Int by integerValue(READ_ONLY_CHOSEN_VERSION_CODE, 0)
+
+  /**
+   * Tellomi（tellomi/tellomi#1138）：最近一次清单检查看到的、比当前安装更新的版本号（清单的 versionName）；没有则为 null。
+   * 只有官网版（MANAGES_APP_UPDATES）会写。「关于」页的「有新版本」读这里。
+   *
+   * 读的时候再按 versionCode 和当前安装的比一次：装上那个版本之后、下一次检查之前，这里不会还说「有新版本」。
+   */
+  val availableUpdateVersionName: String?
+    get() = getString(AVAILABLE_UPDATE_VERSION_NAME, null).takeIf { getInteger(AVAILABLE_UPDATE_VERSION_CODE, 0) > BuildConfig.VERSION_CODE }
+
+  fun setAvailableUpdate(versionCode: Int, versionName: String?) {
+    store
+      .beginWrite()
+      .putInteger(AVAILABLE_UPDATE_VERSION_CODE, versionCode)
+      .putString(AVAILABLE_UPDATE_VERSION_NAME, versionName)
+      .commit()
+  }
+
+  fun clearAvailableUpdate() {
+    store
+      .beginWrite()
+      .putInteger(AVAILABLE_UPDATE_VERSION_CODE, 0)
+      .putString(AVAILABLE_UPDATE_VERSION_NAME, null)
+      .commit()
+  }
+
+  fun setDownloadAttributes(id: Long, digest: ByteArray?, apkUploadTime: Long, allowsMetered: Boolean = false) {
+    Log.d(TAG, "Saving download attributes. id: $id, apkUploadTime: $apkUploadTime, allowsMetered: $allowsMetered")
 
     store
       .beginWrite()
       .putLong(DOWNLOAD_ID, id)
       .putBlob(DIGEST, digest)
       .putLong(PENDING_APK_UPLOAD_TIME, apkUploadTime)
+      .putBoolean(DOWNLOAD_ALLOWS_METERED, allowsMetered)
       .commit()
   }
 
@@ -57,6 +100,7 @@ class ApkUpdateValues(store: KeyValueStore) : SignalStoreValues(store) {
       .putLong(DOWNLOAD_ID, -1)
       .putBlob(DIGEST, null)
       .putLong(PENDING_APK_UPLOAD_TIME, 0)
+      .putBoolean(DOWNLOAD_ALLOWS_METERED, false)
       .commit()
   }
 }

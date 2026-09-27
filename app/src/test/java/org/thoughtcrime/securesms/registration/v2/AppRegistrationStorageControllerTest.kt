@@ -22,6 +22,7 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import okio.ByteString
@@ -39,12 +40,15 @@ import org.signal.core.models.ServiceId.ACI
 import org.signal.core.models.ServiceId.PNI
 import org.signal.core.util.contentproviders.BlobProvider
 import org.signal.libsignal.protocol.IdentityKeyPair
+import org.signal.registration.RestoreDecision
+import org.signal.registration.StoredProfileData
 import org.signal.registration.proto.AccountData
 import org.signal.registration.proto.LinkedDeviceData
 import org.signal.registration.proto.RegistrationData
 import org.thoughtcrime.securesms.crypto.PreKeyUtil
 import org.thoughtcrime.securesms.database.RecipientTable
 import org.thoughtcrime.securesms.database.SignalDatabase
+import org.thoughtcrime.securesms.database.model.databaseprotos.RestoreDecisionState
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.jobmanager.runJobBlocking
 import org.thoughtcrime.securesms.jobs.DirectoryRefreshJob
@@ -52,7 +56,11 @@ import org.thoughtcrime.securesms.jobs.PreKeysSyncJob
 import org.thoughtcrime.securesms.jobs.ReclaimUsernameAndLinkJob
 import org.thoughtcrime.securesms.jobs.RefreshOwnProfileJob
 import org.thoughtcrime.securesms.jobs.RotateCertificateJob
+import org.thoughtcrime.securesms.keyvalue.Completed
+import org.thoughtcrime.securesms.keyvalue.NewAccount
 import org.thoughtcrime.securesms.keyvalue.SignalStore
+import org.thoughtcrime.securesms.keyvalue.Skipped
+import org.thoughtcrime.securesms.profiles.AvatarHelper
 import org.thoughtcrime.securesms.registration.util.RegistrationUtil
 import org.thoughtcrime.securesms.testutil.MockAppDependenciesRule
 import org.thoughtcrime.securesms.testutil.SignalDatabaseRule
@@ -256,6 +264,42 @@ class AppRegistrationStorageControllerTest {
   }
 
   @Test
+  fun `commit - numberless re-registration over existing account - clears stale pni and e164`() = runBlocking<Unit> {
+    SignalStore.account.setAci(aci)
+    SignalStore.account.setPni(pni)
+    SignalStore.account.setE164(E164)
+    SignalStore.account.restoreAciIdentityKeyFromBackup(aciIdentity.publicKey.serialize(), aciIdentity.privateKey.serialize())
+    SignalStore.account.restorePniIdentityKeyFromBackup(pniIdentity.publicKey.serialize(), pniIdentity.privateKey.serialize())
+    SignalStore.account.pniPreKeys.isSignedPreKeyRegistered = true
+    SignalStore.account.pniPreKeys.activeSignedPreKeyId = 12
+    SignalStore.account.setRegistered(true)
+
+    seedInProgressData(
+      RegistrationData(
+        accountData = accountData(reRegistration = true).newBuilder()
+          .e164("")
+          .pni("")
+          .pniIdentityKeyPair(ByteString.EMPTY)
+          .pniSignedPreKey(ByteString.EMPTY)
+          .pniLastResortKyberPreKey(ByteString.EMPTY)
+          .pniRegistrationId(0)
+          .build(),
+        accountEntropyPool = aep.value
+      )
+    )
+
+    controller.commitRegistrationData()
+
+    assertThat(SignalStore.account.aci).isEqualTo(aci)
+    assertThat(SignalStore.account.pni).isNull()
+    assertThat(SignalStore.account.e164).isNull()
+    assertThat(SignalStore.account.hasPniIdentityKey()).isFalse()
+    assertThat(SignalStore.account.pniPreKeys.isSignedPreKeyRegistered).isFalse()
+    assertThat(SignalStore.account.aciPreKeys.isSignedPreKeyRegistered).isTrue()
+    assertThat(SignalStore.account.isRegistered).isTrue()
+  }
+
+  @Test
   fun `commit - pin opted out - applies svr opt out`() = runBlocking<Unit> {
     seedInProgressData(
       RegistrationData(
@@ -313,6 +357,53 @@ class AppRegistrationStorageControllerTest {
     assertThat(SignalStore.misc.needsUsernameRestore).isTrue()
   }
 
+  /** 读资料页要的存量数据；测试环境里读头像要走 KeyStore，桩成「没有头像」（这里只关心重新注册的标记）。 */
+  private suspend fun storedProfileDataWithoutAvatar(): StoredProfileData {
+    mockkStatic(AvatarHelper::class)
+    try {
+      every { AvatarHelper.hasAvatar(any(), any()) } returns false
+      return controller.getStoredProfileData()
+    } finally {
+      unmockkStatic(AvatarHelper::class)
+    }
+  }
+
+  /** Tellomi（tellomi/tellomi#1266）：重新注册时资料页不显示用户名框；标记要活到标完成为止，然后清掉。 */
+  @Test
+  fun `commit - re-registration - hides the username field until registration is complete`() = runBlocking<Unit> {
+    seedInProgressData(
+      RegistrationData(
+        accountData = accountData(reRegistration = true),
+        accountEntropyPool = aep.value
+      )
+    )
+
+    controller.commitRegistrationData()
+
+    assertThat(SignalStore.registration.isTellomiReRegistration).isTrue()
+    assertThat(storedProfileDataWithoutAvatar().isReRegistration).isTrue()
+
+    SignalStore.registration.markRegistrationComplete()
+
+    assertThat(SignalStore.registration.isTellomiReRegistration).isFalse()
+    assertThat(storedProfileDataWithoutAvatar().isReRegistration).isFalse()
+  }
+
+  @Test
+  fun `commit - new account - shows the username field`() = runBlocking<Unit> {
+    seedInProgressData(
+      RegistrationData(
+        accountData = accountData(reRegistration = false),
+        accountEntropyPool = aep.value
+      )
+    )
+
+    controller.commitRegistrationData()
+
+    assertThat(SignalStore.registration.isTellomiReRegistration).isFalse()
+    assertThat(storedProfileDataWithoutAvatar().isReRegistration).isFalse()
+  }
+
   @Test
   fun `commit - new account - does not flag that the username needs to be reclaimed`() = runBlocking<Unit> {
     seedInProgressData(
@@ -325,6 +416,81 @@ class AppRegistrationStorageControllerTest {
     controller.commitRegistrationData()
 
     assertThat(SignalStore.misc.needsUsernameRestore).isFalse()
+  }
+
+  @Test
+  fun `commit - re-registration - clears onboarding state`() = runBlocking<Unit> {
+    seedOnboardingState()
+    seedInProgressData(
+      RegistrationData(
+        accountData = accountData(reRegistration = true),
+        accountEntropyPool = aep.value
+      )
+    )
+
+    controller.commitRegistrationData()
+
+    assertThat(SignalStore.onboarding.hasOnboarding(context)).isFalse()
+  }
+
+  @Test
+  fun `commit - new account - leaves onboarding state alone`() = runBlocking<Unit> {
+    seedOnboardingState()
+    seedInProgressData(
+      RegistrationData(
+        accountData = accountData(reRegistration = false),
+        accountEntropyPool = aep.value
+      )
+    )
+
+    controller.commitRegistrationData()
+
+    assertThat(SignalStore.onboarding.hasOnboarding(context)).isTrue()
+  }
+
+  @Test
+  fun `setRestoreDecision - completed - clears onboarding state`() = runBlocking<Unit> {
+    SignalStore.registration.onFirstEverAppLaunch()
+    seedOnboardingState()
+
+    controller.setRestoreDecision(RestoreDecision.COMPLETED)
+
+    assertThat(SignalStore.registration.restoreDecisionState).isEqualTo(RestoreDecisionState.Completed)
+    assertThat(SignalStore.onboarding.hasOnboarding(context)).isFalse()
+  }
+
+  @Test
+  fun `setRestoreDecision - skipped - leaves onboarding state alone`() = runBlocking<Unit> {
+    SignalStore.registration.onFirstEverAppLaunch()
+    seedOnboardingState()
+
+    controller.setRestoreDecision(RestoreDecision.SKIPPED)
+
+    assertThat(SignalStore.registration.restoreDecisionState).isEqualTo(RestoreDecisionState.Skipped)
+    assertThat(SignalStore.onboarding.hasOnboarding(context)).isTrue()
+  }
+
+  @Test
+  fun `setRestoreDecision - new account - leaves onboarding state alone`() = runBlocking<Unit> {
+    SignalStore.registration.onFirstEverAppLaunch()
+    seedOnboardingState()
+
+    controller.setRestoreDecision(RestoreDecision.NEW_ACCOUNT)
+
+    assertThat(SignalStore.registration.restoreDecisionState).isEqualTo(RestoreDecisionState.NewAccount)
+    assertThat(SignalStore.onboarding.hasOnboarding(context)).isTrue()
+  }
+
+  @Test
+  fun `setRestoreDecision - decision already made - leaves onboarding state alone`() = runBlocking<Unit> {
+    SignalStore.registration.onFirstEverAppLaunch()
+    controller.setRestoreDecision(RestoreDecision.NEW_ACCOUNT)
+    seedOnboardingState()
+
+    controller.setRestoreDecision(RestoreDecision.COMPLETED)
+
+    assertThat(SignalStore.registration.restoreDecisionState).isEqualTo(RestoreDecisionState.NewAccount)
+    assertThat(SignalStore.onboarding.hasOnboarding(context)).isTrue()
   }
 
   @Test
@@ -516,6 +682,14 @@ class AppRegistrationStorageControllerTest {
     every { blobs.delete(any(), any()) } answers {
       blobData.remove(secondArg<Uri>())
     }
+  }
+
+  /** Puts onboarding into the state a fresh install leaves it in, where the get-started megaphone would show. */
+  private fun seedOnboardingState() {
+    SignalStore.onboarding.setShowNewGroup(true)
+    SignalStore.onboarding.setShowInviteFriends(true)
+    SignalStore.onboarding.setShowAppearance(true)
+    SignalStore.onboarding.setShowAddPhoto(true)
   }
 
   private fun seedInProgressData(data: RegistrationData) {

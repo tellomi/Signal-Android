@@ -71,7 +71,11 @@ open class V2ConversationItemTextOnlyViewHolder<Model : MappingModel<Model>>(
   private val binding: V2ConversationItemTextOnlyBindingBridge,
   private val conversationContext: V2ConversationContext,
   footerDelegate: V2FooterPositionDelegate = V2FooterPositionDelegate(binding)
-) : V2ConversationItemViewHolder<Model>(binding.root, conversationContext), Multiselectable, InteractiveConversationElement, Observer<Recipient> {
+) : V2ConversationItemViewHolder<Model>(binding.root, conversationContext),
+  Multiselectable,
+  InteractiveConversationElement,
+  Observer<Recipient>,
+  TellomiBubbleTail.Provider {
 
   companion object {
     private val STYLE_FACTORY = SearchUtil.StyleFactory { arrayOf<CharacterStyle>(BackgroundColorSpan(Color.YELLOW), ForegroundColorSpan(Color.BLACK)) }
@@ -82,6 +86,9 @@ open class V2ConversationItemTextOnlyViewHolder<Model : MappingModel<Model>>(
   }
 
   private var messageId: Long = Long.MAX_VALUE
+
+  /** Tellomi：这一条画不画小尾巴（#1206）。 */
+  private var tellomiHasTail = false
 
   private val projections = ProjectionList()
   private val dispatchTouchEventListener = V2OnDispatchTouchEventListener(conversationContext, binding)
@@ -235,6 +242,18 @@ open class V2ConversationItemTextOnlyViewHolder<Model : MappingModel<Model>>(
       adapterPosition = bindingAdapterPosition
     )
 
+    // Tellomi：一组的最后一条、单独一条画小尾巴（#1206）。紧跟在 setMessageShape 后面：
+    // 只改时间等的局部刷新也会重算形状、然后提前返回。
+    tellomiHasTail = TellomiBubbleTail.shouldDraw(
+      isEndOfCluster = shape.isEndingShape,
+      hasReactions = conversationMessage.messageRecord.reactions.isNotEmpty(),
+      hasBubble = !conversationMessage.messageRecord.hasNoBubble(context),
+      displayMode = conversationContext.displayMode
+    )
+    if (tellomiHasTail) {
+      shapeDelegate.applyTellomiTail(isOutgoing = conversationMessage.messageRecord.isOutgoing)
+    }
+
     if (ConversationAdapterBridge.PAYLOAD_TIMESTAMP in payload) {
       if (conversationMessage.computedProperties.formattedDate != formattedDate) {
         presentDate()
@@ -363,6 +382,31 @@ open class V2ConversationItemTextOnlyViewHolder<Model : MappingModel<Model>>(
   }
 
   override fun canPlayContent(): Boolean = false
+
+  override fun getTellomiTail(parent: RecyclerView): TellomiBubbleTail.Spec? {
+    if (!tellomiHasTail || !binding.bodyWrapper.isShown || binding.bodyWrapper.scaleX != 1f) {
+      return null
+    }
+
+    val isLtr = ViewUtil.isLtr(parent)
+    val projection = Projection.relativeToParent(
+      parent,
+      binding.bodyWrapper,
+      if (isLtr) shapeDelegate.cornersLTR else shapeDelegate.cornersRTL
+    )
+      .translateY(root.translationY)
+      .translateX(binding.bodyWrapper.translationX)
+      .translateX(root.translationX)
+
+    val isOutgoing = conversationMessage.messageRecord.isOutgoing
+    val towardsRight = isOutgoing == isLtr
+    return if (isOutgoing) {
+      val chatColors = conversationContext.getChatColorsData().chatColors
+      TellomiBubbleTail.Spec(projection, towardsRight, chatColors?.asSingleColor() ?: Color.TRANSPARENT, chatColors)
+    } else {
+      TellomiBubbleTail.Spec(projection, towardsRight, themeDelegate.getBodyBubbleColor(conversationMessage), null)
+    }
+  }
 
   override fun shouldProjectContent(): Boolean = false
 

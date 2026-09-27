@@ -9,6 +9,7 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -51,6 +52,9 @@ fun CaptchaScreen(
   modifier: Modifier = Modifier
 ) {
   var loadState by remember { mutableStateOf(state.loadState) }
+  // Tellomi（tellomi/tellomi#1210）：出错时要能重试——记住 WebView，并且这一次加载出过错就不让 onPageFinished 把状态盖回「已加载」
+  var webView by remember { mutableStateOf<WebView?>(null) }
+  var currentLoadFailed by remember { mutableStateOf(false) }
 
   Column(
     modifier = modifier
@@ -87,7 +91,9 @@ fun CaptchaScreen(
 
               override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                loadState = CaptchaLoadState.Loaded
+                if (!currentLoadFailed) {
+                  loadState = CaptchaLoadState.Loaded
+                }
               }
 
               override fun onReceivedError(
@@ -97,11 +103,13 @@ fun CaptchaScreen(
                 failingUrl: String?
               ) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
+                currentLoadFailed = true
                 loadState = CaptchaLoadState.Error
               }
             }
 
             loadUrl(state.captchaUrl)
+            webView = this
           }
         },
         modifier = Modifier.fillMaxSize()
@@ -119,15 +127,27 @@ fun CaptchaScreen(
         }
 
         CaptchaLoadState.Error -> {
-          Box(
+          Column(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
           ) {
             Text(
               text = stringResource(R.string.CaptchaScreen__failed_to_load_captcha),
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.error
             )
+            // Tellomi（#1210）：上游只有这一行字，没有重试，只能退回去重新点「下一步」
+            TextButton(
+              onClick = {
+                currentLoadFailed = false
+                loadState = CaptchaLoadState.Loading
+                webView?.loadUrl(state.captchaUrl)
+              },
+              modifier = Modifier.testTag(TestTags.CAPTCHA_RETRY_BUTTON)
+            ) {
+              Text(stringResource(R.string.TellomiRegistration__captcha_retry))
+            }
           }
         }
       }

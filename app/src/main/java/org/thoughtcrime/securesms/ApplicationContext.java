@@ -54,6 +54,7 @@ import org.thoughtcrime.securesms.apkupdate.ApkUpdateRefreshListener;
 import org.thoughtcrime.securesms.avatar.AvatarPickerStorage;
 import org.thoughtcrime.securesms.backup.v2.BackupRepository;
 import org.thoughtcrime.securesms.clockskew.ClockSkewDetector;
+import org.thoughtcrime.securesms.contacts.index.ContactIndexRepository;
 import org.thoughtcrime.securesms.preferences.EditProxyActivity;
 import org.thoughtcrime.securesms.conversation.drafts.DraftBlobs;
 import org.thoughtcrime.securesms.crypto.AppAttachmentSecretStore;
@@ -95,6 +96,7 @@ import org.thoughtcrime.securesms.jobs.RetrieveProfileJob;
 import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob;
 import org.thoughtcrime.securesms.jobs.StoryOnboardingDownloadJob;
 import org.thoughtcrime.securesms.keyvalue.KeepMessagesDuration;
+import org.thoughtcrime.securesms.keyvalue.PlainTextKeyValueStore;
 import org.thoughtcrime.securesms.keyvalue.SettingsValues;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.logging.CustomSignalProtocolLogger;
@@ -104,6 +106,7 @@ import org.thoughtcrime.securesms.messageprocessingalarm.RoutineMessageFetchRece
 import org.thoughtcrime.securesms.messages.IncomingMessageObserver;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrations;
 import org.thoughtcrime.securesms.mms.SignalGlideModule;
+import org.thoughtcrime.securesms.net.TellomiCrossBorderNetworkGate;
 import org.thoughtcrime.securesms.ratelimit.RateLimitUtil;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.registration.util.RegistrationUtil;
@@ -192,6 +195,7 @@ public class ApplicationContext extends Application implements AppForegroundObse
               })
               .addBlocking("security-provider", this::initializeSecurityProvider)
               .addBlocking("app-dependencies", this::initializeAppDependencies)
+              .addBlocking("tellomi-cross-border-gate", () -> TellomiCrossBorderNetworkGate.install(this))
               .addBlocking("anr-detector", this::startAnrDetector)
               .addBlocking("crash-handling", this::initializeCrashHandling)
               .addBlocking("rx-init", this::initializeRx)
@@ -242,6 +246,7 @@ public class ApplicationContext extends Application implements AppForegroundObse
               .addPostRender(() -> DownloadLatestEmojiDataJob.scheduleIfNecessary(this))
               .addPostRender(EmojiSearchIndexDownloadJob::scheduleIfNecessary)
               .addPostRender(MessageSendLogCleanupJob::enqueue)
+              .addPostRender(() -> ContactIndexRepository.deleteAbandonedIndex(this))
               .addPostRender(() -> JumboEmoji.updateCurrentVersion(this))
               .addPostRender(RetrieveRemoteAnnouncementsJob::enqueue)
               .addPostRender(AndroidTelecomUtil::registerPhoneAccount)
@@ -439,6 +444,7 @@ public class ApplicationContext extends Application implements AppForegroundObse
         new AppRegistrationStorageController(this),
         Environment.IS_LINK_AND_SYNC_AVAILABLE,
         Environment.PHONENUMBERLESS_REGISTRATION,
+        Environment.supportsGooglePlayBilling(),
         null,
         context -> {
           context.startActivity(new Intent(context, SubmitDebugLogActivity.class));
@@ -688,6 +694,7 @@ public class ApplicationContext extends Application implements AppForegroundObse
 
   @Override
   protected void attachBaseContext(Context base) {
+    PlainTextKeyValueStore.init(base);
     DynamicLanguageContextWrapper.updateContext(base);
     super.attachBaseContext(base);
   }

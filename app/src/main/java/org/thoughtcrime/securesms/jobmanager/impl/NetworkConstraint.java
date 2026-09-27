@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import org.thoughtcrime.securesms.jobmanager.Constraint;
+import org.thoughtcrime.securesms.logout.TellomiLogout;
+import org.thoughtcrime.securesms.net.TellomiCrossBorderNetworkGate;
 import org.thoughtcrime.securesms.util.NetworkUtil;
 
 public class NetworkConstraint implements Constraint {
@@ -45,7 +47,9 @@ public class NetworkConstraint implements Constraint {
   }
 
   public static boolean isMet(@NonNull Context context) {
-    return NetworkUtil.isConnected(context);
+    // Tellomi：跨境同意之前，要网络的任务一律等着（而不是跑了再失败；tellomi/tellomi#1133）。
+    // 主动退出登录之后也一样（ADR-0072 §4.1 第 3 步）：收消息、换密钥、存储服务同步、刷新资料、上传附件都等到重新登录。
+    return NetworkUtil.isConnected(context) && !TellomiCrossBorderNetworkGate.isBlocking() && !TellomiLogout.isLoggedOut();
   }
 
   public static final class Factory implements Constraint.Factory<NetworkConstraint> {

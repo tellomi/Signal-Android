@@ -120,6 +120,14 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <!-- Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」 -->
+        <action
+            android:id="@+id/action_appSettingsFragment_to_aboutSettingsFragment"
+            app:destination="@id/aboutSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_appSettingsFragment_to_inviteFragment"
             app:destination="@id/inviteFragment"
@@ -195,6 +203,14 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <!-- Tellomi（ADR-0072，tellomi/tellomi#1414）：账号页最底部的「退出登录」 -->
+        <action
+            android:id="@+id/action_accountSettingsFragment_to_logoutFragment"
+            app:destination="@id/logoutFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_accountSettingsFragment_to_advancedPinSettingsActivity"
             app:destination="@id/advancedPinSettingsFragment"
@@ -217,22 +233,50 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <action
-            android:id="@+id/action_accountSettingsFragment_to_signalLoginViewDetailsFragment"
-            app:destination="@id/signalLoginViewDetailsFragment"
+            android:id="@+id/action_accountSettingsFragment_to_settingsSignalLoginDetailsFragment"
+            app:destination="@id/settingsSignalLoginDetailsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <action
-            android:id="@+id/action_accountSettingsFragment_to_authenticatorAppsFragment"
-            app:destination="@id/authenticatorAppsFragment"
+            android:id="@+id/action_accountSettingsFragment_to_authenticatorSetupFragment"
+            app:destination="@id/authenticatorSetupFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <action
-            android:id="@+id/action_accountSettingsFragment_to_passkeysFragment"
-            app:destination="@id/passkeysFragment"
+            android:id="@+id/action_accountSettingsFragment_to_authenticatorNameFragment"
+            app:destination="@id/authenticatorNameFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+
+    <!-- Tellomi（ADR-0072，tellomi/tellomi#1414）：「退出登录」替代方案页。三条替代方案打开现有的页面。 -->
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.logout.LogoutFragment"
+        android:label="logout_fragment">
+        <action
+            android:id="@+id/action_logoutFragment_to_privacySettings"
+            app:destination="@id/privacy_settings"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_logoutFragment_to_storagePreferenceFragment"
+            app:destination="@id/storagePreferenceFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_logoutFragment_to_changePhoneNumberFragment"
+            app:destination="@id/app_settings_change_number"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -240,24 +284,12 @@
     </fragment>
 
     <fragment
-        android:id="@+id/signalLoginViewDetailsFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.signallogin.SignalLoginViewDetailsFragment"
-        android:label="signal_login_view_details_fragment" />
-
-    <fragment
-        android:id="@+id/authenticatorAppsFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpAppListFragment"
-        android:label="authenticator_apps_fragment">
+        android:id="@+id/settingsSignalLoginDetailsFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.account.signallogin.SettingsSignalLoginDetailsFragment"
+        android:label="settings_signal_login_details_fragment">
         <action
-            android:id="@+id/action_authenticatorAppsFragment_to_authenticatorSetupFragment"
-            app:destination="@id/authenticatorSetupFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
-        <action
-            android:id="@+id/action_authenticatorAppsFragment_to_authenticatorNameFragment"
-            app:destination="@id/authenticatorNameFragment"
+            android:id="@+id/action_settingsSignalLoginDetailsFragment_to_backupKeyDisplayFragment"
+            app:destination="@id/backupKeyDisplayFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -312,11 +344,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/passkeysFragment"
-        android:name="org.thoughtcrime.securesms.components.settings.app.account.passkeys.PasskeysFragment"
-        android:label="passkeys_fragment" />
-
-    <fragment
         android:id="@+id/linkedDeviceAccountSettingsFragment"
         android:name="org.thoughtcrime.securesms.components.settings.app.account.LinkedDeviceAccountSettingsFragment"
         android:label="linked_device_account_settings_fragment"
@@ -340,8 +367,7 @@
     <fragment
         android:id="@+id/deleteAccountFragment"
         android:name="org.thoughtcrime.securesms.delete.DeleteAccountFragment"
-        android:label="delete_account_fragment"
-        tools:layout="@layout/delete_account_fragment">
+        android:label="delete_account_fragment">
 
         <action
             android:id="@+id/action_deleteAccountFragment_to_deleteAccountCountryFragment"
@@ -546,6 +572,14 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <action
+            android:id="@+id/action_localBackupsFragment_to_settingsSignalLoginDetailsFragment"
+            app:destination="@id/settingsSignalLoginDetailsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
         <argument
             android:name="trigger_update_flow"
             app:argType="boolean"
@@ -713,6 +747,20 @@
             android:defaultValue="0"
             app:argType="integer"
             app:nullable="false" />
+    </fragment>
+
+    <!-- Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」，版本 / 许可证 / 法律文件从「帮助」搬到这里 -->
+    <fragment
+        android:id="@+id/aboutSettingsFragment"
+        android:name="org.thoughtcrime.securesms.components.settings.app.about.AboutSettingsFragment"
+        android:label="about_settings_fragment">
+        <action
+            android:id="@+id/action_aboutSettingsFragment_to_licenseFragment"
+            app:destination="@id/licenseFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
 
     <fragment
@@ -1406,6 +1454,14 @@
         <action
             android:id="@+id/action_remoteBackupsSettingsFragment_to_backupKeyDisplayFragment"
             app:destination="@id/backupKeyDisplayFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_remoteBackupsSettingsFragment_to_settingsSignalLoginDetailsFragment"
+            app:destination="@id/settingsSignalLoginDetailsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"

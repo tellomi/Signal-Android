@@ -31,11 +31,17 @@ import kotlin.time.Duration.Companion.milliseconds
 class OutdatedBuildBanner : Banner<Int>() {
 
   companion object {
-    private const val MAX_DAYS_UNTIL_EXPIRE = 10
+    // Tellomi（tellomi/tellomi#1142，需求第 3.6 节）：到期前 14 天开始提示（上游 10 天），与 iOS 一致。
+    private const val MAX_DAYS_UNTIL_EXPIRE = 14
   }
 
   override val enabled: Boolean
     get() {
+      // Tellomi（taishi 审查 b14 包 8 不阻塞 2）：「客户端已弃用」置上之后 getTimeUntilBuildExpiry 恒为 0，
+      // 这个横幅会说「此版本将在今天过期」、按钮去浏览器；这时由只读横幅（DeprecatedBuildBanner）说话。
+      if (SignalStore.misc.isClientDeprecated) {
+        return false
+      }
       val daysUntilExpiry = Util.getTimeUntilBuildExpiry(SignalStore.misc.estimatedServerTime).milliseconds.inWholeDays.toInt()
       return daysUntilExpiry <= MAX_DAYS_UNTIL_EXPIRE
     }

@@ -41,6 +41,7 @@ import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.DropdownMenus
 import org.signal.core.ui.compose.LocalFragmentManager
 import org.signal.core.ui.compose.Previews
+import org.signal.core.util.TellomiUsernames
 import org.signal.core.util.or
 import org.signal.libsignal.protocol.IdentityKey
 import org.signal.libsignal.protocol.ecc.ECPublicKey
@@ -233,7 +234,8 @@ fun SafetyNumberRecipientRow(
   val context = LocalContext.current
   val menuController = remember { DropdownMenus.MenuController() }
   val displayName by rememberRecipientField(safetyNumberRecipient.recipient) { getDisplayName(context) }
-  val identifier by rememberRecipientField(safetyNumberRecipient.recipient) { e164.or(username).orElse(null) }
+  // Tellomi（#1106，ADR-0066 §六）：只有用户名的联系人，副标题显示 kaixin 而不是 kaixin.01
+  val identifier by rememberRecipientField(safetyNumberRecipient.recipient) { e164.or(username.map { TellomiUsernames.toDisplayUsername(it) }).orElse(null) }
   val isVerified = safetyNumberRecipient.identityRecord.verifiedStatus == IdentityTable.VerifiedStatus.VERIFIED
   val secondaryText = remember(identifier, isVerified) { buildSecondaryText(identifier, isVerified, context) }
 

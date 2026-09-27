@@ -30,6 +30,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import org.signal.camera.CameraScreenEvents
 import org.signal.camera.CameraScreenState
 import org.signal.camera.CameraScreenViewModel
+import org.signal.camera.TellomiQrFocus
 import org.signal.core.ui.compose.ComposeFragment
 import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Previews
@@ -55,7 +56,8 @@ class AddLinkDeviceFragment : ComposeFragment() {
   @Composable
   override fun FragmentContent() {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val cameraViewModel: CameraScreenViewModel = viewModel { CameraScreenViewModel() }
+    // Tellomi（#1219）：只认对准画面中心、连续对准 0.5 秒的码，免得扫到旁边别人屏幕上的关联码（见 TellomiQrFocus）
+    val cameraViewModel: CameraScreenViewModel = viewModel { CameraScreenViewModel(tellomiQrFocus = TellomiQrFocus()) }
     val cameraState by cameraViewModel.state
     val context = LocalContext.current
     val navController: NavController by remember { mutableStateOf(findNavController()) }

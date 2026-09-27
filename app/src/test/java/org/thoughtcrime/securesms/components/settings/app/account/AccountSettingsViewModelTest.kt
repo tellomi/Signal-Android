@@ -6,6 +6,8 @@
 package org.thoughtcrime.securesms.components.settings.app.account
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
@@ -18,6 +20,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -33,6 +36,9 @@ import org.junit.Test
 import org.signal.appsettings.account.AccountSettingsAction
 import org.signal.appsettings.account.AccountSettingsEvent
 import org.signal.appsettings.account.AccountSettingsState.Dialog
+import org.signal.appsettings.account.AccountSettingsState.LoadState
+import org.signal.appsettings.account.TwoFactorMethod
+import org.signal.appsettings.totp.TotpApp
 import org.thoughtcrime.securesms.lock.v2.PinKeyboardType
 import org.thoughtcrime.securesms.testing.CoroutineDispatcherRule
 
@@ -42,6 +48,10 @@ class AccountSettingsViewModelTest {
   companion object {
     private const val CORRECT_PIN = "1234"
     private const val INCORRECT_PIN = "9999"
+
+    private val TOTP_APP = TwoFactorMethod(id = 1, kind = TwoFactorMethod.Kind.AUTHENTICATOR_APP, name = "Bitwarden Authenticator", createdAt = 0)
+    private val OTHER_TOTP_APP = TwoFactorMethod(id = 2, kind = TwoFactorMethod.Kind.AUTHENTICATOR_APP, name = "Twilio Authy", createdAt = 0)
+    private val PASSKEY = TwoFactorMethod(id = 1, kind = TwoFactorMethod.Kind.PASSKEY, name = "Pixel Phone", createdAt = 0)
   }
 
   private val testDispatcher = UnconfinedTestDispatcher()
@@ -63,8 +73,10 @@ class AccountSettingsViewModelTest {
     every { repository.isClientDeprecated() } returns false
     every { repository.getPinKeyboardType() } returns PinKeyboardType.NUMERIC
     every { repository.isPhoneNumberless() } returns false
-    coEvery { repository.getTotpAppCount() } returns 0
-    every { repository.getPasskeyCount() } returns 0
+    every { repository.getMaxTotpApps() } returns 2
+    every { repository.getMaxMfaKeys() } returns 10
+    coEvery { repository.getTwoFactorMethods() } returns AccountSettingsRepository.TwoFactorMethodsResult.Success(emptyList())
+    coEvery { repository.removeTotpApp(any()) } returns true
     every { repository.verifyLocalPin(any()) } answers { firstArg<String>() == CORRECT_PIN }
     coEvery { repository.setRegistrationLockEnabled(any()) } returns true
   }
@@ -303,29 +315,260 @@ class AccountSettingsViewModelTest {
   @Test
   fun `the Signal Login section is filled in when the account is phone-numberless`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberless() } returns true
-    coEvery { repository.getTotpAppCount() } returns 2
-    every { repository.getPasskeyCount() } returns 8
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP, PASSKEY)
 
     val viewModel = createViewModel()
 
     assertThat(viewModel.state.value.isPhoneNumberless).isTrue()
-    assertThat(viewModel.state.value.signalLogin?.totpAppCount).isEqualTo(2)
-    assertThat(viewModel.state.value.signalLogin?.passkeyCount).isEqualTo(8)
+    assertThat(viewModel.state.value.signalLogin!!.twoFactorMethods).containsExactly(TOTP_APP, PASSKEY)
+    assertThat(viewModel.state.value.signalLogin?.loadState).isEqualTo(LoadState.LOADED)
+    assertThat(viewModel.state.value.signalLogin?.maxTotpApps).isEqualTo(2)
+    assertThat(viewModel.state.value.signalLogin?.maxMfaKeys).isEqualTo(10)
   }
 
-  /** Zero would render as "no authenticator apps", which is a claim we can't make when we couldn't reach the service. */
+  /** An empty list says nothing on its own, so the screen leans on the load state to know we haven't heard back yet. */
   @Test
-  fun `a count we couldn't fetch is null rather than zero`() = runTest(testDispatcher) {
+  fun `the two-factor list is LOADING until we've heard back about the account`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberless() } returns true
-    coEvery { repository.getTotpAppCount() } returns null
+    coEvery { repository.getTwoFactorMethods() } coAnswers { awaitCancellation() }
 
     val viewModel = createViewModel()
 
-    assertThat(viewModel.state.value.signalLogin?.totpAppCount).isNull()
+    assertThat(viewModel.state.value.signalLogin?.loadState).isEqualTo(LoadState.LOADING)
+    assertThat(viewModel.state.value.signalLogin!!.twoFactorMethods).isEmpty()
+  }
+
+  /** An account we couldn't ask about is not an account with no second factors. */
+  @Test
+  fun `a service we couldn't reach clears the two-factor list and says so`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns AccountSettingsRepository.TwoFactorMethodsResult.NetworkFailure
+
+    val viewModel = createViewModel()
+
+    assertThat(viewModel.state.value.signalLogin?.loadState).isEqualTo(LoadState.NETWORK_FAILURE)
+    assertThat(viewModel.state.value.signalLogin!!.twoFactorMethods).isEmpty()
   }
 
   @Test
-  fun `AccountAndRecoveryClicked opens the Signal Login details screen`() = runTest(testDispatcher) {
+  fun `ScreenResumed picks up second factors added elsewhere`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+
+    val viewModel = createViewModel()
+
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+    viewModel.onEvent(AccountSettingsEvent.ScreenResumed)
+
+    assertThat(viewModel.state.value.signalLogin!!.twoFactorMethods).containsExactly(TOTP_APP)
+  }
+
+  @Test
+  fun `AddTotpAppClicked opens setup when there's room for another app`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.AddTotpAppClicked)
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToTotpSetup)
+  }
+
+  /** The app limit is the more specific of the two, so it's what an account with room to spare overall is told about. */
+  @Test
+  fun `AddTotpAppClicked explains the limit when there's no room for another app`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP, OTHER_TOTP_APP, PASSKEY)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.AddTotpAppClicked)
+
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.MaxTotpAppsReached)
+    assertThat(actions).isEmpty()
+  }
+
+  /** Every second factor counts against one overall limit, so a passkey can be what leaves no room for another app. */
+  @Test
+  fun `AddTotpAppClicked explains the overall limit when there's no room for another second factor`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    every { repository.getMaxMfaKeys() } returns 2
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP, PASSKEY)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.AddTotpAppClicked)
+
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.MaxMfaKeysReached)
+    assertThat(actions).isEmpty()
+  }
+
+  @Test
+  fun `RenameMethodClicked opens the naming screen for that app`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.RenameMethodClicked(TOTP_APP))
+
+    val expected = TotpApp(id = TOTP_APP.id, name = TOTP_APP.name, createdAt = TOTP_APP.createdAt)
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToRenameTotpApp(expected))
+  }
+
+  /** Ids only mean anything within a kind, so a passkey sharing an id with an app must not be mistaken for it. */
+  @Test
+  fun `RenameMethodClicked for an unsupported passkey does nothing`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP, PASSKEY)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.RenameMethodClicked(PASSKEY))
+
+    assertThat(actions).isEmpty()
+  }
+
+  /** Removing a second factor is guarded by the screen lock, so nothing happens until the user gets past it. */
+  @Test
+  fun `RemoveMethodClicked asks for the screen lock first`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.RemoveMethodClicked(TOTP_APP))
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.AuthenticateToRemoveMethod(TOTP_APP))
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.None)
+  }
+
+  @Test
+  fun `MethodRemovalAuthenticated asks the user to confirm before removing`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+
+    viewModel.onEvent(AccountSettingsEvent.MethodRemovalAuthenticated(TOTP_APP))
+
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.ConfirmRemoveTotpApp(TOTP_APP.id))
+  }
+
+  @Test
+  fun `AuthenticationFailed says so and removes nothing`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.RemoveMethodClicked(TOTP_APP))
+    viewModel.onEvent(AccountSettingsEvent.AuthenticationFailed)
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.ShowAuthenticationFailed)
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.None)
+    coVerify(exactly = 0) { repository.removeTotpApp(any()) }
+  }
+
+  @Test
+  fun `MethodRemovalAuthenticated for an unsupported passkey does nothing`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(PASSKEY)
+
+    val viewModel = createViewModel()
+
+    viewModel.onEvent(AccountSettingsEvent.MethodRemovalAuthenticated(PASSKEY))
+
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.None)
+  }
+
+  @Test
+  fun `RemoveTotpAppConfirmed removes the app and says so`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.MethodRemovalAuthenticated(TOTP_APP))
+    viewModel.onEvent(AccountSettingsEvent.RemoveTotpAppConfirmed(TOTP_APP.id))
+
+    coVerify { repository.removeTotpApp(TOTP_APP.id) }
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.None)
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.ShowTotpAppRemoved)
+  }
+
+  /** The dialog dismisses itself before it confirms, so the removal has to survive the dismissal that lands first. */
+  @Test
+  fun `RemoveTotpAppConfirmed removes the app even though the dialog dismissed itself first`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.MethodRemovalAuthenticated(TOTP_APP))
+    viewModel.onEvent(AccountSettingsEvent.DialogDismissed)
+    viewModel.onEvent(AccountSettingsEvent.RemoveTotpAppConfirmed(TOTP_APP.id))
+
+    coVerify { repository.removeTotpApp(TOTP_APP.id) }
+    assertThat(viewModel.state.value.dialog).isEqualTo(Dialog.None)
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.ShowTotpAppRemoved)
+  }
+
+  /** The list is what tells the user the app is gone, so it has to be read again rather than assumed. */
+  @Test
+  fun `a removal re-reads the list`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+
+    val viewModel = createViewModel()
+
+    viewModel.onEvent(AccountSettingsEvent.MethodRemovalAuthenticated(TOTP_APP))
+
+    coEvery { repository.getTwoFactorMethods() } returns methods()
+    viewModel.onEvent(AccountSettingsEvent.RemoveTotpAppConfirmed(TOTP_APP.id))
+
+    assertThat(viewModel.state.value.signalLogin!!.twoFactorMethods).isEmpty()
+  }
+
+  @Test
+  fun `a removal that didn't go through says so rather than pretending the app is gone`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+    coEvery { repository.getTwoFactorMethods() } returns methods(TOTP_APP)
+    coEvery { repository.removeTotpApp(any()) } returns false
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.MethodRemovalAuthenticated(TOTP_APP))
+    viewModel.onEvent(AccountSettingsEvent.RemoveTotpAppConfirmed(TOTP_APP.id))
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.ShowTotpAppRemovalFailed)
+    assertThat(viewModel.state.value.signalLogin!!.twoFactorMethods).containsExactly(TOTP_APP)
+  }
+
+  @Test
+  fun `LearnMoreClicked opens the support article`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.LearnMoreClicked("https://support.signal.org/hc/articles/11228705649690"))
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.OpenSupportArticle("https://support.signal.org/hc/articles/11228705649690"))
+  }
+
+  @Test
+  fun `AccountAndRecoveryClicked asks for the screen lock first`() = runTest(testDispatcher) {
     every { repository.isPhoneNumberless() } returns true
 
     val viewModel = createViewModel()
@@ -333,32 +576,53 @@ class AccountSettingsViewModelTest {
 
     viewModel.onEvent(AccountSettingsEvent.AccountAndRecoveryClicked)
 
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.AuthenticateToViewSignalLoginDetails)
+  }
+
+  @Test
+  fun `SignalLoginDetailsAuthenticated opens the Signal Login details screen`() = runTest(testDispatcher) {
+    every { repository.isPhoneNumberless() } returns true
+
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.SignalLoginDetailsAuthenticated)
+
     assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToSignalLoginDetails)
   }
 
+  /** Tellomi（ADR-0072，tellomi/tellomi#1414）：「退出登录」直接去替代方案页，那里才有确认。 */
   @Test
-  fun `TotpAppClicked opens the authenticator apps screen`() = runTest(testDispatcher) {
-    every { repository.isPhoneNumberless() } returns true
-
+  fun `LogoutClicked opens the logout screen`() = runTest(testDispatcher) {
     val viewModel = createViewModel()
     val actions = collectActions(viewModel.actions)
 
-    viewModel.onEvent(AccountSettingsEvent.TotpAppClicked)
+    viewModel.onEvent(AccountSettingsEvent.LogoutClicked)
 
-    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToTotpAppList)
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToLogout)
   }
 
   @Test
-  fun `PasskeysClicked opens the passkeys screen`() = runTest(testDispatcher) {
-    every { repository.isPhoneNumberless() } returns true
-
+  fun `DeleteAccountClicked asks for the screen lock first`() = runTest(testDispatcher) {
     val viewModel = createViewModel()
     val actions = collectActions(viewModel.actions)
 
-    viewModel.onEvent(AccountSettingsEvent.PasskeysClicked)
+    viewModel.onEvent(AccountSettingsEvent.DeleteAccountClicked)
 
-    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToPasskeys)
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.AuthenticateToDeleteAccount)
   }
+
+  @Test
+  fun `DeleteAccountAuthenticated opens the delete account screen`() = runTest(testDispatcher) {
+    val viewModel = createViewModel()
+    val actions = collectActions(viewModel.actions)
+
+    viewModel.onEvent(AccountSettingsEvent.DeleteAccountAuthenticated)
+
+    assertThat(actions.last()).isEqualTo(AccountSettingsAction.NavigateToDeleteAccount)
+  }
+
+  private fun methods(vararg methods: TwoFactorMethod) = AccountSettingsRepository.TwoFactorMethodsResult.Success(methods.toList())
 
   private fun createViewModel(): AccountSettingsViewModel = AccountSettingsViewModel(repository)
 

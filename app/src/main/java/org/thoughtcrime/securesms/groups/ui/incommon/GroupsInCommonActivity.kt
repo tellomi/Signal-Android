@@ -7,6 +7,7 @@ package org.thoughtcrime.securesms.groups.ui.incommon
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -79,6 +80,12 @@ class GroupsInCommonActivity : PassphraseRequiredActivity() {
   override fun onCreate(savedInstanceState: Bundle?, ready: Boolean) {
     super.onCreate(savedInstanceState, ready)
 
+    // Tellomi（交互审计 A-22）：API 34 起事先声明退场动画，拖返回手势时系统沿着手势播它。
+    // 原来只在 finish() 里 overridePendingTransition：预测性返回会先播系统预览，松手后页面跳回全尺寸再下滑一次。
+    if (Build.VERSION.SDK_INT >= 34) {
+      overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, R.anim.slide_fade_to_bottom)
+    }
+
     setContent {
       SignalTheme {
         GroupsInCommonScreen(
@@ -92,7 +99,10 @@ class GroupsInCommonActivity : PassphraseRequiredActivity() {
 
   override fun finish() {
     super.finish()
-    overridePendingTransition(0, R.anim.slide_fade_to_bottom)
+    if (Build.VERSION.SDK_INT < 34) {
+      @Suppress("DEPRECATION")
+      overridePendingTransition(0, R.anim.slide_fade_to_bottom)
+    }
   }
 
   private fun navigateToConversation(group: Recipient) {

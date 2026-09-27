@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
@@ -25,11 +26,16 @@ import org.signal.core.ui.compose.CollectActions
 import org.signal.core.ui.compose.ComposeFragment
 import org.signal.core.util.ServiceUtil
 import org.thoughtcrime.securesms.R
+import org.thoughtcrime.securesms.components.compose.BiometricsAuthentication
+import org.thoughtcrime.securesms.components.compose.rememberBiometricsAuthentication
+import org.thoughtcrime.securesms.components.settings.app.account.authenticator.TotpNavArgs
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity
 import org.thoughtcrime.securesms.registration.ui.RegistrationActivity
+import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.PlayStoreUtil
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
+import org.signal.appsettings.R as AppSettingsR
 
 /**
  * Account settings shown on a primary device. Carries out the [AccountSettingsAction]s that need an Activity or the
@@ -60,7 +66,25 @@ class AccountSettingsFragment : ComposeFragment() {
   override fun FragmentContent() {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    CollectActions(viewModel.actions) { action -> handleAction(action) }
+    val removalBiometrics = rememberBiometricsAuthentication(
+      promptTitle = stringResource(AppSettingsR.string.AccountSettingsFragment__unlock_to_remove_two_factor_method),
+      educationSheetMessage = stringResource(AppSettingsR.string.AccountSettingsFragment__to_remove_this_method_confirm_its_you),
+      onAuthenticationFailed = { viewModel.onEvent(AccountSettingsEvent.AuthenticationFailed) }
+    )
+
+    val signalLoginBiometrics = rememberBiometricsAuthentication(
+      promptTitle = stringResource(AppSettingsR.string.AccountSettingsFragment__unlock_to_view_signal_login),
+      educationSheetMessage = stringResource(AppSettingsR.string.AccountSettingsFragment__to_view_your_signal_login_confirm_its_you),
+      onAuthenticationFailed = { viewModel.onEvent(AccountSettingsEvent.AuthenticationFailed) }
+    )
+
+    val deleteAccountBiometrics = rememberBiometricsAuthentication(
+      promptTitle = stringResource(AppSettingsR.string.AccountSettingsFragment__unlock_to_confirm_its_you),
+      educationSheetMessage = stringResource(AppSettingsR.string.AccountSettingsFragment__to_delete_your_account_confirm_its_you),
+      onAuthenticationFailed = { viewModel.onEvent(AccountSettingsEvent.AuthenticationFailed) }
+    )
+
+    CollectActions(viewModel.actions) { action -> handleAction(action, removalBiometrics, signalLoginBiometrics, deleteAccountBiometrics) }
 
     AccountSettingsScreen(
       state = state,
@@ -68,20 +92,50 @@ class AccountSettingsFragment : ComposeFragment() {
     )
   }
 
-  private fun handleAction(action: AccountSettingsAction) {
+  private fun handleAction(
+    action: AccountSettingsAction,
+    removalBiometrics: BiometricsAuthentication,
+    signalLoginBiometrics: BiometricsAuthentication,
+    deleteAccountBiometrics: BiometricsAuthentication
+  ) {
     when (action) {
       AccountSettingsAction.NavigateBack -> requireActivity().onBackPressedDispatcher.onBackPressed()
       AccountSettingsAction.LaunchCreatePinFlow -> pinFlowLauncher.launch(CreateSvrPinActivity.getIntentForPinCreate(requireContext()))
       AccountSettingsAction.LaunchChangePinFlow -> pinFlowLauncher.launch(CreateSvrPinActivity.getIntentForPinChangeFromSettings(requireContext()))
       AccountSettingsAction.ShowPinCreatedConfirmation -> Snackbar.make(requireView(), R.string.ConfirmKbsPinFragment__pin_created, Snackbar.LENGTH_LONG).show()
-      AccountSettingsAction.NavigateToSignalLoginDetails -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_signalLoginViewDetailsFragment)
-      AccountSettingsAction.NavigateToTotpAppList -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_authenticatorAppsFragment)
-      AccountSettingsAction.NavigateToPasskeys -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_passkeysFragment)
+      AccountSettingsAction.AuthenticateToViewSignalLoginDetails -> {
+        signalLoginBiometrics.withBiometricsAuthentication {
+          viewModel.onEvent(AccountSettingsEvent.SignalLoginDetailsAuthenticated)
+        }
+      }
+      AccountSettingsAction.NavigateToSignalLoginDetails -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_settingsSignalLoginDetailsFragment)
+      AccountSettingsAction.NavigateToTotpSetup -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_authenticatorSetupFragment)
+      is AccountSettingsAction.NavigateToRenameTotpApp -> {
+        findNavController().safeNavigate(
+          R.id.action_accountSettingsFragment_to_authenticatorNameFragment,
+          Bundle().apply { TotpNavArgs.putRenamedApp(this, action.app) }
+        )
+      }
+      is AccountSettingsAction.AuthenticateToRemoveMethod -> {
+        removalBiometrics.withBiometricsAuthentication {
+          viewModel.onEvent(AccountSettingsEvent.MethodRemovalAuthenticated(action.method))
+        }
+      }
+      AccountSettingsAction.ShowAuthenticationFailed -> toast(AppSettingsR.string.AccountSettingsFragment__authentication_required)
+      AccountSettingsAction.ShowTotpAppRemoved -> toast(AppSettingsR.string.AccountSettingsFragment__authenticator_app_removed)
+      AccountSettingsAction.ShowTotpAppRemovalFailed -> toast(AppSettingsR.string.AccountSettingsFragment__couldnt_remove_authenticator_app)
+      is AccountSettingsAction.OpenSupportArticle -> CommunicationActions.openBrowserLink(requireContext(), action.url)
       AccountSettingsAction.NavigateToAdvancedPinSettings -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_advancedPinSettingsActivity)
       AccountSettingsAction.NavigateToChangePhoneNumber -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_changePhoneNumberFragment)
       AccountSettingsAction.NavigateToDeviceTransfer -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_oldDeviceTransferActivity)
       AccountSettingsAction.NavigateToExportAccountData -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_exportAccountFragment)
+      AccountSettingsAction.AuthenticateToDeleteAccount -> {
+        deleteAccountBiometrics.withBiometricsAuthentication {
+          viewModel.onEvent(AccountSettingsEvent.DeleteAccountAuthenticated)
+        }
+      }
       AccountSettingsAction.NavigateToDeleteAccount -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_deleteAccountFragment)
+      AccountSettingsAction.NavigateToLogout -> findNavController().safeNavigate(R.id.action_accountSettingsFragment_to_logoutFragment)
       AccountSettingsAction.OpenPlayStore -> PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(requireContext())
       AccountSettingsAction.LaunchReRegistration -> startActivity(RegistrationActivity.newIntentForReRegistration(requireContext()))
       AccountSettingsAction.WipeAllData -> {

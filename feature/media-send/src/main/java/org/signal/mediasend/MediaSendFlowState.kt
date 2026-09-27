@@ -42,7 +42,7 @@ data class MediaSendFlowState(
   val focusedMedia: Media? = null,
   val isMeteredConnection: Boolean = false,
   val isPreUploadEnabled: Boolean = false,
-  val sentMediaQuality: @WriteWith<TransientSentMediaQualityParceler> SentMediaQuality = MediaSendDependencies.mediaSendRepository.sentMediaQuality,
+  val sentMediaQuality: @WriteWith<SentMediaQualityParceler> SentMediaQuality = MediaSendDependencies.mediaSendRepository.sentMediaQuality,
   /**
    * Per-media editor state keyed by URI (video trim data, image editor data, etc.).
    */
@@ -137,7 +137,13 @@ data class MediaSendFlowState(
   /**
    * Whether the control for stripping a video's audio track is available.
    */
-  val isMuteVideoAudioEnabled: Boolean = MediaConstraints.isMuteVideoAudioAvailable()
+  val isMuteVideoAudioEnabled: Boolean = MediaConstraints.isMuteVideoAudioAvailable(),
+
+  /** Tellomi（tellomi/tellomi#1115）：从「+」打开的附件 Sheet；null 是整屏的选图流程，同上游。 */
+  val attachmentSheet: MediaSendFlowActivityContract.AttachmentSheet? = null,
+
+  /** Tellomi（tellomi/tellomi#1121 F-1）：附件 Sheet 现在显示哪一页（dock 的「相册」/「文件」）。 */
+  val attachmentPage: MediaSendFlowActivityContract.AttachmentPage = MediaSendFlowActivityContract.AttachmentPage.GALLERY
 ) : Parcelable {
 
   /**
@@ -167,15 +173,16 @@ data class MediaSendFlowState(
   }
 
   /**
-   * The repository is the source of truth: every toggle writes through to it, so the value is re-read rather than saved.
+   * Tellomi（tellomi/tellomi#1261，需求 D9）：这次选的画质只属于这一次发送、不写回设置，所以跟着状态一起存，进程被回收后也照样恢复。
+   * 默认值（新开的一次）仍取设置里的「发送媒体质量」。
    */
-  private object TransientSentMediaQualityParceler : Parceler<SentMediaQuality> {
-    override fun create(parcel: Parcel): SentMediaQuality = MediaSendDependencies.mediaSendRepository.sentMediaQuality
-    override fun SentMediaQuality.write(parcel: Parcel, flags: Int) = Unit
+  private object SentMediaQualityParceler : Parceler<SentMediaQuality> {
+    override fun create(parcel: Parcel): SentMediaQuality = SentMediaQuality.fromCode(parcel.readInt())
+    override fun SentMediaQuality.write(parcel: Parcel, flags: Int) = parcel.writeInt(code)
   }
 
   /**
-   * Derived from the quality the repository restores, so it is re-read alongside it rather than saved.
+   * Derived from the quality, so it is re-read rather than saved. Tellomi（#1261）：恢复后由 MediaSendFlowViewModel 按恢复出来的画质重算。
    */
   private object TransientVideoTranscodingTiersParceler : Parceler<List<TranscodingConfig.QualityTier>> {
     override fun create(parcel: Parcel): List<TranscodingConfig.QualityTier> {

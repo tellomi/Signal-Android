@@ -19,6 +19,9 @@ object TestTags {
   const val WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON = "welcome_restore_has_old_phone_button"
   const val WELCOME_RESTORE_NO_OLD_PHONE_BUTTON = "welcome_restore_no_old_phone_button"
 
+  // Tellomi（ADR-0072）：已退出登录时欢迎页的「上次登录」
+  const val WELCOME_LAST_LOGIN = "welcome_last_login"
+
   // Permissions Screen
   const val PERMISSIONS_SCREEN = "permissions_screen"
   const val PERMISSIONS_NEXT_BUTTON = "permissions_next_button"
@@ -45,16 +48,20 @@ object TestTags {
   const val PHONE_NUMBER_SCREEN = "phone_number_screen"
   const val PHONE_NUMBER_COUNTRY_CODE_FIELD = "phone_number_country_code_field"
   const val PHONE_NUMBER_PHONE_FIELD = "phone_number_phone_field"
+  const val PHONE_NUMBER_CLEAR_BUTTON = "phone_number_clear_button"
   const val PHONE_NUMBER_NEXT_BUTTON = "phone_number_next_button"
+  const val PHONE_NUMBER_WIPE_FOR_NEW_NUMBER_DIALOG = "phone_number_wipe_for_new_number_dialog"
   const val PHONE_NUMBER_REGISTER_WITHOUT_NUMBER_BUTTON = "phone_number_register_without_number_button"
 
   // Signal Login Payment Screen
   const val SIGNAL_LOGIN_PAYMENT_SCREEN = "signal_login_payment_screen"
   const val SIGNAL_LOGIN_PAYMENT_LEARN_MORE_LINK = "signal_login_payment_learn_more_link"
   const val SIGNAL_LOGIN_PAYMENT_PURCHASE_OPTION = "signal_login_payment_purchase_option"
+  const val SIGNAL_LOGIN_PAYMENT_PRICE_RETRY_BUTTON = "signal_login_payment_price_retry_button"
   const val SIGNAL_LOGIN_PAYMENT_EXISTING_LOGIN_OPTION = "signal_login_payment_existing_login_option"
   const val SIGNAL_LOGIN_PAYMENT_CONTINUE_BUTTON = "signal_login_payment_continue_button"
   const val SIGNAL_LOGIN_PAYMENT_RECEIPT_CREDENTIAL_FIELD = "signal_login_payment_receipt_credential_field"
+  const val SIGNAL_LOGIN_PAYMENT_UNAVAILABLE_DIALOG = "signal_login_payment_unavailable_dialog"
 
   // Signal Login Credential Entry Screen
   const val SIGNAL_LOGIN_CREDENTIAL_ENTRY_SCREEN = "signal_login_credential_entry_screen"
@@ -62,6 +69,7 @@ object TestTags {
   const val SIGNAL_LOGIN_CREDENTIAL_RECOVERY_KEY_FIELD = "signal_login_credential_recovery_key_field"
   const val SIGNAL_LOGIN_CREDENTIAL_REVEAL_RECOVERY_KEY_BUTTON = "signal_login_credential_reveal_recovery_key_button"
   const val SIGNAL_LOGIN_CREDENTIAL_NEED_HELP_BUTTON = "signal_login_credential_need_help_button"
+  const val SIGNAL_LOGIN_CREDENTIAL_SHOW_LOGIN_INFO_AGAIN_BUTTON = "signal_login_credential_show_login_info_again_button"
   const val SIGNAL_LOGIN_CREDENTIAL_NEXT_BUTTON = "signal_login_credential_next_button"
 
   // Signal Login Info Screen
@@ -69,6 +77,17 @@ object TestTags {
   const val SIGNAL_LOGIN_INFO_CREDENTIAL_CARD = "signal_login_info_credential_card"
   const val SIGNAL_LOGIN_INFO_SAVE_TO_PASSWORD_MANAGER_BUTTON = "signal_login_info_save_to_password_manager_button"
   const val SIGNAL_LOGIN_INFO_SAVE_MANUALLY_BUTTON = "signal_login_info_save_manually_button"
+  const val CONFIRM_LOGIN_SAVED_TO_PASSWORD_MANAGER_SHEET = "confirm_login_saved_to_password_manager_sheet"
+  const val CONFIRM_LOGIN_SAVED_TO_PASSWORD_MANAGER_CONFIRM_BUTTON = "confirm_login_saved_to_password_manager_confirm_button"
+  const val CONFIRM_LOGIN_SAVED_TO_PASSWORD_MANAGER_SEE_LOGIN_INFO_AGAIN_BUTTON = "confirm_login_saved_to_password_manager_see_login_info_again_button"
+
+  // Save Signal Login Screen
+  const val SIGNAL_LOGIN_MANUAL_SAVE_SCREEN = "signal_login_manual_save_screen"
+  const val SIGNAL_LOGIN_MANUAL_SAVE_SAVE_AS_PDF_BUTTON = "signal_login_manual_save_save_as_pdf_button"
+  const val SIGNAL_LOGIN_MANUAL_SAVE_CONTINUE_BUTTON = "signal_login_manual_save_continue_button"
+  const val CONFIRM_LOGIN_SAVED_SHEET = "confirm_login_saved_sheet"
+  const val CONFIRM_LOGIN_SAVED_CONTINUE_BUTTON = "confirm_login_saved_continue_button"
+  const val CONFIRM_LOGIN_SAVED_SHOW_LOGIN_INFO_AGAIN_BUTTON = "confirm_login_saved_show_login_info_again_button"
 
   // Add Username Screen
   const val ADD_USERNAME_SCREEN = "add_username_screen"
@@ -90,6 +109,9 @@ object TestTags {
   const val VERIFICATION_CODE_RESEND_SMS_BUTTON = "verification_code_resend_sms_button"
   const val VERIFICATION_CODE_CALL_ME_BUTTON = "verification_code_call_me_button"
   const val VERIFICATION_CODE_HAVING_TROUBLE_BUTTON = "verification_code_having_trouble_button"
+  const val VERIFICATION_CODE_ERROR = "verification_code_error"
+  const val VERIFICATION_CODE_HELP_CHANGE_NUMBER = "verification_code_help_change_number"
+  const val VERIFICATION_CODE_HELP_CONTACT_SUPPORT = "verification_code_help_contact_support"
 
   // Archive Restore Selection Screen
   const val ARCHIVE_RESTORE_SELECTION_SCREEN = "archive_restore_selection_screen"
@@ -98,6 +120,7 @@ object TestTags {
   const val ARCHIVE_RESTORE_SELECTION_FROM_BACKUP_FILE = "archive_restore_selection_from_backup_file"
   const val ARCHIVE_RESTORE_SELECTION_DEVICE_TRANSFER = "archive_restore_selection_device_transfer"
   const val ARCHIVE_RESTORE_SELECTION_NONE = "archive_restore_selection_none"
+  const val ARCHIVE_RESTORE_SELECTION_SPINNER = "archive_restore_selection_spinner"
 
   // Local Backup Restore Screen
   const val LOCAL_BACKUP_RESTORE_SCREEN = "local_backup_restore_screen"
@@ -121,6 +144,7 @@ object TestTags {
   // Captcha Screen
   const val CAPTCHA_SCREEN = "captcha_screen"
   const val CAPTCHA_CANCEL_BUTTON = "captcha_cancel_button"
+  const val CAPTCHA_RETRY_BUTTON = "captcha_retry_button" // Tellomi（#1210）
 
   // Country Code Picker Screen
   const val COUNTRY_CODE_PICKER_SCREEN = "country_code_picker_screen"
@@ -133,6 +157,12 @@ object TestTags {
   const val CREATE_PROFILE_FAMILY_NAME_FIELD = "create_profile_family_name_field"
   const val CREATE_PROFILE_WHO_CAN_FIND_ME_ROW = "create_profile_who_can_find_me_row"
   const val CREATE_PROFILE_NEXT_BUTTON = "create_profile_next_button"
+  const val CREATE_PROFILE_PHONE_NUMBER_NOT_SHOWN = "create_profile_phone_number_not_shown"
+  const val CREATE_PROFILE_AVATAR_INITIALS = "create_profile_avatar_initials"
+  const val CREATE_PROFILE_USERNAME_FIELD = "create_profile_username_field"
+  const val CREATE_PROFILE_USERNAME_SUPPORTING_TEXT = "create_profile_username_supporting_text"
+  const val CREATE_PROFILE_USERNAME_RULES_HINT = "create_profile_username_rules_hint"
+  const val CREATE_PROFILE_USERNAME_CANDIDATE = "create_profile_username_candidate"
 
   // Phone Number Discoverability Screen
   const val PHONE_NUMBER_DISCOVERABILITY_SCREEN = "phone_number_discoverability_screen"
@@ -190,13 +220,6 @@ object TestTags {
 
   // Totp Entry Screen
   const val TOTP_ENTRY_SCREEN = "totp_entry_screen"
-  const val TOTP_ENTRY_INPUT = "totp_entry_input"
-  const val TOTP_ENTRY_DIGIT_0 = "totp_entry_digit_0"
-  const val TOTP_ENTRY_DIGIT_1 = "totp_entry_digit_1"
-  const val TOTP_ENTRY_DIGIT_2 = "totp_entry_digit_2"
-  const val TOTP_ENTRY_DIGIT_3 = "totp_entry_digit_3"
-  const val TOTP_ENTRY_DIGIT_4 = "totp_entry_digit_4"
-  const val TOTP_ENTRY_DIGIT_5 = "totp_entry_digit_5"
   const val TOTP_ENTRY_CANCEL_BUTTON = "totp_entry_cancel_button"
 
   // Two Factor Selection Screen

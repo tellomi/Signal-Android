@@ -29,7 +29,7 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
     ChatsSettingsState(
       generateLinkPreviews = SignalStore.settings.isLinkPreviewsEnabled,
       useAddressBook = SignalStore.settings.isPreferSystemContactPhotos,
-      keepMutedChatsArchived = SignalStore.settings.shouldKeepMutedChatsArchived(),
+      keepMutedChatsArchived = SignalStore.settings.keepMutedChatsArchived,
       useSystemEmoji = SignalStore.settings.isPreferSystemEmoji,
       enterKeySends = SignalStore.settings.isEnterKeySends,
       localBackupsEnabled = SignalStore.settings.isBackupEnabled && BackupUtil.canUserAccessBackupDirectory(AppDependencies.application),
@@ -37,7 +37,8 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
       userUnregistered = TextSecurePreferences.isUnauthorizedReceived(AppDependencies.application) || !SignalStore.account.isRegistered,
       clientDeprecated = SignalStore.misc.isClientDeprecated,
       isPlaintextExportEnabled = RemoteConfig.localPlaintextExport,
-      chatExportState = ChatExportState.None
+      chatExportState = ChatExportState.None,
+      expandShortLinks = SignalStore.tellomiLinks.expandShortLinks
     )
   )
 
@@ -88,6 +89,12 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
     repository.syncLinkPreviewsState()
   }
 
+  /** Tellomi（#1422）：只存本机，不同步（ADR-0063 §8.1 第 9 行）。 */
+  fun setExpandShortLinksEnabled(enabled: Boolean) {
+    store.update { it.copy(expandShortLinks = enabled) }
+    SignalStore.tellomiLinks.expandShortLinks = enabled
+  }
+
   fun setUseAddressBook(enabled: Boolean) {
     store.update { it.copy(useAddressBook = enabled) }
     refreshDebouncer.publish { ConversationUtil.refreshRecipientShortcuts() }
@@ -97,7 +104,7 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
 
   fun setKeepMutedChatsArchived(enabled: Boolean) {
     store.update { it.copy(keepMutedChatsArchived = enabled) }
-    SignalStore.settings.setKeepMutedChatsArchived(enabled)
+    SignalStore.settings.keepMutedChatsArchived = enabled
     repository.syncKeepMutedChatsArchivedState()
   }
 

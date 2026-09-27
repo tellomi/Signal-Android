@@ -64,6 +64,10 @@ class ChatsSettingsFragment : ComposeFragment() {
       viewModel.setGenerateLinkPreviewsEnabled(enabled)
     }
 
+    override fun onExpandShortLinksChanged(enabled: Boolean) {
+      viewModel.setExpandShortLinksEnabled(enabled)
+    }
+
     override fun onUseAddressBookChanged(enabled: Boolean) {
       viewModel.setUseAddressBook(enabled)
     }
@@ -121,6 +125,7 @@ class ChatsSettingsFragment : ComposeFragment() {
 private interface ChatsSettingsCallbacks : ChatExportCallbacks {
   fun onNavigationClick() = Unit
   fun onGenerateLinkPreviewsChanged(enabled: Boolean) = Unit
+  fun onExpandShortLinksChanged(enabled: Boolean) = Unit
   fun onUseAddressBookChanged(enabled: Boolean) = Unit
   fun onKeepMutedChatsArchivedChanged(enabled: Boolean) = Unit
   fun onAddAChatFolderClick() = Unit
@@ -165,10 +170,21 @@ private fun ChatsSettingsScreen(
       item {
         Rows.ToggleRow(
           text = stringResource(R.string.preferences__generate_link_previews),
-          label = stringResource(R.string.preferences__retrieve_link_previews_from_websites_for_messages),
+          // Tellomi（ADR-0063 §8.1 第 9 行）：说清楚开着时发送端会访问网站
+          label = stringResource(R.string.TellomiLinks__generate_link_previews_description),
           enabled = state.isRegisteredAndUpToDate(),
           checked = state.generateLinkPreviews,
           onCheckChanged = callbacks::onGenerateLinkPreviewsChanged
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
+          text = stringResource(R.string.TellomiLinks__expand_short_links),
+          label = stringResource(R.string.TellomiLinks__expand_short_links_description),
+          enabled = state.isRegisteredAndUpToDate() && state.generateLinkPreviews,
+          checked = state.expandShortLinks,
+          onCheckChanged = callbacks::onExpandShortLinksChanged
         )
       }
 

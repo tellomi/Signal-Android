@@ -138,6 +138,12 @@ class UsernameLinkSettingsFragment : ComposeFragment() {
       onUsernameLinkResetResultHandled = { viewModel.onUsernameLinkResetResultHandled() },
       onShareBadge = { shareQrBadge(requireActivity(), viewModel.generateQrCodeImage(helpText)) },
       onQrResultHandled = { viewModel.onQrResultHandled() },
+      onGroupInviteFound = { url ->
+        // Tellomi（tellomi/tellomi#947）：先切回「二维码」页签——扫码屏离开组合、相机解绑，码留在取景框里也不会每 2 秒再弹一层
+        viewModel.onQrResultHandled()
+        viewModel.onTabSelected(ActiveTab.Code)
+        CommunicationActions.handlePotentialGroupLinkUrl(requireActivity(), url)
+      },
       onOpenCameraClicked = { askCameraPermissions() },
       onOpenGalleryClicked = { galleryLauncher.launch(Unit) },
       onLinkReset = { viewModel.onUsernameLinkReset() },
@@ -178,6 +184,7 @@ private fun MainScreen(
   onUsernameLinkResetResultHandled: () -> Unit = {},
   onShareBadge: () -> Unit = {},
   onQrResultHandled: () -> Unit = {},
+  onGroupInviteFound: (String) -> Unit = {},
   onOpenCameraClicked: () -> Unit = {},
   onOpenGalleryClicked: () -> Unit = {},
   onLinkReset: () -> Unit = {},
@@ -244,6 +251,7 @@ private fun MainScreen(
         cameraState = cameraState,
         cameraEmitter = cameraEmitter,
         onQrResultHandled = onQrResultHandled,
+        onGroupInviteFound = onGroupInviteFound,
         onOpenCameraClicked = onOpenCameraClicked,
         onOpenGalleryClicked = onOpenGalleryClicked,
         hasCameraPermission = cameraPermissionState.status.isGranted,

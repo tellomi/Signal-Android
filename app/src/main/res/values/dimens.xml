@@ -70,7 +70,14 @@
     <dimen name="conversation_individual_left_gutter">16dp</dimen>
     <dimen name="conversation_individual_received_left_gutter">8dp</dimen>
     <dimen name="conversation_group_left_gutter">52dp</dimen>
-    <dimen name="conversation_vertical_message_spacing_default">8dp</dimen>
+    <!-- Tellomi：气泡在尾巴那一侧多留的外边距 e（规范 #1204 第 2 节，A「圆润」伸出 6），尾巴不贴屏幕边、不压头像（owner 2026-09-26） -->
+    <dimen name="tellomi_bubble_tail_margin">6dp</dimen>
+    <!-- 16 + e：尾巴那一侧的气泡离屏幕边 -->
+    <dimen name="tellomi_bubble_tail_side_edge">22dp</dimen>
+    <!-- 8 + e：对方的气泡离头像 -->
+    <dimen name="tellomi_bubble_tail_side_after_avatar">14dp</dimen>
+    <!-- Tellomi：组间距 12（上下各 6），和 V2 纯文字气泡一致；原来 8（组间 16）。#1206，规范 #1204 第 1 节 -->
+    <dimen name="conversation_vertical_message_spacing_default">6dp</dimen>
     <dimen name="conversation_vertical_message_spacing_collapse">1dp</dimen>
 
     <dimen name="reaction_scrubber_anim_start_translation_y">25dp</dimen>
@@ -221,8 +228,6 @@
     <dimen name="exo_media_preview_button_height">48dp</dimen>
     <dimen name="media_preview_button_horizontal_margin">8dp</dimen>
     <dimen name="media_preview_lottie_button_dimen">36dp</dimen>
-    <dimen name="media_rail_item_size">46dp</dimen>
-    <dimen name="media_rail_thumbnail_size">44dp</dimen>
     <dimen name="registrationactivity_text_view_padding">32dp</dimen>
 
     <dimen name="safety_number_qr_peek">24dp</dimen>

@@ -8,6 +8,7 @@
 package org.signal.registration.screens.welcome
 
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.util.DisplayMetrics
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,8 +27,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,14 +48,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.window.layout.WindowMetricsCalculator
 import kotlinx.coroutines.CoroutineScope
@@ -67,12 +67,15 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.TabletPortraitDayPreview
 import org.signal.core.ui.compose.dismissWithAnimation
 import org.signal.core.ui.compose.horizontalGutters
-import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.ui.isWidthExpanded
 import org.signal.core.ui.rememberWindowBreakpoint
 import org.signal.registration.R
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
+import org.signal.registration.screens.shared.TellomiCrossBorderConsent
+import org.signal.registration.screens.shared.TellomiCrossBorderNotice
+import org.signal.registration.screens.shared.TellomiFirstLaunchNotice
 import org.signal.registration.test.TestTags
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -88,6 +91,25 @@ fun WelcomeScreen(
   modifier: Modifier = Modifier
 ) {
   var showBottomSheet by remember { mutableStateOf(false) }
+
+  // Tellomi：「我可以用旧手机」（扫码恢复）和「关联设备」都要连服务端，同意跨境之前网络是关着的，先问（tellomi/tellomi#1133）。
+  // 走号码注册的在号码页确认之前问。
+  val context = LocalContext.current
+  var pendingNetworkEvent by remember { mutableStateOf<WelcomeScreenEvents?>(null) }
+  val gatedOnEvent: (WelcomeScreenEvents) -> Unit = { event ->
+    // Tellomi（tellomi/tellomi#1338）：关联设备只要看过告知（hasAgreed，含「知道了」）；恢复 / 转移是主设备，
+    // 要亲自点过「同意并继续」——只点过关联的「知道了」、又退回来恢复的，还要出完整同意。
+    val needsNotice = when (event) {
+      WelcomeScreenEvents.LinkDevice -> !TellomiCrossBorderConsent.hasAgreed(context)
+      WelcomeScreenEvents.HasOldPhone -> !TellomiCrossBorderConsent.hasGivenSeparateConsent(context)
+      else -> false
+    }
+    if (needsNotice) {
+      pendingNetworkEvent = event
+    } else {
+      onEvent(event)
+    }
+  }
   val windowBreakpoint = rememberWindowBreakpoint()
   val onRestoreOrTransferClick = { showBottomSheet = true }
   val displayLinkAsPrimaryOption by rememberDisplayLinkAndSyncAsPrimaryPath(state.isLinkAndSyncAvailable)
@@ -96,7 +118,7 @@ fun WelcomeScreen(
     is WindowBreakpoint.Small -> {
       CompactLayout(
         state = state,
-        onEvent = onEvent,
+        onEvent = gatedOnEvent,
         onRestoreOrTransferClick = onRestoreOrTransferClick,
         modifier = modifier
       )
@@ -105,7 +127,7 @@ fun WelcomeScreen(
     is WindowBreakpoint.Medium -> {
       MediumLayout(
         state = state,
-        onEvent = onEvent,
+        onEvent = gatedOnEvent,
         onRestoreOrTransferClick = onRestoreOrTransferClick,
         modifier = modifier
       )
@@ -114,7 +136,7 @@ fun WelcomeScreen(
     is WindowBreakpoint.Large -> {
       LargeLayout(
         state = state,
-        onEvent = onEvent,
+        onEvent = gatedOnEvent,
         displayLinkAsPrimaryOption = displayLinkAsPrimaryOption,
         onRestoreOrTransferClick = onRestoreOrTransferClick,
         modifier = modifier
@@ -126,9 +148,31 @@ fun WelcomeScreen(
     RestoreOrTransferBottomSheet(
       onEvent = {
         showBottomSheet = false
-        onEvent(it)
+        gatedOnEvent(it)
       },
       onDismiss = { showBottomSheet = false }
+    )
+  }
+
+  // Tellomi：第一次打开先弹一次隐私提示；同意之前，这一页的按钮都在提示后面（tellomi/tellomi#1211）。
+  TellomiFirstLaunchNotice()
+
+  pendingNetworkEvent?.let { event ->
+    // Tellomi（tellomi/tellomi#1338）：关联设备的同意在手机上取得，这台只出只读告知、一个「知道了」（需求 6.1 ④）；
+    // 「我可以用旧手机」是恢复 / 转移成主设备，照旧完整同意。
+    val linking = event == WelcomeScreenEvents.LinkDevice
+    TellomiCrossBorderNotice(
+      onAgree = {
+        if (linking) {
+          TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
+        } else {
+          TellomiCrossBorderConsent.recordAgreement(context)
+        }
+        pendingNetworkEvent = null
+        onEvent(event)
+      },
+      onCancel = { pendingNetworkEvent = null },
+      readOnly = linking
     )
   }
 }
@@ -157,7 +201,6 @@ private fun CompactLayout(
         )
 
         Headline(
-          textAlign = TextAlign.Center,
           modifier = Modifier.padding(horizontal = 32.dp)
         )
 
@@ -175,14 +218,11 @@ private fun CompactLayout(
           modifier = Modifier.widthIn(max = 320.dp),
           horizontalAlignment = Alignment.CenterHorizontally
         ) {
-          TermsAndPrivacy(onEvent)
-
-          Spacer(modifier = Modifier.height(16.dp))
-
           PrimaryDeviceCallToActionButtons(
             onEvent = onEvent,
             onRestoreOrTransferClick = onRestoreOrTransferClick,
-            showRestoreOrTransfer = state.showRestoreOrTransfer
+            showRestoreOrTransfer = state.showRestoreOrTransfer,
+            lastLogin = state.lastLogin
           )
 
           Spacer(modifier = Modifier.height(48.dp))
@@ -220,13 +260,6 @@ private fun MediumLayout(
               .padding(horizontal = 24.dp)
           )
         }
-
-        TermsAndPrivacy(
-          onEvent = onEvent,
-          modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .padding(bottom = 24.dp)
-        )
       }
     },
     footer = {
@@ -241,7 +274,8 @@ private fun MediumLayout(
           PrimaryDeviceCallToActionButtons(
             onEvent = onEvent,
             onRestoreOrTransferClick = onRestoreOrTransferClick,
-            showRestoreOrTransfer = state.showRestoreOrTransfer
+            showRestoreOrTransfer = state.showRestoreOrTransfer,
+            lastLogin = state.lastLogin
           )
         }
       }
@@ -283,20 +317,12 @@ private fun LargeLayout(
               .widthIn(max = 320.dp)
               .fillMaxWidth()
           ) {
-            Headline(
-              style = MaterialTheme.typography.headlineLarge
-            )
+            Headline()
 
             Spacer(modifier = Modifier.height(77.dp))
 
-            TermsAndPrivacy(
-              onEvent = onEvent,
-              modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp)
-            )
-
-            if (displayLinkAsPrimaryOption) {
+            // Tellomi（ADR-0072）：已退出登录的主设备不把「关联设备」当主路径，照手机的样子给「上次登录」。
+            if (displayLinkAsPrimaryOption && state.lastLogin == null) {
               SecondaryDeviceCallToActionButtons(
                 onEvent = onEvent
               )
@@ -304,7 +330,8 @@ private fun LargeLayout(
               PrimaryDeviceCallToActionButtons(
                 onEvent = onEvent,
                 onRestoreOrTransferClick = onRestoreOrTransferClick,
-                showRestoreOrTransfer = state.showRestoreOrTransfer
+                showRestoreOrTransfer = state.showRestoreOrTransfer,
+                lastLogin = state.lastLogin
               )
             }
           }
@@ -314,81 +341,78 @@ private fun LargeLayout(
   )
 }
 
+/**
+ * Tellomi（owner 2026-09-27，`docs/brand/README.md`「插画」「开屏轮播」）：上游的单张欢迎插画换成四张 Open Doodles 的轮播，
+ * 下面带一排小圆点；实现见 [TellomiWelcomeCarousel]。
+ */
 @Composable
 private fun HeroImage(
   modifier: Modifier = Modifier
 ) {
-  Image(
-    painter = painterResource(R.drawable.welcome),
-    contentDescription = null,
-    modifier = modifier.attachDebugLogHelper(),
-    contentScale = ContentScale.Fit
-  )
+  TellomiWelcomeCarousel(modifier = modifier)
 }
 
+/**
+ * Tellomi（owner 2026-09-27，`docs/product/BRAND.md`「开屏」）：插画下面只显示字标 Tell@mi（`docs/brand/wordmark/tellomi-wordmark-{light,dark}.svg`，浅色黑、深色白），
+ * 不放上游的「Take privacy with you…」这类句子；上游的「条款与隐私政策」链接也去掉了（首次打开的隐私提示和号码页的勾选里都有）。
+ * 字标只在这一处引用 `R.drawable.tellomi_wordmark`（深色在 drawable-night），只定高度、宽度按图自己的比例：字标还会重新设计，换文件就行，不用改代码。
+ */
 @Composable
 private fun Headline(
-  modifier: Modifier = Modifier,
-  style: TextStyle = MaterialTheme.typography.headlineMedium,
-  textAlign: TextAlign = TextAlign.Start
+  modifier: Modifier = Modifier
 ) {
-  Text(
-    text = stringResource(R.string.RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message),
-    style = style,
-    textAlign = textAlign,
+  Image(
+    painter = painterResource(R.drawable.tellomi_wordmark),
+    // 品牌名不翻译，读屏各语言都念「Tellomi」。
+    contentDescription = "Tellomi",
+    contentScale = ContentScale.Fit,
     modifier = modifier
+      .height(40.dp)
       .testTag(TestTags.WELCOME_HEADLINE)
       .attachDebugLogHelper()
   )
 }
 
 @Composable
-private fun TermsAndPrivacy(
-  onEvent: (WelcomeScreenEvents) -> Unit,
-  modifier: Modifier = Modifier
-) {
-  TextButton(
-    onClick = { onEvent(WelcomeScreenEvents.ViewTermsAndPrivacy) },
-    colors = ButtonDefaults.textButtonColors(
-      contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-    ),
-    modifier = modifier
-  ) {
-    Text(
-      text = stringResource(R.string.RegistrationActivity_terms_and_privacy),
-      textAlign = TextAlign.Center
-    )
-  }
-}
-
-@Composable
 private fun PrimaryDeviceCallToActionButtons(
   onEvent: (WelcomeScreenEvents) -> Unit,
   onRestoreOrTransferClick: () -> Unit,
-  showRestoreOrTransfer: Boolean
+  showRestoreOrTransfer: Boolean,
+  lastLogin: WelcomeScreenState.LastLogin? = null
 ) {
+  // Tellomi（ADR-0072 §4.1 第 4 步 / §4.2）：已退出登录时，按钮上面是「上次登录」，点一下直接进验证码；
+  // 下面的主按钮改叫「用其他号码登录」（输了别的号码会先确认清空本机）。
+  if (lastLogin != null) {
+    LastLoginCard(
+      lastLogin = lastLogin,
+      onClick = { onEvent(WelcomeScreenEvents.ReloginClicked) }
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+  }
+
   Buttons.LargeTonal(
     onClick = { onEvent(WelcomeScreenEvents.Continue) },
     modifier = Modifier
       .fillMaxWidth()
       .testTag(TestTags.WELCOME_GET_STARTED_BUTTON)
   ) {
-    Text(stringResource(R.string.RegistrationActivity_continue))
+    Text(stringResource(if (lastLogin != null) R.string.TellomiRelogin__use_another_number else R.string.RegistrationActivity_continue))
   }
 
   if (showRestoreOrTransfer) {
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(8.dp))
 
-    Buttons.LargeTonal(
+    // Tellomi：上游「恢复或转移」和「继续」一样大，而大多数人是第一次注册。降成主按钮下面一行文字链（tellomi/tellomi#1216）。
+    // Telegram 两端都把次要动作做成主按钮旁边的一行文字：iOS（RMIntroViewController 的 _alternativeLanguageButton）在按钮下方，
+    // Android（IntroActivity 的 switchLanguageTextView，onLayout 里 y -= dp(30)）在按钮上方 30dp。Tellomi 取 iOS 的下方位置。
+    TextButton(
       onClick = onRestoreOrTransferClick,
-      colors = ButtonDefaults.filledTonalButtonColors(
-        containerColor = SignalTheme.colors.colorSurface2
-      ),
       modifier = Modifier
         .fillMaxWidth()
         .testTag(TestTags.WELCOME_RESTORE_OR_TRANSFER_BUTTON)
     ) {
-      Text(stringResource(R.string.registration_activity__restore_or_transfer))
+      Text(stringResource(R.string.TellomiRegistration__new_phone))
     }
   }
 }
@@ -422,6 +446,89 @@ private fun ColumnScope.SecondaryDeviceCallToActionButtons(
     ) {
       Text(
         text = stringResource(R.string.WelcomeScreen__create_account)
+      )
+    }
+  }
+}
+
+/**
+ * Tellomi（ADR-0072 §4.1 第 4 步）：「上次登录」——头像（没有头像时名字的第一个字）+ 打码的号码，整块可点。
+ * 样子照下面「恢复或转移」底部卡里的行（[RestoreActionRow]）：圆角色块、左图右字。
+ */
+@Composable
+private fun LastLoginCard(
+  lastLogin: WelcomeScreenState.LastLogin,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier
+) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = modifier
+      .fillMaxWidth()
+      .clip(RoundedCornerShape(18.dp))
+      .background(MaterialTheme.colorScheme.surfaceVariant)
+      .clickable(onClick = onClick)
+      .padding(horizontal = 16.dp, vertical = 12.dp)
+      .testTag(TestTags.WELCOME_LAST_LOGIN)
+  ) {
+    LastLoginAvatar(lastLogin = lastLogin)
+
+    Column(
+      modifier = Modifier
+        .weight(1f)
+        .padding(horizontal = 12.dp)
+    ) {
+      Text(
+        text = stringResource(R.string.TellomiRelogin__last_login),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+
+      Text(
+        text = lastLogin.maskedE164,
+        style = MaterialTheme.typography.bodyLarge
+      )
+    }
+
+    Icon(
+      imageVector = SignalIcons.ChevronRight.imageVector,
+      contentDescription = null,
+      tint = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+  }
+}
+
+@Composable
+private fun LastLoginAvatar(lastLogin: WelcomeScreenState.LastLogin) {
+  val avatar = remember(lastLogin.avatar) {
+    lastLogin.avatar?.let { bytes -> BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.asImageBitmap() }
+  }
+
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = Modifier
+      .size(40.dp)
+      .clip(CircleShape)
+      .background(MaterialTheme.colorScheme.primaryContainer)
+  ) {
+    when {
+      avatar != null -> Image(
+        bitmap = avatar,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxSize()
+      )
+
+      lastLogin.initial.isNotEmpty() -> Text(
+        text = lastLogin.initial,
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onPrimaryContainer
+      )
+
+      else -> Icon(
+        imageVector = SignalIcons.PersonCircle.imageVector,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onPrimaryContainer
       )
     }
   }
@@ -467,10 +574,14 @@ private fun RestoreOrTransferBottomSheetContent(
   ) {
     Spacer(modifier = Modifier.size(26.dp))
 
+    // Tellomi（tellomi/tellomi#1216）：没有备份服务时说清每条路能带过来什么——旧 Android 手机扫码能直连传输；
+    // 旧手机不在身边只剩这台手机上的本地备份，或者直接注册。
+    val tellomiTexts = !TellomiRegistration.isRemoteBackupAvailable
+
     RestoreActionRow(
       icon = SignalIcons.QrCode.painter,
-      title = stringResource(R.string.WelcomeFragment_restore_action_i_have_my_old_phone),
-      subtitle = stringResource(R.string.WelcomeFragment_restore_action_scan_qr),
+      title = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_here else R.string.WelcomeFragment_restore_action_i_have_my_old_phone),
+      subtitle = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_here_description else R.string.WelcomeFragment_restore_action_scan_qr),
       modifier = Modifier.testTag(TestTags.WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON),
       onRowClick = {
         sheetState.dismissWithAnimation(scope) {
@@ -481,8 +592,8 @@ private fun RestoreOrTransferBottomSheetContent(
 
     RestoreActionRow(
       icon = painterResource(R.drawable.symbol_no_phone_44),
-      title = stringResource(R.string.WelcomeFragment_restore_action_i_dont_have_my_old_phone),
-      subtitle = stringResource(R.string.WelcomeFragment_restore_action_reinstalling),
+      title = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_not_here else R.string.WelcomeFragment_restore_action_i_dont_have_my_old_phone),
+      subtitle = stringResource(if (tellomiTexts) R.string.TellomiRegistration__old_phone_not_here_description else R.string.WelcomeFragment_restore_action_reinstalling),
       modifier = Modifier.testTag(TestTags.WELCOME_RESTORE_NO_OLD_PHONE_BUTTON),
       onRowClick = {
         sheetState.dismissWithAnimation(scope) {
@@ -564,6 +675,14 @@ private fun rememberDisplayLinkAndSyncAsPrimaryPath(isLinkAndSyncAvailable: Bool
 private fun WelcomeScreenPreview() {
   Previews.Preview {
     WelcomeScreen(state = WelcomeScreenState(), onEvent = {})
+  }
+}
+
+@AllDevicePreviews
+@Composable
+private fun WelcomeScreenLastLoginPreview() {
+  Previews.Preview {
+    WelcomeScreen(state = WelcomeScreenState(showRestoreOrTransfer = false, lastLogin = WelcomeScreenState.LastLogin(maskedE164 = "+86 138****5678", initial = "林")), onEvent = {})
   }
 }
 

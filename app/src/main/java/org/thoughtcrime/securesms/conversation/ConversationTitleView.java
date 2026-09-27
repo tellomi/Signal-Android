@@ -199,7 +199,8 @@ public class ConversationTitleView extends ConstraintLayout {
 
   private void setSelfTitle() {
     this.title.setText(R.string.note_to_self);
-    this.subtitle.setText(R.string.ConversationFragment_official_chat);
+    // Tellomi：「官方聊天号」是官方账号的说法，「我的收藏」的顶栏不挂副标题（#1174）
+    this.subtitle.setText(null);
     updateSubtitleVisibility();
   }
 

@@ -82,6 +82,7 @@ import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.registration.ui.countrycode.Country
 import org.thoughtcrime.securesms.registration.ui.countrycode.CountryCodeSelectScreen
 import org.thoughtcrime.securesms.registration.ui.countrycode.CountryCodeState
+import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
 import org.thoughtcrime.securesms.util.viewModel
 import org.signal.core.ui.R as CoreUiR
@@ -106,7 +107,11 @@ class FindByActivity : PassphraseRequiredActivity() {
   override fun onCreate(savedInstanceState: Bundle?, ready: Boolean) {
     theme.onCreate(this)
 
-    val qrScanLauncher: ActivityResultLauncher<Unit> = registerForActivityResult(UsernameQrScannerActivity.Contract()) { recipientId ->
+    val qrScanLauncher: ActivityResultLauncher<Unit> = registerForActivityResult(UsernameQrScannerActivity.Contract()) { result ->
+      // Tellomi（tellomi/tellomi#947）：扫码页扫到的是群邀请码——扫码页已经关了，加群弹层开在找人页上
+      result?.groupInviteUrl?.let { CommunicationActions.handlePotentialGroupLinkUrl(this, it) }
+
+      val recipientId = result?.recipientId
       if (recipientId != null) {
         setResult(RESULT_OK, Intent().putExtra(RECIPIENT_ID, recipientId))
         finishAfterTransition()
@@ -190,7 +195,7 @@ class FindByActivity : PassphraseRequiredActivity() {
             }
 
             val body = if (state.mode == FindByMode.USERNAME) {
-              stringResource(id = R.string.FindByActivity__s_is_not_a_valid_username, state.userEntry)
+              stringResource(id = R.string.FindByActivity__tellomi_s_is_not_a_valid_username, state.userEntry) // Tellomi（#1106 第四刀）：不再要人补「一组数字」
             } else {
               stringResource(id = R.string.FindByActivity__s_is_not_a_valid_phone_number, state.userEntry)
             }
@@ -381,7 +386,7 @@ private fun Content(
 
     if (state.mode == FindByMode.USERNAME) {
       Text(
-        text = stringResource(id = R.string.FindByActivity__enter_username_description),
+        text = stringResource(id = R.string.FindByActivity__tellomi_enter_username_description), // Tellomi（#1106 第四刀）：输 kaixin 就能找到
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier

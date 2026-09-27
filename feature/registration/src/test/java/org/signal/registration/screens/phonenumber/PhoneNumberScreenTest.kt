@@ -11,13 +11,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
+import assertk.assertThat
+import assertk.assertions.hasLength
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
+import io.mockk.verify
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,7 +38,7 @@ import org.robolectric.annotation.Config
 import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.registration.R
-import org.signal.registration.screens.shared.AccountIdError
+import org.signal.registration.screens.shared.AccountIdFormat
 import org.signal.registration.test.TestTags
 
 /**
@@ -253,19 +265,25 @@ class PhoneNumberScreenTest {
   }
 
   @Test
-  fun `an over-long account ID says why it can't be submitted`() {
+  fun `account ID entry turns away anything typed past a complete ID`() {
     // Given
+    var emittedEvent: PhoneNumberEntryScreenEvents? = null
+
     composeTestRule.setContent {
       SignalTheme {
         PhoneNumberScreen(
-          state = accountIdState().copy(accountIdError = AccountIdError.TooLong(34)),
-          onEvent = {}
+          state = accountIdState(),
+          onEvent = { emittedEvent = it }
         )
       }
     }
 
+    // When
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_PHONE_FIELD).performTextInput("ff")
+
     // Then
-    composeTestRule.onNodeWithText(context.getString(R.string.AccountIdField__too_long, 34, 32)).assertExists()
+    val newValue = (emittedEvent as PhoneNumberEntryScreenEvents.NationalNumberChanged).newValue
+    assertThat(newValue).hasLength(AccountIdFormat.ACCOUNT_ID_LENGTH)
   }
 
   @Test
@@ -326,9 +344,132 @@ class PhoneNumberScreenTest {
     }
   }
 
+  @Test
+  fun `the numberless button offers to register without a number when the user has no existing account`() {
+    // Given
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = PhoneNumberEntryState(isPhoneNumberlessRegistrationAvailable = true),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_register_without_number)).assertExists()
+  }
+
+  @Test
+  fun `the numberless button offers to use an account ID when the user has an existing account`() {
+    // Given
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = PhoneNumberEntryState(
+            isPhoneNumberlessRegistrationAvailable = true,
+            sawArchiveRestoreSelectionScreen = true
+          ),
+          onEvent = {}
+        )
+      }
+    }
+
+    // Then
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_use_account_id)).assertExists()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_register_without_number)).assertDoesNotExist()
+  }
+
   private fun accountIdState(accountId: String = "a6b284822e3283d07f2391360a4c2b91") = PhoneNumberEntryState(
     accountId = accountId,
     formattedNumber = accountId,
     isPhoneNumberlessRegistrationAvailable = true
   )
+
+  // ==================== Tellomi（tellomi/tellomi#1213）：清空 × ====================
+
+  @Test
+  fun `the clear button only shows once something is typed`() {
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(state = PhoneNumberEntryState(), onEvent = {})
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).assertDoesNotExist()
+  }
+
+  @Test
+  fun `the clear button empties the number`() {
+    val events = mutableListOf<PhoneNumberEntryScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = PhoneNumberEntryState(
+            countryCode = "86",
+            nationalNumber = "13800138000",
+            formattedNumber = "138 0013 8000",
+            isNumberPossible = true
+          ),
+          onEvent = { events += it }
+        )
+      }
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).performClick()
+
+    val change = events.filterIsInstance<PhoneNumberEntryScreenEvents.NationalNumberChanged>().last()
+    assert(change.newValue.isEmpty()) { "Expected the number to be cleared but got ${change.newValue}" }
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).assertDoesNotExist()
+  }
+
+  @Test
+  fun `clearing the number from an unfocused field puts the cursor back so typing can continue`() {
+    // × 在框没有焦点时也显示（iOS 只在编辑中显示）；清完要能直接接着输（taishi 审查 b13 不阻塞）。
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(
+          state = PhoneNumberEntryState(
+            countryCode = "86",
+            nationalNumber = "13800138000",
+            formattedNumber = "138 0013 8000",
+            isNumberPossible = true
+          ),
+          onEvent = {}
+        )
+      }
+    }
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_PHONE_FIELD).assertIsNotFocused()
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_CLEAR_BUTTON).performClick()
+
+    composeTestRule.onNodeWithTag(TestTags.PHONE_NUMBER_PHONE_FIELD).assertIsFocused()
+  }
+
+  // ==================== Tellomi（tellomi/tellomi#1338）：同意之前不调 Google Play 服务 ====================
+
+  @Test
+  fun `entering the screen does not ask Google Play services for a phone number hint`() {
+    // 号码页出现时用户还没同意协议和跨境告知；上游在这里（state.initialized 变 true、号码为空）自动调
+    // Identity.getSignInClient(...).getPhoneNumberHintIntent(...) 弹 Google 的号码选择器。
+    mockkStatic(Identity::class)
+    try {
+      every { Identity.getSignInClient(any<Context>()) } returns mockk<SignInClient>(relaxed = true)
+      val events = mutableListOf<PhoneNumberEntryScreenEvents>()
+
+      composeTestRule.setContent {
+        SignalTheme {
+          PhoneNumberScreen(state = PhoneNumberEntryState(initialized = true), onEvent = { events += it })
+        }
+      }
+      composeTestRule.waitForIdle()
+
+      verify(exactly = 0) { Identity.getSignInClient(any<Context>()) }
+      assert(events.none { it is PhoneNumberEntryScreenEvents.FullPhoneNumberEntered }) {
+        "Expected no prefilled number before consent but got $events"
+      }
+    } finally {
+      unmockkStatic(Identity::class)
+    }
+  }
 }

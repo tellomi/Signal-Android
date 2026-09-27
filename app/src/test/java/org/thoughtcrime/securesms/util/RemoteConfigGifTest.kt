@@ -1,3 +1,8 @@
+/*
+ * Copyright 2026 重庆半格智能科技有限公司
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 package org.thoughtcrime.securesms.util
 
 import org.junit.Assert.assertFalse

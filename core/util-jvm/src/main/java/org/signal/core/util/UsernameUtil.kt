@@ -68,7 +68,9 @@ object UsernameUtil {
     return try {
       // We only want to check the nickname, so we pass in a known-valid discriminator
       Username.fromParts(value, "01", MIN_NICKNAME_LENGTH, MAX_NICKNAME_LENGTH)
-      null
+      // Tellomi（ADR-0066 §六 第 73 行 / ADR-0036）：新建 / 修改的用户名必须字母开头。libsignal 只拒数字开头、放行 `_` 开头，
+      // 服务端只见到哈希、拦不了，只能在客户端收紧。搜索与链接不受影响：别人已有的 `_` 开头用户名照样能找到。
+      if (value.startsWith("_")) InvalidReason.STARTS_WITH_UNDERSCORE else null
     } catch (e: BadNicknameCharacterException) {
       InvalidReason.INVALID_CHARACTERS
     } catch (e: CannotBeEmptyException) {
@@ -137,6 +139,9 @@ object UsernameUtil {
     TOO_LONG,
     INVALID_CHARACTERS,
     STARTS_WITH_NUMBER,
+
+    /** Tellomi（ADR-0066）：`_` 开头。libsignal 允许，Tellomi 的规则是字母开头。 */
+    STARTS_WITH_UNDERSCORE,
     INVALID_NUMBER,
     INVALID_NUMBER_00,
     INVALID_NUMBER_PREFIX_0

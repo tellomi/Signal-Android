@@ -33,6 +33,12 @@ sealed interface RegistrationFlowEvent {
   /** An update has been made to the ongoing registration session.  */
   data class SessionUpdated(val session: SessionMetadata) : RegistrationFlowEvent
 
+  /**
+   * Tellomi（tellomi/tellomi#1214）：服务端说会话已失效（找不到 / id 无效）。只清掉会话，号码保留，
+   * 手机号页下一次「下一步」会开新会话，不会复用旧会话 → 404 → 整个流程被重置回欢迎页。
+   */
+  data object SessionExpired : RegistrationFlowEvent
+
   /** The e164 associated with this registration attempt has been updated.  */
   data class E164Chosen(val e164: String) : RegistrationFlowEvent
 
@@ -110,4 +116,10 @@ sealed interface RegistrationFlowEvent {
 
   /** Registration has been completed. Will finalize any pending state, then navigate to flow's conclusion. */
   data object RegistrationComplete : RegistrationFlowEvent
+
+  /** Tellomi（ADR-0072 §4.2）：欢迎页点了「上次登录」，手机号页要直接用本机账号的号码去要验证码。 */
+  data object ReloginRequested : RegistrationFlowEvent
+
+  /** Tellomi：手机号页已经处理了 [ReloginRequested]。 */
+  data object ReloginRequestHandled : RegistrationFlowEvent
 }

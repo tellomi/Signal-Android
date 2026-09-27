@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Tellomi
+ * Copyright 2026 重庆半格智能科技有限公司
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -44,6 +44,19 @@ class UsernameServiceTest {
   }
 
   /** 被占 / 命中保留词：就是「不可用」，只请求一次，不换别的数字再试。 */
+  /** Tellomi（ADR-0066 §6.1b）：发给 libsignal 的 nickname 一律小写——保留下来的 `Username` 就是加密进用户名链接的那份字符串。 */
+  @Test
+  fun `an uppercase nickname is reserved in lowercase`() = runTest {
+    val expected = Username("kaixin.01")
+    val sent = slot<List<ByteArray>>()
+    coEvery { accountApi.reserveUsername(capture(sent)) } returns RequestResult.Success(expected.hash)
+
+    val result = service.reserveUsername("KaiXin")
+
+    assertThat(sent.captured.single().contentEquals(expected.hash)).isTrue()
+    assertThat((result as RequestResult.Success).result.username).isEqualTo("kaixin.01")
+  }
+
   @Test
   fun `taken or reserved is NotAvailable after a single attempt`() = runTest {
     coEvery { accountApi.reserveUsername(any()) } returns RequestResult.NonSuccess(mockk<UsernameNotAvailableException>())

@@ -7,6 +7,7 @@ package org.thoughtcrime.securesms.components.settings.app
 
 import androidx.compose.runtime.Immutable
 import com.google.common.base.Objects
+import org.signal.core.util.TellomiUsernames
 import org.thoughtcrime.securesms.badges.models.Badge
 import org.thoughtcrime.securesms.profiles.ProfileName
 import org.thoughtcrime.securesms.recipients.Recipient
@@ -18,7 +19,8 @@ import org.thoughtcrime.securesms.recipients.Recipient
 class BioRecipientState(
   val recipient: Recipient
 ) {
-  val username: String = recipient.username.orElse("")
+  // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+  val username: String = recipient.username.map { TellomiUsernames.toDisplayUsername(it) }.orElse("")
   val featuredBadge: Badge? = recipient.featuredBadge
   val profileName: ProfileName = recipient.profileName
   val e164: String = recipient.e164.orElse("")

@@ -141,6 +141,12 @@ class MainToolbarViewModel : ViewModel() {
     }
   }
 
+  fun setConnectionTitle(connectionTitle: ConnectionTitle) {
+    internalStateFlow.update {
+      it.copy(connectionTitle = connectionTitle)
+    }
+  }
+
   fun setNotificationProfileEnabled(hasEnabledNotificationProfile: Boolean) {
     internalStateFlow.update {
       it.copy(hasEnabledNotificationProfile = hasEnabledNotificationProfile)

@@ -81,6 +81,11 @@ public final class VideoMediaPreviewPageFragment extends MediaPreviewPageFragmen
       @Override
       public void onReady() {
         updateSkipButtonState();
+        // Tellomi（#1257，照 Telegram）：30 秒以内的视频循环播放
+        long duration = videoView.getDuration();
+        if (!isVideoGif && duration > 0 && duration <= LOOP_MAX_DURATION_MS) {
+          videoView.loopForever();
+        }
         events.onMediaReady();
       }
 
@@ -115,6 +120,8 @@ public final class VideoMediaPreviewPageFragment extends MediaPreviewPageFragmen
     videoView.setOnClickListener(v -> events.singleTapOnMedia());
     return itemView;
   }
+
+  private static final long LOOP_MAX_DURATION_MS = 30_000L;
 
   private void updateSkipButtonState() {
     final LegacyPlayerControlView playbackControls = videoView.getControlView();

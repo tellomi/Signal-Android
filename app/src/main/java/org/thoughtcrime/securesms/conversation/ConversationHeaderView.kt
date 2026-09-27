@@ -113,10 +113,12 @@ class ConversationHeaderView : AbstractComposeView {
     val isReleaseNotes = recipient.isReleaseNotes
     val isOfficialAccount = recipient.showVerified
 
+    val hasUsernameOrSharedName = recipient.hasUsernameOrSharedName
+
     val showUnverifiedName = if (recipient.isGroup) {
       !info.groupInfo.nameVerified
     } else if (!isOfficialAccount) {
-      recipient.nickname.isEmpty && !recipient.isSystemContact
+      recipient.nickname.isEmpty && !recipient.isSystemContact && !hasUsernameOrSharedName
     } else {
       false
     }
@@ -139,6 +141,7 @@ class ConversationHeaderView : AbstractComposeView {
         isReleaseNotes = isReleaseNotes,
         badge = if (!isOfficialAccount) recipient.featuredBadge else null,
         showUnverifiedName = showUnverifiedName,
+        hasUsernameOrSharedName = hasUsernameOrSharedName,
         isGroup = recipient.isGroup,
         hasWallpaper = recipient.hasWallpaper,
         phoneNumber = phoneNumber,
@@ -188,6 +191,7 @@ private fun ConversationHeaderContent(
   isReleaseNotes: Boolean = false,
   badge: Badge?,
   showUnverifiedName: Boolean,
+  hasUsernameOrSharedName: Boolean = false,
   isGroup: Boolean,
   hasWallpaper: Boolean = false,
   phoneNumber: String? = null,
@@ -234,7 +238,7 @@ private fun ConversationHeaderContent(
       )
 
       if (isSelf) {
-        OfficialChatPill()
+        // Tellomi：「官方聊天号」是官方账号的说法，「我的收藏」不挂（#1174）；认证标照旧由名字后面的标给
         Text(
           text = stringResource(R.string.ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation),
           style = MaterialTheme.typography.bodyMedium,
@@ -291,7 +295,9 @@ private fun ConversationHeaderContent(
         )
       }
 
-      if (!isSelf && !isReleaseNotes && (sharedGroups.isNotEmpty() || !isGroup)) {
+      val showSharedGroups = sharedGroups.isNotEmpty() || (!isGroup && !hasUsernameOrSharedName)
+
+      if (!isSelf && !isReleaseNotes && showSharedGroups) {
         SharedGroupsDescription(
           sharedGroups = sharedGroups,
           modifier = Modifier.padding(top = 8.dp)

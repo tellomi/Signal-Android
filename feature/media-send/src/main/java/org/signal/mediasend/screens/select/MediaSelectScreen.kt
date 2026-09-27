@@ -5,6 +5,7 @@
 
 package org.signal.mediasend.screens.select
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
@@ -62,6 +63,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
@@ -114,7 +116,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import org.signal.core.ui.permissions.Permissions as PermissionsUtil
 
 /** How many empty tiles stand in for the gallery we are not allowed to show. Matches the v2 gallery. */
-private const val PLACEHOLDER_COUNT = 100
+internal const val PLACEHOLDER_COUNT = 100
 
 /**
  * Allows user to select one or more pieces of content to add to the
@@ -136,7 +138,15 @@ internal fun MediaSelectScreen(
   val recipientChatColor: Color? = chatColorFor(state.recipientId)
 
   val gridState = rememberLazyGridState()
-  val dragToSelectState = rememberDragToSelectMediaState(state, onEvent, gridState)
+  // Tellomi（#1261 P-7、P-8）：新的网格页里受限访问横幅占第一格（整行），「最近」里还有相机格和它下面的占位；
+  // 拖动多选按格子下标找媒体，这几格都不是媒体。
+  val showLimitedAccessBanner = state is MediaSelectState.Files && state.mediaPermissions == MediaPermissions.PARTIAL && state.hasContent
+  val pickerColumns = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 3
+  val showPickerCamera = state is MediaSelectState.Files && !showPlaceholders && state.showsPickerCamera
+  val pickerGridEntries = (state as? MediaSelectState.Files)
+    ?.let { pickerGridEntries(it.selectedMediaFolderItems, showLimitedAccessBanner, showPickerCamera, pickerColumns) }
+    .orEmpty()
+  val dragToSelectState = rememberDragToSelectMediaState(state, onEvent, gridState, pickerGridEntries)
 
   // Only an empty selection can leave an editor with nothing to edit behind us. Every other back press is left to the
   // navigation default, which keeps its predictive-back gesture.
@@ -158,6 +168,24 @@ internal fun MediaSelectScreen(
   LifecycleResumeEffect(Unit) {
     currentOnEvent(MediaSelectScreenEvents.Refresh)
     onPauseOrDispose { }
+  }
+
+  // Tellomi（tellomi/tellomi#1261）：相册里的网格换成照 Telegram 的选图网格（顶栏 ✓N / 最近 ⌄ / ⋮、编号勾、底部说明 + 发送）；
+  // 相册列表页原样保留。
+  if (state is MediaSelectState.Files) {
+    MediaPickerFilesScreen(
+      state = state,
+      onEvent = onEvent,
+      gridState = gridState,
+      dragToSelectState = dragToSelectState,
+      showPlaceholders = showPlaceholders,
+      showLimitedAccessBanner = showLimitedAccessBanner,
+      recipientChatColor = recipientChatColor,
+      columns = pickerColumns,
+      showCamera = showPickerCamera,
+      gridEntries = pickerGridEntries
+    )
+    return
   }
 
   Scaffolds.Settings(
@@ -287,10 +315,13 @@ internal fun MediaSelectScreen(
 private fun rememberDragToSelectMediaState(
   state: MediaSelectState,
   onEvent: (MediaSelectScreenEvents) -> Unit,
-  gridState: LazyGridState
+  gridState: LazyGridState,
+  gridEntries: List<Media?>
 ): DragToSelectState {
   return rememberDragToSelectState(gridState) { event ->
-    val items = (state as? MediaSelectState.Files)?.selectedMediaFolderItems ?: return@rememberDragToSelectState
+    if (state !is MediaSelectState.Files) return@rememberDragToSelectState
+    // Tellomi（#1261 P-7、P-8）：格子下标 → 媒体；横幅、相机格与它下面的占位是 null。
+    val items = gridEntries
 
     when (event) {
       is DragSelectEvent.Started -> {
@@ -304,14 +335,14 @@ private fun rememberDragToSelectMediaState(
       }
 
       is DragSelectEvent.RangeSelected -> {
-        val media = event.indices.mapNotNullTo(mutableSetOf(), items::getOrNull)
+        val media = event.indices.mapNotNullTo(mutableSetOf()) { items.getOrNull(it) }
         if (media.isNotEmpty()) {
           onEvent(MediaSelectScreenEvents.MediaSelected(media))
         }
       }
 
       is DragSelectEvent.RangeUnselected -> {
-        val media = event.indices.mapNotNullTo(mutableSetOf(), items::getOrNull)
+        val media = event.indices.mapNotNullTo(mutableSetOf()) { items.getOrNull(it) }
         if (media.isNotEmpty()) {
           onEvent(MediaSelectScreenEvents.MediaUnselected(media))
         }
@@ -435,7 +466,7 @@ private fun LimitedAccessBar(onEvent: (MediaSelectScreenEvents) -> Unit) {
  * at all and have to ask, or they granted selected-photos access without sharing anything we can use.
  */
 @Composable
-private fun MediaAccessCallToAction(
+internal fun MediaAccessCallToAction(
   mediaPermissions: MediaPermissions,
   onEvent: (MediaSelectScreenEvents) -> Unit,
   modifier: Modifier = Modifier
@@ -486,7 +517,7 @@ private fun MediaAccessCallToAction(
  * permission up in app settings.
  */
 @Composable
-private fun ManageAccessMenu(
+internal fun ManageAccessMenu(
   menuController: DropdownMenus.MenuController,
   onEvent: (MediaSelectScreenEvents) -> Unit
 ) {
@@ -514,7 +545,7 @@ private fun ManageAccessMenu(
  * be looking at rather than a blank screen.
  */
 @Composable
-private fun MediaTilePlaceholder() {
+internal fun MediaTilePlaceholder() {
   Box(
     modifier = Modifier
       .fillMaxWidth()

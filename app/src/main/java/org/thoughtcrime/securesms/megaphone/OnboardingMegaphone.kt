@@ -8,11 +8,16 @@ package org.thoughtcrime.securesms.megaphone
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,6 +33,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,17 +49,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.IconButtons
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.settings.app.AppSettingsActivity
+import org.thoughtcrime.securesms.conversation.NewConversationActivity
 import org.thoughtcrime.securesms.groups.ui.creategroup.CreateGroupActivity
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.main.EmptyMegaphoneActionController
 import org.thoughtcrime.securesms.profiles.manage.EditProfileActivity
+import org.thoughtcrime.securesms.profiles.username.ConnectWithUsernamesDialogFragment
 import org.thoughtcrime.securesms.wallpaper.ChatWallpaperActivity
 import org.signal.core.ui.R as CoreUiR
 
@@ -66,6 +76,13 @@ fun OnboardingMegaphone(
   modifier: Modifier = Modifier,
   onboardingState: OnboardingState = OnboardingState.rememberOnboardingState(megaphoneActionController)
 ) {
+  // Tellomi（tellomi/tellomi#1218 F-02）：列表那边改了找朋友的开关（出现第一个真人会话 / 列表空了）就重读，
+  // 卡片当场收起或出现，不用等下次回到前台
+  val findFriendsChanges by TellomiOnboarding.findFriendsChanges.collectAsStateWithLifecycle()
+  LaunchedEffect(onboardingState, findFriendsChanges) {
+    onboardingState.refresh()
+  }
+
   Column(
     modifier = modifier
       .background(MaterialTheme.colorScheme.background)
@@ -97,9 +114,15 @@ fun OnboardingMegaphone(
     }
 
     LazyRow(
-      modifier = Modifier.padding(top = 10.dp)
+      contentPadding = PaddingValues(start = 16.dp),
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = 10.dp)
     ) {
-      itemsIndexed(items = onboardingItems) { idx, item ->
+      items(
+        items = onboardingItems,
+        key = { it.name }
+      ) { item ->
         OnboardingMegaphoneListItem(
           onboardingListItem = item,
           onActionClick = {
@@ -108,7 +131,11 @@ fun OnboardingMegaphone(
           onCloseClick = {
             onboardingState.onItemCloseClick(item)
           },
-          modifier = if (idx == 0) Modifier.padding(start = 16.dp) else Modifier
+          modifier = Modifier.animateItem(
+            fadeInSpec = tween(durationMillis = 150),
+            fadeOutSpec = tween(durationMillis = 150),
+            placementSpec = spring(stiffness = Spring.StiffnessMediumLow, visibilityThreshold = IntOffset.VisibilityThreshold)
+          )
         )
       }
     }
@@ -210,6 +237,23 @@ enum class OnboardingListItem(
   @DrawableRes val icon: Int,
   @ColorRes val cardColor: Int
 ) {
+  SET_UP_USERNAME(
+    title = R.string.Megaphones_set_up_username,
+    icon = CoreUiR.drawable.symbol_at_24,
+    cardColor = R.color.onboarding_background_5
+  ),
+
+  // Tellomi（tellomi/tellomi#1218 F-02）：找朋友三条路——没有 CDSI，用户名、二维码、邀请是别人找到你的全部办法
+  FIND_BY_USERNAME(
+    title = R.string.TellomiOnboarding__search_by_username,
+    icon = CoreUiR.drawable.symbol_search_24,
+    cardColor = R.color.onboarding_background_1
+  ),
+  MY_QR_CODE(
+    title = R.string.TellomiOnboarding__my_qr_code,
+    icon = CoreUiR.drawable.symbol_qrcode_24,
+    cardColor = R.color.onboarding_background_3
+  ),
   GROUP(
     title = R.string.Megaphones_new_group,
     icon = R.drawable.symbol_group_24,
@@ -271,23 +315,34 @@ abstract class OnboardingState private constructor(
   abstract fun onItemCloseClick(onboardingListItem: OnboardingListItem)
 
   /**
+   * Tellomi：开关在别处被改了（出现第一个真人会话时 [TellomiOnboarding] 收起找朋友三条路），重新读一遍。
+   */
+  open fun refresh() = Unit
+
+  /**
    * Preview implementation, used automatically when rendering previews.
    */
   private object Preview : OnboardingState(
     initialState = DisplayState(
+      shouldShowSetUpUsername = true,
       shouldShowNewGroup = true,
       shouldShowInviteFriends = true,
       shouldShowAddPhoto = true,
-      shouldShowAppearance = true
+      shouldShowAppearance = true,
+      shouldShowFindByUsername = true,
+      shouldShowMyQrCode = true
     ),
     megaphoneActionController = EmptyMegaphoneActionController
   ) {
     override fun onItemCloseClick(onboardingListItem: OnboardingListItem) {
       displayState = when (onboardingListItem) {
+        OnboardingListItem.SET_UP_USERNAME -> displayState.copy(shouldShowSetUpUsername = false)
         OnboardingListItem.GROUP -> displayState.copy(shouldShowNewGroup = false)
         OnboardingListItem.INVITE -> displayState.copy(shouldShowInviteFriends = false)
         OnboardingListItem.ADD_PHOTO -> displayState.copy(shouldShowAddPhoto = false)
         OnboardingListItem.APPEARANCE -> displayState.copy(shouldShowAppearance = false)
+        OnboardingListItem.FIND_BY_USERNAME -> displayState.copy(shouldShowFindByUsername = false)
+        OnboardingListItem.MY_QR_CODE -> displayState.copy(shouldShowMyQrCode = false)
       }
     }
 
@@ -298,12 +353,23 @@ abstract class OnboardingState private constructor(
    * Real implementation, used automatically on-device. Backed by SignalStore.
    */
   private class Real(megaphoneActionController: MegaphoneActionController) : OnboardingState(megaphoneActionController = megaphoneActionController) {
+    override fun refresh() {
+      displayState = DisplayState()
+
+      if (displayState.hasNoVisibleContent()) {
+        megaphoneActionController.onMegaphoneCompleted(Megaphones.Event.ONBOARDING)
+      }
+    }
+
     override fun onItemCloseClick(onboardingListItem: OnboardingListItem) {
       when (onboardingListItem) {
+        OnboardingListItem.SET_UP_USERNAME -> SignalStore.onboarding.setShowSetUpUsername(false)
         OnboardingListItem.GROUP -> SignalStore.onboarding.setShowNewGroup(false)
         OnboardingListItem.INVITE -> SignalStore.onboarding.setShowInviteFriends(false)
         OnboardingListItem.ADD_PHOTO -> SignalStore.onboarding.setShowAddPhoto(false)
         OnboardingListItem.APPEARANCE -> SignalStore.onboarding.setShowAppearance(false)
+        OnboardingListItem.FIND_BY_USERNAME -> SignalStore.onboarding.setShowFindByUsername(false)
+        OnboardingListItem.MY_QR_CODE -> SignalStore.onboarding.setShowMyQrCode(false)
       }
 
       displayState = DisplayState()
@@ -315,6 +381,7 @@ abstract class OnboardingState private constructor(
 
     override fun onItemActionClick(onboardingListItem: OnboardingListItem) {
       when (onboardingListItem) {
+        OnboardingListItem.SET_UP_USERNAME -> megaphoneActionController.onMegaphoneDialogFragmentRequested(ConnectWithUsernamesDialogFragment())
         OnboardingListItem.GROUP -> megaphoneActionController.onMegaphoneNavigationRequested(CreateGroupActivity.createIntent(megaphoneActionController.megaphoneActivity))
         OnboardingListItem.INVITE -> megaphoneActionController.onMegaphoneNavigationRequested(AppSettingsActivity.invite(megaphoneActionController.megaphoneActivity))
         OnboardingListItem.ADD_PHOTO -> {
@@ -325,6 +392,9 @@ abstract class OnboardingState private constructor(
           megaphoneActionController.onMegaphoneNavigationRequested(ChatWallpaperActivity.createIntent(megaphoneActionController.megaphoneActivity))
           SignalStore.onboarding.setShowAppearance(false)
         }
+        // 找朋友三条路点了不收起：有了第一个真人会话才自动收（TellomiOnboarding），或者用户点 ✕
+        OnboardingListItem.FIND_BY_USERNAME -> megaphoneActionController.onMegaphoneNavigationRequested(NewConversationActivity.createFindByUsernameIntent(megaphoneActionController.megaphoneActivity))
+        OnboardingListItem.MY_QR_CODE -> megaphoneActionController.onMegaphoneNavigationRequested(TellomiOnboarding.myQrCodeIntent(megaphoneActionController.megaphoneActivity))
       }
 
       displayState = DisplayState()
@@ -339,19 +409,26 @@ abstract class OnboardingState private constructor(
    * Simple display state, driven by [SignalStore] by default.
    */
   data class DisplayState(
+    private val shouldShowSetUpUsername: Boolean = SignalStore.onboarding.shouldShowSetUpUsername() && SignalStore.account.isPhoneNumberless && SignalStore.account.username == null,
     private val shouldShowNewGroup: Boolean = SignalStore.onboarding.shouldShowNewGroup(),
     private val shouldShowInviteFriends: Boolean = SignalStore.onboarding.shouldShowInviteFriends(),
     private val shouldShowAddPhoto: Boolean = SignalStore.onboarding.shouldShowAddPhoto() && !SignalStore.misc.hasEverHadAnAvatar,
-    private val shouldShowAppearance: Boolean = SignalStore.onboarding.shouldShowAppearance()
+    private val shouldShowAppearance: Boolean = SignalStore.onboarding.shouldShowAppearance(),
+    private val shouldShowFindByUsername: Boolean = SignalStore.onboarding.shouldShowFindByUsername(),
+    private val shouldShowMyQrCode: Boolean = SignalStore.onboarding.shouldShowMyQrCode()
   ) {
-    fun hasNoVisibleContent(): Boolean = !(shouldShowNewGroup || shouldShowInviteFriends || shouldShowAddPhoto || shouldShowAppearance)
+    fun hasNoVisibleContent(): Boolean = OnboardingListItem.entries.none(::shouldDisplayListItem)
 
     fun shouldDisplayListItem(onboardingListItem: OnboardingListItem): Boolean {
       return when (onboardingListItem) {
-        OnboardingListItem.GROUP -> shouldShowNewGroup
+        OnboardingListItem.SET_UP_USERNAME -> shouldShowSetUpUsername
+        // Tellomi（tellomi/tellomi#1218 第 5 条）：「新建群组」「聊天颜色」不出——新用户还没有可拉进群的人，聊天颜色不是上手必需
+        OnboardingListItem.GROUP -> false
         OnboardingListItem.INVITE -> shouldShowInviteFriends
         OnboardingListItem.ADD_PHOTO -> shouldShowAddPhoto
-        OnboardingListItem.APPEARANCE -> shouldShowAppearance
+        OnboardingListItem.APPEARANCE -> false
+        OnboardingListItem.FIND_BY_USERNAME -> shouldShowFindByUsername
+        OnboardingListItem.MY_QR_CODE -> shouldShowMyQrCode
       }
     }
   }

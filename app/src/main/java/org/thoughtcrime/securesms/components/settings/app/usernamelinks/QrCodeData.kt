@@ -43,7 +43,10 @@ class QrCodeData(
     @WorkerThread
     fun forData(data: String, supportIconOverlay: Boolean = true): QrCodeData {
       val qrCodeWriter = QRCodeWriter()
-      val hints = mapOf(EncodeHintType.ERROR_CORRECTION to if (supportIconOverlay) ErrorCorrectionLevel.Q.toString() else ErrorCorrectionLevel.L.toString())
+      // Tellomi（tellomi/tellomi#947）：一律不挖空、不画中心标——我们的标是同心的，扫码器会把它当成定位角
+      // （Desktop 7f55023：离线实测带标 0–12/12 可识别、不带 30/30）。原来要画标的短码（用户名二维码）容错改用 H，
+      // 与 Desktop / iOS 一致；原来就不画标的长码（配对 / 恢复，传 false）照旧 L。「二维码版」标（#1146）做好前不画。
+      val hints = mapOf(EncodeHintType.ERROR_CORRECTION to if (supportIconOverlay) ErrorCorrectionLevel.H.toString() else ErrorCorrectionLevel.L.toString())
 
       val padded = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 64, 64, hints)
       val dimens = padded.enclosingRectangle
@@ -63,7 +66,7 @@ class QrCodeData(
         }
       }
 
-      return QrCodeData(width, height, supportIconOverlay, bitSet)
+      return QrCodeData(width, height, canSupportIconOverlay = false, bitSet)
     }
   }
 }

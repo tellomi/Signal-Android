@@ -19,6 +19,7 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.PointF
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.Rect
@@ -43,8 +44,10 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Space
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
@@ -55,6 +58,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.constraintlayout.widget.ConstraintSet
@@ -99,7 +104,6 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -130,8 +134,10 @@ import org.signal.core.util.DrawableUtil
 import org.signal.core.util.PendingIntentFlags
 import org.signal.core.util.Result
 import org.signal.core.util.ThreadUtil
+import org.signal.core.util.bytes
 import org.signal.core.util.concurrent.LifecycleDisposable
 import org.signal.core.util.concurrent.ListenableFuture
+import org.signal.core.util.concurrent.SignalDispatchers
 import org.signal.core.util.concurrent.addTo
 import org.signal.core.util.dp
 import org.signal.core.util.encourageNewBrowserTab
@@ -142,8 +148,11 @@ import org.signal.core.util.requireParcelableCompat
 import org.signal.core.util.setActionItemTint
 import org.signal.donations.InAppPaymentType
 import org.signal.emoji.EmojiEventListener
+import org.signal.mediasend.MediaSendFlowActivityContract
+import org.signal.mediasend.screens.files.PickedFileGrants
 import org.signal.ringrtc.CallLinkRootKey
 import org.thoughtcrime.securesms.BlockUnblockDialog
+import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.MainActivity
 import org.thoughtcrime.securesms.MuteDialog
 import org.thoughtcrime.securesms.R
@@ -193,6 +202,8 @@ import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey.RecipientSearc
 import org.thoughtcrime.securesms.contactshare.Contact
 import org.thoughtcrime.securesms.contactshare.ContactUtil
 import org.thoughtcrime.securesms.contactshare.SharedContactDetailsActivityV2
+import org.thoughtcrime.securesms.contactshare.SharedContactSource
+import org.thoughtcrime.securesms.contactshare.resolveOrCreateSignalRecipient
 import org.thoughtcrime.securesms.conversation.AttachmentKeyboardButton
 import org.thoughtcrime.securesms.conversation.BadDecryptLearnMoreDialog
 import org.thoughtcrime.securesms.conversation.ConversationAdapter
@@ -206,10 +217,6 @@ import org.thoughtcrime.securesms.conversation.ConversationItemSelection
 import org.thoughtcrime.securesms.conversation.ConversationItemSwipeCallback
 import org.thoughtcrime.securesms.conversation.ConversationMessage
 import org.thoughtcrime.securesms.conversation.ConversationOptionsMenu
-import org.thoughtcrime.securesms.conversation.ConversationReactionDelegate
-import org.thoughtcrime.securesms.conversation.ConversationReactionOverlay
-import org.thoughtcrime.securesms.conversation.ConversationReactionOverlay.OnActionSelectedListener
-import org.thoughtcrime.securesms.conversation.ConversationReactionOverlay.OnHideListener
 import org.thoughtcrime.securesms.conversation.ConversationSearchViewModel
 import org.thoughtcrime.securesms.conversation.ConversationUpdateTick
 import org.thoughtcrime.securesms.conversation.MarkReadHelper
@@ -217,6 +224,7 @@ import org.thoughtcrime.securesms.conversation.MenuState
 import org.thoughtcrime.securesms.conversation.MessageSendType
 import org.thoughtcrime.securesms.conversation.MessageStyler.getStyling
 import org.thoughtcrime.securesms.conversation.PinnedMessagesBottomSheet
+import org.thoughtcrime.securesms.conversation.ReactionAction
 import org.thoughtcrime.securesms.conversation.ReenableScheduledMessagesDialogFragment
 import org.thoughtcrime.securesms.conversation.ScheduleMessageContextMenu
 import org.thoughtcrime.securesms.conversation.ScheduleMessageDialogCallback
@@ -224,7 +232,6 @@ import org.thoughtcrime.securesms.conversation.ScheduleMessageTimePickerBottomSh
 import org.thoughtcrime.securesms.conversation.ScheduleMessageTimePickerBottomSheet.Companion.showSchedule
 import org.thoughtcrime.securesms.conversation.ScheduledMessagesBottomSheet
 import org.thoughtcrime.securesms.conversation.ScheduledMessagesRepository
-import org.thoughtcrime.securesms.conversation.SelectedConversationModel
 import org.thoughtcrime.securesms.conversation.ShowAdminsBottomSheetDialog
 import org.thoughtcrime.securesms.conversation.clicklisteners.PollVotesFragment
 import org.thoughtcrime.securesms.conversation.colors.ChatColors
@@ -237,8 +244,9 @@ import org.thoughtcrime.securesms.conversation.mutiselect.ConversationItemAnimat
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectItemDecoration
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectPart
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardBottomSheet
-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
 import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardRepository
+import org.thoughtcrime.securesms.conversation.mutiselect.forward.TellomiForwardGridBottomSheet
 import org.thoughtcrime.securesms.conversation.quotes.MessageQuotesBottomSheet
 import org.thoughtcrime.securesms.conversation.ui.edit.EditMessageHistoryDialog
 import org.thoughtcrime.securesms.conversation.ui.error.EnableCallNotificationSettingsDialog
@@ -257,6 +265,7 @@ import org.thoughtcrime.securesms.conversation.v2.items.ChatColorsDrawable
 import org.thoughtcrime.securesms.conversation.v2.items.InteractiveConversationElement
 import org.thoughtcrime.securesms.conversation.v2.keyboard.AttachmentKeyboardFragment
 import org.thoughtcrime.securesms.database.DraftTable
+import org.thoughtcrime.securesms.database.SignalDatabase
 import org.thoughtcrime.securesms.database.model.IdentityRecord
 import org.thoughtcrime.securesms.database.model.InMemoryMessageRecord
 import org.thoughtcrime.securesms.database.model.Mention
@@ -265,6 +274,7 @@ import org.thoughtcrime.securesms.database.model.MessageRecord
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord
 import org.thoughtcrime.securesms.database.model.Quote
 import org.thoughtcrime.securesms.database.model.databaseprotos.BodyRangeList
+import org.thoughtcrime.securesms.database.withAttachments
 import org.thoughtcrime.securesms.databinding.V2ConversationBackgroundBinding
 import org.thoughtcrime.securesms.databinding.V2ConversationFragmentBinding
 import org.thoughtcrime.securesms.dependencies.AppDependencies
@@ -311,7 +321,9 @@ import org.thoughtcrime.securesms.main.MainSnackbarHostKey
 import org.thoughtcrime.securesms.mediaoverview.MediaOverviewActivity
 import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewActivity
+import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache
 import org.thoughtcrime.securesms.mediasend.MediaSendActivityResult
+import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity
 import org.thoughtcrime.securesms.messagerequests.MessageRequestRepository
 import org.thoughtcrime.securesms.mms.AttachmentManager
 import org.thoughtcrime.securesms.mms.AudioSlide
@@ -356,6 +368,7 @@ import org.thoughtcrime.securesms.stickers.manage.StickerManagementScreen
 import org.thoughtcrime.securesms.stickers.preview.StickerPackPreviewActivity
 import org.thoughtcrime.securesms.stories.StoryViewerArgs
 import org.thoughtcrime.securesms.stories.viewer.StoryViewerActivity
+import org.thoughtcrime.securesms.updaterequired.UpdateRequired
 import org.thoughtcrime.securesms.util.BubbleUtil
 import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.ConversationUtil
@@ -371,6 +384,7 @@ import org.thoughtcrime.securesms.util.MessageConstraintsUtil.getEditMessageThre
 import org.thoughtcrime.securesms.util.MessageConstraintsUtil.isValidEditMessageSend
 import org.thoughtcrime.securesms.util.MessageUtil
 import org.thoughtcrime.securesms.util.PlayStoreUtil
+import org.thoughtcrime.securesms.util.Projection
 import org.thoughtcrime.securesms.util.RemoteConfig
 import org.thoughtcrime.securesms.util.SignalLocalMetrics
 import org.thoughtcrime.securesms.util.TextSecurePreferences
@@ -672,30 +686,31 @@ class ConversationFragment :
 
   private val scheduledMessagesStub: Stub<View> by lazy { Stub(binding.scheduledMessagesStub) }
 
-  /**
-   * The long press waiting on the keyboards to clear before the overlay can measure itself. The list
-   * has to stop taking taps for that whole wait, or a tap lands on a message that is about to be
-   * covered by the overlay.
-   */
-  private var pendingReactionOverlayJob: Job? = null
-
-  private val isReactionOverlayPending: Boolean
-    get() = pendingReactionOverlayJob?.isActive == true
-
-  /** Swallows list touches for the length of [pendingReactionOverlayJob]. */
-  private val pendingReactionOverlayTouchGuard = object : RecyclerView.OnItemTouchListener {
-    override fun onInterceptTouchEvent(recyclerView: RecyclerView, event: MotionEvent): Boolean = isReactionOverlayPending
-    override fun onTouchEvent(recyclerView: RecyclerView, event: MotionEvent) = Unit
-    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) = Unit
+  private val reactionOverlay: ChatReactionOverlayController by lazy(LazyThreadSafetyMode.NONE) {
+    ChatReactionOverlayController(
+      context = requireContext(),
+      hapticView = { chatHost },
+      menuAnchor = { reactionMenuAnchor },
+      onReactionSelected = { messageRecord, emoji ->
+        reactionOverlay.hide()
+        disposables += viewModel.updateReaction(messageRecord, emoji).subscribe()
+      },
+      onCustomReactionSelected = { messageRecord, hasAddedCustomEmoji ->
+        reactionOverlay.hide()
+        onCustomReactionSelected(messageRecord, hasAddedCustomEmoji)
+      },
+      onActionSelected = { action -> reactionActionListener?.onActionSelected(action) },
+      onStartHide = { focusedView -> reactionHideListener?.startHide(focusedView) },
+      onHidden = { reactionHideListener?.onHide() }
+    )
   }
 
-  private val reactionDelegate: ConversationReactionDelegate by lazy(LazyThreadSafetyMode.NONE) {
-    val conversationReactionStub = Stub<ConversationReactionOverlay>(binding.conversationReactionScrubberStub)
-    val delegate = ConversationReactionDelegate(conversationReactionStub)
-    delegate.setOnReactionSelectedListener(OnReactionsSelectedListener())
+  /** Set for the life of one long press, so the overlay's callbacks reach that message. */
+  private var reactionActionListener: ReactionsToolbarListener? = null
+  private var reactionHideListener: ReactionOverlayHideListener? = null
 
-    delegate
-  }
+  private lateinit var reactionMenuAnchor: View
+  private lateinit var chatHost: ViewGroup
 
   private lateinit var voiceMessageRecordingDelegate: VoiceMessageRecordingDelegate
 
@@ -719,7 +734,7 @@ class ConversationFragment :
     conversationBackground = inflater.inflate(R.layout.v2_conversation_background, container, false)
     conversationContent = inflater.inflate(R.layout.v2_conversation_fragment, container, false)
 
-    return ComposeView(requireContext()).apply {
+    val composition = ComposeView(requireContext()).apply {
       setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
       setContent {
         SignalTheme {
@@ -728,12 +743,48 @@ class ConversationFragment :
             onEvent = ::onMediaKeyboardEvent,
             scrims = chatScrims,
             isBubble = args.conversationScreenType == ConversationScreenType.BUBBLE,
-            backgroundView = conversationBackground,
-            contentView = conversationContent
+            conversationView = conversationContent,
+            overlayController = reactionOverlay
           )
         }
       }
     }
+
+    // Not the ComposeView itself: showAsDropDown measures from an anchor's bottom and flips a popup
+    // that will not fit below it.
+    reactionMenuAnchor = Space(requireContext())
+
+    // Behind the composition rather than inside it: an AndroidView would put the wallpaper in
+    // Compose's hit path, and a second interop view there costs the conversation its
+    // ACTION_HOVER_EXIT. See stylus-hover-interop.md.
+    chatHost = FrameLayout(requireContext()).apply {
+      addView(conversationBackground)
+      addView(composition)
+      addView(reactionMenuAnchor, FrameLayout.LayoutParams(0, 0))
+    }
+
+    return chatHost
+  }
+
+  /**
+   * Where [target]'s row sits in the overlay's coordinate space. [Projection] walks the layout
+   * positions; translations are not part of that walk, so they are added here.
+   *
+   * The overlay is a composition, so there is nothing to project into. It reports where it starts
+   * instead, which is the only reliable measure of its padding: a bubble consumes the insets it is
+   * padded by, leaving it flush with the root.
+   */
+  private fun overlayOriginOf(target: InteractiveConversationElement, recycler: RecyclerView): PointF {
+    val projection = Projection.relativeToViewWithCommonRoot(target.root, chatHost, null)
+    val hostOrigin = IntArray(2).also { chatHost.getLocationInWindow(it) }
+    val overlayOrigin = reactionOverlay.originInWindow
+    val origin = PointF(
+      projection.x + target.root.translationX - (overlayOrigin.x - hostOrigin[0]),
+      projection.y + target.root.translationY + recycler.translationY - (overlayOrigin.y - hostOrigin[1])
+    )
+    projection.release()
+
+    return origin
   }
 
   private fun onMediaKeyboardEvent(event: MediaKeyboardEvents) {
@@ -778,8 +829,8 @@ class ConversationFragment :
     )
     conversationToolbarOnScrollHelper.attach(binding.conversationItemRecycler)
     presentConversationTitle(viewModel.recipientSnapshot)
-    if (viewModel.recipientSnapshot?.isGroup == true) {
-      presentGroupConversationSubtitle(createGroupSubtitleString(viewModel.titleViewParticipantsSnapshot))
+    viewModel.recipientSnapshot?.takeIf { it.isGroup }?.let { group ->
+      presentGroupConversationSubtitle(tellomiGroupMemberSubtitle(resources, group))
     }
     presentActionBarMenu()
     presentStoryRing()
@@ -840,7 +891,8 @@ class ConversationFragment :
       viewModel.onChatBoundsChanged(Rect(left, top, right, bottom))
     }
 
-    binding.toolbar.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+    // Tellomi：跟着顶栏背景走（它铺到「我的收藏」分类栏的底边，没有分类栏时就是顶栏底边，#1174）
+    binding.toolbarBackground.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
       // Bug: ConstraintLayout can provide a negative value for the toolbar causing RV layout problems
       if (bottom < 0) return@addOnLayoutChangeListener
 
@@ -914,14 +966,56 @@ class ConversationFragment :
     if (SignalStore.rateLimit.needsRecaptcha()) {
       RecaptchaProofBottomSheetFragment.show(childFragmentManager)
     }
+
+    MediaPreviewCache.consumePendingReply(args.threadId)?.let { replyToMessageFromViewer(it) }
+  }
+
+  /**
+   * Tellomi（#1257）：在查看器里点了「回复」——和长按回复一样引用整条消息，缩略图照上游取第一项
+   * （owner 2026-09-26：不做「回复这一张」，协议只能引用整条消息，要让对方看到那一张就得放宽收件方的防伪）。
+   */
+  private fun replyToMessageFromViewer(reply: MediaPreviewCache.PendingReply) {
+    val recipient = viewModel.recipientSnapshot ?: return
+    val appContext = requireContext().applicationContext
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      val message = withContext(Dispatchers.IO) {
+        val record = SignalDatabase.messages.getMessageRecordOrNull(reply.messageId)?.withAttachments() ?: return@withContext null
+        ConversationMessage.ConversationMessageFactory.createWithUnresolvedData(appContext, record, recipient)
+      } ?: return@launch
+
+      val canReply = !isActionModeStarted() &&
+        MenuState.canReplyToMessage(
+          recipient,
+          MenuState.isActionMessage(message.messageRecord),
+          message.messageRecord,
+          viewModel.hasMessageRequestState,
+          conversationGroupViewModel.isNonAdminInAnnouncementGroup()
+        )
+      if (!canReply) {
+        return@launch
+      }
+
+      val (slideDeck, body) = viewModel.getSlideDeckAndBodyForReply(requireContext(), message)
+
+      if (inputPanel.inEditMessageMode()) {
+        inputPanel.exitEditMessageMode()
+      }
+
+      inputPanel.setQuote(
+        Glide.with(this@ConversationFragment),
+        message.messageRecord.dateSent,
+        message.messageRecord.fromRecipient,
+        body,
+        slideDeck,
+        message.messageRecord.getRecordQuoteType()
+      )
+      inputPanel.clickOnComposeInput()
+    }
   }
 
   override fun onPause() {
     super.onPause()
-
-    // Abandoned rather than resumed on the way back in, where the long press is no longer the last
-    // thing the user did.
-    pendingReactionOverlayJob?.cancel()
 
     ConversationUtil.refreshRecipientShortcuts()
 
@@ -929,6 +1023,7 @@ class ConversationFragment :
       AppDependencies.messageNotifier.clearVisibleThread(ConversationId.forConversation(args.threadId))
     } else {
       AppDependencies.messageNotifier.clearVisibleBubbleThread()
+      AppDependencies.messageNotifier.updateNotification(requireContext())
     }
 
     if (activity?.isFinishing == true) {
@@ -1022,11 +1117,11 @@ class ConversationFragment :
   }
 
   override fun onReactWithAnyEmojiDialogDismissed() {
-    reactionDelegate.hide()
+    reactionOverlay.hide()
   }
 
   override fun onReactWithAnyEmojiSelected(emoji: String) {
-    reactionDelegate.hide()
+    reactionOverlay.hide()
   }
 
   override fun onReactionsDialogDismissed() {
@@ -1170,7 +1265,7 @@ class ConversationFragment :
     val state = viewModel.backPressedState.value
 
     when {
-      state.isReactionDelegateShowing -> reactionDelegate.hide()
+      state.isReactionDelegateShowing -> reactionOverlay.hide()
 
       state.isSearchRequested -> searchMenuItem?.collapseActionView()
 
@@ -1232,10 +1327,6 @@ class ConversationFragment :
     binding.conversationItemRecycler.invalidateItemDecorations()
   }
 
-  private fun createGroupSubtitleString(members: List<Recipient>): String {
-    return members.joinToString(", ") { r -> if (r.isSelf) getString(R.string.ConversationTitleView_you) else r.getDisplayName(requireContext()) }
-  }
-
   private fun observeConversationThread() {
     var firstRender = true
     disposables += viewModel
@@ -1262,6 +1353,8 @@ class ConversationFragment :
         adapter.submitList(it) {
           scrollToPositionDelegate.notifyListCommitted()
           conversationItemDecorations.currentItems = it
+          // Tellomi（#1206）：未读线上下两条不算同一组（在主线程读：未读状态第一次是在后台线程设的）
+          adapter.tellomiUnreadAnchorId = conversationItemDecorations.tellomiUnreadAnchorId
 
           if (firstRender) {
             firstRender = false
@@ -1343,10 +1436,15 @@ class ConversationFragment :
       .distinctUntilChanged { r1, r2 -> r1 === r2 || r1.hasSameContent(r2) }
       .subscribeBy(onNext = this::onRecipientChanged)
 
-    disposables += viewModel.titleViewParticipants
-      .map { createGroupSubtitleString(it) }
-      .distinctUntilChanged()
+    // Tellomi：「我的收藏」顶栏下方的分类（#1174）
+    disposables += binding.tellomiSavedCategoriesBar.bind(viewModel.recipient, args.threadId)
+
+    // Tellomi（两端差异清单第 10 项）：人数按群的全部成员算；titleViewParticipants 只取了前 10 个，只够拼名字
+    disposables += viewModel.recipient
+      .filter { it.isGroup }
       .observeOn(AndroidSchedulers.mainThread())
+      .map { tellomiGroupMemberSubtitle(resources, it) }
+      .distinctUntilChanged()
       .subscribeBy(onNext = this::presentGroupConversationSubtitle)
 
     disposables += viewModel.scrollButtonState
@@ -1387,7 +1485,8 @@ class ConversationFragment :
     sendEditButton.setOnClickListener { handleSendEditMessage() }
 
     val attachListener = { _: View ->
-      container.toggleInput(ChatKeyboards.Attachment, composeText)
+      // Tellomi（tellomi/tellomi#1115）：「+」不再弹键盘位的附件面板，改成照 Telegram 的附件 Sheet（相册网格 + 底部 dock）
+      openAttachmentSheet()
     }
     binding.conversationInputPanel.attachButton.setOnClickListener(attachListener)
     binding.conversationInputPanel.inlineAttachmentButton.setOnClickListener(attachListener)
@@ -1738,7 +1837,7 @@ class ConversationFragment :
     val recipientId: RecipientId = viewModel.recipientSnapshot?.id ?: return
 
     if (mediaType == SlideFactory.MediaType.VCARD) {
-      conversationActivityResultContracts.launchContactShareEditor(uri, recipientId)
+      conversationActivityResultContracts.launchVCardShareEditor(uri, recipientId)
     } else {
       val mimeType = MediaUtil.getMimeType(requireContext(), uri) ?: mediaType.toFallbackMimeType()
       val media = Media(
@@ -2342,7 +2441,6 @@ class ConversationFragment :
     binding.conversationItemRecycler.layoutManager = layoutManager
     scrollListener = ScrollListener()
     binding.conversationItemRecycler.addOnScrollListener(scrollListener!!)
-    binding.conversationItemRecycler.addOnItemTouchListener(pendingReactionOverlayTouchGuard)
 
     adapter = ConversationAdapterV2(
       lifecycleOwner = viewLifecycleOwner,
@@ -2525,7 +2623,8 @@ class ConversationFragment :
         inlineAttachment.hide(false)
       }
 
-      draftViewModel.voiceNoteDraft != null -> {
+      // An in-progress recording snapshots itself into the draft, but its UI lives in quickAttachment and must stay visible.
+      draftViewModel.voiceNoteDraft != null && !inputPanel.isRecordingInProgress -> {
         buttonToggle.display(sendButton)
         quickAttachment.hide(true)
         inlineAttachment.hide(true)
@@ -2957,13 +3056,17 @@ class ConversationFragment :
 
   private fun handleReaction(
     conversationMessage: ConversationMessage,
-    onActionSelectedListener: OnActionSelectedListener,
-    selectedConversationModel: SelectedConversationModel,
-    onHideListener: OnHideListener
+    snapshot: ReactionOverlaySnapshot,
+    focusedView: View?
   ) {
-    reactionDelegate.setOnActionSelectedListener(onActionSelectedListener)
-    reactionDelegate.setOnHideListener(onHideListener)
-    reactionDelegate.show(requireActivity(), viewModel.recipientSnapshot!!, conversationMessage, conversationGroupViewModel.isNonAdminInAnnouncementGroup(), selectedConversationModel, conversationGroupViewModel.canEditGroupInfo())
+    reactionOverlay.show(
+      conversationRecipient = viewModel.recipientSnapshot!!,
+      conversationMessage = conversationMessage,
+      snapshot = snapshot,
+      isNonAdminInAnnouncementGroup = conversationGroupViewModel.isNonAdminInAnnouncementGroup(),
+      canEditGroupInfo = conversationGroupViewModel.canEditGroupInfo(),
+      focusedView = focusedView
+    )
     viewModel.setIsReactionDelegateShowing(true)
     composeText.clearFocus()
   }
@@ -3159,8 +3262,41 @@ class ConversationFragment :
     inputPanel.clearQuote()
 
     MultiselectForwardFragmentArgs.create(requireContext(), messageParts) { args ->
-      MultiselectForwardFragment.showBottomSheet(childFragmentManager, args)
+      // Tellomi（#1259 F-1）：长按 / 多选的「转发」打开头像网格
+      TellomiForwardGridBottomSheet.show(childFragmentManager, args)
     }
+  }
+
+  /**
+   * Tellomi：长按「收藏」——不开转发面板，直接发到「我的收藏」，提示「已收藏」可点「查看」（#1174）。
+   * 内容和转发一样（MultiselectForwardFragmentArgs），只是收件人固定是自己。
+   */
+  private fun handleSaveToSavedMessages(messageParts: Set<MultiselectPart>) {
+    MultiselectForwardFragmentArgs.create(requireContext(), messageParts) { args ->
+      MultiselectForwardRepository.send(
+        additionalMessage = "",
+        multiShareArgs = args.multiShareArgs,
+        shareContacts = setOf(RecipientSearchKey(Recipient.self().id, false)),
+        resultHandlers = MultiselectForwardRepository.MultiselectForwardResultHandlers(
+          onAllMessageSentSuccessfully = { ThreadUtil.runOnMain { showSavedToSavedMessages() } },
+          onSomeMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) },
+          onAllMessagesFailed = { toast(R.string.ConversationFragment__tellomi_couldnt_save) }
+        )
+      )
+    }
+  }
+
+  private fun showSavedToSavedMessages() {
+    // 发送是异步的，回来时页面可能已经进了返回栈（fragment 还在、view 没了），这时取 binding 会抛
+    if (!isAdded || view == null) {
+      return
+    }
+
+    Snackbar.make(binding.conversationItemRecycler, R.string.ConversationFragment__tellomi_saved_to_saved_messages, Snackbar.LENGTH_LONG)
+      .setAction(R.string.ConversationFragment__tellomi_view_saved_messages) {
+        CommunicationActions.startConversation(requireContext(), Recipient.self(), null)
+      }
+      .show()
   }
 
   private fun handleSaveAttachment(record: MmsMessageRecord) {
@@ -3696,10 +3832,21 @@ class ConversationFragment :
       )
     }
 
-    override fun onMessageSharedContactClicked(choices: MutableList<Recipient>) {
+    override fun onMessageSharedContactClicked(contact: Contact, choices: MutableList<Recipient>) {
       val context = context ?: return
-      ContactUtil.selectRecipientThroughDialog(context, choices, Locale.getDefault()) { recipient: Recipient ->
-        CommunicationActions.startConversation(context, recipient, null)
+
+      if (choices.isNotEmpty()) {
+        ContactUtil.selectRecipientThroughDialog(context, choices, Locale.getDefault()) { recipient: Recipient ->
+          CommunicationActions.startConversation(context, recipient, null)
+        }
+        return
+      }
+
+      // A card that carries only an ACI has nobody to pick between and no row yet, so tapping it is
+      // what seeds one.
+      viewLifecycleOwner.lifecycleScope.launch {
+        val recipientId = withContext(SignalDispatchers.IO) { contact.resolveOrCreateSignalRecipient() } ?: return@launch
+        CommunicationActions.startConversation(context, Recipient.resolved(recipientId), null)
       }
     }
 
@@ -4077,6 +4224,7 @@ class ConversationFragment :
       container.hideAll(composeText)
 
       sharedElement.transitionName = MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME
+      MediaPreviewCache.replyTargetThreadId = args.threadId
       requireActivity().setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
       val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(), sharedElement, MediaPreviewActivity.SHARED_ELEMENT_TRANSITION_NAME)
       requireActivity().startActivity(MediaIntentFactory.create(requireActivity(), args), options.toBundle())
@@ -4165,13 +4313,8 @@ class ConversationFragment :
           // Read before anything is asked to hide, or the keyboard cannot be brought back on dismiss.
           val focusedView = if (container.isInputShowing || !container.isKeyboardShowing) null else itemView.rootView.findFocus()
 
-          // The overlay sizes itself to the content area, so every keyboard has to be all the way
-          // out before it measures. Mid-animation it has half a screen to fit the menu into.
-          pendingReactionOverlayJob?.cancel()
-          pendingReactionOverlayJob = viewLifecycleOwner.lifecycleScope.launch {
-            container.hideAllAndAwaitSettled(composeText, conversationContent)
-            showReactionOverlay(itemView, item, target, focusedView)
-          }
+          container.hideAll(composeText)
+          showReactionOverlay(item, target, focusedView)
         }
       } else if (item.conversationMessage.isActiveCollapsedHead) {
         viewModel.onExpandEvents(item.conversationMessage.messageRecord.id)
@@ -4182,12 +4325,8 @@ class ConversationFragment :
       }
     }
 
-    /**
-     * Snapshots [target] and hands it to the reaction overlay. Split out of [onItemLongClick] because
-     * it runs once the keyboards are out of the way, which is not until a few frames later.
-     */
+    /** Snapshots [target] and hands it to the reaction overlay. */
     private fun showReactionOverlay(
-      itemView: View,
       item: MultiselectPart,
       target: InteractiveConversationElement,
       focusedView: View?
@@ -4196,24 +4335,27 @@ class ConversationFragment :
         return
       }
 
-      val messageRecord = item.getMessageRecord()
-
-      // The wait gave the list room to move on, so the row may be gone or bound to another message.
-      if (isActionModeStarted() || adapter.selectedItems.isNotEmpty() || target.conversationMessage.messageRecord.id != messageRecord.id) {
+      if (reactionOverlay.isShowing) {
+        // Nothing below would be undone by a hide that never comes.
+        Log.w(TAG, "Long press while the reaction overlay is still showing. Ignoring.")
         return
       }
 
+      val messageRecord = item.getMessageRecord()
+
+      // Held, not re-read: teardown has to work from a screen that is already going.
+      val recycler = binding.conversationItemRecycler
+
       multiselectItemDecoration.setFocusedItem(MultiselectPart.Message(item.conversationMessage))
-      binding.conversationItemRecycler.invalidateItemDecorations()
-      binding.reactionsShade.visibility = View.VISIBLE
-      binding.conversationItemRecycler.suppressLayout(true)
+      recycler.invalidateItemDecorations()
+      recycler.suppressLayout(true)
 
       val audioUri = messageRecord.getAudioUriForLongClick()
       if (audioUri != null) {
         getVoiceNoteMediaController().pausePlayback(audioUri)
       }
 
-      val childAdapterPosition = target.getAdapterPosition(binding.conversationItemRecycler)
+      val childAdapterPosition = target.getAdapterPosition(recycler)
       var mp4Holder: GiphyMp4ProjectionPlayerHolder? = null
       var videoBitmap: Bitmap? = null
       if (childAdapterPosition != RecyclerView.NO_POSITION) {
@@ -4225,22 +4367,30 @@ class ConversationFragment :
         }
       }
 
-      val snapshot = ConversationItemSelection.snapshotView(target, binding.conversationItemRecycler, messageRecord, videoBitmap)
+      val snapshot = ConversationItemSelection.snapshotView(target, recycler, messageRecord, videoBitmap)
 
       val bodyBubble = target.bubbleView
-      val selectedConversationModel = SelectedConversationModel(
-        bitmap = snapshot,
-        itemX = itemView.x,
-        itemY = itemView.y + binding.conversationItemRecycler.translationY,
-        bubbleY = bodyBubble.y,
+      val snapshotMetrics = target.getSnapshotStrategy()?.snapshotMetrics ?: InteractiveConversationElement.SnapshotMetrics(
+        snapshotOffset = bodyBubble.x,
+        contextMenuPadding = bodyBubble.x
+      )
+
+      val origin = overlayOriginOf(target, recycler)
+      val overlaySnapshot = ReactionOverlaySnapshot(
+        bitmap = snapshot.asImageBitmap(),
+        bubbleX = origin.x + snapshotMetrics.snapshotOffset,
+        bubbleY = origin.y + bodyBubble.y,
         bubbleWidth = bodyBubble.width,
-        audioUri = audioUri,
-        isOutgoing = messageRecord.isOutgoing,
-        focusedView = focusedView,
-        snapshotMetrics = target.getSnapshotStrategy()?.snapshotMetrics ?: InteractiveConversationElement.SnapshotMetrics(
-          snapshotOffset = bodyBubble.x,
-          contextMenuPadding = bodyBubble.x
-        )
+        contextMenuX = origin.x + snapshotMetrics.contextMenuPadding,
+        isMessageOnLeft = messageRecord.isOutgoing xor ViewUtil.isLtr(recycler),
+        returnPosition = {
+          if (view == null || target.root.parent == null || target.conversationMessage.messageRecord.id != messageRecord.id) {
+            null
+          } else {
+            val current = overlayOriginOf(target, recycler)
+            Offset(current.x + snapshotMetrics.snapshotOffset, current.y + bodyBubble.y)
+          }
+        }
       )
 
       bodyBubble.visibility = View.INVISIBLE
@@ -4253,58 +4403,56 @@ class ConversationFragment :
 
       viewModel.setHideScrollButtonsForReactionOverlay(true)
 
-      handleReaction(
-        item.conversationMessage,
-        ReactionsToolbarListener(item.conversationMessage),
-        selectedConversationModel,
-        object : OnHideListener {
-          override fun startHide(focusedView: View?) {
-            if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
-              return
-            }
+      reactionActionListener = ReactionsToolbarListener(item.conversationMessage)
+      reactionHideListener = object : ReactionOverlayHideListener {
+        override fun startHide(focusedView: View?) {
+          // Ahead of the started check: a dismiss while stopped would leave the chat dimmed.
+          multiselectItemDecoration.hideShade(recycler)
 
-            multiselectItemDecoration.hideShade(binding.conversationItemRecycler)
-            ViewUtil.fadeOut(binding.reactionsShade, resources.getInteger(R.integer.reaction_scrubber_hide_duration), View.GONE)
-
-            val searchField = expandedSearchField()
-            if (searchField != null && focusedView == searchField) {
-              // The input panel is gone while search is open, so composeText cannot take the keyboard back.
-              container.showSoftkey(searchField)
-            } else if (focusedView == composeText) {
-              container.showSoftkey(composeText)
-            }
+          if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
+            return
           }
 
-          override fun onHide() {
-            viewModel.setIsReactionDelegateShowing(false)
-
-            if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
-              return
-            }
-
-            binding.conversationItemRecycler.suppressLayout(false)
-            if (selectedConversationModel.audioUri != null) {
-              getVoiceNoteMediaController().resumePlayback(selectedConversationModel.audioUri, messageRecord.id)
-            }
-
-            clearFocusedItem()
-
-            if (mp4Holder != null) {
-              mp4Holder.show()
-              mp4Holder.resume()
-            }
-
-            bodyBubble.visibility = View.VISIBLE
-            target.reactionsView.visibility = View.VISIBLE
-
-            if (quotedIndicatorVisible && target.quotedIndicatorView != null) {
-              ViewUtil.fadeIn(target.quotedIndicatorView!!, 150)
-            }
-
-            viewModel.setHideScrollButtonsForReactionOverlay(false)
+          val searchField = expandedSearchField()
+          if (searchField != null && focusedView == searchField) {
+            // The input panel is gone while search is open, so composeText cannot take the keyboard back.
+            container.showSoftkey(searchField)
+          } else if (focusedView == composeText) {
+            container.showSoftkey(composeText)
           }
         }
-      )
+
+        override fun onHide() {
+          viewModel.setIsReactionDelegateShowing(false)
+
+          // Likewise: otherwise the list stays frozen and the message invisible.
+          recycler.suppressLayout(false)
+          multiselectItemDecoration.setFocusedItem(null)
+          recycler.invalidateItemDecorations()
+          bodyBubble.visibility = View.VISIBLE
+          target.reactionsView.visibility = View.VISIBLE
+          viewModel.setHideScrollButtonsForReactionOverlay(false)
+
+          if (quotedIndicatorVisible && target.quotedIndicatorView != null) {
+            ViewUtil.fadeIn(target.quotedIndicatorView!!, 150)
+          }
+
+          if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) || activity == null || activity?.isFinishing == true) {
+            return
+          }
+
+          if (audioUri != null) {
+            getVoiceNoteMediaController().resumePlayback(audioUri, messageRecord.id)
+          }
+
+          if (mp4Holder != null) {
+            mp4Holder.show()
+            mp4Holder.resume()
+          }
+        }
+      }
+
+      handleReaction(item.conversationMessage, overlaySnapshot, focusedView)
     }
 
     override fun onShowGroupDescriptionClicked(groupName: String, description: String, shouldLinkifyWebLinks: Boolean) {
@@ -4611,27 +4759,16 @@ class ConversationFragment :
     }
   }
 
-  private inner class OnReactionsSelectedListener : ConversationReactionOverlay.OnReactionSelectedListener {
-    override fun onReactionSelected(messageRecord: MessageRecord, emoji: String?) {
-      reactionDelegate.hide()
-
-      if (emoji != null) {
-        disposables += viewModel.updateReaction(messageRecord, emoji).subscribe()
-      }
-    }
-
-    override fun onCustomReactionSelected(messageRecord: MessageRecord, hasAddedCustomEmoji: Boolean) {
-      reactionDelegate.hide()
-      disposables += viewModel.updateCustomReaction(messageRecord, hasAddedCustomEmoji)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeBy(
-          onSuccess = {
-            ReactWithAnyEmojiBottomSheetDialogFragment
-              .createForMessageRecord(messageRecord, -1)
-              .show(childFragmentManager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG)
-          }
-        )
-    }
+  private fun onCustomReactionSelected(messageRecord: MessageRecord, hasAddedCustomEmoji: Boolean) {
+    disposables += viewModel.updateCustomReaction(messageRecord, hasAddedCustomEmoji)
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribeBy(
+        onSuccess = {
+          ReactWithAnyEmojiBottomSheetDialogFragment
+            .createForMessageRecord(messageRecord, -1)
+            .show(childFragmentManager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG)
+        }
+      )
   }
 
   private inner class MotionEventRelayDrain(lifecycleOwner: LifecycleOwner) : MotionEventRelay.Drain {
@@ -4639,7 +4776,7 @@ class ConversationFragment :
 
     override fun accept(motionEvent: MotionEvent): Boolean {
       return if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-        reactionDelegate.applyTouchEvent(motionEvent)
+        reactionOverlay.applyTouchEvent(motionEvent)
       } else {
         false
       }
@@ -4648,24 +4785,25 @@ class ConversationFragment :
 
   private inner class ReactionsToolbarListener(
     private val conversationMessage: ConversationMessage
-  ) : OnActionSelectedListener {
-    override fun onActionSelected(action: ConversationReactionOverlay.Action) {
+  ) {
+    fun onActionSelected(action: ReactionAction) {
       when (action) {
-        ConversationReactionOverlay.Action.REPLY -> handleReplyToMessage(conversationMessage)
-        ConversationReactionOverlay.Action.EDIT -> handleEditMessage(conversationMessage)
-        ConversationReactionOverlay.Action.FORWARD -> handleForwardMessageParts(conversationMessage.multiselectCollection.toSet())
-        ConversationReactionOverlay.Action.RESEND -> handleResend(conversationMessage)
-        ConversationReactionOverlay.Action.DOWNLOAD -> handleSaveAttachment(conversationMessage.messageRecord as MmsMessageRecord)
-        ConversationReactionOverlay.Action.COPY -> handleCopyMessage(conversationMessage.multiselectCollection.toSet())
-        ConversationReactionOverlay.Action.MULTISELECT -> handleEnterMultiselect(conversationMessage)
-        ConversationReactionOverlay.Action.PAYMENT_DETAILS -> handleViewPaymentDetails(conversationMessage)
-        ConversationReactionOverlay.Action.VIEW_INFO -> handleDisplayDetails(conversationMessage)
-        ConversationReactionOverlay.Action.DELETE -> handleDeleteMessages(conversationMessage.multiselectCollection.toSet())
-        ConversationReactionOverlay.Action.END_POLL -> handleEndPoll(conversationMessage.messageRecord.getPoll()?.id)
-        ConversationReactionOverlay.Action.PIN_MESSAGE -> handlePinMessage(conversationMessage)
-        ConversationReactionOverlay.Action.UNPIN_MESSAGE -> handleUnpinMessage(conversationMessage.messageRecord.id)
-        ConversationReactionOverlay.Action.STAR_MESSAGE -> handleStarMessages(setOf(conversationMessage.messageRecord.id))
-        ConversationReactionOverlay.Action.UNSTAR_MESSAGE -> handleUnstarMessages(setOf(conversationMessage.messageRecord.id))
+        ReactionAction.REPLY -> handleReplyToMessage(conversationMessage)
+        ReactionAction.EDIT -> handleEditMessage(conversationMessage)
+        ReactionAction.FORWARD -> handleForwardMessageParts(conversationMessage.multiselectCollection.toSet())
+        ReactionAction.TELLOMI_SAVE_TO_SAVED_MESSAGES -> handleSaveToSavedMessages(conversationMessage.multiselectCollection.toSet())
+        ReactionAction.RESEND -> handleResend(conversationMessage)
+        ReactionAction.DOWNLOAD -> handleSaveAttachment(conversationMessage.messageRecord as MmsMessageRecord)
+        ReactionAction.COPY -> handleCopyMessage(conversationMessage.multiselectCollection.toSet())
+        ReactionAction.MULTISELECT -> handleEnterMultiselect(conversationMessage)
+        ReactionAction.PAYMENT_DETAILS -> handleViewPaymentDetails(conversationMessage)
+        ReactionAction.VIEW_INFO -> handleDisplayDetails(conversationMessage)
+        ReactionAction.DELETE -> handleDeleteMessages(conversationMessage.multiselectCollection.toSet())
+        ReactionAction.END_POLL -> handleEndPoll(conversationMessage.messageRecord.getPoll()?.id)
+        ReactionAction.PIN_MESSAGE -> handlePinMessage(conversationMessage)
+        ReactionAction.UNPIN_MESSAGE -> handleUnpinMessage(conversationMessage.messageRecord.id)
+        ReactionAction.STAR_MESSAGE -> handleStarMessages(setOf(conversationMessage.messageRecord.id))
+        ReactionAction.UNSTAR_MESSAGE -> handleUnstarMessages(setOf(conversationMessage.messageRecord.id))
       }
     }
   }
@@ -4697,29 +4835,18 @@ class ConversationFragment :
         return
       }
 
+      // Tellomi（tellomi/tellomi#1261 P-5「单独发送」）：一张一条，说明挂最后一条。
+      if (result.sendSeparately) {
+        sendMediaSeparately(result)
+        return
+      }
+
       if (result.isPushPreUpload) {
         sendPreUploadMediaMessage(result)
         return
       }
 
-      val slides: List<Slide> = result.nonUploadedMedia.mapNotNull {
-        when {
-          MediaUtil.isVideoType(it.contentType) -> VideoSlide(requireContext(), it.uri, it.size, it.isVideoGif, it.width, it.height, it.caption, it.transformProperties)
-
-          MediaUtil.isGif(it.contentType) -> GifSlide(requireContext(), it.uri, it.size, it.width, it.height, it.isBorderless, it.caption)
-
-          MediaUtil.isImageType(it.contentType) -> ImageSlide(requireContext(), it.uri, it.contentType, it.size, it.width, it.height, it.isBorderless, it.caption, null, it.transformProperties)
-
-          MediaUtil.isDocumentType(it.contentType) -> {
-            DocumentSlide(requireContext(), it.uri, it.contentType!!, it.size, it.fileName)
-          }
-
-          else -> {
-            Log.w(TAG, "Asked to send an unexpected mimeType: '${it.contentType}'. Skipping.")
-            null
-          }
-        }
-      }
+      val slides: List<Slide> = mediaSlides(result.nonUploadedMedia)
 
       sendMessage(
         body = result.body,
@@ -4737,6 +4864,101 @@ class ConversationFragment :
       ) {
         viewModel.deleteSlideData(slides)
       }
+    }
+
+    private fun mediaSlides(media: List<Media>): List<Slide> {
+      return media.mapNotNull {
+        when {
+          MediaUtil.isVideoType(it.contentType) -> VideoSlide(requireContext(), it.uri, it.size, it.isVideoGif, it.width, it.height, it.caption, it.transformProperties)
+
+          MediaUtil.isGif(it.contentType) -> GifSlide(requireContext(), it.uri, it.size, it.width, it.height, it.isBorderless, it.caption)
+
+          MediaUtil.isImageType(it.contentType) -> ImageSlide(requireContext(), it.uri, it.contentType, it.size, it.width, it.height, it.isBorderless, it.caption, null, it.transformProperties)
+
+          MediaUtil.isDocumentType(it.contentType) -> {
+            DocumentSlide(requireContext(), it.uri, it.contentType!!, it.size, it.fileName)
+          }
+
+          else -> {
+            Log.w(TAG, "Asked to send an unexpected mimeType: '${it.contentType}'. Skipping.")
+            null
+          }
+        }
+      }
+    }
+
+    /**
+     * Tellomi（tellomi/tellomi#1261 P-5「单独发送」，照 Telegram 的 SendWithoutGrouping）：一张一条消息，说明（与 @、样式）挂在最后一条，
+     * 引用挂在第一条。一条发完（写进库）再发下一条，时间戳各不相同、顺序就是选的顺序。
+     *
+     * 整串一次建好交给 [TellomiSendInOrder]，订阅不进 [disposables]（那个绑在 view 上）：发到一半离开会话、弹窗会话发完第一条就
+     * finish，剩下的照样发完。所以前置检查（收件人、定时消息）只在这里做一次，输入框和引用在这里同步清掉（同 [sendMessage] 的
+     * clearCompose）；[onSendComplete] 只在第一条写进库、页面还在时调一次。
+     */
+    @SuppressLint("CheckResult")
+    private fun sendMediaSeparately(result: MediaSendActivityResult) {
+      val threadRecipient = viewModel.recipientSnapshot
+      if (threadRecipient == null) {
+        Log.w(TAG, "Unable to send due to invalid thread recipient")
+        toast(R.string.ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation, Toast.LENGTH_LONG)
+        return
+      }
+
+      if (result.scheduledTime != -1L && ReenableScheduledMessagesDialogFragment.showIfNeeded(requireContext(), childFragmentManager, null, result.scheduledTime)) {
+        return
+      }
+
+      val quote = if (result.isViewOnce) null else inputPanel.quote.orNull()
+      val preUploadParts: List<MessageSender.PreUploadResult> = result.preUploadResults
+      val slideParts: List<Slide> = if (result.isPushPreUpload) emptyList() else mediaSlides(result.nonUploadedMedia)
+      val count = if (result.isPushPreUpload) preUploadParts.size else slideParts.size
+      if (count == 0) {
+        Log.i(TAG, "Unable to send due to empty message")
+        toast(R.string.ConversationActivity_message_is_empty_exclamation)
+        return
+      }
+
+      val parts: List<Completable> = (0 until count).map { index ->
+        val isFirst = index == 0
+        val isLast = index == count - 1
+        val slide = slideParts.getOrNull(index)
+        viewModel.sendMessage(
+          metricId = null,
+          threadRecipient = threadRecipient,
+          body = if (isLast) result.body else "",
+          slideDeck = slide?.let { SlideDeck().apply { addSlide(it) } },
+          scheduledDate = result.scheduledTime,
+          messageToEdit = null,
+          quote = if (isFirst) quote else null,
+          mentions = if (isLast) result.mentions else emptyList(),
+          bodyRanges = if (isLast) result.bodyRanges else null,
+          contacts = emptyList(),
+          linkPreviews = emptyList(),
+          preUploadResults = if (result.isPushPreUpload) listOf(preUploadParts[index]) else emptyList(),
+          isViewOnce = false
+        ).doOnComplete {
+          // 离开会话后 view 已经没了，onSendComplete 里滚动、清草稿都不用做了。
+          if (isFirst && isAdded && view != null) {
+            onSendComplete()
+          }
+          slide?.let { viewModel.deleteSlideData(listOf(it)) }
+        }
+      }
+
+      AppDependencies.typingStatusSender.onTypingStopped(args.threadId)
+      composeTextEventsListener?.typingStatusEnabled = false
+      composeText.setText("")
+      composeTextEventsListener?.typingStatusEnabled = true
+      attachmentManager.clear(Glide.with(this@ConversationFragment), false)
+      inputPanel.clearQuote()
+      scrollToPositionDelegate.markListCommittedVersion()
+
+      TellomiSendInOrder.inOrder(parts).subscribeBy(
+        onError = {
+          Log.w(TAG, "Error received during send!", it)
+          toast(R.string.ConversationActivity_error_sending_media)
+        }
+      )
     }
 
     private fun sendPreUploadMediaMessage(result: MediaSendActivityResult) {
@@ -4757,10 +4979,10 @@ class ConversationFragment :
       )
     }
 
-    override fun onContactSelect(uri: Uri?) {
+    override fun onContactSelect(source: SharedContactSource?) {
       val recipient = viewModel.recipientSnapshot
-      if (uri != null && recipient != null) {
-        conversationActivityResultContracts.launchContactShareEditor(uri, recipient.id)
+      if (source != null && recipient != null) {
+        conversationActivityResultContracts.launchContactShareEditor(source, recipient.id)
       }
     }
 
@@ -4777,6 +4999,15 @@ class ConversationFragment :
       if (uri != null) {
         setMedia(uri, SlideFactory.MediaType.DOCUMENT)
       }
+    }
+
+    override fun onAttachmentSheetButton(button: AttachmentKeyboardButton) {
+      val recipient = viewModel.recipientSnapshot ?: return
+      onAttachmentButton(button, recipient)
+    }
+
+    override fun onAttachmentSheetFiles(result: MediaSendFlowActivityContract.AttachmentFilesResult) {
+      sendAttachmentSheetFiles(result)
     }
   }
 
@@ -4898,7 +5129,12 @@ class ConversationFragment :
 
   private inner class DisabledInputListener : DisabledInputView.Listener {
     override fun onUpdateAppClicked() {
-      PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(requireContext())
+      // Tellomi（taishi 审查 b14 包 8 不阻塞 2）：官网版和只读横幅一样打开 App 内的更新页，不去浏览器
+      if (BuildConfig.MANAGES_APP_UPDATES && UpdateRequired.isRequired()) {
+        startActivity(Intent(requireContext(), ClientDeprecatedActivity::class.java))
+      } else {
+        PlayStoreUtil.openPlayStoreOrOurApkDownloadPage(requireContext())
+      }
     }
 
     override fun onReRegisterClicked() {
@@ -5272,6 +5508,148 @@ class ConversationFragment :
     }
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1121 F-4、F-7、F-8）：附件 Sheet「文件」页选好的文件——每个一条、按顺序立即发送，说明挂在最后一个
+   * （同 Telegram）。超过上限的不发，发完剩下的再提示「文件太大」并写明上限；本机已经没有的也提示一句。
+   *
+   * 系统选择器挑的文件，Sheet 收到时转成了持久读授权（[PickedFileGrants.take]）：整串发完、出错或者一个都没发成都放掉。
+   * 取元数据那一步还挂在 [disposables] 上，离开会话时不放——那时查询可能还在 IO 线程上读，放了它就会抛，而订阅已经断了，
+   * 异常只能走 Rx 的全局处理器；留下的这几个持久授权由系统的名额上限兜底（超了按时间淘汰最旧的）。
+   */
+  private fun sendAttachmentSheetFiles(result: MediaSendFlowActivityContract.AttachmentFilesResult) {
+    val context = requireContext().applicationContext
+    val maxFileSize = PushMediaConstraints(null).documentMaxSize
+    val releasePickedGrants: () -> Unit = { PickedFileGrants.release(context.contentResolver, result.pickedUris) }
+    disposables += Single
+      .fromCallable { TellomiAttachmentFiles.prepare(context, result, maxFileSize) }
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribeBy(
+        onError = {
+          Log.w(TAG, "Couldn't prepare the attachment sheet files", it)
+          releasePickedGrants()
+          toast(R.string.ConversationActivity_error_sending_media)
+        },
+        onSuccess = { prepared ->
+          sendSlidesInOrder(prepared.slides, result.caption?.trim().orEmpty(), onTerminate = releasePickedGrants)
+          val tooLarge = prepared.tooLarge.firstOrNull()
+          when {
+            tooLarge != null -> MaterialAlertDialogBuilder(requireContext())
+              .setMessage(getString(R.string.TellomiAttachmentFiles__too_large, tooLarge, maxFileSize.bytes.toUnitString()))
+              .setPositiveButton(android.R.string.ok, null)
+              .show()
+
+            prepared.unavailable > 0 -> toast(R.string.TellomiAttachmentFiles__some_not_on_device, Toast.LENGTH_LONG)
+          }
+        }
+      )
+  }
+
+  /**
+   * 一个发完（进了本地库）再发下一个，保证对方看到的顺序就是选的顺序；[caption] 只挂在最后一个上，输入框里的草稿不动。
+   *
+   * 整串一次建好交给 [TellomiSendInOrder]，订阅不进 [disposables]（那个绑在 view 上）：文件这条路不预上传，每个都要在插入时整份
+   * 拷进附件库，多选几个大文件就是好几秒，发到一半离开会话、弹窗会话发完第一个就 finish，剩下的也要发完。
+   * [onSendComplete] 只在第一个写进库、页面还在时调一次；[onTerminate] 在整串发完、出错或者一个都没发时调（放掉读授权）。
+   */
+  @SuppressLint("CheckResult")
+  private fun sendSlidesInOrder(slides: List<Slide>, caption: String, onTerminate: () -> Unit) {
+    val threadRecipient = viewModel.recipientSnapshot
+    if (threadRecipient == null) {
+      Log.w(TAG, "Unable to send due to invalid thread recipient")
+      toast(R.string.ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation, Toast.LENGTH_LONG)
+      onTerminate()
+      return
+    }
+
+    if (slides.isEmpty()) {
+      onTerminate()
+      return
+    }
+
+    val parts: List<Completable> = slides.mapIndexed { index, slide ->
+      val send = viewModel.sendMessage(
+        metricId = null,
+        threadRecipient = threadRecipient,
+        body = if (index == slides.lastIndex) caption else "",
+        slideDeck = SlideDeck().apply { addSlide(slide) },
+        scheduledDate = -1L,
+        messageToEdit = null,
+        quote = null,
+        mentions = emptyList(),
+        bodyRanges = null,
+        contacts = emptyList(),
+        linkPreviews = emptyList(),
+        preUploadResults = emptyList(),
+        isViewOnce = false
+      )
+      if (index == 0) {
+        // 离开会话后 view 已经没了，onSendComplete 里滚动、清草稿都不用做了。
+        send.doOnComplete {
+          if (isAdded && view != null) {
+            onSendComplete()
+          }
+        }
+      } else {
+        send
+      }
+    }
+
+    scrollToPositionDelegate.markListCommittedVersion()
+
+    TellomiSendInOrder.inOrder(parts).subscribeBy(
+      onComplete = onTerminate,
+      onError = {
+        Log.w(TAG, "Error received during send!", it)
+        toast(R.string.ConversationActivity_error_sending_media)
+        onTerminate()
+      }
+    )
+  }
+
+  /** Tellomi（tellomi/tellomi#1115）：「+」→ 附件 Sheet。先收起键盘和表情面板，Sheet 从底部滑上来、聊天留在后面。 */
+  private fun openAttachmentSheet() {
+    val recipient = viewModel.recipientSnapshot ?: return
+    container.hideAll(composeText)
+    conversationActivityResultContracts.launchAttachmentSheet(recipient.id, composeText.textTrimmed, inputPanel.quote.isPresent)
+  }
+
+  /**
+   * 附件键盘和附件 Sheet 的 dock（tellomi/tellomi#1115）里的格子走同一套处理。
+   * 返回 false：这一格现在用不了（只提示了一句），附件面板留着。
+   */
+  private fun onAttachmentButton(button: AttachmentKeyboardButton, recipient: Recipient): Boolean {
+    when (button) {
+      AttachmentKeyboardButton.GALLERY -> conversationActivityResultContracts.launchGallery(recipient.id, composeText.textTrimmed, inputPanel.quote.isPresent)
+
+      AttachmentKeyboardButton.CONTACT -> conversationActivityResultContracts.launchSelectContact()
+
+      AttachmentKeyboardButton.LOCATION -> if (BuildConfig.MAPS_AVAILABLE) {
+        conversationActivityResultContracts.launchSelectLocation(recipient.chatColors)
+      } else {
+        // Tellomi（tellomi/tellomi#1235、#1124）：高德接上之前不提供发送位置，格子已置灰（AttachmentKeyboardButtonAdapter）
+        toast(R.string.TellomiLocation__coming_soon, Toast.LENGTH_SHORT)
+        return false
+      }
+
+      AttachmentKeyboardButton.PAYMENT -> AttachmentManager.selectPayment(this@ConversationFragment, recipient)
+
+      AttachmentKeyboardButton.FILE -> {
+        if (!conversationActivityResultContracts.launchSelectFile()) {
+          toast(R.string.AttachmentManager_cant_open_media_selection, Toast.LENGTH_LONG)
+        }
+      }
+
+      AttachmentKeyboardButton.POLL -> {
+        CreatePollFragment.show(childFragmentManager)
+        childFragmentManager.setFragmentResultListener(CreatePollFragment.REQUEST_KEY, requireActivity()) { _, bundle ->
+          sendPoll(recipient, Poll.fromBundle(bundle))
+        }
+      }
+    }
+    return true
+  }
+
   private inner class AttachmentKeyboardFragmentListener : FragmentResultListener {
     @Suppress("DEPRECATION")
     override fun onFragmentResult(requestKey: String, result: Bundle) {
@@ -5280,27 +5658,9 @@ class ConversationFragment :
       val media: Media? = result.getParcelable(AttachmentKeyboardFragment.MEDIA_RESULT)
 
       if (button != null) {
-        when (button) {
-          AttachmentKeyboardButton.GALLERY -> conversationActivityResultContracts.launchGallery(recipient.id, composeText.textTrimmed, inputPanel.quote.isPresent)
-
-          AttachmentKeyboardButton.CONTACT -> conversationActivityResultContracts.launchSelectContact()
-
-          AttachmentKeyboardButton.LOCATION -> conversationActivityResultContracts.launchSelectLocation(recipient.chatColors)
-
-          AttachmentKeyboardButton.PAYMENT -> AttachmentManager.selectPayment(this@ConversationFragment, recipient)
-
-          AttachmentKeyboardButton.FILE -> {
-            if (!conversationActivityResultContracts.launchSelectFile()) {
-              toast(R.string.AttachmentManager_cant_open_media_selection, Toast.LENGTH_LONG)
-            }
-          }
-
-          AttachmentKeyboardButton.POLL -> {
-            CreatePollFragment.show(childFragmentManager)
-            childFragmentManager.setFragmentResultListener(CreatePollFragment.REQUEST_KEY, requireActivity()) { _, bundle ->
-              sendPoll(recipient, Poll.fromBundle(bundle))
-            }
-          }
+        if (!onAttachmentButton(button, recipient)) {
+          // 点一个用不了的格子不收起附件面板，下面的 container.hideInput() 不走（taishi 审查 b9 不阻塞 2）
+          return
         }
       } else if (media != null) {
         conversationActivityResultContracts.launchMediaEditor(listOf(media), recipient.id, composeText.textTrimmed)
@@ -5326,12 +5686,18 @@ class ConversationFragment :
     }
 
     override fun onKeyboardShown() {
+      // The toggle follows what is on screen: the system keyboard can cover one of ours, not just
+      // replace it.
+      inputPanel.setMediaKeyboardToggleOffersIme(false)
+
       if (searchMenuItem?.isActionViewExpanded == true && searchMenuItem?.actionView?.hasFocus() == false) {
         searchMenuItem?.actionView?.requestFocus()
       }
     }
 
     override fun onKeyboardHidden() {
+      inputPanel.setMediaKeyboardToggleOffersIme(container.isInputShowing)
+
       if (searchMenuItem?.isActionViewExpanded == true && searchMenuItem?.actionView?.hasFocus() == true) {
         searchMenuItem?.actionView?.clearFocus()
       }

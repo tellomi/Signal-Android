@@ -84,6 +84,51 @@
   <string name="MediaSelectScreen__to_show_photos_and_videos">To show photos and videos:</string>
   <!-- Snackbar shown when the user denies the permission to read their photos and videos. -->
   <string name="MediaSelectScreen__signal_needs_access_to_show_your_photos_and_videos">Tellomi needs access to show your photos and videos.</string>
+  <!-- Tellomi（tellomi/tellomi#1261）选图网格 -->
+  <string name="MediaSelectScreen__recents">Recents</string>
+  <string name="MediaSelectScreen__close">Close</string>
+  <string name="MediaSelectScreen__more_options">More options</string>
+  <string name="MediaSelectScreen__send_in_high_quality">Send in High Quality</string>
+  <string name="MediaSelectScreen__send_in_standard_quality">Send in Standard Quality</string>
+  <string name="MediaSelectScreen__send_separately">Send Separately</string>
+  <string name="MediaSelectScreen__open_media">Open</string>
+  <string name="MediaSelectScreen__select">Select</string>
+  <string name="MediaSelectScreen__you_have_limited_access">You\'ve limited Tellomi\'s access to your photos.</string>
+  <plurals name="MediaSelectScreen__n_selected">
+    <item quantity="one">%d selected</item>
+    <item quantity="other">%d selected</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__selected_number_n">
+    <item quantity="one">Number %d</item>
+    <item quantity="other">Number %d</item>
+  </plurals>
+  <plurals name="MediaSelectScreen__at_most_n_items">
+    <item quantity="one">You can select up to %d item at a time</item>
+    <item quantity="other">You can select up to %d items at a time</item>
+  </plurals>
+  <!-- Tellomi（tellomi/tellomi#1261 P-3）只看已选 -->
+  <string name="MediaSelectScreen__back">Back</string>
+  <string name="MediaSelectScreen__drag_to_reorder">Drag to reorder</string>
+  <string name="MediaSelectScreen__undo">Undo</string>
+  <plurals name="MediaSelectScreen__n_deselected">
+    <item quantity="one">%d deselected</item>
+    <item quantity="other">%d deselected</item>
+  </plurals>
+  <!-- Tellomi（tellomi/tellomi#1121）附件 Sheet「文件」页 -->
+  <string name="AttachmentFilesScreen__files">Files</string>
+  <string name="AttachmentFilesScreen__search">Search</string>
+  <string name="AttachmentFilesScreen__select_from_gallery">Select from Gallery</string>
+  <string name="AttachmentFilesScreen__select_from_files">Select from Files</string>
+  <string name="AttachmentFilesScreen__coming_soon">Coming soon</string>
+  <string name="AttachmentFilesScreen__recently_sent_files">Recently Sent Files</string>
+  <string name="AttachmentFilesScreen__empty">Send and receive files of any type, up to %1$s each.</string>
+  <string name="AttachmentFilesScreen__not_on_device">No longer on this device</string>
+  <string name="AttachmentFilesScreen__cant_send_not_on_device">This file is no longer on this device, so it can\'t be sent again.</string>
+  <string name="AttachmentFilesScreen__files_you_sent">Files You Sent</string>
+  <string name="AttachmentFilesScreen__show_more">Show More</string>
+  <string name="AttachmentFilesScreen__no_results">No results found for “%1$s”</string>
+  <string name="AttachmentFilesScreen__add_a_caption">Add a caption…</string>
+  <string name="AttachmentFilesScreen__send">Send</string>
 
   <!-- Label for the button that switches the capture screen to taking a photo. -->
   <string name="MediaCaptureScreen__photo">Photo</string>
@@ -133,12 +178,6 @@
   <!-- Toasted when user device does not support video recording -->
   <string name="CameraFragment__video_recording_is_not_supported_on_your_device">Video recording is not supported on your device</string>
 
-  <!-- CameraXFragment -->
-  <string name="CameraXFragment_tap_for_photo_hold_for_video">Tap for photo, hold for video</string>
-  <!-- Accessibility content description to describe the capture button when taking an image/video -->
-  <string name="CameraXFragment_capture_description">Capture</string>
-  <string name="CameraXFragment_change_camera_description">Change camera</string>
-  <string name="CameraXFragment_open_gallery_description">Open gallery</string>
   <!-- Button text asking for access to camera permissions -->
   <string name="CameraXFragment_allow_access">Allow access</string>
   <!-- Dialog title asking users for camera and microphone permission -->
@@ -173,16 +212,6 @@
   <string name="CameraXFragment_photo_capture_failed">Failed to capture photo. Please try again.</string>
   <!-- Error message shown when we try to take a photo, but fail when trying to process it (convert it into something the user can see). -->
   <string name="CameraXFragment_photo_processing_failed">Failed to process photo. Please try again.</string>
-  <!-- Accessibility label for the switch camera button -->
-  <string name="CameraXFragment_switch_camera">Switch camera</string>
-  <!-- Accessibility label for flash button when flash is off -->
-  <string name="CameraXFragment_flash_off">Flash off</string>
-  <!-- Accessibility label for flash button when flash is on -->
-  <string name="CameraXFragment_flash_on">Flash on</string>
-  <!-- Accessibility label for flash button when flash is set to auto -->
-  <string name="CameraXFragment_flash_auto">Flash auto</string>
-  <!-- Accessibility label for the send button in media selection -->
-  <string name="CameraXFragment_send">Send</string>
   <!-- Label shown below the elapsed time while a video recording is paused -->
   <string name="CameraXFragment_paused">Paused</string>
   <!-- Displayed in a permissions dialog when the user has denied access to hardware for image and video capture. -->
@@ -247,6 +276,11 @@
   <!-- The label of a dialog asking the user if they would like to continue to the linked device settings screen. -->
   <string name="LinkedDeviceScannedDialog__device_link_dialog_continue">Continue</string>
 
+  <!-- The title of a dialog shown when the user scanned a transfer QR code from a device that is too old to accept their account. -->
+  <string name="ReRegistrationScannedDialog__transfer_failed_title">Can\'t transfer account</string>
+  <!-- The body of a dialog shown when the user scanned a transfer QR code from a device that is too old to accept their account. -->
+  <string name="ReRegistrationScannedDialog__the_device_you_are_transferring_to_is_out_of_date">The device you\'re transferring to is out of date. Update Tellomi on that device and try again.</string>
+
     <!-- Gif label displayed in a pill in the editor specifying the type of media being sent. -->
     <plurals name="MediaEditScreen__gif">
         <item quantity="one">%1$d Gif</item>
@@ -274,4 +308,8 @@
     </plurals>
     <!-- x of y label displayed in a pill in the editor specifying the type of media being sent. First placeholder is selected page, second is total count. -->
     <string name="MediaEditScreen__d_of_d">%1$d of %2$d</string>
+  <!-- Tellomi：相机扫到新手机上的「转移帐户」码时，进转移页之前的防骗确认 -->
+  <string name="TellomiReRegistrationScannedDialog__title">This QR code transfers your account</string>
+  <string name="TellomiReRegistrationScannedDialog__body">A new phone is asking to take over your account. Continue only if you are switching to your own new phone and registering on it right now. If someone else asked you to scan this, cancel. Continuing moves your account to their phone.</string>
+  <string name="TellomiReRegistrationScannedDialog__continue">Continue</string>
 </resources>

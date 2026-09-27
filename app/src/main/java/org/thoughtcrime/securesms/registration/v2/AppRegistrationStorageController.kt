@@ -45,6 +45,7 @@ import org.signal.libsignal.protocol.state.KyberPreKeyRecord
 import org.signal.libsignal.protocol.state.SignedPreKeyRecord
 import org.signal.libsignal.zkgroup.profiles.ProfileKey
 import org.signal.registration.PreExistingRegistrationData
+import org.signal.registration.ReloginPinAttempts
 import org.signal.registration.RestoreDecision
 import org.signal.registration.StorageController
 import org.signal.registration.StoredProfileData
@@ -88,6 +89,7 @@ import org.thoughtcrime.securesms.keyvalue.PhoneNumberPrivacyValues
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.keyvalue.Skipped
 import org.thoughtcrime.securesms.keyvalue.isDecisionPending
+import org.thoughtcrime.securesms.logout.TellomiLogout
 import org.thoughtcrime.securesms.notifications.NotificationIds
 import org.thoughtcrime.securesms.pin.SvrRepository
 import org.thoughtcrime.securesms.profiles.AvatarHelper
@@ -101,6 +103,7 @@ import org.thoughtcrime.securesms.service.LocalBackupListener
 import org.thoughtcrime.securesms.service.RotateSignedPreKeyListener
 import org.thoughtcrime.securesms.util.BackupUtil
 import org.thoughtcrime.securesms.util.TextSecurePreferences
+import org.whispersystems.signalservice.api.kbs.PinHashUtil
 import org.whispersystems.signalservice.api.link.TransferArchiveResponse
 import org.whispersystems.signalservice.api.push.UsernameLinkComponents
 import java.io.File
@@ -163,8 +166,36 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       registrationLockEnabled = SignalStore.svr.isRegistrationLockEnabled,
       unrestrictedUnidentifiedAccess = TextSecurePreferences.isUniversalUnidentifiedAccess(context),
       aciIdentityKeyPair = aciIdentityKeyPair,
-      pniIdentityKeyPair = pniIdentityKeyPair
+      pniIdentityKeyPair = pniIdentityKeyPair,
+      loggedOut = TellomiLogout.isLoggedOut()
     )
+  }
+
+  /** Tellomi（ADR-0072 §4.2 第 3 步）：用本地保存的 PIN 哈希核对，不联网、不碰 SVR。 */
+  override suspend fun verifyLocalPin(pin: String): Boolean = withContext(Dispatchers.Default) {
+    val localPinHash = SignalStore.svr.localPinHash
+    if (localPinHash == null) {
+      Log.w(TAG, "[verifyLocalPin] No local PIN hash to check against.")
+      return@withContext false
+    }
+    PinHashUtil.verifyLocalPinHash(localPinHash, pin)
+  }
+
+  override suspend fun getReloginPinAttempts(): ReloginPinAttempts = withContext(Dispatchers.Default) {
+    ReloginPinAttempts(
+      failed = SignalStore.account.tellomiReloginPinFailed,
+      lockedUntilMs = SignalStore.account.tellomiReloginPinLockedUntil
+    )
+  }
+
+  override suspend fun setReloginPinAttempts(attempts: ReloginPinAttempts) = withContext(Dispatchers.Default) {
+    SignalStore.account.tellomiReloginPinFailed = attempts.failed
+    SignalStore.account.tellomiReloginPinLockedUntil = attempts.lockedUntilMs
+  }
+
+  /** Tellomi（ADR-0072 §4.2 第 4 步）：解锁本机，见 [TellomiLogout.completeRelogin]。 */
+  override suspend fun completeRelogin() = withContext(Dispatchers.Default) {
+    TellomiLogout.completeRelogin(context)
   }
 
   override suspend fun clearAllData() = withContext(Dispatchers.IO) {
@@ -212,7 +243,8 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       givenName = profileName.givenName,
       familyName = profileName.familyName,
       avatar = avatar,
-      discoverableByPhoneNumber = discoverable
+      discoverableByPhoneNumber = discoverable,
+      isReRegistration = SignalStore.registration.isTellomiReRegistration
     )
   }
 
@@ -306,6 +338,11 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       RestoreDecision.NEW_ACCOUNT -> RestoreDecisionState.NewAccount
       RestoreDecision.SKIPPED -> RestoreDecisionState.Skipped
       RestoreDecision.COMPLETED -> RestoreDecisionState.Completed
+    }
+
+    if (decision == RestoreDecision.COMPLETED) {
+      Log.i(TAG, "[setRestoreDecision] Data was restored. Clearing onboarding state.")
+      SignalStore.onboarding.clearAll()
     }
 
     RegistrationUtil.maybeMarkRegistrationComplete()
@@ -439,7 +476,7 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
         val selfPni = SignalStore.account.pni
         val selfE164 = SignalStore.account.e164
 
-        if (selfAci == null || selfPni == null || selfE164 == null) {
+        if (selfAci == null) {
           trySend(LocalBackupRestoreProgress.Error(IllegalStateException("Account not registered, cannot restore V2 backup")))
           return@launch
         }
@@ -752,7 +789,8 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
     val isAciChanged = SignalStore.account.aci != aci
 
     if (pni == null) {
-      Log.i(TAG, "[applyAccountData] No PNI in the account data. Registering an account with no phone number.")
+      Log.i(TAG, "[applyAccountData] No PNI in the account data. Registering an account with no phone number. Clearing any E164/PNI state from a previous registration.")
+      SignalStore.account.clearE164AndPni()
     }
 
     SignalStore.account.setAci(aci)
@@ -809,6 +847,13 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
       // Registering releases any username we previously held, so it has to be re-reserved once storage service tells us what it was.
       Log.i(TAG, "[applyAccountData] Re-registration. Marking that we need to reclaim our username and link.")
       SignalStore.misc.needsUsernameRestore = true
+
+      Log.i(TAG, "[applyAccountData] Re-registration. Clearing onboarding state.")
+      SignalStore.onboarding.clearAll()
+
+      // Tellomi（tellomi/tellomi#1266）：注册资料页不显示用户名框，标完成时清掉（RegistrationValues.isTellomiReRegistration）
+      Log.i(TAG, "[applyAccountData] Re-registration. Hiding the username field on the profile screen.")
+      SignalStore.registration.isTellomiReRegistration = true
     }
 
     accountData.authCredentialSalt?.let {
@@ -906,7 +951,7 @@ class AppRegistrationStorageController(private val context: Context) : StorageCo
 
       val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
       context.contentResolver.takePersistableUriPermission(rootUri, takeFlags)
-      SignalStore.settings.setSignalBackupDirectory(rootUri)
+      SignalStore.settings.signalBackupDirectory = rootUri
 
       if (BackupUtil.canUserAccessBackupDirectory(context)) {
         LocalBackupListener.setNextBackupTimeToIntervalFromNow(context)

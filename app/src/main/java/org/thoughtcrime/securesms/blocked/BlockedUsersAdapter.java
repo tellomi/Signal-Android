@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.signal.core.util.TellomiUsernames;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.AvatarImageView;
 import org.thoughtcrime.securesms.recipients.Recipient;
@@ -66,7 +67,8 @@ final class BlockedUsersAdapter extends ListAdapter<Recipient, BlockedUsersAdapt
       avatar.setAvatar(recipient);
       displayName.setText(recipient.getDisplayName(itemView.getContext()));
 
-      String identifier = recipient.getUsername().orElse(null);
+      // Tellomi（#1106 第三刀，ADR-0066 §九）：`.01` 结尾的去掉后缀显示，别的后缀完整显示
+      String identifier = recipient.getUsername().map(TellomiUsernames::toDisplayUsername).orElse(null);
 
       if (identifier != null) {
         username.setText(identifier);

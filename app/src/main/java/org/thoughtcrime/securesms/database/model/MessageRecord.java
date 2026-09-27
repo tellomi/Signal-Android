@@ -37,6 +37,7 @@ import org.signal.core.models.ServiceId.ACI;
 import org.signal.core.ui.fonts.SignalSymbols.Glyph;
 import org.signal.core.util.Base64;
 import org.signal.core.util.BidiUtil;
+import org.signal.core.util.TellomiUsernames;
 import org.signal.core.util.Util;
 import org.signal.core.util.UuidUtil;
 import org.signal.core.util.logging.Log;
@@ -553,8 +554,11 @@ public abstract class MessageRecord extends DisplayRecord {
         String previouslyKnownAs;
         if (!Util.isEmpty(profileChangeDetails.learnedProfileName.e164)) {
           previouslyKnownAs = SignalE164Util.prettyPrint(profileChangeDetails.learnedProfileName.e164);
+        } else if (!Util.isEmpty(profileChangeDetails.learnedProfileName.username)) {
+          // Tellomi（#1106，ADR-0066 §六）：「您向 kaixin 发起了聊天。」——只改显示，库里存的仍是完整用户名
+          previouslyKnownAs = TellomiUsernames.toDisplayUsername(profileChangeDetails.learnedProfileName.username);
         } else {
-          previouslyKnownAs = profileChangeDetails.learnedProfileName.username;
+          previouslyKnownAs = profileChangeDetails.learnedProfileName.sharedName;
         }
 
         if (!Util.isEmpty(previouslyKnownAs)) {

@@ -455,7 +455,7 @@ abstract class PushSendJob protected constructor(parameters: Parameters) : BaseJ
   fun getPreviewsFor(mediaMessage: OutgoingMessage): List<SignalServicePreview> {
     return mediaMessage.linkPreviews.map { lp ->
       val attachment = if (lp.thumbnail.isPresent) getAttachmentPointerFor(lp.thumbnail.get()) else null
-      SignalServicePreview(lp.url, lp.title, lp.description, lp.date, Optional.ofNullable(attachment))
+      SignalServicePreview(lp.url, lp.title, lp.description, lp.date, Optional.ofNullable(attachment), lp.rich)
     }
   }
 

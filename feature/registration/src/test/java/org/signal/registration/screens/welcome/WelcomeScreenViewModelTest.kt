@@ -87,8 +87,8 @@ class WelcomeScreenViewModelTest {
   }
 
   @Test
-  fun `Continue navigates straight to phone number entry when permissions are granted`() {
-    val viewModel = createViewModel(hasPermissions = true)
+  fun `Continue navigates straight to phone number entry`() {
+    val viewModel = createViewModel()
 
     viewModel.applyEvent(WelcomeScreenState(), WelcomeScreenEvents.Continue, parentEventEmitter, stateEmitter)
 
@@ -98,21 +98,29 @@ class WelcomeScreenViewModelTest {
       .isEqualTo(RegistrationRoute.PhoneNumberEntry)
   }
 
+  /**
+   * Tellomi（tellomi/tellomi#1112）：注册流程里一个权限都不要。上游在没有权限时会先导航到 Permissions /
+   * AllowNotifications；这里把欢迎页的四个出口都走一遍，任何一个再插回权限页都会红。
+   */
   @Test
-  fun `Continue routes through the permissions screen when permissions are missing`() {
-    val viewModel = createViewModel(hasPermissions = false)
+  fun `no welcome action routes through a permissions screen`() {
+    val viewModel = createViewModel()
 
-    viewModel.applyEvent(WelcomeScreenState(), WelcomeScreenEvents.Continue, parentEventEmitter, stateEmitter)
+    listOf(
+      WelcomeScreenEvents.Continue,
+      WelcomeScreenEvents.HasOldPhone,
+      WelcomeScreenEvents.DoesNotHaveOldPhone,
+      WelcomeScreenEvents.LinkDevice
+    ).forEach { viewModel.applyEvent(WelcomeScreenState(), it, parentEventEmitter, stateEmitter) }
 
-    assertThat(emittedParentEvents.last())
-      .isInstanceOf<RegistrationFlowEvent.NavigateToScreen>()
-      .prop(RegistrationFlowEvent.NavigateToScreen::route)
-      .isEqualTo(RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry))
+    val routes = emittedParentEvents.filterIsInstance<RegistrationFlowEvent.NavigateToScreen>().map { it.route }
+    assertThat(routes.size).isEqualTo(4)
+    assertThat(routes.none { it is RegistrationRoute.Permissions || it is RegistrationRoute.AllowNotifications }).isTrue()
   }
 
   @Test
-  fun `HasOldPhone navigates to the quick restore scan when permissions are granted`() {
-    val viewModel = createViewModel(hasPermissions = true)
+  fun `HasOldPhone navigates straight to the quick restore scan`() {
+    val viewModel = createViewModel()
 
     viewModel.applyEvent(WelcomeScreenState(), WelcomeScreenEvents.HasOldPhone, parentEventEmitter, stateEmitter)
 
@@ -123,8 +131,8 @@ class WelcomeScreenViewModelTest {
   }
 
   @Test
-  fun `DoesNotHaveOldPhone navigates to the manual restore selection when permissions are granted`() {
-    val viewModel = createViewModel(hasPermissions = true)
+  fun `DoesNotHaveOldPhone navigates straight to the manual restore selection`() {
+    val viewModel = createViewModel()
 
     viewModel.applyEvent(WelcomeScreenState(), WelcomeScreenEvents.DoesNotHaveOldPhone, parentEventEmitter, stateEmitter)
 
@@ -135,8 +143,8 @@ class WelcomeScreenViewModelTest {
   }
 
   @Test
-  fun `LinkDevice navigates straight to link account when no linked device permission is required`() {
-    val viewModel = createViewModel(requiredLinkedDevicePermission = null)
+  fun `LinkDevice navigates straight to link account`() {
+    val viewModel = createViewModel()
 
     viewModel.applyEvent(WelcomeScreenState(), WelcomeScreenEvents.LinkDevice, parentEventEmitter, stateEmitter)
 
@@ -144,18 +152,6 @@ class WelcomeScreenViewModelTest {
       .isInstanceOf<RegistrationFlowEvent.NavigateToScreen>()
       .prop(RegistrationFlowEvent.NavigateToScreen::route)
       .isInstanceOf<RegistrationRoute.LinkAccount>()
-  }
-
-  @Test
-  fun `LinkDevice routes through allow notifications when a linked device permission is required`() {
-    val viewModel = createViewModel(requiredLinkedDevicePermission = "android.permission.POST_NOTIFICATIONS")
-
-    viewModel.applyEvent(WelcomeScreenState(), WelcomeScreenEvents.LinkDevice, parentEventEmitter, stateEmitter)
-
-    assertThat(emittedParentEvents.last())
-      .isInstanceOf<RegistrationFlowEvent.NavigateToScreen>()
-      .prop(RegistrationFlowEvent.NavigateToScreen::route)
-      .isInstanceOf<RegistrationRoute.AllowNotifications>()
   }
 
   @Test
@@ -175,10 +171,8 @@ class WelcomeScreenViewModelTest {
   }
 
   private fun createViewModel(
-    parentState: RegistrationFlowState = RegistrationFlowState(),
-    hasPermissions: Boolean = true,
-    requiredLinkedDevicePermission: String? = null
+    parentState: RegistrationFlowState = RegistrationFlowState()
   ): WelcomeScreenViewModel {
-    return WelcomeScreenViewModel(mockRepository, MutableStateFlow(parentState), parentEventEmitter, hasPermissions = { hasPermissions }, getRequiredLinkedDevicePermission = { requiredLinkedDevicePermission })
+    return WelcomeScreenViewModel(mockRepository, MutableStateFlow(parentState), parentEventEmitter)
   }
 }

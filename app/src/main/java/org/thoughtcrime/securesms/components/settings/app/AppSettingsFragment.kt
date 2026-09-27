@@ -58,6 +58,7 @@ import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.horizontalGutters
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.core.util.Util
+import org.signal.core.util.concurrent.SignalExecutors
 import org.signal.emoji.Emojifier
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.avatar.AvatarImage
@@ -74,6 +75,7 @@ import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRout
 import org.thoughtcrime.securesms.components.settings.app.subscription.BadgeImageMedium
 import org.thoughtcrime.securesms.components.settings.app.subscription.InAppPaymentsRepository
 import org.thoughtcrime.securesms.components.settings.app.subscription.completed.InAppPaymentsBottomSheetDelegate
+import org.thoughtcrime.securesms.conversationlist.TellomiSavedMessages
 import org.thoughtcrime.securesms.database.model.InAppPaymentSubscriberRecord
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.profiles.ProfileName
@@ -115,6 +117,7 @@ class AppSettingsFragment : ComposeFragment(), Callbacks {
             is AppSettingsRoute.AppUpdates -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_appUpdatesSettingsFragment)
             is AppSettingsRoute.Payments -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_paymentsActivity)
             is AppSettingsRoute.HelpRoute.Settings -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_helpSettingsFragment)
+            is AppSettingsRoute.About -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_aboutSettingsFragment)
             is AppSettingsRoute.Invite -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_inviteFragment)
             is AppSettingsRoute.LabsRoute.Labs -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_labsSettingsFragment)
             is AppSettingsRoute.InternalRoute.Internal -> findNavController().safeNavigate(R.id.action_appSettingsFragment_to_internalSettingsFragment)
@@ -294,6 +297,19 @@ private fun AppSettingsContent(
           }
 
           BackupFailureState.NONE -> Unit
+        }
+
+        // Tellomi：设置页的「我的收藏」入口，删掉之后从这里回来（#1174）
+        item {
+          val context = LocalContext.current
+          Rows.TextRow(
+            text = stringResource(R.string.note_to_self),
+            icon = painterResource(R.drawable.tellomi_symbol_bookmark_24),
+            onClick = {
+              SignalExecutors.BOUNDED.execute { TellomiSavedMessages.list() }
+              CommunicationActions.startConversation(context, Recipient.self(), null)
+            }
+          )
         }
 
         item {
@@ -514,6 +530,17 @@ private fun AppSettingsContent(
           )
         }
 
+        // Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」从「帮助」里拿出来，紧跟「帮助」
+        item {
+          Rows.TextRow(
+            text = stringResource(R.string.AboutSettings__tellomi_about_tellomi),
+            icon = SignalIcons.Info.painter,
+            onClick = {
+              callbacks.navigate(AppSettingsRoute.About)
+            }
+          )
+        }
+
         item {
           Rows.TextRow(
             text = stringResource(R.string.AppSettingsFragment__invite_your_friends),
@@ -590,6 +617,7 @@ private fun BioRow(
   callbacks: Callbacks
 ) {
   val hasUsername by rememberUpdatedState(self.username.isNotBlank())
+  val hasPhoneNumber by rememberUpdatedState(self.e164.isNotBlank())
 
   Row(
     verticalAlignment = Alignment.CenterVertically,
@@ -633,21 +661,23 @@ private fun BioRow(
         )
       }
 
-      val prettyPhoneNumber = if (LocalInspectionMode.current) {
-        self.e164
-      } else {
-        remember(self.e164) {
-          SignalE164Util.prettyPrint(self.e164)
+      if (hasPhoneNumber) {
+        val prettyPhoneNumber = if (LocalInspectionMode.current) {
+          self.e164
+        } else {
+          remember(self.e164) {
+            SignalE164Util.prettyPrint(self.e164)
+          }
         }
-      }
 
-      Text(
-        text = prettyPhoneNumber,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        style = TextStyle(
-          textDirection = TextDirection.ContentOrLtr
+        Text(
+          text = prettyPhoneNumber,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          style = TextStyle(
+            textDirection = TextDirection.ContentOrLtr
+          )
         )
-      )
+      }
 
       if (hasUsername) {
         Text(
@@ -775,6 +805,27 @@ private fun BioRowPreview() {
           profileName = ProfileName.fromParts("Miles", "Morales ❤\uFE0F"),
           isSelf = true,
           e164Value = "+15555555555",
+          usernameValue = "miles.98",
+          aboutEmoji = "❤\uFE0F",
+          about = "About",
+          isResolving = false
+        )
+      ),
+      callbacks = EmptyCallbacks
+    )
+  }
+}
+
+@DayNightPreviews
+@Composable
+private fun BioRowNoPhoneNumberPreview() {
+  Previews.Preview {
+    BioRow(
+      self = BioRecipientState(
+        Recipient(
+          systemContactName = "Miles Morales",
+          profileName = ProfileName.fromParts("Miles", "Morales ❤\uFE0F"),
+          isSelf = true,
           usernameValue = "miles.98",
           aboutEmoji = "❤\uFE0F",
           about = "About",

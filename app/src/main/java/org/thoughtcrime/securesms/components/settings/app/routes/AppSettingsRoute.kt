@@ -39,6 +39,9 @@ sealed interface AppSettingsRoute : Parcelable {
 
   data object Payments : AppSettingsRoute
   data object Invite : AppSettingsRoute
+
+  /** Tellomi（tellomi/tellomi#1165）：「关于 Tellomi」，与「帮助」平级。 */
+  data object About : AppSettingsRoute
   data object AppUpdates : AppSettingsRoute
 
   @Parcelize

@@ -100,8 +100,10 @@ public class ConversationRepository {
       groupMemberAcis = Collections.emptyList();
     }
 
+    // Tellomi（owner 2026-09-26）：「我的收藏」不套默认限时（见 RecipientUtil.setAndSendUniversalExpireTimerIfNecessary），这条提示也不出。
     if (SignalStore.settings().getUniversalExpireTimer() != 0 &&
         conversationRecipient.getExpiresInSeconds() == 0 &&
+        !conversationRecipient.isSelf() &&
         !conversationRecipient.isGroup() &&
         conversationRecipient.isRegistered() &&
         SignalDatabase.messages().canSetUniversalTimer(threadId))

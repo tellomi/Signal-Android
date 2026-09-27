@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.os.ConfigurationCompat
 import org.signal.core.ui.compose.AllDevicePreviews
 import org.signal.core.ui.compose.Buttons
 import org.signal.core.ui.compose.Dialogs
@@ -55,11 +57,13 @@ import org.signal.core.ui.compose.PinVisualTransformation
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.SignalIcons
 import org.signal.registration.R
+import org.signal.registration.TellomiRegistration
 import org.signal.registration.screens.RegistrationScaffold
 import org.signal.registration.screens.TwoPaneRegistrationScaffold
 import org.signal.registration.screens.attachDebugLogHelper
 import org.signal.registration.screens.shared.ContactSupportDialog
 import org.signal.registration.test.TestTags
+import java.util.Locale
 
 /**
  * PIN entry screen for the registration flow.
@@ -123,7 +127,7 @@ fun PinEntryScreen(
     state.dialogs.networkError -> stringResource(R.string.VerificationCodeScreen__network_error) to PinEntryScreenEvents.NetworkErrorDialogDismissed
     state.dialogs.rateLimitedRetryAfter != null -> {
       val message = if (state.dialogs.rateLimitedRetryAfter.isPositive()) {
-        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, state.dialogs.rateLimitedRetryAfter.toString())
+        stringResource(R.string.VerificationCodeScreen__too_many_attempts_try_again_in_s, TellomiRegistration.retryAfterText(state.dialogs.rateLimitedRetryAfter, ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.getDefault())) // Tellomi（#1210）：不用 Duration.toString()
       } else {
         stringResource(R.string.VerificationCodeScreen__too_many_attempts)
       }

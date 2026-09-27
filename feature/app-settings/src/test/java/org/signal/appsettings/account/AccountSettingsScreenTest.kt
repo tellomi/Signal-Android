@@ -6,18 +6,27 @@
 package org.signal.appsettings.account
 
 import android.app.Application
+import android.text.format.DateUtils
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onChildren
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performSemanticsAction
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isLessThan
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,11 +35,30 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.signal.appsettings.R
 import org.signal.appsettings.account.AccountSettingsState.Dialog
+import org.signal.appsettings.account.AccountSettingsState.LoadState
 import org.signal.core.ui.compose.Dialogs
+import org.signal.signallogin.SignalLoginTestTags
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = Application::class)
 class AccountSettingsScreenTest {
+
+  companion object {
+    /** Fixed so the "Added ..." subtitle a row renders is something the test can predict. */
+    private const val CREATED_AT = 1_700_000_000_000L
+    private val ADDED_TIME: String = DateUtils.getRelativeDateTimeString(
+      RuntimeEnvironment.getApplication(),
+      CREATED_AT,
+      DateUtils.DAY_IN_MILLIS,
+      DateUtils.WEEK_IN_MILLIS,
+      0
+    ).toString()
+
+    private val METHODS = listOf(
+      TwoFactorMethod(id = 1, kind = TwoFactorMethod.Kind.AUTHENTICATOR_APP, name = "Bitwarden Authenticator", createdAt = CREATED_AT),
+      TwoFactorMethod(id = 1, kind = TwoFactorMethod.Kind.PASSKEY, name = "Pixel Phone", createdAt = CREATED_AT)
+    )
+  }
 
   private val context: Application = RuntimeEnvironment.getApplication()
 
@@ -46,6 +74,24 @@ class AccountSettingsScreenTest {
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_MODIFY_PIN).performClick()
 
     assertThat(events).contains(AccountSettingsEvent.ModifyPinClicked)
+  }
+
+  /** Tellomi（tellomi/tellomi#1234）：没有 SVR 时创建 / 修改 PIN 会去连 SVR，整节不显示。 */
+  @Test
+  fun givenNoSvrInThisDeployment_whenScreenShown_thenPinSectionIsHidden() {
+    setContent(createState(hasPin = false, hasRestoredAep = false, isSvrAvailable = false))
+
+    composeTestRule.onNodeWithText(context.getString(R.string.preferences_app_protection__signal_pin)).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_MODIFY_PIN).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_PIN_REMINDER).assertDoesNotExist()
+  }
+
+  @Test
+  fun givenSvrAvailable_whenScreenShown_thenPinSectionIsShown() {
+    setContent(createState(hasPin = false, hasRestoredAep = false, isSvrAvailable = true))
+
+    composeTestRule.onNodeWithText(context.getString(R.string.preferences_app_protection__signal_pin)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_MODIFY_PIN).assertIsDisplayed()
   }
 
   @Test
@@ -250,6 +296,38 @@ class AccountSettingsScreenTest {
     assertThat(events).contains(AccountSettingsEvent.DeleteAccountClicked)
   }
 
+  /** Tellomi（ADR-0072，tellomi/tellomi#1414）：最底部红字「退出登录」，在删号上方，点了去替代方案页。 */
+  @Test
+  fun givenANormalRegisteredUser_whenIClickLogOut_thenIExpectLogoutEvent() {
+    setContent(createState())
+
+    scrollTo(AccountSettingsTestTags.ROW_DELETE_ACCOUNT)
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_LOG_OUT)
+      .assertIsDisplayed()
+      .assertIsEnabled()
+      .assertTextContains(context.getString(R.string.TellomiLogout__log_out))
+      .performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.LogoutClicked)
+
+    val logOutTop = composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_LOG_OUT).fetchSemanticsNode().boundsInRoot.top
+    val deleteTop = composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_DELETE_ACCOUNT).fetchSemanticsNode().boundsInRoot.top
+    assertThat(logOutTop).isLessThan(deleteTop)
+  }
+
+  /** Tellomi：被服务端登出时推送令牌注销不了，退出登录和删号一样置灰。 */
+  @Test
+  fun givenUnregisteredUser_whenLogOutDisplayed_thenDisabled() {
+    setContent(createState(userUnregistered = true))
+
+    scrollTo(AccountSettingsTestTags.ROW_DELETE_ACCOUNT)
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_LOG_OUT)
+      .assertIsDisplayed()
+      .assertIsNotEnabled()
+  }
+
   @Test
   fun givenDeprecatedClient_whenDeleteAccountDisplayed_thenDisabled() {
     setContent(createState(clientDeprecated = true))
@@ -299,12 +377,19 @@ class AccountSettingsScreenTest {
     setContent(createState())
 
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN).assertDoesNotExist()
-    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_TOTP_APP).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_SET_UP_TWO_FACTOR).assertDoesNotExist()
+  }
+
+  @Test
+  fun givenASignalLogin_whenScreenDisplayed_thenTheSectionIsLabelledBeta() {
+    setContent(createState(signalLogin = signalLogin()))
+
+    composeTestRule.onNodeWithTag(SignalLoginTestTags.BETA_TAG).assertIsDisplayed()
   }
 
   @Test
   fun givenASignalLogin_whenIClickTheSignalLoginCard_thenIExpectAccountAndRecoveryEvent() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 0, passkeyCount = 0)))
+    setContent(createState(signalLogin = signalLogin()))
 
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN).performClick()
 
@@ -312,40 +397,139 @@ class AccountSettingsScreenTest {
   }
 
   @Test
-  fun givenASignalLogin_whenIClickTotpApp_thenIExpectTotpAppEvent() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 0, passkeyCount = 0)))
+  fun givenASignalLogin_whenIPickAuthenticatorAppFromTheSetUpMenu_thenIExpectAddTotpAppEvent() {
+    setContent(createState(signalLogin = signalLogin()))
 
-    composeTestRule.onNodeWithTag(AccountSettingsTestTags.CARD_SIGNAL_LOGIN).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_SET_UP_TWO_FACTOR).performClick()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.MENU_ITEM_AUTHENTICATOR_APP).performClick()
 
-    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_TOTP_APP).performClick()
-
-    assertThat(events).contains(AccountSettingsEvent.TotpAppClicked)
+    assertThat(events).contains(AccountSettingsEvent.AddTotpAppClicked)
   }
 
-  /** A count we couldn't fetch has to read the same as no count at all, rather than as "0 configured". */
+  /** Passkeys aren't supported yet, so the menu can't offer to set one up. */
   @Test
-  fun givenAnUnknownTotpAppCount_whenScreenDisplayed_thenTheRowDoesNotClaimACount() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = null, passkeyCount = 0)))
+  fun givenTheSetUpMenu_whenItIsOpen_thenPasskeyIsNotOffered() {
+    setContent(createState(signalLogin = signalLogin()))
 
-    composeTestRule.onNodeWithText(context.getString(R.string.AccountSettingsFragment__one_time_verification_codes)).assertIsDisplayed()
-  }
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_SET_UP_TWO_FACTOR).performClick()
 
-  @Test
-  fun givenConfiguredTotpApps_whenScreenDisplayed_thenTheRowShowsTheCount() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 2, passkeyCount = 0)))
-
-    composeTestRule.onNodeWithText(context.resources.getQuantityString(R.plurals.AccountSettingsFragment__d_configured, 2, 2)).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.AccountSettingsFragment__passkey)).assertDoesNotExist()
   }
 
   @Test
-  fun givenASignalLogin_whenIClickPasskeys_thenIExpectPasskeysEvent() {
-    setContent(createState(signalLogin = AccountSettingsState.SignalLogin(totpAppCount = 0, passkeyCount = 0)))
+  fun givenTwoFactorMethods_whenScreenDisplayed_thenIExpectARowPerMethod() {
+    setContent(createState(signalLogin = signalLogin(twoFactorMethods = METHODS)))
 
-    scrollTo(AccountSettingsTestTags.ROW_PASSKEYS)
+    for (method in METHODS) {
+      composeTestRule.onNodeWithTag(AccountSettingsTestTags.SCROLLER).performScrollToNode(hasText(method.name))
+      composeTestRule.onNodeWithText(method.name).assertIsDisplayed()
+    }
+  }
 
-    composeTestRule.onNodeWithTag(AccountSettingsTestTags.ROW_PASSKEYS).performClick()
+  /** Authenticator apps and passkeys share one list, so a row's subtitle is what says which kind it is. */
+  @Test
+  fun givenTwoFactorMethods_whenScreenDisplayed_thenEachRowSaysWhatKindItIs() {
+    setContent(createState(signalLogin = signalLogin(twoFactorMethods = METHODS)))
 
-    assertThat(events).contains(AccountSettingsEvent.PasskeysClicked)
+    for (kind in listOf(R.string.AccountSettingsFragment__authenticator_app, R.string.AccountSettingsFragment__passkey)) {
+      val label = context.getString(R.string.AccountSettingsFragment__s_added_s, context.getString(kind), ADDED_TIME)
+      composeTestRule.onNodeWithTag(AccountSettingsTestTags.SCROLLER).performScrollToNode(hasText(label))
+      composeTestRule.onNodeWithText(label).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun givenTwoFactorMethods_whenIClickRenameInTheMenu_thenIExpectRenameMethodEvent() {
+    setContent(createState(signalLogin = signalLogin(twoFactorMethods = METHODS)))
+
+    scrollTo(AccountSettingsTestTags.ROW_TWO_FACTOR_METHOD)
+    composeTestRule.onAllNodesWithTag(AccountSettingsTestTags.BUTTON_METHOD_MENU)[0].performClick()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.MENU_ITEM_RENAME).performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.RenameMethodClicked(METHODS[0]))
+  }
+
+  @Test
+  fun givenTwoFactorMethods_whenIClickRemoveInTheMenu_thenIExpectRemoveMethodEvent() {
+    setContent(createState(signalLogin = signalLogin(twoFactorMethods = METHODS)))
+
+    scrollTo(AccountSettingsTestTags.ROW_TWO_FACTOR_METHOD)
+    composeTestRule.onAllNodesWithTag(AccountSettingsTestTags.BUTTON_METHOD_MENU)[0].performClick()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.MENU_ITEM_REMOVE).performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.RemoveMethodClicked(METHODS[0]))
+  }
+
+  @Test
+  fun givenTheConfirmRemoveDialog_whenIConfirm_thenIExpectRemoveTotpAppConfirmedForThatApp() {
+    setContent(createState(signalLogin = signalLogin(twoFactorMethods = METHODS), dialog = Dialog.ConfirmRemoveTotpApp(METHODS[0].id)))
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.DIALOG_CONFIRM_REMOVE_TOTP_APP).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(Dialogs.TEST_TAG_ALERT_DIALOG_CONFIRM_BUTTON).performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.RemoveTotpAppConfirmed(METHODS[0].id))
+  }
+
+  // Tellomi：下面四条「了解更多」的链接跟着 main 里 scripts/brand/rename-links.py 的映射走
+  // （support.signal.org/hc/articles/<id> → tellomi.app/help/<id>，#966）；脚本不碰测试目录，这里手改。
+  @Test
+  fun givenTheMaxAppsDialog_whenIClickLearnMore_thenIExpectLearnMoreAndDismissEvents() {
+    setContent(createState(signalLogin = signalLogin(), dialog = Dialog.MaxTotpAppsReached))
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.DIALOG_MAX_TOTP_APPS_REACHED).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(Dialogs.TEST_TAG_ALERT_DIALOG_DISMISS_BUTTON).performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11228705649690"))
+    assertThat(events).contains(AccountSettingsEvent.DialogDismissed)
+  }
+
+  @Test
+  fun givenTheMaxMfaKeysDialog_whenIClickLearnMore_thenIExpectLearnMoreAndDismissEvents() {
+    setContent(createState(signalLogin = signalLogin(), dialog = Dialog.MaxMfaKeysReached))
+
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.DIALOG_MAX_MFA_KEYS_REACHED).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(Dialogs.TEST_TAG_ALERT_DIALOG_DISMISS_BUTTON).performClick()
+
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11228705649690"))
+    assertThat(events).contains(AccountSettingsEvent.DialogDismissed)
+  }
+
+  @Test
+  fun whenIClickTheSignalLoginLearnMore_thenIExpectLearnMoreForTheSignalLoginArticle() {
+    setContent(createState(signalLogin = signalLogin()))
+
+    scrollTo(AccountSettingsTestTags.LINK_SIGNAL_LOGIN_LEARN_MORE)
+    clickLink(AccountSettingsTestTags.LINK_SIGNAL_LOGIN_LEARN_MORE)
+
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11197884108826"))
+  }
+
+  @Test
+  fun whenIClickTheTwoFactorLearnMore_thenIExpectLearnMoreForTheTwoFactorArticle() {
+    setContent(createState(signalLogin = signalLogin()))
+
+    scrollTo(AccountSettingsTestTags.LINK_TWO_FACTOR_LEARN_MORE)
+    clickLink(AccountSettingsTestTags.LINK_TWO_FACTOR_LEARN_MORE)
+
+    assertThat(events).contains(AccountSettingsEvent.LearnMoreClicked("https://tellomi.app/help/11228705649690"))
+  }
+
+  @Test
+  fun whenTheTwoFactorListHasntArrived_thenIExpectASpinnerRatherThanAnEmptyList() {
+    setContent(createState(signalLogin = signalLogin(loadState = LoadState.LOADING)))
+
+    scrollTo(AccountSettingsTestTags.TWO_FACTOR_LOADING)
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.TWO_FACTOR_LOADING).assertIsDisplayed()
+  }
+
+  /** An account we couldn't ask about is not an account with no second factors. */
+  @Test
+  fun givenTheTwoFactorListCouldntBeLoaded_whenScreenDisplayed_thenIExpectTheFailureMessage() {
+    setContent(createState(signalLogin = signalLogin(loadState = LoadState.NETWORK_FAILURE)))
+
+    scrollTo(AccountSettingsTestTags.TWO_FACTOR_LOAD_FAILED_MESSAGE)
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.TWO_FACTOR_LOAD_FAILED_MESSAGE).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(AccountSettingsTestTags.TWO_FACTOR_LOADING).assertDoesNotExist()
   }
 
   @Test
@@ -374,6 +558,23 @@ class AccountSettingsScreenTest {
     }
   }
 
+  private fun signalLogin(
+    twoFactorMethods: List<TwoFactorMethod> = emptyList(),
+    loadState: LoadState = LoadState.LOADED,
+    maxTotpApps: Int = 2,
+    maxMfaKeys: Int = 10
+  ): AccountSettingsState.SignalLogin {
+    return AccountSettingsState.SignalLogin(twoFactorMethods = twoFactorMethods, loadState = loadState, maxTotpApps = maxTotpApps, maxMfaKeys = maxMfaKeys)
+  }
+
+  /** Links inside an [androidx.compose.ui.text.AnnotatedString] have no bounds to tap, so their click action is invoked directly. */
+  private fun clickLink(testTag: String) {
+    composeTestRule.onNodeWithTag(testTag)
+      .onChildren()
+      .onFirst()
+      .performSemanticsAction(SemanticsActions.OnClick)
+  }
+
   private fun scrollTo(testTag: String) {
     composeTestRule.onNodeWithTag(AccountSettingsTestTags.SCROLLER)
       .performScrollToNode(hasTestTag(testTag))
@@ -388,6 +589,7 @@ class AccountSettingsScreenTest {
     clientDeprecated: Boolean = false,
     canTransferWhileUnregistered: Boolean = true,
     isPhoneNumberless: Boolean = false,
+    isSvrAvailable: Boolean = true,
     signalLogin: AccountSettingsState.SignalLogin? = null,
     dialog: Dialog = Dialog.None
   ): AccountSettingsState {
@@ -400,6 +602,7 @@ class AccountSettingsScreenTest {
       clientDeprecated = clientDeprecated,
       canTransferWhileUnregistered = canTransferWhileUnregistered,
       isPhoneNumberless = isPhoneNumberless,
+      isSvrAvailable = isSvrAvailable,
       signalLogin = signalLogin,
       dialog = dialog
     )

@@ -8,8 +8,6 @@ package org.thoughtcrime.securesms.linkdevice
 import android.app.Application
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
-import io.mockk.unmockkObject
 import io.mockk.verify
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -41,14 +39,17 @@ class LinkDeviceRepositoryTest {
   @Before
   fun setUp() {
     Log.initialize(SystemOutLogger())
-    mockkObject(SignalNetwork)
-    every { SignalNetwork.attachments } returns attachments
-    every { SignalNetwork.archive } returns archive
+
+    val signalNetwork = mockk<SignalNetwork>()
+    every { signalNetwork.attachmentApi } returns attachments
+    every { signalNetwork.archiveApi } returns archive
+
+    SignalNetwork.init(signalNetwork)
   }
 
   @After
   fun tearDown() {
-    unmockkObject(SignalNetwork)
+    SignalNetwork.init(SignalNetwork())
   }
 
   @Test

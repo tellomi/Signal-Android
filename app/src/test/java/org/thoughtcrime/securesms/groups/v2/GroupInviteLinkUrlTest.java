@@ -73,13 +73,26 @@ public final class GroupInviteLinkUrlTest {
 
   @Test
   public void can_reconstruct_url() {
-    String urlToCompare = expectedUrl;
+    // Tellomi（tellomi/tellomi#1113）：生成的是 https://tell.cc/g#<同一段编码>；上面这些旧形状仍拿来测解析
+    String encoding = expectedUrl.substring(expectedUrl.indexOf('#') + 1);
 
-    if (urlToCompare.startsWith("sgnl")) {
-      urlToCompare = urlToCompare.replace("sgnl", "https");
+    assertEquals("https://tell.cc/g#" + encoding, GroupInviteLinkUrl.createUrl(groupMasterKey, password));
+  }
+
+  @Test
+  public void can_parse_tell_urls() throws GroupInviteLinkUrl.InvalidGroupLinkException, GroupInviteLinkUrl.UnknownGroupLinkVersionException {
+    // Tellomi（tellomi/tellomi#1113）：自己生成的新形状，以及带斜杠 / tellomi:// 两种写法，都要能解析回同一个群
+    String encoding = expectedUrl.substring(expectedUrl.indexOf('#') + 1);
+
+    for (String url : Arrays.asList(GroupInviteLinkUrl.createUrl(groupMasterKey, password),
+                                    "https://tell.cc/g/#" + encoding,
+                                    "tellomi://tell.cc/g#" + encoding))
+    {
+      GroupInviteLinkUrl parsed = GroupInviteLinkUrl.fromUri(url);
+
+      assertEquals(url, groupMasterKey, parsed.getGroupMasterKey());
+      assertEquals(url, password, parsed.getPassword());
     }
-
-    assertEquals(urlToCompare, GroupInviteLinkUrl.createUrl(groupMasterKey, password));
   }
 
   private static TestBuilder givenGroup() {

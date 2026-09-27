@@ -39,8 +39,8 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
   val backupValues = BackupValues(store)
   val callQualityValues = CallQualityValues(store)
   val labsValues = LabsValues(store)
-
-  val plainTextValues = PlainTextSharedPrefsDataStore(context)
+  val tellomiRegionValues = TellomiRegionValues(store)
+  val tellomiLinkValues = TellomiLinkValues(store)
 
   companion object {
 
@@ -275,6 +275,18 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
     val apkUpdate: ApkUpdateValues
       get() = instance!!.apkUpdateValues
 
+    /** Tellomi（#1055）：当前区域。 */
+    @JvmStatic
+    @get:JvmName("tellomiRegion")
+    val tellomiRegion: TellomiRegionValues
+      get() = instance!!.tellomiRegionValues
+
+    /** Tellomi（#1422）：链接卡片的本机设置（「展开短链接」）。 */
+    @JvmStatic
+    @get:JvmName("tellomiLinks")
+    val tellomiLinks: TellomiLinkValues
+      get() = instance!!.tellomiLinkValues
+
     @JvmStatic
     @get:JvmName("backup")
     val backup: BackupValues
@@ -292,9 +304,6 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
 
     val groupsV2AciAuthorizationCache: GroupsV2AuthorizationSignalStoreCache
       get() = GroupsV2AuthorizationSignalStoreCache.createAciCache(instance!!.store)
-
-    val plaintext: PlainTextSharedPrefsDataStore
-      get() = instance!!.plainTextValues
 
     fun getPreferenceDataStore(): PreferenceDataStore {
       return SignalPreferenceDataStore(instance!!.store)

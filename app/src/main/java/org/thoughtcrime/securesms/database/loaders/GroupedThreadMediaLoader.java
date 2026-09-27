@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 import org.signal.core.util.ThreadUtil;
@@ -13,6 +14,7 @@ import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.database.DatabaseObserver;
 import org.thoughtcrime.securesms.database.MediaTable;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
+import org.thoughtcrime.securesms.mediaoverview.TellomiMediaSearch;
 import org.thoughtcrime.securesms.util.CalendarDateOnly;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public final class GroupedThreadMediaLoader extends AsyncTaskLoader<GroupedThreadMediaLoader.GroupedThreadMedia> {
 
@@ -31,6 +34,7 @@ public final class GroupedThreadMediaLoader extends AsyncTaskLoader<GroupedThrea
   private final MediaTable.Sorting    sorting;
   private final long                  threadId;
   private final int                   limit;
+  private final @Nullable String      tellomiQuery;
 
   public GroupedThreadMediaLoader(@NonNull Context context,
                                   long threadId,
@@ -38,11 +42,23 @@ public final class GroupedThreadMediaLoader extends AsyncTaskLoader<GroupedThrea
                                   @NonNull MediaTable.Sorting sorting,
                                   int limit)
   {
+    this(context, threadId, mediaType, sorting, limit, null);
+  }
+
+  /** Tellomi：带一个查询时只留下匹配的（「我的收藏」按类型搜，#1174）。 */
+  public GroupedThreadMediaLoader(@NonNull Context context,
+                                  long threadId,
+                                  @NonNull MediaLoader.MediaType mediaType,
+                                  @NonNull MediaTable.Sorting sorting,
+                                  int limit,
+                                  @Nullable String tellomiQuery)
+  {
     super(context);
-    this.threadId  = threadId;
-    this.mediaType = mediaType;
-    this.sorting   = sorting;
-    this.limit     = limit;
+    this.threadId     = threadId;
+    this.mediaType    = mediaType;
+    this.sorting      = sorting;
+    this.limit        = limit;
+    this.tellomiQuery = tellomiQuery;
     this.observer  = () -> ThreadUtil.runOnMain(this::onContentChanged);
 
     onContentChanged();
@@ -76,9 +92,14 @@ public final class GroupedThreadMediaLoader extends AsyncTaskLoader<GroupedThrea
 
     AppDependencies.getDatabaseObserver().registerAttachmentUpdatedObserver(observer);
 
+    Map<Long, String> tellomiBodies = TellomiMediaSearch.isActive(tellomiQuery) ? TellomiMediaSearch.bodies(threadId) : null;
+
     try (Cursor cursor = ThreadMediaLoader.createThreadMediaCursor(context, threadId, mediaType, sorting, limit)) {
       while (cursor != null && cursor.moveToNext()) {
-        mediaGrouping.add(MediaTable.MediaRecord.from(cursor));
+        MediaTable.MediaRecord record = MediaTable.MediaRecord.from(cursor);
+        if (tellomiBodies == null || TellomiMediaSearch.matches(record, tellomiQuery, tellomiBodies)) {
+          mediaGrouping.add(record);
+        }
       }
     }
 

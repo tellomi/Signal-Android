@@ -6,8 +6,6 @@
 package org.signal.registration.screens.signalloginpayment
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -21,9 +19,13 @@ import org.signal.core.ui.compose.EventDrivenViewModel
 import org.signal.core.util.logging.Log
 import org.signal.libsignal.net.RequestResult
 import org.signal.network.api.RegistrationApiV2.RegisterAccountError
+import org.signal.registration.ReceiptCredentialResult
 import org.signal.registration.RegistrationFlowEvent
 import org.signal.registration.RegistrationRepository
 import org.signal.registration.RegistrationRoute
+import org.signal.registration.SignalLoginPriceResult
+import org.signal.registration.SignalLoginPurchaseResult
+import org.signal.registration.SignalLoginPurchaseStep
 import org.signal.registration.screens.util.navigateBack
 import org.signal.registration.screens.util.navigateTo
 
@@ -63,7 +65,76 @@ class SignalLoginPaymentViewModel(
   ) {
     when (event) {
       is SignalLoginPaymentScreenEvents.Initialize -> {
-        // TODO [phonenumberless] Load the price from the billing library and populate SignalLoginPaymentState.formattedPrice.
+        val hasUnredeemedPurchase = repository.hasUnredeemedSignalLoginPurchase()
+
+        if (hasUnredeemedPurchase) {
+          Log.i(TAG, "[Initialize] The user already has a Signal Login purchase that was never redeemed.")
+        }
+
+        val paymentAvailability = repository.getPaymentAvailability()
+
+        val price = when {
+          paymentAvailability.isAvailable -> loadPrice()
+          paymentAvailability.isTerminal -> {
+            Log.w(TAG, "[Initialize] Google Play can never take a payment here ($paymentAvailability). Offering an existing login only.")
+            SignalLoginPaymentState.Price.Unavailable
+          }
+          else -> {
+            Log.w(TAG, "[Initialize] Google Play cannot take a payment ($paymentAvailability), so there is no price to show yet.")
+            SignalLoginPaymentState.Price.TransientError
+          }
+        }
+
+        val updated = state.copy(
+          price = price,
+          hasUnredeemedPurchase = hasUnredeemedPurchase,
+          paymentAvailability = paymentAvailability,
+          dialogs = state.dialogs.copy(paymentUnavailable = !paymentAvailability.isAvailable)
+        )
+
+        stateEmitter(
+          if (updated.isPurchaseOptionEnabled) {
+            updated
+          } else {
+            updated.copy(selectedOption = SignalLoginPaymentState.Option.ExistingLogin)
+          }
+        )
+      }
+
+      is SignalLoginPaymentScreenEvents.PriceRetryClicked -> {
+        val localState = state.copy(price = SignalLoginPaymentState.Price.Loading)
+        stateEmitter(localState)
+
+        val availability = repository.getPaymentAvailability()
+        if (availability.isAvailable) {
+          stateEmitter(localState.copy(paymentAvailability = availability, price = loadPrice()))
+        } else {
+          Log.w(TAG, "[PriceRetryClicked] Google Play still cannot take a payment: $availability")
+          stateEmitter(
+            localState.copy(
+              paymentAvailability = availability,
+              price = if (availability.isTerminal) SignalLoginPaymentState.Price.Unavailable else SignalLoginPaymentState.Price.TransientError,
+              dialogs = localState.dialogs.copy(paymentUnavailable = true)
+            )
+          )
+        }
+      }
+
+      is SignalLoginPaymentScreenEvents.Foregrounded -> {
+        val availability = repository.getPaymentAvailability()
+
+        if (availability != state.paymentAvailability) {
+          Log.i(TAG, "[Foregrounded] Google Play availability changed from ${state.paymentAvailability} to $availability.")
+
+          val localState = state.copy(paymentAvailability = availability)
+          if (availability.isAvailable) {
+            stateEmitter(localState.copy(price = SignalLoginPaymentState.Price.Loading, dialogs = localState.dialogs.copy(paymentUnavailable = false)))
+            stateEmitter(localState.copy(price = loadPrice(), dialogs = localState.dialogs.copy(paymentUnavailable = false)))
+          } else {
+            val price = if (availability.isTerminal) SignalLoginPaymentState.Price.Unavailable else SignalLoginPaymentState.Price.TransientError
+            stateEmitter(localState.copy(price = price, dialogs = localState.dialogs.copy(paymentUnavailable = true)))
+          }
+        }
       }
 
       is SignalLoginPaymentScreenEvents.BackClicked -> {
@@ -74,8 +145,16 @@ class SignalLoginPaymentViewModel(
         _actions.trySend(SignalLoginPaymentScreenActions.OpenLearnMoreArticle)
       }
 
+      is SignalLoginPaymentScreenEvents.PaymentUnavailableLearnMoreClicked -> {
+        _actions.trySend(SignalLoginPaymentScreenActions.OpenPaymentUnavailableArticle)
+      }
+
       is SignalLoginPaymentScreenEvents.OptionSelected -> {
-        stateEmitter(state.copy(selectedOption = event.option))
+        if (event.option == SignalLoginPaymentState.Option.Purchase && !state.isPurchaseOptionEnabled) {
+          Log.w(TAG, "[OptionSelected] Ignoring a purchase selection that cannot be acted on.")
+        } else {
+          stateEmitter(state.copy(selectedOption = event.option))
+        }
       }
 
       is SignalLoginPaymentScreenEvents.ManualReceiptCredentialChanged -> {
@@ -90,10 +169,28 @@ class SignalLoginPaymentViewModel(
           stateEmitter(localState.copy(showSpinner = false))
         } else if (state.selectedOption == SignalLoginPaymentState.Option.ExistingLogin) {
           parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginCredentialEntry())
+        } else if (!state.paymentAvailability.isAvailable) {
+          Log.w(TAG, "[ContinueClicked] Google Play cannot take a payment: ${state.paymentAvailability}. Explaining rather than starting a purchase.")
+          stateEmitter(state.copy(dialogs = state.dialogs.copy(paymentUnavailable = true)))
         } else {
-          // TODO [phonenumberless] Launch the purchase flow.
-          Log.i(TAG, "Continue clicked for ${state.selectedOption}, but the purchase flow isn't implemented yet.")
+          val localState = state.copy(showSpinner = true)
+          stateEmitter(localState)
+
+          when (val step = repository.startOrCompleteSignalLoginPurchase()) {
+            is SignalLoginPurchaseStep.LaunchRequired -> {
+              // The spinner stays up: PurchaseFlowCompleted clears it once the sheet the UI layer opens resolves.
+              _actions.trySend(SignalLoginPaymentScreenActions.LaunchPurchaseFlow(step.launcher))
+            }
+            is SignalLoginPurchaseStep.Finished -> {
+              stateEmitter(applyPurchaseResult(localState, step.result, parentEventEmitter).copy(showSpinner = false))
+            }
+          }
         }
+      }
+
+      is SignalLoginPaymentScreenEvents.PurchaseFlowCompleted -> {
+        val result = repository.completeSignalLoginPurchase(event.result)
+        stateEmitter(applyPurchaseResult(state, result, parentEventEmitter).copy(showSpinner = false))
       }
 
       is SignalLoginPaymentScreenEvents.NetworkErrorDialogDismissed -> {
@@ -108,25 +205,118 @@ class SignalLoginPaymentViewModel(
         stateEmitter(state.copy(dialogs = state.dialogs.copy(purchaseFailed = false)))
       }
 
+      is SignalLoginPaymentScreenEvents.PurchaseUnavailableDialogDismissed -> {
+        stateEmitter(state.copy(dialogs = state.dialogs.copy(purchaseUnavailable = false)))
+      }
+
+      is SignalLoginPaymentScreenEvents.PurchasePendingDialogDismissed -> {
+        stateEmitter(state.copy(dialogs = state.dialogs.copy(purchasePending = false)))
+      }
+
       is SignalLoginPaymentScreenEvents.InvalidReceiptCredentialDialogDismissed -> {
         stateEmitter(state.copy(dialogs = state.dialogs.copy(invalidReceiptCredential = false)))
+      }
+
+      is SignalLoginPaymentScreenEvents.MakeGooglePlayServicesAvailableClicked -> {
+        stateEmitter(state.copy(dialogs = state.dialogs.copy(paymentUnavailable = false)))
+        _actions.trySend(SignalLoginPaymentScreenActions.MakeGooglePlayServicesAvailable)
+      }
+
+      is SignalLoginPaymentScreenEvents.OpenPlayStoreClicked -> {
+        stateEmitter(state.copy(dialogs = state.dialogs.copy(paymentUnavailable = false)))
+        _actions.trySend(SignalLoginPaymentScreenActions.OpenPlayStore)
+      }
+
+      is SignalLoginPaymentScreenEvents.PaymentUnavailableDialogDismissed -> {
+        stateEmitter(state.copy(dialogs = state.dialogs.copy(paymentUnavailable = false)))
+      }
+    }
+  }
+
+  private suspend fun loadPrice(): SignalLoginPaymentState.Price {
+    return when (val result = repository.getSignalLoginPrice()) {
+      is SignalLoginPriceResult.Available -> SignalLoginPaymentState.Price.Available(result.formattedPrice)
+      SignalLoginPriceResult.Unavailable -> {
+        Log.w(TAG, "[loadPrice] A Signal Login cannot be bought here. An earlier log says why.")
+        SignalLoginPaymentState.Price.Unavailable
+      }
+      SignalLoginPriceResult.TransientError -> {
+        Log.w(TAG, "[loadPrice] Could not determine a Signal Login price. Offering a retry.")
+        SignalLoginPaymentState.Price.TransientError
+      }
+    }
+  }
+
+  /** Folds the outcome of a Signal Login purchase into the state, navigating onward when it registered an account. */
+  private fun applyPurchaseResult(
+    state: SignalLoginPaymentState,
+    result: SignalLoginPurchaseResult,
+    parentEventEmitter: (RegistrationFlowEvent) -> Unit
+  ): SignalLoginPaymentState {
+    return when (result) {
+      is SignalLoginPurchaseResult.Registered -> {
+        Log.i(TAG, "[Purchase] Successfully registered without a phone number.")
+        val (response, keyMaterial, aci) = result.account
+
+        parentEventEmitter(RegistrationFlowEvent.Registered(aci, keyMaterial.accountEntropyPool, response.storageCapable, phoneNumberless = response.e164 == null))
+        parentEventEmitter.navigateTo(RegistrationRoute.SignalLoginInfo)
+        state.copy(hasUnredeemedPurchase = false)
+      }
+      SignalLoginPurchaseResult.PurchasePending -> {
+        Log.i(TAG, "[Purchase] The payment has not settled yet.")
+        state.copy(hasUnredeemedPurchase = true, dialogs = state.dialogs.copy(purchasePending = true))
+      }
+      SignalLoginPurchaseResult.Cancelled -> {
+        Log.i(TAG, "[Purchase] The user cancelled.")
+        state
+      }
+      SignalLoginPurchaseResult.PurchaseUnavailable -> {
+        Log.w(TAG, "[Purchase] Google Play cannot sell the product on this device.")
+        state.copy(dialogs = state.dialogs.copy(purchaseUnavailable = true))
+      }
+      SignalLoginPurchaseResult.PurchaseFailed -> {
+        Log.w(TAG, "[Purchase] Google Play could not complete the purchase.")
+        state.copy(dialogs = state.dialogs.copy(purchaseFailed = true))
+      }
+      is SignalLoginPurchaseResult.RedemptionFailed -> {
+        Log.w(TAG, "[Purchase] The service would not redeem the purchase: ${result.error}")
+        state.copy(hasUnredeemedPurchase = true, dialogs = state.dialogs.copy(purchaseFailed = true))
+      }
+      is SignalLoginPurchaseResult.RegistrationFailed -> {
+        Log.w(TAG, "[Purchase] Failed to register with the purchase: ${result.error}")
+        state.copy(hasUnredeemedPurchase = true, dialogs = state.dialogs.copy(unknownError = true))
+      }
+      SignalLoginPurchaseResult.NetworkError -> {
+        Log.w(TAG, "[Purchase] Network error during the purchase.")
+        state.copy(dialogs = state.dialogs.copy(networkError = true))
+      }
+      SignalLoginPurchaseResult.UnknownError -> {
+        Log.w(TAG, "[Purchase] Unknown error during the purchase.")
+        state.copy(dialogs = state.dialogs.copy(unknownError = true))
       }
     }
   }
 
   /**
    * Redeems the manually-pasted receipt credential by building its presentation and registering a numberless account
-   * with it, bypassing the (unfinished) purchase flow entirely.
+   * with it, bypassing the purchase flow entirely.
    */
   private suspend fun applyManualReceiptCredentialSubmitted(
     state: SignalLoginPaymentState,
     parentEventEmitter: (RegistrationFlowEvent) -> Unit
   ): SignalLoginPaymentState {
-    val presentation = try {
-      repository.createReceiptCredentialPresentation(state.manualReceiptCredential.decode())
-    } catch (e: Exception) {
-      Log.w(TAG, "[ManualReceipt] The pasted value could not be parsed as a receipt credential.", e)
+    val credential = state.manualReceiptCredential.decodeOrNull()
+    if (credential == null) {
+      Log.w(TAG, "[ManualReceipt] The pasted value could not be parsed as a receipt credential.")
       return state.copy(dialogs = state.dialogs.copy(invalidReceiptCredential = true))
+    }
+
+    val presentation = when (val built = repository.createReceiptCredentialPresentation(credential)) {
+      is ReceiptCredentialResult.Success -> built.value
+      ReceiptCredentialResult.VerificationFailed -> {
+        Log.w(TAG, "[ManualReceipt] The pasted credential was not issued by this environment's service.")
+        return state.copy(dialogs = state.dialogs.copy(invalidReceiptCredential = true))
+      }
     }
 
     return when (val result = repository.registerAccountWithoutPhoneNumber(presentation)) {
@@ -170,16 +360,6 @@ class SignalLoginPaymentViewModel(
         Log.w(TAG, "[ManualReceipt] Application error.", result.cause)
         state.copy(dialogs = state.dialogs.copy(unknownError = true))
       }
-    }
-  }
-
-  class Factory(
-    private val repository: RegistrationRepository,
-    private val parentEventEmitter: (RegistrationFlowEvent) -> Unit
-  ) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return SignalLoginPaymentViewModel(repository, parentEventEmitter) as T
     }
   }
 }

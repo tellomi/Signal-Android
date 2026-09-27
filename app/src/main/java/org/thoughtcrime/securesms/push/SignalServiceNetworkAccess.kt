@@ -14,12 +14,7 @@ import okhttp3.TlsVersion
 import org.signal.core.util.Base64
 import org.signal.core.util.logging.Log
 import org.signal.network.config.HttpProxy
-import org.signal.network.config.SignalCdnUrl
-import org.signal.network.config.SignalCdsiUrl
 import org.signal.network.config.SignalServiceConfiguration
-import org.signal.network.config.SignalServiceUrl
-import org.signal.network.config.SignalStorageUrl
-import org.signal.network.config.SignalSvr2Url
 import org.signal.network.config.TrustStore
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.keyvalue.SettingsValues
@@ -32,6 +27,8 @@ import org.thoughtcrime.securesms.net.SequentialDns
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor
 import org.thoughtcrime.securesms.net.StaticDns
 import org.thoughtcrime.securesms.net.StorageServiceSizeLoggingInterceptor
+import org.thoughtcrime.securesms.region.TellomiRegions
+import org.thoughtcrime.securesms.region.TellomiServiceConfigurations
 import java.io.IOException
 import java.util.Optional
 
@@ -47,28 +44,10 @@ class SignalServiceNetworkAccess(context: Context) {
     val DNS: Dns = SequentialDns(
       Dns.SYSTEM,
       CustomDns("1.1.1.1"),
-      StaticDns(
-        mapOf(
-          BuildConfig.SIGNAL_URL.stripProtocol() to BuildConfig.SIGNAL_SERVICE_IPS.toSet(),
-          BuildConfig.STORAGE_URL.stripProtocol() to BuildConfig.SIGNAL_STORAGE_IPS.toSet(),
-          BuildConfig.SIGNAL_CDN_URL.stripProtocol() to BuildConfig.SIGNAL_CDN_IPS.toSet(),
-          BuildConfig.SIGNAL_CDN2_URL.stripProtocol() to BuildConfig.SIGNAL_CDN2_IPS.toSet(),
-          // cdn3 的 IP 表**故意是空的**（#1077）：cdn3.tellomi.app 在 Cloudflare 后面，
-          // 边缘 IP 会变，写死等于给自己做一张会过期的劫持表——DNS 正常时根本用不到，
-          // DNS 失效时反而把流量送到一个可能早已不属于我们的地址。
-          // 空集在 StaticDns 里和"没有这个 key"是同一个结果（UnknownHostException），
-          // 留着这一行是为了让下一个人看见这是**决定**，不是漏填。
-          BuildConfig.SIGNAL_CDN3_URL.stripProtocol() to BuildConfig.SIGNAL_CDN3_IPS.toSet(),
-          // Tellomi（#1077）：上游这里是 `sfu.voip.signal.org`（纯主机名）。我们把 SFU 并进了
-          // chat.tellomi.app，`SIGNAL_SFU_URL` 因此带上了路径（".../callingService"），
-          // 而 `stripProtocol()` 只去 scheme 不去路径 —— 组出来的 key 是
-          // `chat.tellomi.app/callingService`，**永远等不上任何一次 DNS 查询的主机名**。
-          // 它要解析的主机就是上面那条 SIGNAL_URL 已经覆盖的 chat.tellomi.app，所以直接去掉。
-          BuildConfig.CONTENT_PROXY_HOST.stripProtocol() to BuildConfig.SIGNAL_CONTENT_PROXY_IPS.toSet(),
-          BuildConfig.SIGNAL_CDSI_URL.stripProtocol() to BuildConfig.SIGNAL_CDSI_IPS.toSet(),
-          BuildConfig.SIGNAL_SVR2_URL.stripProtocol() to BuildConfig.SIGNAL_SVR2_IPS.toSet()
-        )
-      )
+      // Tellomi（#1055 第三刀）：静态 IP 表从区域表来（契约第三节 staticIps，只有 global 档有，CN 暂无回落），切区不用重建。
+      // 上游这里还有 cdsi / svr2 两行，指向 Signal 自己的 IP。这两样都不走这张表：svr2 的 OkHttp client
+      // （SignalUrlExtensions.buildOkHttpClient）不设 dns，CDSI 走 libsignal。是死配置，删掉。
+      StaticDns(TellomiRegions.staticIpTable())
     )
 
     private fun String.stripProtocol(): String {
@@ -156,7 +135,7 @@ class SignalServiceNetworkAccess(context: Context) {
 
     fun ProxyInfo?.toApplicableSystemHttpProxy(): HttpProxy? {
       return this
-        ?.takeIf { !it.exclusionList.contains(BuildConfig.SIGNAL_URL.stripProtocol()) }
+        ?.takeIf { !it.exclusionList.contains(TellomiRegions.current().chat.stripProtocol()) }
         // NB: Edit carefully, dear reader, as the line below is written from hard won experience.
         // It turns out, that despite being documented *nowhere*, if a PAC file is set
         //   as the system proxy, proxyInfo.host will return "localhost" and proxyInfo.port
@@ -215,6 +194,8 @@ class SignalServiceNetworkAccess(context: Context) {
   // 真要做规避，得先有我们自己的 fronted 入口（域名 + CDN，服务端那半），
   // 那时把这段按上游的形状重建、并把 86 加进 defaultCensoredCountryCodes 才有意义。
   // 上游原文见 v8.26.4 的同一文件（G_HOST / F_* 常量 + buildGConfiguration + fConfig）。
+  // 重建时每个 CDN 只能放一个 URL，并且经 TellomiServiceConfigurations 组装：照抄上游的 fUrls / buildGConfiguration
+  // （每个 CDN 3–6 个 URL）会在构造时被下面的 init 拒绝（RegionProfile 契约第五节第 3 条，tellomi/tellomi#1055）。
   private val censorshipConfiguration: Map<Int, SignalServiceConfiguration> = emptyMap()
 
   // 注意 **不能**写成 `private val ... = uncensoredConfiguration.copy(...)`：
@@ -235,16 +216,13 @@ class SignalServiceNetworkAccess(context: Context) {
     COUNTRY_CODE_PAKISTAN
   )
 
-  val uncensoredConfiguration: SignalServiceConfiguration = SignalServiceConfiguration(
-    signalServiceUrls = arrayOf(SignalServiceUrl(BuildConfig.SIGNAL_URL, serviceTrustStore)),
-    signalCdnUrlMap = mapOf(
-      0 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN_URL, serviceTrustStore)),
-      2 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN2_URL, serviceTrustStore)),
-      3 to arrayOf(SignalCdnUrl(BuildConfig.SIGNAL_CDN3_URL, serviceTrustStore))
-    ),
-    signalStorageUrls = arrayOf(SignalStorageUrl(BuildConfig.STORAGE_URL, serviceTrustStore)),
-    signalCdsiUrls = arrayOf(SignalCdsiUrl(BuildConfig.SIGNAL_CDSI_URL, serviceTrustStore)),
-    signalSvr2Urls = arrayOf(SignalSvr2Url(BuildConfig.SIGNAL_SVR2_URL, serviceTrustStore)),
+  // Tellomi（#1055）：按当前区组装（RegionProfile 契约；现在 CN 关着，恒为 global = 原来这里的常量），组装时断言 cdn3 恰好一个。
+  // 切区走 AppDependencies.resetNetwork()：它会重建整个 NetworkDependenciesModule，连同这个对象。
+  val uncensoredConfiguration: SignalServiceConfiguration = TellomiServiceConfigurations.build(
+    profile = TellomiRegions.current(),
+    trustStore = serviceTrustStore,
+    cdsiUrl = BuildConfig.SIGNAL_CDSI_URL,
+    svr2Url = BuildConfig.SIGNAL_SVR2_URL,
     networkInterceptors = interceptors,
     dns = Optional.of(DNS),
     signalProxy = if (SignalStore.proxy.isProxyEnabled) Optional.ofNullable(SignalStore.proxy.proxy) else Optional.empty(),
@@ -254,6 +232,12 @@ class SignalServiceNetworkAccess(context: Context) {
     backupServerPublicParams = backupServerPublicParams,
     censored = false
   )
+
+  init {
+    // 契约第五节第 3 条：getConfiguration() 可能返回的每一份都要 cdn3 恰好一个，含将来按上游形状重建的规避配置。
+    // 必须放在 uncensoredConfiguration 之后：defaultCensoredConfiguration 的 getter 要读它。
+    (censorshipConfiguration.values + defaultCensoredConfiguration).forEach(TellomiServiceConfigurations::requireSingleCdn3)
+  }
 
   fun getConfiguration(): SignalServiceConfiguration {
     return getConfiguration(SignalStore.account.e164)

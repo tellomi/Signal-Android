@@ -30,7 +30,11 @@ class MediaSendActivityResult(
   val mentions: List<Mention>,
   @TypeParceler<BodyRangeList?, BodyRangeListParceler>() val bodyRanges: BodyRangeList?,
   val storyType: StoryType,
-  val scheduledTime: Long = -1
+  val scheduledTime: Long = -1,
+  /**
+   * Tellomi（tellomi/tellomi#1261 P-5「单独发送」）：会话页一张一条地发（说明挂最后一条），而不是整组一条相册消息。
+   */
+  val sendSeparately: Boolean = false
 ) : Parcelable {
 
   val isPushPreUpload: Boolean
@@ -39,6 +43,21 @@ class MediaSendActivityResult(
   init {
     require((preUploadResults.isNotEmpty() && nonUploadedMedia.isEmpty()) || (preUploadResults.isEmpty() && nonUploadedMedia.isNotEmpty()))
   }
+
+  /** Tellomi（#1261）：同一份结果，改成一张一条地发。 */
+  fun withSendSeparately(sendSeparately: Boolean): MediaSendActivityResult = MediaSendActivityResult(
+    recipientId = recipientId,
+    preUploadResults = preUploadResults,
+    nonUploadedMedia = nonUploadedMedia,
+    body = body,
+    messageSendType = messageSendType,
+    isViewOnce = isViewOnce,
+    mentions = mentions,
+    bodyRanges = bodyRanges,
+    storyType = storyType,
+    scheduledTime = scheduledTime,
+    sendSeparately = sendSeparately
+  )
 
   companion object {
     const val EXTRA_RESULT = "result"

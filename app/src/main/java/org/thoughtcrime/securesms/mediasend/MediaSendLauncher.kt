@@ -15,6 +15,7 @@ import org.signal.mediasend.MediaRecipientId
 import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.mediasend.MediaSendRecipient
 import org.thoughtcrime.securesms.contacts.paged.ContactSearchKey
+import org.thoughtcrime.securesms.mediasend.v3.MediaSendAttachmentSheetActivity
 import org.thoughtcrime.securesms.mediasend.v3.MediaSendV3Activity
 import org.thoughtcrime.securesms.recipients.RecipientId
 import org.thoughtcrime.securesms.util.RemoteConfig
@@ -152,6 +153,54 @@ object MediaSendLauncher {
     )
   }
 
+  /** Tellomi（tellomi/tellomi#1115）：附件 Sheet 里点了 dock 的哪一格（[MediaSendFlowActivityContract.DockEntry.id]）。 */
+  const val EXTRA_ATTACHMENT_DOCK_ENTRY = "tellomi.attachment_dock_entry"
+
+  /** Tellomi（tellomi/tellomi#1121）：附件 Sheet「文件」页要发的文件（[MediaSendFlowActivityContract.AttachmentFilesResult]）。 */
+  const val EXTRA_ATTACHMENT_FILES = "tellomi.attachment_files"
+
+  /**
+   * Tellomi（tellomi/tellomi#1115）：会话页「+」打开的附件 Sheet——选图网格做成半屏 Sheet（聊天露在上面），底部 dock 是 [dock] 里的格子。
+   * 发了照片的结果同 [gallery]；点了 dock 的别的格子，结果里带 [EXTRA_ATTACHMENT_DOCK_ENTRY]（[parseAttachmentDockEntry]）。
+   */
+  fun attachmentSheet(
+    context: Context,
+    recipientId: RecipientId,
+    message: CharSequence?,
+    isReply: Boolean,
+    dock: List<MediaSendFlowActivityContract.DockEntry>
+  ): Intent {
+    return v3Intent(
+      context,
+      MediaSendFlowActivityContract.Args(
+        mode = MediaSendFlowActivityContract.Mode.SingleRecipient,
+        recipientId = recipientId.toMediaRecipientId(),
+        initialMessage = message,
+        isReply = isReply,
+        attachmentSheet = MediaSendFlowActivityContract.AttachmentSheet(dock)
+      ),
+      MediaSendAttachmentSheetActivity::class.java
+    )
+  }
+
+  /** 附件 Sheet 里点了 dock 的哪一格；发了照片或者取消了是 null。 */
+  fun parseAttachmentDockEntry(resultCode: Int, data: Intent?): String? {
+    if (resultCode != Activity.RESULT_OK) {
+      return null
+    }
+
+    return data?.getStringExtra(EXTRA_ATTACHMENT_DOCK_ENTRY)
+  }
+
+  /** Tellomi（tellomi/tellomi#1121）：附件 Sheet「文件」页选好的文件，交给会话页去发；不是这种结果时是 null。 */
+  fun parseAttachmentFiles(resultCode: Int, data: Intent?): MediaSendFlowActivityContract.AttachmentFilesResult? {
+    if (resultCode != Activity.RESULT_OK || data == null) {
+      return null
+    }
+
+    return data.getParcelableExtraCompat(EXTRA_ATTACHMENT_FILES, MediaSendFlowActivityContract.AttachmentFilesResult::class.java)
+  }
+
   /**
    * Reads the payload the caller is expected to send itself, for either implementation.
    *
@@ -167,8 +216,12 @@ object MediaSendLauncher {
     return data.getParcelableExtraCompat(MediaSendActivityResult.EXTRA_RESULT, Parcelable::class.java) as? MediaSendActivityResult
   }
 
-  private fun v3Intent(context: Context, args: MediaSendFlowActivityContract.Args): Intent {
-    return Intent(context, MediaSendV3Activity::class.java)
+  private fun v3Intent(
+    context: Context,
+    args: MediaSendFlowActivityContract.Args,
+    activity: Class<out Activity> = MediaSendV3Activity::class.java
+  ): Intent {
+    return Intent(context, activity)
       .putExtra(MediaSendFlowActivityContract.EXTRA_ARGS, args.copy(maxSelection = RemoteConfig.maxAttachmentCount))
   }
 

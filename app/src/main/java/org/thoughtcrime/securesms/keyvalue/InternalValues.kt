@@ -5,6 +5,7 @@ import org.signal.ringrtc.CallManager.DataMode
 import org.thoughtcrime.securesms.BuildConfig
 import org.thoughtcrime.securesms.database.model.IssuePriority
 import org.thoughtcrime.securesms.keyvalue.protos.IssueNotifyTimes
+import org.thoughtcrime.securesms.region.TellomiRegions
 import org.thoughtcrime.securesms.util.Environment.Calling.defaultSfuUrl
 import org.thoughtcrime.securesms.util.RemoteConfig
 
@@ -33,6 +34,7 @@ class InternalValues internal constructor(store: KeyValueStore) : SignalStoreVal
     const val CALLING_USE_SOFTWARE_VP9_DECODE: String = "internal.calling_use_software_vp9_decode"
     const val CALLING_ENABLE_SVC: String = "internal.calling_enable_svc"
     const val CALLING_STATS_INTERVAL_SECS: String = "internal.calling_stats_interval_secs"
+    const val CALLING_MINIMUM_CAPTURE_FPS: String = "internal.calling_minimum_capture_fps"
     const val SHAKE_TO_REPORT: String = "internal.shake_to_report"
     const val DISABLE_STORAGE_SERVICE: String = "internal.disable_storage_service"
     const val LAST_SCROLL_POSITION: String = "internal.last_scroll_position"
@@ -110,7 +112,7 @@ class InternalValues internal constructor(store: KeyValueStore) : SignalStoreVal
       if (internalServer != null && !listOf(*BuildConfig.SIGNAL_SFU_INTERNAL_URLS).contains(internalServer)) {
         internalServer = null
       }
-      return internalServer ?: BuildConfig.SIGNAL_SFU_URL
+      return internalServer ?: TellomiRegions.current().sfu
     }
     set(value) = putString(CALLING_SERVER, value)
 
@@ -195,6 +197,11 @@ class InternalValues internal constructor(store: KeyValueStore) : SignalStoreVal
    * How often, in seconds, RingRTC should report call stats. Zero means use the default interval.
    */
   var callingStatsIntervalSecs: Int by integerValue(CALLING_STATS_INTERVAL_SECS, 0).defaultForExternalUsers()
+
+  /**
+   * Minimum fps for the camera's capture framerate range. Zero means use default logic
+   */
+  var callingMinimumCaptureFps: Int by integerValue(CALLING_MINIMUM_CAPTURE_FPS, 0).defaultForExternalUsers()
 
   var lastScrollPosition: Int by integerValue(LAST_SCROLL_POSITION, 0).defaultForExternalUsers()
 

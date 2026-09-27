@@ -5,8 +5,6 @@
 
 package org.signal.mediasend.screens.select
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,14 +18,18 @@ import kotlinx.coroutines.launch
 import org.signal.core.models.media.Media
 import org.signal.core.models.media.MediaFolder
 import org.signal.core.ui.compose.EventDrivenViewModel
+import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.Snackbars
 import org.signal.core.util.logging.Log
 import org.signal.mediasend.MediaSendDependencies
+import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.mediasend.MediaSendFlowEvent
 import org.signal.mediasend.MediaSendFlowState
 import org.signal.mediasend.MediaSendRepository
 import org.signal.mediasend.R
 import org.signal.mediasend.SnackbarEvent
+import org.signal.mediasend.ToastEvent
+import org.signal.mediasend.ToastMessage
 
 /**
  * Drives the select screen, for one appearance of it: either the list of folders, or the contents of a single folder.
@@ -58,7 +60,8 @@ internal class MediaSelectViewModel(
         selectedMediaFolder = mediaFolder,
         selectedMediaFolderItems = emptyList(),
         selectedMedia = emptyList(),
-        recipientId = parentState.value.recipientId
+        recipientId = parentState.value.recipientId,
+        attachmentDock = parentState.value.attachmentSheet?.dock.orEmpty()
       )
     } else {
       MediaSelectState.Folders(
@@ -76,7 +79,8 @@ internal class MediaSelectViewModel(
 
   init {
     parentState
-      .distinctUntilChangedBy { it.selectedMedia to it.isSelectionRejected }
+      // Tellomi（#1261）：网格底栏还要跟着说明、画质、一次性查看、是否在发送走。
+      .distinctUntilChangedBy { listOf(it.selectedMedia, it.isSelectionRejected, MediaSelectState.SendOptions.from(it).copy(message = it.message?.toString())) }
       .onEach { onEvent(MediaSelectScreenEvents.ParentStateChanged(it)) }
       .launchIn(viewModelScope)
 
@@ -85,7 +89,10 @@ internal class MediaSelectViewModel(
 
   override suspend fun processEvent(event: MediaSelectScreenEvents) {
     when (event) {
-      is MediaSelectScreenEvents.ParentStateChanged -> _state.update { it.withParentState(event.parentState.selectedMedia, event.parentState.isSelectionRejected) }
+      is MediaSelectScreenEvents.ParentStateChanged -> _state.update {
+        it.withParentState(event.parentState.selectedMedia, event.parentState.isSelectionRejected)
+          .withSendOptions(MediaSelectState.SendOptions.from(event.parentState))
+      }
       MediaSelectScreenEvents.SelectionRejectionShown -> parentEventEmitter(MediaSendFlowEvent.SelectionRejectionShown)
       is MediaSelectScreenEvents.FolderClick -> event.mediaFolder?.let { parentEventEmitter(MediaSendFlowEvent.NavigateToFiles(it)) }
       is MediaSelectScreenEvents.MediaClick -> applyMediaClickEvent(event.media)
@@ -99,6 +106,30 @@ internal class MediaSelectViewModel(
       MediaSelectScreenEvents.Refresh -> refresh()
       MediaSelectScreenEvents.RequestMediaPermissions -> requestReadMediaPermissions(reportDenial = true)
       MediaSelectScreenEvents.SelectMorePhotos -> requestReadMediaPermissions(reportDenial = false)
+      is MediaSelectScreenEvents.OpenMedia -> parentEventEmitter(MediaSendFlowEvent.OpenInEditor(event.media))
+      is MediaSelectScreenEvents.SwitchFolder -> parentEventEmitter(MediaSendFlowEvent.SwitchFolder(event.mediaFolder))
+      is MediaSelectScreenEvents.AddMessage -> parentEventEmitter(MediaSendFlowEvent.AddMessageRequested(event.startWithEmojiKeyboard))
+      MediaSelectScreenEvents.ToggleViewOnce -> parentEventEmitter(MediaSendFlowEvent.ToggleViewOnce)
+      MediaSelectScreenEvents.Send -> parentEventEmitter(MediaSendFlowEvent.NextRequested)
+      is MediaSelectScreenEvents.SendWithQuality -> parentEventEmitter(MediaSendFlowEvent.SendNow(quality = event.quality))
+      MediaSelectScreenEvents.SendSeparately -> parentEventEmitter(MediaSendFlowEvent.SendNow(separately = true))
+      MediaSelectScreenEvents.Close -> parentEventEmitter(MediaSendFlowEvent.CloseRequested)
+      is MediaSelectScreenEvents.DockEntryClicked -> onDockEntryClicked(event.entry)
+    }
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1115、#1121）：置灰的格子只提示一句；Sheet 里的别的页（文件）在同一个 Sheet 里换过去；
+   * 别的交给会话页。当前页（相册）那一格由网格自己处理（回到顶部、展开）。
+   */
+  private fun onDockEntryClicked(entry: MediaSendFlowActivityContract.DockEntry) {
+    val comingSoon = entry.comingSoonMessage
+    val page = entry.page
+    when {
+      comingSoon != null -> parentEventEmitter(MediaSendFlowEvent.ShowToast(ToastEvent(SignalIcons.Info, ToastMessage.Text(comingSoon))))
+      page == MediaSendFlowActivityContract.AttachmentPage.GALLERY -> Unit
+      page != null -> parentEventEmitter(MediaSendFlowEvent.OpenAttachmentPage(page))
+      else -> parentEventEmitter(MediaSendFlowEvent.AttachmentDockEntrySelected(entry.id))
     }
   }
 
@@ -118,17 +149,24 @@ internal class MediaSelectViewModel(
   private fun refresh() {
     viewModelScope.launch {
       val mediaPermissions = MediaPermissions.current()
+      val cameraAccess = PickerCameraAccess.current()
 
       val reloaded: MediaSelectState = when (val snapshot = _state.value) {
         is MediaSelectState.Folders -> snapshot.copy(mediaFolders = repository.getFolders())
-        is MediaSelectState.Files -> snapshot.copy(selectedMediaFolderItems = repository.getMedia(snapshot.selectedMediaFolder.bucketId))
+        is MediaSelectState.Files -> snapshot.copy(
+          selectedMediaFolderItems = repository.getMedia(snapshot.selectedMediaFolder.bucketId),
+          // Tellomi（#1261 P-1）：顶栏下拉里的相册。
+          mediaFolders = repository.getFolders()
+        )
       }
 
       // Only what the parent reports can have changed while we were reading, and that is not ours to overwrite.
       _state.update { current ->
         reloaded
           .withMediaPermissions(mediaPermissions)
+          .withCameraAccess(cameraAccess)
           .withParentState(current.selectedMedia, current.isSelectionRejected)
+          .let { if (current is MediaSelectState.Files) it.withSendOptions(current.sendOptions) else it }
       }
     }
   }
@@ -153,18 +191,6 @@ internal class MediaSelectViewModel(
       }
 
       refresh()
-    }
-  }
-
-  class Factory(
-    private val parentState: StateFlow<MediaSendFlowState>,
-    private val parentEventEmitter: (MediaSendFlowEvent) -> Unit,
-    private val mediaFolder: MediaFolder?,
-    private val selectionAdditions: Flow<Media>
-  ) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return MediaSelectViewModel(parentState, parentEventEmitter, mediaFolder, selectionAdditions) as T
     }
   }
 }

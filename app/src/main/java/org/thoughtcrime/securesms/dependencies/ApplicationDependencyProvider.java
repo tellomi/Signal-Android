@@ -50,6 +50,7 @@ import org.signal.network.api.UsernameApi;
 import org.signal.network.rest.SignalRestClient;
 import org.signal.network.service.ArchiveService;
 import org.signal.network.service.MessageService;
+import org.signal.network.service.StorageServiceService;
 import org.signal.network.service.UsernameService;
 import org.signal.video.exo.ExoPlayerPool;
 import org.thoughtcrime.securesms.backup.v2.SignalStoreArchiveCacheStore;
@@ -90,6 +91,7 @@ import org.thoughtcrime.securesms.jobs.TypingSendJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.megaphone.MegaphoneRepository;
 import org.thoughtcrime.securesms.messages.IncomingMessageObserver;
+import org.thoughtcrime.securesms.logout.TellomiLogout;
 import org.thoughtcrime.securesms.net.DeviceTransferBlockingInterceptor;
 import org.thoughtcrime.securesms.net.SignalWebSocketHealthMonitor;
 import org.thoughtcrime.securesms.net.StandardUserAgentInterceptor;
@@ -100,6 +102,7 @@ import org.thoughtcrime.securesms.payments.Payments;
 import org.thoughtcrime.securesms.push.SecurityEventListener;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
+import org.thoughtcrime.securesms.region.TellomiRegions;
 import org.thoughtcrime.securesms.revealable.ViewOnceMessageManager;
 import org.thoughtcrime.securesms.service.DeletedCallEventManager;
 import org.thoughtcrime.securesms.service.ExpiringArchivedStoriesManager;
@@ -349,9 +352,11 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
     // libsignal-net 把 Signal 自己 staging / prod 的域名与根证书编译在 Rust 里，客户端侧覆盖不了，
     // 所以连自建服务端只能走 customServer 入口（tellomi/libsignal 的 tellomi-0.101.1 分支）。
     // 主机名为空 = 官方环境，保持上游行为。
-    Network network = BuildConfig.LIBSIGNAL_CUSTOM_SERVER_HOST.isEmpty()
+    // Tellomi（#1055）：主机名从当前区取（RegionProfile 的 grpcChat）；切区时 resetNetwork() 会重建这个 Network
+    String customServerHost = TellomiRegions.current().getGrpcChatHost();
+    Network network = customServerHost.isEmpty()
                       ? new Network(BuildConfig.LIBSIGNAL_NET_ENV, StandardUserAgentInterceptor.USER_AGENT, RemoteConfig.getLibsignalConfigs(), Network.BuildVariant.PRODUCTION)
-                      : Network.customServer(BuildConfig.LIBSIGNAL_CUSTOM_SERVER_HOST,
+                      : Network.customServer(customServerHost,
                                              BuildConfig.LIBSIGNAL_CUSTOM_SERVER_PORT,
                                              null,  // 平台信任库：自建服务端用的是公开 CA 签发的证书
                                              2,     // Omnibus 说 HTTP/2
@@ -431,7 +436,7 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
     };
 
     SignalWebSocket.AuthenticatedWebSocket webSocket = new SignalWebSocket.AuthenticatedWebSocket(authFactory,
-                                                                                                  () -> !SignalStore.misc().isClientDeprecated() && SignalStore.account().isRegistered() && !TextSecurePreferences.isUnauthorizedReceived(context) && !DeviceTransferBlockingInterceptor.getInstance().isBlockingNetwork() && !Environment.IS_INSTRUMENTATION,
+                                                                                                  () -> !SignalStore.misc().isClientDeprecated() && SignalStore.account().isRegistered() && !TextSecurePreferences.isUnauthorizedReceived(context) && !TellomiLogout.isLoggedOut() && !DeviceTransferBlockingInterceptor.getInstance().isBlockingNetwork() && !Environment.IS_INSTRUMENTATION,
                                                                                                   sleepTimer,
                                                                                                   TimeUnit.SECONDS.toMillis(30));
     if (AppForegroundObserver.isForegrounded()) {
@@ -458,7 +463,7 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
     };
 
     SignalWebSocket.UnauthenticatedWebSocket webSocket = new SignalWebSocket.UnauthenticatedWebSocket(unauthFactory,
-                                                                                                      () -> !SignalStore.misc().isClientDeprecated() && !DeviceTransferBlockingInterceptor.getInstance().isBlockingNetwork() && !Environment.IS_INSTRUMENTATION,
+                                                                                                      () -> !SignalStore.misc().isClientDeprecated() && !TellomiLogout.isLoggedOut() && !DeviceTransferBlockingInterceptor.getInstance().isBlockingNetwork() && !Environment.IS_INSTRUMENTATION,
                                                                                                       sleepTimer,
                                                                                                       TimeUnit.SECONDS.toMillis(30));
     if (AppForegroundObserver.isForegrounded()) {
@@ -569,6 +574,8 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
   public @NonNull OkHttpClient provideOkHttpClient() {
     return new OkHttpClient.Builder()
         .addInterceptor(new StandardUserAgentInterceptor())
+        // Tellomi：updates.tellomi.app 等资源下载走这个客户端，跨境同意之前也要拦（tellomi/tellomi#1133）。
+        .addInterceptor(DeviceTransferBlockingInterceptor.getInstance())
         .dns(SignalServiceNetworkAccess.DNS)
         .build();
   }
@@ -625,6 +632,11 @@ public class ApplicationDependencyProvider implements AppDependencies.Provider {
   @Override
   public @NonNull StorageServiceApi provideStorageServiceApi(@NonNull SignalWebSocket.AuthenticatedWebSocket authWebSocket, @NonNull PushServiceSocket pushServiceSocket) {
     return new StorageServiceApi(authWebSocket, pushServiceSocket);
+  }
+
+  @Override
+  public @NonNull StorageServiceService provideStorageService(@NonNull StorageServiceApi storageServiceApi) {
+    return new StorageServiceService(storageServiceApi);
   }
 
   @Override

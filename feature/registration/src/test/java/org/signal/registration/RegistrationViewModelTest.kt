@@ -6,6 +6,10 @@
 package org.signal.registration
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
@@ -14,6 +18,7 @@ import assertk.assertions.isTrue
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -86,9 +91,44 @@ class RegistrationViewModelTest {
     advanceUntilIdle()
 
     val state = viewModel.state.value
-    assertThat(state.backStack).isEqualTo(savedState.backStack)
+    // Tellomi（tellomi/tellomi#1112）：旧版本存下的 Permissions 在恢复时被滤掉，其余原样
+    assertThat(state.backStack).isEqualTo(
+      listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.PhoneNumberEntry,
+        RegistrationRoute.VerificationCodeEntry
+      )
+    )
     assertThat(state.sessionMetadata).isEqualTo(freshSession)
     assertThat(state.sessionE164).isEqualTo("+15551234567")
+  }
+
+  @Test
+  fun `restore drops permission routes persisted by an older version`() = runTest(testDispatcher) {
+    val savedSession = createSessionMetadata("session-legacy")
+
+    val savedState = RegistrationFlowState(
+      backStack = listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.AllowNotifications(RegistrationRoute.LinkAccount()),
+        RegistrationRoute.LinkAccount(),
+        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry)
+      ),
+      sessionMetadata = savedSession
+    )
+
+    coEvery { mockRepository.restoreFlowState() } returns savedState
+    coEvery { mockRepository.validateSession("session-legacy") } returns savedSession
+
+    val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+
+    assertThat(viewModel.state.value.backStack).isEqualTo(
+      listOf(
+        RegistrationRoute.Welcome,
+        RegistrationRoute.LinkAccount()
+      )
+    )
   }
 
   @Test
@@ -114,10 +154,10 @@ class RegistrationViewModelTest {
     advanceUntilIdle()
 
     val state = viewModel.state.value
+    // Tellomi（tellomi/tellomi#1112）：上游重置成 Welcome → Permissions → PhoneNumberEntry
     assertThat(state.backStack).isEqualTo(
       listOf(
         RegistrationRoute.Welcome,
-        RegistrationRoute.Permissions(nextRoute = RegistrationRoute.PhoneNumberEntry),
         RegistrationRoute.PhoneNumberEntry
       )
     )
@@ -692,6 +732,24 @@ class RegistrationViewModelTest {
   }
 
   @Test
+  fun `applyEvent SessionExpired clears the session but keeps the number`() = runTest(testDispatcher) {
+    // Tellomi（tellomi/tellomi#1214，taishi 审查 b8-v2 不阻塞 1）：手机号页下一次「下一步」要开新会话，号码不用重填。
+    coEvery { mockRepository.restoreFlowState() } returns null
+    coEvery { mockRepository.getPreExistingRegistrationData() } returns null
+
+    val viewModel = RegistrationViewModel(mockRepository, SavedStateHandle())
+    advanceUntilIdle()
+
+    val result = viewModel.applyEvent(
+      RegistrationFlowState(sessionMetadata = createSessionMetadata("expired-session"), sessionE164 = "+15551234567"),
+      RegistrationFlowEvent.SessionExpired
+    )
+
+    assertThat(result.sessionMetadata).isNull()
+    assertThat(result.sessionE164).isEqualTo("+15551234567")
+  }
+
+  @Test
   fun `applyEvent VerificationCodeRequested updates both request windows`() = runTest(testDispatcher) {
     coEvery { mockRepository.restoreFlowState() } returns null
     coEvery { mockRepository.getPreExistingRegistrationData() } returns null
@@ -910,6 +968,26 @@ class RegistrationViewModelTest {
     assertThat(viewModel.state.value.isRestoringNavigationState).isTrue()
 
     advanceUntilIdle()
+  }
+
+  // ==================== Repository Ownership Tests ====================
+
+  @Test
+  fun `repository is closed when the view model is cleared`() = runTest(testDispatcher) {
+    val store = ViewModelStore()
+    val provider = ViewModelProvider.create(
+      store,
+      viewModelFactory {
+        initializer { RegistrationViewModel(mockRepository, SavedStateHandle()) }
+      }
+    )
+
+    provider[RegistrationViewModel::class]
+    advanceUntilIdle()
+    verify(exactly = 0) { mockRepository.close() }
+
+    store.clear()
+    verify(exactly = 1) { mockRepository.close() }
   }
 
   // ==================== Helpers ====================

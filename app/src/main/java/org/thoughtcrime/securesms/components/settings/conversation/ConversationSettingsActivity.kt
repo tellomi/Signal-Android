@@ -16,6 +16,10 @@ open class ConversationSettingsActivity : DSLSettingsActivity(), ConversationSet
 
   override val dynamicTheme: DynamicTheme = DynamicConversationSettingsTheme()
 
+  // Tellomi（交互审计 A-22）：这一页从会话头像用共享元素展开、结束时自己播下滑退场；
+  // 交给系统返回会叠上系统的跨页动画和共享元素返场，所以照旧自己 finish。
+  override val usesSystemBackAtRoot: Boolean = false
+
   override fun onCreate(savedInstanceState: Bundle?, ready: Boolean) {
     ActivityCompat.postponeEnterTransition(this)
     setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
