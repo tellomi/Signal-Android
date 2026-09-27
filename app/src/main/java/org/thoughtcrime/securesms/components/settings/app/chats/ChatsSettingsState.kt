@@ -16,7 +16,9 @@ data class ChatsSettingsState(
   val isPlaintextExportEnabled: Boolean,
   val plaintextExportProgress: LocalBackupCreationProgress = LocalExportProgress.plaintextProgress.value,
   val chatExportState: ChatExportState = ChatExportState.None,
-  val includeMediaInExport: Boolean = false
+  val includeMediaInExport: Boolean = false,
+  /** Tellomi（#1422）：「展开短链接」，只存本机（[org.thoughtcrime.securesms.keyvalue.TellomiLinkValues]）。 */
+  val expandShortLinks: Boolean = true
 ) {
   fun isRegisteredAndUpToDate(): Boolean {
     return !userUnregistered && !clientDeprecated

@@ -40,6 +40,7 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
   val callQualityValues = CallQualityValues(store)
   val labsValues = LabsValues(store)
   val tellomiRegionValues = TellomiRegionValues(store)
+  val tellomiLinkValues = TellomiLinkValues(store)
 
   companion object {
 
@@ -279,6 +280,12 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
     @get:JvmName("tellomiRegion")
     val tellomiRegion: TellomiRegionValues
       get() = instance!!.tellomiRegionValues
+
+    /** Tellomi（#1422）：链接卡片的本机设置（「展开短链接」）。 */
+    @JvmStatic
+    @get:JvmName("tellomiLinks")
+    val tellomiLinks: TellomiLinkValues
+      get() = instance!!.tellomiLinkValues
 
     @JvmStatic
     @get:JvmName("backup")

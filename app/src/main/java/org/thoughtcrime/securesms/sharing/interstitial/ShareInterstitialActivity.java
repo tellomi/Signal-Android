@@ -156,7 +156,12 @@ public class ShareInterstitialActivity extends PassphraseRequiredActivity {
     linkPreviewViewModel.getLinkPreviewState().observe(this, linkPreviewState -> {
       preview.setVisibility(View.VISIBLE);
       if (linkPreviewState.error != null) {
-        preview.setNoPreview(linkPreviewState.error);
+        // Tellomi（ADR-0063 §5.1）：取不到预览就不显示预览区；只有群邀请失效时照上游提示
+        if (LinkPreviewView.isShownWithoutPreview(linkPreviewState.error)) {
+          preview.setNoPreview(linkPreviewState.error);
+        } else {
+          preview.setVisibility(View.GONE);
+        }
         viewModel.onLinkPreviewChanged(null);
       } else if (linkPreviewState.isLoading) {
         preview.setLoading();

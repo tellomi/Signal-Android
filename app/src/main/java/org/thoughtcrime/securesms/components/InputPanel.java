@@ -342,6 +342,12 @@ public class InputPanel extends ConstraintLayout
   }
 
   public void setLinkPreviewNoPreview(@Nullable LinkPreviewRepository.Error customError) {
+    // Tellomi（ADR-0063 §5.1）：取不到预览就不显示预览区；只有群邀请失效时照上游提示发送者
+    if (!LinkPreviewView.isShownWithoutPreview(customError)) {
+      linkPreviewStub.setVisibility(View.GONE);
+      return;
+    }
+
     LinkPreviewView linkPreview = requireLinkPreview();
     linkPreview.setVisibility(View.VISIBLE);
     linkPreview.setNoPreview(customError);

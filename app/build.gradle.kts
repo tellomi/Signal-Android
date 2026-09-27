@@ -994,6 +994,11 @@ dependencies {
   }
   testImplementation(testLibs.conscrypt.openjdk.uber)
   testImplementation(testLibs.mockk)
+  // Tellomi（tellomi/tellomi#1422）：链接预览抓取器的本地 https 测试服务。
+  // 它依赖的 okhttp 5.0.0-alpha.16 反正会被 App 的 5.3.2 顶掉；排除掉，免得为这份不用的元数据改依赖校验表。
+  testImplementation(testLibs.square.mockwebserver) {
+    exclude(group = "com.squareup.okhttp3", module = "okhttp")
+  }
   testImplementation(testFixtures(project(":core:ui")))
   testImplementation(testFixtures(project(":lib:libsignal-service")))
   testImplementation(testLibs.espresso.core)

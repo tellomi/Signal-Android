@@ -4081,6 +4081,15 @@
     <string name="preferences__muted_chats_that_are_archived_will_remain_archived">Muted chats that are archived will remain archived when a new message arrives.</string>
     <string name="preferences__generate_link_previews">Generate link previews</string>
     <string name="preferences__retrieve_link_previews_from_websites_for_messages">Retrieve link previews directly from websites for messages you send.</string>
+    <!-- Tellomi：链接卡片的设置与文案（ADR-0063 §8.1 第 9 行、§5.5；tellomi/tellomi#1422）。三端一致：英文、简体、香港繁体、台湾繁体 -->
+    <!-- Description under the "Generate link previews" switch: the sender's device fetches the page to build the preview -->
+    <string name="TellomiLinks__generate_link_previews_description">When on, your device visits the website when you send a link.</string>
+    <!-- Switch under "Generate link previews": look up where a short link (e.g. b23.tv) leads before creating the preview. Stored on this device only -->
+    <string name="TellomiLinks__expand_short_links">Expand short links</string>
+    <!-- Description of the "Expand short links" switch -->
+    <string name="TellomiLinks__expand_short_links_description">Before creating a preview, your device opens a short link once to find the full address. The short link service can see this.</string>
+    <!-- Toast shown when no browser can open a link, so it was copied to the clipboard instead -->
+    <string name="TellomiLinks__link_copied">Link copied</string>
     <string name="preferences__change_passphrase">Change passphrase</string>
     <string name="preferences__change_your_passphrase">Change your passphrase</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->
