@@ -904,6 +904,10 @@
     <string name="TellomiConsent__first_launch_agree">同意</string>
     <string name="TellomiConsent__first_launch_disagree_hint">需要同意後才能使用 Tellomi；不同意的話，我們不會收集任何資訊。</string>
 
+    <!-- Tellomi（ADR-0066 §6.1b，owner 2026-09-27）：用户名一律小写 -->
+    <string name="TellomiUsername__rules_hint">只能用小寫字母、數字和底線，以字母開頭，3–20 個字元。</string>
+    <string name="TellomiUsername__lowercased_hint">已自動轉成小寫</string>
+
     <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338）。「境外接收方」用 Android 那一行（Google / FCM） -->
     <string name="TellomiCrossBorder__dialog_title">個人信息出境</string>
     <string name="TellomiCrossBorder__dialog_body">您的部分個人信息將傳輸到中國大陸境外處理，是否同意？</string>

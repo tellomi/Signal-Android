@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import org.signal.core.util.TellomiUsernames;
 import org.signal.core.util.UsernameUtil;
 import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.core.ui.logging.LoggingFragment;
+import org.signal.registration.screens.createprofile.TellomiUsernameInput;
+import org.signal.registration.screens.createprofile.TellomiUsernameInputFilter;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.contactshare.SimpleTextWatcher;
 import org.thoughtcrime.securesms.databinding.UsernameEditFragmentBinding;
@@ -35,6 +38,10 @@ import org.thoughtcrime.securesms.util.FragmentResultContract;
 import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
+
+import java.util.Arrays;
+
+import kotlin.Unit;
 
 public class UsernameEditFragment extends LoggingFragment {
 
@@ -48,6 +55,13 @@ public class UsernameEditFragment extends LoggingFragment {
   private UsernameEditFragmentBinding binding;
   private LifecycleDisposable         lifecycleDisposable;
   private UsernameEditFragmentArgs    args;
+
+  /** Tellomi（ADR-0066 §6.1b）：「已自动转成小写」到时换回规则提示。 */
+  private final Runnable restoreRulesHint = () -> {
+    if (binding != null) {
+      binding.usernameRulesHint.setText(org.signal.registration.R.string.TellomiUsername__rules_hint);
+    }
+  };
 
   private static final LayoutTransition ANIMATED_LAYOUT = new LayoutTransition();
   private static final LayoutTransition STATIC_LAYOUT   = new LayoutTransition();
@@ -107,6 +121,18 @@ public class UsernameEditFragment extends LoggingFragment {
     binding.usernameDoneButton.setOnClickListener(v -> viewModel.onUsernameSubmitted(false));
     binding.usernameSkipButton.setOnClickListener(v -> viewModel.onUsernameSkipped());
 
+    // Tellomi（ADR-0066 §6.1b，owner 2026-09-27）：用户名一律小写。键入 / 粘贴的大写当场转小写（替换文字等长，光标不跳），
+    // 规则提示换成「已自动转成小写」约 2 秒；别的不合规字符不动，照旧由下面的红字就地报错。设置 / 修改 / 找回都是这一页。
+    InputFilter[] existingFilters = binding.usernameText.getFilters();
+    InputFilter[] filters         = Arrays.copyOf(existingFilters, existingFilters.length + 1);
+    filters[existingFilters.length] = new TellomiUsernameInputFilter(() -> {
+      if (binding.usernameText.getTag() != IGNORE_TEXT_CHANGE_EVENT) {
+        showLowercasedHint();
+      }
+      return Unit.INSTANCE;
+    });
+    binding.usernameText.setFilters(filters);
+
     binding.usernameText.addTextChangedListener(new SimpleTextWatcher() {
       @Override
       public void onTextChanged(@NonNull String text) {
@@ -155,6 +181,7 @@ public class UsernameEditFragment extends LoggingFragment {
   @Override
   public void onDestroyView() {
     super.onDestroyView();
+    binding.usernameRulesHint.removeCallbacks(restoreRulesHint);
     binding = null;
   }
 
@@ -214,6 +241,13 @@ public class UsernameEditFragment extends LoggingFragment {
     // 上游只在「还没有用户名、也还没拿到判别位」时藏，其余时候显示并允许自己改数字。
     binding.discriminatorText.setVisibility(View.GONE);
     binding.divider.setVisibility(View.GONE);
+  }
+
+  /** Tellomi（ADR-0066 §6.1b）：规则提示换成「已自动转成小写」，[TellomiUsernameInput.LOWERCASED_HINT_MS] 后恢复；连着打就从最后一次重新计时。 */
+  private void showLowercasedHint() {
+    binding.usernameRulesHint.removeCallbacks(restoreRulesHint);
+    binding.usernameRulesHint.setText(org.signal.registration.R.string.TellomiUsername__lowercased_hint);
+    binding.usernameRulesHint.postDelayed(restoreRulesHint, TellomiUsernameInput.LOWERCASED_HINT_MS);
   }
 
   private void presentButtonState(@NonNull UsernameEditViewModel.ButtonState buttonState) {

@@ -40,6 +40,10 @@ class UsernameService(private val accountApi: AccountApiV2) {
    * `PUT /v1/accounts/username_hash/reserve`
    */
   suspend fun reserveUsername(nickname: String, discriminator: String? = null): RequestResult<Username, ReserveUsernameError> {
+    // Tellomi（ADR-0066 §6.1b）：发给 libsignal 的 nickname 一律小写。hash 本来就不分大小写，但保留下来的 `Username`
+    // 字符串会存进账号、加密进用户名链接——新设的一律小写，别人扫码 / 点链接看到的也是小写。注册资料页和设置里的改名都走这里。
+    @Suppress("NAME_SHADOWING")
+    val nickname = TellomiUsernames.lowercaseAscii(nickname)
     val candidates: List<Username> = try {
       if (discriminator == null) {
         // Tellomi（tellomi/tellomi#1106，ADR-0066）：判别位固定 01，只试 `<nickname>.01` 这一个。上游这里用

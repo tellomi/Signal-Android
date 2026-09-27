@@ -674,7 +674,8 @@ public final class ContactSelectionListFragment extends LoggingFragment {
             } else {
               new MaterialAlertDialogBuilder(requireContext())
                   .setTitle(R.string.ContactSelectionListFragment_username_not_found)
-                  .setMessage(getString(R.string.ContactSelectionListFragment_s_is_not_a_signal_user, username))
+                  // Tellomi（ADR-0066 §6.1b）：用户名一律显示小写
+                  .setMessage(getString(R.string.ContactSelectionListFragment_s_is_not_a_signal_user, TellomiUsernames.lowercaseAscii(username)))
                   .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                   .show();
             }

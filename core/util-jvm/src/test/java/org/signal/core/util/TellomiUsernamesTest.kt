@@ -55,6 +55,28 @@ class TellomiUsernamesTest {
     assertThat(TellomiUsernames.toDisplayUsername("kaixin.001")).isEqualTo("kaixin.001")
   }
 
+  /** ADR-0066 §6.1b（owner 2026-09-27）：用户名一律小写。老数据里的大写只在显示时转，不迁移。 */
+  @Test
+  fun displayIsAlwaysLowercase() {
+    assertThat(TellomiUsernames.toDisplayUsername("Chang.01")).isEqualTo("chang")
+    assertThat(TellomiUsernames.toDisplayUsername("KaiXin.57")).isEqualTo("kaixin.57")
+  }
+
+  /** §6.1b：搜索、链接里的大写也按小写查（hash 本来就不分大小写，这里让 `Username` 的字符串也是小写）。 */
+  @Test
+  fun protocolUsernameIsLowercase() {
+    assertThat(TellomiUsernames.toProtocolUsername("Chang")).isEqualTo("chang.01")
+    assertThat(TellomiUsernames.toProtocolUsername(" @KaiXin.57 ")).isEqualTo("kaixin.57")
+  }
+
+  /** 输入时转小写只动 A–Z：长度不变，光标 / 选区才不会跳；别的不合规字符原样留着，交给就地报错。 */
+  @Test
+  fun lowercaseAsciiOnlyTouchesAtoZAndKeepsTheLength() {
+    assertThat(TellomiUsernames.lowercaseAscii("KaiXin_9")).isEqualTo("kaixin_9")
+    assertThat(TellomiUsernames.lowercaseAscii("ÄB 中-C")).isEqualTo("Äb 中-c")
+    assertThat(TellomiUsernames.lowercaseAscii("İ")).isEqualTo("İ")
+  }
+
   @Test
   fun renameCooldownIsTheLong429() {
     // 限流桶的 Retry-After 是秒级；改名冷却是天级。一小时是分界线（与 Desktop 相同）

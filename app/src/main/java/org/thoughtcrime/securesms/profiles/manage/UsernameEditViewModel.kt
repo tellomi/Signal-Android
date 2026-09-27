@@ -54,7 +54,8 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
 
   private val stateMachineStore = RxStore<UsernameEditStateMachine.State>(
     defaultValue = UsernameEditStateMachine.NoUserEntry(
-      nickname = SignalStore.account.username?.split(Usernames.DELIMITER)?.first() ?: "",
+      // Tellomi（ADR-0066 §6.1b）：老数据里的大写只在显示时转小写；输入框里预填的也是小写
+      nickname = SignalStore.account.username?.split(Usernames.DELIMITER)?.first()?.let(TellomiUsernames::lowercaseAscii) ?: "",
       discriminator = SignalStore.account.username?.split(Usernames.DELIMITER)?.last() ?: "",
       stateModifier = UsernameEditStateMachine.StateModifier.SYSTEM
     ),
@@ -71,7 +72,8 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
       .subscribeBy(onNext = this::onUsernameStateUpdateDebounced)
 
     if (mode == UsernameEditMode.RECOVERY) {
-      onNicknameUpdated(SignalStore.account.username?.split(Usernames.DELIMITER)?.first() ?: "")
+      // Tellomi（ADR-0066 §6.1b）：找回也按小写重新保留（hash 不分大小写，是同一个名字；新建的链接里存的就是小写）
+      onNicknameUpdated(SignalStore.account.username?.split(Usernames.DELIMITER)?.first()?.let(TellomiUsernames::lowercaseAscii) ?: "")
       onDiscriminatorUpdated(SignalStore.account.username?.split(Usernames.DELIMITER)?.last() ?: "")
     }
   }
