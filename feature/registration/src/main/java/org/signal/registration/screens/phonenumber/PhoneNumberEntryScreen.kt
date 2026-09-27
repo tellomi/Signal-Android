@@ -218,7 +218,9 @@ fun PhoneNumberScreen(
         pendingLinkDevice = false
         onEvent(PhoneNumberEntryScreenEvents.LinkDevice)
       },
-      onCancel = { pendingLinkDevice = false }
+      onCancel = { pendingLinkDevice = false },
+      // Tellomi（tellomi/tellomi#1338）：关联设备只出只读告知、一个「知道了」，点了照同意一样记下 cb-1、放开网络（需求 6.1 ④）。
+      readOnly = true
     )
   }
 }

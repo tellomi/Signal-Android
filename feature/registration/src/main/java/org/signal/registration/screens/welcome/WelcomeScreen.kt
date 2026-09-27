@@ -158,7 +158,10 @@ fun WelcomeScreen(
         pendingNetworkEvent = null
         onEvent(event)
       },
-      onCancel = { pendingNetworkEvent = null }
+      onCancel = { pendingNetworkEvent = null },
+      // Tellomi（tellomi/tellomi#1338）：关联设备的同意在手机上取得，这台只出只读告知、一个「知道了」（需求 6.1 ④）；
+      // 「我可以用旧手机」是恢复 / 转移成主设备，照旧完整同意。
+      readOnly = event == WelcomeScreenEvents.LinkDevice
     )
   }
 }

@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -60,11 +62,16 @@ import org.signal.registration.R
  * - 只记在本机（文档版本 + 时间）；服务端留存与跨境告知（tellomi/tellomi#1133）一起设计。
  */
 object TellomiLegalConsent {
-  const val TERMS_URL = "https://tellomi.app/legal/terms/"
-  const val PRIVACY_URL = "https://tellomi.app/legal/privacy/"
+  // Tellomi（tellomi/tellomi#1338）：官网在 www 上，不带 www 的会 301 过去；需求 6.3 写的就是 www 的地址。
+  const val TERMS_URL = "https://www.tellomi.app/legal/terms/"
+  const val PRIVACY_URL = "https://www.tellomi.app/legal/privacy/"
+  const val THIRD_PARTY_URL = "https://www.tellomi.app/legal/third-party/"
 
-  /** 《用户服务协议》《隐私政策》的版本（1.0.0，2026-09-11 生效）。文本改版时改这里：记下的版本对不上，就会重新要求同意。 */
-  const val DOCUMENTS_VERSION = "1.0.0"
+  /**
+   * 《用户服务协议》《隐私政策》的版本。文本改版时改这里：记下的版本对不上，就会重新要求同意（首次启动提示、号码页的勾选）。
+   * Tellomi（tellomi/tellomi#1338）：1.0.0 → 2.0.0（需求 6.1 ①）。已注册的设备不走这两处，它们在升级盖页上看到「隐私政策已更新」（需求 6.2 c）。
+   */
+  const val DOCUMENTS_VERSION = "2.0.0"
 
   const val CHECKBOX_TEST_TAG = "tellomi-consent-checkbox"
 
@@ -104,14 +111,20 @@ object TellomiLegalConsent {
 /**
  * Tellomi：跨境单独告知与同意（tellomi/tellomi#1133；需求 `docs/product/specs/privacy-compliance-hk-cross-border.md` 第二节）。
  * 服务端还在香港的这段时间，手机号、推送令牌、网络信息等会出境，这一页就是出境前的单独告知与单独同意。iOS 同一套在 Signal-iOS#15。
- * **文字是草稿**：9 项以 tellomi/tellomi#1132 的法务定稿为准，owner 审定后才能对外发布。
+ * Tellomi（tellomi/tellomi#1338）：文字 2026-09-27 定稿（需求第六节 6.3，对齐隐私政策 2.0.0 第 21.2–21.6 节）。
  */
 object TellomiCrossBorderConsent {
-  /** 告知文本的版本。定稿后与 `docs/legal/manifest.json` 对齐；文本有实质变化就改这里，已同意的人会被重新询问。 */
-  const val NOTICE_VERSION = "0.1.0-draft"
+  /**
+   * 告知文本的版本。文本有实质变化就改这里，已同意的人会被重新询问。
+   * Tellomi（tellomi/tellomi#1338）：定稿为独立编号 `cb-1`，不跟隐私政策的版本走（隐私政策 2.0.0 第 21.7 节：只有实质变化才重新征得同意）；
+   * `docs/legal/manifest.json` 的 `notices` 里登记 `cross-border` = `cb-1` ↔ 隐私政策 `2.0.0`，改版时两边一起改。
+   * 同意过草稿 `0.1.0-draft` 的设备升级后会再出这一页（需求 6.1 ①）。
+   */
+  const val NOTICE_VERSION = "cb-1"
 
   const val AGREE_TEST_TAG = "tellomi-cross-border-agree"
   const val DISAGREE_TEST_TAG = "tellomi-cross-border-disagree"
+  const val ACK_TEST_TAG = "tellomi-cross-border-ack"
 
   private const val VERSION_KEY = "cross_border.version"
   private const val DATE_KEY = "cross_border.date"
@@ -127,7 +140,10 @@ object TellomiCrossBorderConsent {
     return TellomiLegalConsent.prefs(context).getString(VERSION_KEY, null) == NOTICE_VERSION
   }
 
-  /** 本机记一份（版本 + 时间）。服务端的最小记录点由 taishi 设计（tellomi/tellomi#1133）。 */
+  /**
+   * 本机记一份（版本 + 时间）。服务端的最小记录点由 taishi 设计（tellomi/tellomi#1133）。
+   * Tellomi（tellomi/tellomi#1338）：关联设备在只读告知上点「知道了」也走这里——同一份记录、同样放开网络（需求 6.1 ④）。
+   */
   fun recordAgreement(context: Context) {
     TellomiLegalConsent.prefs(context).edit(commit = true) {
       putString(VERSION_KEY, NOTICE_VERSION)
@@ -219,16 +235,21 @@ fun TellomiFirstLaunchNotice() {
 /**
  * 跨境单独告知（tellomi/tellomi#1133）：全屏独立一页，9 项 + 隐私政策链接 + 两个同样醒目的按钮。
  * 不预选、不倒计时、不默认聚焦「同意」。「不同意」留在这一页、说明后果；返回键 = 关掉这一页，号码不发出。
+ *
+ * Tellomi（tellomi/tellomi#1338；需求 6.3 的三种用法）：
+ * - 底部多一条《第三方信息共享及 SDK 清单》链接。
+ * - [readOnly]：关联设备用的只读版（需求 6.1 ④）。单独同意在手机上取得，这台不另行收集：换标题、导语和第 9 项正文，
+ *   只有一个「知道了」。点它走 [onAgree]——调用方照同意一样在本机记下 cb-1、放开网络。
+ * - [showPolicyUpdated]：已注册设备升级后的盖页，在导语上方加「隐私政策已更新至 2.0.0」和链接（需求 6.2 c）。
  */
 @Composable
 fun TellomiCrossBorderNotice(
   onAgree: () -> Unit,
-  onCancel: () -> Unit
+  onCancel: () -> Unit,
+  readOnly: Boolean = false,
+  showPolicyUpdated: Boolean = false
 ) {
-  val context = LocalContext.current
   var showDisagreeHint by rememberSaveable { mutableStateOf(false) }
-  val linkStyles = TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
-  val privacyLinkText = stringResource(R.string.TellomiCrossBorder__privacy_link)
 
   Dialog(
     onDismissRequest = onCancel,
@@ -243,18 +264,37 @@ fun TellomiCrossBorderNotice(
             .padding(horizontal = 24.dp, vertical = 24.dp)
         ) {
           Text(
-            text = stringResource(R.string.TellomiCrossBorder__title),
+            text = stringResource(if (readOnly) R.string.TellomiCrossBorder__linked_title else R.string.TellomiCrossBorder__title),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.semantics { heading() }
           )
+
+          if (showPolicyUpdated) {
+            // 隐私政策第三十二节的「以显著方式提示」：放在导语上方，底色和正文区分开（需求 6.2 c）。
+            Spacer(modifier = Modifier.height(12.dp))
+            Surface(
+              color = MaterialTheme.colorScheme.secondaryContainer,
+              contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+              shape = RoundedCornerShape(12.dp),
+              modifier = Modifier.fillMaxWidth()
+            ) {
+              Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = stringResource(R.string.TellomiCrossBorder__policy_updated), style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+                NoticeLink(text = stringResource(R.string.TellomiCrossBorder__policy_updated_link), url = TellomiLegalConsent.PRIVACY_URL)
+              }
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+          }
+
           Spacer(modifier = Modifier.height(8.dp))
           Text(
-            text = stringResource(R.string.TellomiCrossBorder__intro),
+            text = stringResource(if (readOnly) R.string.TellomiCrossBorder__linked_intro else R.string.TellomiCrossBorder__intro),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
           )
 
-          crossBorderItems().forEach { (title, body) ->
+          crossBorderItems(readOnly).forEach { (title, body) ->
             Spacer(modifier = Modifier.height(20.dp))
             Text(text = title, style = MaterialTheme.typography.titleSmall)
             Spacer(modifier = Modifier.height(4.dp))
@@ -262,14 +302,9 @@ fun TellomiCrossBorderNotice(
           }
 
           Spacer(modifier = Modifier.height(20.dp))
-          Text(
-            text = buildAnnotatedString {
-              withLink(LinkAnnotation.Clickable(tag = "privacy", styles = linkStyles) { openUrl(context, TellomiLegalConsent.PRIVACY_URL) }) {
-                append(privacyLinkText)
-              }
-            },
-            style = MaterialTheme.typography.bodyMedium
-          )
+          NoticeLink(text = stringResource(R.string.TellomiCrossBorder__privacy_link), url = TellomiLegalConsent.PRIVACY_URL)
+          Spacer(modifier = Modifier.height(12.dp))
+          NoticeLink(text = stringResource(R.string.TellomiCrossBorder__third_party_link), url = TellomiLegalConsent.THIRD_PARTY_URL)
         }
 
         Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
@@ -282,23 +317,25 @@ fun TellomiCrossBorderNotice(
             Spacer(modifier = Modifier.height(12.dp))
           }
 
-          // 两个按钮同样的样式、同样宽，谁也不比谁醒目（需求 2.2）。
+          // 两个按钮同样的样式、同样宽，谁也不比谁醒目（需求 2.2）。只读版只有一个「知道了」（tellomi/tellomi#1338）。
           Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Buttons.LargeTonal(
-              onClick = { showDisagreeHint = true },
-              modifier = Modifier
-                .weight(1f)
-                .testTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG)
-            ) {
-              Text(stringResource(R.string.TellomiConsent__disagree))
+            if (!readOnly) {
+              Buttons.LargeTonal(
+                onClick = { showDisagreeHint = true },
+                modifier = Modifier
+                  .weight(1f)
+                  .testTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG)
+              ) {
+                Text(stringResource(R.string.TellomiConsent__disagree))
+              }
             }
             Buttons.LargeTonal(
               onClick = onAgree,
               modifier = Modifier
                 .weight(1f)
-                .testTag(TellomiCrossBorderConsent.AGREE_TEST_TAG)
+                .testTag(if (readOnly) TellomiCrossBorderConsent.ACK_TEST_TAG else TellomiCrossBorderConsent.AGREE_TEST_TAG)
             ) {
-              Text(stringResource(R.string.TellomiConsent__agree_and_continue))
+              Text(stringResource(if (readOnly) R.string.TellomiCrossBorder__linked_ack else R.string.TellomiConsent__agree_and_continue))
             }
           }
         }
@@ -307,9 +344,25 @@ fun TellomiCrossBorderNotice(
   }
 }
 
-/** 需求 2.3 的 9 项，顺序与隐私政策第二十一节一致。 */
+/** 告知页里的一条链接，点了用浏览器打开官网上的全文。 */
 @Composable
-private fun crossBorderItems(): List<Pair<String, String>> = listOf(
+private fun NoticeLink(text: String, url: String) {
+  val context = LocalContext.current
+  val linkStyles = TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
+
+  Text(
+    text = buildAnnotatedString {
+      withLink(LinkAnnotation.Clickable(tag = url, styles = linkStyles) { openUrl(context, url) }) {
+        append(text)
+      }
+    },
+    style = MaterialTheme.typography.bodyMedium
+  )
+}
+
+/** 需求 2.3 的 9 项，顺序与隐私政策第二十一节一致。只读版（关联设备）第 9 项正文换成「同意在手机上取得」（tellomi/tellomi#1338）。 */
+@Composable
+private fun crossBorderItems(readOnly: Boolean): List<Pair<String, String>> = listOf(
   stringResource(R.string.TellomiCrossBorder__item_where_title) to stringResource(R.string.TellomiCrossBorder__item_where_body),
   stringResource(R.string.TellomiCrossBorder__item_recipients_title) to stringResource(R.string.TellomiCrossBorder__item_recipients_body),
   stringResource(R.string.TellomiCrossBorder__item_contact_title) to stringResource(R.string.TellomiCrossBorder__item_contact_body),
@@ -318,7 +371,8 @@ private fun crossBorderItems(): List<Pair<String, String>> = listOf(
   stringResource(R.string.TellomiCrossBorder__item_kinds_title) to stringResource(R.string.TellomiCrossBorder__item_kinds_body),
   stringResource(R.string.TellomiCrossBorder__item_rights_title) to stringResource(R.string.TellomiCrossBorder__item_rights_body),
   stringResource(R.string.TellomiCrossBorder__item_procedure_title) to stringResource(R.string.TellomiCrossBorder__item_procedure_body),
-  stringResource(R.string.TellomiCrossBorder__item_consent_title) to stringResource(R.string.TellomiCrossBorder__item_consent_body)
+  stringResource(R.string.TellomiCrossBorder__item_consent_title) to
+    stringResource(if (readOnly) R.string.TellomiCrossBorder__linked_item_consent_body else R.string.TellomiCrossBorder__item_consent_body)
 )
 
 private data class ConsentLink(val text: String, val url: String)
