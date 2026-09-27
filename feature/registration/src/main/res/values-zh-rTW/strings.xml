@@ -906,7 +906,7 @@
 
     <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338）。「境外接收方」用 Android 那一行（Google / FCM） -->
     <string name="TellomiCrossBorder__dialog_title">個人信息出境</string>
-    <string name="TellomiCrossBorder__dialog_body">Tellomi 的伺服器在中國香港，附件、頭像和備份存放在 Cloudflare（美國），您的部分個人信息會因此傳輸到中國大陸境外處理。是否單獨同意？</string>
+    <string name="TellomiCrossBorder__dialog_body">您的部分個人信息將傳輸到中國大陸境外處理，是否同意？</string>
     <string name="TellomiCrossBorder__dialog_full_notice_link">檢視《個人信息出境告知》</string>
     <string name="TellomiCrossBorder__dialog_policy_updated">《隱私政策》已更新至 2.0.0 版。</string>
     <string name="TellomiCrossBorder__policy_updated_link">檢視《隱私政策》2.0.0</string>

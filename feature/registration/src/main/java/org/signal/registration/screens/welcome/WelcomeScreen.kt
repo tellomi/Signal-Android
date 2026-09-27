@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -53,8 +52,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.window.layout.WindowMetricsCalculator
 import kotlinx.coroutines.CoroutineScope
@@ -201,7 +198,6 @@ private fun CompactLayout(
         )
 
         Headline(
-          textAlign = TextAlign.Center,
           modifier = Modifier.padding(horizontal = 32.dp)
         )
 
@@ -219,10 +215,6 @@ private fun CompactLayout(
           modifier = Modifier.widthIn(max = 320.dp),
           horizontalAlignment = Alignment.CenterHorizontally
         ) {
-          TermsAndPrivacy(onEvent)
-
-          Spacer(modifier = Modifier.height(16.dp))
-
           PrimaryDeviceCallToActionButtons(
             onEvent = onEvent,
             onRestoreOrTransferClick = onRestoreOrTransferClick,
@@ -264,13 +256,6 @@ private fun MediumLayout(
               .padding(horizontal = 24.dp)
           )
         }
-
-        TermsAndPrivacy(
-          onEvent = onEvent,
-          modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .padding(bottom = 24.dp)
-        )
       }
     },
     footer = {
@@ -327,18 +312,9 @@ private fun LargeLayout(
               .widthIn(max = 320.dp)
               .fillMaxWidth()
           ) {
-            Headline(
-              style = MaterialTheme.typography.headlineLarge
-            )
+            Headline()
 
             Spacer(modifier = Modifier.height(77.dp))
-
-            TermsAndPrivacy(
-              onEvent = onEvent,
-              modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp)
-            )
 
             if (displayLinkAsPrimaryOption) {
               SecondaryDeviceCallToActionButtons(
@@ -358,51 +334,41 @@ private fun LargeLayout(
   )
 }
 
+/**
+ * Tellomi（owner 2026-09-27，`docs/product/BRAND.md`「插画」）：Signal 的欢迎插画换成 unDraw「Casual Chat」
+ * （`docs/brand/illustrations/casual-chat-{light,dark}.svg` 转的 VectorDrawable，深色在 drawable-night；许可见 ILLUSTRATIONS-LICENSE.md）。
+ */
 @Composable
 private fun HeroImage(
   modifier: Modifier = Modifier
 ) {
   Image(
-    painter = painterResource(R.drawable.welcome),
+    painter = painterResource(R.drawable.tellomi_welcome_illustration),
     contentDescription = null,
     modifier = modifier.attachDebugLogHelper(),
     contentScale = ContentScale.Fit
   )
 }
 
+/**
+ * Tellomi（owner 2026-09-27，`docs/product/BRAND.md`「开屏」）：插画下面只显示字标 Tell@mi（`docs/brand/wordmark/tellomi-wordmark-{light,dark}.svg`，浅色黑、深色白），
+ * 不放上游的「Take privacy with you…」这类句子；上游的「条款与隐私政策」链接也去掉了（首次打开的隐私提示和号码页的勾选里都有）。
+ * 字标只在这一处引用 `R.drawable.tellomi_wordmark`（深色在 drawable-night），只定高度、宽度按图自己的比例：字标还会重新设计，换文件就行，不用改代码。
+ */
 @Composable
 private fun Headline(
-  modifier: Modifier = Modifier,
-  style: TextStyle = MaterialTheme.typography.headlineMedium,
-  textAlign: TextAlign = TextAlign.Start
+  modifier: Modifier = Modifier
 ) {
-  Text(
-    text = stringResource(R.string.RegistrationActivity_take_privacy_with_you_be_yourself_in_every_message),
-    style = style,
-    textAlign = textAlign,
+  Image(
+    painter = painterResource(R.drawable.tellomi_wordmark),
+    // 品牌名不翻译，读屏各语言都念「Tellomi」。
+    contentDescription = "Tellomi",
+    contentScale = ContentScale.Fit,
     modifier = modifier
+      .height(40.dp)
       .testTag(TestTags.WELCOME_HEADLINE)
       .attachDebugLogHelper()
   )
-}
-
-@Composable
-private fun TermsAndPrivacy(
-  onEvent: (WelcomeScreenEvents) -> Unit,
-  modifier: Modifier = Modifier
-) {
-  TextButton(
-    onClick = { onEvent(WelcomeScreenEvents.ViewTermsAndPrivacy) },
-    colors = ButtonDefaults.textButtonColors(
-      contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-    ),
-    modifier = modifier
-  ) {
-    Text(
-      text = stringResource(R.string.RegistrationActivity_terms_and_privacy),
-      textAlign = TextAlign.Center
-    )
-  }
 }
 
 @Composable

@@ -934,8 +934,8 @@
     <!-- Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。2026-09-27 定稿 cb-1；owner 同日下午改成「两行小弹窗 + 全文页」，逐字照需求第六节 6.6 和 6.3 保留的 key（tellomi/tellomi#1338） -->
     <!-- Title of the small cross-border transfer dialog shown before the phone number is sent (also on upgrade and when linking this device) -->
     <string name="TellomiCrossBorder__dialog_title">Cross-border transfer of personal information</string>
-    <!-- Body of the cross-border transfer dialog: where the data goes, and the question asking for separate consent -->
-    <string name="TellomiCrossBorder__dialog_body">Tellomi’s servers are in Hong Kong, China, and attachments, profile photos and backups are stored with Cloudflare (United States), so some of your personal information is transferred outside mainland China. Do you give your separate consent?</string>
+    <!-- Body of the cross-border transfer dialog: one sentence saying some personal information is transferred outside mainland China, asking whether the user agrees -->
+    <string name="TellomiCrossBorder__dialog_body">Some of your personal information will be transferred outside mainland China for processing. Do you agree?</string>
     <!-- Link in the cross-border transfer dialog that opens the full notice (rendered in the app, not loaded from the web) -->
     <string name="TellomiCrossBorder__dialog_full_notice_link">Read the Cross-Border Transfer Notice</string>
     <!-- Shown at the top of the cross-border transfer dialog when an already registered device sees it after upgrading: the Privacy Policy was updated -->
