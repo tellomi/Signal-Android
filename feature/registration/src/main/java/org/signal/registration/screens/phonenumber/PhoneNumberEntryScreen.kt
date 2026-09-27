@@ -118,11 +118,12 @@ fun PhoneNumberScreen(
   var holdConfirmForCheckmark by remember { mutableStateOf(false) }
   // Tellomi：跨境单独告知与同意（tellomi/tellomi#1133）。手机号是第一条发往境外（香港）服务端的个人信息，
   // 所以这一页排在协议同意之后、确认号码之前；同意过同一版本就不再出现。
-  var crossBorderAgreed by remember { mutableStateOf(TellomiCrossBorderConsent.hasAgreed(context)) }
+  // Tellomi（tellomi/tellomi#1338）：号码注册是主设备，要亲自点过「同意并继续」；关联设备的「知道了」不算（hasGivenSeparateConsent）。
+  var crossBorderAgreed by remember { mutableStateOf(TellomiCrossBorderConsent.hasGivenSeparateConsent(context)) }
   // 右上角菜单的「关联设备」也要连服务端（二维码），同意之前网络是关着的：和欢迎页一样先问，同意了再往下走。
   var pendingLinkDevice by remember { mutableStateOf(false) }
   val gatedOnEvent: (PhoneNumberEntryScreenEvents) -> Unit = { event ->
-    if (event == PhoneNumberEntryScreenEvents.LinkDevice && !crossBorderAgreed) {
+    if (event == PhoneNumberEntryScreenEvents.LinkDevice && !TellomiCrossBorderConsent.hasAgreed(context)) {
       pendingLinkDevice = true
     } else {
       onEvent(event)
@@ -212,14 +213,14 @@ fun PhoneNumberScreen(
 
   if (pendingLinkDevice) {
     TellomiCrossBorderNotice(
+      // Tellomi（tellomi/tellomi#1338）：关联设备只出只读告知、一个「知道了」，点了记下 cb-1、放开网络（需求 6.1 ④）；
+      // 这不是单独同意，所以不动 crossBorderAgreed——退回来改走「下一步」时还要出完整同意。
       onAgree = {
-        TellomiCrossBorderConsent.recordAgreement(context)
-        crossBorderAgreed = true
+        TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
         pendingLinkDevice = false
         onEvent(PhoneNumberEntryScreenEvents.LinkDevice)
       },
       onCancel = { pendingLinkDevice = false },
-      // Tellomi（tellomi/tellomi#1338）：关联设备只出只读告知、一个「知道了」，点了照同意一样记下 cb-1、放开网络（需求 6.1 ④）。
       readOnly = true
     )
   }

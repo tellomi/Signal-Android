@@ -7,6 +7,9 @@ package org.signal.registration.screens.shared
 
 import android.app.Application
 import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
@@ -353,6 +356,96 @@ class TellomiLegalConsentTest {
     val recorded = TellomiLegalConsent.prefs(context).getString("cross_border.version", null)
     assert(recorded == "cb-1") { "Expected cb-1 to be recorded, but got $recorded" }
     assert(networkReleased) { "Got It must lift the network gate like agreeing does" }
+    assert(!TellomiCrossBorderConsent.hasGivenSeparateConsent(context)) { "Got It on the linked notice must not count as separate consent" }
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1338）：只读版的「知道了」只是关联设备的告知，不是单独同意。
+   * 点过「知道了」又退回来改走号码注册 / 恢复（主设备）时，必须还出完整的「同意 / 不同意」；网络闸照旧只看 hasAgreed。
+   */
+  @Test
+  fun `the linked acknowledgement lets the network through but is not separate consent`() {
+    TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
+
+    assert(TellomiCrossBorderConsent.hasAgreed(context)) { "Got It must still lift the network gate for the linked device" }
+    assert(!TellomiCrossBorderConsent.hasGivenSeparateConsent(context)) { "Got It on the linked notice must not count as separate consent" }
+  }
+
+  @Test
+  fun `a full agree is separate consent`() {
+    TellomiCrossBorderConsent.recordAgreement(context)
+
+    assert(TellomiCrossBorderConsent.hasAgreed(context))
+    assert(TellomiCrossBorderConsent.hasGivenSeparateConsent(context)) { "Agree and Continue must count as separate consent" }
+  }
+
+  @Test
+  fun `a full agree after the linked acknowledgement clears the linked-only marker`() {
+    TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
+    TellomiCrossBorderConsent.recordAgreement(context)
+
+    assert(TellomiCrossBorderConsent.hasGivenSeparateConsent(context)) { "Agreeing after Got It must count as separate consent" }
+    assert(!TellomiLegalConsent.prefs(context).getBoolean("cross_border.linked_ack_only", false)) { "Agreeing must clear the linked-only marker" }
+  }
+
+  @Test
+  fun `after the linked acknowledgement, confirming a phone number still shows the full notice`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
+
+    val events = setPhoneNumberScreen(confirmingState)
+
+    assertFullNoticeShown()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_is_the_phone_number)).assertDoesNotExist()
+    assert(events.isEmpty()) { "Nothing may be sent before separate consent, but got $events" }
+  }
+
+  @Test
+  fun `after the linked acknowledgement, restoring from the old phone still shows the full notice`() {
+    TellomiLegalConsent.acceptFirstLaunchNotice(context)
+    TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement(context)
+    val events = setWelcomeScreenCollecting()
+
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_OR_TRANSFER_BUTTON).performClick()
+    composeTestRule.onNodeWithTag(TestTags.WELCOME_RESTORE_HAS_OLD_PHONE_BUTTON).performClick()
+
+    assertFullNoticeShown()
+    assert(events.isEmpty()) { "Restoring must wait for separate consent, but got $events" }
+  }
+
+  /** 协调方给的复现：号码页菜单「关联设备」→「知道了」→ 从二维码页退回来 →「下一步」。必须出完整同意，号码不能直接发出。 */
+  @Test
+  fun `linking from the phone number menu, backing out, then Next still asks for full consent`() {
+    TellomiLegalConsent.setAgreedToTerms(context, true)
+    var state by mutableStateOf(PhoneNumberEntryState(isLinkAndSyncAvailable = true, countryCode = "86", nationalNumber = "13800138000", formattedNumber = "138 0013 8000", isNumberPossible = true))
+    val events = mutableListOf<PhoneNumberEntryScreenEvents>()
+    composeTestRule.setContent {
+      SignalTheme {
+        PhoneNumberScreen(state = state, onEvent = { events += it })
+      }
+    }
+
+    composeTestRule.onNodeWithContentDescription(context.getString(R.string.RegistrationActivity_open_menu)).performClick()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_link_device)).performClick()
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.ACK_TEST_TAG).performClick()
+    assert(events == listOf(PhoneNumberEntryScreenEvents.LinkDevice)) { "Got It should go on to linking, but got $events" }
+
+    // 从二维码页退回号码页，点「下一步」：视图模型要出「号码是否正确」的确认框了
+    events.clear()
+    state = state.copy(dialogs = PhoneNumberEntryState.Dialogs(confirmNumber = true))
+
+    assertFullNoticeShown()
+    composeTestRule.onNodeWithText(context.getString(R.string.RegistrationActivity_is_the_phone_number)).assertDoesNotExist()
+    assert(events.isEmpty()) { "Nothing may be sent before separate consent, but got $events" }
+  }
+
+  /** 完整版：主设备的标题、「不同意」「同意并继续」，没有只读版的标题和「知道了」。 */
+  private fun assertFullNoticeShown() {
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__title)).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.AGREE_TEST_TAG).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.DISAGREE_TEST_TAG).assertIsDisplayed()
+    composeTestRule.onNodeWithText(context.getString(R.string.TellomiCrossBorder__linked_title)).assertDoesNotExist()
+    composeTestRule.onNodeWithTag(TellomiCrossBorderConsent.ACK_TEST_TAG).assertDoesNotExist()
   }
 
   /**

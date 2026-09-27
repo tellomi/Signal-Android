@@ -129,6 +129,9 @@ object TellomiCrossBorderConsent {
   private const val VERSION_KEY = "cross_border.version"
   private const val DATE_KEY = "cross_border.date"
 
+  /** Tellomi（tellomi/tellomi#1338）：这份记录只来自关联设备的「知道了」，不是单独同意（iOS 同一个标记在 Signal-iOS#118）。 */
+  private const val LINKED_ACK_ONLY_KEY = "cross_border.linked_ack_only"
+
   /**
    * 同意之后要重新放开网络（应用层的 TellomiCrossBorderNetworkGate 负责：重建连接、唤醒等网络的任务）。
    * 注册模块碰不到应用层的依赖，所以由应用在启动时挂上这个回调。
@@ -141,13 +144,39 @@ object TellomiCrossBorderConsent {
   }
 
   /**
+   * Tellomi（tellomi/tellomi#1338）：这台设备的用户是否亲自点过「同意并继续」。
+   * [hasAgreed] 只管网络闸（关联设备点「知道了」也算）；要当主设备用——号码注册、恢复 / 转移——必须看这个：
+   * 只点过关联设备的「知道了」、又退回来改走注册的，还要出完整的「同意 / 不同意」。
+   */
+  fun hasGivenSeparateConsent(context: Context): Boolean {
+    return hasAgreed(context) && !TellomiLegalConsent.prefs(context).getBoolean(LINKED_ACK_ONLY_KEY, false)
+  }
+
+  /**
    * 本机记一份（版本 + 时间）。服务端的最小记录点由 taishi 设计（tellomi/tellomi#1133）。
-   * Tellomi（tellomi/tellomi#1338）：关联设备在只读告知上点「知道了」也走这里——同一份记录、同样放开网络（需求 6.1 ④）。
+   * Tellomi（tellomi/tellomi#1338）：这是完整的「同意并继续」，会清掉关联设备「知道了」留下的标记（见 [recordLinkedDeviceAcknowledgement]）。
    */
   fun recordAgreement(context: Context) {
     TellomiLegalConsent.prefs(context).edit(commit = true) {
       putString(VERSION_KEY, NOTICE_VERSION)
       putLong(DATE_KEY, System.currentTimeMillis())
+      remove(LINKED_ACK_ONLY_KEY)
+    }
+    onAgreed?.invoke()
+  }
+
+  /**
+   * Tellomi（tellomi/tellomi#1338）：关联设备在只读告知上点「知道了」。和同意一样记下版本、放开网络（需求 6.1 ④），
+   * 另记「只是知道了」——它不能顶替主设备的单独同意（[hasGivenSeparateConsent]）。已经完整同意过的不降级。
+   */
+  fun recordLinkedDeviceAcknowledgement(context: Context) {
+    val alreadyConsented = hasGivenSeparateConsent(context)
+    TellomiLegalConsent.prefs(context).edit(commit = true) {
+      putString(VERSION_KEY, NOTICE_VERSION)
+      putLong(DATE_KEY, System.currentTimeMillis())
+      if (!alreadyConsented) {
+        putBoolean(LINKED_ACK_ONLY_KEY, true)
+      }
     }
     onAgreed?.invoke()
   }
@@ -239,7 +268,8 @@ fun TellomiFirstLaunchNotice() {
  * Tellomi（tellomi/tellomi#1338；需求 6.3 的三种用法）：
  * - 底部多一条《第三方信息共享及 SDK 清单》链接。
  * - [readOnly]：关联设备用的只读版（需求 6.1 ④）。单独同意在手机上取得，这台不另行收集：换标题、导语和第 9 项正文，
- *   只有一个「知道了」。点它走 [onAgree]——调用方照同意一样在本机记下 cb-1、放开网络。
+ *   只有一个「知道了」。点它走 [onAgree]——调用方用 [TellomiCrossBorderConsent.recordLinkedDeviceAcknowledgement] 记下 cb-1、放开网络，
+ *   但不算单独同意。
  * - [showPolicyUpdated]：已注册设备升级后的盖页，在导语上方加「隐私政策已更新至 2.0.0」和链接（需求 6.2 c）。
  */
 @Composable
