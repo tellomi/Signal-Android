@@ -4096,6 +4096,10 @@
     <string name="TellomiLinkCard__official_badge">Official</string>
     <!-- Tellomi (ADR-0063 §4.8): tell.cc user link card: subtitle under the @username, or the title when the link has no readable username -->
     <string name="TellomiLinkCard__tellomi_user">Tellomi user</string>
+    <!-- Tellomi (ADR-0063 §6.1): shown once before opening a link whose domain imitates a well-known one; %1$s is the well-known domain. The link can still be opened. -->
+    <string name="TellomiLinkOpen__lookalike_message">The domain of this link looks like %1$s, but it isn’t %1$s.</string>
+    <!-- Tellomi (ADR-0063 §6.1): button in that warning that opens the link anyway -->
+    <string name="TellomiLinkOpen__open_anyway">Open anyway</string>
     <string name="preferences__change_passphrase">Change passphrase</string>
     <string name="preferences__change_your_passphrase">Change your passphrase</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->

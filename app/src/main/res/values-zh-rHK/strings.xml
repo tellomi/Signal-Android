@@ -3938,6 +3938,8 @@
     <string name="TellomiLinkCard__official_title">Tellomi 官網</string>
     <string name="TellomiLinkCard__official_badge">官方</string>
     <string name="TellomiLinkCard__tellomi_user">Tellomi 用戶</string>
+    <string name="TellomiLinkOpen__lookalike_message">這個連結的域名與 %1$s 相似，但不是它</string>
+    <string name="TellomiLinkOpen__open_anyway">繼續開啟</string>
     <string name="preferences__change_passphrase">更改密碼</string>
     <string name="preferences__change_your_passphrase">變更您的密碼</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->
