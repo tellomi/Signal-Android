@@ -22,7 +22,7 @@ import java.util.Locale
 
 /**
  * 用**显式指定的浏览器**打开链接：ADR-0063 §4.9 第 3 步的底层接入（tellomi/tellomi#1422；§8.1 第 7 行）。
- * 以后 `open_plan` 走到第 3 步、以及支付金融链接（只走这一步）都调它；点击入口现在还没改（`ConversationFragment.openLink` 照旧）。
+ * `open_plan` 走到第 3 步、以及支付金融链接（只走这一步）都调它，入口是 [TellomiLinkOpener]。
  *
  * 顺序：
  * 1. 只收 `https` / `http`。`intent:`、`javascript:`、`data:`、`file:`、`content:` 这类一律拒绝，不产生任何跳转（§4.9 / §6.1）。

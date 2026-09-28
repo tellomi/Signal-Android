@@ -311,6 +311,7 @@ import org.thoughtcrime.securesms.keyboard.sticker.StickerSearchDialogFragment
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.linkpreview.LinkPreview
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewViewModelV2
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkOpener
 import org.thoughtcrime.securesms.longmessage.LongMessageFragment
 import org.thoughtcrime.securesms.main.MainDetailRoute
 import org.thoughtcrime.securesms.main.MainListRoute
@@ -1080,7 +1081,10 @@ class ConversationFragment :
   }
 
   private fun openLink(url: String) {
-    startActivity(Intent(Intent.ACTION_VIEW, url.toUri()).encourageNewBrowserTab())
+    // Tellomi (ADR-0063 §4.9 / §6.1): the card and the text both come here; open per rust/links' open plan.
+    TellomiLinkOpener.open(requireActivity(), url) {
+      startActivity(Intent(Intent.ACTION_VIEW, url.toUri()).encourageNewBrowserTab())
+    }
   }
 
   //endregion
