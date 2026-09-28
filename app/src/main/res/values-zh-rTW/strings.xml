@@ -3935,6 +3935,9 @@
     <string name="TellomiLinks__expand_short_links">展開短連結</string>
     <string name="TellomiLinks__expand_short_links_description">建立預覽前，你的裝置會先開啟一次短連結，取得完整網址。短連結服務能看到這次存取。</string>
     <string name="TellomiLinks__link_copied">已複製連結</string>
+    <string name="TellomiLinkCard__official_title">Tellomi 官網</string>
+    <string name="TellomiLinkCard__official_badge">官方</string>
+    <string name="TellomiLinkCard__tellomi_user">Tellomi 用戶</string>
     <string name="preferences__change_passphrase">變更自訂密碼</string>
     <string name="preferences__change_your_passphrase">變更您的自訂密碼</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->

@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,7 @@ import org.thoughtcrime.securesms.calls.links.CallLinks;
 import org.thoughtcrime.securesms.conversation.colors.AvatarColorHash;
 import org.thoughtcrime.securesms.linkpreview.LinkPreview;
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewRepository;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay;
 import org.thoughtcrime.securesms.mms.ImageSlide;
 import org.thoughtcrime.securesms.mms.SlidesClickedListener;
 import org.signal.core.util.Util;
@@ -212,6 +217,44 @@ public class LinkPreviewView extends FrameLayout {
 
     boolean thumbnailVisible = (showThumbnail && linkPreview.getThumbnail().isPresent()) || callLinkRootKey != null;
     alignTitleWithThumbnail(thumbnailVisible);
+  }
+
+  /**
+   * Tellomi (ADR-0063 §5.1, §4.8): after {@link #setLinkPreview}, show the text rust/links decided for
+   * this preview's level instead of the sender's. Null leaves Signal's display as is.
+   */
+  public void applyTellomiDisplay(@Nullable TellomiLinkDisplay display, boolean showDescription) {
+    if (display == null) {
+      return;
+    }
+
+    if (!Util.isEmpty(display.getTitle())) {
+      if (display.getOfficialBadge()) {
+        SpannableStringBuilder text  = new SpannableStringBuilder(display.getTitle()).append("  ");
+        int                    start = text.length();
+        text.append(getContext().getString(R.string.TellomiLinkCard__official_badge));
+        text.setSpan(new ForegroundColorSpan(site.getCurrentTextColor()), start, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        text.setSpan(new RelativeSizeSpan(0.85f), start, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        title.setText(text);
+      } else {
+        title.setText(display.getTitle());
+      }
+      title.setVisibility(VISIBLE);
+    } else {
+      title.setVisibility(GONE);
+    }
+
+    if (showDescription && !Util.isEmpty(display.getDescription())) {
+      description.setText(display.getDescription());
+      description.setVisibility(VISIBLE);
+    } else {
+      description.setVisibility(GONE);
+    }
+
+    if (!Util.isEmpty(display.getDomain())) {
+      site.setText(display.getDomain());
+      site.setVisibility(VISIBLE);
+    }
   }
 
   private void alignTitleWithThumbnail(boolean thumbnailVisible) {
