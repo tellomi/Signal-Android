@@ -111,6 +111,7 @@ internal class MediaSelectViewModel(
       is MediaSelectScreenEvents.AddMessage -> parentEventEmitter(MediaSendFlowEvent.AddMessageRequested(event.startWithEmojiKeyboard))
       MediaSelectScreenEvents.ToggleViewOnce -> parentEventEmitter(MediaSendFlowEvent.ToggleViewOnce)
       MediaSelectScreenEvents.Send -> parentEventEmitter(MediaSendFlowEvent.NextRequested)
+      is MediaSelectScreenEvents.ScheduleSend -> parentEventEmitter(MediaSendFlowEvent.ScheduleSendRequested(event.option))
       is MediaSelectScreenEvents.SendWithQuality -> parentEventEmitter(MediaSendFlowEvent.SendNow(quality = event.quality))
       MediaSelectScreenEvents.SendSeparately -> parentEventEmitter(MediaSendFlowEvent.SendNow(separately = true))
       MediaSelectScreenEvents.Close -> parentEventEmitter(MediaSendFlowEvent.CloseRequested)

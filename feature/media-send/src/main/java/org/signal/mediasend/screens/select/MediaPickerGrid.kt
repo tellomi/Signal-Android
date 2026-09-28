@@ -808,12 +808,14 @@ private fun PickerSendBar(
         when (event) {
           is MediaEditScreenEvents.AddMessageClick -> onEvent(MediaSelectScreenEvents.AddMessage(event.startWithEmojiKeyboard))
           MediaEditScreenEvents.ToggleViewOnce -> onEvent(MediaSelectScreenEvents.ToggleViewOnce)
+          // owner 2026-09-28（D4）：网格的发送键长按也能定时发送（照 Telegram 长按发送的 schedule 项）。
+          is MediaEditScreenEvents.ScheduleSendClick -> onEvent(MediaSelectScreenEvents.ScheduleSend(event.option))
           else -> Unit
         }
       },
       onNextClick = { onEvent(MediaSelectScreenEvents.Send) },
       enabled = !options.isSending,
-      canScheduleSend = false,
+      canScheduleSend = options.canScheduleSend,
       viewOnceAvailable = options.isViewOnceAvailable,
       viewOnce = options.isViewOnceEnabled,
       isReply = options.isReply,

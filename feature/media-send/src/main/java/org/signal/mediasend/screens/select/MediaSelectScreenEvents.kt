@@ -10,6 +10,7 @@ import org.signal.core.models.media.MediaFolder
 import org.signal.mediasend.MediaSendFlowActivityContract
 import org.signal.mediasend.MediaSendFlowState
 import org.signal.mediasend.SentMediaQuality
+import org.signal.mediasend.screens.edit.ScheduleSendOption
 
 sealed interface MediaSelectScreenEvents {
 
@@ -62,6 +63,9 @@ sealed interface MediaSelectScreenEvents {
 
   /** P-9 / P-10：底栏的发送键——在网格里直接发，不经预览页。 */
   data object Send : MediaSelectScreenEvents
+
+  /** Tellomi（owner 2026-09-28 D4）：网格发送键长按选了定时发送的时间。 */
+  data class ScheduleSend(val option: ScheduleSendOption) : MediaSelectScreenEvents
 
   /** P-5：「···」→ 以高清 / 标准质量发送（D9：只管这一次）。 */
   data class SendWithQuality(val quality: SentMediaQuality) : MediaSelectScreenEvents
