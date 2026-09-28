@@ -15,6 +15,7 @@ import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -25,6 +26,7 @@ import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsExactly
+import assertk.assertions.isFalse
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,6 +38,7 @@ import org.signal.core.ui.CoreUiDependenciesRule
 import org.signal.core.ui.compose.theme.SignalTheme
 import org.signal.mediasend.MediaSendDependenciesRule
 import org.signal.mediasend.SentMediaQuality
+import org.signal.mediasend.screens.edit.ScheduleSendOption
 import org.signal.mediasend.test.TestTags
 
 /**
@@ -148,6 +151,20 @@ class MediaPickerGridTest {
     composeTestRule.onNodeWithTag(TestTags.ADD_A_MESSAGE_NEXT_BUTTON, useUnmergedTree = true).performClick()
 
     assertThat(events).contains(MediaSelectScreenEvents.Send)
+  }
+
+  // owner 2026-09-28（D4）：长按发送键 →「定时发送」两端都做。安卓上游的定时发送只接在单张预览页的发送键上，
+  // 网格里直接发的那一栏没接；照 Telegram（ChatSendMessageContextScreen 的 schedule 项）在网格的发送键上也能长按定时。
+
+  @Test
+  fun `Given a selection in a conversation, when the grid send button is long pressed, then a send can be scheduled`() {
+    setContent(selectedMedia = MEDIA.take(2), sendOptions = MediaSelectState.SendOptions(canScheduleSend = true))
+
+    composeTestRule.onNodeWithTag(TestTags.ADD_A_MESSAGE_NEXT_BUTTON, useUnmergedTree = true).performTouchInput { longClick() }
+    composeTestRule.onNodeWithTag(TestTags.SCHEDULE_SEND_PICK_TIME_OPTION).performClick()
+
+    assertThat(events).contains(MediaSelectScreenEvents.ScheduleSend(ScheduleSendOption.PickTime))
+    assertThat(events.contains(MediaSelectScreenEvents.Send)).isFalse()
   }
 
   @Test
