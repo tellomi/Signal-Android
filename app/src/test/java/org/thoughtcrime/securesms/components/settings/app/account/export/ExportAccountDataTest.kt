@@ -8,6 +8,7 @@ import io.mockk.mockk
 import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.TestScheduler
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
@@ -30,6 +31,13 @@ class ExportAccountDataTest {
 
   @get:Rule
   val appDependencies = MockAppDependenciesRule()
+
+  // Tellomi：「Failed download error flow」装的主线程 TestScheduler 要还原，不然留在 Robolectric 沙箱里，
+  // 后面用 AndroidSchedulers.mainThread() 的测试收不到东西（见 RxPluginsRule 的说明）
+  @After
+  fun tearDown() {
+    RxAndroidPlugins.reset()
+  }
 
   private val mockJson: String = """
 {

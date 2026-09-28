@@ -10,6 +10,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isSameInstanceAs
+import assertk.assertions.isTrue
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -18,7 +19,10 @@ import io.mockk.unmockkObject
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -26,6 +30,7 @@ import org.robolectric.annotation.Config
 import org.signal.core.models.ServiceId
 import org.thoughtcrime.securesms.profiles.manage.UsernameRepository
 import org.thoughtcrime.securesms.recipients.Recipient
+import java.util.concurrent.TimeUnit
 
 /**
  * Tellomi（tellomi/tellomi#947，需求 share-qr-and-invite.md §3.2「扫一扫统一」）：两个扫码入口与「从相册识别」
@@ -35,13 +40,27 @@ import org.thoughtcrime.securesms.recipients.Recipient
 @Config(manifest = Config.NONE, application = Application::class)
 class UsernameQrScanRepositoryTest {
 
+  @Before
+  fun setUp() {
+    // 查询在 Schedulers.io() 上跑；就地执行，不依赖这个 Robolectric 沙箱里 io 调度器的状态——
+    // 全量跑时曾被别的测试留成没人推进的 TestScheduler，blockingGet 永远等（见 RxPluginsRule 的说明）
+    RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
+  }
+
   @After
   fun tearDown() {
+    RxJavaPlugins.setIoSchedulerHandler(null)
     unmockkStatic(UsernameRepository::class)
     unmockkObject(Recipient)
   }
 
-  private fun scan(text: String): QrScanResult = UsernameQrScanRepository.lookupUsernameUrl(text).blockingGet()
+  /** 等有上限：调度器再出问题也是这条测试失败，不是整个测试进程挂住。 */
+  private fun scan(text: String): QrScanResult {
+    val observer = UsernameQrScanRepository.lookupUsernameUrl(text).test()
+    assertThat(observer.await(5, TimeUnit.SECONDS), "5 秒内查完「$text」").isTrue()
+    observer.assertNoErrors()
+    return observer.values().single()
+  }
 
   @Test
   fun deviceLinkCodesInBothSchemesPointToTheRightPlace() {

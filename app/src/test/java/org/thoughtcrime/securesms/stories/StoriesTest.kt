@@ -33,7 +33,7 @@ class StoriesTest {
   fun setUp() {
     mockkStatic(AppDependencies::class)
 
-    RxJavaPlugins.setInitIoSchedulerHandler { testScheduler }
+    // Tellomi：不装 RxJava 的 init handler，免得这里的 TestScheduler 永久留成同一测试进程里的默认调度器（见 RxPluginsRule 的说明）
     RxJavaPlugins.setIoSchedulerHandler { testScheduler }
 
     SignalDatabase.setSignalDatabaseInstanceForTesting(mockSignalDatabase)
