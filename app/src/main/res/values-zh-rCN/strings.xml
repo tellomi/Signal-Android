@@ -3935,6 +3935,9 @@
     <string name="TellomiLinks__expand_short_links">展开短链接</string>
     <string name="TellomiLinks__expand_short_links_description">生成预览前，你的设备会先打开一次短链接，取得完整地址。短链接服务能看到这次访问。</string>
     <string name="TellomiLinks__link_copied">已复制链接</string>
+    <string name="TellomiLinkCard__official_title">Tellomi 官网</string>
+    <string name="TellomiLinkCard__official_badge">官方</string>
+    <string name="TellomiLinkCard__tellomi_user">Tellomi 用户</string>
     <string name="preferences__change_passphrase">修改密码</string>
     <string name="preferences__change_your_passphrase">修改您的密码</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->

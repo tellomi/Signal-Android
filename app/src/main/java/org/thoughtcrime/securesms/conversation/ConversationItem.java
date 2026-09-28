@@ -129,6 +129,8 @@ import org.thoughtcrime.securesms.giph.mp4.GiphyMp4PlaybackPolicyEnforcer;
 import org.thoughtcrime.securesms.jobs.AttachmentDownloadJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.linkpreview.LinkPreview;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkCard;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay;
 import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory;
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache;
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewFragment;
@@ -1167,11 +1169,26 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   }
 
   private boolean hasLinkPreview(MessageRecord messageRecord) {
-    return MessageRecordUtil.hasLinkPreview(messageRecord);
+    // Tellomi (ADR-0063 §5.1): a preview rust/links put on the plain-link rung is not shown.
+    TellomiLinkCard card = getLinkCard();
+    return MessageRecordUtil.hasLinkPreview(messageRecord) && (card == null || card.getLevel() != TellomiLinkCard.Level.PLAIN_LINK);
   }
 
   private boolean hasBigImageLinkPreview(MessageRecord messageRecord) {
-    return MessageRecordUtil.hasBigImageLinkPreview(messageRecord, context) && !isContentCondensed();
+    TellomiLinkCard card = getLinkCard();
+    return MessageRecordUtil.hasBigImageLinkPreview(messageRecord, context) && !isContentCondensed() && (card == null || card.getShowImage());
+  }
+
+  private @Nullable TellomiLinkCard getLinkCard() {
+    return conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCard() : null;
+  }
+
+  private @Nullable TellomiLinkDisplay getLinkDisplay(@NonNull LinkPreview linkPreview) {
+    return TellomiLinkDisplay.of(linkPreview,
+                                 getLinkCard(),
+                                 Locale.getDefault(),
+                                 new TellomiLinkDisplay.Strings(context.getString(R.string.TellomiLinkCard__official_title),
+                                                                context.getString(R.string.TellomiLinkCard__tellomi_user)));
   }
 
   private boolean isViewOnceMessage(MessageRecord messageRecord) {
@@ -1440,6 +1457,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         mediaThumbnailStub.require().setOnLongClickListener(passthroughClickListener);
 
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, false);
+        linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), true);
 
         setThumbnailCorners(messageRecord, previousRecord, nextRecord, isGroupThread);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, true);
@@ -1448,7 +1466,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         ViewUtil.updateLayoutParamsIfNonNull(groupSenderHolder, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ViewUtil.setTopMargin(linkPreviewStub.get(), 0);
       } else {
-        linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, true, !isContentCondensed(), displayMode.getMessageMode() == ConversationItemDisplayMode.MessageMode.SCHEDULED);
+        TellomiLinkCard linkCard = getLinkCard();
+        linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, linkCard == null || linkCard.getShowImage(), !isContentCondensed(), displayMode.getMessageMode() == ConversationItemDisplayMode.MessageMode.SCHEDULED);
+        linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), !isContentCondensed());
         linkPreviewStub.get().setDownloadClickedListener(downloadClickListener);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, false);
         ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

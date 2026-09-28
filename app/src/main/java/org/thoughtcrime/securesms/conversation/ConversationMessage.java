@@ -27,12 +27,16 @@ import org.thoughtcrime.securesms.database.model.MmsMessageRecord;
 import org.thoughtcrime.securesms.database.model.databaseprotos.BodyRangeList;
 import org.thoughtcrime.securesms.groups.memberlabel.MemberLabel;
 import org.thoughtcrime.securesms.groups.memberlabel.MemberLabelRepository;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkCard;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkRegistry;
+import org.thoughtcrime.securesms.mms.Slide;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.DateUtils;
 import org.thoughtcrime.securesms.util.MessageRecordUtil;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -234,8 +238,20 @@ public class ConversationMessage {
   public static class ComputedProperties {
     private @NonNull FormattedDate formattedDate;
 
+    /** Tellomi (ADR-0063 §5.1 rule 4): the link card decided for the first preview, or null. */
+    private final @Nullable TellomiLinkCard linkCard;
+
     ComputedProperties(@NonNull FormattedDate formattedDate) {
+      this(formattedDate, null);
+    }
+
+    ComputedProperties(@NonNull FormattedDate formattedDate, @Nullable TellomiLinkCard linkCard) {
       this.formattedDate = formattedDate;
+      this.linkCard      = linkCard;
+    }
+
+    public @Nullable TellomiLinkCard getLinkCard() {
+      return linkCard;
     }
 
     public synchronized FormattedDate getFormattedDate() {
@@ -335,13 +351,36 @@ public class ConversationMessage {
                                      styleResult,
                                      threadRecipient,
                                      originalMessage,
-                                     new ComputedProperties(formattedDate),
+                                     new ComputedProperties(formattedDate, classifyLinkPreview(messageRecord)),
                                      memberLabel,
                                      quoteMemberLabel,
                                      deletedBy,
                                      resolvedPresentation,
                                      collapsedSize,
                                      collapsedExpirationInMs);
+    }
+
+    /**
+     * Tellomi (ADR-0063 §5.1 rule 4): the level of the first link preview, decided here off the main
+     * thread and never in view binding.
+     */
+    @WorkerThread
+    private static @Nullable TellomiLinkCard classifyLinkPreview(@NonNull MessageRecord messageRecord) {
+      if (!(messageRecord instanceof MmsMessageRecord)) {
+        return null;
+      }
+
+      MmsMessageRecord mms = (MmsMessageRecord) messageRecord;
+      if (mms.getLinkPreviews().isEmpty()) {
+        return null;
+      }
+
+      List<String> attachmentContentTypes = new ArrayList<>();
+      for (Slide slide : mms.getSlideDeck().getSlides()) {
+        attachmentContentTypes.add(slide.getContentType());
+      }
+
+      return TellomiLinkRegistry.classify(mms.getLinkPreviews().get(0), mms.getBody(), mms.getStoryType().isStory(), attachmentContentTypes);
     }
 
     @WorkerThread

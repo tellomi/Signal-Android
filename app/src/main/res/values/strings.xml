@@ -4090,6 +4090,12 @@
     <string name="TellomiLinks__expand_short_links_description">Before creating a preview, your device opens a short link once to find the full address. The short link service can see this.</string>
     <!-- Toast shown when no browser can open a link, so it was copied to the clipboard instead -->
     <string name="TellomiLinks__link_copied">Link copied</string>
+    <!-- Tellomi (ADR-0063 §4.8): fixed title of the link card for Tellomi's official website, shown instead of the sender's title -->
+    <string name="TellomiLinkCard__official_title">Tellomi website</string>
+    <!-- Tellomi (ADR-0063 §4.8): small badge after the title of the official website card; only that card ever shows it -->
+    <string name="TellomiLinkCard__official_badge">Official</string>
+    <!-- Tellomi (ADR-0063 §4.8): tell.cc user link card: subtitle under the @username, or the title when the link has no readable username -->
+    <string name="TellomiLinkCard__tellomi_user">Tellomi user</string>
     <string name="preferences__change_passphrase">Change passphrase</string>
     <string name="preferences__change_your_passphrase">Change your passphrase</string>
     <!-- Legacy preference menu item to enable a passphrase screen lock that is only available to those who have previously had a passphrase -->
