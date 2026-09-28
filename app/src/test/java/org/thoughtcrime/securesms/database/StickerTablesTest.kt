@@ -21,6 +21,7 @@ import org.signal.core.util.Hex
 import org.signal.core.util.deleteAll
 import org.thoughtcrime.securesms.database.model.IncomingSticker
 import org.thoughtcrime.securesms.database.model.StickerPackId
+import org.thoughtcrime.securesms.stickers.BlessedPacks
 import org.thoughtcrime.securesms.storage.StorageSyncHelper
 import org.thoughtcrime.securesms.testutil.RecipientTestRule
 import org.whispersystems.signalservice.api.storage.SignalStickerPackRecord
@@ -288,6 +289,25 @@ class StickerTablesTest {
     assertThat(results).isEqualTo(listOf(2))
   }
 
+  // Tellomi (tellomi/tellomi#1406): Signal's packs are no longer blessed.
+  @Test
+  fun `given an installed Signal pack, when I delete orphaned packs, then it is kept`() {
+    installPack(BlessedPacks.ZOZO.packId, BlessedPacks.ZOZO.packKey)
+
+    SignalDatabase.stickers.deleteOrphanedPacks()
+
+    assertThat(SignalDatabase.stickers.isPackInstalled(BlessedPacks.ZOZO.packId)).isTrue()
+  }
+
+  @Test
+  fun `given a Signal pack kept only as a reference, when I delete orphaned packs, then it is removed`() {
+    insertSticker(BlessedPacks.COZY_SEASON.packId, BlessedPacks.COZY_SEASON.packKey, stickerId = 0, emoji = "", isCover = true, isInstalled = false)
+
+    SignalDatabase.stickers.deleteOrphanedPacks()
+
+    assertThat(SignalDatabase.stickers.getStickerPack(BlessedPacks.COZY_SEASON.packId)).isNull()
+  }
+
   private fun installedPackIds(): List<String> {
     return StickerTables.StickerPackRecordReader(SignalDatabase.stickers.getInstalledStickerPacks()).use { reader ->
       reader.asSequence().map { it.packId }.toList()
@@ -298,7 +318,7 @@ class StickerTablesTest {
     insertSticker(packId, packKey, stickerId = 0, emoji = "", isCover = true)
   }
 
-  private fun insertSticker(packId: String, packKey: String, stickerId: Int, emoji: String?, isCover: Boolean = false) {
+  private fun insertSticker(packId: String, packKey: String, stickerId: Int, emoji: String?, isCover: Boolean = false, isInstalled: Boolean = true) {
     SignalDatabase.stickers.insertSticker(
       sticker = IncomingSticker(
         packId = packId,
@@ -309,7 +329,7 @@ class StickerTablesTest {
         emoji = emoji,
         contentType = "image/webp",
         isCover = isCover,
-        isInstalled = true
+        isInstalled = isInstalled
       ),
       dataStream = ByteArrayInputStream(byteArrayOf(1, 2, 3, 4)),
       notify = false
