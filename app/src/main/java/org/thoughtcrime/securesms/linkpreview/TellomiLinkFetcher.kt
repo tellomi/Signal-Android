@@ -154,6 +154,31 @@ class TellomiLinkFetcher(
     }
   }
 
+  /**
+   * One request the way `rust/links` asked for it (tellomi/tellomi#1422 send side): its `Accept`, the content
+   * types it takes, its size and redirect limits, and what is left of its time. Never looser than [limits]:
+   * each value is capped by the fetcher's own. A bare [Step] keeps the fetcher's defaults.
+   */
+  data class Spec(
+    val step: Step,
+    val accept: String = step.accept,
+    /** Lower-case `type/subtype`; null → the [Step]'s own rule. */
+    val contentTypes: Set<String>? = null,
+    val maxBytes: Long? = null,
+    val maxRedirects: Int? = null,
+    val timeoutMs: Long? = null
+  ) {
+    fun accepts(contentType: MediaType?): Boolean {
+      if (contentTypes == null) {
+        return step.accepts(contentType)
+      }
+      if (contentType == null) {
+        return false
+      }
+      return "${contentType.type}/${contentType.subtype}".lowercase(Locale.ROOT) in contentTypes
+    }
+  }
+
   enum class Reason {
     NOT_HTTPS,
     INVALID_URL,
@@ -186,8 +211,8 @@ class TellomiLinkFetcher(
       override fun toString(): String = "Body(${bytes.size} bytes)"
     }
 
-    /** 短链展开的结果：`Location` 解析成绝对地址，**没有**被请求过。 */
-    class Location(val location: HttpUrl) : Result() {
+    /** 短链展开的结果：`Location` 解析成绝对地址，**没有**被请求过；[status] 是那个 3xx。 */
+    class Location(val location: HttpUrl, val status: Int) : Result() {
       override fun toString(): String = "Location"
     }
 
@@ -195,7 +220,9 @@ class TellomiLinkFetcher(
       val reason: Reason,
       val finalUrl: HttpUrl? = null,
       val contentType: MediaType? = null,
-      val httpCode: Int = 0
+      val httpCode: Int = 0,
+      /** 连上之前就失败（DNS、TCP、TLS，含连接超时）：§4.3 的网络层失败。 */
+      val beforeConnect: Boolean = false
     ) : Result() {
       /** 页面步骤拿到的是一张图（链接直接指向图片）：上游把它当预览图用，这里把最终地址交回去，由图片步骤去取。 */
       fun isDirectImage(): Boolean = reason == Reason.CONTENT_TYPE && finalUrl != null && contentType?.type == "image"
@@ -229,6 +256,9 @@ class TellomiLinkFetcher(
   /** 一条链接一个 session：10 s 与 3 + 1 个请求的预算按 session 算。 */
   fun newSession(): Session = Session()
 
+  /** 当前网络上已知不可达的 host（§4.3），作为 `unreachable_hosts` 交给 `rust/links`。 */
+  fun unreachableHosts(): List<String> = reachability.unreachableHosts()
+
   inner class Session internal constructor() {
     private val deadline = clock() + limits.linkBudgetMs
     private var metadataRequests = 0
@@ -240,9 +270,11 @@ class TellomiLinkFetcher(
     @Volatile
     private var inFlight: Call? = null
 
-    fun fetch(url: String, step: Step): Result {
-      val outcome = fetchInternal(url, step)
-      log(step, outcome.result, outcome.hops)
+    fun fetch(url: String, step: Step): Result = fetch(url, Spec(step))
+
+    fun fetch(url: String, spec: Spec): Result {
+      val outcome = fetchInternal(url, spec)
+      log(spec.step, outcome.result, outcome.hops)
       return outcome.result
     }
 
@@ -251,7 +283,8 @@ class TellomiLinkFetcher(
       inFlight?.cancel()
     }
 
-    private fun fetchInternal(url: String, step: Step): Outcome {
+    private fun fetchInternal(url: String, spec: Spec): Outcome {
+      val step = spec.step
       if (cancelled) {
         return Outcome(Result.Failure(Reason.CANCELLED))
       }
@@ -260,7 +293,8 @@ class TellomiLinkFetcher(
       }
 
       var current: HttpUrl = url.trim().toHttpUrlOrNull() ?: return Outcome(Result.Failure(Reason.INVALID_URL))
-      val requestDeadline = clock() + limits.requestTimeoutMs
+      val requestDeadline = clock() + min(limits.requestTimeoutMs, spec.timeoutMs ?: Long.MAX_VALUE)
+      val maxRedirects = min(limits.maxRedirects, spec.maxRedirects ?: Int.MAX_VALUE)
       var reserved = false
       var hops = 0
 
@@ -282,11 +316,11 @@ class TellomiLinkFetcher(
           return Outcome(Result.Failure(Reason.TIMEOUT), hops)
         }
 
-        when (val hop = exchange(current, step, remaining)) {
+        when (val hop = exchange(current, spec, remaining)) {
           is Hop.Done -> return Outcome(hop.result, hops)
           is Hop.Redirect -> {
             hops++
-            if (hops > limits.maxRedirects) {
+            if (hops > maxRedirects) {
               return Outcome(Result.Failure(Reason.REDIRECT_LIMIT), hops)
             }
             current = hop.next
@@ -304,12 +338,12 @@ class TellomiLinkFetcher(
       }
     }
 
-    private fun exchange(url: HttpUrl, step: Step, timeoutMs: Long): Hop {
+    private fun exchange(url: HttpUrl, spec: Spec, timeoutMs: Long): Hop {
       val state = HopState()
       val request = Request.Builder()
         .url(url.newBuilder().fragment(null).build())
         .header("User-Agent", USER_AGENT)
-        .header("Accept", step.accept)
+        .header("Accept", spec.accept)
         .header("Accept-Encoding", "gzip")
         .tag(HopState::class.java, state)
         .get()
@@ -327,7 +361,7 @@ class TellomiLinkFetcher(
       }
 
       return try {
-        call.execute().use { response -> read(response, url, step) }
+        call.execute().use { response -> read(response, url, spec) }
       } catch (e: BlockedAddressException) {
         Hop.Done(Result.Failure(Reason.BLOCKED_ADDRESS))
       } catch (e: IOException) {
@@ -336,7 +370,7 @@ class TellomiLinkFetcher(
           !state.connected -> {
             // 连上之前就失败：DNS、TCP、TLS。这是 §4.3 说的网络层失败。
             reachability.markUnreachable(url.host)
-            Hop.Done(Result.Failure(if (e is InterruptedIOException) Reason.TIMEOUT else Reason.UNREACHABLE))
+            Hop.Done(Result.Failure(if (e is InterruptedIOException) Reason.TIMEOUT else Reason.UNREACHABLE, beforeConnect = true))
           }
           e is InterruptedIOException -> Hop.Done(Result.Failure(Reason.TIMEOUT))
           else -> Hop.Done(Result.Failure(Reason.IO))
@@ -346,26 +380,27 @@ class TellomiLinkFetcher(
       }
     }
 
-    private fun read(response: Response, url: HttpUrl, step: Step): Hop {
+    private fun read(response: Response, url: HttpUrl, spec: Spec): Hop {
+      val step = spec.step
       if (response.isRedirect) {
         val location = response.header("Location") ?: return Hop.Done(Result.Failure(Reason.BAD_REDIRECT, httpCode = response.code))
         val next = url.resolve(location) ?: return Hop.Done(Result.Failure(Reason.BAD_REDIRECT, httpCode = response.code))
-        return if (step == Step.SHORT_LINK) Hop.Done(Result.Location(next)) else Hop.Redirect(next)
+        return if (step == Step.SHORT_LINK) Hop.Done(Result.Location(next, response.code)) else Hop.Redirect(next)
       }
       if (step == Step.SHORT_LINK) {
         return Hop.Done(Result.Failure(Reason.NOT_REDIRECT, httpCode = response.code))
       }
       if (!response.isSuccessful) {
-        return Hop.Done(Result.Failure(Reason.HTTP_STATUS, httpCode = response.code))
+        return Hop.Done(Result.Failure(Reason.HTTP_STATUS, finalUrl = url, httpCode = response.code))
       }
 
       val body = response.body
       val contentType = body.contentType()
-      if (contentType == null || !step.accepts(contentType)) {
+      if (contentType == null || !spec.accepts(contentType)) {
         return Hop.Done(Result.Failure(Reason.CONTENT_TYPE, finalUrl = url, contentType = contentType))
       }
 
-      val max = limits.maxBytes(step)
+      val max = min(limits.maxBytes(step), spec.maxBytes ?: Long.MAX_VALUE)
       val source: BufferedSource = when (response.header("Content-Encoding")?.trim()?.lowercase(Locale.ROOT)) {
         null, "", "identity" -> {
           if (body.contentLength() > max) {
