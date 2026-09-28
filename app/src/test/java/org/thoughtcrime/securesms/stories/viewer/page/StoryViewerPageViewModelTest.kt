@@ -26,10 +26,10 @@ class StoryViewerPageViewModelTest {
 
   @Before
   fun setUp() {
-    RxJavaPlugins.setInitIoSchedulerHandler { testScheduler }
+    // Tellomi：不装 init handler、tearDown 连 RxAndroidPlugins 一起还原——否则这里的 TestScheduler 会留在
+    // Robolectric 沙箱里，让后面的测试挂住（见 RxPluginsRule 的说明）
     RxJavaPlugins.setIoSchedulerHandler { testScheduler }
 
-    RxJavaPlugins.setInitComputationSchedulerHandler { testScheduler }
     RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
 
     RxAndroidPlugins.setMainThreadSchedulerHandler { testScheduler }
@@ -40,6 +40,7 @@ class StoryViewerPageViewModelTest {
   @After
   fun tearDown() {
     RxJavaPlugins.reset()
+    RxAndroidPlugins.reset()
   }
 
   @Test

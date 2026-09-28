@@ -20,7 +20,8 @@ class StoryViewerViewModelTest {
 
   @Before
   fun setUp() {
-    RxJavaPlugins.setInitComputationSchedulerHandler { testScheduler }
+    // Tellomi：不装 RxJava 的 init handler，免得这里的 TestScheduler 永久留成同一测试进程里的默认调度器（见 RxPluginsRule 的说明）；
+    // RxAndroid 那份留着——这是纯 JVM 测试，没有它 AndroidSchedulers 初始化时要拿主线程 Looper 会直接失败
     RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
     RxAndroidPlugins.setInitMainThreadSchedulerHandler { testScheduler }
     RxAndroidPlugins.setMainThreadSchedulerHandler { testScheduler }
