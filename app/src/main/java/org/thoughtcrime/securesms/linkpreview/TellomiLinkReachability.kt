@@ -50,6 +50,15 @@ class TellomiLinkReachability(
     return true
   }
 
+  /** 当前网络上已知不可达、还没过期的 host（给 `rust/links` 的发送上下文，§4.3）。 */
+  @Synchronized
+  fun unreachableHosts(): List<String> {
+    dropIfNetworkChanged()
+    val now = clock()
+    unreachableSince.entries.removeAll { now - it.value >= ttlMs }
+    return unreachableSince.keys.sorted()
+  }
+
   /** 记下 [host] 在当前网络上不可达。 */
   @Synchronized
   fun markUnreachable(host: String) {

@@ -59,6 +59,12 @@ class TellomiLinkFetchFixture : ExternalResource() {
     val PUBLIC: InetAddress = InetAddress.getByName("203.0.113.10")
     val DEAD: InetAddress = InetAddress.getByName("203.0.113.99")
 
+    /**
+     * Real provider hosts the certificate also covers, so the send-side tests can replay rust/links' own requests
+     * (tellomi/tellomi#1422). Nothing resolves them unless a test calls [FakeDns.resolve].
+     */
+    val PROVIDER_HOSTS = listOf("itunes.apple.com", "*.mzstatic.com", "www.bilibili.com", "b23.tv")
+
     private const val FIXTURE_HTML = "<html><head><meta property=\"og:title\" content=\"Fixture\"></head></html>"
 
     private val PASSWORD = "fixture".toCharArray()
@@ -80,7 +86,7 @@ class TellomiLinkFetchFixture : ExternalResource() {
       builder.addExtension(
         Extension.subjectAlternativeName,
         false,
-        GeneralNames(arrayOf(GeneralName(GeneralName.dNSName, "*.$DOMAIN"), GeneralName(GeneralName.dNSName, DOMAIN)))
+        GeneralNames((listOf("*.$DOMAIN", DOMAIN) + PROVIDER_HOSTS).map { GeneralName(GeneralName.dNSName, it) }.toTypedArray())
       )
       val cert = JcaX509CertificateConverter().getCertificate(builder.build(JcaContentSignerBuilder("SHA256withECDSA").build(keyPair.private)))
       val keyStore = KeyStore.getInstance(KeyStore.getDefaultType()).apply {

@@ -18,6 +18,7 @@ import org.signal.core.util.Result;
 import org.signal.core.util.bitmaps.BitmapDecodingException;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.logging.Log;
+import org.signal.libsignal.links.LinkRegistry;
 import org.signal.libsignal.protocol.InvalidMessageException;
 import org.signal.libsignal.zkgroup.VerificationFailedException;
 import org.signal.libsignal.zkgroup.groups.GroupMasterKey;
@@ -59,9 +60,14 @@ import org.whispersystems.signalservice.api.util.OptionalUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -78,6 +84,12 @@ public class LinkPreviewRepository {
    */
   private final TellomiLinkFetcher fetcher;
 
+  /**
+   * Tellomi（ADR-0063 §4.2 / §5.2）：注册表在的时候，抓什么、预览怎么拼由 rust/links 定（snapshot + Preview.rich），
+   * 群、贴纸、通话链接仍用下面上游自己的查询；注册表加载不了就走上游原来的路。
+   */
+  private final TellomiLinkSender sender;
+
   public LinkPreviewRepository() {
     this(TellomiLinkFetcher.getDefault());
   }
@@ -85,6 +97,10 @@ public class LinkPreviewRepository {
   @VisibleForTesting
   LinkPreviewRepository(@NonNull TellomiLinkFetcher fetcher) {
     this.fetcher = fetcher;
+    this.sender  = new TellomiLinkSender(fetcher,
+                                         () -> SignalStore.tellomiLinks().getExpandShortLinks(),
+                                         Locale::getDefault, // the in-app language sets the default (DynamicLanguageContextWrapper)
+                                         new FirstPartyLookups());
   }
 
   public @NonNull Single<Result<LinkPreview, Error>> getLinkPreview(@NonNull String url) {
@@ -125,6 +141,11 @@ public class LinkPreviewRepository {
       return compositeController;
     }
 
+    LinkRegistry registry = TellomiLinkRegistry.get();
+    if (registry != null) {
+      return fetchTellomiLinkPreview(registry, url, callback);
+    }
+
     RequestController metadataController;
 
     if (StickerUrl.isValidShareLink(url)) {
@@ -162,6 +183,84 @@ public class LinkPreviewRepository {
 
     compositeController.addController(metadataController);
     return compositeController;
+  }
+
+  private @NonNull RequestController fetchTellomiLinkPreview(@NonNull LinkRegistry registry, @NonNull String url, @NonNull Callback callback) {
+    TellomiLinkFetcher.Session session   = fetcher.newSession();
+    AtomicBoolean              cancelled = new AtomicBoolean(false);
+
+    SignalExecutors.UNBOUNDED.execute(() -> {
+      TellomiLinkSender.Result result = sender.preview(registry, url, session, cancelled::get);
+
+      if (result == null || cancelled.get()) {
+        return;
+      }
+      if (result instanceof TellomiLinkSender.Result.Found) {
+        callback.onSuccess(((TellomiLinkSender.Result.Found) result).getPreview());
+      } else if (result instanceof TellomiLinkSender.Result.GroupLinkInactive) {
+        callback.onError(Error.GROUP_LINK_INACTIVE);
+      } else {
+        callback.onError(Error.PREVIEW_NOT_AVAILABLE);
+      }
+    });
+
+    return () -> {
+      cancelled.set(true);
+      session.cancel();
+    };
+  }
+
+  /** The job's `first_party` requests and its preview image, done the way this class already does them. */
+  private static final class FirstPartyLookups implements TellomiLinkSender.Lookups {
+
+    private static final long LOOKUP_TIMEOUT_MS = TellomiLinkSendJob.LINK_BUDGET_MS;
+
+    @Override
+    public @NonNull TellomiLinkSender.FirstParty firstParty(@NonNull String kind, @NonNull String url) {
+      Context                                         context  = AppDependencies.getApplication();
+      CompletableFuture<TellomiLinkSender.FirstParty> future   = new CompletableFuture<>();
+      Callback                                        callback = new Callback() {
+        @Override
+        public void onSuccess(@NonNull LinkPreview linkPreview) {
+          future.complete(new TellomiLinkSender.FirstParty.Found(linkPreview));
+        }
+
+        @Override
+        public void onError(@NonNull Error error) {
+          future.complete(error == Error.GROUP_LINK_INACTIVE ? TellomiLinkSender.FirstParty.Inactive.INSTANCE
+                                                             : TellomiLinkSender.FirstParty.NotFound.INSTANCE);
+        }
+      };
+
+      switch (kind) {
+        case "tellomi.group":
+          if (!GroupInviteLinkUrl.isGroupLink(url)) return TellomiLinkSender.FirstParty.NotFound.INSTANCE;
+          fetchGroupLinkPreview(context, url, callback);
+          break;
+        case "tellomi.sticker":
+          if (!StickerUrl.isValidShareLink(url)) return TellomiLinkSender.FirstParty.NotFound.INSTANCE;
+          fetchStickerPackLinkPreview(context, url, callback);
+          break;
+        case "tellomi.call":
+          if (!CallLinks.isCallLink(url)) return TellomiLinkSender.FirstParty.NotFound.INSTANCE;
+          fetchCallLinkPreview(context, url, callback);
+          break;
+        default:
+          return TellomiLinkSender.FirstParty.NotFound.INSTANCE;
+      }
+
+      try {
+        return future.get(LOOKUP_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+      } catch (ExecutionException | InterruptedException | TimeoutException e) {
+        Log.w(TAG, "First-party lookup did not finish: " + e.getClass().getSimpleName());
+        return TellomiLinkSender.FirstParty.NotFound.INSTANCE;
+      }
+    }
+
+    @Override
+    public @Nullable Attachment thumbnail(@NonNull byte[] bytes) {
+      return thumbnailFromBytes(bytes).orElse(null);
+    }
   }
 
   private @NonNull RequestController fetchMetadata(@NonNull TellomiLinkFetcher.Session session, @NonNull String url, Consumer<Metadata> callback) {
@@ -212,40 +311,43 @@ public class LinkPreviewRepository {
         return;
       }
 
-      try {
-        byte[]                           data        = ((TellomiLinkFetcher.Result.Body) result).getBytes();
-        Bitmap                           bitmap      = BitmapFactory.decodeByteArray(data, 0, data.length);
-        Optional<Attachment>             thumbnail   = Optional.empty();
-        PushMediaConstraints.MediaConfig mediaConfig = PushMediaConstraints.MediaConfig.getDefault(AppDependencies.getApplication());
-
-        if (bitmap != null) {
-          for (final int maxDimension : mediaConfig.getImageSizeTargets()) {
-            ImageCompressionUtil.Result compressed = ImageCompressionUtil.compressWithinConstraints(
-                AppDependencies.getApplication(),
-                MediaUtil.IMAGE_JPEG,
-                bitmap,
-                maxDimension,
-                mediaConfig.getMaxImageFileSize(),
-                mediaConfig.getImageQualitySetting()
-            );
-
-            if (compressed != null) {
-              thumbnail = Optional.of(bytesToAttachment(compressed.getData(), compressed.getWidth(), compressed.getHeight(), compressed.getMimeType()));
-              break;
-            }
-          }
-        }
-
-        if (bitmap != null) bitmap.recycle();
-
-        callback.accept(thumbnail);
-      } catch (IllegalArgumentException | BitmapDecodingException e) {
-        Log.w(TAG, "Failed to decode the link preview image: " + e.getClass().getSimpleName());
-        callback.accept(Optional.empty());
-      }
+      callback.accept(thumbnailFromBytes(((TellomiLinkFetcher.Result.Body) result).getBytes()));
     });
 
     return session::cancel;
+  }
+
+  private static @NonNull Optional<Attachment> thumbnailFromBytes(@NonNull byte[] data) {
+    try {
+      Bitmap                           bitmap      = BitmapFactory.decodeByteArray(data, 0, data.length);
+      Optional<Attachment>             thumbnail   = Optional.empty();
+      PushMediaConstraints.MediaConfig mediaConfig = PushMediaConstraints.MediaConfig.getDefault(AppDependencies.getApplication());
+
+      if (bitmap != null) {
+        for (final int maxDimension : mediaConfig.getImageSizeTargets()) {
+          ImageCompressionUtil.Result compressed = ImageCompressionUtil.compressWithinConstraints(
+              AppDependencies.getApplication(),
+              MediaUtil.IMAGE_JPEG,
+              bitmap,
+              maxDimension,
+              mediaConfig.getMaxImageFileSize(),
+              mediaConfig.getImageQualitySetting()
+          );
+
+          if (compressed != null) {
+            thumbnail = Optional.of(bytesToAttachment(compressed.getData(), compressed.getWidth(), compressed.getHeight(), compressed.getMimeType()));
+            break;
+          }
+        }
+      }
+
+      if (bitmap != null) bitmap.recycle();
+
+      return thumbnail;
+    } catch (IllegalArgumentException | BitmapDecodingException e) {
+      Log.w(TAG, "Failed to decode the link preview image: " + e.getClass().getSimpleName());
+      return Optional.empty();
+    }
   }
 
   private static RequestController fetchStickerPackLinkPreview(@NonNull Context context,

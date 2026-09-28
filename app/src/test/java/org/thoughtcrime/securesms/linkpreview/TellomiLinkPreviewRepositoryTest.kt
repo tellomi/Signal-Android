@@ -8,7 +8,9 @@ package org.thoughtcrime.securesms.linkpreview
 import android.app.Application
 import androidx.test.core.app.ApplicationProvider
 import okhttp3.mockwebserver.MockResponse
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -17,6 +19,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.signal.libsignal.links.LinkRegistry
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.testutil.SignalStoreRule
 import java.util.concurrent.CountDownLatch
@@ -41,6 +44,31 @@ class TellomiLinkPreviewRepositoryTest {
   @Before
   fun setUp() {
     SignalStore.settings.isLinkPreviewsEnabled = true
+    // Signal's own path: without a registry nothing goes through rust/links.
+    TellomiLinkRegistry.setForTesting(null)
+  }
+
+  @After
+  fun tearDown() {
+    TellomiLinkRegistry.setForTesting(null)
+  }
+
+  @Test
+  fun `with the registry loaded the preview is assembled by rust-links`() {
+    val envelope = requireNotNull(javaClass.classLoader?.getResourceAsStream("links/links-2026092702.json")).use { it.readBytes() }
+    TellomiLinkRegistry.setForTesting(LinkRegistry.load(envelope))
+    fixture.html("https://b.$d/article", "<html><head><meta property=\"og:title\" content=\"标题\"></head></html>")
+
+    val brand = load("https://item.taobao.com/item.htm?id=100032608854")
+    assertEquals("Taobao", brand.first!!.title)
+    assertNotNull(brand.first!!.rich)
+
+    val generic = load("https://b.$d/article#part-2")
+    assertEquals("https://b.$d/article#part-2", generic.first!!.url)
+    assertEquals("标题", generic.first!!.title)
+    assertNull(generic.first!!.rich)
+    // No og:image: rust/links falls back to the site's touch icon (404 here, so no image).
+    assertEquals(listOf("/article" to "text/html", "/apple-touch-icon.png" to "image/*"), fixture.takeRequests().map { it.path to it.getHeader("Accept") })
   }
 
   @Test
