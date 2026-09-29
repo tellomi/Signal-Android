@@ -68,6 +68,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -219,10 +220,16 @@ public class LinkPreviewRepository {
     public @NonNull TellomiLinkSender.FirstParty firstParty(@NonNull String kind, @NonNull String url) {
       Context                                         context  = AppDependencies.getApplication();
       CompletableFuture<TellomiLinkSender.FirstParty> future   = new CompletableFuture<>();
+      AtomicReference<Integer>                        count    = new AtomicReference<>();
       Callback                                        callback = new Callback() {
         @Override
+        public void onTellomiCount(int value) {
+          count.set(value);
+        }
+
+        @Override
         public void onSuccess(@NonNull LinkPreview linkPreview) {
-          future.complete(new TellomiLinkSender.FirstParty.Found(linkPreview));
+          future.complete(new TellomiLinkSender.FirstParty.Found(linkPreview, count.get()));
         }
 
         @Override
@@ -380,6 +387,7 @@ public class LinkPreviewRepository {
 
           Optional<Attachment> thumbnail = bitmapToAttachment(bitmap, Bitmap.CompressFormat.WEBP, MediaUtil.IMAGE_WEBP);
 
+          callback.onTellomiCount(manifest.getStickers().size());
           callback.onSuccess(new LinkPreview(packUrl, title, "", 0, thumbnail));
         } else {
           callback.onError(Error.PREVIEW_NOT_AVAILABLE);
@@ -473,6 +481,7 @@ public class LinkPreviewRepository {
             thumbnail = bitmapToAttachment(bitmap, Bitmap.CompressFormat.WEBP, MediaUtil.IMAGE_WEBP);
           }
 
+          callback.onTellomiCount(memberCount);
           callback.onSuccess(new LinkPreview(groupUrl, title, description, 0, thumbnail));
         } else {
           Log.i(TAG, "Group is not locally available for preview generation, fetching from server");
@@ -490,6 +499,7 @@ public class LinkPreviewRepository {
             if (bitmap != null) bitmap.recycle();
           }
 
+          callback.onTellomiCount(joinInfo.memberCount);
           callback.onSuccess(new LinkPreview(groupUrl, joinInfo.title, description, 0, thumbnail));
         }
       } catch (ExecutionException | InterruptedException | IOException | VerificationFailedException e) {
@@ -599,6 +609,12 @@ public class LinkPreviewRepository {
     void onSuccess(@NonNull LinkPreview linkPreview);
 
     void onError(@NonNull Error error);
+
+    /**
+     * Tellomi (ADR-0063 §4.8, card-visual §3.9): how many members the group or stickers the pack has, when the
+     * lookup knows. Called before {@link #onSuccess}.
+     */
+    default void onTellomiCount(int count) {}
   }
   
   public enum Error {
