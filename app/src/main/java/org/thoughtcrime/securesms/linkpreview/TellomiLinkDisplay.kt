@@ -24,7 +24,8 @@ import java.util.Locale
  * - structured: the validated title and the kind's sub line (attrs, counts, durations); a video's
  *   publish date follows the domain;
  * - user and official cards: text computed from the URL, never the sender's (§4.8, §6.1);
- * - group, call and sticker cards: Signal's display until the first-party card layout lands (§5.2).
+ * - group, call and sticker cards: Signal's display until the first-party card layout lands (§5.2);
+ * - plain link: the no-image card, the domain once as its title (§3.5, only for a message that is just the link).
  *
  * Layout, tint and action buttons are not decided here. Whether the image shows is
  * [TellomiLinkCard.showImage], decided by the caller.
@@ -33,7 +34,11 @@ data class TellomiLinkDisplay(
   val title: String?,
   val description: String?,
   val domain: String?,
-  val officialBadge: Boolean
+  val officialBadge: Boolean,
+  /** The no-image card (card-visual §3.5 / §3.7): the domain as the title, a link icon at the end, no other line. */
+  val plainLink: Boolean = false,
+  /** The domain imitates a well-known one (ADR-0063 §6.1): shown in the danger colour. */
+  val lookalike: Boolean = false
 ) {
 
   /** Everything that needs resources or the clock, so [of] stays a pure function. */
@@ -96,7 +101,15 @@ data class TellomiLinkDisplay(
         return null
       }
       return when (card.level) {
-        TellomiLinkCard.Level.PLAIN_LINK -> null
+        // Reaches a bubble only as the card of a message that is just this link (TellomiLinkOnly).
+        TellomiLinkCard.Level.PLAIN_LINK -> TellomiLinkDisplay(
+          title = card.domain,
+          description = null,
+          domain = null,
+          officialBadge = false,
+          plainLink = true,
+          lookalike = card.lookalike != null
+        )
         TellomiLinkCard.Level.GENERIC -> generic(linkPreview, card, card.title)
         TellomiLinkCard.Level.BRAND -> TellomiLinkDisplay(
           title = card.providerName?.forLocale(locale),

@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -44,6 +45,7 @@ class TellomiLinkPreviewViewTest {
   private val title get() = view.findViewById<TextView>(R.id.linkpreview_title)
   private val description get() = view.findViewById<TextView>(R.id.linkpreview_description)
   private val site get() = view.findViewById<TextView>(R.id.linkpreview_site)
+  private val linkIcon get() = view.findViewById<View>(R.id.linkpreview_link_icon)
 
   @Before
   fun setUp() {
@@ -104,5 +106,43 @@ class TellomiLinkPreviewViewTest {
     assertEquals("Sender title", title.text.toString())
     assertEquals("Sender description", description.text.toString())
     assertEquals("www.example.com", site.text.toString())
+  }
+
+  @Test
+  fun `a plain-link card shows the domain as the title and the link icon, nothing else`() {
+    val titleColor = title.currentTextColor
+    site.visibility = View.VISIBLE
+
+    view.applyTellomiDisplay(TellomiLinkDisplay("163.com", null, null, false, plainLink = true, lookalike = false), true)
+
+    assertEquals("163.com", title.text.toString())
+    assertEquals(View.VISIBLE, title.visibility)
+    assertEquals(View.GONE, description.visibility)
+    assertEquals(View.GONE, site.visibility)
+    assertEquals(View.VISIBLE, linkIcon.visibility)
+    assertEquals(titleColor, title.currentTextColor)
+  }
+
+  @Test
+  fun `a domain that imitates a well-known one is red`() {
+    view.applyTellomiDisplay(TellomiLinkDisplay("bi1ibili.com", null, null, false, plainLink = true, lookalike = true), true)
+
+    assertEquals(ContextCompat.getColor(view.context, org.signal.core.ui.R.color.signal_colorError), title.currentTextColor)
+  }
+
+  @Test
+  fun `a recycled view drops the plain-link look`() {
+    val titleColor = title.currentTextColor
+    view.applyTellomiDisplay(TellomiLinkDisplay("bi1ibili.com", null, null, false, plainLink = true, lookalike = true), true)
+
+    view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", null, "taobao.com", false), true)
+    assertEquals(View.GONE, linkIcon.visibility)
+    assertEquals(titleColor, title.currentTextColor)
+    assertEquals(View.VISIBLE, site.visibility)
+
+    view.applyTellomiDisplay(TellomiLinkDisplay("bi1ibili.com", null, null, false, plainLink = true, lookalike = true), true)
+    view.applyTellomiDisplay(null, true)
+    assertEquals(View.GONE, linkIcon.visibility)
+    assertEquals(titleColor, title.currentTextColor)
   }
 }

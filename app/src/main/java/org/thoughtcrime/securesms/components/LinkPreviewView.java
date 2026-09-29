@@ -1,6 +1,7 @@
 package org.thoughtcrime.securesms.components;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.RequestManager;
 
@@ -53,6 +55,8 @@ public class LinkPreviewView extends FrameLayout {
   private ViewGroup                   container;
   private Stub<OutlinedThumbnailView> thumbnail;
   private TextView                    title;
+  private View                        linkIcon;
+  private ColorStateList              titleColors;
   private TextView                    description;
   private TextView                    site;
   private View                        divider;
@@ -82,6 +86,8 @@ public class LinkPreviewView extends FrameLayout {
     container     = findViewById(R.id.linkpreview_container);
     thumbnail     = new Stub<>(findViewById(R.id.linkpreview_thumbnail));
     title         = findViewById(R.id.linkpreview_title);
+    linkIcon      = findViewById(R.id.linkpreview_link_icon);
+    titleColors   = title.getTextColors();
     description   = findViewById(R.id.linkpreview_description);
     site          = findViewById(R.id.linkpreview_site);
     divider       = findViewById(R.id.linkpreview_divider);
@@ -147,6 +153,7 @@ public class LinkPreviewView extends FrameLayout {
   }
 
   public void setLinkPreview(@NonNull RequestManager requestManager, @NonNull LinkPreview linkPreview, boolean showThumbnail, boolean showDescription, boolean scheduleMessageMode) {
+    showPlainLink(false, false);
     spinner.setVisibility(GONE);
     noPreview.setVisibility(GONE);
 
@@ -224,6 +231,7 @@ public class LinkPreviewView extends FrameLayout {
    * this preview's level instead of the sender's. Null leaves Signal's display as is.
    */
   public void applyTellomiDisplay(@Nullable TellomiLinkDisplay display, boolean showDescription) {
+    showPlainLink(display != null && display.getPlainLink(), display != null && display.getLookalike());
     if (display == null) {
       return;
     }
@@ -254,6 +262,22 @@ public class LinkPreviewView extends FrameLayout {
     if (!Util.isEmpty(display.getDomain())) {
       site.setText(display.getDomain());
       site.setVisibility(VISIBLE);
+    } else if (display.getPlainLink()) {
+      // The domain is the title already (card-visual §3.7).
+      site.setVisibility(GONE);
+    }
+  }
+
+  /**
+   * Tellomi (card-visual §3.7): the no-image card: a link icon at the end of the title line, and the domain in the
+   * danger colour when it imitates a well-known one (ADR-0063 §6.1). Undone for every other card, since views are reused.
+   */
+  private void showPlainLink(boolean plainLink, boolean lookalike) {
+    linkIcon.setVisibility(plainLink ? VISIBLE : GONE);
+    if (plainLink && lookalike) {
+      title.setTextColor(ContextCompat.getColor(getContext(), org.signal.core.ui.R.color.signal_colorError));
+    } else {
+      title.setTextColor(titleColors);
     }
   }
 
@@ -296,6 +320,21 @@ public class LinkPreviewView extends FrameLayout {
           thumbnailState.getDownloadListener()
       );
       thumbnailState.applyState(thumbnail);
+    }
+    postInvalidate();
+  }
+
+  /**
+   * Tellomi (card-visual §3.5): after {@link #setCorners}, round the bottom corners too, for a card that ends the
+   * bubble.
+   */
+  public void setBottomCorners(int bottomStart, int bottomEnd) {
+    if (ViewUtil.isRtl(this)) {
+      cornerMask.setBottomLeftRadius(bottomEnd);
+      cornerMask.setBottomRightRadius(bottomStart);
+    } else {
+      cornerMask.setBottomLeftRadius(bottomStart);
+      cornerMask.setBottomRightRadius(bottomEnd);
     }
     postInvalidate();
   }
