@@ -10,6 +10,7 @@ import android.text.format.DateFormat
 import org.thoughtcrime.securesms.R
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -84,9 +85,9 @@ data class TellomiLinkDisplay(
       "web" to R.string.TellomiLinkCard__kind_web
     )
 
-    // Shown as plain text, in this order (kinds.toml). Counts, dates and coordinates wait for the
-    // finalized card spec (they need localized formatting).
-    private val TEXT_ATTRS = listOf("author", "artist", "album", "developer", "owner", "name", "address", "platform")
+    private const val SEPARATOR = " · "
+
+    private val PLATFORM_NAMES = mapOf("ios" to "iOS", "android" to "Android")
 
     /** Null: no override, show the preview the way Signal does. */
     @JvmStatic
@@ -95,19 +96,15 @@ data class TellomiLinkDisplay(
         return null
       }
       return when (card.level) {
-        TellomiLinkCard.Level.PLAIN_LINK, TellomiLinkCard.Level.GENERIC -> null
+        TellomiLinkCard.Level.PLAIN_LINK -> null
+        TellomiLinkCard.Level.GENERIC -> generic(linkPreview, card, card.title)
         TellomiLinkCard.Level.BRAND -> TellomiLinkDisplay(
           title = card.providerName?.forLocale(locale),
-          description = null,
+          description = card.kind?.let(strings.kindName),
           domain = card.domain,
           officialBadge = false
         )
-        TellomiLinkCard.Level.STRUCTURED -> TellomiLinkDisplay(
-          title = card.title ?: linkPreview.title,
-          description = formatAttrs(card),
-          domain = card.domain,
-          officialBadge = false
-        )
+        TellomiLinkCard.Level.STRUCTURED -> structured(linkPreview, card, strings)
         TellomiLinkCard.Level.FIRST_PARTY -> {
           val firstParty = card.firstParty
           when (firstParty?.type) {
@@ -129,12 +126,49 @@ data class TellomiLinkDisplay(
       }
     }
 
-    @JvmStatic
-    fun formatAttrs(card: TellomiLinkCard): String? {
-      val byKey = card.attrs.associate { it.key to it.value }
-      val parts = TEXT_ATTRS.mapNotNull { key -> byKey[key]?.takeIf { it.isNotEmpty() } }.toMutableList()
-      formatDuration(byKey["duration_ms"])?.let { parts += it }
-      return parts.takeIf { it.isNotEmpty() }?.joinToString(" · ")
+    private fun generic(linkPreview: LinkPreview, card: TellomiLinkCard, title: String?): TellomiLinkDisplay {
+      return TellomiLinkDisplay(
+        title = title.nonEmpty() ?: linkPreview.title.nonEmpty(),
+        description = null,
+        domain = card.domain,
+        officialBadge = false
+      )
+    }
+
+    private fun structured(linkPreview: LinkPreview, card: TellomiLinkCard, strings: Strings): TellomiLinkDisplay {
+      val attrs = card.attrs.associate { it.key to it.value }
+      fun text(key: String): String? = attrs[key].nonEmpty()
+      fun count(key: String): String? = attrs[key]?.toIntOrNull()?.takeIf { it > 0 }?.let(strings.trackCount)
+      fun line(vararg parts: String?): String? = parts.filterNotNull().takeIf { it.isNotEmpty() }?.joinToString(SEPARATOR)
+
+      return when (card.kind) {
+        "video" -> {
+          val published = text("published_at")?.let { parseDate(it) }
+          TellomiLinkDisplay(
+            title = card.title.nonEmpty() ?: linkPreview.title.nonEmpty(),
+            description = line(text("author"), formatDuration(attrs["duration_ms"])),
+            domain = if (card.domain != null && published != null) card.domain + SEPARATOR + strings.date(published) else card.domain,
+            officialBadge = false
+          )
+        }
+        "channel" -> withLine(linkPreview, card, line(text("author")))
+        "music.track" -> withLine(linkPreview, card, line(text("artist"), text("album"), formatDuration(attrs["duration_ms"])))
+        "music.album" -> withLine(linkPreview, card, line(text("artist"), count("track_count")))
+        "music.playlist" -> withLine(linkPreview, card, line(text("author"), count("track_count")))
+        "app" -> withLine(linkPreview, card, line(text("developer"), attrs["platform"]?.let { PLATFORM_NAMES[it] }))
+        "repo" -> withLine(linkPreview, card, line(text("owner")))
+        "place" -> TellomiLinkDisplay(
+          title = text("name") ?: card.title.nonEmpty() ?: linkPreview.title.nonEmpty() ?: strings.place,
+          description = line(text("address")),
+          domain = card.domain,
+          officialBadge = false
+        )
+        else -> generic(linkPreview, card, card.title)
+      }
+    }
+
+    private fun withLine(linkPreview: LinkPreview, card: TellomiLinkCard, subLine: String?): TellomiLinkDisplay {
+      return generic(linkPreview, card, card.title).copy(description = subLine)
     }
 
     /** `m:ss` under an hour, `h:mm:ss` from an hour; zero, negative or not a number shows nothing (§3.9). */
@@ -152,6 +186,15 @@ data class TellomiLinkDisplay(
       }
     }
 
+    /** RFC 3339 → epoch millis; null when it does not parse. */
+    private fun parseDate(value: String): Long? {
+      return try {
+        OffsetDateTime.parse(value).toInstant().toEpochMilli()
+      } catch (e: Exception) {
+        null
+      }
+    }
+
     /** Medium length date in the device's time zone, without the year when it is this year (§3.9). */
     @JvmStatic
     fun formatDate(millis: Long, locale: Locale, nowMillis: Long): String {
@@ -161,5 +204,6 @@ data class TellomiLinkDisplay(
       return SimpleDateFormat(DateFormat.getBestDateTimePattern(locale, skeleton), locale).format(Date(millis))
     }
 
+    private fun String?.nonEmpty(): String? = this?.takeIf { it.isNotEmpty() }
   }
 }
