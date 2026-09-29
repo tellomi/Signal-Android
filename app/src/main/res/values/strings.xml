@@ -4120,6 +4120,34 @@
         <item quantity="one">%1$s track</item>
         <item quantity="other">%1$s tracks</item>
     </plurals>
+    <!-- Tellomi (card-visual §5.2): button under the card of a Tellomi user -->
+    <string name="TellomiLinkCard__action_message">Message</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a group invite link -->
+    <string name="TellomiLinkCard__action_join_group">Join Group</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a group this account is in, or of the official website -->
+    <string name="TellomiLinkCard__action_open">Open</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a call link -->
+    <string name="TellomiLinkCard__action_join_call">Join Call</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a sticker pack that is not installed -->
+    <string name="TellomiLinkCard__action_add_stickers">Add</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a sticker pack that is installed -->
+    <string name="TellomiLinkCard__action_view_stickers">View</string>
+    <!-- Tellomi (card-visual §5.2): line under the name of a group this account is already in -->
+    <string name="TellomiLinkCard__group_joined">You’re a member</string>
+    <!-- Tellomi (card-visual §5.2): line under the name of a sticker pack that is already installed -->
+    <string name="TellomiLinkCard__stickers_added">Added</string>
+    <!-- Tellomi (card-visual §5.2): title of the card of a call link that has no room name -->
+    <string name="TellomiLinkCard__call_title">Tellomi call</string>
+    <!-- Tellomi (card-visual §3.9): number of members of a group on the card of its invite link; %1$s is the number -->
+    <plurals name="TellomiLinkCard__member_count">
+        <item quantity="one">%1$s member</item>
+        <item quantity="other">%1$s members</item>
+    </plurals>
+    <!-- Tellomi (card-visual §3.9): number of stickers in a pack on its card; %1$s is the number -->
+    <plurals name="TellomiLinkCard__sticker_count">
+        <item quantity="one">%1$s sticker</item>
+        <item quantity="other">%1$s stickers</item>
+    </plurals>
     <!-- Tellomi (ADR-0063 §6.1): shown once before opening a link whose domain imitates a well-known one; %1$s is the well-known domain. The link can still be opened. -->
     <string name="TellomiLinkOpen__lookalike_message">The domain of this link looks like %1$s, but it isn’t %1$s.</string>
     <!-- Tellomi (ADR-0063 §6.1): button in that warning that opens the link anyway -->
