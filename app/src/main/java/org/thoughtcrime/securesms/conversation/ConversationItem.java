@@ -768,6 +768,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   private int getDefaultTopMarginForRecord(@NonNull MessageRecord messageRecord, int defaultTopMargin, int defaultBottomMargin) {
     if (isStoryReaction(messageRecord) && !messageRecord.isRemoteDelete()) {
       return defaultBottomMargin;
+    } else if (conversationMessage != null && bodyText.getVisibility() == GONE && conversationMessage.getComputedProperties().isLinkCardOnly()) {
+      // Tellomi (card-visual §3.5): the time sits under the card, not under text that is not there.
+      return defaultBottomMargin;
     } else {
       return defaultTopMargin;
     }
@@ -1169,9 +1172,35 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   }
 
   private boolean hasLinkPreview(MessageRecord messageRecord) {
-    // Tellomi (ADR-0063 §5.1): a preview rust/links put on the plain-link rung is not shown.
+    // Tellomi (ADR-0063 §5.1, card-visual §3.5): a preview rust/links put on the plain-link rung shows only as the
+    // no-image card of a message that is just this link; such a message sent without a preview gets that card too.
     TellomiLinkCard card = getLinkCard();
-    return MessageRecordUtil.hasLinkPreview(messageRecord) && (card == null || card.getLevel() != TellomiLinkCard.Level.PLAIN_LINK);
+    if (card != null && card.getLevel() == TellomiLinkCard.Level.PLAIN_LINK) {
+      return conversationMessage.getComputedProperties().isLinkCardOnly();
+    }
+    return MessageRecordUtil.hasLinkPreview(messageRecord);
+  }
+
+  /** Tellomi: the preview the card shows: the message's first, or the one drawn from its link alone (card-visual §3.5). */
+  private @Nullable LinkPreview getShownLinkPreview() {
+    LinkPreview local = conversationMessage != null ? conversationMessage.getComputedProperties().getLocalLinkPreview() : null;
+    if (local != null) {
+      return local;
+    }
+    if (messageRecord.isMms() && !((MmsMessageRecord) messageRecord).getLinkPreviews().isEmpty()) {
+      return ((MmsMessageRecord) messageRecord).getLinkPreviews().get(0);
+    }
+    return null;
+  }
+
+  /**
+   * Tellomi (card-visual §3.5): the bubble is the card alone, without the link text under it. Signal shows no preview
+   * in a message request, so there the text stays.
+   */
+  private boolean isLinkCardOnly(MessageRecord messageRecord, boolean messageRequestAccepted) {
+    return messageRequestAccepted &&
+           conversationMessage.getComputedProperties().isLinkCardOnly() &&
+           hasLinkPreview(messageRecord);
   }
 
   private boolean hasBigImageLinkPreview(MessageRecord messageRecord) {
@@ -1265,6 +1294,12 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       bodyText.setText(null);
       bodyText.setOverflowText(null);
       bodyText.setVisibility(View.GONE);
+    } else if (isLinkCardOnly(messageRecord, messageRequestAccepted)) {
+      // Tellomi (card-visual §3.5): just one link shows the card alone; "Copy" in the long-press menu still copies it.
+      bodyText.setText(null);
+      bodyText.setOverflowText(null);
+      bodyText.setVisibility(View.GONE);
+      if (callToActionStub.resolved()) callToActionStub.get().setVisibility(View.GONE);
     } else {
       Spannable styledText = conversationMessage.getDisplayBody(getContext());
       if (messageRequestAccepted) {
@@ -1430,7 +1465,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       paymentViewStub.setVisibility(View.GONE);
 
       //noinspection ConstantConditions
-      LinkPreview linkPreview = ((MmsMessageRecord) messageRecord).getLinkPreviews().get(0);
+      LinkPreview linkPreview = getShownLinkPreview();
 
       CallLinkRootKey callLinkRootKey = CallLinks.isCallLink(linkPreview.getUrl()) ? CallLinks.parseUrl(linkPreview.getUrl()) : null;
       if (callLinkRootKey != null) {
@@ -1460,6 +1495,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
         setThumbnailCorners(messageRecord, previousRecord, nextRecord, isGroupThread);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, true);
+        setLinkCardOnlyBottomCorners(messageRecord, nextRecord, isGroupThread, messageRequestAccepted);
 
         ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ViewUtil.updateLayoutParamsIfNonNull(groupSenderHolder, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1470,6 +1506,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), !isContentCondensed());
         linkPreviewStub.get().setDownloadClickedListener(downloadClickListener);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, false);
+        setLinkCardOnlyBottomCorners(messageRecord, nextRecord, isGroupThread, messageRequestAccepted);
         ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ViewUtil.updateLayoutParamsIfNonNull(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -1832,6 +1869,24 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     } else {
       linkPreviewStub.get().setCorners(collapseRadius, defaultRadius);
     }
+  }
+
+  /**
+   * Tellomi (card-visual §3.5): with no text and no time under it, the card is the bottom of the bubble, so its
+   * bottom corners are the bubble's.
+   */
+  private void setLinkCardOnlyBottomCorners(@NonNull MessageRecord current, @NonNull Optional<MessageRecord> next, boolean isGroupThread, boolean messageRequestAccepted) {
+    if (!isLinkCardOnly(current, messageRequestAccepted) || isFooterVisible(current, next, isGroupThread)) {
+      return;
+    }
+
+    int defaultRadius  = readDimen(R.dimen.message_corner_radius);
+    int collapseRadius = readDimen(R.dimen.message_corner_collapse_radius);
+    // No time under it: the next message is in the same cluster, which squares the corner on the sender's side.
+    int bottomStart    = current.isOutgoing() ? defaultRadius : collapseRadius;
+    int bottomEnd      = current.isOutgoing() ? collapseRadius : defaultRadius;
+
+    linkPreviewStub.get().setBottomCorners(bottomStart, bottomEnd);
   }
 
   private void setContactPhoto(@NonNull Recipient recipient) {
@@ -2875,8 +2930,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   private class LinkPreviewClickListener implements View.OnClickListener {
     @Override
     public void onClick(View view) {
-      if (eventListener != null && batchSelected.isEmpty() && messageRecord.isMms() && !((MmsMessageRecord) messageRecord).getLinkPreviews().isEmpty()) {
-        eventListener.onLinkPreviewClicked(((MmsMessageRecord) messageRecord).getLinkPreviews().get(0));
+      LinkPreview linkPreview = getShownLinkPreview();
+      if (eventListener != null && batchSelected.isEmpty() && linkPreview != null) {
+        eventListener.onLinkPreviewClicked(linkPreview);
       } else {
         passthroughClickListener.onClick(view);
       }
@@ -2900,8 +2956,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   private class LinkPreviewThumbnailClickListener implements SlideClickListener {
     public void onClick(final View v, final Slide slide) {
-      if (eventListener != null && batchSelected.isEmpty() && messageRecord.isMms() && !((MmsMessageRecord) messageRecord).getLinkPreviews().isEmpty()) {
-        eventListener.onLinkPreviewClicked(((MmsMessageRecord) messageRecord).getLinkPreviews().get(0));
+      LinkPreview linkPreview = getShownLinkPreview();
+      if (eventListener != null && batchSelected.isEmpty() && linkPreview != null) {
+        eventListener.onLinkPreviewClicked(linkPreview);
       } else {
         performClick();
       }

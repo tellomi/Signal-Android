@@ -155,6 +155,16 @@ class TellomiLinkDisplayTest {
   }
 
   @Test
+  fun `a plain-link card shows the domain once, as the title, with the link icon`() {
+    val plain = TellomiLinkCard(level = TellomiLinkCard.Level.PLAIN_LINK, domain = "163.com", showImage = false)
+    assertEquals(
+      TellomiLinkDisplay("163.com", null, null, false, plainLink = true, lookalike = false),
+      TellomiLinkDisplay.of(snapshot, plain, Locale.US, strings)
+    )
+    assertEquals(true, TellomiLinkDisplay.of(snapshot, plain.copy(domain = "bi1ibili.com", lookalike = "bilibili.com"), Locale.US, strings)?.lookalike)
+  }
+
+  @Test
   fun `group, call and sticker cards keep Signal's display`() {
     val card = base.copy(
       level = TellomiLinkCard.Level.FIRST_PARTY,
