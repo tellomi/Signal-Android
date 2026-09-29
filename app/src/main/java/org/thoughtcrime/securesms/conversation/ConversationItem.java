@@ -1187,8 +1187,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     return TellomiLinkDisplay.of(linkPreview,
                                  getLinkCard(),
                                  Locale.getDefault(),
-                                 new TellomiLinkDisplay.Strings(context.getString(R.string.TellomiLinkCard__official_title),
-                                                                context.getString(R.string.TellomiLinkCard__tellomi_user)));
+                                 TellomiLinkDisplay.Strings.from(context));
   }
 
   private boolean isViewOnceMessage(MessageRecord messageRecord) {

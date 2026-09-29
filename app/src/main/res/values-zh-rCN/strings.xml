@@ -3938,6 +3938,26 @@
     <string name="TellomiLinkCard__official_title">Tellomi 官网</string>
     <string name="TellomiLinkCard__official_badge">官方</string>
     <string name="TellomiLinkCard__tellomi_user">Tellomi 用户</string>
+    <string name="TellomiLinkCard__place">位置</string>
+    <string name="TellomiLinkCard__kind_video">视频</string>
+    <string name="TellomiLinkCard__kind_channel">频道</string>
+    <string name="TellomiLinkCard__kind_music_track">单曲</string>
+    <string name="TellomiLinkCard__kind_music_album">专辑</string>
+    <string name="TellomiLinkCard__kind_music_playlist">歌单</string>
+    <string name="TellomiLinkCard__kind_place">地点</string>
+    <string name="TellomiLinkCard__kind_app">应用</string>
+    <string name="TellomiLinkCard__kind_repo">代码仓库</string>
+    <string name="TellomiLinkCard__kind_article">文章</string>
+    <string name="TellomiLinkCard__kind_product">商品</string>
+    <string name="TellomiLinkCard__kind_package">快递</string>
+    <string name="TellomiLinkCard__kind_question">问答</string>
+    <string name="TellomiLinkCard__kind_deal">团购</string>
+    <string name="TellomiLinkCard__kind_ride">行程</string>
+    <string name="TellomiLinkCard__kind_payment">支付</string>
+    <string name="TellomiLinkCard__kind_web">网页</string>
+    <plurals name="TellomiLinkCard__track_count">
+        <item quantity="other">%1$s 首</item>
+    </plurals>
     <string name="TellomiLinkOpen__lookalike_message">这个链接的域名与 %1$s 相似，但不是它</string>
     <string name="TellomiLinkOpen__open_anyway">继续打开</string>
     <string name="preferences__change_passphrase">修改密码</string>
