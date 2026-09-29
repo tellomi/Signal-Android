@@ -65,8 +65,11 @@ class TellomiLinkSender(
   }
 
   sealed class FirstParty {
-    /** The preview Signal's lookup made; its title and image are used. */
-    class Found(val preview: LinkPreview) : FirstParty()
+    /**
+     * The preview Signal's lookup made; its title and image are used. [count]: how many members the group or
+     * stickers the pack has, if the lookup knows (ADR-0063 §4.8, card-visual §3.9).
+     */
+    class Found @JvmOverloads constructor(val preview: LinkPreview, val count: Int? = null) : FirstParty()
 
     /** The group link is definitely not active. */
     object Inactive : FirstParty()
@@ -108,7 +111,14 @@ class TellomiLinkSender(
         return when (val found = lookups.firstParty(kind, url)) {
           is FirstParty.Found -> {
             firstParty = found.preview
-            TellomiLinkSendJob.FirstPartyResult(ok = true, title = found.preview.title.takeIf { it.isNotEmpty() })
+            // How many members / stickers, for the receiver's card (card-visual §3.9); only a count above zero.
+            val count = found.count?.takeIf { it > 0 }
+            TellomiLinkSendJob.FirstPartyResult(
+              ok = true,
+              title = found.preview.title.takeIf { it.isNotEmpty() },
+              memberCount = count?.takeIf { kind == "tellomi.group" },
+              stickerCount = count?.takeIf { kind == "tellomi.sticker" }
+            )
           }
           FirstParty.Inactive -> TellomiLinkSendJob.FirstPartyResult(ok = false, invalid = true)
           FirstParty.NotFound -> TellomiLinkSendJob.FirstPartyResult(ok = false)
