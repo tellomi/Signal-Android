@@ -4096,6 +4096,30 @@
     <string name="TellomiLinkCard__official_badge">Official</string>
     <!-- Tellomi (ADR-0063 §4.8): tell.cc user link card: subtitle under the @username, or the title when the link has no readable username -->
     <string name="TellomiLinkCard__tellomi_user">Tellomi user</string>
+    <!-- Tellomi (card-visual §3.7): title of a place link card that has neither a name nor a title -->
+    <string name="TellomiLinkCard__place">Location</string>
+    <!-- Tellomi (card-visual §3.10): what a brand-shell link card links to, shown under the platform name. One per kind in links/kinds.toml -->
+    <string name="TellomiLinkCard__kind_video">Video</string>
+    <string name="TellomiLinkCard__kind_channel">Channel</string>
+    <string name="TellomiLinkCard__kind_music_track">Song</string>
+    <string name="TellomiLinkCard__kind_music_album">Album</string>
+    <string name="TellomiLinkCard__kind_music_playlist">Playlist</string>
+    <string name="TellomiLinkCard__kind_place">Place</string>
+    <string name="TellomiLinkCard__kind_app">App</string>
+    <string name="TellomiLinkCard__kind_repo">Repository</string>
+    <string name="TellomiLinkCard__kind_article">Article</string>
+    <string name="TellomiLinkCard__kind_product">Product</string>
+    <string name="TellomiLinkCard__kind_package">Package</string>
+    <string name="TellomiLinkCard__kind_question">Q&amp;A</string>
+    <string name="TellomiLinkCard__kind_deal">Deal</string>
+    <string name="TellomiLinkCard__kind_ride">Ride</string>
+    <string name="TellomiLinkCard__kind_payment">Payment</string>
+    <string name="TellomiLinkCard__kind_web">Web page</string>
+    <!-- Tellomi (card-visual §3.9): number of tracks in an album or playlist link card -->
+    <plurals name="TellomiLinkCard__track_count">
+        <item quantity="one">%1$s track</item>
+        <item quantity="other">%1$s tracks</item>
+    </plurals>
     <!-- Tellomi (ADR-0063 §6.1): shown once before opening a link whose domain imitates a well-known one; %1$s is the well-known domain. The link can still be opened. -->
     <string name="TellomiLinkOpen__lookalike_message">The domain of this link looks like %1$s, but it isn’t %1$s.</string>
     <!-- Tellomi (ADR-0063 §6.1): button in that warning that opens the link anyway -->
