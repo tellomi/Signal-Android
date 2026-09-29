@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -29,15 +31,19 @@ import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.avatar.fallback.FallbackAvatar;
 import org.thoughtcrime.securesms.avatar.fallback.FallbackAvatarDrawable;
 import org.thoughtcrime.securesms.calls.links.CallLinks;
+import org.thoughtcrime.securesms.conversation.colors.AvatarColor;
 import org.thoughtcrime.securesms.conversation.colors.AvatarColorHash;
 import org.thoughtcrime.securesms.linkpreview.LinkPreview;
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewRepository;
+import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay;
 import org.thoughtcrime.securesms.mms.ImageSlide;
 import org.thoughtcrime.securesms.mms.SlidesClickedListener;
+import org.thoughtcrime.securesms.recipients.Recipient;
 import org.signal.core.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -50,12 +56,17 @@ import okhttp3.HttpUrl;
 public class LinkPreviewView extends FrameLayout {
 
   private static final int TYPE_CONVERSATION = 0;
+  /** Tellomi: the avatar or cover of a first-party card (card-visual §5.2), as on Desktop. */
+  private static final int FIRST_PARTY_AVATAR_DP = 52;
+  private static final int DEFAULT_THUMBNAIL_DP  = 72;
   private static final int TYPE_COMPOSE      = 1;
 
   private ViewGroup                   container;
   private Stub<OutlinedThumbnailView> thumbnail;
   private TextView                    title;
   private View                        linkIcon;
+  private AvatarImageView             firstPartyAvatar;
+  private TextView                    action;
   private ColorStateList              titleColors;
   private TextView                    description;
   private TextView                    site;
@@ -87,6 +98,8 @@ public class LinkPreviewView extends FrameLayout {
     thumbnail     = new Stub<>(findViewById(R.id.linkpreview_thumbnail));
     title         = findViewById(R.id.linkpreview_title);
     linkIcon      = findViewById(R.id.linkpreview_link_icon);
+    firstPartyAvatar = findViewById(R.id.linkpreview_first_party_avatar);
+    action        = findViewById(R.id.linkpreview_action);
     titleColors   = title.getTextColors();
     description   = findViewById(R.id.linkpreview_description);
     site          = findViewById(R.id.linkpreview_site);
@@ -154,6 +167,7 @@ public class LinkPreviewView extends FrameLayout {
 
   public void setLinkPreview(@NonNull RequestManager requestManager, @NonNull LinkPreview linkPreview, boolean showThumbnail, boolean showDescription, boolean scheduleMessageMode) {
     showPlainLink(false, false);
+    showFirstParty(false);
     spinner.setVisibility(GONE);
     noPreview.setVisibility(GONE);
 
@@ -237,16 +251,7 @@ public class LinkPreviewView extends FrameLayout {
     }
 
     if (!Util.isEmpty(display.getTitle())) {
-      if (display.getOfficialBadge()) {
-        SpannableStringBuilder text  = new SpannableStringBuilder(display.getTitle()).append("  ");
-        int                    start = text.length();
-        text.append(getContext().getString(R.string.TellomiLinkCard__official_badge));
-        text.setSpan(new ForegroundColorSpan(site.getCurrentTextColor()), start, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        text.setSpan(new RelativeSizeSpan(0.85f), start, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        title.setText(text);
-      } else {
-        title.setText(display.getTitle());
-      }
+      setTitleText(display.getTitle(), display.getOfficialBadge());
       title.setVisibility(VISIBLE);
     } else {
       title.setVisibility(GONE);
@@ -269,6 +274,149 @@ public class LinkPreviewView extends FrameLayout {
   }
 
   /**
+   * Tellomi (card-visual §5.2): after {@link #setLinkPreview}, draw the card of a Tellomi object: an avatar or cover, the
+   * title, one subtitle line, and the action under a hairline across the card (no domain line). Only for conversation
+   * bubbles. Users and groups this device knows show their own avatar; the others keep what {@link #setLinkPreview} put
+   * there (a group's or pack's picture from the preview, the call link's icon) or get a placeholder.
+   */
+  public void applyTellomiFirstParty(@NonNull RequestManager requestManager,
+                                     @NonNull TellomiFirstPartyCard.Display display,
+                                     @Nullable Recipient avatarRecipient,
+                                     boolean hasSnapshotThumbnail)
+  {
+    if (type == TYPE_COMPOSE) {
+      return;
+    }
+
+    showPlainLink(false, false);
+    setTitleText(display.getTitle(), display.getOfficialBadge());
+    title.setVisibility(VISIBLE);
+
+    if (!Util.isEmpty(display.getSubtitle())) {
+      description.setText(display.getSubtitle());
+      description.setVisibility(VISIBLE);
+    } else {
+      description.setVisibility(GONE);
+    }
+    site.setVisibility(GONE);
+
+    boolean avatarVisible = false;
+    if (avatarRecipient != null && (display.getType() == TellomiFirstPartyCard.Type.USER || display.getType() == TellomiFirstPartyCard.Type.GROUP)) {
+      firstPartyAvatar.setAvatar(requestManager, avatarRecipient, false);
+      firstPartyAvatar.setVisibility(VISIBLE);
+      thumbnail.setVisibility(GONE);
+      avatarVisible = true;
+    } else if (display.getType() == TellomiFirstPartyCard.Type.OFFICIAL) {
+      showThumbnailDrawable(requestManager, AppCompatResources.getDrawable(getContext(), R.mipmap.ic_launcher));
+    } else if (!hasSnapshotThumbnail && (display.getType() == TellomiFirstPartyCard.Type.USER || display.getType() == TellomiFirstPartyCard.Type.GROUP)) {
+      AvatarColor      color    = AvatarColorHash.forCallLink(display.getTitle().getBytes(StandardCharsets.UTF_8));
+      FallbackAvatar   fallback = display.getType() == TellomiFirstPartyCard.Type.USER ? new FallbackAvatar.Resource.Person(color) : new FallbackAvatar.Resource.Group(color);
+      showThumbnailDrawable(requestManager, new FallbackAvatarDrawable(getContext(), fallback).circleCrop());
+    }
+
+    if (!avatarVisible) {
+      firstPartyAvatar.setVisibility(GONE);
+    }
+    boolean leadingVisible = avatarVisible || (thumbnail.resolved() && thumbnail.getVisibility() == VISIBLE);
+    int     leadingId      = avatarVisible ? R.id.linkpreview_first_party_avatar : R.id.linkpreview_thumbnail;
+    resizeThumbnail(FIRST_PARTY_AVATAR_DP);
+    alignTitleWithLeading(leadingVisible, leadingId);
+    stackSubtitleUnderTitle(leadingVisible, leadingId);
+
+    if (display.getType() == TellomiFirstPartyCard.Type.CALL) {
+      // A call link already has Signal's own "Join" button under the bubble; a second one would say the same.
+      action.setVisibility(GONE);
+      divider.setVisibility(GONE);
+      return;
+    }
+
+    int start  = -container.getPaddingStart();
+    int end    = -container.getPaddingEnd();
+    int bottom = -container.getPaddingBottom();
+    setHorizontalMargins(divider, start, end, 0);
+    setHorizontalMargins(action, start, end, bottom);
+    action.setText(display.getAction());
+    action.setVisibility(VISIBLE);
+    divider.setVisibility(VISIBLE);
+  }
+
+  /** The title and the subtitle sit one above the other, centered beside the avatar (Telegram's card, card-visual §5.2). */
+  private void stackSubtitleUnderTitle(boolean leadingVisible, int leadingId) {
+    if (!leadingVisible) {
+      return;
+    }
+
+    ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
+    titleParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
+    titleParams.bottomToTop    = R.id.linkpreview_description;
+    titleParams.verticalChainStyle = ConstraintLayout.LayoutParams.CHAIN_PACKED;
+    title.setLayoutParams(titleParams);
+
+    ConstraintLayout.LayoutParams descriptionParams = (ConstraintLayout.LayoutParams) description.getLayoutParams();
+    descriptionParams.topToBottom     = R.id.linkpreview_title;
+    descriptionParams.bottomToBottom  = leadingId;
+    descriptionParams.startToStart    = R.id.linkpreview_title;
+    descriptionParams.topMargin       = ViewUtil.dpToPx(2);
+    description.setLayoutParams(descriptionParams);
+  }
+
+  /** Puts the description back where the layout file has it, under the header. */
+  private void resetDescriptionPlacement() {
+    ConstraintLayout.LayoutParams descriptionParams = (ConstraintLayout.LayoutParams) description.getLayoutParams();
+    descriptionParams.topToBottom    = R.id.linkpreview_header_barrier;
+    descriptionParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
+    descriptionParams.startToStart   = ConstraintLayout.LayoutParams.PARENT_ID;
+    descriptionParams.topMargin      = ViewUtil.dpToPx(8);
+    description.setLayoutParams(descriptionParams);
+  }
+
+  private void resizeThumbnail(int dp) {
+    if (!thumbnail.resolved()) {
+      return;
+    }
+    ViewGroup.LayoutParams params = thumbnail.get().getLayoutParams();
+    params.width  = ViewUtil.dpToPx(dp);
+    params.height = ViewUtil.dpToPx(dp);
+    thumbnail.get().setLayoutParams(params);
+  }
+
+  private void showThumbnailDrawable(@NonNull RequestManager requestManager, @Nullable Drawable drawable) {
+    if (drawable == null) {
+      return;
+    }
+    thumbnail.setVisibility(VISIBLE);
+    thumbnailState.applyState(thumbnail);
+    thumbnail.get().setImageDrawable(requestManager, drawable);
+    thumbnail.get().showSecondaryText(false);
+    thumbnail.get().setOutlineEnabled(false);
+  }
+
+  private static void setHorizontalMargins(@NonNull View view, int start, int end, int bottom) {
+    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+    params.setMarginStart(start);
+    params.setMarginEnd(end);
+    params.bottomMargin = bottom;
+    view.setLayoutParams(params);
+  }
+
+  /** Undone for every other card, since views are reused. */
+  private void showFirstParty(boolean firstParty) {
+    if (firstParty) {
+      return;
+    }
+    firstPartyAvatar.setVisibility(GONE);
+    action.setVisibility(GONE);
+    resizeThumbnail(DEFAULT_THUMBNAIL_DP);
+    resetDescriptionPlacement();
+    resetTitleChain();
+    if (type != TYPE_COMPOSE) {
+      divider.setVisibility(GONE);
+      setHorizontalMargins(divider, 0, 0, 0);
+    }
+    setHorizontalMargins(action, 0, 0, 0);
+  }
+
+  /**
    * Tellomi (card-visual §3.7): the no-image card: a link icon at the end of the title line, and the domain in the
    * danger colour when it imitates a well-known one (ADR-0063 §6.1). Undone for every other card, since views are reused.
    */
@@ -281,12 +429,36 @@ public class LinkPreviewView extends FrameLayout {
     }
   }
 
+  private void resetTitleChain() {
+    ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
+    titleParams.bottomToTop        = ConstraintLayout.LayoutParams.UNSET;
+    titleParams.verticalChainStyle = ConstraintLayout.LayoutParams.CHAIN_SPREAD;
+    title.setLayoutParams(titleParams);
+  }
+
+  private void setTitleText(@NonNull String text, boolean officialBadge) {
+    if (officialBadge) {
+      SpannableStringBuilder styled = new SpannableStringBuilder(text).append("  ");
+      int                    start  = styled.length();
+      styled.append(getContext().getString(R.string.TellomiLinkCard__official_badge));
+      styled.setSpan(new ForegroundColorSpan(site.getCurrentTextColor()), start, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+      styled.setSpan(new RelativeSizeSpan(0.85f), start, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+      title.setText(styled);
+    } else {
+      title.setText(text);
+    }
+  }
+
   private void alignTitleWithThumbnail(boolean thumbnailVisible) {
+    alignTitleWithLeading(thumbnailVisible, R.id.linkpreview_thumbnail);
+  }
+
+  private void alignTitleWithLeading(boolean leadingVisible, int leadingId) {
     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) title.getLayoutParams();
-    if (thumbnailVisible) {
-      params.topToTop       = R.id.linkpreview_thumbnail;
-      params.bottomToBottom = R.id.linkpreview_thumbnail;
-      params.startToEnd     = R.id.linkpreview_thumbnail;
+    if (leadingVisible) {
+      params.topToTop       = leadingId;
+      params.bottomToBottom = leadingId;
+      params.startToEnd     = leadingId;
       params.startToStart   = ConstraintLayout.LayoutParams.UNSET;
       params.setMarginStart(ViewUtil.dpToPx(8));
     } else {

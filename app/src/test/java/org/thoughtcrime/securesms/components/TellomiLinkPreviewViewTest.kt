@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.test.core.app.ApplicationProvider
+import com.bumptech.glide.RequestManager
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
@@ -27,8 +28,11 @@ import org.signal.emoji.EmojiDependencies
 import org.signal.emoji.EmojiSource
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.keyvalue.SettingsValues
+import org.thoughtcrime.securesms.linkpreview.LinkPreview
+import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay
 import org.thoughtcrime.securesms.testutil.MockSignalStoreRule
+import java.util.Optional
 
 /**
  * ADR-0063 §4.8 / §5.1 (tellomi/tellomi#1422): what [LinkPreviewView.applyTellomiDisplay] puts on screen.
@@ -46,6 +50,9 @@ class TellomiLinkPreviewViewTest {
   private val description get() = view.findViewById<TextView>(R.id.linkpreview_description)
   private val site get() = view.findViewById<TextView>(R.id.linkpreview_site)
   private val linkIcon get() = view.findViewById<View>(R.id.linkpreview_link_icon)
+  private val action get() = view.findViewById<TextView>(R.id.linkpreview_action)
+  private val divider get() = view.findViewById<View>(R.id.linkpreview_divider)
+  private val avatar get() = view.findViewById<View>(R.id.linkpreview_first_party_avatar)
 
   @Before
   fun setUp() {
@@ -144,5 +151,70 @@ class TellomiLinkPreviewViewTest {
     view.applyTellomiDisplay(null, true)
     assertEquals(View.GONE, linkIcon.visibility)
     assertEquals(titleColor, title.currentTextColor)
+  }
+
+  @Test
+  fun `a first-party card shows the title, one subtitle, no domain, and the action under a hairline`() {
+    view.applyTellomiFirstParty(
+      mockk<RequestManager>(relaxed = true),
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.GROUP, "周末爬山群", "12 members", "Join Group", false),
+      null,
+      false
+    )
+
+    assertEquals("周末爬山群", title.text.toString())
+    assertEquals("12 members", description.text.toString())
+    assertEquals(View.VISIBLE, description.visibility)
+    assertEquals(View.GONE, site.visibility)
+    assertEquals("Join Group", action.text.toString())
+    assertEquals(View.VISIBLE, action.visibility)
+    assertEquals(View.VISIBLE, divider.visibility)
+    assertEquals(View.GONE, avatar.visibility)
+  }
+
+  @Test
+  fun `a call card keeps Signal's own join button, so it has no action row`() {
+    view.applyTellomiFirstParty(
+      mockk<RequestManager>(relaxed = true),
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.CALL, "Tellomi call", null, "Join Call", false),
+      null,
+      false
+    )
+
+    assertEquals("Tellomi call", title.text.toString())
+    assertEquals(View.GONE, description.visibility)
+    assertEquals(View.GONE, action.visibility)
+    assertEquals(View.GONE, divider.visibility)
+  }
+
+  @Test
+  fun `the official card keeps its badge on the title`() {
+    view.applyTellomiFirstParty(
+      mockk<RequestManager>(relaxed = true),
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.OFFICIAL, "Tellomi website", "/download", "Open", true),
+      null,
+      false
+    )
+
+    val badge = view.context.getString(R.string.TellomiLinkCard__official_badge)
+    assertEquals("Tellomi website  $badge", title.text.toString())
+  }
+
+  @Test
+  fun `a recycled view drops the first-party look`() {
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    view.applyTellomiFirstParty(
+      requestManager,
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.STICKER, "Bandit", "24 stickers", "Add", false),
+      null,
+      false
+    )
+
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), true)
+
+    assertEquals(View.GONE, action.visibility)
+    assertEquals(View.GONE, divider.visibility)
+    assertEquals(View.GONE, avatar.visibility)
+    assertEquals("Sender title", title.text.toString())
   }
 }

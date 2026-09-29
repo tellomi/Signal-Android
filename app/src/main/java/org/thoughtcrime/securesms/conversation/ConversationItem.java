@@ -129,6 +129,7 @@ import org.thoughtcrime.securesms.giph.mp4.GiphyMp4PlaybackPolicyEnforcer;
 import org.thoughtcrime.securesms.jobs.AttachmentDownloadJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.linkpreview.LinkPreview;
+import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay;
 import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory;
@@ -1212,6 +1213,25 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     return conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCard() : null;
   }
 
+  /** Tellomi (card-visual §5.2): the card of a Tellomi object, or null when this link is not one. */
+  private @Nullable TellomiFirstPartyCard.Display getFirstPartyDisplay() {
+    TellomiLinkCard card = getLinkCard();
+    if (card == null || conversationMessage == null) {
+      return null;
+    }
+    return TellomiFirstPartyCard.display(card, conversationMessage.getComputedProperties().getFirstPartyLocal(), TellomiFirstPartyCard.Strings.from(context));
+  }
+
+  /** The recipient whose avatar the card shows: the user or the group this device already has. */
+  private @Nullable Recipient getFirstPartyAvatarRecipient() {
+    TellomiFirstPartyCard.Local local = conversationMessage != null ? conversationMessage.getComputedProperties().getFirstPartyLocal() : null;
+    if (local == null) {
+      return null;
+    }
+    RecipientId id = local.getKnownUserId() != null ? local.getKnownUserId() : local.getGroupRecipientId();
+    return id != null ? Recipient.live(id).get() : null;
+  }
+
   private @Nullable TellomiLinkDisplay getLinkDisplay(@NonNull LinkPreview linkPreview) {
     return TellomiLinkDisplay.of(linkPreview,
                                  getLinkCard(),
@@ -1504,6 +1524,10 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         TellomiLinkCard linkCard = getLinkCard();
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, linkCard == null || linkCard.getShowImage(), !isContentCondensed(), displayMode.getMessageMode() == ConversationItemDisplayMode.MessageMode.SCHEDULED);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), !isContentCondensed());
+        TellomiFirstPartyCard.Display firstParty = getFirstPartyDisplay();
+        if (firstParty != null) {
+          linkPreviewStub.get().applyTellomiFirstParty(requestManager, firstParty, getFirstPartyAvatarRecipient(), linkPreview.getThumbnail().isPresent() && (linkCard == null || linkCard.getShowImage()));
+        }
         linkPreviewStub.get().setDownloadClickedListener(downloadClickListener);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, false);
         setLinkCardOnlyBottomCorners(messageRecord, nextRecord, isGroupThread, messageRequestAccepted);

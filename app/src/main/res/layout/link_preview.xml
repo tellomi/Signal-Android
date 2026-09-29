@@ -22,6 +22,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Tellomi (card-visual §5.2): the avatar of a first-party card (a known user, a group this device has) -->
+        <org.thoughtcrime.securesms.components.AvatarImageView
+            android:id="@+id/linkpreview_first_party_avatar"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <org.thoughtcrime.securesms.components.emoji.EmojiTextView
             android:id="@+id/linkpreview_title"
             style="@style/Signal.Text.LabelLarge"
@@ -58,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="linkpreview_thumbnail,linkpreview_title,linkpreview_link_icon" />
+            app:constraint_referenced_ids="linkpreview_thumbnail,linkpreview_first_party_avatar,linkpreview_title,linkpreview_link_icon" />
 
         <org.thoughtcrime.securesms.components.emoji.EmojiTextView
             android:id="@+id/linkpreview_description"
@@ -101,6 +111,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linkpreview_content_barrier"
             app:layout_constraintVertical_bias="0.0"
+            tools:visibility="visible" />
+
+        <!-- Tellomi (card-visual §5.2): the action of a first-party card, under a hairline across the card -->
+        <TextView
+            android:id="@+id/linkpreview_action"
+            style="@style/Signal.Text.LabelLarge"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:textColor="@color/signal_colorOnSurface"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linkpreview_divider"
+            tools:text="Join Group"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -151,7 +176,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="linkpreview_thumbnail,linkpreview_close,linkpreview_title,linkpreview_link_icon,linkpreview_description,linkpreview_site,linkpreview_progress_wheel,linkpreview_no_preview" />
+            app:constraint_referenced_ids="linkpreview_thumbnail,linkpreview_first_party_avatar,linkpreview_close,linkpreview_title,linkpreview_link_icon,linkpreview_description,linkpreview_site,linkpreview_progress_wheel,linkpreview_no_preview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3958,6 +3958,32 @@
     <plurals name="TellomiLinkCard__track_count">
         <item quantity="other">%1$s 首</item>
     </plurals>
+    <!-- Tellomi (card-visual §5.2): button under the card of a Tellomi user -->
+    <string name="TellomiLinkCard__action_message">发消息</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a group invite link -->
+    <string name="TellomiLinkCard__action_join_group">加入群聊</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a group this account is in, or of the official website -->
+    <string name="TellomiLinkCard__action_open">打开</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a call link -->
+    <string name="TellomiLinkCard__action_join_call">加入通话</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a sticker pack that is not installed -->
+    <string name="TellomiLinkCard__action_add_stickers">添加</string>
+    <!-- Tellomi (card-visual §5.2): button under the card of a sticker pack that is installed -->
+    <string name="TellomiLinkCard__action_view_stickers">查看</string>
+    <!-- Tellomi (card-visual §5.2): line under the name of a group this account is already in -->
+    <string name="TellomiLinkCard__group_joined">你已加入</string>
+    <!-- Tellomi (card-visual §5.2): line under the name of a sticker pack that is already installed -->
+    <string name="TellomiLinkCard__stickers_added">已添加</string>
+    <!-- Tellomi (card-visual §5.2): title of the card of a call link that has no room name -->
+    <string name="TellomiLinkCard__call_title">Tellomi 通话</string>
+    <!-- Tellomi (card-visual §3.9): number of members of a group on the card of its invite link; %1$s is the number -->
+    <plurals name="TellomiLinkCard__member_count">
+        <item quantity="other">%1$s 位成员</item>
+    </plurals>
+    <!-- Tellomi (card-visual §3.9): number of stickers in a pack on its card; %1$s is the number -->
+    <plurals name="TellomiLinkCard__sticker_count">
+        <item quantity="other">%1$s 个贴纸</item>
+    </plurals>
     <string name="TellomiLinkOpen__lookalike_message">这个链接的域名与 %1$s 相似，但不是它</string>
     <string name="TellomiLinkOpen__open_anyway">继续打开</string>
     <string name="preferences__change_passphrase">修改密码</string>

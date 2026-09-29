@@ -28,6 +28,8 @@ import org.thoughtcrime.securesms.database.model.databaseprotos.BodyRangeList;
 import org.thoughtcrime.securesms.groups.memberlabel.MemberLabel;
 import org.thoughtcrime.securesms.groups.memberlabel.MemberLabelRepository;
 import org.thoughtcrime.securesms.linkpreview.LinkPreview;
+import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard;
+import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyLocalLookup;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkOnly;
 import org.thoughtcrime.securesms.recipients.Recipient;
@@ -242,13 +244,21 @@ public class ConversationMessage {
     /** Tellomi (ADR-0063 §5.1 rule 4, card-visual §3.5): what the bubble shows for the message's link. */
     private final @NonNull TellomiLinkOnly.Decision link;
 
+    /** Tellomi (card-visual §5.2): what this device already has for the object of a first-party card, or null. */
+    private final @Nullable TellomiFirstPartyCard.Local firstPartyLocal;
+
     ComputedProperties(@NonNull FormattedDate formattedDate) {
-      this(formattedDate, TellomiLinkOnly.Decision.NONE);
+      this(formattedDate, TellomiLinkOnly.Decision.NONE, null);
     }
 
-    ComputedProperties(@NonNull FormattedDate formattedDate, @NonNull TellomiLinkOnly.Decision link) {
-      this.formattedDate = formattedDate;
-      this.link          = link;
+    ComputedProperties(@NonNull FormattedDate formattedDate, @NonNull TellomiLinkOnly.Decision link, @Nullable TellomiFirstPartyCard.Local firstPartyLocal) {
+      this.formattedDate   = formattedDate;
+      this.link            = link;
+      this.firstPartyLocal = firstPartyLocal;
+    }
+
+    public @Nullable TellomiFirstPartyCard.Local getFirstPartyLocal() {
+      return firstPartyLocal;
     }
 
     /** The link card decided for the first preview (or for {@link #getLocalLinkPreview()}), or null. */
@@ -356,6 +366,9 @@ public class ConversationMessage {
       SharedContactPresentation resolvedPresentation = sharedContactPresentation != null ? sharedContactPresentation
                                                                                           : resolveSharedContactPresentation(messageRecord);
 
+      TellomiLinkOnly.Decision linkDecision   = TellomiLinkOnly.decide(messageRecord, mentions != null && !mentions.isEmpty());
+      TellomiFirstPartyCard.Local firstPartyLocal = TellomiFirstPartyLocalLookup.forMessage(messageRecord, linkDecision);
+
       return new ConversationMessage(messageRecord,
                                      styledAndMentionBody != null ? styledAndMentionBody : mentionsUpdate != null ? mentionsUpdate.getBody() : body,
                                      mentionsUpdate != null ? mentionsUpdate.getMentions() : null,
@@ -363,7 +376,7 @@ public class ConversationMessage {
                                      styleResult,
                                      threadRecipient,
                                      originalMessage,
-                                     new ComputedProperties(formattedDate, TellomiLinkOnly.decide(messageRecord, mentions != null && !mentions.isEmpty())),
+                                     new ComputedProperties(formattedDate, linkDecision, firstPartyLocal),
                                      memberLabel,
                                      quoteMemberLabel,
                                      deletedBy,
