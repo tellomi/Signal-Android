@@ -10,8 +10,10 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
@@ -98,6 +100,35 @@ class TellomiLinkOpenerTest {
     val launcher = FakeLauncher(takes = setOf("in_app", "installed_app_only", "scheme", "browser", "copy_link"))
     assertNull(TellomiLinkOpener.run(emptyList(), launcher))
     assertEquals(emptyList<String>(), launcher.tried)
+  }
+
+  @Test
+  fun `only mailto and tel are handed to the system without a plan`() {
+    for (url in listOf("mailto:a@b.co", "tel:+8613800000000", "MAILTO:a@b.co", "Tel:+8613800000000", "  mailto:a@b.co\n")) {
+      assertTrue(url, TellomiLinkOpener.isHandedToSystem(url))
+    }
+    for (url in listOf(
+      "",
+      "mailto",
+      ":a@b.co",
+      "a@b.co",
+      "+8613800000000",
+      "https://a.example/",
+      "intent://scan/#Intent;scheme=zxing;end",
+      "javascript:alert('mailto:a@b.co')",
+      "intent://x#Intent;S.browser_fallback_url=tel:+8613800000000;end",
+      "data:text/html,mailto:a@b.co",
+      "file:///tel:",
+      "xmailto:a@b.co",
+      "mailto.evil:a@b.co",
+      "mailto+evil:a@b.co",
+      "tell:+8613800000000",
+      "\u0001mailto:a@b.co",
+      "mai lto:a@b.co",
+      "//mailto:a@b.co"
+    )) {
+      assertFalse(url, TellomiLinkOpener.isHandedToSystem(url))
+    }
   }
 
   @Test
