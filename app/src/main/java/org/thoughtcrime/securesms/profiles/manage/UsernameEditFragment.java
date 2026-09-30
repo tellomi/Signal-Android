@@ -188,7 +188,7 @@ public class UsernameEditFragment extends LoggingFragment {
   private void promptOrSubmitUsername() {
     if (viewModel.isSameUsernameRecovery()) {
       new MaterialAlertDialogBuilder(requireContext())
-          // Tellomi（ADR-0066 §6.2）：恢复要 confirm 一个用户名，服务端按换名算，会开始（或重新开始）30 天冷却，确认前就说清楚（与 Desktop#9 同一句）
+          // Tellomi（ADR-0066 §6.2）：恢复要 confirm 一个用户名，服务端按换名算，会开始（或重新开始）180 天冷却，确认前就说清楚（与 Desktop#9 同一句）
           .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_recovery_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
           .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
             viewModel.onUsernameSubmitted(true);
@@ -371,7 +371,7 @@ public class UsernameEditFragment extends LoggingFragment {
         break;
       case NEEDS_CONFIRM_RESET:
         new MaterialAlertDialogBuilder(requireContext())
-            // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：每次换名都会开始 30 天冷却，确认前就说清楚（与 Desktop#2 同一句）
+            // Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：每次换名都会开始 180 天冷却，确认前就说清楚（与 Desktop#2 同一句）
             .setMessage(getResources().getQuantityString(R.plurals.UsernameEditFragment__tellomi_change_confirmation, TellomiUsernames.RENAME_COOLDOWN_DAYS, TellomiUsernames.RENAME_COOLDOWN_DAYS))
             .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
             .setPositiveButton(R.string.UsernameEditFragment_continue, (dialog, which) -> viewModel.onUsernameSubmitted(true))

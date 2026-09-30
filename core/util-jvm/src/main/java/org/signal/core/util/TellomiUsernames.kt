@@ -66,10 +66,10 @@ object TellomiUsernames {
   }
 
   /**
-   * ADR-0066 §6.2：换用户名之后 30 天内不能再换（服务端 `USERNAME_CHANGE_COOLDOWN`，tellomi/Signal-Server#4；首次设置不计）。
+   * ADR-0066 §6.2：换用户名之后 180 天内不能再换（服务端 `USERNAME_CHANGE_COOLDOWN`，tellomi/Signal-Server#4，#8 起 180 天，owner 2026-09-27；首次设置不计）。
    * 只用在改名前的提醒；还剩多久永远以服务端 429 的 `Retry-After` 为准。
    */
-  const val RENAME_COOLDOWN_DAYS = 30
+  const val RENAME_COOLDOWN_DAYS = 180
 
   /**
    * reserve 回 429 时分辨「改名冷却」和普通限流：限流桶（`usernameReserve`，100 次 / 15 分钟）的 `Retry-After` 是秒级，
@@ -79,7 +79,7 @@ object TellomiUsernames {
     return retryAfter != null && retryAfter > 1.hours
   }
 
-  /** 冷却还剩几天：向上取整、至少 1（刚改完的 `Retry-After` 2591999 秒是 30 天，还剩两小时是 1 天）。与 Desktop 同一算法。 */
+  /** 冷却还剩几天：向上取整、至少 1（刚改完的 `Retry-After` 15551999 秒是 180 天，还剩两小时是 1 天）。与 Desktop 同一算法。 */
   fun renameCooldownDaysLeft(retryAfter: Duration): Int {
     return ceil(retryAfter.toDouble(DurationUnit.DAYS)).toInt().coerceAtLeast(1)
   }

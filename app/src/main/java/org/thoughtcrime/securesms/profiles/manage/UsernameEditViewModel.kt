@@ -431,7 +431,7 @@ internal class UsernameEditViewModel private constructor(private val mode: Usern
     DISCRIMINATOR_CANNOT_BE_00,
     DISCRIMINATOR_CANNOT_START_WITH_0,
 
-    /** Tellomi（tellomi/tellomi#1106 第四刀）：30 天改名冷却期内，天数见 [State.renameCooldownDaysLeft]。 */
+    /** Tellomi（tellomi/tellomi#1106 第四刀）：180 天改名冷却期内，天数见 [State.renameCooldownDaysLeft]。 */
     CHANGE_COOLDOWN
   }
 

@@ -89,6 +89,7 @@ class TellomiUsernamesTest {
 
   @Test
   fun renameCooldownDaysRoundUp() {
+    assertThat(TellomiUsernames.renameCooldownDaysLeft(15551999.seconds)).isEqualTo(180)
     assertThat(TellomiUsernames.renameCooldownDaysLeft(2591999.seconds)).isEqualTo(30)
     assertThat(TellomiUsernames.renameCooldownDaysLeft(86400.seconds)).isEqualTo(1)
     assertThat(TellomiUsernames.renameCooldownDaysLeft(86401.seconds)).isEqualTo(2)
