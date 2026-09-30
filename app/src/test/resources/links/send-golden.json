@@ -1,5 +1,5 @@
 {
-  "source": "tellomi/libsignal rust/links/tests/data/bridge-golden.json (tellomi-0.102.2 f88ffe09): the \"send\" cases, verbatim",
+  "source": "tellomi/libsignal rust/links/tests/data/bridge-golden.json (tellomi-0.102.2 4c8e772b5): the \"send\" cases, verbatim",
   "registry": "links-2026092702.json",
   "send": [
     {
