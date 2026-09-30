@@ -275,7 +275,7 @@ class TellomiLinkPreviewViewTest {
   private fun dp(value: Int) = (value * view.resources.displayMetrics.density).toInt()
 
   @Test
-  fun `the icon card puts a 48 square at the top right, 6 in from the edges, the title and the domain on the left, and no description`() {
+  fun `the icon card puts a 48 square at the top right, 6 down from the top and 12 in from the right, the title and the domain on the left, and no description`() {
     showImage()
     view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", null, "bilibili.com", false), true)
 
@@ -286,6 +286,7 @@ class TellomiLinkPreviewViewTest {
     assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).endToEnd)
     assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).startToStart)
     assertEquals("at the top, not centred", ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).topToTop)
+    assertEquals("6 down from the top is the card's own top padding", dp(6), container.paddingTop)
     assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).bottomToBottom)
     assertEquals("the image's end edge is at the card's own end padding, as the text starts at its start padding", dp(12), container.paddingEnd)
     assertEquals(container.paddingStart, container.paddingEnd)
