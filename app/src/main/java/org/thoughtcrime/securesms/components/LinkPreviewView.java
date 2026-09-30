@@ -59,8 +59,8 @@ import okhttp3.HttpUrl;
 public class LinkPreviewView extends FrameLayout {
 
   private static final int TYPE_CONVERSATION = 0;
-  /** Tellomi: the avatar or cover of a first-party card (card-visual §5.2), as on Desktop. */
-  private static final int FIRST_PARTY_AVATAR_DP = 52;
+  /** Tellomi: the avatar or cover of a first-party card (card-visual §5.2: 56). */
+  private static final int FIRST_PARTY_AVATAR_DP = 56;
   private static final int DEFAULT_THUMBNAIL_DP  = 72;
   /**
    * The icon card's geometry is Telegram's small link-preview image (owner 2026-09-30; Telegram Android
@@ -75,8 +75,8 @@ public class LinkPreviewView extends FrameLayout {
   /** {@code layout_marginEnd} of the title in link_preview.xml. */
   private static final int TITLE_END_MARGIN_DP   = 8;
   private static final int SECONDARY_TEXT_ALPHA  = 0xB3;
-  /** The description's line limits: the layout file's (conversation), and {@link #init} (compose). */
-  private static final int CONVERSATION_DESCRIPTION_MAX_LINES = 15;
+  /** The description's line limits: a card's sub line is one line, cut off at its end (card-visual §3.7); the compose box keeps two. */
+  private static final int CONVERSATION_DESCRIPTION_MAX_LINES = 1;
   private static final int COMPOSE_DESCRIPTION_MAX_LINES      = 2;
   private static final int TYPE_COMPOSE      = 1;
 
@@ -408,24 +408,29 @@ public class LinkPreviewView extends FrameLayout {
   }
 
   /**
-   * Tellomi (card-visual §3.2, §3.7): after {@link #applyTellomiDisplay}, the icon card: the title and the domain on the left,
-   * the card's own image as a {@link #ICON_IMAGE_DP} square with {@link #ICON_IMAGE_RADIUS_DP} corners at the top right,
-   * at the card's end padding (the mirror of the text's start padding) and its top padding, the text column ending
-   * {@link #ICON_TEXT_GAP_DP} before it and starting at the top (no description). The whole text column is narrowed by the
-   * image; Telegram wraps only the first lines around it. The card is at least the image and its paddings tall. Other
-   * layouts are left as they are. Only for conversation bubbles.
+   * Tellomi (card-visual §3.2, §3.7): after {@link #applyTellomiDisplay}, the shape of the card.
+   *
+   * The icon card: the title, the sub line (when there is one) and the domain on the left, the card's own image as a
+   * {@link #ICON_IMAGE_DP} square with {@link #ICON_IMAGE_RADIUS_DP} corners at the top right, at the card's end padding (the
+   * mirror of the text's start padding) and its top padding, the text column ending {@link #ICON_TEXT_GAP_DP} before it and
+   * starting at the top. The whole text column is narrowed by the image; Telegram wraps only the first lines around it. The card
+   * is at least the image and its paddings tall.
+   *
+   * The no-image card: the link icon at the end of the title line, the way the plain-link card has it.
+   *
+   * Other layouts are left as they are. Only for conversation bubbles.
    */
   public void applyTellomiLayout(@Nullable TellomiLinkVisual.Layout layout) {
-    applyTellomiLayout(layout, false);
-  }
+    if (type == TYPE_COMPOSE) {
+      return;
+    }
 
-  /**
-   * As {@link #applyTellomiLayout(TellomiLinkVisual.Layout)}; with {@code keepSubLine} the sub line ({@code description}
-   * here: the brand shell's kind text, card-visual §3.7) stays between the title and the domain, one line, instead of
-   * being hidden.
-   */
-  public void applyTellomiLayout(@Nullable TellomiLinkVisual.Layout layout, boolean keepSubLine) {
-    if (type == TYPE_COMPOSE || layout != TellomiLinkVisual.Layout.ICON || !thumbnail.resolved() || thumbnail.getVisibility() != VISIBLE || firstPartyAvatar.getVisibility() == VISIBLE) {
+    if (layout == TellomiLinkVisual.Layout.NO_IMAGE) {
+      linkIcon.setVisibility(VISIBLE);
+      return;
+    }
+
+    if (layout != TellomiLinkVisual.Layout.ICON || !thumbnail.resolved() || thumbnail.getVisibility() != VISIBLE || firstPartyAvatar.getVisibility() == VISIBLE) {
       return;
     }
 
@@ -443,7 +448,7 @@ public class LinkPreviewView extends FrameLayout {
     thumbnail.get().setLayoutParams(thumbnailParams);
 
     ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
-    boolean subLine = keepSubLine && description.getVisibility() == VISIBLE && !Util.isEmpty(description.getText());
+    boolean subLine = description.getVisibility() == VISIBLE && !Util.isEmpty(description.getText());
 
     titleParams.topToTop           = ConstraintLayout.LayoutParams.PARENT_ID;
     titleParams.bottomToBottom     = ConstraintLayout.LayoutParams.UNSET;
@@ -466,7 +471,6 @@ public class LinkPreviewView extends FrameLayout {
       descriptionParams.endToEnd       = R.id.linkpreview_title;
       descriptionParams.topMargin      = ViewUtil.dpToPx(2);
       description.setLayoutParams(descriptionParams);
-      description.setMaxLines(1);
     } else {
       description.setVisibility(GONE);
     }

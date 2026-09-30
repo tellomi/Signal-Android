@@ -22,11 +22,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Tellomi (card-visual §5.2): the avatar of a first-party card (a known user, a group this device has) -->
+        <!-- Tellomi (card-visual §5.2): the avatar of a first-party card (a known user, a group this device has), 56 -->
         <org.thoughtcrime.securesms.components.AvatarImageView
             android:id="@+id/linkpreview_first_party_avatar"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:contentDescription="@null"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ellipsize="end"
-            android:maxLines="15"
+            android:maxLines="1"
             android:textColor="@color/signal_colorOnSurfaceVariant"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:maxLines="2"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/signal_colorOnSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

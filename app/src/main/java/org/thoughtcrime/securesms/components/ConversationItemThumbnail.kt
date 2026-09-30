@@ -43,6 +43,7 @@ class ConversationItemThumbnail @JvmOverloads constructor(
   private var gifBounds: IntArray
   private var minimumThumbnailWidth = 0
   private var maximumThumbnailHeight = 0
+  private var minimumThumbnailHeight = 0
 
   init {
     inflate(context, R.layout.conversation_item_thumbnail, this)
@@ -80,6 +81,7 @@ class ConversationItemThumbnail @JvmOverloads constructor(
 
     minimumThumbnailWidth = -1
     maximumThumbnailHeight = -1
+    minimumThumbnailHeight = -1
 
     state = ConversationItemThumbnailState()
   }
@@ -186,6 +188,13 @@ class ConversationItemThumbnail @JvmOverloads constructor(
     state.thumbnailViewState.applyState(thumbnail)
   }
 
+  /** Tellomi (card-visual §3.2): the large image of a link card is cut to a box no wider than 1.91:1, so its height has a lower bound too. */
+  fun setMinimumThumbnailHeight(@Px height: Int) {
+    minimumThumbnailHeight = height
+    state = state.copy(thumbnailViewState = state.thumbnailViewState.copy(minHeight = height))
+    state.thumbnailViewState.applyState(thumbnail)
+  }
+
   fun setBorderless(borderless: Boolean) {
     this.borderless = borderless
   }
@@ -212,6 +221,10 @@ class ConversationItemThumbnail @JvmOverloads constructor(
 
         if (maximumThumbnailHeight != -1) {
           state = state.copy(thumbnailViewState = state.thumbnailViewState.copy(maxHeight = maximumThumbnailHeight))
+        }
+
+        if (minimumThumbnailHeight != -1) {
+          state = state.copy(thumbnailViewState = state.thumbnailViewState.copy(minHeight = minimumThumbnailHeight))
         }
       }
 

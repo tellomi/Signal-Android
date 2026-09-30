@@ -97,6 +97,22 @@ object TellomiLinkVisual {
   }
 
   /**
+   * card-visual §3.2: the image of a large-image card fills the card's width, and its box is between 1.91:1 (wide) and 1:1
+   * (square); a picture that is wider or taller than that is cropped at the centre. So, at a card [width] px wide, the box is
+   * [largeImageMinHeight] to [largeImageMaxHeight] px high. 1.91 is written as 191 ÷ 100 so the arithmetic is exact.
+   */
+  private const val LARGE_IMAGE_WIDEST = 191
+  private const val LARGE_IMAGE_WIDEST_SCALE = 100
+
+  /** The lowest the box gets: ⌈width ÷ 1.91⌉, the widest it may be. */
+  @JvmStatic
+  fun largeImageMinHeight(width: Int): Int = (width * LARGE_IMAGE_WIDEST_SCALE + LARGE_IMAGE_WIDEST - 1) / LARGE_IMAGE_WIDEST
+
+  /** The highest the box gets: square. */
+  @JvmStatic
+  fun largeImageMaxHeight(width: Int): Int = width
+
+  /**
    * §3.3: never for first-party or payment cards, only when there is an image to take colours from. Nor in a message
    * request: that draws the domain-only card ([TellomiLinkOnly.decideRequest]), which is not tintable and never asks for this.
    */
