@@ -302,6 +302,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
   private           boolean    tellomiHasTail;
   private @ColorInt int        tellomiTailColor;
   private @Nullable ChatColors tellomiTailChatColors;
+  /** Tellomi (card-visual §3.3 / §7.3): this bubble draws the domain-only card of a message request, not the link's own card. */
+  private           boolean    showsRequestLinkCard;
   private       Colorizer          colorizer;
   private       boolean            hasWallpaper;
   private       float              lastYDownRelativeToThis;
@@ -439,6 +441,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     this.colorizer             = colorizer;
     this.displayMode           = displayMode;
     this.previousMessage       = previousMessageRecord;
+
+    TellomiLinkCard requestLinkCard = getRequestLinkCard();
+    this.showsRequestLinkCard = !isMessageRequestAccepted && requestLinkCard != null && requestLinkCard.getDomain() != null;
 
     lastFooterDecisionLineWidth = -1;
     lastFooterWasCollapsed      = false;
@@ -1198,17 +1203,16 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     return null;
   }
 
-  /**
-   * Tellomi (card-visual §3.5): the bubble is the card alone, without the link text under it. Signal shows no preview
-   * in a message request, so there the text stays.
-   */
-  private boolean isLinkCardOnly(MessageRecord messageRecord, boolean messageRequestAccepted) {
-    return messageRequestAccepted &&
-           conversationMessage.getComputedProperties().isLinkCardOnly() &&
+  /** Tellomi (card-visual §3.5): the bubble is the card alone, without the link text under it. Only asked once the request is accepted: in a request the text stays. */
+  private boolean isLinkCardOnly(MessageRecord messageRecord) {
+    return conversationMessage.getComputedProperties().isLinkCardOnly() &&
            hasLinkPreview(messageRecord);
   }
 
   private boolean hasBigImageLinkPreview(MessageRecord messageRecord) {
+    if (showsRequestLinkCard) {
+      return false;
+    }
     TellomiLinkCard card = getLinkCard();
     if (card != null && !card.getShowImage()) {
       return false;
@@ -1235,10 +1239,10 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     return conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCardIcon() : null;
   }
 
-  /** The colours of the card's own image for this theme, or null: default colours (never in a message request, card-visual §3.3). */
-  private @Nullable TellomiLinkVisual.Colors getLinkCardColors(boolean messageRequestAccepted) {
+  /** The colours of the card's own image for this theme, or null: default colours. A message request never gets here (card-visual §3.3): it draws {@link #getRequestLinkCard()}. */
+  private @Nullable TellomiLinkVisual.Colors getLinkCardColors() {
     TellomiLinkVisual.Tint tint = conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCardTint() : null;
-    if (tint == null || !TellomiLinkVisual.shouldTint(getLinkCard(), getLinkCardLayout(), !messageRequestAccepted)) {
+    if (tint == null || !TellomiLinkVisual.shouldTint(getLinkCard(), getLinkCardLayout())) {
       return null;
     }
     return tint.colors(DynamicTheme.isDarkTheme(context));
@@ -1246,6 +1250,11 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   private @Nullable TellomiLinkCard getLinkCard() {
     return conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCard() : null;
+  }
+
+  /** Tellomi (card-visual §3.3 / §7.3): the domain-only card of this message's link while the conversation is a message request, or null: nothing is drawn. */
+  private @Nullable TellomiLinkCard getRequestLinkCard() {
+    return conversationMessage != null ? conversationMessage.getComputedProperties().getRequestLinkCard() : null;
   }
 
   /** Tellomi (card-visual §5.2): the card of a Tellomi object, or null when this link is not one. */
@@ -1349,7 +1358,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       bodyText.setText(null);
       bodyText.setOverflowText(null);
       bodyText.setVisibility(View.GONE);
-    } else if (isLinkCardOnly(messageRecord, messageRequestAccepted)) {
+    } else if (messageRequestAccepted && isLinkCardOnly(messageRecord)) {
       // Tellomi (card-visual §3.5): just one link shows the card alone; "Copy" in the long-press menu still copies it.
       bodyText.setText(null);
       bodyText.setOverflowText(null);
@@ -1547,11 +1556,11 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, false);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), true);
-        linkPreviewStub.get().applyTellomiTint(getLinkCardColors(messageRequestAccepted));
+        linkPreviewStub.get().applyTellomiTint(getLinkCardColors());
 
         setThumbnailCorners(messageRecord, previousRecord, nextRecord, isGroupThread);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, true);
-        setLinkCardOnlyBottomCorners(messageRecord, nextRecord, isGroupThread, messageRequestAccepted);
+        setLinkCardOnlyBottomCorners(messageRecord, nextRecord, isGroupThread);
 
         ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ViewUtil.updateLayoutParamsIfNonNull(groupSenderHolder, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1563,14 +1572,14 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         linkPreviewStub.get().applyTellomiBrandIcon(requestManager, getLinkCardIcon());
         // A brand shell keeps its kind text beside its icon (card-visual §3.7); a sender's image card is as it was.
         linkPreviewStub.get().applyTellomiLayout(getLinkCardLayout(), getLinkCardIcon() != null);
-        linkPreviewStub.get().applyTellomiTint(getLinkCardColors(messageRequestAccepted));
+        linkPreviewStub.get().applyTellomiTint(getLinkCardColors());
         TellomiFirstPartyCard.Display firstParty = getFirstPartyDisplay();
         if (firstParty != null) {
           linkPreviewStub.get().applyTellomiFirstParty(requestManager, firstParty, getFirstPartyAvatarRecipient(), linkPreview.getThumbnail().isPresent() && (linkCard == null || linkCard.getShowImage()));
         }
         linkPreviewStub.get().setDownloadClickedListener(downloadClickListener);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, false);
-        setLinkCardOnlyBottomCorners(messageRecord, nextRecord, isGroupThread, messageRequestAccepted);
+        setLinkCardOnlyBottomCorners(messageRecord, nextRecord, isGroupThread);
         ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ViewUtil.updateLayoutParamsIfNonNull(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -1580,6 +1589,35 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       }
 
       linkPreviewStub.get().setOnClickListener(linkPreviewClickListener);
+      linkPreviewStub.get().setOnLongClickListener(passthroughClickListener);
+      linkPreviewStub.get().setBackgroundColor(getDefaultBubbleColor(hasWallpaper));
+
+      footer.setVisibility(VISIBLE);
+    } else if (showsRequestLinkCard) {
+      // Tellomi (card-visual §3.3 / §7.3): a stranger's link, before the request is accepted, is the domain and a link icon
+      // (red when it imitates a well-known one), and nothing the sender wrote. The preview itself is not touched: no image
+      // is read or asked for, no colour is taken, and the card does not open the link. The link text stays in the body, as
+      // Signal shows it in a request (not clickable).
+      linkPreviewStub.get().setVisibility(View.VISIBLE);
+      if (audioViewStub.resolved()) audioViewStub.get().setVisibility(View.GONE);
+      if (mediaThumbnailStub.resolved()) mediaThumbnailStub.require().setVisibility(View.GONE);
+      if (documentViewStub.resolved()) documentViewStub.get().setVisibility(View.GONE);
+      if (sharedContactStub.resolved()) sharedContactStub.get().setVisibility(GONE);
+      if (stickerStub.resolved()) stickerStub.get().setVisibility(View.GONE);
+      if (revealableStub.resolved()) revealableStub.get().setVisibility(View.GONE);
+      if (giftViewStub.resolved()) giftViewStub.get().setVisibility(View.GONE);
+      if (joinCallLinkStub.resolved()) joinCallLinkStub.get().setVisibility(View.GONE);
+      paymentViewStub.setVisibility(View.GONE);
+
+      TellomiLinkCard requestCard = Objects.requireNonNull(getRequestLinkCard());
+      linkPreviewStub.get().setDomainOnly(Objects.requireNonNull(requestCard.getDomain()), requestCard.getLookalike() != null);
+      setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, false);
+      ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      ViewUtil.updateLayoutParamsIfNonNull(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      ViewUtil.setTopMargin(linkPreviewStub.get(), isGroupThread && isStartOfMessageCluster(messageRecord, previousRecord, isGroupThread) ? readDimen(R.dimen.message_bubble_top_padding) : 0);
+
+      // Like the sticker and the thumbnail of a plain message: a tap is a tap on the bubble (selection), never an open.
+      linkPreviewStub.get().setOnClickListener(passthroughClickListener);
       linkPreviewStub.get().setOnLongClickListener(passthroughClickListener);
       linkPreviewStub.get().setBackgroundColor(getDefaultBubbleColor(hasWallpaper));
 
@@ -1939,8 +1977,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
    * Tellomi (card-visual §3.5): with no text and no time under it, the card is the bottom of the bubble, so its
    * bottom corners are the bubble's.
    */
-  private void setLinkCardOnlyBottomCorners(@NonNull MessageRecord current, @NonNull Optional<MessageRecord> next, boolean isGroupThread, boolean messageRequestAccepted) {
-    if (!isLinkCardOnly(current, messageRequestAccepted) || isFooterVisible(current, next, isGroupThread)) {
+  private void setLinkCardOnlyBottomCorners(@NonNull MessageRecord current, @NonNull Optional<MessageRecord> next, boolean isGroupThread) {
+    if (!isLinkCardOnly(current) || isFooterVisible(current, next, isGroupThread)) {
       return;
     }
 

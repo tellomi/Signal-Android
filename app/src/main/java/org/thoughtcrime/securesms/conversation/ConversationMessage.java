@@ -252,15 +252,27 @@ public class ConversationMessage {
     /** Tellomi (card-visual §3.2 / §3.3): the shape of the card and the colours of its own image, from rust/links. */
     private final @NonNull TellomiLinkVisual.Visual visual;
 
+    /** Tellomi (card-visual §3.3 / §7.3): the domain-only card this message's link gets while its conversation is a message request, or null. */
+    private final @Nullable TellomiLinkCard requestLinkCard;
+
     ComputedProperties(@NonNull FormattedDate formattedDate) {
-      this(formattedDate, TellomiLinkOnly.Decision.NONE, null, TellomiLinkVisual.Visual.NONE);
+      this(formattedDate, TellomiLinkOnly.Decision.NONE, null, TellomiLinkVisual.Visual.NONE, null);
     }
 
-    ComputedProperties(@NonNull FormattedDate formattedDate, @NonNull TellomiLinkOnly.Decision link, @Nullable TellomiFirstPartyCard.Local firstPartyLocal, @NonNull TellomiLinkVisual.Visual visual) {
+    ComputedProperties(@NonNull FormattedDate formattedDate, @NonNull TellomiLinkOnly.Decision link, @Nullable TellomiFirstPartyCard.Local firstPartyLocal, @NonNull TellomiLinkVisual.Visual visual, @Nullable TellomiLinkCard requestLinkCard) {
       this.formattedDate   = formattedDate;
       this.link            = link;
       this.firstPartyLocal = firstPartyLocal;
       this.visual          = visual;
+      this.requestLinkCard = requestLinkCard;
+    }
+
+    /**
+     * The card of this message's link while its conversation is still a message request: the link's domain and nothing the
+     * sender wrote, no image, no colour, not clickable (card-visual §3.3 / §7.3). Null: nothing is drawn there.
+     */
+    public @Nullable TellomiLinkCard getRequestLinkCard() {
+      return requestLinkCard;
     }
 
     /** Null: no decision, the card is shown the way Signal shows it. */
@@ -390,6 +402,7 @@ public class ConversationMessage {
       TellomiLinkOnly.Decision linkDecision   = TellomiLinkOnly.decide(messageRecord, mentions != null && !mentions.isEmpty());
       TellomiFirstPartyCard.Local firstPartyLocal = TellomiFirstPartyLocalLookup.forMessage(messageRecord, linkDecision);
       TellomiLinkVisual.Visual    linkVisual      = TellomiLinkVisual.forMessage(messageRecord, linkDecision);
+      TellomiLinkCard             requestLinkCard = TellomiLinkOnly.decideRequest(messageRecord, mentions != null && !mentions.isEmpty());
 
       return new ConversationMessage(messageRecord,
                                      styledAndMentionBody != null ? styledAndMentionBody : mentionsUpdate != null ? mentionsUpdate.getBody() : body,
@@ -398,7 +411,7 @@ public class ConversationMessage {
                                      styleResult,
                                      threadRecipient,
                                      originalMessage,
-                                     new ComputedProperties(formattedDate, linkDecision, firstPartyLocal, linkVisual),
+                                     new ComputedProperties(formattedDate, linkDecision, firstPartyLocal, linkVisual, requestLinkCard),
                                      memberLabel,
                                      quoteMemberLabel,
                                      deletedBy,
