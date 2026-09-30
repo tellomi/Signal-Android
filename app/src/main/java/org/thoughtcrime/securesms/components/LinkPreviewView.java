@@ -64,12 +64,13 @@ public class LinkPreviewView extends FrameLayout {
   private static final int DEFAULT_THUMBNAIL_DP  = 72;
   /**
    * The icon card's geometry is Telegram's small link-preview image (owner 2026-09-30; Telegram Android
-   * {@code ChatMessageCell} {@code smallImageSide} = 48dp, {@code smallSideMargin} = 10dp, image 6dp from the preview's
-   * right and top edges; Telegram iOS {@code ImageCorners(radius: 4.0)}), not card-visual §3.2's 44dp / radius 10 / centred.
+   * {@code ChatMessageCell} {@code smallImageSide} = 48dp, {@code smallSideMargin} = 10dp; Telegram iOS
+   * {@code ImageCorners(radius: 4.0)}), not card-visual §3.2's 44dp / radius 10 / centred. The image's end edge is at the
+   * card's end padding, the text's start edge is at its start padding (Telegram: the image's right edge is the text area's
+   * right edge); only the top offset is fixed, and it is the card's own 6dp top padding (Telegram's {@code inlineMediaEdgeInset}).
    */
   private static final int ICON_IMAGE_DP         = 48;
   private static final int ICON_IMAGE_RADIUS_DP  = 4;
-  private static final int ICON_IMAGE_INSET_DP   = 6;
   private static final int ICON_TEXT_GAP_DP      = 10;
   /** {@code layout_marginEnd} of the title in link_preview.xml. */
   private static final int TITLE_END_MARGIN_DP   = 8;
@@ -97,7 +98,6 @@ public class LinkPreviewView extends FrameLayout {
 
   private int                           type;
   private int                           defaultRadius;
-  private int                           defaultPaddingEnd;
   private boolean                       iconLayout;
   private CornerMask                    cornerMask;
   private CloseClickedListener          closeClickedListener;
@@ -132,7 +132,6 @@ public class LinkPreviewView extends FrameLayout {
     closeButton   = findViewById(R.id.linkpreview_close);
     noPreview     = findViewById(R.id.linkpreview_no_preview);
     defaultRadius = getResources().getDimensionPixelSize(R.dimen.thumbnail_default_radius);
-    defaultPaddingEnd = container.getPaddingEnd();
     cornerMask    = new CornerMask(this);
 
     if (attrs != null) {
@@ -385,10 +384,10 @@ public class LinkPreviewView extends FrameLayout {
   /**
    * Tellomi (card-visual §3.2, §3.7): after {@link #applyTellomiDisplay}, the icon card: the title and the domain on the left,
    * the card's own image as a {@link #ICON_IMAGE_DP} square with {@link #ICON_IMAGE_RADIUS_DP} corners at the top right,
-   * {@link #ICON_IMAGE_INSET_DP} from the card's right and top edges, the text column ending {@link #ICON_TEXT_GAP_DP} before
-   * it and starting at the top (no description). The whole text column is narrowed by the image; Telegram wraps only the
-   * first lines around it. The card is at least the image and its insets tall. Other layouts are left as they are. Only for
-   * conversation bubbles.
+   * at the card's end padding (the mirror of the text's start padding) and its top padding, the text column ending
+   * {@link #ICON_TEXT_GAP_DP} before it and starting at the top (no description). The whole text column is narrowed by the
+   * image; Telegram wraps only the first lines around it. The card is at least the image and its paddings tall. Other
+   * layouts are left as they are. Only for conversation bubbles.
    */
   public void applyTellomiLayout(@Nullable TellomiLinkVisual.Layout layout) {
     applyTellomiLayout(layout, false);
@@ -416,9 +415,6 @@ public class LinkPreviewView extends FrameLayout {
     thumbnailParams.topToTop       = ConstraintLayout.LayoutParams.PARENT_ID;
     thumbnailParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
     thumbnail.get().setLayoutParams(thumbnailParams);
-    // The card pads its content by the bubble's padding; the image sits closer to the right edge than that. Drawing outside
-    // the padding would be clipped, so the card's end padding is the inset for this layout.
-    container.setPaddingRelative(container.getPaddingStart(), container.getPaddingTop(), ViewUtil.dpToPx(ICON_IMAGE_INSET_DP), container.getPaddingBottom());
 
     ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
     boolean subLine = keepSubLine && description.getVisibility() == VISIBLE && !Util.isEmpty(description.getText());
@@ -483,9 +479,6 @@ public class LinkPreviewView extends FrameLayout {
       return;
     }
 
-    if (iconLayout) {
-      container.setPaddingRelative(container.getPaddingStart(), container.getPaddingTop(), defaultPaddingEnd, container.getPaddingBottom());
-    }
     iconLayout = false;
     if (type != TYPE_COMPOSE) {
       container.setBackgroundColor(ContextCompat.getColor(getContext(), org.signal.core.ui.R.color.signal_neutralSurface));
