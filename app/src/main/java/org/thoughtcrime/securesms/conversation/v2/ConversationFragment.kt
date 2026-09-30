@@ -1072,7 +1072,8 @@ class ConversationFragment :
     try {
       super.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
-      Log.w(TAG, e)
+      // Only the kind of failure: the exception's message is the intent, which for a link holds its address (ADR-0063 §6.5).
+      Log.w(TAG, "No activity to handle an intent: ${e.javaClass.simpleName}")
       toast(
         toastTextId = R.string.ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device,
         toastDuration = Toast.LENGTH_LONG

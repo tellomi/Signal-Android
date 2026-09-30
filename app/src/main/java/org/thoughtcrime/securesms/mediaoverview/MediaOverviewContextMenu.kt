@@ -123,7 +123,8 @@ class MediaOverviewContextMenu(
       val jsonPreviews = JSONArray(mediaRecord.linkPreviewJson)
       LinkPreview.deserialize(jsonPreviews.getJSONObject(0).toString()).url
     } catch (e: Exception) {
-      Log.w(TAG, "Failed to deserialize link preview", e)
+      // Only the kind of failure: org.json's message quotes the text it could not read, which holds the link (ADR-0063 §6.5).
+      Log.w(TAG, "Failed to deserialize link preview: ${e.javaClass.simpleName}")
       return null
     }
 

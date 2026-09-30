@@ -436,13 +436,14 @@ public class LinkPreviewRepository {
                                                                 Optional.empty()
                                                             ));
                                                           } else {
+                                                            // A status code is all a Failure holds, so this says nothing of the link.
                                                             ReadCallLinkResult.Failure failure = (ReadCallLinkResult.Failure) result;
                                                             Log.w(TAG, "Failed to read call link: " + failure);
                                                             callback.onError(Error.PREVIEW_NOT_AVAILABLE);
                                                           }
                                                         },
                                                         error -> {
-                                                          Log.w(TAG, "An error occurred: ", error);
+                                                          Log.w(TAG, "An error occurred: " + describe(error));
                                                           callback.onError(Error.PREVIEW_NOT_AVAILABLE);
                                                         }
                                                     );
@@ -503,18 +504,27 @@ public class LinkPreviewRepository {
           callback.onSuccess(new LinkPreview(groupUrl, joinInfo.title, description, 0, thumbnail));
         }
       } catch (ExecutionException | InterruptedException | IOException | VerificationFailedException e) {
-        Log.w(TAG, "Failed to fetch group link preview.", e);
+        Log.w(TAG, "Failed to fetch group link preview: " + describe(e));
         callback.onError(Error.PREVIEW_NOT_AVAILABLE);
       } catch (GroupInviteLinkUrl.InvalidGroupLinkException | GroupInviteLinkUrl.UnknownGroupLinkVersionException e) {
-        Log.w(TAG, "Bad group link.", e);
+        Log.w(TAG, "Bad group link: " + describe(e));
         callback.onError(Error.PREVIEW_NOT_AVAILABLE);
       } catch (GroupLinkNotActiveException e) {
-        Log.w(TAG, "Group link not active.", e);
+        Log.w(TAG, "Group link not active: " + describe(e));
         callback.onError(Error.GROUP_LINK_INACTIVE);
       }
     });
 
     return () -> Log.i(TAG, "Cancelled group link preview fetch -- no effect.");
+  }
+
+  /**
+   * Tellomi (ADR-0063 §6.5): what to log of an exception next to a link: its class and its cause's, never its message, which can
+   * hold the address of what failed (or, for a group link, the secret after the {@code #}).
+   */
+  private static @NonNull String describe(@NonNull Throwable t) {
+    Throwable cause = t.getCause();
+    return cause != null && cause != t ? t.getClass().getSimpleName() + " <- " + cause.getClass().getSimpleName() : t.getClass().getSimpleName();
   }
 
   private static @NonNull String getMemberCountDescription(@NonNull Context context, int memberCount) {
