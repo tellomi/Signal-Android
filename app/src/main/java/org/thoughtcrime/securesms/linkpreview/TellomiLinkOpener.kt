@@ -34,7 +34,9 @@ import org.thoughtcrime.securesms.R
  * 4. `browser` — an explicit browser ([TellomiExplicitBrowser]), which copies the link if even that fails.
  * 5. `copy_link` — copy it and say so (§5.5); reached when nothing before it took the link.
  * Payment and ride-hailing plans only have the browser step. An empty plan (`intent:`, `javascript:`,
- * `data:`, `file:`) opens nothing. A domain that imitates a well-known one gets one warning first.
+ * `data:`, `file:`, any scheme that is not http(s)) opens nothing, with one exception: the email and
+ * phone-number links Signal finds in the text (`mailto:`, `tel:`) go to Signal's own handling, the system's
+ * mail app and dialer, as they always have. A domain that imitates a well-known one gets one warning first.
  * No registry: open the way Signal does.
  */
 object TellomiLinkOpener {
@@ -42,6 +44,12 @@ object TellomiLinkOpener {
   private val TAG = Log.tag(TellomiLinkOpener::class.java)
 
   private val JSON = Json { ignoreUnknownKeys = true }
+
+  /** Not web links, so `open_plan` has no plan for them; the text's email and phone-number links, which Signal hands to the system. */
+  private val SYSTEM_SCHEMES = setOf("mailto", "tel")
+
+  /** RFC 3986 §3.1. */
+  private val SCHEME = Regex("[A-Za-z][A-Za-z0-9+.-]*")
 
   @Serializable
   data class Step(val type: String, val url: String)
@@ -103,6 +111,19 @@ object TellomiLinkOpener {
     return null
   }
 
+  /** True for the only non-web links that are opened: `mailto:` and `tel:`, whatever the case of the scheme. */
+  @VisibleForTesting
+  @JvmStatic
+  fun isHandedToSystem(url: String): Boolean {
+    val trimmed = url.trim()
+    val end = trimmed.indexOf(':')
+    if (end <= 0) {
+      return false
+    }
+    val scheme = trimmed.substring(0, end)
+    return SCHEME.matches(scheme) && scheme.lowercase() in SYSTEM_SCHEMES
+  }
+
   @JvmStatic
   fun open(activity: Activity, url: String, fallback: Runnable) {
     val plan = plan(url)
@@ -111,7 +132,13 @@ object TellomiLinkOpener {
       return
     }
     if (plan.steps.isEmpty()) {
-      Log.w(TAG, "Not opening a link that is not http(s).")
+      if (isHandedToSystem(url)) {
+        // The email / phone-number links in the text: upstream's plain ACTION_VIEW, no browser and no plan.
+        fallback.run()
+      } else {
+        // Never the URL itself (§6.5).
+        Log.w(TAG, "Not opening a link that is not http(s).")
+      }
       return
     }
 

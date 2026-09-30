@@ -14,6 +14,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Looper
+import android.text.SpannableStringBuilder
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -34,8 +35,11 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowDialog
 import org.robolectric.shadows.ShadowToast
+import org.signal.core.util.logging.Log
 import org.signal.libsignal.links.LinkRegistry
 import org.thoughtcrime.securesms.R
+import org.thoughtcrime.securesms.conversation.v2.items.V2ConversationItemUtils
+import org.thoughtcrime.securesms.util.InterceptableLongClickCopyLinkSpan
 
 /**
  * ADR-0063 §4.9 / §6.1 (tellomi/tellomi#1422): what actually gets started when a link in a message is
@@ -186,6 +190,98 @@ class TellomiLinkOpenerActivityTest {
   }
 
   @Test
+  fun `an email or phone link is handed to Signal's own handling, not swallowed`() {
+    for (url in listOf("mailto:a@b.co", "tel:+8613800000000", "MAILTO:a@b.co", "Tel:+8613800000000")) {
+      fellBack = false
+
+      open(url)
+
+      assertTrue("$url should go to the system like upstream", fellBack)
+      assertNull(url, nextStarted())
+      assertNull(url, ShadowDialog.getLatestDialog())
+    }
+  }
+
+  @Test
+  fun `the email and phone links Signal finds in a message arrive as mailto and tel and open`() {
+    val body = SpannableStringBuilder("write to a@b.co or call +86 138 0000 0000")
+    val clicked = mutableListOf<String>()
+    V2ConversationItemUtils.linkifyUrlLinks(body, true) { url ->
+      clicked += url
+      true
+    }
+    val spans = body.getSpans(0, body.length, InterceptableLongClickCopyLinkSpan::class.java)
+    spans.sortedBy { body.getSpanStart(it) }.forEach { it.onClick(TextView(activity)) }
+    assertEquals(listOf("mailto:a@b.co", "tel:+8613800000000"), clicked)
+
+    val opened = mutableListOf<String>()
+    for (url in clicked) {
+      TellomiLinkOpener.open(activity, url) { opened += url }
+    }
+    shadowOf(Looper.getMainLooper()).idle()
+
+    assertEquals("every tapped link should reach the system handling", clicked, opened)
+    assertNull(nextStarted())
+  }
+
+  @Test
+  fun `only mailto and tel get through with an empty plan, every other scheme opens nothing`() {
+    val notOpened = listOf(
+      "intent://scan/#Intent;scheme=zxing;end",
+      "intent:#Intent;action=android.intent.action.VIEW;end",
+      "javascript:alert(1)",
+      "JavaScript:alert(1)",
+      "javascript:alert('mailto:a@b.co')",
+      "intent://x#Intent;S.browser_fallback_url=tel:+8613800000000;end",
+      "data:text/html;base64,PGI+eDwvYj4=",
+      "file:///sdcard/Download/a.txt",
+      "content://com.example.provider/a",
+      "sms:+8613800000000",
+      "smsto:+8613800000000?body=x",
+      "geo:0,0?q=x",
+      "market://details?id=com.example",
+      "tg://resolve?domain=x",
+      "weixin://dl/scan",
+      "ftp://a.example/x",
+      "mailto",
+      "tell:+8613800000000",
+      "xmailto:a@b.co",
+      "mailto.evil:a@b.co",
+      " intent:#Intent;end",
+      "//a.example/x",
+      "a@b.co",
+      "+8613800000000"
+    )
+    for (url in notOpened) {
+      fellBack = false
+
+      open(url)
+
+      assertFalse("$url must not reach the system", fellBack)
+      assertNull(url, nextStarted())
+      assertNull(url, ShadowDialog.getLatestDialog())
+    }
+  }
+
+  @Test
+  fun `the logs never contain the link, for the schemes that open and for the ones that do not`() {
+    val canary = "zqxCANARY7f3e"
+    val logger = CapturingLogger()
+    Log.initialize(logger)
+    try {
+      for (url in listOf("mailto:$canary@b.co", "tel:+86$canary", "javascript:$canary", "intent://$canary#Intent;end", "file:///$canary", "data:text/plain,$canary")) {
+        open(url)
+      }
+    } finally {
+      Log.initialize()
+    }
+
+    assertTrue("expected the opener to log its decisions", logger.lines.isNotEmpty())
+    val hits = logger.lines.filter { it.contains(canary, ignoreCase = true) }
+    assertEquals("log lines containing the canary:\n" + hits.joinToString("\n"), 0, hits.size)
+  }
+
+  @Test
   fun `without a registry Signal's own handling runs`() {
     TellomiLinkRegistry.setForTesting(null)
 
@@ -230,5 +326,20 @@ class TellomiLinkOpenerActivityTest {
         name = "$packageName.Main"
       }
     }
+  }
+
+  private class CapturingLogger : Log.Logger() {
+    val lines: MutableList<String> = java.util.Collections.synchronizedList(ArrayList())
+
+    private fun add(level: String, tag: String, message: String?, t: Throwable?) {
+      lines += "$level/$tag: $message ${t?.stackTraceToString() ?: ""}"
+    }
+
+    override fun v(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = add("V", tag, message, t)
+    override fun d(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = add("D", tag, message, t)
+    override fun i(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = add("I", tag, message, t)
+    override fun w(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = add("W", tag, message, t)
+    override fun e(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = add("E", tag, message, t)
+    override fun flush() = Unit
   }
 }
