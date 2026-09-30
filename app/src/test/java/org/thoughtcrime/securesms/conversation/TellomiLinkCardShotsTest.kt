@@ -91,18 +91,22 @@ import java.util.Optional
  * Nothing is fetched.
  *
  * The test asserts what each card should be, and writes one PNG per card and one contact sheet per theme to
- * `app/build/tellomi-cards/<light|dark>/` (rows are kinds; the two columns are "all fields" and "required only"; `contact-<theme>.png` is the whole
- * table, `rows/<theme>-<kind>.png` one row of it), so the next
- * change to a layout can be looked at by running it again:
+ * `app/build/tellomi-cards/<light|dark>/`. The rows of a sheet are kinds and its two columns are "all fields" and "required only":
+ * `contact-<theme>.png` is the whole table and `rows/<theme>-<kind>.png` one row of it. So the next change to a layout can be
+ * looked at by running it again:
  *
  * ```
  * ./gradlew --offline :Signal-Android:testPlayProdDebugUnitTest --tests 'org.thoughtcrime.securesms.conversation.TellomiLinkCardShotsTest'
  * ```
  *
- * `TELLOMI_CARDS_DIR` moves the output. A bubble is as wide as the widest of what is in it, and a card's own title and lines do not
- * count (they are `0dp`, constrained to the card), so the bubble of a card with no large image comes out as wide as its footer and
- * the title wraps into a column; here every bubble is given the width of a large-image card ([BUBBLE_DP]), and
- * `TELLOMI_CARDS_BUBBLE=natural` leaves it as the layout makes it.
+ * `TELLOMI_CARDS_DIR` moves the output.
+ *
+ * The width of the bubble. The card is `match_parent` in a bubble that is `wrap_content`, and a `LinearLayout` counts only the
+ * margins of a `match_parent` child when it works out its own width. So a bubble with nothing but a card in it (the text is the
+ * link and is not shown, card-visual §3.5) is as wide as its widest `wrap_content` child: the large image of a large-image card,
+ * otherwise only the footer. The card's title and lines are `0dp` and do not widen it either, so the title wraps into a column.
+ * That is how the layout is today; here every bubble is given the width of a large-image card ([BUBBLE_DP]) so that the cards
+ * are seen as designed, and `TELLOMI_CARDS_BUBBLE=natural` leaves the bubble as the layout makes it (a number is a width in dp).
  *
  * Two things stand in for what a unit test cannot run: RingRTC's parsing of a call link's key (its native library is not loadable
  * on the host; only the colour of the avatar depends on the key), and the pictures, which Glide would have put on the views.
