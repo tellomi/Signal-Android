@@ -6,11 +6,14 @@
 package org.thoughtcrime.securesms.components
 
 import android.app.Application
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.test.core.app.ApplicationProvider
 import com.bumptech.glide.RequestManager
@@ -31,6 +34,7 @@ import org.thoughtcrime.securesms.keyvalue.SettingsValues
 import org.thoughtcrime.securesms.linkpreview.LinkPreview
 import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkVisual
 import org.thoughtcrime.securesms.testutil.MockSignalStoreRule
 import java.util.Optional
 
@@ -53,6 +57,8 @@ class TellomiLinkPreviewViewTest {
   private val action get() = view.findViewById<TextView>(R.id.linkpreview_action)
   private val divider get() = view.findViewById<View>(R.id.linkpreview_divider)
   private val avatar get() = view.findViewById<View>(R.id.linkpreview_first_party_avatar)
+  private val container get() = view.findViewById<View>(R.id.linkpreview_container)
+  private val thumbnail get() = view.findViewById<View>(R.id.linkpreview_thumbnail)
 
   @Before
   fun setUp() {
@@ -216,5 +222,91 @@ class TellomiLinkPreviewViewTest {
     assertEquals(View.GONE, divider.visibility)
     assertEquals(View.GONE, avatar.visibility)
     assertEquals("Sender title", title.text.toString())
+  }
+
+  private val orange = TellomiLinkVisual.Colors(Color.parseColor("#FE7500"), Color.parseColor("#000000"))
+
+  /** Makes the image on the card visible without going through Glide's request chain, which a mock cannot answer. */
+  private fun showImage() {
+    view.applyTellomiFirstParty(
+      mockk<RequestManager>(relaxed = true),
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.OFFICIAL, "Tellomi", null, "Open", false),
+      null,
+      false
+    )
+  }
+
+  private fun params(id: Int) = view.findViewById<View>(id).layoutParams as ConstraintLayout.LayoutParams
+
+  @Test
+  fun `a tinted card is drawn in the colours of its image, and a recycled view drops them`() {
+    val background = (container.background as ColorDrawable).color
+    val titleColor = title.currentTextColor
+
+    view.applyTellomiTint(orange)
+
+    assertEquals(orange.background, (container.background as ColorDrawable).color)
+    assertEquals(orange.text, title.currentTextColor)
+    assertEquals(0xB3, Color.alpha(description.currentTextColor))
+    assertEquals(orange.text and 0xFFFFFF, description.currentTextColor and 0xFFFFFF)
+
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), true)
+    assertEquals(background, (container.background as ColorDrawable).color)
+    assertEquals(titleColor, title.currentTextColor)
+  }
+
+  @Test
+  fun `no colours leave the card as it is`() {
+    val background = (container.background as ColorDrawable).color
+    view.applyTellomiTint(null)
+    assertEquals(background, (container.background as ColorDrawable).color)
+  }
+
+  @Test
+  fun `the icon card puts a 44 square on the right, the title and the domain on the left, and no description`() {
+    showImage()
+    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", null, "bilibili.com", false), true)
+
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+
+    val size = (44 * view.resources.displayMetrics.density).toInt()
+    assertEquals(size, thumbnail.layoutParams.width)
+    assertEquals(size, thumbnail.layoutParams.height)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).endToEnd)
+    assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).startToStart)
+    assertEquals(R.id.linkpreview_thumbnail, params(R.id.linkpreview_title).endToStart)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_title).startToStart)
+    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_site).topToBottom)
+    assertEquals(View.GONE, description.visibility)
+    assertEquals("bilibili.com", site.text.toString())
+  }
+
+  @Test
+  fun `a card that is not an icon card keeps its image where it was`() {
+    showImage()
+    val startToStart = params(R.id.linkpreview_thumbnail).startToStart
+
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.LARGE_IMAGE)
+    view.applyTellomiLayout(null)
+
+    assertEquals(startToStart, params(R.id.linkpreview_thumbnail).startToStart)
+    assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).endToEnd)
+  }
+
+  @Test
+  fun `a recycled view drops the icon layout`() {
+    showImage()
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).endToEnd)
+
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), true)
+
+    val size = (72 * view.resources.displayMetrics.density).toInt()
+    assertEquals(size, thumbnail.layoutParams.width)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).startToStart)
+    assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).endToEnd)
+    assertEquals(R.id.linkpreview_link_icon, params(R.id.linkpreview_title).endToStart)
+    assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_site).topToBottom)
+    assertEquals(View.VISIBLE, description.visibility)
   }
 }

@@ -32,6 +32,7 @@ import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyLocalLookup;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkOnly;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkVisual;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.DateUtils;
@@ -247,14 +248,28 @@ public class ConversationMessage {
     /** Tellomi (card-visual §5.2): what this device already has for the object of a first-party card, or null. */
     private final @Nullable TellomiFirstPartyCard.Local firstPartyLocal;
 
+    /** Tellomi (card-visual §3.2 / §3.3): the shape of the card and the colours of its own image, from rust/links. */
+    private final @NonNull TellomiLinkVisual.Visual visual;
+
     ComputedProperties(@NonNull FormattedDate formattedDate) {
-      this(formattedDate, TellomiLinkOnly.Decision.NONE, null);
+      this(formattedDate, TellomiLinkOnly.Decision.NONE, null, TellomiLinkVisual.Visual.NONE);
     }
 
-    ComputedProperties(@NonNull FormattedDate formattedDate, @NonNull TellomiLinkOnly.Decision link, @Nullable TellomiFirstPartyCard.Local firstPartyLocal) {
+    ComputedProperties(@NonNull FormattedDate formattedDate, @NonNull TellomiLinkOnly.Decision link, @Nullable TellomiFirstPartyCard.Local firstPartyLocal, @NonNull TellomiLinkVisual.Visual visual) {
       this.formattedDate   = formattedDate;
       this.link            = link;
       this.firstPartyLocal = firstPartyLocal;
+      this.visual          = visual;
+    }
+
+    /** Null: no decision, the card is shown the way Signal shows it. */
+    public @Nullable TellomiLinkVisual.Layout getLinkCardLayout() {
+      return visual.getLayout();
+    }
+
+    /** Null: the card keeps its default colours. Not to be applied in a message request (card-visual §3.3). */
+    public @Nullable TellomiLinkVisual.Tint getLinkCardTint() {
+      return visual.getTint();
     }
 
     public @Nullable TellomiFirstPartyCard.Local getFirstPartyLocal() {
@@ -368,6 +383,7 @@ public class ConversationMessage {
 
       TellomiLinkOnly.Decision linkDecision   = TellomiLinkOnly.decide(messageRecord, mentions != null && !mentions.isEmpty());
       TellomiFirstPartyCard.Local firstPartyLocal = TellomiFirstPartyLocalLookup.forMessage(messageRecord, linkDecision);
+      TellomiLinkVisual.Visual    linkVisual      = TellomiLinkVisual.forMessage(messageRecord, linkDecision);
 
       return new ConversationMessage(messageRecord,
                                      styledAndMentionBody != null ? styledAndMentionBody : mentionsUpdate != null ? mentionsUpdate.getBody() : body,
@@ -376,7 +392,7 @@ public class ConversationMessage {
                                      styleResult,
                                      threadRecipient,
                                      originalMessage,
-                                     new ComputedProperties(formattedDate, linkDecision, firstPartyLocal),
+                                     new ComputedProperties(formattedDate, linkDecision, firstPartyLocal, linkVisual),
                                      memberLabel,
                                      quoteMemberLabel,
                                      deletedBy,

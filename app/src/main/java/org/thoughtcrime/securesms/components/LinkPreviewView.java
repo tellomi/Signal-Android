@@ -37,6 +37,7 @@ import org.thoughtcrime.securesms.linkpreview.LinkPreview;
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewRepository;
 import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkVisual;
 import org.thoughtcrime.securesms.mms.ImageSlide;
 import org.thoughtcrime.securesms.mms.SlidesClickedListener;
 import org.thoughtcrime.securesms.recipients.Recipient;
@@ -59,6 +60,9 @@ public class LinkPreviewView extends FrameLayout {
   /** Tellomi: the avatar or cover of a first-party card (card-visual §5.2), as on Desktop. */
   private static final int FIRST_PARTY_AVATAR_DP = 52;
   private static final int DEFAULT_THUMBNAIL_DP  = 72;
+  private static final int ICON_IMAGE_DP         = 44;
+  private static final int ICON_IMAGE_RADIUS_DP  = 10;
+  private static final int SECONDARY_TEXT_ALPHA  = 0xB3;
   private static final int TYPE_COMPOSE      = 1;
 
   private ViewGroup                   container;
@@ -69,7 +73,9 @@ public class LinkPreviewView extends FrameLayout {
   private TextView                    action;
   private ColorStateList              titleColors;
   private TextView                    description;
+  private ColorStateList              descriptionColors;
   private TextView                    site;
+  private ColorStateList              siteColors;
   private View                        divider;
   private View                        closeButton;
   private View                        spinner;
@@ -77,6 +83,7 @@ public class LinkPreviewView extends FrameLayout {
 
   private int                           type;
   private int                           defaultRadius;
+  private boolean                       iconLayout;
   private CornerMask                    cornerMask;
   private CloseClickedListener          closeClickedListener;
   private LinkPreviewViewThumbnailState thumbnailState = new LinkPreviewViewThumbnailState();
@@ -103,6 +110,8 @@ public class LinkPreviewView extends FrameLayout {
     titleColors   = title.getTextColors();
     description   = findViewById(R.id.linkpreview_description);
     site          = findViewById(R.id.linkpreview_site);
+    descriptionColors = description.getTextColors();
+    siteColors    = site.getTextColors();
     divider       = findViewById(R.id.linkpreview_divider);
     spinner       = findViewById(R.id.linkpreview_progress_wheel);
     closeButton   = findViewById(R.id.linkpreview_close);
@@ -168,6 +177,7 @@ public class LinkPreviewView extends FrameLayout {
   public void setLinkPreview(@NonNull RequestManager requestManager, @NonNull LinkPreview linkPreview, boolean showThumbnail, boolean showDescription, boolean scheduleMessageMode) {
     showPlainLink(false, false);
     showFirstParty(false);
+    showTellomiVisual(false);
     spinner.setVisibility(GONE);
     noPreview.setVisibility(GONE);
 
@@ -340,6 +350,105 @@ public class LinkPreviewView extends FrameLayout {
     divider.setVisibility(VISIBLE);
   }
 
+  /**
+   * Tellomi (card-visual §3.2, §3.7): after {@link #applyTellomiDisplay}, the icon card: the title and the domain on the left,
+   * the card's own image as a {@link #ICON_IMAGE_DP} square with rounded corners on the right, both centred on the
+   * card's height (no description). Other layouts are left as they are. Only for conversation bubbles.
+   */
+  public void applyTellomiLayout(@Nullable TellomiLinkVisual.Layout layout) {
+    if (type == TYPE_COMPOSE || layout != TellomiLinkVisual.Layout.ICON || !thumbnail.resolved() || thumbnail.getVisibility() != VISIBLE || firstPartyAvatar.getVisibility() == VISIBLE) {
+      return;
+    }
+
+    iconLayout = true;
+    resizeThumbnail(ICON_IMAGE_DP);
+    int radius = ViewUtil.dpToPx(ICON_IMAGE_RADIUS_DP);
+    thumbnailState = thumbnailState.copy(radius, radius, radius, radius, thumbnailState.getDownloadListener());
+    thumbnailState.applyState(thumbnail);
+
+    ConstraintLayout.LayoutParams thumbnailParams = (ConstraintLayout.LayoutParams) thumbnail.get().getLayoutParams();
+    thumbnailParams.startToStart   = ConstraintLayout.LayoutParams.UNSET;
+    thumbnailParams.endToEnd       = ConstraintLayout.LayoutParams.PARENT_ID;
+    thumbnailParams.topToTop       = ConstraintLayout.LayoutParams.PARENT_ID;
+    thumbnailParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+    thumbnail.get().setLayoutParams(thumbnailParams);
+
+    ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
+    titleParams.topToTop           = ConstraintLayout.LayoutParams.PARENT_ID;
+    titleParams.bottomToBottom     = ConstraintLayout.LayoutParams.UNSET;
+    titleParams.bottomToTop        = R.id.linkpreview_site;
+    titleParams.startToEnd         = ConstraintLayout.LayoutParams.UNSET;
+    titleParams.startToStart       = ConstraintLayout.LayoutParams.PARENT_ID;
+    titleParams.endToStart         = R.id.linkpreview_thumbnail;
+    titleParams.verticalChainStyle = ConstraintLayout.LayoutParams.CHAIN_PACKED;
+    titleParams.setMarginStart(0);
+    title.setLayoutParams(titleParams);
+
+    description.setVisibility(GONE);
+
+    ConstraintLayout.LayoutParams siteParams = (ConstraintLayout.LayoutParams) site.getLayoutParams();
+    siteParams.topToBottom     = R.id.linkpreview_title;
+    siteParams.bottomToBottom  = ConstraintLayout.LayoutParams.PARENT_ID;
+    siteParams.startToStart    = R.id.linkpreview_title;
+    siteParams.endToEnd        = R.id.linkpreview_title;
+    siteParams.topMargin       = ViewUtil.dpToPx(2);
+    site.setLayoutParams(siteParams);
+  }
+
+  /**
+   * Tellomi (card-visual §3.3): the whole card in the colours taken from its own image; null keeps the default colours.
+   * Whether to apply them (never in a message request) and which set (light or dark) is decided by the caller.
+   */
+  public void applyTellomiTint(@Nullable TellomiLinkVisual.Colors colors) {
+    if (type == TYPE_COMPOSE || colors == null) {
+      return;
+    }
+
+    container.setBackgroundColor(colors.getBackground());
+    title.setTextColor(colors.getText());
+    description.setTextColor(withAlpha(colors.getText(), SECONDARY_TEXT_ALPHA));
+    site.setTextColor(withAlpha(colors.getText(), SECONDARY_TEXT_ALPHA));
+  }
+
+  private static int withAlpha(int color, int alpha) {
+    return Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color));
+  }
+
+  /** Undone for every other card, since views are reused. */
+  private void showTellomiVisual(boolean visual) {
+    if (visual) {
+      return;
+    }
+
+    iconLayout = false;
+    if (type != TYPE_COMPOSE) {
+      container.setBackgroundColor(ContextCompat.getColor(getContext(), org.signal.core.ui.R.color.signal_neutralSurface));
+    }
+    description.setTextColor(descriptionColors);
+    site.setTextColor(siteColors);
+
+    ConstraintLayout.LayoutParams thumbnailParams = thumbnail.resolved() ? (ConstraintLayout.LayoutParams) thumbnail.get().getLayoutParams() : null;
+    if (thumbnailParams != null) {
+      thumbnailParams.startToStart   = ConstraintLayout.LayoutParams.PARENT_ID;
+      thumbnailParams.endToEnd       = ConstraintLayout.LayoutParams.UNSET;
+      thumbnailParams.topToTop       = ConstraintLayout.LayoutParams.PARENT_ID;
+      thumbnailParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
+      thumbnail.get().setLayoutParams(thumbnailParams);
+    }
+
+    ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
+    titleParams.endToStart = R.id.linkpreview_link_icon;
+    title.setLayoutParams(titleParams);
+
+    ConstraintLayout.LayoutParams siteParams = (ConstraintLayout.LayoutParams) site.getLayoutParams();
+    siteParams.topToBottom    = R.id.linkpreview_description;
+    siteParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
+    siteParams.startToStart   = ConstraintLayout.LayoutParams.PARENT_ID;
+    siteParams.endToEnd       = ConstraintLayout.LayoutParams.PARENT_ID;
+    siteParams.topMargin      = ViewUtil.dpToPx(2);
+    site.setLayoutParams(siteParams);
+  }
+
   /** The title and the subtitle sit one above the other, centered beside the avatar (Telegram's card, card-visual §5.2). */
   private void stackSubtitleUnderTitle(boolean leadingVisible, int leadingId) {
     if (!leadingVisible) {
@@ -472,6 +581,13 @@ public class LinkPreviewView extends FrameLayout {
   }
 
   public void setCorners(int topStart, int topEnd) {
+    if (iconLayout) {
+      // The image is not at the bubble's corner any more: it keeps its own rounding.
+      cornerMask.setRadii(ViewUtil.isRtl(this) ? topEnd : topStart, ViewUtil.isRtl(this) ? topStart : topEnd, 0, 0);
+      postInvalidate();
+      return;
+    }
+
     if (ViewUtil.isRtl(this)) {
       cornerMask.setRadii(topEnd, topStart, 0, 0);
       thumbnailState = thumbnailState.copy(
