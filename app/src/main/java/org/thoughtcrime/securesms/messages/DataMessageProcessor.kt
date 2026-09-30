@@ -69,6 +69,7 @@ import org.thoughtcrime.securesms.jobs.protos.GroupCallPeekJobData
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.linkpreview.LinkPreview
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewUtil
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkReceive
 import org.thoughtcrime.securesms.messages.MessageContentProcessor.Companion.debug
 import org.thoughtcrime.securesms.messages.MessageContentProcessor.Companion.log
 import org.thoughtcrime.securesms.messages.MessageContentProcessor.Companion.warn
@@ -921,10 +922,10 @@ object DataMessageProcessor {
     try {
       val quoteModel: QuoteModel? = getValidatedQuote(context, envelope.clientTimestamp!!, message, senderRecipient, threadRecipient)
       val contacts: List<Contact> = getContacts(message)
-      val linkPreviews: List<LinkPreview> = getLinkPreviews(message.preview, message.body ?: "", false)
       val mentions: List<Mention> = getMentions(message.bodyRanges.take(BODY_RANGE_PROCESSING_LIMIT))
       val sticker: Attachment? = getStickerAttachment(envelope.clientTimestamp!!, message)
       val attachments: List<Attachment> = message.attachments.toPointersWithinLimit()
+      val linkPreviews: List<LinkPreview> = getLinkPreviews(message.preview, message.body ?: "", false, (attachments + listOfNotNull(sticker)).mapNotNull { it.contentType })
       val messageRanges: BodyRangeList? = if (message.bodyRanges.isNotEmpty()) message.bodyRanges.asSequence().take(BODY_RANGE_PROCESSING_LIMIT).filter { Util.allAreNull(it.mentionAci, it.mentionAciBinary) }.toList().toBodyRangeList() else null
 
       handlePossibleExpirationUpdate(envelope, metadata, senderRecipient, threadRecipient, groupId, message.expireTimerDuration, message.expireTimerVersion, receivedTime)
@@ -1671,7 +1672,11 @@ object DataMessageProcessor {
     return message.contact.map { ContactModelMapper.remoteToLocal(it) }
   }
 
-  fun getLinkPreviews(previews: List<Preview>, body: String, isStoryEmbed: Boolean): List<LinkPreview> {
+  /**
+   * [attachmentContentTypes]: the content types of the message's own attachments (a sticker included), which rust/links needs to
+   * decide the card the way it will be drawn (ADR-0063 §5.1).
+   */
+  fun getLinkPreviews(previews: List<Preview>, body: String, isStoryEmbed: Boolean, attachmentContentTypes: List<String> = emptyList()): List<LinkPreview> {
     if (previews.isEmpty()) {
       return emptyList()
     }
@@ -1688,6 +1693,21 @@ object DataMessageProcessor {
         val presentInBody = url.isPresent && urlsInMessage.containsUrl(url.get())
         val validDomain = url.isPresent && LinkUtil.isValidPreviewUrl(url.get())
         val isForCallLink = url.isPresent && CallLinks.isCallLink(url.get())
+
+        // Tellomi（ADR-0063 §5.1 铁律 4、§7.4）：留不留这条预览、留不留 rich、留不留图，由 rust/links 定（TellomiLinkReceive），
+        // 不再走下面上游的「要有标题、URL 在正文里」——那条会把没有标题的 tell.cc 用户 / 官网预览在落库前就丢掉。
+        // 没有判定（没注册表、桥出错）就照下面上游原来的规则。
+        if (validDomain) {
+          val received = LinkPreview(url.get(), title.orElse(""), description.orElse(""), preview.date ?: 0, thumbnail.toOptional(), TellomiRichContent.receivedBytes(preview))
+          when (val outcome = TellomiLinkReceive.receive(received, body, isStoryEmbed, attachmentContentTypes)) {
+            is TellomiLinkReceive.Outcome.Kept -> return@mapNotNull outcome.preview
+            TellomiLinkReceive.Outcome.Dropped -> {
+              warn("Discarding a link preview that rust/links does not keep.")
+              return@mapNotNull null
+            }
+            TellomiLinkReceive.Outcome.Undecided -> Unit
+          }
+        }
 
         if ((hasTitle || isForCallLink || isStoryEmbed) && (presentInBody || isStoryEmbed) && validDomain) {
           // Tellomi（ADR-0063 §7.4，tellomi/tellomi#1420）：rich（1000 号字段）按收到的字节带着，含本机不认识的字段。

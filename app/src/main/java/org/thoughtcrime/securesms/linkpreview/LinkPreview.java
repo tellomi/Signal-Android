@@ -138,6 +138,17 @@ public class LinkPreview implements Parcelable {
     }
   };
 
+  /**
+   * Tellomi (ADR-0063 §7.4): this preview with only what rust/links says to keep of a received one: its thumbnail (whose attachment
+   * is then never made or downloaded) and its {@code rich}. Everything else, title and description as received, is as it was.
+   */
+  public @NonNull LinkPreview withKept(boolean keepThumbnail, boolean keepRich) {
+    if (keepThumbnail && keepRich) {
+      return this;
+    }
+    return new LinkPreview(url, title, description, date, keepThumbnail ? thumbnail : Optional.empty(), keepRich ? rich : null);
+  }
+
   public @NonNull String getUrl() {
     return url;
   }

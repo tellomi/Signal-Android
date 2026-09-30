@@ -87,4 +87,26 @@ object TellomiLinkRegistry {
     cards.put(key, Optional(card))
     return card
   }
+
+  /**
+   * rust/links' receive-time check for one received preview (ADR-0063 §7.4): whether to keep it, and whether to keep its
+   * `rich`. Null for "no decision": no registry, or rust/links failed. Never logs the URL.
+   */
+  @JvmStatic
+  @WorkerThread
+  fun receiveCheck(linkPreview: LinkPreview, body: String, isStory: Boolean, attachmentContentTypes: List<String>): TellomiReceiveCheck? {
+    val current = get() ?: return null
+    return try {
+      TellomiReceiveCheck.parse(
+        current.receiveCheck(
+          TellomiLinkCard.previewInputJson(linkPreview),
+          body,
+          TellomiLinkCard.messageContextJson(isStory, attachmentContentTypes)
+        )
+      )
+    } catch (e: Exception) {
+      Log.w(TAG, "receiveCheck failed: ${e.javaClass.simpleName}")
+      null
+    }
+  }
 }
