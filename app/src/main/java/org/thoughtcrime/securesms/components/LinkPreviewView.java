@@ -7,23 +7,31 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.AttributeSet;
+import android.util.StateSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.bumptech.glide.RequestManager;
 
@@ -38,6 +46,7 @@ import org.thoughtcrime.securesms.conversation.colors.AvatarColorHash;
 import org.thoughtcrime.securesms.linkpreview.LinkPreview;
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewRepository;
 import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkCardAccessibility;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkVisual;
 import org.thoughtcrime.securesms.mms.ImageSlide;
@@ -75,6 +84,8 @@ public class LinkPreviewView extends FrameLayout {
   /** {@code layout_marginEnd} of the title in link_preview.xml. */
   private static final int TITLE_END_MARGIN_DP   = 8;
   private static final int SECONDARY_TEXT_ALPHA  = 0xB3;
+  /** A pressed or focused card is covered by its text colour at 12% (Material 3's state layers), card-visual §3.6 / §3.8. */
+  private static final int STATE_LAYER_ALPHA     = 0x1F;
   /** The description's line limits: the layout file's (conversation), and {@link #init} (compose). */
   private static final int CONVERSATION_DESCRIPTION_MAX_LINES = 15;
   private static final int COMPOSE_DESCRIPTION_MAX_LINES      = 2;
@@ -99,6 +110,9 @@ public class LinkPreviewView extends FrameLayout {
   private int                           type;
   private int                           defaultRadius;
   private boolean                       iconLayout;
+  /** Tellomi (card-visual §3.6): what a screen reader says for the whole card, and whether its action is a button. */
+  private TellomiLinkCardAccessibility.Strings accessibilityStrings;
+  private boolean                       actionIsButton;
   private CornerMask                    cornerMask;
   private CloseClickedListener          closeClickedListener;
   private LinkPreviewViewThumbnailState thumbnailState = new LinkPreviewViewThumbnailState();
@@ -133,6 +147,7 @@ public class LinkPreviewView extends FrameLayout {
     noPreview     = findViewById(R.id.linkpreview_no_preview);
     defaultRadius = getResources().getDimensionPixelSize(R.dimen.thumbnail_default_radius);
     cornerMask    = new CornerMask(this);
+    accessibilityStrings = TellomiLinkCardAccessibility.Strings.from(getContext());
 
     if (attrs != null) {
       TypedArray typedArray   = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.LinkPreviewView, 0, 0);
@@ -153,9 +168,33 @@ public class LinkPreviewView extends FrameLayout {
           closeClickedListener.onCloseClicked();
         }
       });
+    } else {
+      // Tellomi (card-visual §3.6, §3.8): a card in a bubble is one node for a screen reader, which says the whole card in one
+      // sentence, so its parts are not read again; a pressed or focused card gets a translucent layer, never another background.
+      ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      ViewCompat.setImportantForAccessibility(container, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      ViewCompat.setAccessibilityDelegate(this, new AccessibilityDelegateCompat() {
+        @Override
+        public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+          super.onInitializeAccessibilityNodeInfo(host, info);
+          if (actionIsButton) {
+            info.setClassName(Button.class.getName());
+          }
+        }
+      });
+      showStateLayer(titleColors.getDefaultColor());
     }
 
     setWillNotDraw(false);
+  }
+
+  @Override
+  public void onDrawForeground(Canvas canvas) {
+    super.onDrawForeground(canvas);
+    if (type == TYPE_COMPOSE || getForeground() == null) return;
+
+    // The layer of a pressed card stops at the bubble's rounded corners, like the card itself.
+    cornerMask.mask(canvas);
   }
 
   @Override
@@ -263,6 +302,11 @@ public class LinkPreviewView extends FrameLayout {
 
     boolean thumbnailVisible = (showThumbnail && linkPreview.getThumbnail().isPresent()) || callLinkRootKey != null;
     alignTitleWithThumbnail(thumbnailVisible);
+
+    // What a card nothing decided on is read as (card-visual §3.6): the preview's own title and the domain shown above.
+    String readTitle = !Util.isEmpty(linkPreview.getTitle()) ? linkPreview.getTitle()
+                                                               : callLinkRootKey != null ? getContext().getString(R.string.Recipient_signal_call) : null;
+    describeCard(TellomiLinkCardAccessibility.link(readTitle, domain, accessibilityStrings), false);
   }
 
   /**
@@ -274,6 +318,8 @@ public class LinkPreviewView extends FrameLayout {
     if (display == null) {
       return;
     }
+
+    describeCard(TellomiLinkCardAccessibility.link(display.getTitle(), display.getAccessibilityDomain(), accessibilityStrings), false);
 
     if (!Util.isEmpty(display.getTitle())) {
       setTitleText(display.getTitle(), display.getOfficialBadge());
@@ -322,6 +368,10 @@ public class LinkPreviewView extends FrameLayout {
     title.setText(domain);
     title.setVisibility(VISIBLE);
     showPlainLink(true, lookalike);
+
+    // It opens nothing, so a touch on it is not a press on a card (card-visual §3.6).
+    hideStateLayer();
+    describeCard(TellomiLinkCardAccessibility.link(null, domain, accessibilityStrings), false);
   }
 
   /**
@@ -338,6 +388,9 @@ public class LinkPreviewView extends FrameLayout {
     if (type == TYPE_COMPOSE) {
       return;
     }
+
+    // The card is read as one sentence, and its action is a button (card-visual §3.6).
+    describeCard(TellomiLinkCardAccessibility.firstParty(display, accessibilityStrings), true);
 
     showPlainLink(false, false);
     setTitleText(display.getTitle(), display.getOfficialBadge());
@@ -493,6 +546,40 @@ public class LinkPreviewView extends FrameLayout {
     title.setTextColor(colors.getText());
     description.setTextColor(withAlpha(colors.getText(), SECONDARY_TEXT_ALPHA));
     site.setTextColor(withAlpha(colors.getText(), SECONDARY_TEXT_ALPHA));
+
+    // Black on a light card, white on a dark one: pressed, it is darkened or lightened, and keeps its own colour (§3.6, §3.8).
+    showStateLayer(colors.getText());
+  }
+
+  /**
+   * Tellomi (card-visual §3.6, §3.8): a pressed or focused card is covered by {@code color} at 12%, which is the card's text
+   * colour, black or white, or the default one on a neutral card. The card's background is not touched. Conversation bubbles only.
+   */
+  private void showStateLayer(@ColorInt int color) {
+    if (type == TYPE_COMPOSE) {
+      return;
+    }
+
+    ColorDrawable     on    = new ColorDrawable(withAlpha(color, STATE_LAYER_ALPHA));
+    StateListDrawable layer = new StateListDrawable();
+    layer.addState(new int[] { android.R.attr.state_pressed }, on);
+    layer.addState(new int[] { android.R.attr.state_focused }, on);
+    layer.addState(StateSet.WILD_CARD, new ColorDrawable(Color.TRANSPARENT));
+    setForeground(layer);
+  }
+
+  private void hideStateLayer() {
+    setForeground(null);
+  }
+
+  /** What a screen reader says for the whole card, and whether the card's action is a button. Conversation bubbles only. */
+  private void describeCard(@NonNull String description, boolean button) {
+    if (type == TYPE_COMPOSE) {
+      return;
+    }
+
+    actionIsButton = button;
+    setContentDescription(description);
   }
 
   private static int withAlpha(int color, int alpha) {
@@ -508,6 +595,7 @@ public class LinkPreviewView extends FrameLayout {
     iconLayout = false;
     if (type != TYPE_COMPOSE) {
       container.setBackgroundColor(ContextCompat.getColor(getContext(), org.signal.core.ui.R.color.signal_neutralSurface));
+      showStateLayer(titleColors.getDefaultColor());
     }
     description.setTextColor(descriptionColors);
     site.setTextColor(siteColors);

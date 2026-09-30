@@ -41,6 +41,12 @@ data class TellomiLinkDisplay(
   val lookalike: Boolean = false
 ) {
 
+  /**
+   * The registrable domain alone, for a screen reader (card-visual §3.6). The domain line can carry a publish date after the
+   * domain; a domain has no space in it, so it is what comes before the first one.
+   */
+  val accessibilityDomain: String? get() = domain?.substringBefore(' ')
+
   /** Everything that needs resources or the clock, so [of] stays a pure function. */
   data class Strings(
     val officialTitle: String,
