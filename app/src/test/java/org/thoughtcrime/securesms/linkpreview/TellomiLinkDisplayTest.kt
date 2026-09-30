@@ -81,11 +81,21 @@ class TellomiLinkDisplayTest {
     val card = structured("video", "duration_ms" to "3723000", "author" to "柯洁", "published_at" to publishedAt, title = "《柯洁围棋入门课》")
     val millis = OffsetDateTime.parse(publishedAt).toInstant().toEpochMilli()
 
+    // card-visual §3.4 / §3.7: the domain and the date are joined with U+22C5, the sub line's parts with U+00B7.
     assertEquals(
-      TellomiLinkDisplay("《柯洁围棋入门课》", "柯洁 · 1:02:03", "bilibili.com · D$millis", false),
+      TellomiLinkDisplay("《柯洁围棋入门课》", "柯洁 · 1:02:03", "bilibili.com ⋅ D$millis", false),
       TellomiLinkDisplay.of(snapshot, card, Locale.US, strings)
     )
     assertEquals("bilibili.com", TellomiLinkDisplay.of(snapshot, structured("video", "published_at" to "not a date"), Locale.US, strings)?.domain)
+  }
+
+  @Test
+  fun `the domain and the publish date are joined by a dot operator, not the middle dot of the sub line`() {
+    val card = structured("video", "author" to "柯洁", "duration_ms" to "65000", "published_at" to "2026-09-01T08:00:00+08:00")
+    val shown = TellomiLinkDisplay.of(snapshot, card, Locale.US, strings)!!
+
+    assertEquals("the sub line keeps U+00B7", "柯洁 · 1:05", shown.description)
+    assertEquals("the domain line uses U+22C5", "bilibili.com ⋅ D${OffsetDateTime.parse("2026-09-01T08:00:00+08:00").toInstant().toEpochMilli()}", shown.domain)
   }
 
   @Test
@@ -183,6 +193,29 @@ class TellomiLinkDisplayTest {
     assertNull(TellomiLinkDisplay.formatDuration("-5"))
     assertNull(TellomiLinkDisplay.formatDuration("long"))
     assertNull(TellomiLinkDisplay.formatDuration(null))
+  }
+
+  /** card-visual §3.9: rounded to the second; "0 or not valid shows nothing", and a duration that rounds to 0 is 0. */
+  @Test
+  fun `a duration that rounds to zero seconds shows nothing`() {
+    assertNull("1 ms", TellomiLinkDisplay.formatDuration("1"))
+    assertNull("499 ms rounds down to 0", TellomiLinkDisplay.formatDuration("499"))
+    assertEquals("500 ms rounds up to 1", "0:01", TellomiLinkDisplay.formatDuration("500"))
+    assertEquals("0:01", TellomiLinkDisplay.formatDuration("999"))
+    assertEquals("0:01", TellomiLinkDisplay.formatDuration("1499"))
+    assertEquals("0:02", TellomiLinkDisplay.formatDuration("1500"))
+    assertEquals("59:59", TellomiLinkDisplay.formatDuration("3599499"))
+    assertEquals("1:00:00", TellomiLinkDisplay.formatDuration("3599500"))
+    assertNull("empty", TellomiLinkDisplay.formatDuration(""))
+    assertNull("a fraction is not a whole number of milliseconds", TellomiLinkDisplay.formatDuration("1.5"))
+    assertNull("too big for a Long is not a number", TellomiLinkDisplay.formatDuration("9223372036854775808"))
+  }
+
+  @Test
+  fun `a video whose duration rounds to zero has no duration on its sub line`() {
+    assertEquals("柯洁", line(structured("video", "author" to "柯洁", "duration_ms" to "499")))
+    assertNull(line(structured("video", "duration_ms" to "499")))
+    assertEquals("柯洁 · 0:01", line(structured("video", "author" to "柯洁", "duration_ms" to "500")))
   }
 
   @Test

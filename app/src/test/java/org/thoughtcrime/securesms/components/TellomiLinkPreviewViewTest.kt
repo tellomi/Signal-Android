@@ -11,14 +11,17 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.text.Spanned
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.test.core.app.ApplicationProvider
 import com.bumptech.glide.RequestManager
 import io.mockk.every
@@ -471,7 +474,7 @@ class TellomiLinkPreviewViewTest {
   private val thumbnailImage get() = thumbnail.findViewById<ImageView>(R.id.thumbnail_image)
 
   @Test
-  fun `a brand shell's icon is the 48 square at the top right, its name and domain on the left, no description`() {
+  fun `a brand shell's icon is the 48 square at the top right, its name, kind and domain on the left`() {
     val icon = brandIcon()
     view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
     view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", "Product", "taobao.com", false), true)
@@ -489,7 +492,8 @@ class TellomiLinkPreviewViewTest {
     assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).startToStart)
     assertEquals(R.id.linkpreview_thumbnail, params(R.id.linkpreview_title).endToStart)
     assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_title).startToStart)
-    assertEquals(View.GONE, description.visibility)
+    assertEquals("the kind is the sub line, between the name and the domain", "Product", description.text.toString())
+    assertEquals(View.VISIBLE, description.visibility)
     assertEquals("Taobao", title.text.toString())
     assertEquals("taobao.com", site.text.toString())
 
@@ -541,7 +545,7 @@ class TellomiLinkPreviewViewTest {
     view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", "Product", "taobao.com", false), true)
     view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
 
-    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON, true)
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
 
     assertEquals("Product", description.text.toString())
     assertEquals(View.VISIBLE, description.visibility)
@@ -558,22 +562,49 @@ class TellomiLinkPreviewViewTest {
   }
 
   @Test
-  fun `a brand shell with no kind text has nothing to keep, and a sender's image card still drops its sub line`() {
+  fun `an icon card with no sub line has nothing to keep`() {
     view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
     view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", null, "taobao.com", false), true)
-    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
-    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON, true)
-
-    assertEquals(View.GONE, description.visibility)
-    assertEquals(R.id.linkpreview_site, params(R.id.linkpreview_title).bottomToTop)
-    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_site).topToBottom)
-
-    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
-    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", "Author", "bilibili.com", false), true)
     view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
     view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
 
     assertEquals(View.GONE, description.visibility)
+    assertEquals(R.id.linkpreview_site, params(R.id.linkpreview_title).bottomToTop)
+    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_site).topToBottom)
+  }
+
+  /** card-visual §3.7: three lines, title, sub line, domain, for every card; §3.2's icon geometry is about the image and does not drop one. */
+  @Test
+  fun `an icon card keeps its sub line whoever's image it shows`() {
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", "Author · 3:45", "bilibili.com", false), true)
+    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
+
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+
+    assertEquals("Author · 3:45", description.text.toString())
+    assertEquals(View.VISIBLE, description.visibility)
+    assertEquals(1, description.maxLines)
+    assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_title).bottomToTop)
+    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_description).topToBottom)
+    assertEquals(R.id.linkpreview_site, params(R.id.linkpreview_description).bottomToTop)
+    assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_site).topToBottom)
+    assertEquals("bilibili.com", site.text.toString())
+    assertEquals("the image is still the 48 square at the top right", dp(48), thumbnail.layoutParams.width)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).endToEnd)
+    assertEquals("the text still ends before the image", R.id.linkpreview_thumbnail, params(R.id.linkpreview_title).endToStart)
+  }
+
+  @Test
+  fun `a condensed bubble's icon card has no sub line to keep`() {
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", "Author · 3:45", "bilibili.com", false), false)
+    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
+
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+
+    assertEquals(View.GONE, description.visibility)
+    assertEquals(R.id.linkpreview_site, params(R.id.linkpreview_title).bottomToTop)
   }
 
   @Test
@@ -582,15 +613,193 @@ class TellomiLinkPreviewViewTest {
     view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
     view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", "Product", "taobao.com", false), true)
     view.applyTellomiBrandIcon(requestManager, brandIcon())
-    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON, true)
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
 
     view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
 
-    assertEquals(15, description.maxLines)
+    assertEquals("one line, as every card's sub line", 1, description.maxLines)
     assertEquals(R.id.linkpreview_header_barrier, params(R.id.linkpreview_description).topToBottom)
     assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_description).bottomToTop)
     assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_description).endToEnd)
     assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_description).startToStart)
     assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_site).topToBottom)
+  }
+
+  // --- Line limits (card-visual §3.7): the title two lines, the sub line one, the domain one, each cut off at its end ---
+
+  @Test
+  fun `a card is two lines of title, one of sub line and one of domain, each cut off at its end`() {
+    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", "Author · 3:45", "bilibili.com", false), true)
+
+    assertEquals(2, title.maxLines)
+    assertEquals(1, description.maxLines)
+    assertEquals(1, site.maxLines)
+    for (line in listOf(title, description, site)) {
+      assertEquals(TextUtils.TruncateAt.END, line.ellipsize)
+    }
+  }
+
+  @Test
+  fun `the limits hold on a reused view, for the first-party card too`() {
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), true)
+    assertEquals(1, description.maxLines)
+    assertEquals(1, site.maxLines)
+
+    view.applyTellomiFirstParty(
+      requestManager,
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.GROUP, "周末爬山群", "12 members", "Join Group", false),
+      null,
+      false
+    )
+    assertEquals(2, title.maxLines)
+    assertEquals(1, description.maxLines)
+
+    view.setDomainOnly("163.com", false)
+    assertEquals(2, title.maxLines)
+    assertEquals(1, site.maxLines)
+  }
+
+  @Test
+  fun `the compose box keeps its own limits`() {
+    val compose = LayoutInflater.from(view.context).inflate(R.layout.conversation_input_link_preview_view, null) as LinkPreviewView
+
+    assertEquals(2, compose.findViewById<TextView>(R.id.linkpreview_title).maxLines)
+    assertEquals(2, compose.findViewById<TextView>(R.id.linkpreview_description).maxLines)
+  }
+
+  // --- The no-image card: a grey link icon at the end of the title line (card-visual §3.2 / §3.7) ---
+
+  @Test
+  fun `a card with no image draws the link icon, whatever its level`() {
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    val displays = listOf(
+      "generic" to TellomiLinkDisplay("Sender title", null, "example.com", false),
+      "structured" to TellomiLinkDisplay("Go Course", "Ke Jie · 1:02:03", "bilibili.com", false),
+      "brand shell without an icon" to TellomiLinkDisplay("Meituan", "Product", "meituan.com", false)
+    )
+    for ((name, display) in displays) {
+      view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+      view.applyTellomiDisplay(display, true)
+      view.applyTellomiLayout(TellomiLinkVisual.Layout.NO_IMAGE)
+
+      assertEquals(name, View.VISIBLE, linkIcon.visibility)
+      assertEquals("$name: the title ends before the icon", R.id.linkpreview_link_icon, params(R.id.linkpreview_title).endToStart)
+    }
+  }
+
+  @Test
+  fun `the link icon is the no-image card's alone`() {
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    for (layout in listOf(TellomiLinkVisual.Layout.ICON, TellomiLinkVisual.Layout.LARGE_IMAGE, TellomiLinkVisual.Layout.FIRST_PARTY, null)) {
+      view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+      view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", null, "bilibili.com", false), true)
+      view.applyTellomiLayout(layout)
+
+      assertEquals("$layout", View.GONE, linkIcon.visibility)
+    }
+  }
+
+  @Test
+  fun `a recycled view drops the no-image card's link icon`() {
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Sender title", null, "example.com", false), true)
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.NO_IMAGE)
+    assertEquals(View.VISIBLE, linkIcon.visibility)
+
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    assertEquals(View.GONE, linkIcon.visibility)
+
+    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", null, "bilibili.com", false), true)
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+    assertEquals(View.GONE, linkIcon.visibility)
+  }
+
+  @Test
+  fun `the no-image card's link icon is the grey one the plain-link card has`() {
+    val icon = linkIcon as ImageView
+    val grey = ContextCompat.getColor(view.context, org.signal.core.ui.R.color.signal_colorOnSurfaceVariant)
+
+    assertEquals(grey, ImageViewCompat.getImageTintList(icon)?.defaultColor)
+    assertEquals(View.IMPORTANT_FOR_ACCESSIBILITY_NO, icon.importantForAccessibility)
+  }
+
+  @Test
+  fun `a card with no image keeps the text clear of the link icon, and is as tall as its lines`() {
+    val card = cardInWindow()
+    card.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "", 0, Optional.empty()), false)
+    card.applyTellomiDisplay(TellomiLinkDisplay("A long title that goes on and on and wraps onto a second line of the card", "Author · 3:45", "bilibili.com", false), true)
+    card.applyTellomiLayout(TellomiLinkVisual.Layout.NO_IMAGE)
+
+    card.measure(View.MeasureSpec.makeMeasureSpec(dp(300), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+    card.layout(0, 0, card.measuredWidth, card.measuredHeight)
+
+    val icon = card.findViewById<View>(R.id.linkpreview_link_icon)
+    val cardTitle = card.findViewById<View>(R.id.linkpreview_title)
+    val cardSub = card.findViewById<View>(R.id.linkpreview_description)
+    val cardSite = card.findViewById<View>(R.id.linkpreview_site)
+    assertEquals(View.VISIBLE, icon.visibility)
+    assertTrue("the title ends before the icon: ${cardTitle.right} vs ${icon.left}", cardTitle.right <= icon.left)
+    assertTrue("title, sub line and domain are one under the other", cardTitle.bottom <= cardSub.top && cardSub.bottom <= cardSite.top)
+  }
+
+  @Test
+  fun `an icon card with a sub line is as tall as its three lines, and all three end before the image`() {
+    val card = cardInWindow()
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    card.setLinkPreview(requestManager, LinkPreview("", "Sender title", "", 0, Optional.empty()), false)
+    card.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", "Author · 3:45", "bilibili.com", false), true)
+    card.applyTellomiBrandIcon(requestManager, brandIcon())
+    card.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+
+    card.measure(View.MeasureSpec.makeMeasureSpec(dp(300), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+    card.layout(0, 0, card.measuredWidth, card.measuredHeight)
+
+    val image = card.findViewById<View>(R.id.linkpreview_thumbnail)
+    val cardTitle = card.findViewById<View>(R.id.linkpreview_title)
+    val cardSub = card.findViewById<View>(R.id.linkpreview_description)
+    val cardSite = card.findViewById<View>(R.id.linkpreview_site)
+    assertTrue("48 + 6 + 6 tall at least, was ${card.measuredHeight}", card.measuredHeight >= dp(60))
+    assertTrue("the sub line is drawn under the title: ${cardTitle.bottom} vs ${cardSub.top}", cardSub.top >= cardTitle.bottom)
+    assertTrue("the domain is drawn under the sub line", cardSite.top >= cardSub.bottom)
+    assertTrue("the sub line ends 10 before the image", cardSub.right <= image.left - dp(10))
+    assertTrue("the domain ends 10 before the image", cardSite.right <= image.left - dp(10))
+    assertEquals("6 from the top, as every icon card", dp(6), card.findViewById<View>(R.id.linkpreview_container).top + image.top)
+  }
+
+  // --- The avatar and the cover of a first-party card are 56 (card-visual §5.2) ---
+
+  @Test
+  fun `the avatar of a first-party card is 56 square, and so is its cover`() {
+    assertEquals(dp(56), avatar.layoutParams.width)
+    assertEquals(dp(56), avatar.layoutParams.height)
+
+    view.applyTellomiFirstParty(
+      mockk<RequestManager>(relaxed = true),
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.OFFICIAL, "Tellomi website", "/download", "Open", true),
+      null,
+      false
+    )
+    assertEquals(dp(56), thumbnail.layoutParams.width)
+    assertEquals(dp(56), thumbnail.layoutParams.height)
+  }
+
+  /** A card on a real window, for measuring: its image is a ThumbnailView, whose transfer controls are Compose. */
+  private fun cardInWindow(): LinkPreviewView {
+    CoreUiDependencies.init(
+      ApplicationProvider.getApplicationContext(),
+      object : CoreUiDependencies.Provider {
+        override fun providePackageId() = "test"
+        override fun provideIsIncognitoKeyboardEnabled() = false
+        override fun provideIsScreenSecurityEnabled() = false
+      }
+    )
+    val controller = Robolectric.buildActivity(AppCompatActivity::class.java)
+    controller.get().setTheme(R.style.Signal_DayNight)
+    val activity = controller.setup().get()
+    val card = LinkPreviewView(activity)
+    activity.setContentView(card)
+    return card
   }
 }

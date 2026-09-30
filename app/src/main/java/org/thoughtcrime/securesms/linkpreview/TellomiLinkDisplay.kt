@@ -90,7 +90,11 @@ data class TellomiLinkDisplay(
       "web" to R.string.TellomiLinkCard__kind_web
     )
 
-    private const val SEPARATOR = " · "
+    /** Between the parts of the sub line (card-visual §3.7): U+00B7. */
+    private const val SEPARATOR = " \u00B7 "
+
+    /** Between the domain and the publish date on the domain line (card-visual §3.4 / §3.7): U+22C5, not the sub line's. */
+    private const val DOMAIN_DATE_SEPARATOR = " \u22C5 "
 
     private val PLATFORM_NAMES = mapOf("ios" to "iOS", "android" to "Android")
 
@@ -160,7 +164,7 @@ data class TellomiLinkDisplay(
           TellomiLinkDisplay(
             title = card.title.nonEmpty() ?: linkPreview.title.nonEmpty(),
             description = line(text("author"), formatDuration(attrs["duration_ms"])),
-            domain = if (card.domain != null && published != null) card.domain + SEPARATOR + strings.date(published) else card.domain,
+            domain = if (card.domain != null && published != null) card.domain + DOMAIN_DATE_SEPARATOR + strings.date(published) else card.domain,
             officialBadge = false
           )
         }
@@ -184,11 +188,18 @@ data class TellomiLinkDisplay(
       return generic(linkPreview, card, card.title).copy(description = subLine)
     }
 
-    /** `m:ss` under an hour, `h:mm:ss` from an hour; zero, negative or not a number shows nothing (§3.9). */
+    /**
+     * `m:ss` under an hour, `h:mm:ss` from an hour, rounded to the second. Zero, negative, not a number, or a duration that rounds
+     * to zero seconds (1–499 ms) shows nothing (§3.9: "0 or not valid"); the same on every client.
+     */
     @JvmStatic
     fun formatDuration(value: String?): String? {
       val ms = value?.toLongOrNull()?.takeIf { it > 0 } ?: return null
-      val totalSeconds = (ms + 500) / 1000
+      // Half up; written so that a value near Long.MAX_VALUE cannot overflow.
+      val totalSeconds = ms / 1000 + if (ms % 1000 >= 500) 1 else 0
+      if (totalSeconds <= 0) {
+        return null
+      }
       val hours = totalSeconds / 3600
       val minutes = (totalSeconds % 3600) / 60
       val seconds = totalSeconds % 60

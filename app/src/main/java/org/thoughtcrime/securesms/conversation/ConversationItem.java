@@ -1545,8 +1545,12 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
       if (hasBigImageLinkPreview(messageRecord)) {
         mediaThumbnailStub.require().setVisibility(VISIBLE);
-        mediaThumbnailStub.require().setMinimumThumbnailWidth(readDimen(R.dimen.media_bubble_min_width_with_content));
-        mediaThumbnailStub.require().setMaximumThumbnailHeight(readDimen(R.dimen.media_bubble_max_height));
+        // Tellomi (card-visual §3.2): the image fills the card's width, and its box is at the widest 1.91:1, at the narrowest square;
+        // a taller or wider picture is cropped at the centre.
+        int largeImageWidth = readDimen(R.dimen.media_bubble_max_width);
+        mediaThumbnailStub.require().setMinimumThumbnailWidth(largeImageWidth);
+        mediaThumbnailStub.require().setMinimumThumbnailHeight(TellomiLinkVisual.largeImageMinHeight(largeImageWidth));
+        mediaThumbnailStub.require().setMaximumThumbnailHeight(TellomiLinkVisual.largeImageMaxHeight(largeImageWidth));
         mediaThumbnailStub.require().setImageResource(requestManager, Collections.singletonList(new ImageSlide(linkPreview.getThumbnail().get())), showControls, false, getDefaultBubbleColor(hasWallpaper));
         mediaThumbnailStub.require().setThumbnailClickListener(new LinkPreviewThumbnailClickListener());
         mediaThumbnailStub.require().setStartTransferClickListener(downloadClickListener);
@@ -1570,8 +1574,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, linkCard == null || linkCard.getShowImage(), !isContentCondensed(), displayMode.getMessageMode() == ConversationItemDisplayMode.MessageMode.SCHEDULED);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), !isContentCondensed());
         linkPreviewStub.get().applyTellomiBrandIcon(requestManager, getLinkCardIcon());
-        // A brand shell keeps its kind text beside its icon (card-visual §3.7); a sender's image card is as it was.
-        linkPreviewStub.get().applyTellomiLayout(getLinkCardLayout(), getLinkCardIcon() != null);
+        // The icon card keeps its sub line, and a card with no image has the link icon (card-visual §3.7).
+        linkPreviewStub.get().applyTellomiLayout(getLinkCardLayout());
         linkPreviewStub.get().applyTellomiTint(getLinkCardColors());
         TellomiFirstPartyCard.Display firstParty = getFirstPartyDisplay();
         if (firstParty != null) {
@@ -1731,6 +1735,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       List<Slide>     thumbnailSlides = slideDeck.getThumbnailSlides();
       mediaThumbnailStub.require().setMinimumThumbnailWidth(readDimen(isCaptionlessMms(messageRecord) ? R.dimen.media_bubble_min_width_solo
                                                                                                       : R.dimen.media_bubble_min_width_with_content));
+      // Tellomi: a link card's large image has a lower bound of its own on this view; a photo has the layout's.
+      mediaThumbnailStub.require().setMinimumThumbnailHeight(readDimen(R.dimen.media_bubble_min_height));
       mediaThumbnailStub.require().setMaximumThumbnailHeight(readDimen(isContentCondensed() ? R.dimen.media_bubble_max_height_condensed
                                                                                             : R.dimen.media_bubble_max_height));
 
