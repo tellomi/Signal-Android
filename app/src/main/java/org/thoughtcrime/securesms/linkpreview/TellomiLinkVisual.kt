@@ -96,10 +96,13 @@ object TellomiLinkVisual {
     return Tint(tinted = true, light = light, dark = dark)
   }
 
-  /** §3.3: never in a message request, never for first-party or payment cards, only when there is an image to take colours from. */
+  /**
+   * §3.3: never for first-party or payment cards, only when there is an image to take colours from. Nor in a message
+   * request: that draws the domain-only card ([TellomiLinkOnly.decideRequest]), which is not tintable and never asks for this.
+   */
   @JvmStatic
-  fun shouldTint(card: TellomiLinkCard?, layout: Layout?, isMessageRequest: Boolean): Boolean {
-    if (card == null || isMessageRequest || !card.tintable || card.payment) {
+  fun shouldTint(card: TellomiLinkCard?, layout: Layout?): Boolean {
+    if (card == null || !card.tintable || card.payment) {
       return false
     }
     return layout == Layout.ICON || layout == Layout.LARGE_IMAGE
@@ -152,8 +155,7 @@ object TellomiLinkVisual {
       return Visual.NONE
     }
     val layout = layout(bridge, card, imageWidth, imageHeight) ?: return Visual.NONE
-    // Whether it is applied is decided when the bubble is drawn (never in a message request); the colours are the same either way.
-    if (!shouldTint(card, layout, isMessageRequest = false) || imageKey == null) {
+    if (!shouldTint(card, layout) || imageKey == null) {
       return Visual(layout, null)
     }
 
@@ -188,7 +190,7 @@ object TellomiLinkVisual {
     if (layout != Layout.ICON) {
       return Visual(layout, null)
     }
-    if (!shouldTint(card, layout, isMessageRequest = false)) {
+    if (!shouldTint(card, layout)) {
       return Visual(layout, null, icon)
     }
 

@@ -299,6 +299,32 @@ public class LinkPreviewView extends FrameLayout {
   }
 
   /**
+   * Tellomi (card-visual §3.3 / §7.3): the card of a link received in a conversation that is still a message request: the
+   * link's registrable domain as its only line, the link icon at the end of it, the default colours, and nothing the sender
+   * wrote (no title, description, image, avatar or action). It takes no preview, so nothing but the domain (and whether it
+   * imitates a well-known one, drawn red, ADR-0063 §6.1) can reach the view, and no link-specific look (a call link's avatar)
+   * can appear. Replaces {@link #setLinkPreview} and {@link #applyTellomiDisplay}, and undoes what any other card left on this
+   * (recycled) view. Only for conversation bubbles.
+   */
+  public void setDomainOnly(@NonNull String domain, boolean lookalike) {
+    if (type == TYPE_COMPOSE) {
+      return;
+    }
+
+    showFirstParty(false);
+    showTellomiVisual(false);
+    spinner.setVisibility(GONE);
+    noPreview.setVisibility(GONE);
+    thumbnail.setVisibility(GONE);
+    description.setVisibility(GONE);
+    site.setVisibility(GONE);
+    alignTitleWithThumbnail(false);
+    title.setText(domain);
+    title.setVisibility(VISIBLE);
+    showPlainLink(true, lookalike);
+  }
+
+  /**
    * Tellomi (card-visual §5.2): after {@link #setLinkPreview}, draw the card of a Tellomi object: an avatar or cover, the
    * title, one subtitle line, and the action under a hairline across the card (no domain line). Only for conversation
    * bubbles. Users and groups this device knows show their own avatar; the others keep what {@link #setLinkPreview} put

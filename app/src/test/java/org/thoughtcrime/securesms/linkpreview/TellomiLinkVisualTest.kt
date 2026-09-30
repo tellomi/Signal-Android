@@ -81,15 +81,14 @@ class TellomiLinkVisualTest {
   }
 
   @Test
-  fun `only third-party cards with an image are tinted, and never in a message request`() {
-    assertTrue(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.ICON, isMessageRequest = false))
-    assertTrue(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.LARGE_IMAGE, isMessageRequest = false))
-    assertFalse(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.ICON, isMessageRequest = true))
-    assertFalse(TellomiLinkVisual.shouldTint(card.copy(tintable = false), TellomiLinkVisual.Layout.ICON, isMessageRequest = false))
-    assertFalse(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.FIRST_PARTY, isMessageRequest = false))
-    assertFalse(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.NO_IMAGE, isMessageRequest = false))
-    assertFalse(TellomiLinkVisual.shouldTint(card, null, isMessageRequest = false))
-    assertFalse(TellomiLinkVisual.shouldTint(null, TellomiLinkVisual.Layout.ICON, isMessageRequest = false))
+  fun `only third-party cards with an image are tinted`() {
+    assertTrue(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.ICON))
+    assertTrue(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.LARGE_IMAGE))
+    assertFalse(TellomiLinkVisual.shouldTint(card.copy(tintable = false), TellomiLinkVisual.Layout.ICON))
+    assertFalse(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.FIRST_PARTY))
+    assertFalse(TellomiLinkVisual.shouldTint(card, TellomiLinkVisual.Layout.NO_IMAGE))
+    assertFalse(TellomiLinkVisual.shouldTint(card, null))
+    assertFalse(TellomiLinkVisual.shouldTint(null, TellomiLinkVisual.Layout.ICON))
   }
 
   @Test
@@ -393,10 +392,9 @@ class TellomiLinkVisualTest {
   }
 
   @Test
-  fun `a brand shell is not tinted in a message request, and a payment one never`() {
-    assertTrue(TellomiLinkVisual.shouldTint(brand, TellomiLinkVisual.Layout.ICON, isMessageRequest = false))
-    assertFalse(TellomiLinkVisual.shouldTint(brand, TellomiLinkVisual.Layout.ICON, isMessageRequest = true))
-    assertFalse(TellomiLinkVisual.shouldTint(brand.copy(tintable = false, payment = true), TellomiLinkVisual.Layout.ICON, isMessageRequest = false))
+  fun `a brand shell is tinted, a payment one never`() {
+    assertTrue(TellomiLinkVisual.shouldTint(brand, TellomiLinkVisual.Layout.ICON))
+    assertFalse(TellomiLinkVisual.shouldTint(brand.copy(tintable = false, payment = true), TellomiLinkVisual.Layout.ICON))
   }
 
   @Test

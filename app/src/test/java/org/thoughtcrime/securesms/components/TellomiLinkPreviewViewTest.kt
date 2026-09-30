@@ -368,6 +368,100 @@ class TellomiLinkPreviewViewTest {
     assertEquals(View.VISIBLE, description.visibility)
   }
 
+  // --- The domain-only card of a message request (card-visual §3.3 / §7.3) ---
+
+  @Test
+  fun `the domain-only card shows the domain and the link icon, and nothing the sender wrote`() {
+    view.setDomainOnly("163.com", false)
+
+    assertEquals("163.com", title.text.toString())
+    assertEquals(View.VISIBLE, title.visibility)
+    assertEquals(View.VISIBLE, linkIcon.visibility)
+    assertEquals(View.GONE, description.visibility)
+    assertEquals(View.GONE, site.visibility)
+    assertEquals(View.GONE, thumbnail.visibility)
+    assertEquals(View.GONE, avatar.visibility)
+    assertEquals(View.GONE, action.visibility)
+    assertEquals(View.GONE, divider.visibility)
+    assertEquals(View.GONE, view.findViewById<View>(R.id.linkpreview_progress_wheel).visibility)
+    assertEquals(View.GONE, view.findViewById<View>(R.id.linkpreview_no_preview).visibility)
+  }
+
+  @Test
+  fun `the domain-only card is in the default colours, and red when the domain imitates a well-known one`() {
+    val titleColor = title.currentTextColor
+    val background = (container.background as ColorDrawable).color
+
+    view.setDomainOnly("163.com", false)
+    assertEquals(titleColor, title.currentTextColor)
+    assertEquals(background, (container.background as ColorDrawable).color)
+
+    view.setDomainOnly("bi1ibili.com", true)
+    assertEquals(ContextCompat.getColor(view.context, org.signal.core.ui.R.color.signal_colorError), title.currentTextColor)
+    assertEquals(background, (container.background as ColorDrawable).color)
+  }
+
+  @Test
+  fun `a recycled view drops whatever the card before the domain-only card left on it`() {
+    val titleColor = title.currentTextColor
+    val background = (container.background as ColorDrawable).color
+    val requestManager = mockk<RequestManager>(relaxed = true)
+
+    // An icon card, tinted, with its image and its first-party look.
+    showImage()
+    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", "Video", "bilibili.com", false), true)
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+    view.applyTellomiTint(orange)
+    assertEquals(View.VISIBLE, thumbnail.visibility)
+    assertEquals(orange.background, (container.background as ColorDrawable).color)
+
+    view.setDomainOnly("163.com", false)
+
+    assertEquals("163.com", title.text.toString())
+    assertEquals(View.GONE, thumbnail.visibility)
+    assertEquals(background, (container.background as ColorDrawable).color)
+    assertEquals(titleColor, title.currentTextColor)
+    assertEquals(View.GONE, description.visibility)
+    assertEquals(View.GONE, site.visibility)
+    assertEquals(View.VISIBLE, linkIcon.visibility)
+    assertEquals("the icon layout is undone", ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).endToEnd)
+    assertEquals("the title is beside the link icon, not beside an image", R.id.linkpreview_link_icon, params(R.id.linkpreview_title).endToStart)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_title).startToStart)
+    assertEquals(0, params(R.id.linkpreview_title).marginStart)
+
+    // A first-party card with its action row.
+    view.applyTellomiFirstParty(
+      requestManager,
+      TellomiFirstPartyCard.Display(TellomiFirstPartyCard.Type.GROUP, "周末爬山群", "12 members", "Join Group", false),
+      null,
+      false
+    )
+    assertEquals(View.VISIBLE, action.visibility)
+
+    view.setDomainOnly("tell.cc", false)
+
+    assertEquals("tell.cc", title.text.toString())
+    assertEquals(View.GONE, action.visibility)
+    assertEquals(View.GONE, divider.visibility)
+    assertEquals(View.GONE, avatar.visibility)
+    assertEquals(View.GONE, thumbnail.visibility)
+    assertEquals(View.GONE, description.visibility)
+  }
+
+  @Test
+  fun `the domain-only card is undone for the next card on the view`() {
+    val titleColor = title.currentTextColor
+    view.setDomainOnly("bi1ibili.com", true)
+
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+
+    assertEquals("Sender title", title.text.toString())
+    assertEquals(View.GONE, linkIcon.visibility)
+    assertEquals(titleColor, title.currentTextColor)
+    assertEquals("Sender description", description.text.toString())
+    assertEquals(View.VISIBLE, description.visibility)
+  }
+
   // --- Brand shells: the icon that ships with the app (card-visual §3.9) ---
 
   private fun brandIcon(color: Int = Color.rgb(254, 117, 0)): Bitmap {

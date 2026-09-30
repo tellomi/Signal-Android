@@ -87,6 +87,46 @@ object TellomiLinkOnly {
     return Decision(card, null, cardOnly)
   }
 
+  /** Decided in the data layer, off the main thread (ADR-0063 §5.1 rule 4). See [decideRequest]. */
+  @JvmStatic
+  @WorkerThread
+  fun decideRequest(record: MessageRecord, hasMentions: Boolean): TellomiLinkCard? {
+    return decideRequest(record, hasMentions, TellomiLinkRegistry::classify) { url -> TellomiLinkOpener.plan(url)?.lookalike }
+  }
+
+  /**
+   * What a received message shows for its link while its conversation is still a message request (card-visual §3.3 / §7.3,
+   * ADR-0063 §8.1 row 6): the no-image card with the link's registrable domain, and nothing else. The link is the first
+   * preview's, or the whole body when the message is just a link sent without a preview.
+   *
+   * Nothing the sender wrote reaches the card: rust/links classifies a bare preview (the URL alone: no title, no description,
+   * no image, no `rich`), and whatever it decides is rebuilt as a plain link that keeps only the domain and whether it imitates
+   * a well-known one. So a first-party link gives no avatar, name or button, a brand shell no icon, a structured card no
+   * sub line. The image of the real preview is not part of this: it is never read, and never asked for.
+   *
+   * Null: nothing is drawn: sent by this device, no link, rust/links gave no domain (attachments, an invalid URL, a URL that is
+   * not in the body) or is not loaded. A request never falls back to the full card.
+   */
+  @VisibleForTesting
+  @JvmStatic
+  fun decideRequest(
+    record: MessageRecord,
+    hasMentions: Boolean,
+    classify: (LinkPreview, String, Boolean, List<String>) -> TellomiLinkCard?,
+    lookalike: (String) -> String?
+  ): TellomiLinkCard? {
+    val mms = record as? MmsMessageRecord ?: return null
+    if (mms.isOutgoing) {
+      return null
+    }
+
+    val body = mms.body
+    val url = mms.linkPreviews.firstOrNull()?.url ?: linkOnlyUrl(body, hasOtherContent(mms, hasMentions)) ?: return null
+    val bare = LinkPreview(url, "", "", 0, Optional.empty())
+    val card = classify(bare, body, mms.storyType.isStory, mms.slideDeck.slides.map { it.contentType }) ?: return null
+    return if (card.domain != null) toPlainLinkCard(card, lookalike(url)) else null
+  }
+
   /**
    * Anything that makes the message more than plain text: mentions, formatting, attachments (a long text too), a
    * sticker, a contact, a payment, a gift, a poll, view-once, a story, a deleted message. Same list as Desktop.
