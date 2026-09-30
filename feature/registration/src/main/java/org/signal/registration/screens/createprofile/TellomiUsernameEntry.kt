@@ -48,7 +48,7 @@ data class TellomiUsernameEntry(
     TOO_MANY_ATTEMPTS,
 
     /**
-     * 改名冷却：回收号码的新主人会继承上一个人的 30 天冷却（ADR-0066 §6.2，服务端重新注册时带过来），
+     * 改名冷却：回收号码的新主人会继承上一个人的 180 天冷却（ADR-0066 §6.2，服务端重新注册时带过来），
      * 这时任何用户名都保留不了，要等 [cooldownDays] 天。不想等就清空，直接进入。
      */
     RENAME_COOLDOWN
@@ -126,7 +126,7 @@ data class TellomiUsernameEntry(
 
     /**
      * reserve 回 429 时分辨改名冷却和普通限流：保留的限流桶 `Retry-After` 是秒级到 15 分钟，冷却是天级，
-     * **超过一小时就是冷却**；天数向上取整、至少 1（`Retry-After` 2591999 秒 = 30 天，还剩两小时 = 1 天）。不是冷却返回 null。
+     * **超过一小时就是冷却**；天数向上取整、至少 1（`Retry-After` 15551999 秒 = 180 天，还剩两小时 = 1 天）。不是冷却返回 null。
      * 与 Desktop `isRenameCooldown` / `getRenameCooldownDays`、编辑页（tellomi/Signal-Android#27）同一条线，三端一致。
      *
      * TODO(tellomi/Signal-Android#27 合并后)：改用 core/util-jvm 的 `TellomiUsernames.isRenameCooldown` /

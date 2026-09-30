@@ -104,6 +104,7 @@ class TellomiUsernameEntryTest {
   /** taishi 审查包 4：429 的 `Retry-After` 超过一小时是改名冷却，按天显示；与 Desktop、编辑页（#27）同一条线。 */
   @Test
   fun `retry after longer than an hour is the rename cooldown in whole days`() {
+    assertThat(TellomiUsernameEntry.renameCooldownDays(15551999.seconds)).isEqualTo(180)
     assertThat(TellomiUsernameEntry.renameCooldownDays(2591999.seconds)).isEqualTo(30)
     assertThat(TellomiUsernameEntry.renameCooldownDays(86401.seconds)).isEqualTo(2)
     assertThat(TellomiUsernameEntry.renameCooldownDays(86400.seconds)).isEqualTo(1)

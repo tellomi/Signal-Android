@@ -578,7 +578,7 @@ object UsernameRepository {
     CANDIDATE_GENERATION_ERROR,
     RATE_LIMIT_ERROR,
 
-    /** Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：30 天改名冷却期内要换别的名字，服务端回 429 + 天级 `Retry-After`。只会出现在 reserve。 */
+    /** Tellomi（tellomi/tellomi#1106 第四刀，ADR-0066 §6.2）：180 天改名冷却期内要换别的名字，服务端回 429 + 天级 `Retry-After`。只会出现在 reserve。 */
     CHANGE_COOLDOWN
   }
 
