@@ -1,0 +1,226 @@
+/*
+ * Copyright 2026 重庆半格智能科技有限公司
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+package org.thoughtcrime.securesms.linkpreview
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.LruCache
+import androidx.annotation.WorkerThread
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import org.signal.core.util.logging.Log
+import org.signal.libsignal.links.Links
+import org.thoughtcrime.securesms.attachments.Attachment
+import org.thoughtcrime.securesms.database.AttachmentTable
+import org.thoughtcrime.securesms.database.model.MessageRecord
+import org.thoughtcrime.securesms.database.model.MmsMessageRecord
+import org.thoughtcrime.securesms.dependencies.AppDependencies
+import org.thoughtcrime.securesms.mms.PartAuthority
+
+/**
+ * card-visual §3.2 / §3.3 / §3.8 (tellomi/tellomi#1422): the shape of a card and the colours taken from its own image are
+ * decided by rust/links (`layout` / `tint`, the same answer on every client). This only reads the answer and applies it.
+ */
+object TellomiLinkVisual {
+
+  private val TAG = Log.tag(TellomiLinkVisual::class.java)
+
+  /** The reduction rust/links expects: 32 × 32 RGBA. */
+  private const val TINT_SIZE = 32
+
+  private val HEX_COLOR = Regex("^#[0-9A-Fa-f]{6}$")
+  private val json = Json { ignoreUnknownKeys = true }
+
+  enum class Layout(val wire: String) {
+    FIRST_PARTY("first_party"),
+    LARGE_IMAGE("large_image"),
+    ICON("icon"),
+    NO_IMAGE("no_image")
+  }
+
+  data class Colors(val background: Int, val text: Int)
+
+  data class Tint(val tinted: Boolean, val light: Colors? = null, val dark: Colors? = null) {
+    fun colors(isDark: Boolean): Colors? = if (tinted) (if (isDark) dark else light) else null
+  }
+
+  /** The two native calls; a seam so the reading and reducing can be tested without the native library. */
+  interface Bridge {
+    fun layout(imageWidth: Int, imageHeight: Int, kind: String, level: String): String
+    fun tint(layout: String, width: Int, height: Int, rgba: ByteArray): String
+  }
+
+  object Native : Bridge {
+    override fun layout(imageWidth: Int, imageHeight: Int, kind: String, level: String): String = Links.layout(imageWidth, imageHeight, kind, level)
+    override fun tint(layout: String, width: Int, height: Int, rgba: ByteArray): String = Links.tint(layout, width, height, rgba)
+  }
+
+  /** What the data layer decided for one card: its shape (null: no decision) and the colours of its own image (null: none). */
+  data class Visual(val layout: Layout?, val tint: Tint?) {
+    companion object {
+      @JvmField
+      val NONE = Visual(null, null)
+    }
+  }
+
+  private val tints = LruCache<String, Tint>(200)
+
+  @Serializable
+  private data class WireColors(val background: String, val text: String)
+
+  @Serializable
+  private data class WireTint(val tinted: Boolean, val light: WireColors? = null, val dark: WireColors? = null)
+
+  @JvmStatic
+  fun parseLayout(text: String): Layout? = Layout.values().firstOrNull { it.wire == text }
+
+  @JvmStatic
+  fun parseTint(text: String): Tint? {
+    val wire = try {
+      json.decodeFromString<WireTint>(text)
+    } catch (e: Exception) {
+      return null
+    }
+    if (!wire.tinted) {
+      return Tint(tinted = false)
+    }
+    val light = wire.light?.let(::colors) ?: return null
+    val dark = wire.dark?.let(::colors) ?: return null
+    return Tint(tinted = true, light = light, dark = dark)
+  }
+
+  /** §3.3: never in a message request, never for first-party or payment cards, only when there is an image to take colours from. */
+  @JvmStatic
+  fun shouldTint(card: TellomiLinkCard?, layout: Layout?, isMessageRequest: Boolean): Boolean {
+    if (card == null || isMessageRequest || !card.tintable || card.payment) {
+      return false
+    }
+    return layout == Layout.ICON || layout == Layout.LARGE_IMAGE
+  }
+
+  /** The visual of the card [decision] made for [record]: the preview's image is the one shown, and it is read from the device. */
+  @JvmStatic
+  @WorkerThread
+  fun forMessage(record: MessageRecord, decision: TellomiLinkOnly.Decision): Visual {
+    val card = decision.card ?: return Visual.NONE
+    val preview = decision.localPreview ?: (record as? MmsMessageRecord)?.linkPreviews?.firstOrNull()
+    val image: Attachment? = if (card.showImage) preview?.thumbnail?.orElse(null) else null
+    if (image != null && (image.width <= 0 || image.height <= 0)) {
+      // Its size is not known yet (still downloading): keep Signal's display until it is, rather than flip from a card without an image.
+      return Visual.NONE
+    }
+    val uri = image?.uri
+    return decide(card, image?.width ?: 0, image?.height ?: 0, uri?.toString()) {
+      if (image?.transferState != AttachmentTable.TRANSFER_PROGRESS_DONE || uri == null) {
+        null
+      } else {
+        try {
+          PartAuthority.getAttachmentStream(AppDependencies.application, uri).use { it.readBytes() }
+        } catch (e: Exception) {
+          Log.w(TAG, "Could not read the card image", e)
+          null
+        }
+      }
+    }
+  }
+
+  /**
+   * The shape and colours of one card, decided off the main thread with the card (ADR-0063 §5.1 rule 4). The image is the
+   * one the card shows ([imageWidth] × [imageHeight], 0 × 0 for none); [imageKey] names it for the cache and
+   * [readImage] reads its bytes, or null while it is not on the device yet.
+   */
+  @JvmStatic
+  @WorkerThread
+  fun decide(card: TellomiLinkCard?, imageWidth: Int, imageHeight: Int, imageKey: String?, readImage: () -> ByteArray?): Visual {
+    return decide(Native, card, imageWidth, imageHeight, imageKey, readImage)
+  }
+
+  @WorkerThread
+  fun decide(bridge: Bridge, card: TellomiLinkCard?, imageWidth: Int, imageHeight: Int, imageKey: String?, readImage: () -> ByteArray?): Visual {
+    if (card == null) {
+      return Visual.NONE
+    }
+    val layout = layout(bridge, card, imageWidth, imageHeight) ?: return Visual.NONE
+    // Whether it is applied is decided when the bubble is drawn (never in a message request); the colours are the same either way.
+    if (!shouldTint(card, layout, isMessageRequest = false) || imageKey == null) {
+      return Visual(layout, null)
+    }
+
+    val key = "${layout.wire}\u0000$imageKey"
+    val cached = tints.get(key)
+    if (cached != null) {
+      return Visual(layout, cached.takeIf { it.tinted })
+    }
+    val bytes = readImage() ?: return Visual(layout, null)
+    val tint = tint(bridge, layout, bytes)
+    if (tint != null) {
+      tints.put(key, tint)
+    }
+    return Visual(layout, tint?.takeIf { it.tinted })
+  }
+
+  /** Null is "no decision": the card shows the way it did before layout existed. */
+  @JvmStatic
+  fun layout(bridge: Bridge, card: TellomiLinkCard, imageWidth: Int, imageHeight: Int): Layout? {
+    val width = if (card.showImage) imageWidth else 0
+    val height = if (card.showImage) imageHeight else 0
+    return try {
+      parseLayout(bridge.layout(width, height, if (card.showImage) card.kind.orEmpty() else "", levelName(card.level)))
+    } catch (e: Exception) {
+      Log.w(TAG, "layout failed", e)
+      null
+    }
+  }
+
+  @JvmStatic
+  @WorkerThread
+  fun tint(bridge: Bridge, layout: Layout, imageBytes: ByteArray): Tint? {
+    val rgba = reduce(imageBytes) ?: return null
+    return try {
+      parseTint(bridge.tint(layout.wire, TINT_SIZE, TINT_SIZE, rgba))
+    } catch (e: Exception) {
+      Log.w(TAG, "tint failed", e)
+      null
+    }
+  }
+
+  private fun levelName(level: TellomiLinkCard.Level): String = when (level) {
+    TellomiLinkCard.Level.PLAIN_LINK -> "plain_link"
+    TellomiLinkCard.Level.GENERIC -> "generic"
+    TellomiLinkCard.Level.BRAND -> "brand"
+    TellomiLinkCard.Level.STRUCTURED -> "structured"
+    TellomiLinkCard.Level.FIRST_PARTY -> "first_party"
+  }
+
+  private fun colors(wire: WireColors): Colors? {
+    if (!HEX_COLOR.matches(wire.background) || !HEX_COLOR.matches(wire.text)) {
+      return null
+    }
+    return Colors(parse(wire.background), parse(wire.text))
+  }
+
+  private fun parse(hex: String): Int = (0xFF000000L or hex.substring(1).toLong(16)).toInt()
+
+  private fun reduce(bytes: ByteArray): ByteArray? {
+    val decoded = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: return null
+    val scaled = Bitmap.createScaledBitmap(decoded, TINT_SIZE, TINT_SIZE, true)
+    val pixels = IntArray(TINT_SIZE * TINT_SIZE)
+    scaled.getPixels(pixels, 0, TINT_SIZE, 0, 0, TINT_SIZE, TINT_SIZE)
+    if (scaled !== decoded) {
+      scaled.recycle()
+    }
+    decoded.recycle()
+
+    val out = ByteArray(pixels.size * 4)
+    pixels.forEachIndexed { i, argb ->
+      out[i * 4] = (argb shr 16).toByte()
+      out[i * 4 + 1] = (argb shr 8).toByte()
+      out[i * 4 + 2] = argb.toByte()
+      out[i * 4 + 3] = (argb ushr 24).toByte()
+    }
+    return out
+  }
+}

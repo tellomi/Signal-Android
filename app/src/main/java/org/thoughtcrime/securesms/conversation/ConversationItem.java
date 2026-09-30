@@ -132,6 +132,7 @@ import org.thoughtcrime.securesms.linkpreview.LinkPreview;
 import org.thoughtcrime.securesms.linkpreview.TellomiFirstPartyCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkCard;
 import org.thoughtcrime.securesms.linkpreview.TellomiLinkDisplay;
+import org.thoughtcrime.securesms.linkpreview.TellomiLinkVisual;
 import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory;
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache;
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewFragment;
@@ -150,7 +151,9 @@ import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientForeverObserver;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.revealable.ViewOnceMessageView;
+import org.thoughtcrime.securesms.stickers.StickerUrl;
 import org.thoughtcrime.securesms.util.DateUtils;
+import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.InterceptableLongClickCopyLinkSpan;
 import org.thoughtcrime.securesms.util.LongClickMovementMethod;
 import org.thoughtcrime.securesms.util.MediaUtil;
@@ -1206,7 +1209,33 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
   private boolean hasBigImageLinkPreview(MessageRecord messageRecord) {
     TellomiLinkCard card = getLinkCard();
-    return MessageRecordUtil.hasBigImageLinkPreview(messageRecord, context) && !isContentCondensed() && (card == null || card.getShowImage());
+    if (card != null && !card.getShowImage()) {
+      return false;
+    }
+    // Tellomi (card-visual §3.2): the shape rust/links decided decides; without a decision, Signal's own rule.
+    TellomiLinkVisual.Layout layout = getLinkCardLayout();
+    if (layout != null) {
+      return layout == TellomiLinkVisual.Layout.LARGE_IMAGE && MessageRecordUtil.hasLinkPreview(messageRecord) && !isContentCondensed() && hasLinkPreviewThumbnail(messageRecord);
+    }
+    return MessageRecordUtil.hasBigImageLinkPreview(messageRecord, context) && !isContentCondensed();
+  }
+
+  private boolean hasLinkPreviewThumbnail(MessageRecord messageRecord) {
+    LinkPreview preview = ((MmsMessageRecord) messageRecord).getLinkPreviews().get(0);
+    return preview.getThumbnail().isPresent() && !StickerUrl.isValidShareLink(preview.getUrl());
+  }
+
+  private @Nullable TellomiLinkVisual.Layout getLinkCardLayout() {
+    return conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCardLayout() : null;
+  }
+
+  /** The colours of the card's own image for this theme, or null: default colours (never in a message request, card-visual §3.3). */
+  private @Nullable TellomiLinkVisual.Colors getLinkCardColors(boolean messageRequestAccepted) {
+    TellomiLinkVisual.Tint tint = conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCardTint() : null;
+    if (tint == null || !TellomiLinkVisual.shouldTint(getLinkCard(), getLinkCardLayout(), !messageRequestAccepted)) {
+      return null;
+    }
+    return tint.colors(DynamicTheme.isDarkTheme(context));
   }
 
   private @Nullable TellomiLinkCard getLinkCard() {
@@ -1512,6 +1541,7 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, false);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), true);
+        linkPreviewStub.get().applyTellomiTint(getLinkCardColors(messageRequestAccepted));
 
         setThumbnailCorners(messageRecord, previousRecord, nextRecord, isGroupThread);
         setLinkPreviewCorners(messageRecord, previousRecord, nextRecord, isGroupThread, true);
@@ -1524,6 +1554,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         TellomiLinkCard linkCard = getLinkCard();
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, linkCard == null || linkCard.getShowImage(), !isContentCondensed(), displayMode.getMessageMode() == ConversationItemDisplayMode.MessageMode.SCHEDULED);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), !isContentCondensed());
+        linkPreviewStub.get().applyTellomiLayout(getLinkCardLayout());
+        linkPreviewStub.get().applyTellomiTint(getLinkCardColors(messageRequestAccepted));
         TellomiFirstPartyCard.Display firstParty = getFirstPartyDisplay();
         if (firstParty != null) {
           linkPreviewStub.get().applyTellomiFirstParty(requestManager, firstParty, getFirstPartyAvatarRecipient(), linkPreview.getThumbnail().isPresent() && (linkCard == null || linkCard.getShowImage()));
