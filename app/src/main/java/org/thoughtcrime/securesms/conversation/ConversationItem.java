@@ -19,6 +19,7 @@ package org.thoughtcrime.securesms.conversation;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -1229,6 +1230,11 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
     return conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCardLayout() : null;
   }
 
+  /** The bundled icon of a brand shell (card-visual §3.9), or null: name and domain only. */
+  private @Nullable Bitmap getLinkCardIcon() {
+    return conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCardIcon() : null;
+  }
+
   /** The colours of the card's own image for this theme, or null: default colours (never in a message request, card-visual §3.3). */
   private @Nullable TellomiLinkVisual.Colors getLinkCardColors(boolean messageRequestAccepted) {
     TellomiLinkVisual.Tint tint = conversationMessage != null ? conversationMessage.getComputedProperties().getLinkCardTint() : null;
@@ -1554,7 +1560,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         TellomiLinkCard linkCard = getLinkCard();
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, linkCard == null || linkCard.getShowImage(), !isContentCondensed(), displayMode.getMessageMode() == ConversationItemDisplayMode.MessageMode.SCHEDULED);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), !isContentCondensed());
-        linkPreviewStub.get().applyTellomiLayout(getLinkCardLayout());
+        linkPreviewStub.get().applyTellomiBrandIcon(requestManager, getLinkCardIcon());
+        // A brand shell keeps its kind text beside its icon (card-visual §3.7); a sender's image card is as it was.
+        linkPreviewStub.get().applyTellomiLayout(getLinkCardLayout(), getLinkCardIcon() != null);
         linkPreviewStub.get().applyTellomiTint(getLinkCardColors(messageRequestAccepted));
         TellomiFirstPartyCard.Display firstParty = getFirstPartyDisplay();
         if (firstParty != null) {

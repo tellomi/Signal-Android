@@ -6,13 +6,17 @@
 package org.thoughtcrime.securesms.components
 
 import android.app.Application
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.test.core.app.ApplicationProvider
@@ -20,13 +24,16 @@ import com.bumptech.glide.RequestManager
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.signal.core.ui.CoreUiDependencies
 import org.signal.emoji.EmojiDependencies
 import org.signal.emoji.EmojiSource
 import org.thoughtcrime.securesms.R
@@ -262,23 +269,69 @@ class TellomiLinkPreviewViewTest {
     assertEquals(background, (container.background as ColorDrawable).color)
   }
 
+  private fun dp(value: Int) = (value * view.resources.displayMetrics.density).toInt()
+
   @Test
-  fun `the icon card puts a 44 square on the right, the title and the domain on the left, and no description`() {
+  fun `the icon card puts a 48 square at the top right, 6 in from the edges, the title and the domain on the left, and no description`() {
     showImage()
     view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", null, "bilibili.com", false), true)
 
     view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
 
-    val size = (44 * view.resources.displayMetrics.density).toInt()
-    assertEquals(size, thumbnail.layoutParams.width)
-    assertEquals(size, thumbnail.layoutParams.height)
+    assertEquals(dp(48), thumbnail.layoutParams.width)
+    assertEquals(dp(48), thumbnail.layoutParams.height)
     assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).endToEnd)
     assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).startToStart)
+    assertEquals("at the top, not centred", ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).topToTop)
+    assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).bottomToBottom)
+    assertEquals("6 from the card's right edge: that is the card's end padding here", dp(6), container.paddingEnd)
+    assertEquals(0, params(R.id.linkpreview_thumbnail).marginEnd)
     assertEquals(R.id.linkpreview_thumbnail, params(R.id.linkpreview_title).endToStart)
+    assertEquals("10 between the text and the image", dp(10), params(R.id.linkpreview_title).marginEnd)
+    assertEquals("the text starts at the top too", 0f, params(R.id.linkpreview_title).verticalBias)
     assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_title).startToStart)
     assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_site).topToBottom)
     assertEquals(View.GONE, description.visibility)
     assertEquals("bilibili.com", site.text.toString())
+  }
+
+  @Test
+  fun `the icon card is at least the image and its insets tall, and the image is where it is meant to be`() {
+    // Measuring the image needs a window (its transfer controls are Compose).
+    CoreUiDependencies.init(
+      ApplicationProvider.getApplicationContext(),
+      object : CoreUiDependencies.Provider {
+        override fun providePackageId() = "test"
+        override fun provideIsIncognitoKeyboardEnabled() = false
+        override fun provideIsScreenSecurityEnabled() = false
+      }
+    )
+    val controller = Robolectric.buildActivity(AppCompatActivity::class.java)
+    controller.get().setTheme(R.style.Signal_DayNight)
+    val activity = controller.setup().get()
+    val card = LinkPreviewView(activity)
+    activity.setContentView(card)
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    card.setLinkPreview(requestManager, LinkPreview("", "Sender title", "", 0, Optional.empty()), false)
+    card.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", null, "bilibili.com", false), true)
+    card.applyTellomiBrandIcon(requestManager, brandIcon())
+    card.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+
+    card.measure(View.MeasureSpec.makeMeasureSpec(dp(300), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+    card.layout(0, 0, card.measuredWidth, card.measuredHeight)
+
+    val cardContainer = card.findViewById<View>(R.id.linkpreview_container)
+    val image = card.findViewById<View>(R.id.linkpreview_thumbnail)
+    val cardTitle = card.findViewById<View>(R.id.linkpreview_title)
+    val cardSite = card.findViewById<View>(R.id.linkpreview_site)
+    assertTrue("48 + 6 + 6 tall at least, was ${card.measuredHeight}", card.measuredHeight >= dp(60))
+    assertEquals("6 from the top", dp(6), cardContainer.top + image.top)
+    assertEquals("6 from the right", dp(6), card.measuredWidth - (cardContainer.left + image.right))
+    assertEquals(dp(48), image.width)
+    assertEquals(dp(48), image.height)
+    assertTrue("the text ends 10 before the image: ${cardTitle.right} vs ${image.left}", cardTitle.right <= image.left - dp(10))
+    assertTrue("the domain ends 10 before the image", cardSite.right <= image.left - dp(10))
+    assertEquals("the text starts at the top, level with the image", image.top, cardTitle.top)
   }
 
   @Test
@@ -305,8 +358,143 @@ class TellomiLinkPreviewViewTest {
     assertEquals(size, thumbnail.layoutParams.width)
     assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).startToStart)
     assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).endToEnd)
+    assertEquals("the card's own padding is back", dp(12), container.paddingEnd)
+    assertEquals(dp(8), params(R.id.linkpreview_title).marginEnd)
+    assertEquals(0.5f, params(R.id.linkpreview_title).verticalBias)
     assertEquals(R.id.linkpreview_link_icon, params(R.id.linkpreview_title).endToStart)
     assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_site).topToBottom)
     assertEquals(View.VISIBLE, description.visibility)
+  }
+
+  // --- Brand shells: the icon that ships with the app (card-visual §3.9) ---
+
+  private fun brandIcon(color: Int = Color.rgb(254, 117, 0)): Bitmap {
+    return Bitmap.createBitmap(114, 114, Bitmap.Config.ARGB_8888).also { it.eraseColor(color) }
+  }
+
+  private val thumbnailImage get() = thumbnail.findViewById<ImageView>(R.id.thumbnail_image)
+
+  @Test
+  fun `a brand shell's icon is the 48 square at the top right, its name and domain on the left, no description`() {
+    val icon = brandIcon()
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", "Product", "taobao.com", false), true)
+
+    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), icon)
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+    view.applyTellomiTint(orange)
+
+    assertEquals(View.VISIBLE, thumbnail.visibility)
+    assertEquals(dp(48), thumbnail.layoutParams.width)
+    assertEquals(dp(48), thumbnail.layoutParams.height)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).endToEnd)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).topToTop)
+    assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).bottomToBottom)
+    assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_thumbnail).startToStart)
+    assertEquals(R.id.linkpreview_thumbnail, params(R.id.linkpreview_title).endToStart)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_title).startToStart)
+    assertEquals(View.GONE, description.visibility)
+    assertEquals("Taobao", title.text.toString())
+    assertEquals("taobao.com", site.text.toString())
+
+    val drawn = thumbnailImage.drawable
+    assertTrue(drawn is BitmapDrawable)
+    assertSame("the bundled icon itself, not a copy of the sender's image", icon, (drawn as BitmapDrawable).bitmap)
+
+    assertEquals("tinted by the icon", orange.background, (container.background as ColorDrawable).color)
+    assertEquals(orange.text, title.currentTextColor)
+  }
+
+  @Test
+  fun `a brand shell without an icon shows only its name and domain`() {
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Meituan", "Product", "meituan.com", false), true)
+
+    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), null)
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.NO_IMAGE)
+
+    assertEquals(View.GONE, thumbnail.visibility)
+    assertEquals("the sub line is kept: nothing about the card changed", "Product", description.text.toString())
+    assertEquals(View.VISIBLE, description.visibility)
+    assertEquals(R.id.linkpreview_link_icon, params(R.id.linkpreview_title).endToStart)
+    assertEquals("Meituan", title.text.toString())
+    assertEquals("meituan.com", site.text.toString())
+  }
+
+  @Test
+  fun `a recycled view drops the brand icon`() {
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    val background = (container.background as ColorDrawable).color
+    view.applyTellomiBrandIcon(requestManager, brandIcon())
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+    view.applyTellomiTint(orange)
+
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+
+    assertEquals(View.GONE, thumbnail.visibility)
+    assertEquals(background, (container.background as ColorDrawable).color)
+    assertEquals(R.id.linkpreview_link_icon, params(R.id.linkpreview_title).endToStart)
+    assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_site).topToBottom)
+    assertEquals(View.VISIBLE, description.visibility)
+  }
+
+  @Test
+  fun `a brand shell's icon card keeps its kind text on one line between the name and the domain`() {
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", "Product", "taobao.com", false), true)
+    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
+
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON, true)
+
+    assertEquals("Product", description.text.toString())
+    assertEquals(View.VISIBLE, description.visibility)
+    assertEquals(1, description.maxLines)
+    assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_title).bottomToTop)
+    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_description).topToBottom)
+    assertEquals(R.id.linkpreview_site, params(R.id.linkpreview_description).bottomToTop)
+    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_description).startToStart)
+    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_description).endToEnd)
+    assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_site).topToBottom)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_site).bottomToBottom)
+    assertEquals("the icon is still the 48 square at the top right", ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_thumbnail).endToEnd)
+    assertEquals(R.id.linkpreview_thumbnail, params(R.id.linkpreview_title).endToStart)
+  }
+
+  @Test
+  fun `a brand shell with no kind text has nothing to keep, and a sender's image card still drops its sub line`() {
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", null, "taobao.com", false), true)
+    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON, true)
+
+    assertEquals(View.GONE, description.visibility)
+    assertEquals(R.id.linkpreview_site, params(R.id.linkpreview_title).bottomToTop)
+    assertEquals(R.id.linkpreview_title, params(R.id.linkpreview_site).topToBottom)
+
+    view.setLinkPreview(mockk<RequestManager>(relaxed = true), LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Bilibili", "Author", "bilibili.com", false), true)
+    view.applyTellomiBrandIcon(mockk<RequestManager>(relaxed = true), brandIcon())
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON)
+
+    assertEquals(View.GONE, description.visibility)
+  }
+
+  @Test
+  fun `a recycled view gets the sub line's placement and line limit back`() {
+    val requestManager = mockk<RequestManager>(relaxed = true)
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+    view.applyTellomiDisplay(TellomiLinkDisplay("Taobao", "Product", "taobao.com", false), true)
+    view.applyTellomiBrandIcon(requestManager, brandIcon())
+    view.applyTellomiLayout(TellomiLinkVisual.Layout.ICON, true)
+
+    view.setLinkPreview(requestManager, LinkPreview("", "Sender title", "Sender description", 0, Optional.empty()), false)
+
+    assertEquals(15, description.maxLines)
+    assertEquals(R.id.linkpreview_header_barrier, params(R.id.linkpreview_description).topToBottom)
+    assertEquals(ConstraintLayout.LayoutParams.UNSET, params(R.id.linkpreview_description).bottomToTop)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_description).endToEnd)
+    assertEquals(ConstraintLayout.LayoutParams.PARENT_ID, params(R.id.linkpreview_description).startToStart)
+    assertEquals(R.id.linkpreview_description, params(R.id.linkpreview_site).topToBottom)
   }
 }

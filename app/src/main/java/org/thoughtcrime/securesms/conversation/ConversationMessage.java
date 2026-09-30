@@ -1,6 +1,7 @@
 package org.thoughtcrime.securesms.conversation;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.SpannableString;
 
 import androidx.annotation.NonNull;
@@ -270,6 +271,11 @@ public class ConversationMessage {
     /** Null: the card keeps its default colours. Not to be applied in a message request (card-visual §3.3). */
     public @Nullable TellomiLinkVisual.Tint getLinkCardTint() {
       return visual.getTint();
+    }
+
+    /** The bundled icon of a brand shell that has one, drawn in the icon slot; null: none. Shared, so never recycle it. */
+    public @Nullable Bitmap getLinkCardIcon() {
+      return visual.getIcon();
     }
 
     public @Nullable TellomiFirstPartyCard.Local getFirstPartyLocal() {

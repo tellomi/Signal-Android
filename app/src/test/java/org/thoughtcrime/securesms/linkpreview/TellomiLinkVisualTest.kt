@@ -214,6 +214,203 @@ class TellomiLinkVisualTest {
     assertEquals(1, tints)
   }
 
+  // --- Brand shells: the icon that ships with the app (card-visual §3.7 / §3.9) ---
+
+  private val brand = TellomiLinkCard(
+    level = TellomiLinkCard.Level.BRAND,
+    provider = "taobao",
+    kind = "product",
+    domain = "taobao.com",
+    showImage = false,
+    icon = "brand-1.png",
+    tintable = true
+  )
+
+  /** Records what rust/links was asked, and answers with [layoutName] / [tintJson]. */
+  private class RecordingBridge(private val layoutName: String = "icon", private val tintJson: String) : TellomiLinkVisual.Bridge {
+    val layouts = mutableListOf<List<Any>>()
+    val tints = mutableListOf<Triple<String, Int, Int>>()
+    val pixels = mutableListOf<ByteArray>()
+
+    override fun layout(imageWidth: Int, imageHeight: Int, kind: String, level: String): String {
+      layouts += listOf(imageWidth, imageHeight, kind, level)
+      return layoutName
+    }
+
+    override fun tint(layout: String, width: Int, height: Int, rgba: ByteArray): String {
+      tints += Triple(layout, width, height)
+      pixels += rgba
+      return tintJson
+    }
+  }
+
+  private fun iconsOf(vararg files: Pair<String, ByteArray>): Pair<TellomiBrandIcons, MutableList<String>> {
+    val opened = mutableListOf<String>()
+    val byPath = files.associate { "links/icons/${it.first}" to it.second }
+    val icons = TellomiBrandIcons { path ->
+      opened += path
+      java.io.ByteArrayInputStream(byPath[path] ?: throw java.io.FileNotFoundException(path))
+    }
+    return icons to opened
+  }
+
+  @Test
+  fun `a brand shell with its icon is asked the icon's size, and tinted from the icon's own pixels`() {
+    val bridge = RecordingBridge(tintJson = orange)
+    val (icons, opened) = iconsOf("brand-1.png" to solidPng(Color.rgb(254, 117, 0), width = 114, height = 114))
+
+    val visual = TellomiLinkVisual.decideBrand(bridge, icons, brand)
+
+    assertEquals("the icon's size, no kind, the brand level", listOf(listOf<Any>(114, 114, "", "brand")), bridge.layouts)
+    assertEquals(listOf(Triple("icon", 32, 32)), bridge.tints)
+    assertArrayEquals("the first pixel of what rust/links saw is the icon's orange", byteArrayOf(0xFE.toByte(), 0x75, 0x00, 0xFF.toByte()), bridge.pixels.single().copyOfRange(0, 4))
+    assertEquals(32 * 32 * 4, bridge.pixels.single().size)
+    assertEquals(listOf("links/icons/brand-1.png"), opened)
+
+    assertEquals(TellomiLinkVisual.Layout.ICON, visual.layout)
+    assertEquals("the colours rust/links gave, as they are", Color.parseColor("#FE7500"), visual.tint?.colors(isDark = false)?.background)
+    assertEquals(Color.parseColor("#994600"), visual.tint?.colors(isDark = true)?.background)
+    assertEquals(114, visual.icon?.width)
+    assertEquals(114, visual.icon?.height)
+  }
+
+  @Test
+  fun `the icon is left as it was after its colours are taken`() {
+    val (icons, _) = iconsOf("brand-2.png" to solidPng(Color.rgb(254, 117, 0), width = 114, height = 114))
+    val visual = TellomiLinkVisual.decideBrand(RecordingBridge(tintJson = orange), icons, brand.copy(icon = "brand-2.png"))
+
+    assertFalse(visual.icon!!.isRecycled)
+    assertEquals(Color.rgb(254, 117, 0), visual.icon!!.getPixel(10, 10))
+  }
+
+  @Test
+  fun `a payment shell is never tinted, and shows the icon if it has one`() {
+    val bridge = RecordingBridge(tintJson = orange)
+    val (icons, _) = iconsOf("brand-3.png" to solidPng(Color.BLUE))
+
+    val visual = TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = "brand-3.png", tintable = false, payment = true))
+
+    assertEquals(TellomiLinkVisual.Layout.ICON, visual.layout)
+    assertNull(visual.tint)
+    assertNotNull("card-visual §3.9: the icon shows when there is one; only the tint is left out", visual.icon)
+    assertEquals(emptyList<Any>(), bridge.tints)
+
+    val locked = TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = "brand-3.png", tintable = false, payment = false))
+    assertNull("not tintable is not tinted either", locked.tint)
+    assertEquals(emptyList<Any>(), bridge.tints)
+  }
+
+  @Test
+  fun `a brand shell with no icon is the card it always was, and the package is not opened`() {
+    val bridge = RecordingBridge(layoutName = "no_image", tintJson = orange)
+    val (icons, opened) = iconsOf()
+
+    val visual = TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = null))
+
+    assertEquals(TellomiLinkVisual.Visual(TellomiLinkVisual.Layout.NO_IMAGE, null), visual)
+    assertNull(visual.icon)
+    assertEquals("no image size", listOf(listOf<Any>(0, 0, "", "brand")), bridge.layouts)
+    assertEquals(emptyList<Any>(), bridge.tints)
+    assertEquals(emptyList<String>(), opened)
+  }
+
+  @Test
+  fun `a brand shell whose icon cannot be read is the same card`() {
+    val bridge = RecordingBridge(layoutName = "no_image", tintJson = orange)
+    val (icons, _) = iconsOf("brand-4.png" to byteArrayOf(9, 9, 9))
+
+    for (name in listOf("brand-missing.png", "brand-4.png")) {
+      assertEquals(TellomiLinkVisual.Visual(TellomiLinkVisual.Layout.NO_IMAGE, null), TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = name)))
+    }
+    assertEquals(emptyList<Any>(), bridge.tints)
+  }
+
+  @Test
+  fun `a name that is not a plain file name never reaches the package`() {
+    val bridge = RecordingBridge(layoutName = "no_image", tintJson = orange)
+    val (icons, opened) = iconsOf("x.png" to solidPng(Color.RED))
+
+    for (hostile in listOf("../x.png", "a/b.png", "X.png", "", "links/icons/x.png")) {
+      assertEquals(TellomiLinkVisual.Visual(TellomiLinkVisual.Layout.NO_IMAGE, null), TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = hostile)))
+    }
+    assertEquals(emptyList<String>(), opened)
+  }
+
+  @Test
+  fun `only a brand shell takes an icon from the package`() {
+    val bridge = RecordingBridge(layoutName = "no_image", tintJson = orange)
+    val (icons, opened) = iconsOf("brand-5.png" to solidPng(Color.RED))
+
+    val visual = TellomiLinkVisual.decideBrand(bridge, icons, card.copy(icon = "brand-5.png"))
+
+    assertNull(visual.icon)
+    assertEquals(emptyList<String>(), opened)
+  }
+
+  @Test
+  fun `a neutral icon gives the shape and no colours, and each icon is tinted once`() {
+    val bridge = RecordingBridge(tintJson = """{"tinted":false,"source":"#808082"}""")
+    val (icons, _) = iconsOf("brand-6.png" to solidPng(Color.GRAY))
+
+    repeat(2) {
+      val visual = TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = "brand-6.png"))
+      assertEquals(TellomiLinkVisual.Layout.ICON, visual.layout)
+      assertNull(visual.tint)
+      assertNotNull(visual.icon)
+    }
+    assertEquals(1, bridge.tints.size)
+  }
+
+  @Test
+  fun `a shape that is not the icon card shows no icon`() {
+    val bridge = RecordingBridge(layoutName = "no_image", tintJson = orange)
+    val (icons, _) = iconsOf("brand-7.png" to solidPng(Color.RED))
+
+    val visual = TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = "brand-7.png"))
+
+    assertEquals(TellomiLinkVisual.Visual(TellomiLinkVisual.Layout.NO_IMAGE, null), visual)
+    assertEquals(emptyList<Any>(), bridge.tints)
+  }
+
+  @Test
+  fun `a bridge that fails is no decision for a brand shell too`() {
+    val failing = object : TellomiLinkVisual.Bridge {
+      override fun layout(imageWidth: Int, imageHeight: Int, kind: String, level: String): String = throw IllegalStateException("no native library")
+      override fun tint(layout: String, width: Int, height: Int, rgba: ByteArray): String = throw IllegalStateException("no native library")
+    }
+    val (icons, _) = iconsOf("brand-8.png" to solidPng(Color.RED))
+
+    assertEquals(TellomiLinkVisual.Visual.NONE, TellomiLinkVisual.decideBrand(failing, icons, brand.copy(icon = "brand-8.png")))
+
+    val layoutOnly = object : TellomiLinkVisual.Bridge {
+      override fun layout(imageWidth: Int, imageHeight: Int, kind: String, level: String): String = "icon"
+      override fun tint(layout: String, width: Int, height: Int, rgba: ByteArray): String = throw IllegalStateException("no native library")
+    }
+    val visual = TellomiLinkVisual.decideBrand(layoutOnly, icons, brand.copy(icon = "brand-8.png"))
+    assertEquals("the icon still shows, untinted", TellomiLinkVisual.Layout.ICON, visual.layout)
+    assertNull(visual.tint)
+    assertNotNull(visual.icon)
+  }
+
+  @Test
+  fun `a brand shell is not tinted in a message request, and a payment one never`() {
+    assertTrue(TellomiLinkVisual.shouldTint(brand, TellomiLinkVisual.Layout.ICON, isMessageRequest = false))
+    assertFalse(TellomiLinkVisual.shouldTint(brand, TellomiLinkVisual.Layout.ICON, isMessageRequest = true))
+    assertFalse(TellomiLinkVisual.shouldTint(brand.copy(tintable = false, payment = true), TellomiLinkVisual.Layout.ICON, isMessageRequest = false))
+  }
+
+  @Test
+  fun `the sender's image plays no part in a brand shell`() {
+    // A brand shell is asked with the icon's size even when the sender sent a big picture: its image is not shown (show_image is false).
+    val bridge = RecordingBridge(tintJson = orange)
+    val (icons, _) = iconsOf("brand-9.png" to solidPng(Color.rgb(254, 117, 0), width = 100, height = 100))
+
+    TellomiLinkVisual.decideBrand(bridge, icons, brand.copy(icon = "brand-9.png"))
+
+    assertEquals(listOf<Any>(100, 100, "", "brand"), bridge.layouts.single())
+    assertFalse(brand.showImage)
+  }
+
   private fun solidPng(color: Int, width: Int = 64, height: Int = 64): ByteArray {
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     bitmap.eraseColor(color)
