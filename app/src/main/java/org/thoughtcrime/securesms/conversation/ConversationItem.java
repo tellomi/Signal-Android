@@ -1557,6 +1557,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         mediaThumbnailStub.require().setCancelTransferClickListener(attachmentCancelClickListener);
         mediaThumbnailStub.require().setPlayVideoClickListener(playVideoClickListener);
         mediaThumbnailStub.require().setOnLongClickListener(passthroughClickListener);
+        // Tellomi (card-visual §3.6): the card is one thing for a screen reader, which the bar under the image says; its image is not a second stop.
+        mediaThumbnailStub.require().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
 
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, false);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), true);
@@ -1721,6 +1723,9 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
       bodyBubble.setBackgroundColor(Color.TRANSPARENT);
     } else if (hasThumbnail(messageRecord)) {
       mediaThumbnailStub.require().setVisibility(View.VISIBLE);
+      // Tellomi: a view that drew a link card's large image was hidden from a screen reader; a photo is not (the layout's content
+      // description makes it important, which is what a fresh view has).
+      mediaThumbnailStub.require().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
       if (audioViewStub.resolved()) audioViewStub.get().setVisibility(View.GONE);
       if (documentViewStub.resolved()) documentViewStub.get().setVisibility(View.GONE);
       if (sharedContactStub.resolved()) sharedContactStub.get().setVisibility(GONE);
