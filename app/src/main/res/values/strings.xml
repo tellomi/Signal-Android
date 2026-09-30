@@ -4148,6 +4148,17 @@
         <item quantity="one">%1$s sticker</item>
         <item quantity="other">%1$s stickers</item>
     </plurals>
+    <!-- Tellomi (card-visual §3.6): what a screen reader says for a whole link card, joined from these parts with the separator. Same words on every client -->
+    <!-- Separator between the parts of that sentence (a comma and a space; quoted so the space stays) -->
+    <string name="TellomiLinkCard__a11y_separator">", "</string>
+    <!-- First part of the sentence for a link to a website: "Link, <title>, <domain>" -->
+    <string name="TellomiLinkCard__a11y_link">Link</string>
+    <!-- Last part of the sentence for a Tellomi object card: the button at the bottom of the card; %1$s is the button's label -->
+    <string name="TellomiLinkCard__a11y_button_with_action">button: %1$s</string>
+    <!-- First part of the sentence for the card of a group invite link -->
+    <string name="TellomiLinkCard__a11y_kind_group">Tellomi group</string>
+    <!-- First part of the sentence for the card of a sticker pack link -->
+    <string name="TellomiLinkCard__a11y_kind_sticker_pack">Tellomi sticker pack</string>
     <!-- Tellomi (ADR-0063 §6.1): shown once before opening a link whose domain imitates a well-known one; %1$s is the well-known domain. The link can still be opened. -->
     <string name="TellomiLinkOpen__lookalike_message">The domain of this link looks like %1$s, but it isn’t %1$s.</string>
     <!-- Tellomi (ADR-0063 §6.1): button in that warning that opens the link anyway -->

@@ -3984,6 +3984,12 @@
     <plurals name="TellomiLinkCard__sticker_count">
         <item quantity="other">%1$s 個貼圖</item>
     </plurals>
+    <!-- Tellomi (card-visual §3.6): 讀屏讀整張連結卡的那一句，各段用分隔符連起來；四種語言三端同一份 -->
+    <string name="TellomiLinkCard__a11y_separator">，</string>
+    <string name="TellomiLinkCard__a11y_link">連結</string>
+    <string name="TellomiLinkCard__a11y_button_with_action">按鈕：%1$s</string>
+    <string name="TellomiLinkCard__a11y_kind_group">Tellomi 群組</string>
+    <string name="TellomiLinkCard__a11y_kind_sticker_pack">Tellomi 貼圖包</string>
     <string name="TellomiLinkOpen__lookalike_message">這個連結的域名與 %1$s 相似，但不是它</string>
     <string name="TellomiLinkOpen__open_anyway">繼續開啟</string>
     <string name="preferences__change_passphrase">更改密碼</string>
