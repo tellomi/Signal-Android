@@ -1545,8 +1545,6 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
 
       if (hasBigImageLinkPreview(messageRecord)) {
         mediaThumbnailStub.require().setVisibility(VISIBLE);
-        // Tellomi (card-visual §3.6): the card is one thing for a screen reader, which the bar under the image says; its image is not a second stop.
-        mediaThumbnailStub.require().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         mediaThumbnailStub.require().setMinimumThumbnailWidth(readDimen(R.dimen.media_bubble_min_width_with_content));
         mediaThumbnailStub.require().setMaximumThumbnailHeight(readDimen(R.dimen.media_bubble_max_height));
         mediaThumbnailStub.require().setImageResource(requestManager, Collections.singletonList(new ImageSlide(linkPreview.getThumbnail().get())), showControls, false, getDefaultBubbleColor(hasWallpaper));
@@ -1555,6 +1553,8 @@ public final class ConversationItem extends RelativeLayout implements BindableCo
         mediaThumbnailStub.require().setCancelTransferClickListener(attachmentCancelClickListener);
         mediaThumbnailStub.require().setPlayVideoClickListener(playVideoClickListener);
         mediaThumbnailStub.require().setOnLongClickListener(passthroughClickListener);
+        // Tellomi (card-visual §3.6): the card is one thing for a screen reader, which the bar under the image says; its image is not a second stop.
+        mediaThumbnailStub.require().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
 
         linkPreviewStub.get().setLinkPreview(requestManager, linkPreview, false);
         linkPreviewStub.get().applyTellomiDisplay(getLinkDisplay(linkPreview), true);

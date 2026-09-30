@@ -84,12 +84,12 @@ public class LinkPreviewView extends FrameLayout {
   /** {@code layout_marginEnd} of the title in link_preview.xml. */
   private static final int TITLE_END_MARGIN_DP   = 8;
   private static final int SECONDARY_TEXT_ALPHA  = 0xB3;
-  /** A pressed or focused card is covered by its text colour at 12% (Material 3's state layers), card-visual §3.6 / §3.8. */
-  private static final int STATE_LAYER_ALPHA     = 0x1F;
   /** The description's line limits: the layout file's (conversation), and {@link #init} (compose). */
   private static final int CONVERSATION_DESCRIPTION_MAX_LINES = 15;
   private static final int COMPOSE_DESCRIPTION_MAX_LINES      = 2;
   private static final int TYPE_COMPOSE      = 1;
+  /** A pressed or focused card is covered by its text colour at 12% (Material 3's state layers), card-visual §3.6 / §3.8. */
+  private static final int STATE_LAYER_ALPHA = 0x1F;
 
   private ViewGroup                   container;
   private Stub<OutlinedThumbnailView> thumbnail;
