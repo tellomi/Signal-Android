@@ -18,6 +18,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -52,9 +53,16 @@ class TellomiLinkRegistryTest {
 
   @Test
   fun `gives the rust-links card for every golden case`() {
-    TellomiLinkRegistry.setForTesting(LinkRegistry.load(resource(golden.str("registry")!!)))
+    val registry = LinkRegistry.load(resource(golden.str("registry")!!))
+    TellomiLinkRegistry.setForTesting(registry)
     val cases = golden["classify"]!!.jsonArray.map { it.jsonObject }
     assert(cases.size >= 40)
+
+    // The golden comes from a libsignal that reports the brand shell's `icon` (libsignal#11 / #13). The build this app pins
+    // may be older: its cards have no `icon` key at all. Then the icon is the one field it cannot answer, and every other
+    // field is still compared; once the pin moves to a build with the field, `icon` is compared too.
+    val first = cases.first()
+    val nativeReportsIcon = registry.classify(first.str("preview")!!, first.str("body")!!, first.str("message")?.takeIf { it.isNotEmpty() } ?: "{}").contains("\"icon\":")
 
     for (case in cases) {
       val name = case.str("name")!!
@@ -84,8 +92,23 @@ class TellomiLinkRegistryTest {
 
       val expected = TellomiLinkCard.parse(case.str("card")!!)
       assertNotNull("golden card parses: $name", expected)
-      assertEquals(name, expected, card)
+      assertEquals(name, if (nativeReportsIcon) expected else expected?.copy(icon = null), card)
     }
+  }
+
+  @Test
+  fun `only a brand shell that has a bundled icon carries its file name`() {
+    val cards = golden["classify"]!!.jsonArray.map { TellomiLinkCard.parse(it.jsonObject.str("card")!!)!! }
+
+    val withIcon = cards.filter { it.icon != null }
+    assertEquals(listOf("taobao.png"), withIcon.map { it.icon })
+    assertEquals(TellomiLinkCard.Level.BRAND, withIcon.single().level)
+    assertTrue("a brand shell's icon can be drawn and tinted", withIcon.single().tintable && !withIcon.single().payment)
+
+    val alipay = cards.single { it.provider == "alipay" }
+    assertNull("no official icon: name and domain only", alipay.icon)
+    assertTrue("a payment shell is never tinted", alipay.payment && !alipay.tintable)
+    assertTrue(TellomiBrandIcons.isValidFileName(withIcon.single().icon))
   }
 
   @Test

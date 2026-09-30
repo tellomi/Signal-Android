@@ -58,8 +58,12 @@ object TellomiLinkVisual {
     override fun tint(layout: String, width: Int, height: Int, rgba: ByteArray): String = Links.tint(layout, width, height, rgba)
   }
 
-  /** What the data layer decided for one card: its shape (null: no decision) and the colours of its own image (null: none). */
-  data class Visual(val layout: Layout?, val tint: Tint?) {
+  /**
+   * What the data layer decided for one card: its shape (null: no decision) and the colours of its own image (null: none).
+   * [icon] is the bundled icon of a brand shell that has one (drawn in the icon slot instead of a sender's image, card-visual
+   * §3.9); it is shared, so it is only ever read.
+   */
+  data class Visual(val layout: Layout?, val tint: Tint?, val icon: Bitmap? = null) {
     companion object {
       @JvmField
       val NONE = Visual(null, null)
@@ -106,6 +110,10 @@ object TellomiLinkVisual {
   @WorkerThread
   fun forMessage(record: MessageRecord, decision: TellomiLinkOnly.Decision): Visual {
     val card = decision.card ?: return Visual.NONE
+    if (card.level == TellomiLinkCard.Level.BRAND && !card.showImage) {
+      // A brand shell never shows the sender's image (show_image is false); it shows the icon that ships with the app.
+      return decideBrand(Native, TellomiBrandIcons.bundled, card)
+    }
     val preview = decision.localPreview ?: (record as? MmsMessageRecord)?.linkPreviews?.firstOrNull()
     val image: Attachment? = if (card.showImage) preview?.thumbnail?.orElse(null) else null
     if (image != null && (image.width <= 0 || image.height <= 0)) {
@@ -162,13 +170,51 @@ object TellomiLinkVisual {
     return Visual(layout, tint?.takeIf { it.tinted })
   }
 
+  /**
+   * The shape and colours of a brand shell (card-visual §3.7 / §3.9): with a readable bundled icon, `layout` is asked the
+   * icon's size and `tint` gets the icon's own pixels; without one (no `icon`, a name that is refused, a file that is
+   * missing or will not decode) it is exactly the card it has always been, name and domain only. The sender's image plays
+   * no part. Payment shells are never tinted ([shouldTint]), whatever they carry.
+   */
+  @JvmStatic
+  @WorkerThread
+  fun decideBrand(bridge: Bridge, icons: TellomiBrandIcons, card: TellomiLinkCard): Visual {
+    val icon = if (card.level == TellomiLinkCard.Level.BRAND) icons.resolve(card.icon) else null
+    if (icon == null) {
+      return decide(bridge, card, 0, 0, null) { null }
+    }
+
+    val layout = askLayout(bridge, icon.width, icon.height, "", levelName(card.level)) ?: return Visual.NONE
+    if (layout != Layout.ICON) {
+      return Visual(layout, null)
+    }
+    if (!shouldTint(card, layout, isMessageRequest = false)) {
+      return Visual(layout, null, icon)
+    }
+
+    val key = "${layout.wire}\u0000icon:${card.icon}"
+    val cached = tints.get(key)
+    if (cached != null) {
+      return Visual(layout, cached.takeIf { it.tinted }, icon)
+    }
+    val tint = tint(bridge, layout, icon)
+    if (tint != null) {
+      tints.put(key, tint)
+    }
+    return Visual(layout, tint?.takeIf { it.tinted }, icon)
+  }
+
   /** Null is "no decision": the card shows the way it did before layout existed. */
   @JvmStatic
   fun layout(bridge: Bridge, card: TellomiLinkCard, imageWidth: Int, imageHeight: Int): Layout? {
     val width = if (card.showImage) imageWidth else 0
     val height = if (card.showImage) imageHeight else 0
+    return askLayout(bridge, width, height, if (card.showImage) card.kind.orEmpty() else "", levelName(card.level))
+  }
+
+  private fun askLayout(bridge: Bridge, width: Int, height: Int, kind: String, level: String): Layout? {
     return try {
-      parseLayout(bridge.layout(width, height, if (card.showImage) card.kind.orEmpty() else "", levelName(card.level)))
+      parseLayout(bridge.layout(width, height, kind, level))
     } catch (e: Exception) {
       Log.w(TAG, "layout failed", e)
       null
@@ -178,7 +224,19 @@ object TellomiLinkVisual {
   @JvmStatic
   @WorkerThread
   fun tint(bridge: Bridge, layout: Layout, imageBytes: ByteArray): Tint? {
-    val rgba = reduce(imageBytes) ?: return null
+    val decoded = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size) ?: return null
+    return try {
+      tint(bridge, layout, decoded)
+    } finally {
+      decoded.recycle()
+    }
+  }
+
+  /** The colours of an image that is already decoded (the bundled icon of a brand shell); [image] is left as it is. */
+  @JvmStatic
+  @WorkerThread
+  fun tint(bridge: Bridge, layout: Layout, image: Bitmap): Tint? {
+    val rgba = reduce(image)
     return try {
       parseTint(bridge.tint(layout.wire, TINT_SIZE, TINT_SIZE, rgba))
     } catch (e: Exception) {
@@ -204,15 +262,14 @@ object TellomiLinkVisual {
 
   private fun parse(hex: String): Int = (0xFF000000L or hex.substring(1).toLong(16)).toInt()
 
-  private fun reduce(bytes: ByteArray): ByteArray? {
-    val decoded = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: return null
-    val scaled = Bitmap.createScaledBitmap(decoded, TINT_SIZE, TINT_SIZE, true)
+  /** [image] to 32 × 32 RGBA; it is not recycled (the scaled copy is, when there is one). */
+  private fun reduce(image: Bitmap): ByteArray {
+    val scaled = Bitmap.createScaledBitmap(image, TINT_SIZE, TINT_SIZE, true)
     val pixels = IntArray(TINT_SIZE * TINT_SIZE)
     scaled.getPixels(pixels, 0, TINT_SIZE, 0, 0, TINT_SIZE, TINT_SIZE)
-    if (scaled !== decoded) {
+    if (scaled !== image) {
       scaled.recycle()
     }
-    decoded.recycle()
 
     val out = ByteArray(pixels.size * 4)
     pixels.forEachIndexed { i, argb ->

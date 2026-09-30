@@ -3,8 +3,10 @@ package org.thoughtcrime.securesms.components;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -60,9 +62,21 @@ public class LinkPreviewView extends FrameLayout {
   /** Tellomi: the avatar or cover of a first-party card (card-visual §5.2), as on Desktop. */
   private static final int FIRST_PARTY_AVATAR_DP = 52;
   private static final int DEFAULT_THUMBNAIL_DP  = 72;
-  private static final int ICON_IMAGE_DP         = 44;
-  private static final int ICON_IMAGE_RADIUS_DP  = 10;
+  /**
+   * The icon card's geometry is Telegram's small link-preview image (owner 2026-09-30; Telegram Android
+   * {@code ChatMessageCell} {@code smallImageSide} = 48dp, {@code smallSideMargin} = 10dp, image 6dp from the preview's
+   * right and top edges; Telegram iOS {@code ImageCorners(radius: 4.0)}), not card-visual §3.2's 44dp / radius 10 / centred.
+   */
+  private static final int ICON_IMAGE_DP         = 48;
+  private static final int ICON_IMAGE_RADIUS_DP  = 4;
+  private static final int ICON_IMAGE_INSET_DP   = 6;
+  private static final int ICON_TEXT_GAP_DP      = 10;
+  /** {@code layout_marginEnd} of the title in link_preview.xml. */
+  private static final int TITLE_END_MARGIN_DP   = 8;
   private static final int SECONDARY_TEXT_ALPHA  = 0xB3;
+  /** The description's line limits: the layout file's (conversation), and {@link #init} (compose). */
+  private static final int CONVERSATION_DESCRIPTION_MAX_LINES = 15;
+  private static final int COMPOSE_DESCRIPTION_MAX_LINES      = 2;
   private static final int TYPE_COMPOSE      = 1;
 
   private ViewGroup                   container;
@@ -83,6 +97,7 @@ public class LinkPreviewView extends FrameLayout {
 
   private int                           type;
   private int                           defaultRadius;
+  private int                           defaultPaddingEnd;
   private boolean                       iconLayout;
   private CornerMask                    cornerMask;
   private CloseClickedListener          closeClickedListener;
@@ -117,6 +132,7 @@ public class LinkPreviewView extends FrameLayout {
     closeButton   = findViewById(R.id.linkpreview_close);
     noPreview     = findViewById(R.id.linkpreview_no_preview);
     defaultRadius = getResources().getDimensionPixelSize(R.dimen.thumbnail_default_radius);
+    defaultPaddingEnd = container.getPaddingEnd();
     cornerMask    = new CornerMask(this);
 
     if (attrs != null) {
@@ -351,11 +367,39 @@ public class LinkPreviewView extends FrameLayout {
   }
 
   /**
+   * Tellomi (card-visual §3.9, ADR-0063 §九.6): after {@link #setLinkPreview}, before {@link #applyTellomiLayout}, the icon
+   * a brand shell ships with the app, in the slot the card's own image would have. It is never the sender's image, and it
+   * comes from the package, so nothing is fetched. Null leaves the card as it is (name and domain only). Only for
+   * conversation bubbles.
+   */
+  public void applyTellomiBrandIcon(@NonNull RequestManager requestManager, @Nullable Bitmap icon) {
+    if (type == TYPE_COMPOSE || icon == null || firstPartyAvatar.getVisibility() == VISIBLE) {
+      return;
+    }
+
+    showThumbnailDrawable(requestManager, new BitmapDrawable(getResources(), icon));
+    // The brand's own image, like a sender's icon: a hairline keeps a white icon from melting into a light card.
+    thumbnail.get().setOutlineEnabled(true);
+  }
+
+  /**
    * Tellomi (card-visual §3.2, §3.7): after {@link #applyTellomiDisplay}, the icon card: the title and the domain on the left,
-   * the card's own image as a {@link #ICON_IMAGE_DP} square with rounded corners on the right, both centred on the
-   * card's height (no description). Other layouts are left as they are. Only for conversation bubbles.
+   * the card's own image as a {@link #ICON_IMAGE_DP} square with {@link #ICON_IMAGE_RADIUS_DP} corners at the top right,
+   * {@link #ICON_IMAGE_INSET_DP} from the card's right and top edges, the text column ending {@link #ICON_TEXT_GAP_DP} before
+   * it and starting at the top (no description). The whole text column is narrowed by the image; Telegram wraps only the
+   * first lines around it. The card is at least the image and its insets tall. Other layouts are left as they are. Only for
+   * conversation bubbles.
    */
   public void applyTellomiLayout(@Nullable TellomiLinkVisual.Layout layout) {
+    applyTellomiLayout(layout, false);
+  }
+
+  /**
+   * As {@link #applyTellomiLayout(TellomiLinkVisual.Layout)}; with {@code keepSubLine} the sub line ({@code description}
+   * here: the brand shell's kind text, card-visual §3.7) stays between the title and the domain, one line, instead of
+   * being hidden.
+   */
+  public void applyTellomiLayout(@Nullable TellomiLinkVisual.Layout layout, boolean keepSubLine) {
     if (type == TYPE_COMPOSE || layout != TellomiLinkVisual.Layout.ICON || !thumbnail.resolved() || thumbnail.getVisibility() != VISIBLE || firstPartyAvatar.getVisibility() == VISIBLE) {
       return;
     }
@@ -370,24 +414,43 @@ public class LinkPreviewView extends FrameLayout {
     thumbnailParams.startToStart   = ConstraintLayout.LayoutParams.UNSET;
     thumbnailParams.endToEnd       = ConstraintLayout.LayoutParams.PARENT_ID;
     thumbnailParams.topToTop       = ConstraintLayout.LayoutParams.PARENT_ID;
-    thumbnailParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+    thumbnailParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
     thumbnail.get().setLayoutParams(thumbnailParams);
+    // The card pads its content by the bubble's padding; the image sits closer to the right edge than that. Drawing outside
+    // the padding would be clipped, so the card's end padding is the inset for this layout.
+    container.setPaddingRelative(container.getPaddingStart(), container.getPaddingTop(), ViewUtil.dpToPx(ICON_IMAGE_INSET_DP), container.getPaddingBottom());
 
     ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
+    boolean subLine = keepSubLine && description.getVisibility() == VISIBLE && !Util.isEmpty(description.getText());
+
     titleParams.topToTop           = ConstraintLayout.LayoutParams.PARENT_ID;
     titleParams.bottomToBottom     = ConstraintLayout.LayoutParams.UNSET;
-    titleParams.bottomToTop        = R.id.linkpreview_site;
+    titleParams.bottomToTop        = subLine ? R.id.linkpreview_description : R.id.linkpreview_site;
     titleParams.startToEnd         = ConstraintLayout.LayoutParams.UNSET;
     titleParams.startToStart       = ConstraintLayout.LayoutParams.PARENT_ID;
     titleParams.endToStart         = R.id.linkpreview_thumbnail;
     titleParams.verticalChainStyle = ConstraintLayout.LayoutParams.CHAIN_PACKED;
+    titleParams.verticalBias       = 0f;
     titleParams.setMarginStart(0);
+    titleParams.setMarginEnd(ViewUtil.dpToPx(ICON_TEXT_GAP_DP));
     title.setLayoutParams(titleParams);
 
-    description.setVisibility(GONE);
+    if (subLine) {
+      ConstraintLayout.LayoutParams descriptionParams = (ConstraintLayout.LayoutParams) description.getLayoutParams();
+      descriptionParams.topToBottom    = R.id.linkpreview_title;
+      descriptionParams.bottomToTop    = R.id.linkpreview_site;
+      descriptionParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
+      descriptionParams.startToStart   = R.id.linkpreview_title;
+      descriptionParams.endToEnd       = R.id.linkpreview_title;
+      descriptionParams.topMargin      = ViewUtil.dpToPx(2);
+      description.setLayoutParams(descriptionParams);
+      description.setMaxLines(1);
+    } else {
+      description.setVisibility(GONE);
+    }
 
     ConstraintLayout.LayoutParams siteParams = (ConstraintLayout.LayoutParams) site.getLayoutParams();
-    siteParams.topToBottom     = R.id.linkpreview_title;
+    siteParams.topToBottom     = subLine ? R.id.linkpreview_description : R.id.linkpreview_title;
     siteParams.bottomToBottom  = ConstraintLayout.LayoutParams.PARENT_ID;
     siteParams.startToStart    = R.id.linkpreview_title;
     siteParams.endToEnd        = R.id.linkpreview_title;
@@ -420,6 +483,9 @@ public class LinkPreviewView extends FrameLayout {
       return;
     }
 
+    if (iconLayout) {
+      container.setPaddingRelative(container.getPaddingStart(), container.getPaddingTop(), defaultPaddingEnd, container.getPaddingBottom());
+    }
     iconLayout = false;
     if (type != TYPE_COMPOSE) {
       container.setBackgroundColor(ContextCompat.getColor(getContext(), org.signal.core.ui.R.color.signal_neutralSurface));
@@ -438,6 +504,7 @@ public class LinkPreviewView extends FrameLayout {
 
     ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
     titleParams.endToStart = R.id.linkpreview_link_icon;
+    titleParams.setMarginEnd(ViewUtil.dpToPx(TITLE_END_MARGIN_DP));
     title.setLayoutParams(titleParams);
 
     ConstraintLayout.LayoutParams siteParams = (ConstraintLayout.LayoutParams) site.getLayoutParams();
@@ -473,10 +540,13 @@ public class LinkPreviewView extends FrameLayout {
   private void resetDescriptionPlacement() {
     ConstraintLayout.LayoutParams descriptionParams = (ConstraintLayout.LayoutParams) description.getLayoutParams();
     descriptionParams.topToBottom    = R.id.linkpreview_header_barrier;
+    descriptionParams.bottomToTop    = ConstraintLayout.LayoutParams.UNSET;
     descriptionParams.bottomToBottom = ConstraintLayout.LayoutParams.UNSET;
     descriptionParams.startToStart   = ConstraintLayout.LayoutParams.PARENT_ID;
+    descriptionParams.endToEnd       = ConstraintLayout.LayoutParams.PARENT_ID;
     descriptionParams.topMargin      = ViewUtil.dpToPx(8);
     description.setLayoutParams(descriptionParams);
+    description.setMaxLines(type == TYPE_COMPOSE ? COMPOSE_DESCRIPTION_MAX_LINES : CONVERSATION_DESCRIPTION_MAX_LINES);
   }
 
   private void resizeThumbnail(int dp) {
@@ -542,6 +612,7 @@ public class LinkPreviewView extends FrameLayout {
     ConstraintLayout.LayoutParams titleParams = (ConstraintLayout.LayoutParams) title.getLayoutParams();
     titleParams.bottomToTop        = ConstraintLayout.LayoutParams.UNSET;
     titleParams.verticalChainStyle = ConstraintLayout.LayoutParams.CHAIN_SPREAD;
+    titleParams.verticalBias       = 0.5f;
     title.setLayoutParams(titleParams);
   }
 

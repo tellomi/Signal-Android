@@ -35,6 +35,12 @@ data class TellomiLinkCard(
   @SerialName("first_party") val firstParty: FirstParty? = null,
   val lookalike: String? = null,
   @SerialName("show_image") val showImage: Boolean = true,
+  /**
+   * Brand shell only: the file name of the icon bundled with the app (`assets/links/icons/`), drawn from the package
+   * and never fetched (ADR-0063 §九.6). Null: no icon, the shell shows the name and the domain only. A name is
+   * only ever read through [TellomiBrandIcons], which checks its shape first.
+   */
+  val icon: String? = null,
   val tintable: Boolean = false,
   val payment: Boolean = false,
   val reason: String? = null
