@@ -199,7 +199,7 @@ internal fun MediaPickerFilesScreen(
             caption = state.sendOptions.message,
             recipientId = state.recipientId?.id,
             recipientChatColor = recipientChatColor,
-            onOpen = { onEvent(MediaSelectScreenEvents.OpenMedia(it)) },
+            onOpen = { onEvent(MediaSelectScreenEvents.OpenSelectedMedia(it)) },
             onDeselect = deselectInPreview,
             onReorder = { from, to -> onEvent(MediaSelectScreenEvents.ReorderSelectedMedia(from, to)) },
             modifier = Modifier.fillMaxSize()
@@ -711,6 +711,7 @@ internal fun SelectionCheck(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   touchSize: Dp = PickerMetrics.checkTouchSize,
+  visualSize: Dp = PickerMetrics.checkVisualSize,
   visualInset: Dp? = null
 ) {
   val isSelected = selectionIndex >= 0
@@ -732,7 +733,7 @@ internal fun SelectionCheck(
       contentAlignment = Alignment.Center,
       modifier = Modifier
         .then(if (visualInset != null) Modifier.padding(top = visualInset, end = visualInset) else Modifier)
-        .size(PickerMetrics.checkVisualSize)
+        .size(visualSize)
         .shadow(elevation = 2.dp, shape = CircleShape, clip = false)
         .background(color = if (isSelected) color else Color.Black.copy(alpha = 0.12f), shape = CircleShape)
         .border(width = PickerMetrics.checkBorder, color = Color.White, shape = CircleShape)
