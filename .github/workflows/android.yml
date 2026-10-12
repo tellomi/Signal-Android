@@ -55,8 +55,8 @@ jobs:
             if comp.get("group") == "org.signal" and comp.get("version") == version and comp.get("name") in ("libsignal-android", "libsignal-client"):
                 for art in comp.findall("{*}artifact"):
                     pins[(comp.get("name"), art.get("name"))] = art.find("{*}sha256").get("value")
-        if len(pins) != 4:
-            raise SystemExit(f"expected 4 pinned artifacts for {version}, found {len(pins)}")
+        if len(pins) != 6:
+            raise SystemExit(f"expected 6 pinned artifacts for {version}, found {len(pins)}")
 
 
         def fetch(url):
