@@ -42,6 +42,47 @@ jobs:
         # Required to persist the Gradle configuration cache across runs.
         cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
+    # Maven 源里没有 tellomi 的 libsignal：从公开 Release 下载，按 verification-metadata.xml 核对 sha256 后放进 mavenLocal。
+    - name: Install tellomi libsignal from release
+      run: |
+        python3 - <<'PY'
+        import hashlib, http.client, os, re, time, urllib.request
+        import xml.etree.ElementTree as ET
+
+        version = re.search(r'^libsignal-client\s*=\s*"([^"]+)"', open("gradle/libs.versions.toml", encoding="utf-8").read(), re.M).group(1)
+        pins = {}
+        for comp in ET.parse("gradle/verification-metadata.xml").getroot().findall(".//{*}component"):
+            if comp.get("group") == "org.signal" and comp.get("version") == version and comp.get("name") in ("libsignal-android", "libsignal-client"):
+                for art in comp.findall("{*}artifact"):
+                    pins[(comp.get("name"), art.get("name"))] = art.find("{*}sha256").get("value")
+        if len(pins) != 4:
+            raise SystemExit(f"expected 4 pinned artifacts for {version}, found {len(pins)}")
+
+
+        def fetch(url):
+            for attempt in range(3):
+                try:
+                    return urllib.request.urlopen(url, timeout=300).read()
+                except (OSError, http.client.HTTPException):
+                    if attempt == 2:
+                        raise
+                    time.sleep(5)
+
+
+        blobs = {}
+        for (name, file), sha in sorted(pins.items()):
+            data = fetch(f"https://github.com/tellomi/libsignal/releases/download/v{version}/{file}")
+            if hashlib.sha256(data).hexdigest() != sha:
+                raise SystemExit(f"sha256 mismatch, nothing written: {file}")
+            blobs[(name, file)] = data
+        for (name, file), data in blobs.items():
+            target = os.path.expanduser(f"~/.m2/repository/org/signal/{name}/{version}")
+            os.makedirs(target, exist_ok=True)
+            with open(os.path.join(target, file), "wb") as f:
+                f.write(data)
+        print("installed:", ", ".join(file for _, file in blobs))
+        PY
+
     # Pull requests run the fast custom linter (ciRemote); pushes to main / 8.x branches run the
     # full Android lint (qaRemote). Both include screenshot validation, which is deliberately kept
     # out of the local qa/ci tasks because screenshot rendering is host-OS dependent.
