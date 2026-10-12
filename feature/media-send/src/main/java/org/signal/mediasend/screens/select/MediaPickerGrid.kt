@@ -180,7 +180,10 @@ internal fun MediaPickerFilesScreen(
         onEvent = onEvent,
         recipientChatColor = recipientChatColor,
         showSelectedOnly = showSelectedOnly,
-        onShowSelectedOnly = { showSelectedOnly = true },
+        onShowSelectedOnly = {
+          showSelectedOnly = true
+          scope.launch { attachmentSheet?.expand() }
+        },
         onBack = { showSelectedOnly = false },
         withStatusBarInset = attachmentSheet == null
       )
@@ -305,7 +308,12 @@ internal fun MediaPickerFilesScreen(
         )
       }
 
-      PickerSendBar(state = state, onEvent = onEvent, recipientChatColor = recipientChatColor)
+      PickerSendBar(
+        state = state,
+        onEvent = onEvent,
+        recipientChatColor = recipientChatColor,
+        bottomPadding = if (showSelectedOnly) SelectedOnlySendBarBottomPadding else SendBarBottomPadding
+      )
     }
   }
 }
@@ -788,12 +796,18 @@ private fun LimitedAccessBanner(onEvent: (MediaSelectScreenEvents) -> Unit) {
   }
 }
 
+private val SendBarBottomPadding = 12.dp
+
+// 与相册查看页底栏对齐：行内 16dp + 外层 10dp。
+private val SelectedOnlySendBarBottomPadding = 26.dp
+
 /** P-9：一有选中就出现「添加说明…」+ 表情 + 发送；聊天输入框里已打的字随流程带过来（上游的 initialMessage）。 */
 @Composable
 private fun PickerSendBar(
   state: MediaSelectState.Files,
   onEvent: (MediaSelectScreenEvents) -> Unit,
-  recipientChatColor: Color?
+  recipientChatColor: Color?,
+  bottomPadding: Dp
 ) {
   val options = state.sendOptions
 
@@ -823,7 +837,7 @@ private fun PickerSendBar(
       recipientChatColor = recipientChatColor,
       modifier = Modifier
         .background(MaterialTheme.colorScheme.surface)
-        .padding(horizontal = 16.dp, vertical = 12.dp)
+        .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = bottomPadding)
         .testTag(TestTags.MEDIA_PICKER_SEND_BAR)
     )
   }
