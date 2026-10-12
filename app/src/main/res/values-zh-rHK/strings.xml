@@ -2515,7 +2515,7 @@
 
     <!-- AboutSheet -->
     <!-- Displayed in a sheet row and allows user to open signal connection explanation on tap -->
-    <string name="AboutSheet__signal_connection">Tellomi 人脈</string>
+    <string name="AboutSheet__signal_connection">好友</string>
     <!-- Displayed in a sheet row describing that the user has marked this contact as \'verified\' from within the app -->
     <string name="AboutSheet__verified">已驗證</string>
     <!-- Displayed in a sheet row that tells users that profile names are not verified -->
@@ -3769,7 +3769,7 @@
     <!-- Title for auto verification education sheet -->
     <string name="VerifyAutomaticallyEducationSheet__title">Tellomi 現在可自動驗證加密</string>
     <!-- Body for auto verification education sheet -->
-    <string name="VerifyAutomaticallyEducationSheet__body">對於透過電話號碼建立聯繫的聯絡人，Tellomi 會透過稱為「金鑰透明度」的程序，自動確認聯絡對象是否安全。為了增加安全性，你仍然可以使用二維碼或比對安全碼手動驗證聯絡人。</string>
+    <string name="VerifyAutomaticallyEducationSheet__body">對於透過電話號碼建立聯繫的好友，Tellomi 會透過稱為「金鑰透明度」的程序，自動確認聯絡對象是否安全。為了增加安全性，你仍然可以使用二維碼或比對安全碼手動驗證好友。</string>
     <!-- Button to learn more about automatic verification -->
     <string name="VerifyAutomaticallyEducationSheet__learn_more">了解更多</string>
     <!-- Button to go to verification page -->
@@ -6064,7 +6064,7 @@
     <string name="TellomiForwardGrid__search">搜尋</string>
     <string name="TellomiForwardGrid__share_to_other_apps">分享到其他 App</string>
     <string name="TellomiForwardGrid__select_up_to_d_chats">最多選 %1$d 個聊天</string>
-    <string name="TellomiForwardGrid__recent">最近聯絡人</string>
+    <string name="TellomiForwardGrid__recent">最近好友</string>
     <string name="TellomiForwardGrid__chats">聊天</string>
     <string name="TellomiForwardGrid__contacts">聯絡人</string>
     <string name="TellomiForwardGrid__groups">群組</string>
@@ -6750,7 +6750,7 @@
     <string name="MyStorySettingsFragment__who_can_view_this_story">誰可以瀏覽此限時快拍</string>
     <!-- Clickable option for selecting people to hide your story from -->
     <!-- Privacy setting title for sending stories to all your signal connections -->
-    <string name="MyStorySettingsFragment__all_signal_connections">所有 Tellomi 人脈</string>
+    <string name="MyStorySettingsFragment__all_signal_connections">所有好友</string>
     <!-- Privacy setting description for sending stories to all your signal connections -->
     <!-- Privacy setting title for sending stories to all except the specified connections -->
     <string name="MyStorySettingsFragment__all_except">所有人，除了…</string>
@@ -6777,9 +6777,9 @@
     <!-- Summary for switchable option allowing replies and reactions on your story -->
     <string name="MyStorySettingsFragment__let_people_who_can_view_your_story_react_and_reply">讓瀏覽限時快拍的人表達心情和回覆</string>
     <!-- Signal connections bolded text in the Signal Connections sheet -->
-    <string name="SignalConnectionsBottomSheet___signal_connections">Tellomi 人脈</string>
+    <string name="SignalConnectionsBottomSheet___signal_connections">好友</string>
     <!-- Displayed at the top of the signal connections sheet. Please remember to insert strong tag as required. -->
-    <string name="SignalConnectionsBottomSheet__signal_connections_are_people">Tellomi 人脈是你透過以下方式選擇而值得信任的人：</string>
+    <string name="SignalConnectionsBottomSheet__signal_connections_are_people">好友是你透過以下方式選擇而值得信任的人：</string>
     <!-- Signal connections sheet bullet point 1 -->
     <string name="SignalConnectionsBottomSheet__starting_a_conversation">開始聊天</string>
     <!-- Signal connections sheet bullet point 2 -->
@@ -6787,7 +6787,7 @@
     <!-- Signal connections sheet bullet point 3 -->
     <string name="SignalConnectionsBottomSheet__having_them_in_your_system_contacts">你的手機通訊錄中有對方的聯絡資料</string>
     <!-- Note at the bottom of the Signal connections sheet -->
-    <string name="SignalConnectionsBottomSheet__your_connections_can_see_your_name">"你的人脈可以看見你的名稱和照片。除非你對他們隱藏，否則他們亦可看見「我的限時快拍」中的貼文。"</string>
+    <string name="SignalConnectionsBottomSheet__your_connections_can_see_your_name">"你的好友可以看見你的名稱和照片。除非你對他們隱藏，否則他們亦可看見「我的限時快拍」中的貼文。"</string>
     <!-- Clickable option to add a viewer to a custom story -->
     <string name="PrivateStorySettingsFragment__add_viewer">新增瀏覽者</string>
     <!-- Clickable option to delete a custom story -->
@@ -7055,16 +7055,16 @@
     <!-- Title of safety number changes bottom sheet when showing individual records -->
     <string name="SafetyNumberBottomSheetFragment__safety_number_changes">安全碼變更</string>
     <!-- Message of safety number changes bottom sheet when showing individual records -->
-    <string name="SafetyNumberBottomSheetFragment__the_following_people">以下的聯絡人可能已重新安裝 Tellomi 或更換裝置。你可以點按接收者以確認新安全碼。這項操作是選擇性的。</string>
+    <string name="SafetyNumberBottomSheetFragment__the_following_people">以下的好友可能已重新安裝 Tellomi 或更換裝置。你可以點按接收者以確認新安全碼。這項操作是選擇性的。</string>
     <!-- Title of safety number changes bottom sheet when not showing individual records -->
     <string name="SafetyNumberBottomSheetFragment__safety_number_checkup">檢查安全碼</string>
     <!-- Title of safety number changes bottom sheet when not showing individual records and user has seen review screen -->
     <string name="SafetyNumberBottomSheetFragment__safety_number_checkup_complete">完成檢查新安全碼</string>
     <!-- Message of safety number changes bottom sheet when not showing individual records and user has seen review screen -->
-    <string name="SafetyNumberBottomSheetFragment__all_connections_have_been_reviewed">已檢查所有人脈，請點按傳送以繼續操作。</string>
+    <string name="SafetyNumberBottomSheetFragment__all_connections_have_been_reviewed">已檢查所有好友，請點按傳送以繼續操作。</string>
     <!-- Message of safety number changes bottom sheet when not showing individual records -->
     <plurals name="SafetyNumberBottomSheetFragment__you_have_d_connections_plural">
-        <item quantity="other">%1$d 位聯絡人可能已重新安裝 Tellomi 或更換裝置。你可以檢查他們的安全碼或繼續傳送訊息。</item>
+        <item quantity="other">%1$d 位好友可能已重新安裝 Tellomi 或更換裝置。你可以檢查他們的安全碼或繼續傳送訊息。</item>
     </plurals>
     <!-- Menu action to launch safety number verification screen -->
     <string name="SafetyNumberBottomSheetFragment__verify_safety_number">驗證安全碼</string>
@@ -7073,7 +7073,7 @@
     <!-- Action button at bottom of SafetyNumberBottomSheetFragment to send anyway -->
     <string name="SafetyNumberBottomSheetFragment__send_anyway">仍要傳送</string>
     <!-- Action button at bottom of SafetyNumberBottomSheetFragment to review connections -->
-    <string name="SafetyNumberBottomSheetFragment__review_connections">檢查人脈</string>
+    <string name="SafetyNumberBottomSheetFragment__review_connections">檢查好友</string>
     <!-- Empty state copy for SafetyNumberBottomSheetFragment -->
     <string name="SafetyNumberBottomSheetFragment__no_more_recipients_to_show">沒有其他可顯示的接收者</string>
     <!-- Done button on safety number review fragment -->
@@ -7096,7 +7096,7 @@
     <!-- Subtitle of initial My Story settings configuration shown when sending to My Story for the first time -->
     <string name="ChooseInitialMyStoryMembershipFragment__choose_who_can_see_posts_to_my_story_you_can_always_make_changes_in_settings">選擇誰可以看到「我的限時快拍」貼文。你可以隨時在設定中作出更改。</string>
     <!-- All connections option for initial My Story settings configuration shown when sending to My Story for the first time -->
-    <string name="ChooseInitialMyStoryMembershipFragment__all_signal_connections">所有 Tellomi 人脈</string>
+    <string name="ChooseInitialMyStoryMembershipFragment__all_signal_connections">所有好友</string>
     <!-- All connections except option for initial My Story settings configuration shown when sending to My Story for the first time -->
     <string name="ChooseInitialMyStoryMembershipFragment__all_except">所有人，除了…</string>
     <!-- Only with selected connections option for initial My Story settings configuration shown when sending to My Story for the first time -->

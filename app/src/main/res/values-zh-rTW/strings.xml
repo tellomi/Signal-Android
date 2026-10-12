@@ -2515,7 +2515,7 @@
 
     <!-- AboutSheet -->
     <!-- Displayed in a sheet row and allows user to open signal connection explanation on tap -->
-    <string name="AboutSheet__signal_connection">Tellomi 人脈</string>
+    <string name="AboutSheet__signal_connection">好友</string>
     <!-- Displayed in a sheet row describing that the user has marked this contact as \'verified\' from within the app -->
     <string name="AboutSheet__verified">已驗證</string>
     <!-- Displayed in a sheet row that tells users that profile names are not verified -->
@@ -2921,9 +2921,9 @@
     <!-- Displayed in the notification when the user has opened a received gift -->
     <string name="ThreadRecord__you_redeemed_a_badge">你已兌換一枚徽章</string>
     <!-- Displayed in the conversation list when someone reacted to your story -->
-    <string name="ThreadRecord__reacted_s_to_your_story">已向你的限動送出 %1$s</string>
+    <string name="ThreadRecord__reacted_s_to_your_story">已向你的快拍送出 %1$s</string>
     <!-- Displayed in the conversation list when you reacted to someone\'s story -->
-    <string name="ThreadRecord__reacted_s_to_their_story">已向對方的限動送出 %1$s</string>
+    <string name="ThreadRecord__reacted_s_to_their_story">已向對方的快拍送出 %1$s</string>
     <!-- Displayed in the conversation list when your most recent message is a payment to or from the person the conversation is with -->
     <string name="ThreadRecord_payment">付款</string>
     <!-- Displayed in the conversation list when your only message in a conversation is a scheduled send. -->
@@ -3769,7 +3769,7 @@
     <!-- Title for auto verification education sheet -->
     <string name="VerifyAutomaticallyEducationSheet__title">Tellomi 現在可自動驗證加密</string>
     <!-- Body for auto verification education sheet -->
-    <string name="VerifyAutomaticallyEducationSheet__body">對於透過電話號碼建立聯繫的聯絡人，Tellomi 會透過稱為「金鑰透明度」的程序，自動確認聯絡對象是否安全。為了增加安全性，你仍然可以使用二維碼或比對安全碼手動驗證聯絡人。</string>
+    <string name="VerifyAutomaticallyEducationSheet__body">對於透過電話號碼建立聯繫的好友，Tellomi 會透過稱為「金鑰透明度」的程序，自動確認聯絡對象是否安全。為了增加安全性，你仍然可以使用二維碼或比對安全碼手動驗證好友。</string>
     <!-- Button to learn more about automatic verification -->
     <string name="VerifyAutomaticallyEducationSheet__learn_more">了解更多</string>
     <!-- Button to go to verification page -->
@@ -6038,9 +6038,9 @@
     <string name="MultiselectForwardFragment__add_a_message">新增訊息</string>
     <string name="MultiselectForwardFragment__faster_forwards">快速轉寄</string>
     <!-- Displayed when user selects a video that will be clipped before sharing to a story -->
-    <string name="MultiselectForwardFragment__videos_will_be_trimmed">影片將剪輯成 30 秒短片，並以多則限動發送。</string>
+    <string name="MultiselectForwardFragment__videos_will_be_trimmed">影片將剪輯成 30 秒短片，並以多則快拍發送。</string>
     <!-- Displayed when user selects a video that cannot be sent as a story -->
-    <string name="MultiselectForwardFragment__videos_sent_to_stories_cant">發送至限動的影片不得超過 30 秒。</string>
+    <string name="MultiselectForwardFragment__videos_sent_to_stories_cant">發送至快拍的影片不得超過 30 秒。</string>
     <!-- Body in alert dialog telling users that messages are now sent immediately -->
     <string name="MultiselectForwardFragment__forwarded_messages_are_now">轉寄的訊息現在會立即傳送。</string>
     <plurals name="MultiselectForwardFragment_send_d_messages">
@@ -6573,7 +6573,7 @@
     <!-- String for counts above 99 in conversation list tabs -->
     <string name="ConversationListTabs__99p">99+</string>
     <!-- Menu item on stories landing page -->
-    <string name="StoriesLandingFragment__story_privacy">限動隱私</string>
+    <string name="StoriesLandingFragment__story_privacy">快拍隱私</string>
     <!-- Title for "My Stories" row item in Stories landing page -->
     <string name="StoriesLandingFragment__my_stories">我的限時快拍</string>
     <!-- Subtitle for "My Stories" row item when user has not added stories -->
@@ -6747,15 +6747,15 @@
     <!-- Button on all signal connections row to view all signal connections. Please keep as short as possible. -->
     <string name="MyStorySettingsFragment__view">檢視</string>
     <!-- Section heading for story visibility -->
-    <string name="MyStorySettingsFragment__who_can_view_this_story">誰能瀏覽此限動</string>
+    <string name="MyStorySettingsFragment__who_can_view_this_story">誰能瀏覽此快拍</string>
     <!-- Clickable option for selecting people to hide your story from -->
     <!-- Privacy setting title for sending stories to all your signal connections -->
-    <string name="MyStorySettingsFragment__all_signal_connections">所有 Tellomi 聯絡人</string>
+    <string name="MyStorySettingsFragment__all_signal_connections">所有好友</string>
     <!-- Privacy setting description for sending stories to all your signal connections -->
     <!-- Privacy setting title for sending stories to all except the specified connections -->
     <string name="MyStorySettingsFragment__all_except">所有人，除了…</string>
     <!-- Privacy setting description for sending stories to all except the specified connections -->
-    <string name="MyStorySettingsFragment__hide_your_story_from_specific_people">隱藏限動不讓特定人士瀏覽</string>
+    <string name="MyStorySettingsFragment__hide_your_story_from_specific_people">隱藏快拍不讓特定人士瀏覽</string>
     <!-- Summary of clickable option displaying how many people you have excluded from your story -->
     <plurals name="MyStorySettingsFragment__d_people_excluded">
         <item quantity="other">已排除 %1$d 人</item>
@@ -6769,7 +6769,7 @@
         <item quantity="other">%1$d 個觀看者</item>
     </plurals>
     <!-- My story privacy fine print about what the privacy settings are for -->
-    <string name="MyStorySettingsFragment__choose_who_can_view_your_story">選擇誰能瀏覽你的限動。變更內容將不會影響你已送出的限動。</string>
+    <string name="MyStorySettingsFragment__choose_who_can_view_your_story">選擇誰能瀏覽你的快拍。變更內容將不會影響你已送出的快拍。</string>
     <!-- Section header for options related to replies and reactions -->
     <string name="MyStorySettingsFragment__replies_amp_reactions">回覆&amp; 回應</string>
     <!-- Switchable option for allowing replies and reactions on your stories -->
@@ -6777,9 +6777,9 @@
     <!-- Summary for switchable option allowing replies and reactions on your story -->
     <string name="MyStorySettingsFragment__let_people_who_can_view_your_story_react_and_reply">誰可檢視你的限時快拍也可表達心情和回覆</string>
     <!-- Signal connections bolded text in the Signal Connections sheet -->
-    <string name="SignalConnectionsBottomSheet___signal_connections">Tellomi 聯絡人</string>
+    <string name="SignalConnectionsBottomSheet___signal_connections">好友</string>
     <!-- Displayed at the top of the signal connections sheet. Please remember to insert strong tag as required. -->
-    <string name="SignalConnectionsBottomSheet__signal_connections_are_people">Tellomi 聯絡人是你信任的使用者，這些使用者可能是：</string>
+    <string name="SignalConnectionsBottomSheet__signal_connections_are_people">好友是你信任的使用者，這些使用者可能是：</string>
     <!-- Signal connections sheet bullet point 1 -->
     <string name="SignalConnectionsBottomSheet__starting_a_conversation">開始聊天</string>
     <!-- Signal connections sheet bullet point 2 -->
@@ -6828,7 +6828,7 @@
     <!-- Done button label for hide story from screen -->
     <string name="HideStoryFromFragment__done">完成</string>
     <!-- Dialog title for removing a group story -->
-    <string name="StoryDialogs__remove_group_story">要移除群組限動嗎？</string>
+    <string name="StoryDialogs__remove_group_story">要移除群組快拍嗎？</string>
     <!-- Dialog message for removing a group story -->
     <string name="StoryDialogs__s_will_be_removed">「%1$s」將會被移除。</string>
     <!-- Dialog positive action for removing a group story -->
@@ -6989,7 +6989,7 @@
     </plurals>
     <!-- Label under name for group stories -->
     <plurals name="ContactSearchItems__group_story_d_viewers">
-        <item quantity="other">群組限動 · %1$d 位瀏覽者</item>
+        <item quantity="other">群組快拍 · %1$d 位瀏覽者</item>
     </plurals>
     <!-- Label under name for groups -->
     <plurals name="ContactSearchItems__group_d_members">
@@ -7008,13 +7008,13 @@
     <!-- Label for context menu item to open story settings -->
     <string name="ContactSearchItems__story_settings">限時快拍設定</string>
     <!-- Label for context menu item to remove a group story from contact results -->
-    <string name="ContactSearchItems__remove_story">移除限動</string>
+    <string name="ContactSearchItems__remove_story">移除快拍</string>
     <!-- Label for context menu item to delete a custom story -->
-    <string name="ContactSearchItems__delete_story">刪除限動</string>
+    <string name="ContactSearchItems__delete_story">刪除快拍</string>
     <!-- Dialog title for removing a group story -->
-    <string name="ContactSearchMediator__remove_group_story">要移除群組限動嗎？</string>
+    <string name="ContactSearchMediator__remove_group_story">要移除群組快拍嗎？</string>
     <!-- Dialog message for removing a group story -->
-    <string name="ContactSearchMediator__this_will_remove">這樣將會從此清單移除限動；你仍然可在此群組中瀏覽限動。</string>
+    <string name="ContactSearchMediator__this_will_remove">這樣將會從此清單移除快拍；你仍然可在此群組中瀏覽快拍。</string>
     <!-- Dialog action item for removing a group story -->
     <string name="ContactSearchMediator__remove">移除</string>
     <!-- Dialog title for deleting a custom story -->
@@ -7061,19 +7061,19 @@
     <!-- Title of safety number changes bottom sheet when not showing individual records and user has seen review screen -->
     <string name="SafetyNumberBottomSheetFragment__safety_number_checkup_complete">安全碼檢查已完成</string>
     <!-- Message of safety number changes bottom sheet when not showing individual records and user has seen review screen -->
-    <string name="SafetyNumberBottomSheetFragment__all_connections_have_been_reviewed">所有聯絡人已審核完畢，點選「傳送」即可繼續。</string>
+    <string name="SafetyNumberBottomSheetFragment__all_connections_have_been_reviewed">所有好友已審核完畢，點選「傳送」即可繼續。</string>
     <!-- Message of safety number changes bottom sheet when not showing individual records -->
     <plurals name="SafetyNumberBottomSheetFragment__you_have_d_connections_plural">
-        <item quantity="other">%1$d 位聯絡人可能已重新安裝 Tellomi 或更換裝置。你可以檢查他們的安全碼或繼續傳送訊息。</item>
+        <item quantity="other">%1$d 位好友可能已重新安裝 Tellomi 或更換裝置。你可以檢查他們的安全碼或繼續傳送訊息。</item>
     </plurals>
     <!-- Menu action to launch safety number verification screen -->
     <string name="SafetyNumberBottomSheetFragment__verify_safety_number">驗證安全碼</string>
     <!-- Menu action to remove user from story -->
-    <string name="SafetyNumberBottomSheetFragment__remove_from_story">從限動中移除</string>
+    <string name="SafetyNumberBottomSheetFragment__remove_from_story">從快拍中移除</string>
     <!-- Action button at bottom of SafetyNumberBottomSheetFragment to send anyway -->
     <string name="SafetyNumberBottomSheetFragment__send_anyway">仍然傳送</string>
     <!-- Action button at bottom of SafetyNumberBottomSheetFragment to review connections -->
-    <string name="SafetyNumberBottomSheetFragment__review_connections">審核聯絡人</string>
+    <string name="SafetyNumberBottomSheetFragment__review_connections">審核好友</string>
     <!-- Empty state copy for SafetyNumberBottomSheetFragment -->
     <string name="SafetyNumberBottomSheetFragment__no_more_recipients_to_show">沒有其他要顯示的收件人了</string>
     <!-- Done button on safety number review fragment -->
@@ -7092,11 +7092,11 @@
     <string name="SafetyNumberReviewConnectionsFragment__remove">移除</string>
 
     <!-- Title of initial My Story settings configuration shown when sending to My Story for the first time -->
-    <string name="ChooseInitialMyStoryMembershipFragment__my_story_privacy">我的限動隱私設定</string>
+    <string name="ChooseInitialMyStoryMembershipFragment__my_story_privacy">我的快拍隱私設定</string>
     <!-- Subtitle of initial My Story settings configuration shown when sending to My Story for the first time -->
     <string name="ChooseInitialMyStoryMembershipFragment__choose_who_can_see_posts_to_my_story_you_can_always_make_changes_in_settings">選擇誰可以看到「我的限時快拍」的貼文。你可以隨時在設定中作出變更。</string>
     <!-- All connections option for initial My Story settings configuration shown when sending to My Story for the first time -->
-    <string name="ChooseInitialMyStoryMembershipFragment__all_signal_connections">所有 Tellomi 聯絡人</string>
+    <string name="ChooseInitialMyStoryMembershipFragment__all_signal_connections">所有好友</string>
     <!-- All connections except option for initial My Story settings configuration shown when sending to My Story for the first time -->
     <string name="ChooseInitialMyStoryMembershipFragment__all_except">所有人，除了…</string>
     <!-- Only with selected connections option for initial My Story settings configuration shown when sending to My Story for the first time -->
@@ -7117,19 +7117,19 @@
     <!-- Explanation about how stories are deleted and managed -->
     <string name="StoriesPrivacySettingsFragment__story_updates_automatically_disappear">限時快拍更新會在 24 小時後自動消失。你可以選擇限時快拍的分享對象，亦可為特定對象或群組建立新的限時快拍。</string>
     <!-- Preference title to turn off stories -->
-    <string name="StoriesPrivacySettingsFragment__turn_off_stories">關閉限動</string>
+    <string name="StoriesPrivacySettingsFragment__turn_off_stories">關閉快拍</string>
     <!-- Preference summary to turn off stories -->
-    <string name="StoriesPrivacySettingsFragment__if_you_opt_out">若選擇退出限動，你將無法再分享或瀏覽限動。</string>
+    <string name="StoriesPrivacySettingsFragment__if_you_opt_out">若選擇退出快拍，你將無法再分享或瀏覽快拍。</string>
     <!-- Preference title to turn on stories -->
-    <string name="StoriesPrivacySettingsFragment__turn_on_stories">開啟限動</string>
+    <string name="StoriesPrivacySettingsFragment__turn_on_stories">開啟快拍</string>
     <!-- Preference summary to turn on stories -->
-    <string name="StoriesPrivacySettingsFragment__share_and_view">分享並瀏覽其他人的限動。限動會在 24 小時後自動消失。</string>
+    <string name="StoriesPrivacySettingsFragment__share_and_view">分享並瀏覽其他人的快拍。快拍會在 24 小時後自動消失。</string>
     <!-- Dialog title to turn off stories -->
-    <string name="StoriesPrivacySettingsFragment__turn_off_stories_question">要關閉限動嗎？</string>
+    <string name="StoriesPrivacySettingsFragment__turn_off_stories_question">要關閉快拍嗎？</string>
     <!-- Dialog message to turn off stories -->
     <string name="StoriesPrivacySettingsFragment__you_will_no_longer_be_able_to_share">你將無法再分享或瀏覽限時快拍。你最近分享的限時快拍更新也將會被刪除。</string>
     <!-- Page title when launched from stories landing screen -->
-    <string name="StoriesPrivacySettingsFragment__story_privacy">限動隱私</string>
+    <string name="StoriesPrivacySettingsFragment__story_privacy">快拍隱私</string>
     <!-- Header for section that lists out stories -->
     <string name="StoriesPrivacySettingsFragment__stories">快拍</string>
     <!-- Story views header -->
@@ -7139,15 +7139,15 @@
     <string name="StoriesPrivacySettingsFragment__see_and_share">對方瀏覽限時快拍時可以觀看和分享。如果停用，你就無法看到其他人瀏覽你的限時快拍。</string>
 
     <!-- NewStoryItem -->
-    <string name="NewStoryItem__new_story">新的限動</string>
+    <string name="NewStoryItem__new_story">新的快拍</string>
 
     <!-- GroupStorySettingsFragment -->
     <!-- Section header for who can view a group story -->
-    <string name="GroupStorySettingsFragment__who_can_view_this_story">誰能瀏覽此限動</string>
+    <string name="GroupStorySettingsFragment__who_can_view_this_story">誰能瀏覽此快拍</string>
     <!-- Explanation of who can view a group story -->
-    <string name="GroupStorySettingsFragment__members_of_the_group_s">"「%1$s」群組成員可以瀏覽並回覆此限動。你可以調整群組中此聊天的成員設定。"</string>
+    <string name="GroupStorySettingsFragment__members_of_the_group_s">"「%1$s」群組成員可以瀏覽並回覆此快拍。你可以調整群組中此聊天的成員設定。"</string>
     <!-- Preference label for removing this group story -->
-    <string name="GroupStorySettingsFragment__remove_group_story">移除群組限動</string>
+    <string name="GroupStorySettingsFragment__remove_group_story">移除群組快拍</string>
 
     <!-- Generic title for overflow menus -->
     <string name="OverflowMenu__overflow_menu">溢出選單</string>
