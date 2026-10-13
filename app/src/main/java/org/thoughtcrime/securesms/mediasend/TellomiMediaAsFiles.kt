@@ -103,6 +103,8 @@ object TellomiMediaAsFiles {
       val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(ByteBuffer.wrap(bytes))) { decoder, _, _ ->
         decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
       }
+      val width = bitmap.width
+      val height = bitmap.height
       val jpeg = ByteArrayOutputStream()
       try {
         bitmap.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, jpeg)
@@ -118,8 +120,8 @@ object TellomiMediaAsFiles {
         uri = uri,
         contentType = MediaUtil.IMAGE_JPEG,
         size = jpeg.size().toLong(),
-        width = bitmap.width,
-        height = bitmap.height,
+        width = width,
+        height = height,
         transformProperties = TransformProperties.forTellomiAsFile(),
         fileName = fileName
       )
