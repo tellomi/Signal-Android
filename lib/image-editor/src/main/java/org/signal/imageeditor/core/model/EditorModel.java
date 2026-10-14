@@ -478,6 +478,63 @@ public final class EditorModel implements Parcelable, RendererContext.Ready {
     return editorElementHierarchy.getCropEditorElement().getFlags().isAspectLocked();
   }
 
+  /**
+   * Tellomi (tellomi/tellomi#1522 E-1): width / height of the crop as it stands on screen.
+   */
+  public float getCropAspectRatioOnScreen() {
+    RectF crop = findCropRelativeToRoot();
+    return crop.height() > 0 ? crop.width() / crop.height() : 1f;
+  }
+
+  /**
+   * Tellomi (tellomi/tellomi#1522 E-1): width / height of the whole image the way it is turned now. An odd number of
+   * quarter turns swaps it; the fine rotation dial is ignored.
+   */
+  public float getOrientedImageAspectRatio() {
+    if (size.x <= 0 || size.y <= 0) {
+      return 1f;
+    }
+    float ratio = size.x / (float) size.y;
+    return isCropQuarterTurned() ? 1f / ratio : ratio;
+  }
+
+  /**
+   * Tellomi (tellomi/tellomi#1522 E-1, as Telegram's crop aspect ratios, {@code CropView.setLockedAspectRatio}): shrinks the
+   * crop around its centre to the largest rectangle of {@code widthToHeight} (as seen on screen) that fits in the current
+   * crop, and locks the crop to that aspect.
+   */
+  public void setCropAspectRatio(float widthToHeight) {
+    if (!isCropping() || widthToHeight <= 0) {
+      return;
+    }
+
+    float current = getCropAspectRatioOnScreen();
+    float across  = widthToHeight < current ? widthToHeight / current : 1f;
+    float down    = widthToHeight > current ? current / widthToHeight : 1f;
+    boolean turned = isCropQuarterTurned();
+
+    pushUndoPoint();
+
+    EditorElement crop     = editorElementHierarchy.getCropEditorElement();
+    Matrix        newLocal = new Matrix(crop.getLocalMatrix());
+    newLocal.preScale(turned ? down : across, turned ? across : down);
+    crop.animateLocalTo(newLocal, invalidate);
+
+    setCropAspectLock(true);
+    updateUndoRedoAvailableState(cropUndoRedoStacks);
+  }
+
+  /** Whether the crop's own x axis runs up or down the screen, i.e. the image has been turned by an odd number of quarter turns. */
+  private boolean isCropQuarterTurned() {
+    Matrix toRoot = findRelativeMatrix(editorElementHierarchy.getCropEditorElement(), editorElementHierarchy.getRoot());
+    if (toRoot == null) {
+      return false;
+    }
+    float[] axis = { 1f, 0f };
+    toRoot.mapVectors(axis);
+    return Math.abs(axis[1]) > Math.abs(axis[0]);
+  }
+
   public void postEdit(boolean allowScaleToRepairCrop) {
     boolean cropping = isCropping();
     if (cropping) {
