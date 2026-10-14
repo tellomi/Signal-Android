@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.signal.imageeditor.core.MatrixUtils;
+import org.signal.imageeditor.core.PaintStrokeRenderer;
 import org.signal.imageeditor.core.Renderer;
 import org.signal.imageeditor.core.RendererContext;
 
@@ -134,11 +135,63 @@ public final class EditorElement implements Parcelable {
   }
 
   private static void drawChildren(@NonNull List<EditorElement> children, @NonNull RendererContext rendererContext) {
-    for (EditorElement element : children) {
-      if (element.zOrder >= 0) {
+    int lastEraser = indexOfLastEraser(children);
+    if (lastEraser < 0) {
+      for (EditorElement element : children) {
+        if (element.zOrder >= 0) {
+          element.draw(rendererContext);
+        }
+      }
+      return;
+    }
+
+    // Tellomi (tellomi/tellomi#1522 E-2, as Telegram's eraser): an eraser clears the paint strokes drawn before it and
+    // nothing else. Stickers share the strokes' z-order, so each run of strokes between stickers gets its own layer:
+    // the run's strokes and erasers are drawn into it in order, then every later eraser, then the layer is put down.
+    int i = 0;
+    while (i < children.size()) {
+      EditorElement element = children.get(i);
+      if (element.zOrder < 0 || isEraser(element)) {
+        i++;
+        continue;
+      }
+      if (i > lastEraser || !isPaintStroke(element)) {
         element.draw(rendererContext);
+        i++;
+        continue;
+      }
+
+      int layer = rendererContext.canvas.saveLayer(null, null);
+      int end   = i;
+      while (end < children.size() && children.get(end).zOrder >= 0 && (isPaintStroke(children.get(end)) || isEraser(children.get(end)))) {
+        children.get(end).draw(rendererContext);
+        end++;
+      }
+      for (int k = end; k <= lastEraser; k++) {
+        if (isEraser(children.get(k))) {
+          children.get(k).draw(rendererContext);
+        }
+      }
+      rendererContext.canvas.restoreToCount(layer);
+      i = end;
+    }
+  }
+
+  private static int indexOfLastEraser(@NonNull List<EditorElement> children) {
+    for (int i = children.size() - 1; i >= 0; i--) {
+      if (isEraser(children.get(i))) {
+        return i;
       }
     }
+    return -1;
+  }
+
+  private static boolean isEraser(@NonNull EditorElement element) {
+    return element.zOrder >= 0 && element.renderer instanceof PaintStrokeRenderer && ((PaintStrokeRenderer) element.renderer).isEraser();
+  }
+
+  private static boolean isPaintStroke(@NonNull EditorElement element) {
+    return element.zOrder >= 0 && element.renderer instanceof PaintStrokeRenderer && !((PaintStrokeRenderer) element.renderer).isEraser();
   }
 
   public void addElement(@NonNull EditorElement element) {
