@@ -42,6 +42,7 @@ import org.signal.mediasend.MediaSendRoute
 import org.signal.mediasend.MediaSendScreen
 import org.signal.mediasend.screens.edit.LocalAddAMessageRowTextField
 import org.signal.mediasend.screens.edit.LocalScheduledSendTimeFormatter
+import org.signal.mediasend.screens.edit.LocalTellomiScheduleIsReminder
 import org.thoughtcrime.securesms.PassphraseRequiredActivity
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.emoji.EmojiTextView
@@ -91,6 +92,11 @@ open class MediaSendV3Activity :
   protected open fun createDynamicTheme(): DynamicTheme = DynamicNoActionBarTheme()
 
   private val contractArgs: MediaSendFlowActivityContract.Args by lazy { MediaSendFlowActivityContract.Args.fromIntent(intent) }
+
+  /** Tellomi（tellomi/tellomi#1601）：这次是发给自己（收藏）：「定时发送」叫「设置提醒」。 */
+  private val tellomiIsNoteToSelf: Boolean by lazy {
+    contractArgs.recipientId?.let { Recipient.resolved(RecipientId.from(it.id)).isSelf } == true
+  }
 
   private val viewModel: MediaSendFlowViewModel by viewModels { MediaSendFlowViewModel.Factory(args = contractArgs) }
 
@@ -154,6 +160,8 @@ open class MediaSendV3Activity :
             modifier = modifier
           )
         },
+        // Tellomi（#1601）：发给自己（收藏）时「定时发送」叫「设置提醒」。
+        LocalTellomiScheduleIsReminder provides tellomiIsNoteToSelf,
         LocalScheduledSendTimeFormatter provides { time ->
           DateUtils.getScheduledMessageDateString(context, time)
         },
@@ -203,7 +211,7 @@ open class MediaSendV3Activity :
               is MediaSendFlowHudCommand.SelectSticker -> stickerLauncher.launch(Unit)
 
               is MediaSendFlowHudCommand.PickScheduledSendTime -> {
-                ScheduleMessageTimePickerBottomSheet.showSchedule(supportFragmentManager)
+                ScheduleMessageTimePickerBottomSheet.showSchedule(supportFragmentManager, tellomiIsNoteToSelf)
               }
 
               is MediaSendFlowHudCommand.ConfirmScheduledSend -> {
