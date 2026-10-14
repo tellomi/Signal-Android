@@ -12,6 +12,7 @@ import org.signal.imageeditor.core.PaintStrokeRenderer;
 import org.signal.imageeditor.core.Renderer;
 import org.signal.imageeditor.core.RendererContext;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -134,16 +135,19 @@ public final class EditorElement implements Parcelable {
     renderer.render(rendererContext);
   }
 
-  private static void drawChildren(@NonNull List<EditorElement> children, @NonNull RendererContext rendererContext) {
-    int lastEraser = indexOfLastEraser(children);
-    if (lastEraser < 0) {
-      for (EditorElement element : children) {
+  private static void drawChildren(@NonNull List<EditorElement> allChildren, @NonNull RendererContext rendererContext) {
+    if (!hasEraser(allChildren)) {
+      for (EditorElement element : allChildren) {
         if (element.zOrder >= 0) {
           element.draw(rendererContext);
         }
       }
       return;
     }
+
+    // The children are a linked list; walk an array copy by index.
+    List<EditorElement> children   = new ArrayList<>(allChildren);
+    int                 lastEraser = indexOfLastEraser(children);
 
     // Tellomi (tellomi/tellomi#1522 E-2, as Telegram's eraser): an eraser clears the paint strokes drawn before it and
     // nothing else. Stickers share the strokes' z-order, so each run of strokes between stickers gets its own layer:
@@ -175,6 +179,15 @@ public final class EditorElement implements Parcelable {
       rendererContext.canvas.restoreToCount(layer);
       i = end;
     }
+  }
+
+  private static boolean hasEraser(@NonNull List<EditorElement> children) {
+    for (EditorElement element : children) {
+      if (isEraser(element)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static int indexOfLastEraser(@NonNull List<EditorElement> children) {

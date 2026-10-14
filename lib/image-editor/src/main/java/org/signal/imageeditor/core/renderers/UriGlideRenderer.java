@@ -78,8 +78,11 @@ public final class UriGlideRenderer implements SelectableRenderer {
   @Nullable private Bitmap bitmap;
   @Nullable private Bitmap blurredBitmap;
   @Nullable private Paint  blurPaint;
-  @Nullable private Paint  maskLayerPaint;
-  @Nullable private Paint  maskDrawPaint;
+  private final Paint maskLayerPaint = new Paint();
+  private final Paint maskDrawPaint  = new Paint(Paint.ANTI_ALIAS_FLAG);
+  {
+    maskLayerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+  }
 
   public UriGlideRenderer(@NonNull Uri imageUri, boolean decryptable, int maxWidth, int maxHeight) {
     this(imageUri, decryptable, maxWidth, maxHeight, STRONG_BLUR);
@@ -243,13 +246,6 @@ public final class UriGlideRenderer implements SelectableRenderer {
       blurPaint.setFilterBitmap(true);
       blurPaint.setDither(true);
     }
-    if (maskLayerPaint == null) {
-      maskLayerPaint = new Paint();
-      maskLayerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-      maskDrawPaint = new Paint();
-      maskDrawPaint.setAntiAlias(true);
-    }
-
     int layer = rendererContext.canvas.saveLayer(null, maskLayerPaint);
     rendererContext.setMaskPaint(maskDrawPaint);
     for (EditorElement stroke : strokes) {

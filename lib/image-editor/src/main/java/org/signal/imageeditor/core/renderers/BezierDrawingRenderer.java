@@ -72,6 +72,7 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
   private       int        color;
   private       float      thickness;
   private       float      arrowHeadProgress;
+  private       boolean    arrowHeadStarted;
 
   @Nullable private Paint neonPaint;
   @Nullable private BlurMaskFilter neonGlow;
@@ -95,6 +96,7 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
     this.style             = style;
     this.strokeSequence    = strokeSequence;
     this.arrowHeadProgress = arrowHeadProgress;
+    this.arrowHeadStarted  = arrowHeadProgress > 0f;
 
     updatePaint();
   }
@@ -110,6 +112,11 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
   private static synchronized long nextStrokeSequence() {
     lastStrokeSequence = Math.max(lastStrokeSequence + 1, System.currentTimeMillis() * 1000);
     return lastStrokeSequence;
+  }
+
+  /** Strokes brought back from a parcel push the counter past them, so a stroke drawn next is always later. */
+  private static synchronized void observeStrokeSequence(long sequence) {
+    lastStrokeSequence = Math.max(lastStrokeSequence, sequence);
   }
 
   @Override
@@ -176,7 +183,8 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
    * The finger lifted. An arrow grows its head now (as Telegram on both clients); other brushes have nothing to do.
    */
   public void finishStroke() {
-    if (style != Style.ARROW || arrowHeadProgress > 0f) return;
+    if (style != Style.ARROW || arrowHeadStarted) return;
+    arrowHeadStarted = true;
 
     ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
     animator.setDuration(ARROW_HEAD_DURATION_MS);
@@ -185,7 +193,6 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
       arrowHeadProgress = (float) animation.getAnimatedValue();
       invalidate();
     });
-    arrowHeadProgress = Float.MIN_VALUE;
     animator.start();
   }
 
@@ -197,6 +204,7 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
   @VisibleForTesting
   void setArrowHeadProgress(float arrowHeadProgress) {
     this.arrowHeadProgress = arrowHeadProgress;
+    this.arrowHeadStarted  = arrowHeadProgress > 0f;
   }
 
   @Override
@@ -347,6 +355,7 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
       long       sequence   = in.readLong();
       float      arrowHead  = in.readFloat();
 
+      observeStrokeSequence(sequence);
       return new BezierDrawingRenderer(color, thickness, cap, bezierLine, clipRect, style, sequence, arrowHead);
     }
 
@@ -371,7 +380,7 @@ public final class BezierDrawingRenderer extends InvalidateableRenderer implemen
     dest.writeInt(style.ordinal());
     dest.writeLong(strokeSequence);
     // A head that has started growing is a finished arrow; bring it back whole.
-    dest.writeFloat(arrowHeadProgress > 0f ? 1f : 0f);
+    dest.writeFloat(arrowHeadStarted ? 1f : 0f);
   }
 
 }

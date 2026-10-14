@@ -106,6 +106,16 @@ public final class BezierDrawingRendererTellomiTest {
   }
 
   @Test
+  public void anArrowSavedTheMomentTheFingerLiftsComesBackWithItsHead() {
+    BezierDrawingRenderer arrow = stroke(Color.RED, BezierDrawingRenderer.Style.ARROW, 0, 0, 300, 0);
+
+    arrow.finishStroke();
+
+    assertEquals(1f, roundTrip(arrow).getArrowHeadProgress(), 0f);
+    assertEquals(0f, roundTrip(stroke(Color.RED, BezierDrawingRenderer.Style.ARROW, 0, 0, 300, 0)).getArrowHeadProgress(), 0f);
+  }
+
+  @Test
   public void theEraserClearsEarlierStrokesButNotThePhotoStickersOrLaterStrokes() {
     EditorElement root = new EditorElement(new FillRenderer(Color.BLUE, Bounds.FULL_BOUNDS));
     // A red stroke across the middle, then a sticker, then an eraser down the middle, then a yellow stroke.
