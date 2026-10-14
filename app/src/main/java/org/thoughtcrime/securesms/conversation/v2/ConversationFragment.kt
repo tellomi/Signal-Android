@@ -4850,9 +4850,9 @@ class ConversationFragment :
       }
 
       // Tellomi（tellomi/tellomi#1518 V-6，owner 2026-10-14 照 TG）：静音当 GIF 发的视频单独成一条，其余照常成组。
-      val tellomiGroups = TellomiMutedVideos.messageGroups(if (result.isPushPreUpload) result.preUploadResults.map { it.media } else result.nonUploadedMedia)
-      if (tellomiGroups.size > 1) {
-        sendMediaInGroups(result, tellomiGroups)
+      val tellomiSplit = TellomiMutedVideos.split(if (result.isPushPreUpload) result.preUploadResults.map { it.media } else result.nonUploadedMedia)
+      if (tellomiSplit != null) {
+        sendMediaInGroups(result, tellomiSplit)
         return
       }
 
@@ -5002,7 +5002,7 @@ class ConversationFragment :
      * Tellomi（tellomi/tellomi#1518 V-6）：按 [groups] 一组一条地发（其余的相册一条在前，每个静音视频各一条在后）。说明、@、格式和
      * 「说明在上方」跟着第一组（其余的那组）；全是静音视频时跟着最后一条。引用回复挂第一条。
      */
-    private fun sendMediaInGroups(result: MediaSendActivityResult, groups: List<List<Int>>) {
+    private fun sendMediaInGroups(result: MediaSendActivityResult, split: TellomiMutedVideos.Split) {
       val threadRecipient = viewModel.recipientSnapshot
       if (threadRecipient == null) {
         Log.w(TAG, "Unable to send due to invalid thread recipient")
@@ -5015,14 +5015,16 @@ class ConversationFragment :
       }
 
       val quote = if (result.isViewOnce) null else inputPanel.quote.orNull()
-      val allSlides: List<Slide> = if (result.isPushPreUpload) emptyList() else mediaSlides(result.nonUploadedMedia)
-      val media = if (result.isPushPreUpload) result.preUploadResults.map { it.media } else result.nonUploadedMedia
-      val bodyIndex = groups.indexOfFirst { group -> group.none { TellomiMutedVideos.isMutedGif(media[it]) } }.takeIf { it >= 0 } ?: groups.lastIndex
+      // One slide per item (null for a type there is no slide for), so the indices in the split still line up.
+      val slidesByIndex: List<Slide?> = if (result.isPushPreUpload) emptyList() else result.nonUploadedMedia.map { mediaSlides(listOf(it)).firstOrNull() }
 
-      val parts: List<Completable> = groups.mapIndexed { index, group ->
+      val parts: List<Completable> = split.groups.mapIndexedNotNull { index, group ->
         val isFirst = index == 0
-        val hasBody = index == bodyIndex
-        val slides = if (result.isPushPreUpload) emptyList() else group.mapNotNull { allSlides.getOrNull(it) }
+        val hasBody = index == split.bodyIndex
+        val slides = if (result.isPushPreUpload) emptyList() else group.mapNotNull { slidesByIndex.getOrNull(it) }
+        if (!result.isPushPreUpload && slides.isEmpty() && !hasBody) {
+          return@mapIndexedNotNull null
+        }
         viewModel.sendMessage(
           metricId = null,
           threadRecipient = threadRecipient,

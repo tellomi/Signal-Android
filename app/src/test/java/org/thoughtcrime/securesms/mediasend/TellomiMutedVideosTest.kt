@@ -46,15 +46,36 @@ class TellomiMutedVideosTest {
   }
 
   @Test
-  fun `muted videos go one per message after the rest, which stay together`() {
+  fun `muted videos go one per message after the rest, which stay together and carry the caption`() {
     val photo = photo("p")
     val muted = mutedVideo("m")
     val plain = video("v")
 
-    assertThat(TellomiMutedVideos.messageGroups(listOf(photo, muted, plain))).isEqualTo(listOf(listOf(0, 2), listOf(1)))
-    assertThat(TellomiMutedVideos.messageGroups(listOf(muted, mutedVideo("n")))).isEqualTo(listOf(listOf(0), listOf(1)))
-    assertThat(TellomiMutedVideos.messageGroups(listOf(photo, plain))).isEqualTo(listOf(listOf(0, 1)))
-    assertThat(TellomiMutedVideos.messageGroups(listOf(muted))).isEqualTo(listOf(listOf(0)))
+    val split = TellomiMutedVideos.split(listOf(photo, muted, plain))!!
+    assertThat(split.groups).isEqualTo(listOf(listOf(0, 2), listOf(1)))
+    assertThat(split.bodyIndex).isEqualTo(0)
+
+    val allMuted = TellomiMutedVideos.split(listOf(muted, mutedVideo("n")))!!
+    assertThat(allMuted.groups).isEqualTo(listOf(listOf(0), listOf(1)))
+    assertThat(allMuted.bodyIndex).isEqualTo(1)
+
+    assertThat(TellomiMutedVideos.split(listOf(photo, plain))).isEqualTo(null)
+    assertThat(TellomiMutedVideos.split(listOf(muted))).isEqualTo(null)
+  }
+
+  @Test
+  fun `a long caption's text attachment goes with the caption, not as a message of its own`() {
+    val longText = video("t").copy(contentType = "text/x-signal-plain", duration = 0)
+
+    // One muted video and a long caption: still one message.
+    assertThat(TellomiMutedVideos.split(listOf(mutedVideo("m"), longText))).isEqualTo(null)
+
+    val split = TellomiMutedVideos.split(listOf(photo("p"), mutedVideo("m"), longText))!!
+    assertThat(split.groups).isEqualTo(listOf(listOf(0, 2), listOf(1)))
+
+    val allMuted = TellomiMutedVideos.split(listOf(mutedVideo("m"), mutedVideo("n"), longText))!!
+    assertThat(allMuted.groups).isEqualTo(listOf(listOf(0), listOf(1, 2)))
+    assertThat(allMuted.bodyIndex).isEqualTo(1)
   }
 
   private fun mutedVideo(id: String) = video(id).copy(isVideoGif = true, transformProperties = TransformProperties(videoMuted = true))
