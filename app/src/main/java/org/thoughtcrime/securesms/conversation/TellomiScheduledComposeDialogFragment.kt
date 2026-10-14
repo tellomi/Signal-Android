@@ -95,15 +95,17 @@ class TellomiScheduledComposeDialogFragment : KeyboardEntryDialogFragment(R.layo
     view.findViewById<View>(R.id.edit_header_close).setOnClickListener { dismissAllowingStateLoss() }
 
     if (editing != null) {
-      // 改的时候只存得下一条消息正文那么长（再长要另存成长文附件，定时消息原地改不了）
-      composeText.filters += ByteLimitInputFilter(SignalServiceMessageLimits.MAX_INLINE_BODY_SIZE_BYTES)
       editHeader.isVisible = true
       editHeaderLabel.setText(R.string.InputPanel_edit_message)
       submitButton.setImageResource(CoreUiR.drawable.symbol_check_24)
       submitButton.contentDescription = getString(R.string.save)
       val body = editing!!.getDisplayBody(requireContext())
+      // 同会话输入框改消息（`InputPanel.enterEditMessageMode`）：剧透在输入框里显示成可编辑的样子
+      MessageStyler.convertSpoilersToComposeMode(body)
       composeText.setText(body)
       composeText.setSelection(body.length)
+      // 改的时候只存得下一条消息正文那么长（再长要另存成长文附件，定时消息原地改不了）；原文先放进去再限
+      composeText.filters += ByteLimitInputFilter(SignalServiceMessageLimits.MAX_INLINE_BODY_SIZE_BYTES)
       record?.linkPreviews?.firstOrNull()?.let { stored ->
         linkPreviewView.isVisible = true
         linkPreviewView.setLinkPreview(Glide.with(this), stored, true)
@@ -139,8 +141,16 @@ class TellomiScheduledComposeDialogFragment : KeyboardEntryDialogFragment(R.layo
             linkPreviewView.isVisible = true
             linkPreviewView.setLinkPreview(Glide.with(this), state.linkPreview.get(), true)
           }
+          // 改的时候网址没变：接着显示原来的预览（存的时候也沿用它）
+          keepsStoredPreview() -> {
+            val stored = (editing?.messageRecord as? MmsMessageRecord)?.linkPreviews?.firstOrNull()
+            if (stored != null) {
+              linkPreviewView.isVisible = true
+              linkPreviewView.setLinkPreview(Glide.with(this), stored, true)
+            }
+          }
           // 同会话输入框（ADR-0063 §5.1 铁律 2）：取不到预览就不显示预览区
-          !keepsStoredPreview() -> linkPreviewView.isVisible = false
+          else -> linkPreviewView.isVisible = false
         }
       }
     }
@@ -162,7 +172,9 @@ class TellomiScheduledComposeDialogFragment : KeyboardEntryDialogFragment(R.layo
 
   override fun onResume() {
     super.onResume()
-    ViewUtil.focusAndShowKeyboard(composeText)
+    if (::composeText.isInitialized) {
+      ViewUtil.focusAndShowKeyboard(composeText)
+    }
   }
 
   override fun onDestroyView() {
@@ -201,7 +213,7 @@ class TellomiScheduledComposeDialogFragment : KeyboardEntryDialogFragment(R.layo
       editing != null && keepsStoredPreview() -> null
       else -> emptyList()
     }
-    sheetViewModel.tellomiPendingDraft = ScheduledMessagesViewModel.TellomiDraft(
+    val draft = ScheduledMessagesViewModel.TellomiDraft(
       displayText = SpannableString(composeText.text ?: ""),
       body = body,
       mentions = composeText.mentions,
@@ -209,6 +221,11 @@ class TellomiScheduledComposeDialogFragment : KeyboardEntryDialogFragment(R.layo
       linkPreviews = linkPreviews,
       editMessageId = editing?.messageRecord?.id
     )
+    if (editing != null) {
+      sheetViewModel.tellomiPendingEdit = draft
+    } else {
+      sheetViewModel.tellomiPendingDraft = draft
+    }
     setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SUBMITTED to true))
     dismissAllowingStateLoss()
   }
@@ -272,6 +289,8 @@ class TellomiScheduledComposeDialogFragment : KeyboardEntryDialogFragment(R.layo
 
     /** @param editMessageId 改哪条（先放进 [ScheduledMessagesViewModel.tellomiEditingMessage]）；新写的不传。 */
     fun show(fragmentManager: FragmentManager, threadId: Long, recipientId: RecipientId, isReminder: Boolean, editMessageId: Long = -1L) {
+      // 连点两下只开一个
+      if (fragmentManager.findFragmentByTag(TAG) != null) return
       TellomiScheduledComposeDialogFragment().apply {
         arguments = bundleOf(
           ARG_THREAD_ID to threadId,

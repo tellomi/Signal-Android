@@ -2594,11 +2594,15 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
           cursor.requireString(LINK_PREVIEWS)
         }
 
-      val mentionsSelf = mentions.any { Recipient.resolved(it.recipientId).isSelf }
+      // 同 [insertMessageOutbox]：@ 换成占位符（正文里不留本机给对方起的名字），样式区间跟着挪
+      val updatedBodyAndMentions = MentionUtil.updateBodyAndMentionsWithPlaceholders(body, mentions)
+      val adjustedRanges = messageRanges.adjustBodyRanges(updatedBodyAndMentions.bodyAdjustments)
+      val placeholderMentions = updatedBodyAndMentions.mentions
+      val mentionsSelf = placeholderMentions.any { Recipient.resolved(it.recipientId).isSelf }
       val values = contentValuesOf(
-        BODY to body,
+        BODY to updatedBodyAndMentions.bodyAsString?.trim(),
         MENTIONS_SELF to if (mentionsSelf) 1 else 0,
-        MESSAGE_RANGES to messageRanges?.encode()
+        MESSAGE_RANGES to adjustedRanges?.encode()
       )
       db.update(TABLE_NAME)
         .values(values)
@@ -2606,7 +2610,7 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
         .run()
 
       SignalDatabase.mentions.deleteMentionsForMessage(messageId)
-      SignalDatabase.mentions.insert(threadId, messageId, mentions)
+      SignalDatabase.mentions.insert(threadId, messageId, placeholderMentions)
 
       if (linkPreviews != null) {
         if (!oldPreviewsJson.isNullOrEmpty()) {

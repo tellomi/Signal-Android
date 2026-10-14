@@ -1100,7 +1100,7 @@ class ConversationFragment :
   /** Tellomi（#1611）：会话输入框能用（没退群、不是只许管理员发言、消息请求已接受……）。定时消息页的输入框跟着它。 */
   private var tellomiInputEnabled = false
 
-  /** Tellomi（#1611）：定时消息页上写的那条在等确认安全码。 */
+  /** Tellomi（#1611）：定时消息页上写的那条在等开精确闹钟权限 / 确认安全码。 */
   private var tellomiPendingScheduledText: (() -> Unit)? = null
 
   override fun tellomiCanWriteScheduledMessages(): Boolean = tellomiInputEnabled
@@ -1108,7 +1108,8 @@ class ConversationFragment :
   /** Tellomi（#1611，M-4）：定时消息页上写好、选好时间的一条。同 [sendMessage] 的检查（精确闹钟权限、安全码变了先确认），不碰输入框。 */
   override fun tellomiScheduleText(body: String, mentions: List<Mention>, bodyRanges: BodyRangeList?, linkPreviews: List<LinkPreview>, scheduledTime: Long) {
     val threadRecipient = viewModel.recipientSnapshot ?: return
-    if (ReenableScheduledMessagesDialogFragment.showIfNeeded(requireContext(), childFragmentManager, null, scheduledTime)) {
+    if (!tellomiInputEnabled) {
+      Log.w(TAG, "The chat can no longer be written to; not scheduling.")
       return
     }
     val schedule = {
@@ -1127,6 +1128,11 @@ class ConversationFragment :
         preUploadResults = emptyList(),
         isViewOnce = false
       ).subscribeBy(onError = { Log.w(TAG, "Couldn't schedule a message from the scheduled list", it) })
+    }
+    // 精确闹钟权限没开：开了以后（`onSchedulePermissionsGranted`）排这一条
+    if (ReenableScheduledMessagesDialogFragment.showIfNeeded(requireContext(), childFragmentManager, null, scheduledTime)) {
+      tellomiPendingScheduledText = { tellomiScheduleText(body, mentions, bodyRanges, linkPreviews, scheduledTime) }
+      return
     }
     if (viewModel.identityRecordsState.hasRecentSafetyNumberChange()) {
       tellomiPendingScheduledText = schedule
@@ -1257,7 +1263,10 @@ class ConversationFragment :
   }
 
   override fun onSchedulePermissionsGranted(metricId: String?, scheduledDate: Long) {
-    sendMessage(scheduledDate = scheduledDate)
+    // Tellomi（#1611）：权限是为定时消息页上写的那条开的，就排它，不发输入框里的字
+    val pendingScheduledText = tellomiPendingScheduledText
+    tellomiPendingScheduledText = null
+    pendingScheduledText?.invoke() ?: sendMessage(scheduledDate = scheduledDate)
   }
 
   override fun sendAnywayAfterSafetyNumberChangedInBottomSheet(destinations: List<RecipientSearchKey>) {

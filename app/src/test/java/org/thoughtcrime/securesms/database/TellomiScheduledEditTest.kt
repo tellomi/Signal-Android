@@ -79,6 +79,23 @@ class TellomiScheduledEditTest {
     assertThat(SignalDatabase.mentions.getMentionsForMessage(messageId)).isEqualTo(listOf(mention))
   }
 
+  /** Like [MessageTable.insertMessageOutbox]: the editor's "@Name" is stored as a placeholder, and styles after it move with it. */
+  @Test
+  fun `a mention typed as a name is stored as a placeholder`() {
+    val messageId = insertScheduled("original")
+    val body = "hi @Recipient Name ok"
+    val mention = Mention(recipientId, 3, "@Recipient Name".length)
+    val okStart = body.indexOf("ok")
+    val ranges = BodyRangeList(ranges = listOf(BodyRangeList.BodyRange(start = okStart, length = 2, style = BodyRangeList.BodyRange.Style.BOLD)))
+
+    messages.tellomiEditScheduledMessage(threadId, messageId, body, ranges, listOf(mention), linkPreviews = null)
+
+    val record = messages.getMessageRecord(messageId) as MmsMessageRecord
+    assertThat(record.body).isEqualTo("hi \uFFFC ok")
+    assertThat(SignalDatabase.mentions.getMentionsForMessage(messageId)).isEqualTo(listOf(Mention(recipientId, 3, 1)))
+    assertThat(record.messageRanges?.ranges?.first()?.start).isEqualTo(5)
+  }
+
   @Test
   fun `styles and mentions can be removed`() {
     val messageId = insertScheduled("original")

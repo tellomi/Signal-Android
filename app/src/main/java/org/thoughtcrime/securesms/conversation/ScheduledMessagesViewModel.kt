@@ -43,8 +43,11 @@ class ScheduledMessagesViewModel @JvmOverloads constructor(
     val editMessageId: Long?
   )
 
-  /** 新写的、正在选时间的那条。 */
+  /** 新写的、正在选时间的那条（选时间取消了也留着，下次打开输入框放回去）。 */
   var tellomiPendingDraft: TellomiDraft? = null
+
+  /** 改好、等存的那条（和新写的分开放：改一条不丢写了一半的新消息）。 */
+  var tellomiPendingEdit: TellomiDraft? = null
 
   /** 正在改的那条（输入框对话框读它的原文）。 */
   var tellomiEditingMessage: ConversationMessage? = null
