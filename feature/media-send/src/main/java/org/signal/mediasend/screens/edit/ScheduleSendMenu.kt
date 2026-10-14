@@ -38,10 +38,6 @@ import java.time.temporal.TemporalAdjusters
 import java.util.concurrent.TimeUnit
 
 /**
- * Renders the label for a scheduled send time, e.g. "Tomorrow at 8:00 AM". Injected because localized date formatting
- * lives with the host app.
- */
-/**
  * Tellomi（tellomi/tellomi#1601，M-4）：发给自己（收藏）时「定时发送」叫「设置提醒」（同 Telegram 两端 `SetReminder`）。
  * 由宿主按这次发给谁提供；默认不是。
  */
@@ -53,6 +49,10 @@ val LocalTellomiScheduleIsReminder = compositionLocalOf { false }
  */
 internal val TellomiScheduleSendOptions: List<ScheduleSendOption> = listOf(ScheduleSendOption.PickTime)
 
+/**
+ * Renders the label for a scheduled send time, e.g. "Tomorrow at 8:00 AM". Injected because localized date formatting
+ * lives with the host app.
+ */
 val LocalScheduledSendTimeFormatter = compositionLocalOf<(Long) -> String> {
   { timeMs ->
     DateTimeFormatter

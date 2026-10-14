@@ -49,9 +49,22 @@ class TellomiScheduleWheelsTest {
   fun `turning the wheels to the past settles on the earliest`() {
     val now = ms(2026, 10, 14, 10, 2, 37)
     val earlier = TellomiScheduleWheels.Selection(dayOffset = 0, hour = 9, minute = 0)
-    assertEquals(TellomiScheduleWheels.Selection(dayOffset = 0, hour = 10, minute = 4), TellomiScheduleWheels.settle(earlier, now, zone))
+    assertEquals(TellomiScheduleWheels.Selection(dayOffset = 0, hour = 10, minute = 4), TellomiScheduleWheels.settle(earlier, now, now, zone))
     val later = TellomiScheduleWheels.Selection(dayOffset = 2, hour = 8, minute = 15)
-    assertEquals(later, TellomiScheduleWheels.settle(later, now, zone))
+    assertEquals(later, TellomiScheduleWheels.settle(later, now, now, zone))
+  }
+
+  /** 开着跨过了午夜：天轮从打开那天算，选的「明天 00:01」还是那一刻，不会晚一天。 */
+  @Test
+  fun `days count from when the sheet opened, even past midnight`() {
+    val opened = ms(2026, 10, 14, 23, 59, 10)
+    val selection = TellomiScheduleWheels.selection(TellomiScheduleWheels.defaultTime(opened), opened, zone)
+    assertEquals(TellomiScheduleWheels.Selection(dayOffset = 1, hour = 0, minute = 1), selection)
+
+    val tappedAfterMidnight = ms(2026, 10, 15, 0, 0, 5)
+    val chosen = TellomiScheduleWheels.clamp(TellomiScheduleWheels.time(selection, opened, zone), tappedAfterMidnight, zone)
+    assertEquals(ms(2026, 10, 15, 0, 2), chosen)
+    assertEquals(selection.copy(minute = 2), TellomiScheduleWheels.settle(selection, opened, tappedAfterMidnight, zone))
   }
 
   @Test

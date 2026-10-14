@@ -39,6 +39,9 @@ class ScheduleMessageTimePickerBottomSheet : FixedRoundedCornerBottomSheetDialog
   private lateinit var minutePicker: NumberPicker
   private lateinit var confirmButton: MaterialButton
 
+  /** 打开时的那一刻：天轮上的「今天」就是这一天（跨过午夜也不变，转屏 / 进程重建后从保存的状态恢复）。 */
+  private var baseTime: Long = 0
+
   private val isReminder: Boolean
     get() = arguments?.getBoolean(KEY_REMINDER) == true
 
@@ -47,7 +50,8 @@ class ScheduleMessageTimePickerBottomSheet : FixedRoundedCornerBottomSheetDialog
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    val now = System.currentTimeMillis()
+    baseTime = savedInstanceState?.getLong(STATE_BASE_TIME) ?: System.currentTimeMillis()
+    val now = baseTime
     view.findViewById<TextView>(R.id.tellomi_schedule_title).setText(
       if (isReminder) R.string.TellomiScheduleTimePicker__set_reminder else R.string.ScheduleMessageTimePickerBottomSheet__dialog_title
     )
@@ -59,7 +63,7 @@ class ScheduleMessageTimePickerBottomSheet : FixedRoundedCornerBottomSheetDialog
     dayPicker.minValue = 0
     dayPicker.maxValue = TellomiScheduleWheels.MAX_DAYS
     dayPicker.wrapSelectorWheel = false
-    dayPicker.displayedValues = Array(TellomiScheduleWheels.MAX_DAYS + 1) { dayLabel(it, now) }
+    dayPicker.displayedValues = dayLabels(now)
     hourPicker.minValue = 0
     hourPicker.maxValue = 23
     hourPicker.setFormatter { String.format(Locale.getDefault(), "%02d", it) }
@@ -67,17 +71,30 @@ class ScheduleMessageTimePickerBottomSheet : FixedRoundedCornerBottomSheetDialog
     minutePicker.maxValue = 59
     minutePicker.setFormatter { String.format(Locale.getDefault(), "%02d", it) }
 
-    val initialTime = arguments?.takeIf { it.containsKey(KEY_INITIAL_TIME) }?.getLong(KEY_INITIAL_TIME)
-    show(TellomiScheduleWheels.selection(TellomiScheduleWheels.clamp(initialTime ?: TellomiScheduleWheels.defaultTime(now), now), now))
+    // 滚轮里的输入框 id 都一样，让系统自己存会把三个滚轮的字存乱：自己存选中的那一刻（onSaveInstanceState）。
+    listOf(dayPicker, hourPicker, minutePicker).forEach { it.isSaveFromParentEnabled = false }
+
+    val restored = savedInstanceState?.takeIf { it.containsKey(STATE_SELECTED_TIME) }?.getLong(STATE_SELECTED_TIME)
+    val initialTime = restored ?: arguments?.takeIf { it.containsKey(KEY_INITIAL_TIME) }?.getLong(KEY_INITIAL_TIME)
+    val startTime = TellomiScheduleWheels.clamp(initialTime ?: TellomiScheduleWheels.defaultTime(System.currentTimeMillis()), System.currentTimeMillis())
+    show(TellomiScheduleWheels.selection(startTime, baseTime))
 
     val onChange = NumberPicker.OnValueChangeListener { _, _, _ ->
-      show(TellomiScheduleWheels.settle(currentSelection(), System.currentTimeMillis()))
+      show(TellomiScheduleWheels.settle(currentSelection(), baseTime, System.currentTimeMillis()))
     }
     dayPicker.setOnValueChangedListener(onChange)
     hourPicker.setOnValueChangedListener(onChange)
     minutePicker.setOnValueChangedListener(onChange)
 
     confirmButton.setOnClickListener { scheduleMessageSend() }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    if (::dayPicker.isInitialized) {
+      outState.putLong(STATE_BASE_TIME, baseTime)
+      outState.putLong(STATE_SELECTED_TIME, TellomiScheduleWheels.time(currentSelection(), baseTime))
+    }
   }
 
   private fun currentSelection(): TellomiScheduleWheels.Selection {
@@ -88,17 +105,24 @@ class ScheduleMessageTimePickerBottomSheet : FixedRoundedCornerBottomSheetDialog
     dayPicker.value = selection.dayOffset
     hourPicker.value = selection.hour
     minutePicker.value = selection.minute
-    confirmButton.text = confirmText(TellomiScheduleWheels.time(selection, System.currentTimeMillis()), System.currentTimeMillis())
+    confirmButton.text = confirmText(TellomiScheduleWheels.time(selection, baseTime), System.currentTimeMillis())
   }
 
-  private fun dayLabel(dayOffset: Int, now: Long): String {
-    if (dayOffset == 0) {
-      return getString(R.string.DateUtils_today)
+  /** 天轮上的字：「今天」，然后「周四 10月15日」，跨年的带年份（同 TG 安卓）。格式各建一次。 */
+  private fun dayLabels(baseMs: Long): Array<String> {
+    val locale = Locale.getDefault()
+    val baseDay = Instant.ofEpochMilli(baseMs).atZone(ZoneId.systemDefault()).toLocalDate()
+    val sameYear = DateTimeFormatter.ofPattern(DateFormat.getBestDateTimePattern(locale, "EEEMMMd"), locale)
+    val otherYear = DateTimeFormatter.ofPattern(DateFormat.getBestDateTimePattern(locale, "MMMdyyyy"), locale)
+    val today = getString(R.string.DateUtils_today)
+    return Array(TellomiScheduleWheels.MAX_DAYS + 1) { offset ->
+      if (offset == 0) {
+        today
+      } else {
+        val day = baseDay.plusDays(offset.toLong())
+        (if (day.year == baseDay.year) sameYear else otherYear).format(day)
+      }
     }
-    val day = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate().plusDays(dayOffset.toLong())
-    val sameYear = day.year == Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).year
-    val pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), if (sameYear) "EEEMMMd" else "MMMdyyyy")
-    return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).format(day)
   }
 
   private fun confirmText(timeMs: Long, now: Long): String {
@@ -115,8 +139,7 @@ class ScheduleMessageTimePickerBottomSheet : FixedRoundedCornerBottomSheetDialog
   }
 
   private fun getSelectedTimestamp(): Long {
-    val now = System.currentTimeMillis()
-    return TellomiScheduleWheels.clamp(TellomiScheduleWheels.time(currentSelection(), now), now)
+    return TellomiScheduleWheels.clamp(TellomiScheduleWheels.time(currentSelection(), baseTime), System.currentTimeMillis())
   }
 
   private fun scheduleMessageSend() {
@@ -145,6 +168,8 @@ class ScheduleMessageTimePickerBottomSheet : FixedRoundedCornerBottomSheetDialog
     private const val KEY_MESSAGE_ID = "message_id"
     private const val KEY_INITIAL_TIME = "initial_time"
     private const val KEY_REMINDER = "tellomi_reminder"
+    private const val STATE_BASE_TIME = "tellomi_base_time"
+    private const val STATE_SELECTED_TIME = "tellomi_selected_time"
 
     /** @param isReminder 收藏（给自己）里：标题「设置提醒」、按钮「今天 HH:mm 提醒」（同 Telegram 两端）。 */
     @JvmStatic

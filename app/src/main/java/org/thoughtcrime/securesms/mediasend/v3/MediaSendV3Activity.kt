@@ -95,7 +95,8 @@ open class MediaSendV3Activity :
 
   /** Tellomi（tellomi/tellomi#1601）：这次是发给自己（收藏）：「定时发送」叫「设置提醒」。 */
   private val tellomiIsNoteToSelf: Boolean by lazy {
-    contractArgs.recipientId?.let { Recipient.resolved(RecipientId.from(it.id)).isSelf } == true
+    // 只比 id，不在主线程查库。
+    contractArgs.recipientId?.let { RecipientId.from(it.id) == Recipient.self().id } == true
   }
 
   private val viewModel: MediaSendFlowViewModel by viewModels { MediaSendFlowViewModel.Factory(args = contractArgs) }

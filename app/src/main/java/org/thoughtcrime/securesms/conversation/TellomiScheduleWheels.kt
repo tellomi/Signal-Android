@@ -44,21 +44,25 @@ object TellomiScheduleWheels {
     return timeMs.coerceIn(minimumTime(nowMs), maximumTime(nowMs, zone))
   }
 
-  fun selection(timeMs: Long, nowMs: Long, zone: ZoneId = ZoneId.systemDefault()): Selection {
+  /**
+   * 滚轮的「第几天」都从 [baseMs]（打开选时间的那一刻）那天算起，和天轮上的字一致；
+   * 开着跨过了午夜也不会差一天。
+   */
+  fun selection(timeMs: Long, baseMs: Long, zone: ZoneId = ZoneId.systemDefault()): Selection {
     val time = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timeMs), zone)
-    val today = Instant.ofEpochMilli(nowMs).atZone(zone).toLocalDate()
-    val dayOffset = ChronoUnit.DAYS.between(today, time.toLocalDate()).toInt().coerceIn(0, MAX_DAYS)
+    val baseDay = Instant.ofEpochMilli(baseMs).atZone(zone).toLocalDate()
+    val dayOffset = ChronoUnit.DAYS.between(baseDay, time.toLocalDate()).toInt().coerceIn(0, MAX_DAYS)
     return Selection(dayOffset = dayOffset, hour = time.hour, minute = time.minute)
   }
 
-  fun time(selection: Selection, nowMs: Long, zone: ZoneId = ZoneId.systemDefault()): Long {
-    val day = Instant.ofEpochMilli(nowMs).atZone(zone).toLocalDate().plusDays(selection.dayOffset.toLong())
+  fun time(selection: Selection, baseMs: Long, zone: ZoneId = ZoneId.systemDefault()): Long {
+    val day = Instant.ofEpochMilli(baseMs).atZone(zone).toLocalDate().plusDays(selection.dayOffset.toLong())
     return day.atTime(selection.hour, selection.minute).atZone(zone).toInstant().toEpochMilli()
   }
 
-  /** 滚轮转到的那一刻，推进最早 / 最晚之间后，滚轮该停在哪。 */
-  fun settle(selection: Selection, nowMs: Long, zone: ZoneId = ZoneId.systemDefault()): Selection {
-    return selection(clamp(time(selection, nowMs, zone), nowMs, zone), nowMs, zone)
+  /** 滚轮转到的那一刻（天从 [baseMs] 算），推进 [nowMs] 时的最早 / 最晚之间后，滚轮该停在哪。 */
+  fun settle(selection: Selection, baseMs: Long, nowMs: Long, zone: ZoneId = ZoneId.systemDefault()): Selection {
+    return selection(clamp(time(selection, baseMs, zone), nowMs, zone), baseMs, zone)
   }
 
   fun day(timeMs: Long, nowMs: Long, zone: ZoneId = ZoneId.systemDefault()): Day {
