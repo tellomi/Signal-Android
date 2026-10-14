@@ -42,7 +42,9 @@ import org.thoughtcrime.securesms.util.ImageCompressionUtil;
 import org.thoughtcrime.securesms.util.MediaUtil;
 import org.thoughtcrime.securesms.util.RemoteConfig;
 import org.thoughtcrime.securesms.video.StreamingTranscoder;
+import org.thoughtcrime.securesms.video.TellomiVideoQuality;
 import org.thoughtcrime.securesms.video.TranscoderOptions;
+import org.thoughtcrime.securesms.video.TranscodingConfig;
 import org.thoughtcrime.securesms.video.exceptions.VideoPostProcessingException;
 import org.thoughtcrime.securesms.video.exceptions.VideoSourceException;
 import org.thoughtcrime.securesms.video.interfaces.TranscoderCancelationSignal;
@@ -54,6 +56,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -262,7 +265,16 @@ public final class AttachmentCompressionJob extends BaseJob {
           }
         }
 
-        StreamingTranscoder transcoder = new StreamingTranscoder(dataSource, options, constraints.getVideoTranscodingSettings(), AttachmentUploadJob.getMaxPlaintextSize(), RemoteConfig.allowAudioRemuxing(), muteAudio);
+        // Tellomi (tellomi/tellomi#1518 V-7 ②): a level picked for this one video replaces the batch quality's tiers.
+        List<TranscodingConfig.QualityTier> tiers = constraints.getVideoTranscodingSettings();
+        if (transformProperties != null && transformProperties.tellomiVideoShortEdge > 0) {
+          List<TranscodingConfig.QualityTier> levelTiers = TellomiVideoQuality.INSTANCE.tiersFor(transformProperties.tellomiVideoShortEdge, AttachmentUploadJob.getMaxPlaintextSize());
+          if (levelTiers != null) {
+            tiers = levelTiers;
+          }
+        }
+
+        StreamingTranscoder transcoder = new StreamingTranscoder(dataSource, options, tiers, AttachmentUploadJob.getMaxPlaintextSize(), RemoteConfig.allowAudioRemuxing(), muteAudio);
 
         if (transcoder.isTranscodeRequired()) {
           Log.i(TAG, "Compressing with streaming muxer");
