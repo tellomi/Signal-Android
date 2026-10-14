@@ -1064,6 +1064,7 @@ class MediaSendFlowViewModel(
    * and drops the pre-upload made at the old quality.
    */
   private fun setVideoLevel(shortEdge: Int) {
+    if (!repository.isVideoTranscodeAvailable()) return
     val snapshot = state.value
     val uri = snapshot.focusedMedia?.uri ?: return
     val existing = snapshot.editorStateMap[uri] as? EditorState.VideoTrim ?: return

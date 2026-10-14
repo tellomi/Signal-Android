@@ -141,6 +141,47 @@ class MediaSendFlowViewModelVideoLevelTest {
     assertThat(options).isEmpty()
   }
 
+  @Test
+  fun `Given a device that cannot transcode, when a level is picked, then nothing changes`() = runTest {
+    val viewModel = viewModel(video(durationSeconds = 60))
+    advanceUntilIdle()
+    every { repository.isVideoTranscodeAvailable() } returns false
+
+    viewModel.onEvent(MediaSendFlowEvent.SetVideoLevel(1080))
+
+    assertThat(trimOf(viewModel).videoTrimData.tellomiShortEdge).isEqualTo(0)
+  }
+
+  @Test
+  fun `a picked level stays in the sheet with the batch quality to go back to, even when it is the only one that fits`() {
+    // 270p fits ~1037 s at 100 MiB; at 900 s nothing else does.
+    val options = videoLevelOptions(
+      sourceShortEdge = 1080,
+      duration = 900.seconds,
+      maxUploadBytes = LIMIT,
+      batchTiers = listOf(VideoConstants.DEFAULT_LVL1_STANDARD),
+      chosenShortEdge = 270
+    )
+    assertThat(options.map { it.shortEdge }).isEqualTo(listOf(480, 270))
+    assertThat(options.single { it.isSelected }.shortEdge).isEqualTo(270)
+    assertThat(options.single { it.shortEdge == 480 }.storedShortEdge).isEqualTo(0)
+  }
+
+  @Test
+  fun `a batch quality that is not one of the levels is still there, picked`() {
+    // A 540p source under a 720p batch tier: the levels stop at 480p, the batch one is offered as it is.
+    val options = videoLevelOptions(
+      sourceShortEdge = 540,
+      duration = 30.seconds,
+      maxUploadBytes = LIMIT,
+      batchTiers = listOf(VideoConstants.DEFAULT_HIGH),
+      chosenShortEdge = 0
+    )
+    assertThat(options.map { it.shortEdge }).isEqualTo(listOf(720, 480, 270))
+    assertThat(options.single { it.isSelected }.shortEdge).isEqualTo(720)
+    assertThat(options.single { it.shortEdge == 720 }.storedShortEdge).isEqualTo(0)
+  }
+
   private fun trimOf(viewModel: MediaSendFlowViewModel): EditorState.VideoTrim {
     return viewModel.state.value.editorStateMap[VIDEO_URI] as EditorState.VideoTrim
   }

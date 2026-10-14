@@ -32,6 +32,7 @@ import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.dismissWithAnimation
 import org.signal.core.util.bytes
 import org.signal.mediasend.EditorState
+import org.signal.mediasend.MediaConstraints
 import org.signal.mediasend.R
 import org.signal.mediasend.test.TestTags
 import org.thoughtcrime.securesms.video.TellomiVideoQuality
@@ -68,26 +69,45 @@ internal fun videoLevelOptions(
 ): List<VideoLevelOption> {
   val durationSeconds = duration.inWholeMilliseconds / 1000.0
   val available = TellomiVideoQuality.availableLevels(sourceShortEdge, durationSeconds, maxUploadBytes)
-  if (available.size < 2) return emptyList()
+  // A level that was picked stays reachable even once fewer than two fit, so it can always be taken back.
+  if (available.size < 2 && chosenShortEdge == 0) return emptyList()
 
   val batchShortEdge = if (batchTiers.isNotEmpty()) TranscodingConfig.getQualityTier(batchTiers, duration).resolution else 0
   val effective = if (chosenShortEdge > 0) chosenShortEdge else batchShortEdge
+  val millis = duration.inWholeMilliseconds
 
-  return available.reversed().map { level ->
+  val levels = available.map { level ->
     val isBatch = level.shortEdge == batchShortEdge
     val tiers = if (isBatch) batchTiers else listOf(TellomiVideoQuality.tier(level, maxUploadBytes))
     VideoLevelOption(
       shortEdge = level.shortEdge,
       label = level.label,
-      estimatedBytes = TranscodingQuality.createFromQualityTiers(tiers, duration.inWholeMilliseconds).byteCountEstimate.toLong(),
+      estimatedBytes = TranscodingQuality.createFromQualityTiers(tiers, millis).byteCountEstimate.toLong(),
       isSelected = level.shortEdge == effective,
       storedShortEdge = if (isBatch) 0 else level.shortEdge
     )
   }
+
+  // The batch quality's own size when it is not one of the levels (or no longer fits as one): always there to go back to.
+  val batch = if (batchShortEdge > 0 && levels.none { it.storedShortEdge == 0 }) {
+    VideoLevelOption(
+      shortEdge = batchShortEdge,
+      label = "${batchShortEdge}p",
+      estimatedBytes = TranscodingQuality.createFromQualityTiers(batchTiers, millis).byteCountEstimate.toLong(),
+      isSelected = chosenShortEdge == 0,
+      storedShortEdge = 0
+    )
+  } else {
+    null
+  }
+
+  return (levels + listOfNotNull(batch)).sortedByDescending { it.shortEdge }
 }
 
 /** [videoLevelOptions] for the focused video, or empty when it is not a video that can be transcoded at a level. */
 internal fun MediaEditState.focusedVideoLevelOptions(): List<VideoLevelOption> {
+  // Without a transcoder the video goes as it is, so there is no level to pick.
+  if (!MediaConstraints.isVideoTranscodeAvailable()) return emptyList()
   val media = focusedMedia ?: return emptyList()
   val trim = (focusedEditorState as? EditorState.VideoTrim)?.videoTrimData ?: return emptyList()
   val shortEdge = minOf(media.width, media.height)

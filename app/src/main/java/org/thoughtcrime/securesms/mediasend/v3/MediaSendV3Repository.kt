@@ -327,13 +327,13 @@ object MediaSendV3Repository : MediaSendRepository {
 
   override var storyMaxVideoDuration: Duration = Stories.MAX_VIDEO_DURATION_MILLIS.milliseconds
 
-  /**
-   * Stored as whole percentages so that the v2 and v3 editors stay in sync.
-   */
   /** Tellomi (tellomi/tellomi#1518 V-7 ②): what the attachment upload actually allows. */
   override val tellomiVideoMaxUploadBytes: Long
     get() = AttachmentUploadJob.maxPlaintextSize
 
+  /**
+   * Stored as whole percentages so that the v2 and v3 editors stay in sync.
+   */
   override var brushWidths: BrushWidths
     get() = BrushWidths(
       marker = SignalStore.imageEditor.getMarkerPercentage() / 100f,

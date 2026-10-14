@@ -271,6 +271,11 @@ public final class AttachmentCompressionJob extends BaseJob {
           List<TranscodingConfig.QualityTier> levelTiers = TellomiVideoQuality.INSTANCE.tiersFor(transformProperties.tellomiVideoShortEdge, AttachmentUploadJob.getMaxPlaintextSize());
           if (levelTiers != null) {
             tiers = levelTiers;
+            // The transcoder skips a low-bitrate H.264 input whatever its size; a picked level has to be re-encoded at
+            // its own size. Options with no end time force the transcode without trimming.
+            if (options == null) {
+              options = new TranscoderOptions(0, 0);
+            }
           }
         }
 
