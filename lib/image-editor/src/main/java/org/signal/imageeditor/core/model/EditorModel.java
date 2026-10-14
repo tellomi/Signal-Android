@@ -890,6 +890,7 @@ public final class EditorModel implements Parcelable, RendererContext.Ready {
   public void onReady(@NonNull Renderer renderer, @Nullable Matrix cropMatrix, @Nullable Point size) {
     if (cropMatrix != null && size != null && isRendererOfMainImage(renderer)) {
       boolean changedBefore   = isChanged();
+      boolean croppingBefore  = isCropping();
       Matrix  imageCropMatrix = editorElementHierarchy.getImageCrop().getLocalMatrix();
       this.size.set(size.x, size.y);
       if (imageCropMatrix.isIdentity()) {
@@ -921,6 +922,11 @@ public final class EditorModel implements Parcelable, RendererContext.Ready {
             break;
           }
           default:
+            // Tellomi (tellomi/tellomi#1522 E-1): the crop was opened before the image had loaded (the album viewer's crop
+            // shortcut goes straight to it), and laying out the loaded image just closed it. Open it again.
+            if (croppingBefore && !isCropping()) {
+              startCrop();
+            }
             break;
         }
       }

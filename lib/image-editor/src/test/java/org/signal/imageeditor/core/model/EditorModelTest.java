@@ -102,6 +102,20 @@ public final class EditorModelTest {
     assertTrue(model.isChanged());
   }
 
+  /** Tellomi (tellomi/tellomi#1522 E-1): a crop opened before the image loads is still open once it has loaded. */
+  @Test
+  public void aCropOpenedBeforeTheImageLoadsStaysOpen() {
+    EditorModel model = modelWithMainImage();
+
+    model.setVisibleViewPort(VIEW_PORT);
+    model.startCrop();
+    ready(model);
+
+    assertTrue(model.isCropping());
+    model.setCropAspectRatio(1f);
+    assertEquals(1f, model.getCropAspectRatioOnScreen(), 0.01f);
+  }
+
   /** Tellomi (tellomi/tellomi#1522 E-1): picking an aspect ratio while cropping shrinks the crop to it and locks it. */
   @Test
   public void croppingToAnAspectRatioShrinksTheCropToItAndLocksIt() {
