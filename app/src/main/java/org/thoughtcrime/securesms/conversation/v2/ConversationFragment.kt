@@ -324,6 +324,7 @@ import org.thoughtcrime.securesms.mediapreview.MediaIntentFactory
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewActivity
 import org.thoughtcrime.securesms.mediapreview.MediaPreviewCache
 import org.thoughtcrime.securesms.mediasend.MediaSendActivityResult
+import org.thoughtcrime.securesms.mediasend.TellomiMutedVideos
 import org.thoughtcrime.securesms.megaphone.ClientDeprecatedActivity
 import org.thoughtcrime.securesms.messagerequests.MessageRequestRepository
 import org.thoughtcrime.securesms.mms.AttachmentManager
@@ -4848,6 +4849,13 @@ class ConversationFragment :
         return
       }
 
+      // Tellomi（tellomi/tellomi#1518 V-6，owner 2026-10-14 照 TG）：静音当 GIF 发的视频单独成一条，其余照常成组。
+      val tellomiGroups = TellomiMutedVideos.messageGroups(if (result.isPushPreUpload) result.preUploadResults.map { it.media } else result.nonUploadedMedia)
+      if (tellomiGroups.size > 1) {
+        sendMediaInGroups(result, tellomiGroups)
+        return
+      }
+
       if (result.isPushPreUpload) {
         sendPreUploadMediaMessage(result)
         return
@@ -4971,6 +4979,72 @@ class ConversationFragment :
             onSendComplete()
           }
           slide?.let { viewModel.deleteSlideData(listOf(it)) }
+        }
+      }
+
+      AppDependencies.typingStatusSender.onTypingStopped(args.threadId)
+      composeTextEventsListener?.typingStatusEnabled = false
+      composeText.setText("")
+      composeTextEventsListener?.typingStatusEnabled = true
+      attachmentManager.clear(Glide.with(this@ConversationFragment), false)
+      inputPanel.clearQuote()
+      scrollToPositionDelegate.markListCommittedVersion()
+
+      TellomiSendInOrder.inOrder(parts).subscribeBy(
+        onError = {
+          Log.w(TAG, "Error received during send!", it)
+          toast(R.string.ConversationActivity_error_sending_media)
+        }
+      )
+    }
+
+    /**
+     * Tellomi（tellomi/tellomi#1518 V-6）：按 [groups] 一组一条地发（其余的相册一条在前，每个静音视频各一条在后）。说明、@、格式和
+     * 「说明在上方」跟着第一组（其余的那组）；全是静音视频时跟着最后一条。引用回复挂第一条。
+     */
+    private fun sendMediaInGroups(result: MediaSendActivityResult, groups: List<List<Int>>) {
+      val threadRecipient = viewModel.recipientSnapshot
+      if (threadRecipient == null) {
+        Log.w(TAG, "Unable to send due to invalid thread recipient")
+        toast(R.string.ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation, Toast.LENGTH_LONG)
+        return
+      }
+
+      if (result.scheduledTime != -1L && ReenableScheduledMessagesDialogFragment.showIfNeeded(requireContext(), childFragmentManager, null, result.scheduledTime)) {
+        return
+      }
+
+      val quote = if (result.isViewOnce) null else inputPanel.quote.orNull()
+      val allSlides: List<Slide> = if (result.isPushPreUpload) emptyList() else mediaSlides(result.nonUploadedMedia)
+      val media = if (result.isPushPreUpload) result.preUploadResults.map { it.media } else result.nonUploadedMedia
+      val bodyIndex = groups.indexOfFirst { group -> group.none { TellomiMutedVideos.isMutedGif(media[it]) } }.takeIf { it >= 0 } ?: groups.lastIndex
+
+      val parts: List<Completable> = groups.mapIndexed { index, group ->
+        val isFirst = index == 0
+        val hasBody = index == bodyIndex
+        val slides = if (result.isPushPreUpload) emptyList() else group.mapNotNull { allSlides.getOrNull(it) }
+        viewModel.sendMessage(
+          metricId = null,
+          threadRecipient = threadRecipient,
+          body = if (hasBody) result.body else "",
+          slideDeck = if (slides.isEmpty()) null else SlideDeck().apply { slides.forEach { addSlide(it) } },
+          scheduledDate = result.scheduledTime,
+          messageToEdit = null,
+          quote = if (isFirst) quote else null,
+          mentions = if (hasBody) result.mentions else emptyList(),
+          bodyRanges = if (hasBody) result.bodyRanges else null,
+          contacts = emptyList(),
+          linkPreviews = emptyList(),
+          preUploadResults = if (result.isPushPreUpload) group.map { result.preUploadResults[it] } else emptyList(),
+          isViewOnce = false,
+          captionAboveMedia = hasBody && result.captionAboveMedia
+        ).doOnComplete {
+          if (isFirst && isAdded && view != null) {
+            onSendComplete()
+          }
+          if (slides.isNotEmpty()) {
+            viewModel.deleteSlideData(slides)
+          }
         }
       }
 
