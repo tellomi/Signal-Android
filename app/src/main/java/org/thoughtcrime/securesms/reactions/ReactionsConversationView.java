@@ -182,9 +182,7 @@ public class ReactionsConversationView extends LinearLayout {
         emojiViews.put(key, emojiView);
 
         // Tellomi (A-07): the reaction just chosen is still flying here; its emoji shows when it lands.
-        if (TellomiReactionFlyIn.isAwaitingLanding(messageId, reaction.baseEmoji)) {
-          emojiView.setAlpha(0f);
-        }
+        TellomiReactionFlyIn.holdUntilLanded(messageId, reaction.baseEmoji, emojiView);
       }
 
       if (sameMessage) {

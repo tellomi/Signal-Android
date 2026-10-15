@@ -4860,7 +4860,9 @@ class ConversationFragment :
     val recycler = binding.conversationItemRecycler
     for (index in 0 until recycler.childCount) {
       val child = recycler.getChildAt(index)
-      if ((child as? Multiselectable)?.conversationMessage?.messageRecord?.id == messageId) {
+      // V2 rows are Multiselectable through their view holder, older rows through the view (as MultiselectItemDecoration does).
+      val item = recycler.getChildViewHolder(child) as? Multiselectable ?: child as? Multiselectable
+      if (item?.conversationMessage?.messageRecord?.id == messageId) {
         return child.findReactionsView()?.findPillEmojiView(emoji)
       }
     }

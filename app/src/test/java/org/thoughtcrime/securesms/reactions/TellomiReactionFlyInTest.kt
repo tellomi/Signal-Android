@@ -61,10 +61,18 @@ class TellomiReactionFlyInTest {
     assertFalse("another emoji", TellomiReactionFlyIn.isAwaitingLanding(42L, "👍"))
 
     target.alpha = 0f
+    val rebound = View(RuntimeEnvironment.getApplication())
+    TellomiReactionFlyIn.holdUntilLanded(42L, "❤️", rebound)
+    val otherMessage = View(RuntimeEnvironment.getApplication())
+    TellomiReactionFlyIn.holdUntilLanded(43L, "❤️", otherMessage)
+    assertEquals("a pill rebuilt mid-flight hides its emoji too", 0f, rebound.alpha, 0f)
+    assertEquals("other messages are left alone", 1f, otherMessage.alpha, 0f)
+
     flight!!.cancel()
 
     assertFalse(TellomiReactionFlyIn.isAwaitingLanding(42L, "❤️"))
     assertEquals("the hidden emoji is put back", 1f, target.alpha, 0f)
+    assertEquals("even one the flight could not find any more", 1f, rebound.alpha, 0f)
   }
 
   @Test

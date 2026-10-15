@@ -15,6 +15,7 @@ import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
 import org.signal.core.ui.motion.TellomiHaptics
 import org.signal.core.ui.motion.TellomiMotion
+import java.lang.ref.WeakReference
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -190,9 +191,12 @@ class TellomiReactionFlyIn private constructor(
     host.overlay.remove(drawable)
   }
 
+  /** 放回藏着的字：落点自己藏起来的那些都放回（不靠 [findTarget] 找得到），再加上此刻找得到的落点。 */
   private fun revealTarget() {
     if (awaiting == key) {
       awaiting = null
+      held.forEach { it.get()?.alpha = 1f }
+      held.clear()
     }
     findTarget()?.alpha = 1f
   }
@@ -257,6 +261,9 @@ class TellomiReactionFlyIn private constructor(
 
     private var awaiting: Key? = null
 
+    /** 因为 [awaiting] 藏起来的字（行被重新绑定时会换新的），落地或取消时一起放回。 */
+    private val held = mutableListOf<WeakReference<View>>()
+
     /**
      * 这条消息的这个表情正等着飞进来：胶囊里的字先藏着。[baseEmoji] 是规范化之后的表情（胶囊按它分组），
      * 这里不再规范化——那要等表情数据加载完，建胶囊时不该等。
@@ -265,6 +272,16 @@ class TellomiReactionFlyIn private constructor(
     fun isAwaitingLanding(messageId: Long, baseEmoji: String?): Boolean {
       val awaiting = awaiting ?: return false
       return baseEmoji != null && awaiting.messageId == messageId && awaiting.baseEmoji == baseEmoji
+    }
+
+    /** 胶囊建好时调：这个字正等着飞进来就先藏起来，记下，落地或取消时放回。 */
+    @JvmStatic
+    fun holdUntilLanded(messageId: Long, baseEmoji: String?, emojiView: View) {
+      if (isAwaitingLanding(messageId, baseEmoji)) {
+        emojiView.alpha = 0f
+        held.removeAll { it.get() == null }
+        held += WeakReference(emojiView)
+      }
     }
 
     /** 目标在下面够远：向上抛（负的初速）；在上面或几乎平齐：不抛。 */
