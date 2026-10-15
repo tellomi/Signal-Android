@@ -12,7 +12,7 @@ import androidx.core.view.animation.PathInterpolatorCompat
  *
  * 一次更新里只换了位置、或者只进出一两个会话（来新消息顶上去、新会话出现、归档一个、删一个）：
  * 所有看得见的行一起移到新位置，新出现的那个淡入。曲线、时长和聊天页补位（A-05）同一套。
- * 一次进出很多（第一次加载、切文件夹、翻页、批量归档）不播，直接换；手指还在滑或列表在惯性滚动时也不播。
+ * 一次进出很多（切文件夹、翻页、批量归档）不播，直接换；手指还在滑或列表在惯性滚动时也不播。
  * Telegram iOS 的会话列表来新消息时同样带插入动画（`ChatListViewTransition` 的 `.interactiveChanges` → `.AnimateInsertion`）。
  */
 object TellomiChatListMotion {
@@ -31,4 +31,11 @@ object TellomiChatListMotion {
     if (listScrolling) return false
     return additions + removals <= MAX_ANIMATED_ENTRANCES_AND_EXITS
   }
+
+  /**
+   * 新出现的行只在别的行同时让位（移动或离开）时淡入。列表从空到有（打开 App 时异步加载完）、在末尾追加都直接出现：
+   * 否则只有一两个会话的人每次打开都看到列表淡入，会话多的人却没有。
+   */
+  @JvmStatic
+  fun shouldFadeIn(moves: Int, removals: Int): Boolean = moves + removals > 0
 }

@@ -1,6 +1,10 @@
 package org.thoughtcrime.securesms.conversationlist;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewPropertyAnimator;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
@@ -8,6 +12,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConversationListItemAnimator extends DefaultItemAnimator {
@@ -15,8 +20,12 @@ public class ConversationListItemAnimator extends DefaultItemAnimator {
   private static final long ANIMATION_DURATION = 200;
 
   // Tellomi（交互审计 A-37）：移动不再默认关掉（原来只有被顶上去的那一行滑、其余行瞬移），见 TellomiChatListMotion。
+  // 新出现的行自己淡入、和移动同时开始：DefaultItemAnimator 要等移动播完才淡入，顶上会先空 250 ms。
+  private final List<RecyclerView.ViewHolder> pendingAdditions = new ArrayList<>();
+  private final List<RecyclerView.ViewHolder> runningAdditions = new ArrayList<>();
+
   private boolean listScrolling;
-  private int     pendingAdditions;
+  private int     pendingMoves;
   private int     pendingRemovals;
 
   @VisibleForTesting
@@ -42,6 +51,7 @@ public class ConversationListItemAnimator extends DefaultItemAnimator {
   public boolean animateMove(@NonNull RecyclerView.ViewHolder holder, int fromX, int fromY, int toX, int toY) {
     boolean pending = super.animateMove(holder, fromX, fromY, toX, toY);
     if (pending) {
+      pendingMoves++;
       holder.itemView.animate().setInterpolator(TellomiChatListMotion.MOVE_INTERPOLATOR);
     }
     return pending;
@@ -49,8 +59,10 @@ public class ConversationListItemAnimator extends DefaultItemAnimator {
 
   @Override
   public boolean animateAdd(@NonNull RecyclerView.ViewHolder holder) {
-    pendingAdditions++;
-    return super.animateAdd(holder);
+    endAnimation(holder);
+    holder.itemView.setAlpha(0f);
+    pendingAdditions.add(holder);
+    return true;
   }
 
   @Override
@@ -61,16 +73,89 @@ public class ConversationListItemAnimator extends DefaultItemAnimator {
 
   @Override
   public void runPendingAnimations() {
-    boolean animate = TellomiChatListMotion.shouldAnimate(pendingAdditions, pendingRemovals, listScrolling);
-    pendingAdditions = 0;
-    pendingRemovals  = 0;
-    lastRunAnimated  = animate;
+    boolean animate = TellomiChatListMotion.shouldAnimate(pendingAdditions.size(), pendingRemovals, listScrolling);
+    boolean fadeIn  = TellomiChatListMotion.shouldFadeIn(pendingMoves, pendingRemovals);
+    pendingMoves    = 0;
+    pendingRemovals = 0;
+    lastRunAnimated = animate;
 
-    if (animate) {
-      super.runPendingAnimations();
-    } else {
+    if (!animate) {
       endAnimations();
+      return;
     }
+
+    super.runPendingAnimations();
+
+    List<RecyclerView.ViewHolder> additions = new ArrayList<>(pendingAdditions);
+    pendingAdditions.clear();
+    for (RecyclerView.ViewHolder holder : additions) {
+      if (fadeIn) {
+        fadeIn(holder);
+      } else {
+        holder.itemView.setAlpha(1f);
+        dispatchAddFinished(holder);
+      }
+    }
+  }
+
+  private void fadeIn(@NonNull RecyclerView.ViewHolder holder) {
+    View                 view      = holder.itemView;
+    ViewPropertyAnimator animation = view.animate();
+
+    runningAdditions.add(holder);
+    animation.alpha(1f)
+             .setDuration(getAddDuration())
+             .setInterpolator(TellomiChatListMotion.MOVE_INTERPOLATOR)
+             .setListener(new AnimatorListenerAdapter() {
+               @Override
+               public void onAnimationStart(Animator animator) {
+                 dispatchAddStarting(holder);
+               }
+
+               @Override
+               public void onAnimationCancel(Animator animator) {
+                 view.setAlpha(1f);
+               }
+
+               @Override
+               public void onAnimationEnd(Animator animator) {
+                 animation.setListener(null);
+                 runningAdditions.remove(holder);
+                 dispatchAddFinished(holder);
+                 if (!isRunning()) {
+                   dispatchAnimationsFinished();
+                 }
+               }
+             })
+             .start();
+  }
+
+  @Override
+  public void endAnimation(@NonNull RecyclerView.ViewHolder holder) {
+    if (pendingAdditions.remove(holder)) {
+      holder.itemView.setAlpha(1f);
+      dispatchAddFinished(holder);
+    }
+    // 正在淡入的由 super 里的 animate().cancel() 收尾（取消回调把透明度补成 1）。
+    super.endAnimation(holder);
+  }
+
+  @Override
+  public void endAnimations() {
+    for (RecyclerView.ViewHolder holder : new ArrayList<>(pendingAdditions)) {
+      holder.itemView.setAlpha(1f);
+      dispatchAddFinished(holder);
+    }
+    pendingAdditions.clear();
+    for (RecyclerView.ViewHolder holder : new ArrayList<>(runningAdditions)) {
+      holder.itemView.animate().cancel();
+    }
+    super.endAnimations();
+  }
+
+  @Override
+  public boolean isRunning() {
+    return super.isRunning() || !pendingAdditions.isEmpty() || !runningAdditions.isEmpty();
   }
 
   @Override

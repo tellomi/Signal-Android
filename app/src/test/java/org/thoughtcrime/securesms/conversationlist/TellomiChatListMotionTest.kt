@@ -52,6 +52,29 @@ class TellomiChatListMotionTest {
   }
 
   @Test
+  fun `a new row fades in only while other rows make room`() {
+    assertTrue(TellomiChatListMotion.shouldFadeIn(moves = 4, removals = 0))
+    assertTrue(TellomiChatListMotion.shouldFadeIn(moves = 0, removals = 1))
+    assertFalse(TellomiChatListMotion.shouldFadeIn(moves = 0, removals = 0))
+  }
+
+  @Test
+  fun `the first conversations arriving in an empty list just appear`() {
+    val (list, adapter, animator) = showList(count = 0)
+
+    adapter.items.addAll(listOf(100L, 101L))
+    adapter.notifyItemRangeInserted(0, 2)
+    layOut(list)
+    animator.runPendingAnimations()
+
+    assertTrue(animator.lastRunAnimated)
+    for (id in listOf(100L, 101L)) {
+      assertEquals(1f, list.findViewHolderForItemId(id)!!.itemView.alpha, 0f)
+    }
+    assertFalse(animator.isRunning)
+  }
+
+  @Test
   fun `a conversation moving to the top slides every row it passes, not just itself`() {
     val (list, adapter, animator) = showList(count = 8)
     val passedRows = (0 until 5).map { adapter.items[it] }
@@ -77,6 +100,31 @@ class TellomiChatListMotionTest {
       assertEquals("row $id duration", TellomiChatListMotion.MOVE_DURATION_MS, view.animate().duration)
       assertSame("row $id curve", TellomiChatListMotion.MOVE_INTERPOLATOR, view.animate().interpolator)
     }
+  }
+
+  @Test
+  fun `a new conversation at the top fades in while the rows below slide, not after them`() {
+    val (list, adapter, animator) = showList(count = 8)
+
+    adapter.items.add(0, 100L)
+    adapter.notifyItemInserted(0)
+    list.scrollToPosition(0)
+    layOut(list)
+
+    assertEquals(0f, list.findViewHolderForItemId(100L)!!.itemView.alpha, 0f)
+    assertEquals(-ROW_HEIGHT.toFloat(), list.findViewHolderForItemId(0L)!!.itemView.translationY, 0f)
+
+    // The pass that starts the slide also starts the fade. DefaultItemAnimator posts the fade for after the whole
+    // move duration and leaves the top slot empty; until then the row's animator has no duration set (300 ms
+    // default). Robolectric does not hold that delay back, so this checks the pass itself, not frames.
+    animator.runPendingAnimations()
+    val added = list.findViewHolderForItemId(100L)!!.itemView
+    assertTrue(animator.lastRunAnimated)
+    assertEquals(TellomiChatListMotion.ADD_DURATION_MS, added.animate().duration)
+
+    advance(Duration.ofMillis(600))
+    assertEquals(1f, added.alpha, 0f)
+    assertFalse(animator.isRunning)
   }
 
   @Test
@@ -139,7 +187,7 @@ class TellomiChatListMotionTest {
       itemAnimator = animator
       this.adapter = adapter
     }
-    activity.setContentView(list, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ROW_HEIGHT * count))
+    activity.setContentView(list, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ROW_HEIGHT * maxOf(count, 8)))
     advance(Duration.ofMillis(34))
     check(list.childCount == count) { "expected $count rows on screen, got ${list.childCount}" }
     return Shown(list, adapter, animator)
