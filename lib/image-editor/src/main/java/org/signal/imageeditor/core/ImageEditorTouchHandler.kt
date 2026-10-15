@@ -182,15 +182,26 @@ class ImageEditorTouchHandler(
     point: PointF,
     selected: EditorElement?
   ): EditSession? {
-    // Tellomi (tellomi/tellomi#1522 E-3b): a finger on a selected shape's handle pulls that handle.
-    val shape = selected?.renderer as? ShapeRenderer
-    if (selected != null && shape != null) {
+    // Tellomi (tellomi/tellomi#1522 E-3b): a finger on a selected shape's handle pulls that handle -- also when the
+    // selection guide's scale / rotate thumb sits on the same spot (an arrow's ends are exactly where the thumbs are).
+    val shapeElement = when (val renderer = selected?.renderer) {
+      is ShapeRenderer -> selected
+      is ThumbRenderer -> model.findById(renderer.elementToControl)?.takeIf { it.renderer is ShapeRenderer }
+      else -> null
+    }
+    val shape = shapeElement?.renderer as? ShapeRenderer
+    val shapeInverse = when {
+      shapeElement == null -> null
+      shapeElement === selected -> inverse
+      else -> model.findElementInverseMatrix(shapeElement, viewMatrix)
+    }
+    if (shapeElement != null && shape != null && shapeInverse != null) {
       val local = FloatArray(2)
-      inverse.mapPoints(local, floatArrayOf(point.x, point.y))
+      shapeInverse.mapPoints(local, floatArrayOf(point.x, point.y))
       val handle = shape.handleAt(local[0], local[1])
       if (handle != null) {
         drawingSession = false
-        return ShapeHandleEditSession(selected, shape, handle, Matrix(inverse))
+        return ShapeHandleEditSession(shapeElement, shape, handle, Matrix(shapeInverse))
       }
     }
 
