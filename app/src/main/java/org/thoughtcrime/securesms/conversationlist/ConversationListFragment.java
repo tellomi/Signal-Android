@@ -232,6 +232,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
   private AppBarLayout                           pullViewAppBarLayout;
   private ConversationListViewModel              viewModel;
   private RecyclerView.Adapter                   activeAdapter;
+  private Runnable                               cancelPendingSearchFade;
   private ConversationListAdapter                defaultAdapter;
   private PagingMappingAdapter<ContactSearchKey> searchAdapter;
   private final Runnable                         showSearchLoadingRunnable = () -> {
@@ -553,6 +554,7 @@ public class ConversationListFragment extends MainFragment implements Conversati
       searchLoading = null;
     }
 
+    cancelPendingSearchFade();
     dismissProgressDialog();
 
     super.onDestroyView();
@@ -991,8 +993,9 @@ public class ConversationListFragment extends MainFragment implements Conversati
 
     list.setAdapter(adapter);
 
+    cancelPendingSearchFade();
     if (animate && oldAdapter != null) {
-      TellomiSearchResultsTransition.play(list, adapter == searchAdapter);
+      cancelPendingSearchFade = TellomiSearchResultsTransition.playWhenFilled(list, adapter, adapter == searchAdapter, SEARCH_LOADING_SHOW_DELAY_MS);
     }
 
     if (adapter == defaultAdapter) {
@@ -1002,6 +1005,13 @@ public class ConversationListFragment extends MainFragment implements Conversati
     }
 
     updateSearchLoadingVisibility();
+  }
+
+  private void cancelPendingSearchFade() {
+    if (cancelPendingSearchFade != null) {
+      cancelPendingSearchFade.run();
+      cancelPendingSearchFade = null;
+    }
   }
 
   private void updateSearchLoadingVisibility() {

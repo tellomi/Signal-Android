@@ -5,8 +5,11 @@
 
 package org.thoughtcrime.securesms.conversationlist
 
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.core.view.animation.PathInterpolatorCompat
+import androidx.recyclerview.widget.RecyclerView
 import org.signal.core.ui.motion.TellomiMotion
 
 /**
@@ -37,7 +40,72 @@ object TellomiSearchResultsTransition {
     }
   }
 
-  /** 列表刚换上新适配器时调；[toSearch] = 换成的是搜索结果。 */
+  /**
+   * 列表刚换上 [adapter] 时调。搜索结果是异步分页到的，换上时往往还是空的：这时淡入等于对着空白播完、结果到了再整块出现
+   * （模拟器录屏 2026-10-17 就是这样）。所以适配器还空着时先把列表藏起来，等第一批结果插入再淡入；[timeoutMs] 到了还没有
+   * （例如真的没有结果）也照样淡入。返回取消用的句柄：在等的时候又换了适配器、或者页面销毁，先调它。
+   */
+  @JvmStatic
+  fun playWhenFilled(list: View, adapter: RecyclerView.Adapter<*>, toSearch: Boolean, timeoutMs: Long): Runnable {
+    if (adapter.itemCount > 0 || !specFor(toSearch, TellomiMotion.tier(list.context)).animate) {
+      play(list, toSearch)
+      return Runnable { }
+    }
+    list.animate().cancel()
+    list.alpha = 0f
+    return PendingFadeIn(list, adapter, toSearch, timeoutMs).also { it.start() }
+  }
+
+  private class PendingFadeIn(
+    private val list: View,
+    private val adapter: RecyclerView.Adapter<*>,
+    private val toSearch: Boolean,
+    private val timeoutMs: Long
+  ) : RecyclerView.AdapterDataObserver(), Runnable {
+
+    private var finished = false
+    private val timeout = Runnable { finish(play = true) }
+
+    // 主线程 Handler 而不是 list.postDelayed：没挂到窗口上的视图，postDelayed 只排队不执行。
+    private val handler = Handler(Looper.getMainLooper())
+
+    fun start() {
+      adapter.registerAdapterDataObserver(this)
+      handler.postDelayed(timeout, timeoutMs)
+    }
+
+    override fun onChanged() = onData()
+
+    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) = onData()
+
+    private fun onData() {
+      if (adapter.itemCount > 0) {
+        finish(play = true)
+      }
+    }
+
+    /** 取消：不再等，列表先复原成完全不透明（下一次换适配器要淡入的话会重新从 0 开始）。 */
+    override fun run() {
+      if (!finished) {
+        finish(play = false)
+        list.alpha = 1f
+      }
+    }
+
+    private fun finish(play: Boolean) {
+      if (finished) {
+        return
+      }
+      finished = true
+      adapter.unregisterAdapterDataObserver(this)
+      handler.removeCallbacks(timeout)
+      if (play) {
+        play(list, toSearch)
+      }
+    }
+  }
+
+  /** 换上的内容按 [specFor] 淡入；[toSearch] = 换成的是搜索结果。 */
   @JvmStatic
   fun play(list: View, toSearch: Boolean) {
     val spec = specFor(toSearch, TellomiMotion.tier(list.context))
