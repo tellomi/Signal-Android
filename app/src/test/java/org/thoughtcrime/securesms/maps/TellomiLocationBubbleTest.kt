@@ -145,8 +145,7 @@ class TellomiLocationBubbleTest {
 
   @Test
   fun `a reply quoting a location says Location`() {
-    fun slide(contentType: String = MediaUtil.IMAGE_JPEG, borderless: Boolean = false, videoGif: Boolean = false) =
-      SlideDeck(listOf(image(contentType = contentType, borderless = borderless, videoGif = videoGif))).slides[0]
+    fun slide(contentType: String = MediaUtil.IMAGE_JPEG, borderless: Boolean = false, videoGif: Boolean = false) = SlideDeck(listOf(image(contentType = contentType, borderless = borderless, videoGif = videoGif))).slides[0]
 
     assertTrue(TellomiLocationBubble.isQuotedLocation(placeBody, slide(), 1, MediaUtil.IMAGE_JPEG))
     assertTrue(TellomiLocationBubble.isQuotedLocation(placeBody, slide(MediaUtil.IMAGE_PNG), 1, MediaUtil.IMAGE_PNG))
