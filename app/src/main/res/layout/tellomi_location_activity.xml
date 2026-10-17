@@ -19,11 +19,11 @@
         app:navigationIcon="@drawable/symbol_arrow_start_24"
         app:title="@string/TellomiLocation__title" />
 
-    <!-- Width × half-width, like the bubble (the code sets the height): the snapshot that came with the message is 2:1. -->
-    <ImageView
+    <!-- Width × half-width, like the bubble (the code sets the ratio): the snapshot that came with the message is 2:1. -->
+    <org.thoughtcrime.securesms.giph.ui.AspectRatioImageView
         android:id="@+id/tellomi_location_map"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:background="@color/signal_colorSurfaceVariant"
         android:importantForAccessibility="no"
         android:scaleType="centerCrop" />

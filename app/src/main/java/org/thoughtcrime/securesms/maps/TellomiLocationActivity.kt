@@ -37,7 +37,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
@@ -47,6 +46,7 @@ import org.signal.core.util.dp
 import org.signal.core.util.logging.Log
 import org.signal.glide.decryptableuri.DecryptableUri
 import org.thoughtcrime.securesms.R
+import org.thoughtcrime.securesms.giph.ui.AspectRatioImageView
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
 import org.thoughtcrime.securesms.util.DynamicTheme
 import java.util.Locale
@@ -154,13 +154,9 @@ class TellomiLocationActivity : AppCompatActivity() {
     toolbar.setOnMenuItemClickListener(::onMenuItem)
     updateMenu(toolbar)
 
-    val map = findViewById<ImageView>(R.id.tellomi_location_map)
-    map.addOnLayoutChangeListener { view, left, _, right, _, _, _, _, _ ->
-      val height = (right - left) / 2
-      if (height > 0 && view.layoutParams.height != height) {
-        view.post { view.updateLayoutParams { this.height = height } }
-      }
-    }
+    // Measured 2:1 before Glide sizes the image, so the snapshot is shown whole (not cropped to a placeholder height).
+    val map = findViewById<AspectRatioImageView>(R.id.tellomi_location_map)
+    map.aspectRatio = 2.0
     IntentCompat.getParcelableExtra(intent, EXTRA_MAP, Uri::class.java)?.let { uri ->
       Glide.with(this).load(DecryptableUri(uri)).centerCrop().into(map)
     }

@@ -148,12 +148,8 @@ class TellomiLocationActivityTest {
     val root = activity.findViewById<View>(R.id.tellomi_location_root)
     val width = (360 * activity.resources.displayMetrics.density).toInt()
     val height = (800 * activity.resources.displayMetrics.density).toInt()
-    repeat(2) {
-      // The second pass picks up the map's height, set from its width after the first.
-      root.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY))
-      root.layout(0, 0, width, height)
-      org.robolectric.shadows.ShadowLooper.idleMainLooper()
-    }
+    root.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY))
+    root.layout(0, 0, width, height)
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     Canvas(bitmap).apply {
       drawColor(Color.WHITE)
