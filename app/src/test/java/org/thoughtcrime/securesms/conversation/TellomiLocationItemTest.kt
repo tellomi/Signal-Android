@@ -14,9 +14,11 @@ import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.descendants
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -45,6 +47,7 @@ import org.signal.emoji.EmojiSource
 import org.thoughtcrime.securesms.BindableConversationItem
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.ConversationItemThumbnail
+import org.thoughtcrime.securesms.components.ThumbnailView
 import org.thoughtcrime.securesms.components.emoji.EmojiTextView
 import org.thoughtcrime.securesms.conversation.colors.ColorizerV2
 import org.thoughtcrime.securesms.database.FakeMessageRecords
@@ -222,6 +225,17 @@ class TellomiLocationItemTest {
     assertEquals(TellomiLocationActivity::class.java.name, started.component?.className)
     assertEquals("星巴克臻选上海烘焙工坊", started.getStringExtra("name"))
     assertEquals(31.2297, started.getDoubleExtra("latitude", 0.0), 0.0)
+  }
+
+  @Test
+  fun `tapping the map opens the location page`() {
+    val item = bind(record(signalIosBody))
+    val thumbnail = item.findViewById<ViewGroup>(R.id.image_view).descendants.filterIsInstance<ThumbnailView>().first()
+    thumbnail.performClick()
+    val started = shadowOf(activity).nextStartedActivity
+    assertNotNull(started)
+    assertEquals(TellomiLocationActivity::class.java.name, started.component?.className)
+    assertNull(started.getStringExtra("name"))
   }
 
   @Test

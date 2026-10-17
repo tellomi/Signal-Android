@@ -41,15 +41,14 @@ class TellomiLocationBubbleTest {
   private val place = TellomiLocationMessage(31.2297, 121.456, "星巴克臻选上海烘焙工坊", "静安区南京西路789号兴业太古汇")
   private val placeBody = "星巴克臻选上海烘焙工坊\n静安区南京西路789号兴业太古汇\nhttps://maps.google.com/maps?q=31.2297%2C121.456"
 
-  private fun image(contentType: String = MediaUtil.IMAGE_JPEG, borderless: Boolean = false, videoGif: Boolean = false, id: Long = 1) =
-    FakeMessageRecords.buildDatabaseAttachment(
-      attachmentId = org.signal.core.models.database.AttachmentId(id),
-      contentType = contentType,
-      borderless = borderless,
-      videoGif = videoGif,
-      width = 768,
-      height = 768
-    )
+  private fun image(contentType: String = MediaUtil.IMAGE_JPEG, borderless: Boolean = false, videoGif: Boolean = false, id: Long = 1) = FakeMessageRecords.buildDatabaseAttachment(
+    attachmentId = org.signal.core.models.database.AttachmentId(id),
+    contentType = contentType,
+    borderless = borderless,
+    videoGif = videoGif,
+    width = 768,
+    height = 768
+  )
 
   // ---------------------------------------------------------------------------------------------------------------------------
   // Recognising
