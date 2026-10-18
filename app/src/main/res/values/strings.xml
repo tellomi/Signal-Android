@@ -765,7 +765,7 @@
         <item quantity="other">%d messages unpinned</item>
     </plurals>
     <!-- Tellomi (pinned-messages.md 3.5): notice after "Hide pinned messages" in the pinned list; has Undo -->
-    <string name="TellomiPinnedList__hidden">Pinned messages hidden. You’ll see them again when a new message is pinned.</string>
+    <string name="TellomiPinnedList__hidden">Pinned messages hidden until a new message is pinned</string>
     <!-- Tellomi (ADR-0081 §4.3, pinned-messages.md 3.5): under a message pinned for me only, in the pinned list -->
     <string name="TellomiPinnedList__only_you_can_see">Only visible to you</string>
     <!-- Tellomi (pinned-messages.md 3.5): button at the bottom of the pinned list -->
