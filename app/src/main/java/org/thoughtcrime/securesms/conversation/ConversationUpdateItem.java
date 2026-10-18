@@ -2,6 +2,7 @@ package org.thoughtcrime.securesms.conversation;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +27,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 import com.google.android.material.button.MaterialButton;
@@ -44,6 +46,7 @@ import org.thoughtcrime.securesms.conversation.colors.Colorizer;
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectCollection;
 import org.thoughtcrime.securesms.conversation.mutiselect.MultiselectPart;
 import org.thoughtcrime.securesms.conversation.ui.error.EnableCallNotificationSettingsDialog;
+import org.thoughtcrime.securesms.conversation.v2.items.InteractiveConversationElement;
 import org.thoughtcrime.securesms.database.CollapsedState;
 import org.thoughtcrime.securesms.database.CollapsibleEvents;
 import org.thoughtcrime.securesms.database.model.GroupCallUpdateDetailsUtil;
@@ -54,6 +57,7 @@ import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.database.model.UpdateDescription;
 import org.thoughtcrime.securesms.database.model.databaseprotos.GroupCallUpdateDetails;
 import org.thoughtcrime.securesms.groups.LiveGroup;
+import org.thoughtcrime.securesms.reactions.ReactionsConversationView;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.recipients.LiveRecipient;
 import org.thoughtcrime.securesms.recipients.Recipient;
@@ -70,6 +74,8 @@ import org.thoughtcrime.securesms.util.livedata.LiveDataUtil;
 import org.thoughtcrime.securesms.verify.VerifyIdentityActivity;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -82,7 +88,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public final class ConversationUpdateItem extends FrameLayout
-                                          implements BindableConversationItem
+                                          implements BindableConversationItem,
+                                                     InteractiveConversationElement
 {
   private static final String         TAG                   = Log.tag(ConversationUpdateItem.class);
   private static final ProjectionList EMPTY_PROJECTION_LIST = new ProjectionList();
@@ -102,6 +109,7 @@ public final class ConversationUpdateItem extends FrameLayout
   private boolean                   isMessageRequestAccepted;
   private EventListener             eventListener;
   private Button                    collapsedButton;
+  private ReactionsConversationView reactionsView;
   private float                     lastYDownRelativeToThis;
   private int                       tint;
 
@@ -141,6 +149,14 @@ public final class ConversationUpdateItem extends FrameLayout
     this.background      = findViewById(R.id.conversation_update_background);
     this.bodyBackground  = findViewById(R.id.conversation_update_body_background);
     this.collapsedButton = findViewById(R.id.conversation_update_collapsed);
+    this.reactionsView   = findViewById(R.id.conversation_update_reactions);
+
+    // Tellomi (pinned-messages.md 3.7): the pills under "×× pinned «…»" wrap at the pill's width, as under a message bubble.
+    bodyBackground.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+      if (reactionsView.getVisibility() == VISIBLE && right - left != oldRight - oldLeft) {
+        reactionsView.setBubbleWidth(right - left);
+      }
+    });
 
     body.setOnClickListener(v -> {
       if ((messageRecord.isIdentityUpdate() || messageRecord.isIdentityDefault() || messageRecord.isIdentityVerified()) && batchSelected.isEmpty()) {
@@ -236,6 +252,7 @@ public final class ConversationUpdateItem extends FrameLayout
 
     presentActionButton(hasWallpaper, donationRequest);
     presentCollapsedHead(hasWallpaper, conversationMessage.getMessageRecord().getCollapsedState());
+    presentReactions();
 
     updateSelectedState();
   }
@@ -310,6 +327,108 @@ public final class ConversationUpdateItem extends FrameLayout
   @Override
   public @NonNull ViewGroup getRoot() {
     return this;
+  }
+
+  /**
+   * Tellomi (ADR-0081 §4.2, pinned-messages.md 3.7): reactions on "×× pinned «…»" show under it, as under a message (both Telegram
+   * apps); tapping them opens who reacted.
+   */
+  private void presentReactions() {
+    if (!MessageRecordUtil.hasPinnedMessageUpdate(messageRecord) || messageRecord.getReactions().isEmpty()) {
+      reactionsView.clear(messageRecord.getId());
+      reactionsView.setOnClickListener(null);
+      reactionsView.setVisibility(GONE);
+      return;
+    }
+
+    reactionsView.setVisibility(VISIBLE);
+    reactionsView.setReactions(messageRecord.getId(), messageRecord.getReactions());
+    reactionsView.setBubbleWidth(bodyBackground.getWidth());
+    reactionsView.setOnClickListener(v -> {
+      if (eventListener != null) {
+        eventListener.onReactionClicked(new MultiselectPart.Update(conversationMessage), messageRecord.getId(), messageRecord.isMms());
+      }
+    });
+  }
+
+  // Tellomi (ADR-0081 §4.2, pinned-messages.md 3.7): "×× pinned «…»" is long-pressed like a message — react, reply, delete — so
+  // it hands the reaction overlay a bubble (the pill, with its reactions) and never swipes. The other updates still go to
+  // multi-select (they aren't reaction targets).
+
+  @Override
+  public @NonNull View getBubbleView() {
+    return background;
+  }
+
+  @Override
+  public @NonNull List<View> getBubbleViews() {
+    return Collections.singletonList(background);
+  }
+
+  @Override
+  public @NonNull View getReactionsView() {
+    return reactionsView;
+  }
+
+  @Override
+  public @Nullable View getQuotedIndicatorView() {
+    return null;
+  }
+
+  @Override
+  public @NonNull View getReplyView() {
+    return background;
+  }
+
+  @Override
+  public @Nullable View getContactPhotoHolderView() {
+    return null;
+  }
+
+  @Override
+  public @Nullable View getBadgeImageView() {
+    return null;
+  }
+
+  @Override
+  public boolean disallowSwipe(float latestDownX, float latestDownY) {
+    return true;
+  }
+
+  @Override
+  public int getAdapterPosition(@NonNull RecyclerView recyclerView) {
+    return recyclerView.getChildViewHolder(this).getBindingAdapterPosition();
+  }
+
+  @Override
+  public @NonNull ProjectionList getSnapshotProjections(@NonNull ViewGroup coordinateRoot, boolean clipOutMedia) {
+    return new ProjectionList();
+  }
+
+  @Override
+  public @NonNull ProjectionList getSnapshotProjections(@NonNull ViewGroup coordinateRoot, boolean clipOutMedia, boolean outgoingOnly) {
+    return new ProjectionList();
+  }
+
+  /** The pill (and its reactions) drawn where it is, with nothing from the chat colors behind it. */
+  @Override
+  public @Nullable SnapshotStrategy getSnapshotStrategy() {
+    return new SnapshotStrategy() {
+      @Override
+      public void snapshot(@NonNull Canvas canvas) {
+        background.draw(canvas);
+      }
+
+      @Override
+      public @NonNull SnapshotMetrics getSnapshotMetrics() {
+        return new SnapshotMetrics(background.getX(), background.getX());
+      }
+    };
+  }
+
+  @Override
+  public void invalidateChatColorsDrawable(@NonNull ViewGroup coordinateRoot) {
+    // Updates have no chat colors.
   }
 
   static final class RecipientObserverManager {

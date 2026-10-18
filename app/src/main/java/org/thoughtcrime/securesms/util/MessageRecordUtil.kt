@@ -169,5 +169,6 @@ fun MessageRecord.isEditMessage(): Boolean {
  * Returns whether or not the given message record can be reacted to.
  */
 fun MessageRecord.isValidReactionTarget(): Boolean {
-  return isSecure && !isPending && !isFailed && !isRemoteDelete && !isUpdate
+  // Tellomi (ADR-0081 §4.2, pinned-messages.md 3.7): "×× pinned «…»" takes reactions like a message (both Telegram apps).
+  return isSecure && !isPending && !isFailed && !isRemoteDelete && (!isUpdate || hasPinnedMessageUpdate())
 }
