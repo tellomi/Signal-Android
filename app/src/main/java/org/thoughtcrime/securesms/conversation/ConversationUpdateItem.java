@@ -30,6 +30,7 @@ import androidx.lifecycle.Transformations;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.button.MaterialButton;
 import com.google.common.collect.Sets;
 
@@ -151,12 +152,9 @@ public final class ConversationUpdateItem extends FrameLayout
     this.collapsedButton = findViewById(R.id.conversation_update_collapsed);
     this.reactionsView   = findViewById(R.id.conversation_update_reactions);
 
-    // Tellomi (pinned-messages.md 3.7): the pills under "×× pinned «…»" wrap at the pill's width, as under a message bubble.
-    bodyBackground.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-      if (reactionsView.getVisibility() == VISIBLE && right - left != oldRight - oldLeft) {
-        reactionsView.setBubbleWidth(right - left);
-      }
-    });
+    // Tellomi (pinned-messages.md 3.7): the pills under "×× pinned «…»" are centred and wrap at the row's width (both Telegram
+    // apps), so they never hang from a side of the notice as they do from a message bubble.
+    reactionsView.setJustifyContent(JustifyContent.CENTER);
 
     body.setOnClickListener(v -> {
       if ((messageRecord.isIdentityUpdate() || messageRecord.isIdentityDefault() || messageRecord.isIdentityVerified()) && batchSelected.isEmpty()) {
@@ -253,6 +251,7 @@ public final class ConversationUpdateItem extends FrameLayout
     presentActionButton(hasWallpaper, donationRequest);
     presentCollapsedHead(hasWallpaper, conversationMessage.getMessageRecord().getCollapsedState());
     presentReactions();
+    background.setVisibility(MessageRecordUtil.isPinNoticeDeletedForEveryone(messageRecord) ? GONE : VISIBLE);
 
     updateSelectedState();
   }
@@ -334,16 +333,16 @@ public final class ConversationUpdateItem extends FrameLayout
    * apps); tapping them opens who reacted.
    */
   private void presentReactions() {
+    // Always laid out (empty, it takes no room): the long press hides and shows it, as it does a message's.
     if (!MessageRecordUtil.hasPinnedMessageUpdate(messageRecord) || messageRecord.getReactions().isEmpty()) {
       reactionsView.clear(messageRecord.getId());
       reactionsView.setOnClickListener(null);
-      reactionsView.setVisibility(GONE);
+      ViewUtil.setTopMargin(reactionsView, 0);
       return;
     }
 
-    reactionsView.setVisibility(VISIBLE);
+    ViewUtil.setTopMargin(reactionsView, (int) DimensionUnit.DP.toPixels(4));
     reactionsView.setReactions(messageRecord.getId(), messageRecord.getReactions());
-    reactionsView.setBubbleWidth(bodyBackground.getWidth());
     reactionsView.setOnClickListener(v -> {
       if (eventListener != null) {
         eventListener.onReactionClicked(new MultiselectPart.Update(conversationMessage), messageRecord.getId(), messageRecord.isMms());
@@ -402,12 +401,20 @@ public final class ConversationUpdateItem extends FrameLayout
 
   @Override
   public @NonNull ProjectionList getSnapshotProjections(@NonNull ViewGroup coordinateRoot, boolean clipOutMedia) {
-    return new ProjectionList();
+    return getSnapshotProjections(coordinateRoot, clipOutMedia, true);
   }
 
+  /**
+   * Tellomi (pinned-messages.md 3.7): a reply's quote of "×× pinned «…»" jumps here, and the jump's pulse is drawn in the
+   * notice's own rounded area. The notice never takes the chat's colors, so it is no part of the outgoing-only shapes.
+   */
   @Override
   public @NonNull ProjectionList getSnapshotProjections(@NonNull ViewGroup coordinateRoot, boolean clipOutMedia, boolean outgoingOnly) {
-    return new ProjectionList();
+    ProjectionList projections = new ProjectionList();
+    if (!outgoingOnly && MessageRecordUtil.hasPinnedMessageUpdate(messageRecord) && bodyBackground.getVisibility() == VISIBLE) {
+      projections.add(Projection.relativeToParent(coordinateRoot, bodyBackground, new Projection.Corners(DimensionUnit.DP.toPixels(24))));
+    }
+    return projections;
   }
 
   /** The pill (and its reactions) drawn where it is, with nothing from the chat colors behind it. */

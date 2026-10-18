@@ -39,11 +39,14 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.mms.IncomingMessage
 import org.thoughtcrime.securesms.mms.OutgoingMessage
 import org.thoughtcrime.securesms.recipients.Recipient
+import org.thoughtcrime.securesms.sms.MessageSender
 import org.thoughtcrime.securesms.testutil.RecipientTestRule
 import org.thoughtcrime.securesms.util.LocaleUtil
 import org.thoughtcrime.securesms.util.MessageConstraintsUtil
 import org.thoughtcrime.securesms.util.RemoteConfig
+import org.thoughtcrime.securesms.util.isPinNoticeDeletedForEveryone
 import org.thoughtcrime.securesms.util.isValidReactionTarget
+import org.thoughtcrime.securesms.util.pulsesAsOutgoing
 import org.whispersystems.signalservice.internal.push.DataMessage
 import org.whispersystems.signalservice.internal.push.Envelope
 import java.util.Locale
@@ -174,6 +177,34 @@ class TellomiPinNoticeActionsTest {
     assertEquals("${Recipient.self().getDisplayName(context)} pinned “See you there”", body.toString())
   }
 
+  @Test
+  fun `my pin notice deleted for everyone leaves the chat at once, a message shows it was deleted`() {
+    val mine = insertMyPin(insertFromAlice("See you there"))
+    SignalDatabase.messages.markAsSent(mine, true)
+    assertFalse(record(mine).isPinNoticeDeletedForEveryone())
+
+    MessageSender.sendRemoteDelete(mine)
+    assertTrue("gone before the delete is out", record(mine).isPinNoticeDeletedForEveryone())
+
+    val myMessage = insertMyMessage("On my way")
+    SignalDatabase.messages.markAsSent(myMessage, true)
+    MessageSender.sendRemoteDelete(myMessage)
+    assertTrue(record(myMessage).isRemoteDelete)
+    assertFalse("still there, as deleted", record(myMessage).isPinNoticeDeletedForEveryone())
+  }
+
+  @Test
+  fun `a jump to my pin notice pulses as lightly as over an incoming bubble`() {
+    val target = insertFromAlice("See you there")
+    val minePin = record(insertMyPin(target))
+    assertTrue(minePin.isOutgoing)
+    assertFalse("it sits on the chat's background", minePin.pulsesAsOutgoing())
+
+    val myMessage = record(insertMyMessage("On my way"))
+    assertTrue("my bubbles still pulse darker", myMessage.pulsesAsOutgoing())
+    assertFalse(record(target).pulsesAsOutgoing())
+  }
+
   // MARK: Helpers
 
   private fun record(id: Long): MessageRecord = SignalDatabase.messages.getMessageRecord(id)
@@ -205,6 +236,11 @@ class TellomiPinNoticeActionsTest {
       messageExtras = pinned(pinnedMessageId)
     )
     return SignalDatabase.messages.insertMessageInbox(message, threadId).get().messageId
+  }
+
+  private fun insertMyMessage(body: String): Long {
+    val message = OutgoingMessage.text(threadRecipient = alice, body = body, expiresIn = 0, sentTimeMillis = ++clock)
+    return SignalDatabase.messages.insertMessageOutbox(message, threadId, false, GroupReceiptTable.STATUS_UNKNOWN, null).messageId
   }
 
   private fun insertMyPin(pinnedMessageId: Long): Long {
